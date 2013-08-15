@@ -1,3 +1,4 @@
+15. Aug. 2013 - amo - removed annotation @DeclarativeComponent and add @Declarative as an add on to @Component
 15. Aug. 2013 - amo - removed setComponents and setSubComponents from IPerspective API, set @DeclarativeComponent to deprecated
 25. Jul. 2013 - amo - add @Stateless annotation
 25. Jul. 2013 - amo - removed ICallbackComponents as it is obsolete now, lot of updates in component interfaces due to this change

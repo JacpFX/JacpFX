@@ -30,10 +30,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IDelegateDTO;
-import org.jacp.api.annotations.Component;
-import org.jacp.api.annotations.DeclarativeComponent;
-import org.jacp.api.annotations.Perspective;
-import org.jacp.api.annotations.Stateless;
+import org.jacp.api.annotations.*;
 import org.jacp.api.component.*;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.coordinator.IComponentCoordinator;
@@ -219,12 +216,10 @@ public abstract class AFXPerspective extends AComponent implements
         final IComponentHandle<?,EventHandler<Event>,Event,Object> handler = component.getComponentHandle();
         if(handler==null)return;
 
-        final DeclarativeComponent declarativeComponent = handler.getClass()
-                .getAnnotation(DeclarativeComponent.class);
+        final Declarative declarativeComponent = handler.getClass()
+                .getAnnotation(Declarative.class);
         if (declarativeComponent != null && FXComponent.class.isAssignableFrom(handler.getClass())) {
             handleDeclarativeComponentAnnotation(component, declarativeComponent);
-            this.log("register declarative component with annotations : " + declarativeComponent.id());
-            return;
         }
 
         final Component componentAnnotation = handler.getClass().getAnnotation(Component.class);
@@ -244,10 +239,8 @@ public abstract class AFXPerspective extends AComponent implements
 
     }
 
-    private void handleDeclarativeComponentAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component, final DeclarativeComponent declarativeComponent) {
-        handleBaseAttributes(AComponent.class, component, declarativeComponent.id(), declarativeComponent.active(),
-                declarativeComponent.name());
-        handleDeclarativeComponentAnnotations(declarativeComponent, (AFXComponent) component);
+    private void handleDeclarativeComponentAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component, final Declarative declarativeComponent) {
+        AFXComponent.class.cast(component).setViewLocation(declarativeComponent.viewLocation());
     }
 
     private void handleCallbackAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component, final Component callbackAnnotation) {
@@ -272,19 +265,6 @@ public abstract class AFXPerspective extends AComponent implements
         setLocale(component, componentAnnotation.localeID());
         setRessourceBundleLocation(component, componentAnnotation.resourceBundleLocation());
         this.log("register component with annotations : " + componentAnnotation.id());
-    }
-
-    /**
-     * set declarative component members
-     *
-     * @param declarativeComponent
-     * @param component
-     */
-    private void handleDeclarativeComponentAnnotations(final DeclarativeComponent declarativeComponent, final AFXComponent component) {
-        setExecutionTarget(component, declarativeComponent.defaultExecutionTarget());
-        component.setViewLocation(declarativeComponent.viewLocation());
-        setLocale(component, declarativeComponent.localeID());
-        setRessourceBundleLocation(component, declarativeComponent.resourceBundleLocation());
     }
 
     private void setRessourceBundleLocation(final AFXComponent component, String bundleLocation) {
@@ -417,7 +397,7 @@ public abstract class AFXPerspective extends AComponent implements
     @Override
     public final String getViewLocation() {
         if (type.equals(UIType.PROGRAMMATIC))
-            throw new UnsupportedOperationException("Only supported when @DeclarativeComponent annotation is used");
+            throw new UnsupportedOperationException("Only supported when @Declarative annotation is used");
         return this.viewLocation;
     }
 
@@ -440,7 +420,7 @@ public abstract class AFXPerspective extends AComponent implements
     @Override
     public final URL getDocumentURL() {
         if (type.equals(UIType.PROGRAMMATIC))
-            throw new UnsupportedOperationException("Only supported when @DeclarativeComponent annotation is used");
+            throw new UnsupportedOperationException("Only supported when @Declarative annotation is used");
         return documentURL;
     }
 

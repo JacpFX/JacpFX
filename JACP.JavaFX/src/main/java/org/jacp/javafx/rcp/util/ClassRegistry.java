@@ -1,8 +1,6 @@
 package org.jacp.javafx.rcp.util;
 
 import org.jacp.api.annotations.Component;
-import org.jacp.api.annotations.DeclarativeComponent;
-import org.jacp.api.component.Injectable;
 
 import java.util.Collections;
 import java.util.List;
@@ -53,15 +51,11 @@ public class ClassRegistry {
     }
 
     private static boolean checkForAnntotation(final Class c) {
-        return (c.isAnnotationPresent(Component.class) || c.isAnnotationPresent(DeclarativeComponent.class));
+        return c.isAnnotationPresent(Component.class);
     }
 
     private static boolean checkIdMatch(final Class component, final String id) {
-        Component annotation = (Component) component.getAnnotation(Component.class);
-        if(annotation==null) {
-            DeclarativeComponent dComponent   = (DeclarativeComponent) component.getAnnotation(DeclarativeComponent.class);
-            return dComponent.id().equalsIgnoreCase(id);
-        }
+        final Component annotation = (Component) component.getAnnotation(Component.class);
         return annotation.id().equalsIgnoreCase(id);
     }
 }

@@ -73,7 +73,8 @@ public abstract class AFXComponent extends ASubComponent implements
 	 */
 	@Override
 	public final String getViewLocation() {
-		if(type.equals(UIType.PROGRAMMATIC))throw new UnsupportedOperationException("Only supported when @DeclarativeComponent annotation is used");
+		if(type.equals(UIType.PROGRAMMATIC))throw new UnsupportedOperationException("Only supported when @Declarative" +
+                " annotation is used");
 		return viewLocation;
 	}
 	/**
@@ -101,7 +102,7 @@ public abstract class AFXComponent extends ASubComponent implements
 	 */
 	@Override
 	public final URL getDocumentURL() {
-		if(type.equals(UIType.PROGRAMMATIC))throw new UnsupportedOperationException("Only supported when @DeclarativeComponent annotation is used");
+		if(type.equals(UIType.PROGRAMMATIC))throw new UnsupportedOperationException("Only supported when @Declarative annotation is used");
 		return documentURL;
 	}
 
