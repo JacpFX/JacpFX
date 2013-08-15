@@ -1,0 +1,44 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.jacp.project</groupId>
+		<artifactId>JACP</artifactId>
+		<version>1.4-SNAPSHOT</version>
+		<relativePath>../JACP</relativePath>
+	</parent>
+	<artifactId>JACP.API</artifactId>
+	<packaging>jar</packaging>
+	<name>JACP.API</name>
+	<url>http://jacp.googlecode.com</url>
+
+	<developers>
+		<developer>
+			<id>amo</id>
+			<name>Andy Moncsek</name>
+			<email>amo.ahcp@gmail.com</email>
+		</developer>
+		<developer>
+			<id>pete</id>
+			<name>Patrick Symmangk</name>
+			<email>pete.ahcp@gmail.com</email>
+		</developer>
+	</developers>
+	<build>
+		<plugins>
+			<plugin>
+				<!-- create source jar -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>jacp-api-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

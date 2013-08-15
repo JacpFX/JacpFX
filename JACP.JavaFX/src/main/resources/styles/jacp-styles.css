@@ -1,0 +1,24 @@
+@CHARSET "ISO-8859-1";
+
+.jacp-option-pane {
+    -fx-background-color:#CCCCCC;
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 15, 14, 13;
+    -fx-padding: 15;
+    -fx-effect: dropshadow( three-pass-box , black , 20, 0 , 0 , 0   );
+}
+.jacp-option-pane .jacp-option-pane-title{
+    -fx-font-size: 1.4em;
+    -fx-font-weight: bold;
+}
+/*********************
+*
+* HOVER-MENU
+*
+*********************/
+
+.top-arrow{
+    -fx-background-color: #333333;
+    -fx-shape: "m 198.42809,396.07978 -21.28524,0 -21.28523,0 10.64262,-18.43356 10.64261,-18.43355 10.64262,18.43355 10.64262,18.43356 z";
+}
+

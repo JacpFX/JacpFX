@@ -1,0 +1,10 @@
+mvn archetype:create-from-project
+
+update all sources in /target/generated-sources.... org.jacp. was replaced by {package}!!!
+
+
+mvn archetype:generate \
+  -DarchetypeGroupId=org.jacp \
+  -DarchetypeArtifactId=JacpFX-quickstart-archetype \
+  -DarchetypeVersion=1.1 \
+  -DarchetypeRepository=http://developer.ahcp.de/nexus/content/repositories/jacp

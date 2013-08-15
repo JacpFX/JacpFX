@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane id="BorderPane" xmlns:fx="http://javafx.com/fxml">
+  <center>
+    <AnchorPane fx:id="details">
+      <children>
+        <Button id="button1" fx:id="sendButton" alignment="BOTTOM_LEFT" layoutY="120" onAction="#handleSend" text="%send" AnchorPane.rightAnchor="25" AnchorPane.bottomAnchor="30"  />
+        <Label id="Label" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="10" styleClass="propLabel" text="%fxmlCompBottom" />
+        <TextField id="synopsis" fx:id="textField"  styleClass="propTextField" text=""  AnchorPane.rightAnchor="25" AnchorPane.topAnchor="50" />
+      </children>
+    </AnchorPane>
+  </center>
+</BorderPane>

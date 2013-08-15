@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<context:component-scan base-package="org.jacp"/>
+    <context:annotation-config/>
+
+	<bean id="workbench" class="org.jacp.workbench.Workbench">
+		<property name="perspectives">
+			<list>
+				<ref bean="perspectiveTwo" />
+				<ref bean="perspectiveOne" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="perspectiveTwo" class="org.jacp.perspectives.PerspectiveTwo">
+		<property name="subcomponents">
+			<list>
+				<ref bean="componentTop" />
+				<ref bean="componentBottom" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="perspectiveOne" class="org.jacp.perspectives.PerspectiveOne">
+		<property name="subcomponents">
+			<list>
+				<ref bean="componentLeft" />
+				<ref bean="componentRight" />
+				<ref bean="statefulCallback" />
+				<ref bean="statelessCallback" />
+			</list>
+		</property>
+	</bean>
+
+
+	<bean id="componentLeft" class="org.jacp.components.ComponentLeft" />
+
+	<bean id="componentRight" class="org.jacp.components.ComponentFXMLRight" />
+
+	<bean id="componentTop" class="org.jacp.components.ComponentTop" />
+
+	<bean id="componentBottom" class="org.jacp.components.ComponentFXMLBottom" />
+
+	<bean id="statefulCallback" class="org.jacp.callbacks.StatefulCallback" />
+
+	<bean id="statelessCallback" class="org.jacp.callbacks.StatelessCallback" />
+</beans>

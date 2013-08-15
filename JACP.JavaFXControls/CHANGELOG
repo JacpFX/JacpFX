@@ -1,0 +1,50 @@
+10. Apr. 2012 - amo -  OnStart annotation on Perspective level implemented... TODO: implement on Teardown in FXWorkbenchHandler !!
+10. Apr. 2012 - amo -  OnStart and OnTeardown annotations for Components implemented AFXComponent do not extend IEXtended component anymore (no need to implement onStart/OnTeardown) instead annotate methods 
+09. Apr. 2012 - amo -  add annotation handling in workbench for perspectives
+08. Apr. 2012 - amo -  AFXPerspective extends from AComponent
+08. Apr. 2012 - amo -  AFXComponent extends from ASubComponent
+08. Apr. 2012 - amo -  AComponent and ASubComponent extracted
+08. Apr. 2012 - amo -  Worker classes moved to worker package
+06. Apr. 2012 - amo -  fixed todo; find responsible component when no correct target found, try to scan all perspectives for correct rootPerspective,; this can be nessesary when subcomponent moves to an other perspective and a second component sends messages to this component
+04. Apr. 2012 - amo -  fixed bug with reassignment of components in perspective when switching between perspectives
+02. Apr. 2012 - amo -  updated to version number 1.05
+02. Apr. 2012 - amo -  renamed all *.javafx2.* packages to *.javafx.*
+01. Apr. 2012 - amo -  AFXComponent, AStatefulCallbackComponent and AStatelessCompnent extending AFXSubComponent
+01. Apr. 2012 - amo -  AFXSubComponent added, the basic abstract component
+24. Jan. 2012 - amo -  update to version 1.2 and java 7
+01. Apr. 2012 - amo -  AStateLessCallbackComponent renamed to AStatelessCallbackComponent
+01. Apr. 2012 - amo -  AFX2Component renamed to AFXComponent
+01. Apr. 2012 - amo -  AFXSubcomponent added, ACallbackComponent renamed to AStatefulCallbackComponent
+13. Mar. 2012 - amo -  reduce insance count in stateless components to avoid system overload
+10. Mar. 2012 - psy -  fixed missing content if no toolbars were defined 
+07. Mar. 2012 - amo -  fixed bug where a message to a component right after / while initialization can be dropped because it is added to queue and the initWorker won't receive messages from queue 
+07. Mar. 2012 - amo -  version 1.1 started
+06. Feb. 2012 - amo -  update copyright
+06. Feb. 2012 - amo -  changes in AFX2Component due to API changes in IComponent
+02. Feb. 2012 - amo -  moved StateLessComponentRunWorker from inner class to class, cleanup
+14. Dez. 2011 - amo -  implement getActionListener() to AFX2Workbench to allow workbench to send messages
+08. Dez. 2011 - amo -  changed dependencies between statelesscallback component and scheduler to remove circular dependency
+08. Dez. 2011 - amo -  finished refractoring to replace componentHandler methods with methods in workbench and perspective, goal was to remove circular dependency; restructured workbench and perspective initialization 
+07. Dez. 2011 - amo -  introduced handler components; this components do initialization and replacement of subcomponents which was previously handled by workbench and perspective itself; this changes should decouple dependency between workers and components
+07. Dez. 2011 - amo -  removed perspective dependencies in *Worker classes, instead provide a reference to delegate queue
+06. Dez. 2011 - amo -  moved Id checking methods to FX2Util class
+05. Dez. 2011 - amo -  introduced ComponentDelegator to extract delegate methods from coordinator, be careful methods me change!!! Implementation is not final, removed circular dependency
+29. Nov. 2011 - amo -  update, see changes in API; renamed BG components 
+25. Nov. 2011 - amo -  bug removed, solved with previous changes 
+25. Nov. 2011 - amo -  FX2Perspective Coordinator fixed when component was delegate to new perspective the initialization sequence was wrong (see bug 24.Nov); now the standard init sequence is used and an init message is send
+25. Nov. 2011 - amo -  removed bug where removed components and the return node were reactivated when perspective was changed; fixed by checking if component is active
+24. Nov. 2011 - amo -  bug found when component changed execution target to an other perspective; returned (root)Node is reused from "old" perspective so that all actions do not fin a local target because they are related to the observer of the old perspective. see TODO for more details. 
+24. Nov. 2011 - amo -  changed FX2ComponentRelpaceWorker, changed behavior when component change execution target; split methods in *LocalTargerChange and PerspectiveChange.
+24. Nov. 2011 - amo -  FX2Component add worker now is handled in application thread, it only acts as proxy to the methods in AFX2ComponentWorker; all methods involved must be executed in application thread
+23. Nov. 2011 - amo -  tearDown for AFX2Components implemented
+23. Nov. 2011 - amo -  changed initComponent in AFX2Perspective to check if it runs in application thread, otherwise execute in application thread;
+22. Nov. 2011 - amo -  postHandle method added to workspace to handle menu entries and toolbars 
+21. Nov. 2011 - amo -  changed onStart and onTeardown behavior, created AFX2ComponentLayout, this component holds reference to main menu and toolBar; corrected methods, cleanup. Stage reference added to workbench handle method.
+17. Nov. 2011 - amo -  handleInitialLayout overloaded to pass Stage object
+17. Nov. 2011 - amo -  removed ChunkDTO (class was obsolete), reorganized ComponentReplaceWorker, changed lock behavior, introduced postHandle execution in worker (init and replace worker), 
+					   postHandle and remove/add method are encapsulated in one "invokeLater" block to be executed in application thread, 
+					   locking simplified by releasing lock at the end of "invokeLater" block
+08. Nov. 2011 - amo -  changed maven dependency from javafx2 system to compile scope, please install  "mvn install:install-file -Dfile=jfxrt.jar -DgroupId?=com.oracle -DartifactId?=javafx-runtime -Dpackaging=jar -Dversion=2.0"
+07. Nov. 2011 - amo -  clean up pom.xml, removed build settings for javafx2
+07. Nov. 2011 - amo -  add synchronization to launcher access in AStatelessComponent, performAction method changed to basic Event interface in FX2ActionListener 
+07. Nov. 2011 - amo -  removed demo package, moved contents to JACP.JavaFX2DemoArea

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean id="workbench" class="org.jacp.demo.workbench.ContactWorkbench">
+        <property name="perspectives">
+            <list>
+                <ref bean="contactPerspective"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="contactPerspective" class="org.jacp.demo.perspectives.ContactPerspective">
+       <!-- <property name="components">
+            <list>
+                <ref bean="contactTreeView"/>
+                <ref bean="XMLDetailView"/>
+                <ref bean="contactTableView"/>
+                <ref bean="contactChartView"/>
+                <ref bean="analyticsCallback"/>
+                <ref bean="coordinatorCallback"/>
+                <ref bean="creatorCallback"/>
+            </list>
+        </property>-->
+    </bean>
+
+<!--    <bean id="XMLDetailView" class="org.jacp.demo.components.XMLDetailView"/>
+    <bean id="contactTreeView" class="org.jacp.demo.components.ContactTreeViewComponent"/>
+    <bean id="contactTableView" class="org.jacp.demo.components.ContactTableViewComponent"/>
+    <bean id="contactChartView" class="org.jacp.demo.components.ContactChartViewComponent"/>
+
+    <bean id="coordinatorCallback" class="org.jacp.demo.callbacks.CoordinatorCallback"/>
+    <bean id="creatorCallback" class="org.jacp.demo.callbacks.CreatorCallback"/>
+    <bean id="analyticsCallback" class="org.jacp.demo.callbacks.AnalyticsCallback"/>-->
+</beans>

@@ -1,0 +1,28 @@
+Install instructions:
+
+Make sure you have a maven installed and add the jfxrt.jar and ant-javafx.jar to your local maven repository. You can use JavaFX2 or 2.1 but maven version tag is set to 2.0!
+
+1. ) go to your  JavaFX2 install directory (C:\Program Files\Oracle\JavaFX 2.0 SDK\rt\lib) and type:  "mvn install:install-file -Dfile=jfxrt.jar -DgroupId=com.oracle -DartifactId=javafx-runtime -Dpackaging=jar -Dversion=2.0"
+1.1) next copy the bin folder to the maven repository... C:\Program Files\Oracle\JavaFX 2.0 SDK\rt\bin to C:\Users\YOURUSER\.m2\repository\com\oracle\javafx-runtime
+2. ) go to to your JavaFX2-Ant install location (C:\Program Files\Oracle\JavaFX 2.0 SDK\tools) and type:  mvn install:install-file -Dfile=ant-javafx.jar -DgroupId=com.oracle -DartifactId=ant-javafx -Dpackaging=jar -Dversion=2.0
+
+
+Install the archetype and create a JacpFX project:
+
+
+- unzip the archetype and type: "mvn install"; now you have registered the JacpFX simple archetype in you local repository.
+
+Create a new JacpFX project:
+
+go to your preferred workbench and type: "mvn archetype:generate -DarchetypeCatalog=local" 
+select the (JacpFX-quickstart) archetype (if you have installed only one locale archetype, type "1")
+add a groupId like "com.my.company"
+add an artifactId like "MyJacpFXProject"
+
+For the rest you simply press "Enter", now you have created a simple JacpFX project with a launcher, a workbench, a perspective and two components. 
+You can add this project to Eclipse, Netbeans or whatever you want. If you want to create an Eclipse project simply type: "mvn eclipse:eclipse" and import this project to your workspace. 
+To start the simple Application construct use the "ApplicationLauncher" class. A detailed documentation of JacpFX you can find here: http://code.google.com/p/jacp/wiki/Documentation
+
+
+
+ 

@@ -1,0 +1,46 @@
+15. Aug. 2013 - amo - removed setComponents and setSubComponents from IPerspective API, set @DeclarativeComponent to deprecated
+25. Jul. 2013 - amo - add @Stateless annotation
+25. Jul. 2013 - amo - removed ICallbackComponents as it is obsolete now, lot of updates in component interfaces due to this change
+18. Jul. 2013 - amo - update in JACPContext and JACPManagedDialog to pass the correct accessor class, moved CustomSecurityManager to class
+18. Jul. 2013 - amo - removed @CallbackComponent annotation, updated ICallbackComponent an IStatelessComponent
+04. Jul. 2013 - amo - initial commit of changing component model to pure interface model... developers should implement components instead of extending
+04. Jul. 2013 - amo - initial commit of Context, which contains basic metadata as well as the message listeners and will contain stuff like managedDialog factory
+24. Jun. 2013 - amo - start initial work on context object
+28. May. 2013 - amo - renamed OnStart and OnTearDown to PostConstruct and PreDestroy.
+27. May. 2013 - amo - OnStart, OnHide annotation introduced to mark perspective methods
+06. May. 2013 - amo - Action interface, renamed getLastMessage to getMessage, new method: getTypedMessage, isMessageTypeOf, messageEquals
+24. Jan. 2013 - amo - changed version to 1.2 and update to java 7
+24. Jan. 2013 - amo - add new Annotations (@Dialog, @Resource); add new package and define Scope enum, add new method to Launcher (registerAndGetBean) to register beans dynamically
+12. Sep. 2012 - amo - Reduced IAction interface to ensure thread safety
+26. Jun. 2012 - amo - update getActionListener to support target id and message
+30. Mai. 2012 - amo - added resourceBundle and locale interfaces to declarative components
+30. Mai. 2012 - amo - remove IDeclarative view, add UIType enum
+29. Mai. 2012 - amo - add viewLocation to perspective annotation, add IDeclarative interface to mark components that can be implemented
+20. Mai. 2012 - amo - extended API to support declarative UI components; Declarative components do not have a UI return because the xml file or whatever is always the root UI object
+09. Apr. 2012 - amo - IExtendedComponent deleted
+09. Apr. 2012 - amo - removed setRoot from IComponentView
+09. Apr. 2012 - amo - add perspective annotation
+08. Apr. 2012 - amo - removed some setter from IComponent  
+08. Apr. 2012 - amo - IComponentView and IPerspectiveView extracted
+08. Apr. 2012 - amo - Component and CallBackComponent annotation added
+06. Apr. 2012 - amo - renamed IVComponent to IVisibleComponent
+06. Apr. 2012 - amo - renamed iLayoutAble to IVisibleComponent
+06. Apr. 2012 - amo - removed iMapReduceComponente... out of scope currently 
+02. Apr. 2012 - amo -  updated to version number 1.05
+01. Apr. 2012 - amo - renamed ICallbackComponent to IStatefulComponent
+01. Apr. 2012 - amo - renamed IStateLess* to IStateless* 
+06. Feb. 2012 - amo - changed IComponent-API to getListener("id", message) getListener now takes parameters; to avoid something like getListener().getAction().setMessage()....
+14. Dez. 2011 - amo - add getActionListener() to IWorkbench to allow workbench to send messages
+09. Dez. 2011 - amo - split the delegator interface in message and component delegator
+08. Dez. 2011 - amo - renamed statelesscomponentcoordinator in *Scheduler; removed dependency between statelesscomponent and scheduler, introduced new package
+08. Dez. 2011 - amo - extract componentHandler interface to move methods from workbench and perspective; this handler coordinates creation and replacement of components, introduced new package
+06. Dez. 2011 - amo - remove delegateMessage and delegateTarget change from IPerspective, add dependency to delegate queue
+05. Dez. 2011 - amo - introduced IComponentDelegator and IDelegator to extract delegate methods from coordinator, removed circular dependency between components and coordinator
+29. Nov. 2011 - amo - changed dependencies between observer, component and perspective; renamed BG components to "callback".
+23. Nov. 2011 - amo - renamed method isActivated to isStarted in ISubcomponent; method name sounds like isActive, to avoid mistakes method renamed
+22. Nov. 2011 - amo - Menu handling removed from IWorkbench
+21. Nov. 2011 - amo - IBaseLayout introduced to hold reference to menu and toolbars; API changes caused by IBaseLayout
+17. Nov. 2011 - amo - removed dependency to workbench style, changed to Enum
+17. Nov. 2011 - amo - removed dependency to layoutManager definition in WorkbenchLayout
+17. Nov. 2011 - amo - postHandle method introduced in IVComponent, this method should ensure that UI components are handled in main application thread 
+07. Nov. 2011 - amo - clean up, update JavaDoc, generate JavaDoc ... see doc Folder

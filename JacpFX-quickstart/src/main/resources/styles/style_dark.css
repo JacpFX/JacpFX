@@ -1,0 +1,247 @@
+.root {
+    -fx-font-family: "System";
+    -fx-font-size: 12.703703703703704px;
+    -fx-base: #555555;
+    -fx-hover-base: #555555;
+    -fx-background:#555555;
+    -fx-focus-color: #AAAAAA;
+    -fx-text-box-border: #AAAAAA;
+    -fx-text-base-color:#F0F0F0;
+    -fx-control-inner-background: #555555;
+    
+
+
+}
+
+/* Description textArea */
+
+
+.descriptionValue {
+    -fx-font: 1.166666em "System";
+    -fx-background-color: -fx-base;
+    -fx-effect: innershadow(three-pass-box, gray, 1 , 1, 0, 0);
+    -fx-text-fill: -fx-text-base-color;
+ }
+
+.descriptionValue:focused {
+    -fx-background-color: -fx-focus-color, transparent, -fx-base;
+    -fx-effect: innershadow(three-pass-box, gray, 1 , 1, 0, 0);
+} 
+
+.descriptionValue:hover {
+    -fx-background-color: -fx-focus-color, -fx-text-box-border, -fx-focus-color;
+}
+
+
+/* Anchor Pane, Label and Textfield in Properties area */
+
+
+.propLabel{
+	-fx-text-fill: -fx-text-base-color;
+	-fx-font: 0.833333em "System";
+}
+
+.propLabelBig{
+	-fx-text-fill: -fx-text-base-color;
+	-fx-font: 1.2em "System";
+	-fx-font-weigh: bold;
+}
+
+.propTextField {
+
+    -fx-font: 1em "System";
+    -fx-padding: 0;
+    -fx-background-color: -fx-base;
+    -fx-effect: innershadow(three-pass-box, gray, 1 , 1, 0, 0);
+    -fx-text-fill: -fx-text-base-color;
+}
+
+.propTextField:hover {
+     -fx-background-color: -fx-focus-color, -fx-text-box-border, -fx-focus-color;
+     
+}
+
+.propTextField:focused {
+    -fx-background-color: -fx-focus-color, transparent, -fx-base;
+    -fx-effect: innershadow(three-pass-box, gray, 1 , 1, 0, 0);
+} 
+
+.dividerLines {
+	-fx-stroke-width: 0.9;
+	-fx-stroke:-fx-focus-color;
+}
+
+/* A rounded AnchorPane */
+
+
+.roundedAnchorPane {
+    -fx-border-radius:10 10 10 10;
+    -fx-border-color: -fx-focus-color;
+    -fx-border-width: 0.083333em;
+}
+
+
+/* Splitpane styling */
+
+
+.vsplitpane {
+    -fx-padding: -1 -1 -2 -2 ;
+    -fx-background-image: url("../images/texture_dark.png");
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.1) , 20, 0.0 , 0 , 0 );
+}
+
+.vsplitpane:vertical > * > .split-pane-divider {
+-fx-border-color:  -fx-base transparent -fx-base transparent ;
+-fx-background-color: transparent;
+}
+
+.vsplitpane  *.vertical-grabber {
+    -fx-background-color:-fx-base;
+    -fx-shape: "M0 0 L0 0 L0 5 L2 5 L2 0 L0 0 Z"; /* TODO NOT THE RIGHT L&F */
+}
+ 
+.vsplitpane  *.horizontal-grabber {
+    -fx-background-color:-fx-base;
+    -fx-shape: "M0 0 L0 0 L0 5 L2 5 L2 0 L0 0 Z"; /* TODO NOT THE RIGHT L&F */
+}
+
+.hsplitpane {
+    -fx-padding: -1 -1 -2 -2 ;
+    -fx-background-insets: 1; /* remov left right line of splitPane*/
+    -fx-background-image: url("../images/texture_dark.png");
+    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.1) , 20, 0.0 , 0 , 0 );
+}
+
+.hsplitpane:horizontal > * > .split-pane-divider {
+-fx-border-color: transparent -fx-base transparent -fx-base;
+-fx-background-color: transparent;
+-fx-background-insets: 0, 0 1 0 1;
+}
+
+.hsplitpane  *.vertical-grabber {
+    -fx-background-color:-fx-base;
+    -fx-shape: "M0 0 L0 0 L0 5 L2 5 L2 0 L0 0 Z"; /* TODO NOT THE RIGHT L&F */
+}
+
+.hsplitpane  *.horizontal-grabber {
+    -fx-background-color:-fx-base;
+    -fx-shape: "M0 0 L0 0 L0 5 L2 5 L2 0 L0 0 Z"; /* TODO NOT THE RIGHT L&F */
+}
+
+.button, .toggle-button, .choice-box {
+    -fx-background-radius: 20, 20, 19, 18;
+    -fx-padding: 5px 10px 5px 10px;
+    -fx-control-inner-background: -fx-background;
+    -fx-inner-border: linear-gradient(to bottom, derive(-fx-color,35.0%) 0%, derive(-fx-color,-6.0%) 100%);
+    -fx-body-color: linear-gradient( to bottom, derive(-fx-color, 35.0%) 0%, derive(-fx-color, -6.0%) 100%);
+    -fx-text-fill: -fx-text-base-color;
+}
+
+.menu .label
+{
+   -fx-text-fill: -fx-text-base-color;
+}
+
+.menu-bar
+{
+    -fx-background-color: linear-gradient( to bottom, derive(-fx-background, 35.0%) 0%, derive(-fx-background, -6.0%) 100%);
+    -fx-text-fill: -fx-text-base-color;
+}
+
+.tool-bar
+{
+    -fx-background-color: linear-gradient( to bottom, derive(-fx-color, 35.0%) 0%, derive(-fx-color, -6.0%) 100%);
+    -fx-text-fill: -fx-text-base-color;
+}
+.menu-button {
+    -fx-background-radius: 20, 20, 19, 18;
+}
+.menu-button .label {
+    -fx-padding: 3px 18px 3px 10px;
+}
+.menu-button .arrow-button {
+    -fx-padding: 3px 6px 3px 0px;
+}
+.choice-box {
+    -fx-padding: 0 6px 0 0;
+}
+.choice-box .label {
+    -fx-padding: 3px 4px 3px 6px;
+}
+.choice-box .open-button {
+    -fx-padding: 1 0 0 8px;
+}
+.combo-box-base:editable .text-field, .combo-box-base .arrow-button, .combo-box .list-cell {
+    -fx-padding: 3px 6px 3px 6px;
+}
+.check-box .box {
+    -fx-padding: 0.25em;
+}
+.radio-button .radio {
+    -fx-padding: 0.333333em;
+}
+.check-box, .radio-button {
+    -fx-text-fill: -fx-text-base-color;
+}
+.button, .toggle-button, .check-box .box, .radio-button .radio, .choice-box, .menu-button, .tab, .combo-box-base {
+    -fx-background-insets: -1.4, 0, 1, 2;
+}
+.button:focused, .toggle-button:focused, .check-box:focused .box, .radio-button:focused .radio, .choice-box:focused, .menu-button:focused, .combo-box-base:focused {
+    -fx-background-insets: -1.4, 0, 1, 2;
+}
+.combo-box-base .arrow-button {
+    -fx-background-insets: 0, 1, 2;
+}
+.choice-box  { /* Workaround for RT-20015 */
+    -fx-text-fill: -fx-text-base-color;
+}
+.menu-button  { /* Workaround for RT-20015 */
+	
+    -fx-text-fill: -fx-text-base-color;
+    -fx-background-radius: 1, 1, 1, 1;
+}
+
+.menu-item {
+ 	-fx-text-fill: -fx-text-base-color;
+    -fx-background-radius: 1, 1, 1, 1;
+ }
+
+.menu-button:hover  { /* Workaround for RT-20015 */
+     -fx-background-color: linear-gradient( to bottom, derive(-fx-focus-color, 35.0%) 0%, derive(-fx-focus-color, -6.0%) 100%);
+}
+
+.menu-button:showing  { /* Workaround for RT-20015 */
+   -fx-background-color: linear-gradient( to bottom, derive(-fx-focus-color, 35.0%) 0%, derive(-fx-focus-color, -6.0%) 100%);
+}
+
+.menu-item:hover {
+ 	 -fx-background-color: -fx-focus-color, -fx-text-box-border, -fx-focus-color;
+ }
+ 
+ 
+ /**************************
+ * 
+ *   OPTIONPANE
+ * 
+ **************************/
+
+
+#error-dimmer{
+	-fx-background-color: rgba(0,0,0,0.5);
+}
+
+.jacp-option-pane-message{
+ -fx-fill: white;
+}
+	
+.jacp-option-pane {
+ 	-fx-background-image: url("../images/texture_dark.png");
+    -fx-background-insets: 0, 1, 2;
+    -fx-padding: 15;
+    -fx-effect: dropshadow( three-pass-box , black , 20, 0 , 0 , 0 );
+}
+.jacp-option-pane .jacp-option-pane-title {
+    -fx-font-size: 1.4em;
+    -fx-font-weight: bold;
+    -fx-text-fill: #CCCCCC;
+}

@@ -1,0 +1,13 @@
+@CHARSET "ISO-8859-1";
+
+.jacp-option-pane {
+    -fx-background-color:#CCCCCC;
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 15, 14, 13;
+    -fx-padding: 15;
+    -fx-effect: dropshadow( three-pass-box , black , 20, 0 , 0 , 0   );
+}
+.jacp-option-pane .jacp-option-pane-title {
+    -fx-font-size: 1.4em;
+    -fx-font-weight: bold;
+}

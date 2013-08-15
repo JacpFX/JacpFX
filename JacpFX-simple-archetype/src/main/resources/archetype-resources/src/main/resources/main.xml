@@ -1,0 +1,36 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set(
+$symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+	<bean id="workbench" class="${package}.workbench.Workbench">
+		<property name="perspectives">
+			<list>
+				<ref bean="perspectiveOne" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="perspectiveOne" class="${package}.perspectives.PerspectiveOne">
+		<property name="subcomponents">
+			<list>
+				<ref bean="componentLeft" />
+				<ref bean="componentRight" />
+				<ref bean="statefulCallback" />
+				<ref bean="statelessCallback" />
+			</list>
+		</property>
+	</bean>
+
+
+	<bean id="componentLeft" class="${package}.components.ComponentLeft" />
+	<bean id="componentRight" class="${package}.components.ComponentRight" />
+
+	<bean id="statefulCallback" class="${package}.callbacks.StatefulCallback" />
+	<bean id="statelessCallback" class="${package}.callbacks.StatelessCallback" />
+</beans>

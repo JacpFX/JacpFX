@@ -1,0 +1,10 @@
+org.jacp.api.action
+org.jacp.api.component
+org.jacp.api.componentLayout
+org.jacp.api.coordinator
+org.jacp.api.handler
+org.jacp.api.launcher
+org.jacp.api.perspective
+org.jacp.api.scheduler
+org.jacp.api.util
+org.jacp.api.workbench

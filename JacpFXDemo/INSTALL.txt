@@ -1,0 +1,13 @@
+Install instructions:
+
+Make sure you have a maven installed and add the jfxrt.jar to your local maven repository. You can use JavaFX 2.0x or 2.1 but maven version tag is set to 2.0!
+
+1. ) go to your  JavaFX2 install directory (C:\Program Files\Oracle\JavaFX 2.0 SDK\rt\lib) and type:  "mvn install:install-file -Dfile=jfxrt.jar -DgroupId=com.oracle -DartifactId=javafx-runtime -Dpackaging=jar -Dversion=2.0"
+1.1) next copy the bin folder to the maven repository... C:\Program Files\Oracle\JavaFX 2.0 SDK\rt\bin to C:\Users\YOURUSER\.m2\repository\com\oracle\javafx-runtime
+
+3. ) now unzip the archetype and type: "mvn install";  If you want to create an Eclipse project simply type: "mvn eclipse:eclipse" and import this project to your workspace. 
+To start the simple Application construct use the "ContactMain" class. A detailed documentation of JacpFX you can find here: http://code.google.com/p/jacp/wiki/Documentation
+
+
+
+ 

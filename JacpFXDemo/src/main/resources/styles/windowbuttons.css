@@ -1,0 +1,37 @@
+@CHARSET "ISO-8859-1";
+
+.window-buttons {
+    -fx-font-size: 1px;
+    -fx-text-fill: transparent;
+    -fx-background-color: null;
+    -fx-padding: 7 8 7 7;
+	-fx-border-color: transparent;
+}
+
+#window-close {
+	-fx-background-image: url("../images/close.png");
+}
+#window-close:hover {
+    -fx-background-image: url("../images/close-over.png");
+}
+#window-close:armed {
+    -fx-background-image: url("../images/close-armed.png");
+}
+#window-min {
+    -fx-background-image: url("../images/min.png");
+}
+#window-min:hover {
+    -fx-background-image: url("../images/min-over.png");
+}
+#window-min:armed {
+    -fx-background-image: url("../images/min-armed.png");
+}
+#window-max {
+    -fx-background-image: url("../images/max.png");
+}
+#window-max:hover {
+    -fx-background-image: url("../images/max-over.png");
+}
+#window-max:armed {
+    -fx-background-image: url("../images/max-armed.png");
+}

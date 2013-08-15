@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane id="BorderPane" xmlns:fx="http://javafx.com/fxml">
+  <center>
+    <AnchorPane fx:id="details" styleClass="roundedAnchorPaneFX">
+      <children>
+        <AnchorPane fx:id="titleLine" layoutY="32.0" prefHeight="38.0" prefWidth="310.0" styleClass="roundedAnchorPane" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" >
+          <children>
+            <Label id="Label" layoutX="11.0" layoutY="9.0" styleClass="propLabelBig" text="%fxmlComp" AnchorPane.topAnchor="9.0"/>
+          </children>
+        </AnchorPane>
+        <TextField id="synopsis" fx:id="message" prefHeight="38.0" prefWidth="573.0" styleClass="descriptionValue" text="messages" AnchorPane.leftAnchor="21" AnchorPane.rightAnchor="20.5" AnchorPane.bottomAnchor="410" />
+        <AnchorPane fx:id="descriptionArea"  prefHeight="323.5" prefWidth="160.0" styleClass="roundedAnchorPane" AnchorPane.bottomAnchor="60" AnchorPane.leftAnchor="201.0" AnchorPane.rightAnchor="20.0" >
+          <children>
+            <Label id="descriptionLabel" layoutX="10.0" layoutY="8.0" styleClass="propLabel" text="%description" />
+            <TextArea fx:id="descriptionValue" prefHeight="127.0" prefWidth="374.19" styleClass="descriptionValue" text="TextArea" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="24.0" />
+          </children>
+        </AnchorPane>
+        <AnchorPane id="propertyArea" prefHeight="328" prefWidth="160.0" styleClass="roundedAnchorPane" AnchorPane.bottomAnchor="60"  AnchorPane.leftAnchor="21.0" >
+          <children>
+            <TextField id="creationTimeValue" fx:id="countryTextField" layoutY="169.0" prefHeight="29.0" prefWidth="142.0" styleClass="propTextField" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.topAnchor="165.0"/>
+            <Label id="creationTimeLabel" contentDisplay="TOP" layoutY="146.0" styleClass="propLabel" text="%country" AnchorPane.leftAnchor="12.0" />
+            <Line id="Line" endX="60.0" layoutX="101.0" layoutY="137.0" startX="-100.0" styleClass="dividerLines"/>
+            <TextField id="statusValue" fx:id="streetTextField" layoutY="98.0" prefHeight="29.0" prefWidth="142.0" styleClass="propTextField" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="95.0"/>
+            <Label id="statusLabel" layoutY="75.0" styleClass="propLabel" text="%street" AnchorPane.leftAnchor="12.0" />
+            <Line id="Line" endX="60.0" layoutX="101.0" layoutY="66.0" startX="-100.0" stroke="$x1" styleClass="dividerLines" />
+            <TextField id="priorityValue" fx:id="nameTextField" layoutY="30.0" prefHeight="29.0" prefWidth="142.0" styleClass="propTextField" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+            <Label id="priorityLabel" layoutY="12.0" styleClass="propLabel" text="%name" AnchorPane.leftAnchor="11.0" />
+          </children>
+        </AnchorPane>
+        <Button id="button1" fx:id="sendButton" alignment="BOTTOM_LEFT" text="%send" AnchorPane.rightAnchor="20" AnchorPane.bottomAnchor="12" onAction="#handleSend"/>
+      </children>
+    </AnchorPane>
+  </center>
+</BorderPane>

@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>${groupId}</groupId>
+	<artifactId>${artifactId}</artifactId>
+	<packaging>jar</packaging>
+	<version>${version}</version>
+	<name>JacpFX-quickstart</name>
+	<url>http://maven.apache.org</url>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<javafx.version>2.2</javafx.version>
+		<jacp.version>1.2</jacp.version>
+		<spring.version>3.1.1.RELEASE</spring.version>
+	</properties>
+	<repositories>
+		<repository>
+			<id>jacp</id>
+			<url>http://developer.ahcp.de/nexus/content/repositories/jacp</url>
+		</repository>
+	</repositories>
+	<developers>
+		<developer>
+			<id>amo</id>
+			<name>Andy Moncsek</name>
+			<email>amo.ahcp@gmail.com</email>
+		</developer>
+		<developer>
+			<id>pete</id>
+			<name>Patrick Symmangk</name>
+			<email>pete.ahcp@gmail.com</email>
+		</developer>
+	</developers>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.3</version>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<configuration>
+							<includeScope>runtime</includeScope>
+			                <outputDirectory>${project.build.directory}/lib</outputDirectory>
+			                <overWriteReleases>false</overWriteReleases>
+			                <overWriteSnapshots>true</overWriteSnapshots>
+			                <overWriteIfNewer>true</overWriteIfNewer>
+			                <excludeArtifactIds>javafx,log4j</excludeArtifactIds>
+						</configuration>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						 <configuration>
+			                <target xmlns:fx="javafx:com.sun.javafx.tools.ant">
+			                    <property name="applet.width" value="1024"/>
+			                    <property name="applet.height" value="600"/>
+			                    <property name="application.title" value="JacpFX-Quickstart"/>
+			                    <property name="application.vendor" value="JacpFX"/>
+			                    <manifestclasspath property="manifest.classpath"
+                                       jarfile="${project.build.directory}/${project.build.finalName}">
+			                        <classpath>
+			                            <path id="build.classpath">
+			                                <fileset dir="${project.build.directory}/lib">
+			                                    <include name="*.jar"/>
+			                                </fileset>
+			                            </path>
+			                        </classpath>
+			                    </manifestclasspath>
+			                    
+                   				<taskdef resource="com/sun/javafx/tools/ant/antlib.xml"
+                             		uri="javafx:com.sun.javafx.tools.ant" classpathref="maven.plugin.classpath" />
+
+								<fx:application id="${project.name}" name="${project.name}" mainClass="org.jacp.main.ApplicationLauncher" preloaderClass="org.jacp.main.ApplicationPreloader"/>
+								<!-- shrink css to binary; currently uncommented due to http://javafx-jira.kenai.com/browse/RT-21964
+                             	<fx:csstobin outdir="${project.build.directory}/classes/styles">
+								    <fileset dir="${project.build.directory}/classes/styles" includes="**/*.css"/>
+								</fx:csstobin>--> 
+								<!-- create jar file -->
+                             	<fx:jar destfile="${project.build.directory}/${project.build.finalName}.jar">
+			                        <fx:application refid="${project.name}"/>			
+			                        <manifest>
+			                            <attribute name="Class-Path" value="${manifest.classpath}"/>
+			                        </manifest>
+			                        <fileset dir="${project.build.outputDirectory}"/>
+			                    </fx:jar>	
+			                    
+			                    <fx:resources id="appRes">
+			                        <fx:fileset dir="${project.build.directory}" includes="*.jar"/>
+			                        <fx:fileset dir="${project.build.directory}" includes="lib/*.jar"/>
+			                    </fx:resources>
+			                    
+			                    <!-- sign jar
+			                    
+			                    <signjar keyStore="${basedir}\keystore.jks"
+			                             destdir="${project.build.directory}"
+			                             alias="..." storePass="..." keyPass="...">
+			                        <fileset dir="${project.build.directory}" includes="*.jar"/>
+			                        <fileset dir="${project.build.directory}" includes="lib/*.jar"/>
+			                    </signjar>
+								-->
+
+								<!-- create executeables -->
+							    <fx:deploy width="${applet.width}" height="${applet.height}"
+			                               outdir="${project.build.directory}/deploy" embedJNLP="true"
+			                               outfile="${application.title}" nativeBundles="all">
+
+			                        <fx:application refId="${project.name}"/>			
+			                        <fx:resources refid="appRes"/>
+			                        <fx:platform javafx="${javafx.version}+">
+										<fx:jvmarg value="-Xms128m" />
+										<fx:jvmarg value="-Xmx256m" />
+									</fx:platform>
+			                        <fx:info title="${application.title}"
+			                                 vendor="${application.vendor}"/>			
+			                        <!-- Request elevated permissions -->
+			                        <fx:permissions elevated="true"/>
+			                    </fx:deploy>
+
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>com.oracle</groupId>
+						<artifactId>ant-javafx</artifactId>
+						<version>${javafx.version}</version>
+						<systemPath>${java.home}/../lib/ant-javafx.jar</systemPath>
+						<scope>system</scope>
+					</dependency>
+					<dependency>
+						<groupId>com.oracle</groupId>
+						<artifactId>javafx</artifactId>
+						<version>${javafx.version}</version>
+						<systemPath>${java.home}/lib/jfxrt.jar</systemPath>
+						<scope>system</scope>
+					</dependency>
+				</dependencies>
+			</plugin>
+			
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-dependency-plugin</artifactId>
+										<versionRange>[1.0.0,)</versionRange>
+										<goals>
+											<goal>copy-dependencies</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>javafx</artifactId>
+			<version>2.2</version>
+			<systemPath>${java.home}/lib/jfxrt.jar</systemPath>
+			<scope>system</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jacp.project</groupId>
+			<artifactId>JACP.API</artifactId>
+			<version>${jacp.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jacp.project</groupId>
+			<artifactId>JACP.JavaFX</artifactId>
+			<version>${jacp.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jacp.project</groupId>
+			<artifactId>JACP.JavaFXSpring</artifactId>
+			<version>${jacp.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jacp.project</groupId>
+			<artifactId>JACP.JavaFXControls</artifactId>
+			<version>${jacp.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-beans</artifactId>
+			<version>${spring.version}</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-expression</artifactId>
+			<version>${spring.version}</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+		</dependency>
+	</dependencies>
+</project>
