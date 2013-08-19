@@ -37,6 +37,7 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 import org.jacp.api.annotations.Perspective;
 import org.jacp.api.annotations.Stateless;
+import org.jacp.api.annotations.Workbench;
 import org.jacp.api.component.IPerspective;
 import org.jacp.api.component.IRootComponent;
 import org.jacp.api.component.Injectable;
@@ -134,6 +135,18 @@ public abstract class AFXWorkbench
         this.componentDelegator.setComponentHandler(this.componentHandler);
         this.messageDelegator.setComponentHandler(this.componentHandler);
         this.handleInitialisationSequence();
+    }
+
+
+    private List<IPerspective<EventHandler<Event>, Event, Object>>  createPerspectiveInstances() {
+        if(this.getClass().isAnnotationPresent(Workbench.class)){
+            Workbench annotation = this.getClass().getAnnotation(Workbench.class);
+            String[] ids = annotation.perspectives();
+            final List<String> componentIds = Arrays.asList(ids);
+
+        }
+
+        return null;
     }
 
     @Override
