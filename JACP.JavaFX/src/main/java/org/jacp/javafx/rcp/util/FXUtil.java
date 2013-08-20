@@ -30,10 +30,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.Resource;
-import org.jacp.api.component.IComponent;
-import org.jacp.api.component.IComponentHandle;
-import org.jacp.api.component.IPerspective;
-import org.jacp.api.component.ISubComponent;
+import org.jacp.api.component.*;
 import org.jacp.api.context.Context;
 
 import java.io.IOException;
@@ -166,7 +163,7 @@ public class FXUtil {
         }
     }
 
-    public static void performResourceInjection(IComponentHandle<?, EventHandler<Event>, Event, Object> handler,Context<EventHandler<Event>, Event, Object> context) {
+    public static void performResourceInjection(final Injectable handler,Context<EventHandler<Event>, Event, Object> context) {
         final Field[] fields = handler.getClass().getDeclaredFields();
         final List<Field> fieldList = Arrays.asList(fields);
         fieldList.parallelStream().filter(f -> f.isAnnotationPresent(Resource.class)).forEach(f -> {
@@ -180,7 +177,7 @@ public class FXUtil {
         });
     }
 
-    private static void injectContext(final IComponentHandle<?, EventHandler<Event>, Event, Object> handler,final Field f, final Context context) {
+    private static void injectContext(final Injectable handler,final Field f, final Context context) {
         f.setAccessible(true);
         try {
             f.set(handler, context);
@@ -189,7 +186,7 @@ public class FXUtil {
         }
     }
 
-    private static void injectResourceBundle(final IComponentHandle<?, EventHandler<Event>, Event, Object> handler,final Field f, final ResourceBundle bundle) {
+    private static void injectResourceBundle(final Injectable handler,final Field f, final ResourceBundle bundle) {
         f.setAccessible(true);
         try {
             f.set(handler, bundle);

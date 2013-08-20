@@ -33,6 +33,7 @@ import org.jacp.api.action.IDelegateDTO;
 import org.jacp.api.annotations.*;
 import org.jacp.api.component.*;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
+import org.jacp.api.context.Context;
 import org.jacp.api.coordinator.IComponentCoordinator;
 import org.jacp.api.dialog.Scope;
 import org.jacp.api.handler.IComponentHandler;
@@ -41,6 +42,7 @@ import org.jacp.api.util.UIType;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.component.*;
 import org.jacp.javafx.rcp.componentLayout.PerspectiveLayout;
+import org.jacp.javafx.rcp.context.JACPContextImpl;
 import org.jacp.javafx.rcp.coordinator.FXComponentCoordinator;
 import org.jacp.javafx.rcp.util.ClassRegistry;
 import org.jacp.javafx.rcp.util.ComponentRegistry;
@@ -82,6 +84,8 @@ public abstract class AFXPerspective extends AComponent implements
     private final Object lock = new Object();
     private Launcher<?> launcher;
 
+    protected Injectable perspectiveHandler;
+
     @Override
     public final void init(
             final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue,
@@ -91,13 +95,9 @@ public abstract class AFXPerspective extends AComponent implements
         this.messageDelegateQueue = messageDelegateQueue;
         this.globalMessageQueue = globalMessageQueue;
         this.launcher = launcher;
-
+        this.context = new JACPContextImpl(this.getId(), this.getName(), this.globalMessageQueue);
     }
 
-    @Override
-    public final <C> C handle(final IAction<Event, Object> action) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 
     /**
      * {@inheritDoc}
@@ -118,7 +118,9 @@ public abstract class AFXPerspective extends AComponent implements
     }
 
     private String[] getComponentIds() {
-        final Perspective perspectiveAnnotation = this.getClass()
+        final Injectable handler =  this.getPerspectiveHandler();
+        if(handler==null) throw new IllegalArgumentException("no perspective annotatation found");
+        final Perspective perspectiveAnnotation = handler.getClass()
                 .getAnnotation(Perspective.class);
         if (perspectiveAnnotation != null) {
             return perspectiveAnnotation.components();
@@ -175,18 +177,9 @@ public abstract class AFXPerspective extends AComponent implements
       }
 
 
-    /**
-     * Handle perspective method to initialize the perspective and the layout.
-     *
-     * @param action            ; the action triggering the method
-     * @param perspectiveLayout ,  the layout handler defining the perspective
-     */
-    protected abstract void handlePerspective(IAction<Event, Object> action,
-                                              final PerspectiveLayout perspectiveLayout);
-
     @Override
     public void handlePerspective(final IAction<Event, Object> action) {
-        this.handlePerspective(action,
+        getFXPerspectiveHandler().handlePerspective(action,
                 (PerspectiveLayout) this.perspectiveLayout);
 
     }
@@ -412,6 +405,7 @@ public abstract class AFXPerspective extends AComponent implements
     public final void initialize(URL url, ResourceBundle resourceBundle) {
         this.documentURL = url;
         this.resourceBundle = resourceBundle;
+        JACPContextImpl.class.cast(context).setResourceBundle(resourceBundle);
     }
 
     /**
@@ -428,6 +422,7 @@ public abstract class AFXPerspective extends AComponent implements
      * {@inheritDoc}
      */
     @Override
+    @Deprecated
     public final ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
@@ -464,6 +459,19 @@ public abstract class AFXPerspective extends AComponent implements
     public final void setResourceBundleLocation(String resourceBundleLocation) {
         super.checkPolicy(this.resourceBundleLocation, "Do Not Set document manually");
         this.resourceBundleLocation = resourceBundleLocation;
+    }
+
+    public FXPerspective getFXPerspectiveHandler() {
+        return FXPerspective.class.cast(getPerspectiveHandler());
+    }
+
+    public Injectable getPerspectiveHandler(){
+        return this.perspectiveHandler;
+    }
+
+    @Override
+    public Context<EventHandler<Event>, Event, Object> getContext() {
+        return this.context;
     }
 
 }

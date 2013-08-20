@@ -46,8 +46,7 @@ import java.util.concurrent.BlockingQueue;
  *            defines the basic message type
  */
 public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
-		IRootComponent<ISubComponent<L, A, M>, IAction<A, M>>,
-		IHandleable<A, M> {
+		IRootComponent<ISubComponent<L, A, M>, IAction<A, M>>{
 
 	/**
 	 * The initialization method.
@@ -107,5 +106,11 @@ public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
 	 * @return message queue
 	 */
 	BlockingQueue<IAction<A, M>> getComponentsMessageQueue();
+
+    /**
+     * Returns the injected perspective representation. This Injectable is the implementation of a perspective which includes all handle methods.
+     * @return
+     */
+    Injectable getPerspectiveHandler();
 
 }

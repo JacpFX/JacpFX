@@ -65,6 +65,7 @@ import org.jacp.javafx.rcp.coordinator.FXMessageDelegator;
 import org.jacp.javafx.rcp.coordinator.FXPerspectiveCoordinator;
 import org.jacp.javafx.rcp.handler.FXWorkbenchHandler;
 import org.jacp.javafx.rcp.perspective.AFXPerspective;
+import org.jacp.javafx.rcp.perspective.EmbeddedFXPerspective;
 import org.jacp.javafx.rcp.util.*;
 
 import java.security.InvalidParameterException;
@@ -75,6 +76,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * represents the basic JavaFX2 workbench instance; handles perspectives and
@@ -129,6 +131,7 @@ public abstract class AFXWorkbench
                 this.glassPane));
 
         this.log("3: handle initialisation sequence");
+        this.perspectives = createPerspectiveInstances();
         this.componentHandler = new FXWorkbenchHandler(this.launcher,
                 this.workbenchLayout, this.root, this.perspectives);
         this.perspectiveCoordinator.setComponentHandler(this.componentHandler);
@@ -140,13 +143,30 @@ public abstract class AFXWorkbench
 
     private List<IPerspective<EventHandler<Event>, Event, Object>>  createPerspectiveInstances() {
         if(this.getClass().isAnnotationPresent(Workbench.class)){
-            Workbench annotation = this.getClass().getAnnotation(Workbench.class);
-            String[] ids = annotation.perspectives();
+            final Workbench annotation = this.getClass().getAnnotation(Workbench.class);
+            final String[] ids = annotation.perspectives();
             final List<String> componentIds = Arrays.asList(ids);
-
+            final List<Injectable> perspectiveHandlerList = componentIds.stream()
+                    .map(this::mapToInjectable)
+                    .collect(Collectors.toList());
+            return perspectiveHandlerList.stream().map(this::mapToPerspective).collect(Collectors.toList());
         }
 
         return null;
+    }
+
+    private IPerspective<EventHandler<Event>, Event, Object>  mapToPerspective(Injectable handler) {
+           return new EmbeddedFXPerspective(handler);
+    }
+
+    private Injectable mapToInjectable(final String id) {
+        final Class perspectiveClass = ClassRegistry.getPerspectiveClassById(id);
+        final Object component = launcher.registerAndGetBean(perspectiveClass, id, Scope.SINGLETON);
+        if(Injectable.class.isAssignableFrom(component.getClass())) {
+            return Injectable.class.cast(component);
+        } else {
+            throw new InvalidParameterException("Only IPerspective components are allowed");
+        }
     }
 
     @Override
@@ -262,7 +282,8 @@ public abstract class AFXWorkbench
      */
     private void handleMetaAnnotation(
             final IPerspective<EventHandler<Event>, Event, Object> perspective) {
-        final Perspective perspectiveAnnotation = perspective.getClass()
+        final Injectable handler = perspective.getPerspectiveHandler();
+        final Perspective perspectiveAnnotation = handler.getClass()
                 .getAnnotation(Perspective.class);
         if (perspectiveAnnotation != null) {
             final String id = perspectiveAnnotation.id();

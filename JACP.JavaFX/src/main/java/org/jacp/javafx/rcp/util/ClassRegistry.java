@@ -1,6 +1,7 @@
 package org.jacp.javafx.rcp.util;
 
 import org.jacp.api.annotations.Component;
+import org.jacp.api.annotations.Perspective;
 
 import java.util.Collections;
 import java.util.List;
@@ -39,7 +40,6 @@ public class ClassRegistry {
      * @param id
      * @return
      */
-    // TODO remove code for DeclarativeComponents
     public static Class getComponentClassById(final String id) {
         final Optional<Class> result = allClasses.parallelStream()
                 .filter(c -> checkForAnntotation(c))
@@ -50,12 +50,35 @@ public class ClassRegistry {
 
     }
 
+    /**
+     * Returns a perspective class by ID.
+     * @param id
+     * @return
+     */
+    public static Class getPerspectiveClassById(final String id) {
+        final Optional<Class> result = allClasses.parallelStream()
+                .filter(c -> checkForPerspectiveAnntotation(c))
+                .filter(component -> checkPerspectiveIdMatch(component,id))
+                .findFirst();
+
+        return result.isPresent()?result.get():null;
+    }
+
     private static boolean checkForAnntotation(final Class c) {
         return c.isAnnotationPresent(Component.class);
     }
 
+    private static boolean checkForPerspectiveAnntotation(final Class c) {
+        return c.isAnnotationPresent(Perspective.class);
+    }
+
     private static boolean checkIdMatch(final Class component, final String id) {
         final Component annotation = (Component) component.getAnnotation(Component.class);
+        return annotation.id().equalsIgnoreCase(id);
+    }
+
+    private static boolean checkPerspectiveIdMatch(final Class perspective, final String id) {
+        final Perspective annotation = (Perspective) perspective.getAnnotation(Perspective.class);
         return annotation.id().equalsIgnoreCase(id);
     }
 }

@@ -55,7 +55,7 @@ public abstract class ASubComponent extends AComponent implements
     private volatile BlockingQueue<IAction<Event, Object>> incomingMessage = new ArrayBlockingQueue<>(
             1000);
 
-    private JACPContextImpl context;
+
 
 
     private IComponentHandle<?, EventHandler<Event>, Event, Object> componentHandle;

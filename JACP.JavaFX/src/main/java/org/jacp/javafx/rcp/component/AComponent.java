@@ -29,6 +29,7 @@ import org.jacp.api.action.IActionListener;
 import org.jacp.api.component.IComponent;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.action.FXActionListener;
+import org.jacp.javafx.rcp.context.JACPContextImpl;
 import org.jacp.javafx.rcp.util.Checkable;
 
 import java.util.concurrent.BlockingQueue;
@@ -45,7 +46,7 @@ public abstract class AComponent extends Checkable implements
     private String id;
     private String name;
     private volatile boolean active;
-
+    protected JACPContextImpl context;
     protected volatile BlockingQueue<IAction<Event, Object>> globalMessageQueue;
 
     /**

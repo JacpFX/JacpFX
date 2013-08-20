@@ -38,6 +38,7 @@ public interface IDeclarative {
 	 * 
 	 * @return the document url
 	 */
+    @Deprecated // TODO move to context
 	String getViewLocation();
 
 	/**

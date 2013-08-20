@@ -23,6 +23,7 @@
 package org.jacp.api.component;
 
 import org.jacp.api.action.IActionListener;
+import org.jacp.api.context.Context;
 
 /**
  * This Interface represents a very basic component that can exists in JACP
@@ -130,4 +131,10 @@ public interface IComponent<L, A, M> extends Comparable<String>{
      * @param location
      *//*
     void  setResourceBundleLocation(final String location);*/
+
+    /**
+     * Returns the components context object.
+     * @return the context object.
+     */
+    Context<L, A, M> getContext();
 }

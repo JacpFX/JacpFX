@@ -108,6 +108,7 @@ public class FXWorkbenchHandler implements
                                     final IPerspective<EventHandler<Event>, Event, Object> perspective) {
 
         this.log("3.4.3: perspective handle init");
+        FXUtil.performResourceInjection(perspective.getPerspectiveHandler(),perspective.getContext());
         this.handlePerspectiveInitMethod(action, perspective);
         this.log("3.4.4: perspective init subcomponents");
         perspective.initComponents(action);
@@ -249,7 +250,7 @@ public class FXWorkbenchHandler implements
         }
     }
 
-    @SuppressWarnings("unchecked")
+
     private void handlePerspectiveInitMethod(final IAction<Event, Object> action,
                                              final IPerspective<EventHandler<Event>, Event, Object> perspective) {
         if (perspective instanceof IPerspectiveView) {
@@ -259,7 +260,7 @@ public class FXWorkbenchHandler implements
             if (perspectiveView.getType().equals(UIType.DECLARATIVE)) {
                 handleDeclarativePerspective(perspective, layout, perspectiveView);
             } else {
-                handleDefaultPerspective(perspective, layout, perspectiveView);
+                handleDefaultPerspective(perspective, layout);
             }
 
             final IPerspectiveLayout<Node, Node> perspectiveLayout = (IPerspectiveLayout<Node, Node>) perspectiveView
@@ -280,12 +281,12 @@ public class FXWorkbenchHandler implements
         } // End else
     }
 
-    private void handleDefaultPerspective(final IPerspective<EventHandler<Event>, Event, Object> perspective, final FXComponentLayout layout, final IPerspectiveView<Node, EventHandler<Event>, Event, Object> perspectiveView) {
+    private void handleDefaultPerspective(final IPerspective<EventHandler<Event>, Event, Object> perspective, final FXComponentLayout layout) {
         // init default IPerspectiveLayout
         initLocalization(null, (AFXPerspective) perspective);
         FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,
                 FXUtil.AFXPERSPECTIVE_PERSPECTIVE_LAYOUT, new FXPerspectiveLayout());
-        FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, perspective, layout, perspectiveView.getResourceBundle());
+        FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, perspective, layout, perspective.getContext().getResourceBundle());
     }
 
     private void handleDeclarativePerspective(final IPerspective<EventHandler<Event>, Event, Object> perspective, final FXComponentLayout layout, final IPerspectiveView<Node, EventHandler<Event>, Event, Object> perspectiveView) {
@@ -296,7 +297,7 @@ public class FXWorkbenchHandler implements
                 FXUtil.AFXPERSPECTIVE_PERSPECTIVE_LAYOUT, new FXMLPerspectiveLayout(
                 loadFXMLandSetController((AFXPerspective) perspectiveView, url)));
         FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, perspective, layout,
-                perspectiveView.getDocumentURL(), perspectiveView.getResourceBundle());
+                perspectiveView.getDocumentURL(), perspectiveView.getContext().getResourceBundle());
     }
 
     private void initLocalization(final URL url, final AFXPerspective perspective) {
@@ -310,11 +311,11 @@ public class FXWorkbenchHandler implements
     private Node loadFXMLandSetController(
             final AFXPerspective perspectiveView, final URL url) {
         final FXMLLoader fxmlLoader = new FXMLLoader();
-        if (perspectiveView.getResourceBundle() != null) {
-            fxmlLoader.setResources(perspectiveView.getResourceBundle());
+        if (perspectiveView.getContext().getResourceBundle() != null) {
+            fxmlLoader.setResources(perspectiveView.getContext().getResourceBundle());
         }
         fxmlLoader.setLocation(url);
-        fxmlLoader.setController(perspectiveView);
+        fxmlLoader.setController(perspectiveView.getPerspectiveHandler());
         try {
             return (Node) fxmlLoader.load();
         } catch (IOException e) {

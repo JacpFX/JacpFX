@@ -46,6 +46,7 @@ public interface IPerspectiveView<C, L, A, M> extends IPerspective<L, A, M>, IDe
 	 *         perspective
 	 */
 	IPerspectiveLayout<? extends C, C> getIPerspectiveLayout();
+
 	
 	
 }
