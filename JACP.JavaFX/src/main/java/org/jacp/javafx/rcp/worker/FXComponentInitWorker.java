@@ -30,9 +30,9 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.PostConstruct;
 import org.jacp.api.component.IComponentHandle;
 import org.jacp.api.util.UIType;
+import org.jacp.javafx.rcp.component.AComponent;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
-import org.jacp.javafx.rcp.util.Checkable;
 import org.jacp.javafx.rcp.util.FXUtil;
 
 import java.io.IOException;
@@ -68,7 +68,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	public FXComponentInitWorker(final Map<String, Node> targetComponents,
 			final AFXComponent component, final IAction<Event, Object> action,
 			final FXComponentLayout layout) {
-		super(component.getName());
+		super(component.getContext().getName());
 		this.targetComponents = targetComponents;
 		this.component = component;
 		this.action = action;
@@ -121,12 +121,13 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 			this.component.lock();
 			runPreInitMethods();
 			try {
+                final String name = this.component.getContext().getName();
 				this.log("3.4.4.2.1: subcomponent handle init START: "
-						+ this.component.getName());
+						+ name);
 				final Node handleReturnValue = this.prepareAndRunHandleMethod(
 						this.component, this.action);
 				this.log("3.4.4.2.2: subcomponent handle init get valid container: "
-						+ this.component.getName());
+						+ name);
 				// expect always local target id
 				this.component.setExecutionTarget(FXUtil
 						.getTargetComponentId(this.component
@@ -135,11 +136,11 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 						this.targetComponents,
 						this.component.getExecutionTarget());
 				this.log("3.4.4.2.3: subcomponent handle init add component by type: "
-						+ this.component.getName());
+						+ name);
 				this.addComponent(validContainer, handleReturnValue,
 						this.component, this.action);
 				this.log("3.4.4.2.4: subcomponent handle init END: "
-						+ this.component.getName());
+						+ name);
 			} finally {
 				this.component.release();
 			}
@@ -256,7 +257,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 				// queue
 				e.printStackTrace();
 			} finally {
-				FXUtil.setPrivateMemberValue(Checkable.class, this.component,
+				FXUtil.setPrivateMemberValue(AComponent.class, this.component,
 						FXUtil.ACOMPONENT_STARTED, true);
 			}
 

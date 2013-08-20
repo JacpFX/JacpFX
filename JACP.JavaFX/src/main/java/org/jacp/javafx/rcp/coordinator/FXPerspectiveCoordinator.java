@@ -76,7 +76,7 @@ public class FXPerspectiveCoordinator extends AFXCoordinator implements
 	private void handleComponentHit(final String target,
 			final IAction<Event, Object> action,
 			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
-		if (perspective.isActive()) {
+		if (perspective.getContext().isActive()) {
 			this.handleMessageToActivePerspective(target, action, perspective);
 		} // End if
 		else {
@@ -127,7 +127,7 @@ public class FXPerspectiveCoordinator extends AFXCoordinator implements
 	@Override
 	public <P extends IComponent<EventHandler<Event>, Event, Object>> void handleInActive(
 			final P component, final IAction<Event, Object> action) {
-		component.setActive(true);
+		component.getContext().setActive(true);
 		Platform.runLater(() -> FXPerspectiveCoordinator.this.componentHandler
                 .initComponent(
                         action,

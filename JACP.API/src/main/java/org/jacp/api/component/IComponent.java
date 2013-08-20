@@ -40,53 +40,8 @@ import org.jacp.api.context.Context;
  */
 public interface IComponent<L, A, M> extends Comparable<String>{
 
-	/**
-	 * Returns an action listener (for local use). Message will be send to
-	 * caller component.
-	 * @param message ; the initial message to be send by invoking the listener
-	 * @return the action listener instance
-	 */
-    @Deprecated
-	IActionListener<L, A, M> getActionListener(final M message);
-
-	/**
-	 * Returns an action listener (for global use). targetId defines the id or
-	 * your receiver component
-	 * @param message ; the message to send to target.
-	 * @param targetId ; the targets component id.
-	 * @return the action listener instance
-	 */
-    @Deprecated
-	IActionListener<L, A, M> getActionListener(final String targetId, final M message);
-
-	/**
-	 * Returns the id of the component.
-	 * 
-	 * @return the component id
-	 */
-	String getId();
 
 
-    /**
-     * Set the component id.
-     * @param id
-     */
-    void setId(final String id);
-
-
-	/**
-	 * Get the default active status of component.
-	 * 
-	 * @return the active state of component
-	 */
-	boolean isActive();
-
-	/**
-	 * Set default active state of component.
-	 * 
-	 * @param active ; the component active state.
-	 */
-	void setActive(final boolean active);
 
 	/**
 	 * Get if component was activated, can occur if message was send before
@@ -96,18 +51,11 @@ public interface IComponent<L, A, M> extends Comparable<String>{
 	 */
 	boolean isStarted();
 
-	/**
-	 * Returns the name of a component.
-	 * 
-	 * @return the component name
-	 */
-	String getName();
-
     /**
-     * Set the component name.
-     * @param name
+     * Set once when component was first started
+     * @param started
      */
-    void setName(final String name);
+    void setStarted(final boolean started);
 
     /**
      * Represents the Locale ID, see: http://www.oracle.com/technetwork/java/javase/locales-137662.html.
@@ -115,22 +63,23 @@ public interface IComponent<L, A, M> extends Comparable<String>{
      */
     String getLocaleID();
 
-   /* *//**
+   /**
      *  Set the Locale ID, see: http://www.oracle.com/technetwork/java/javase/locales-137662.html.
      * @param localeId
-     *//*
-    void setLocaleID(final String localeId);*/
+     */
+    void setLocaleID(final String localeId);
+
     /**
      * Represents the location of your resource bundle file.
      * @return the url of resource bundle
      */
     String getResourceBundleLocation();
 
-/*    *//**
+    /**
      * Set the location of your resource bundle file.
      * @param location
-     *//*
-    void  setResourceBundleLocation(final String location);*/
+     */
+    void  setResourceBundleLocation(final String location);
 
     /**
      * Returns the components context object.

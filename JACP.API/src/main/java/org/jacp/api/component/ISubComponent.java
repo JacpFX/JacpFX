@@ -124,11 +124,6 @@ public interface ISubComponent<L, A, M> extends IComponent<L, A, M> {
      */
     <X extends IComponentHandle<?, L, A, M>>  void setComponentHandle(final X  handle);
 
-    /**
-     * Set the defined ResourceBundle for the component.
-     * @param resourceBundle
-     */
-    void setResourceBundle(ResourceBundle resourceBundle);
 
 
 }

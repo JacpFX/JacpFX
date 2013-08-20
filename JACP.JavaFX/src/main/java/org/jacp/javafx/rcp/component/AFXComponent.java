@@ -29,6 +29,8 @@ import javafx.scene.Node;
 import org.jacp.api.component.IDeclarative;
 import org.jacp.api.component.IUIComponent;
 import org.jacp.api.util.UIType;
+import org.jacp.javafx.rcp.context.JACPContext;
+import org.jacp.javafx.rcp.context.JACPContextImpl;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -82,7 +84,6 @@ public abstract class AFXComponent extends ASubComponent implements
 	 */
 	@Override
 	public final void setViewLocation(String document){
-		super.checkPolicy(this.viewLocation, "Do Not Set document manually");
 		this.viewLocation = document;
 		this.type = UIType.DECLARATIVE;
 	}
@@ -92,7 +93,7 @@ public abstract class AFXComponent extends ASubComponent implements
 	@Override
 	public final void initialize(URL url, ResourceBundle resourceBundle) {
 		this.documentURL = url;
-        setResourceBundle(resourceBundle);
+        JACPContextImpl.class.cast(this.getContext()).setResourceBundle(resourceBundle);
 	}
 
 
@@ -114,10 +115,5 @@ public abstract class AFXComponent extends ASubComponent implements
 		return type;
 	}
 
-
-    @Override
-    public ResourceBundle getResourceBundle() {
-        throw new UnsupportedOperationException("This deprecated Method will be removed soon");
-    }
 
 }

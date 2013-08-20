@@ -27,6 +27,7 @@ import javafx.event.EventHandler;
 import org.jacp.api.component.IComponentHandle;
 import org.jacp.api.component.IStatelessCallabackComponent;
 import org.jacp.api.component.ISubComponent;
+import org.jacp.javafx.rcp.context.JACPContextImpl;
 import org.jacp.javafx.rcp.util.FXUtil;
 import org.jacp.javafx.rcp.util.HandlerThreadFactory;
 import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
@@ -82,15 +83,14 @@ public abstract class AStatelessCallbackComponent extends ASubComponent
 			final IComponentHandle<Object,EventHandler<Event>, Event, Object> handler) {
 
         final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> comp = new EmbeddedStatelessCallbackComponent(handler);
-		FXUtil.setPrivateMemberValue(AComponent.class, comp,
-				FXUtil.ACOMPONENT_ID, this.getId());
-		FXUtil.setPrivateMemberValue(AComponent.class, comp,
-				FXUtil.ACOMPONENT_ACTIVE, this.isActive());
-		FXUtil.setPrivateMemberValue(AComponent.class, comp,
-				FXUtil.ACOMPONENT_NAME, this.getName());
+        comp.initEnv(this.getParentId(), this.globalMessageQueue);
+        JACPContextImpl context = JACPContextImpl.class.cast(comp.getContext());
+        context.setId(this.getContext().getId());
+        context.setActive(this.getContext().isActive());
+        context.setName(this.getContext().getName());
 		FXUtil.setPrivateMemberValue(ASubComponent.class, comp,
 				FXUtil.ACOMPONENT_EXTARGET, this.getExecutionTarget());
-		comp.initEnv(this.getParentId(), this.globalMessageQueue);
+
 		return comp;
 	}
 

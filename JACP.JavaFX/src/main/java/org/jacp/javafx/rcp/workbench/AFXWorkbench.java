@@ -60,6 +60,7 @@ import org.jacp.javafx.rcp.componentLayout.FXWorkbenchLayout;
 import org.jacp.javafx.rcp.components.managedDialog.JACPManagedDialog;
 import org.jacp.javafx.rcp.components.modalDialog.JACPModalDialog;
 import org.jacp.javafx.rcp.components.toolBar.JACPToolBar;
+import org.jacp.javafx.rcp.context.JACPContextImpl;
 import org.jacp.javafx.rcp.coordinator.FXComponentDelegator;
 import org.jacp.javafx.rcp.coordinator.FXMessageDelegator;
 import org.jacp.javafx.rcp.coordinator.FXPerspectiveCoordinator;
@@ -188,14 +189,14 @@ public abstract class AFXWorkbench
         this.perspectives.forEach(perspective ->
                 {
                     this.registerComponent(perspective);
-                    this.log("3.4.1: register component: " + perspective.getName());
+                    this.log("3.4.1: register component: " + perspective.getContext().getName());
                     // TODO what if component removed an initialized later
                     // again?
                     this.log("3.4.2: create perspective menu");
-                    if (perspective.isActive()) {
+                    if (perspective.getContext().isActive()) {
                         final Runnable r =   ()-> AFXWorkbench.this.componentHandler.initComponent(
-                                new FXAction(perspective.getId(), perspective
-                                        .getId(), "init", null), perspective);
+                                new FXAction(perspective.getContext().getId(), perspective
+                                        .getContext().getId(), "init", null), perspective);
                         if(Platform.isFxApplicationThread()) {
                              r.run();
                         } else {
@@ -266,10 +267,11 @@ public abstract class AFXWorkbench
     public final void registerComponent(
             final IPerspective<EventHandler<Event>, Event, Object> perspective) {
 
-        this.handleMetaAnnotation(perspective);
+
         perspective.init(this.componentDelegator.getComponentDelegateQueue(),
                 this.messageDelegator.getMessageDelegateQueue(),
                 this.perspectiveCoordinator.getMessageQueue(),this.launcher);
+        this.handleMetaAnnotation(perspective);
         this.perspectiveCoordinator.addPerspective(perspective);
         this.componentDelegator.addPerspective(perspective);
         this.messageDelegator.addPerspective(perspective);
@@ -286,17 +288,13 @@ public abstract class AFXWorkbench
         final Injectable handler = perspective.getPerspectiveHandler();
         final Perspective perspectiveAnnotation = handler.getClass()
                 .getAnnotation(Perspective.class);
+        final JACPContextImpl context = JACPContextImpl.class.cast(perspective.getContext());
         if (perspectiveAnnotation != null) {
             final String id = perspectiveAnnotation.id();
-            if (id != null)
-                FXUtil.setPrivateMemberValue(AComponent.class, perspective,
-                        FXUtil.ACOMPONENT_ID, id);
-            FXUtil.setPrivateMemberValue(AComponent.class, perspective,
-                    FXUtil.ACOMPONENT_ACTIVE, perspectiveAnnotation.active());
-            final String name = perspectiveAnnotation.name();
-            if (name != null)
-                FXUtil.setPrivateMemberValue(AComponent.class, perspective,
-                        FXUtil.ACOMPONENT_NAME, name);
+            if (id == null) throw new IllegalArgumentException("no perspective id set");
+            context.setId(id);
+            context.setActive(perspectiveAnnotation.active());
+            context.setName(perspectiveAnnotation.name());
             this.log("register perspective with annotations : "
                     + perspectiveAnnotation.id());
             final String viewLocation = perspectiveAnnotation.viewLocation();

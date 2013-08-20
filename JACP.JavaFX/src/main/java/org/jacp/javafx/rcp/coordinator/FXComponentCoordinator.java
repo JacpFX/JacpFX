@@ -137,7 +137,7 @@ public class FXComponentCoordinator extends AFXCoordinator implements
     private void handleComponentHit(final String targetId,
                                     final IAction<Event, Object> action,
                                     final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        if (component.isActive()) {
+        if (component.getContext().isActive()) {
             this.log(" //1.1.1.1// component HIT handle ACTIVE: "
                     + action.getTargetId());
             this.handleActive(component, action);
@@ -163,7 +163,7 @@ public class FXComponentCoordinator extends AFXCoordinator implements
     @Override
     public final <P extends IComponent<EventHandler<Event>, Event, Object>> void handleInActive(
             final P component, final IAction<Event, Object> action) {
-        component.setActive(true);
+        component.getContext().setActive(true);
         this.componentHandler.initComponent(action,
                 (ISubComponent<EventHandler<Event>, Event, Object>) component);
 

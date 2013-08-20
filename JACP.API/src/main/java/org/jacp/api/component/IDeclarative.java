@@ -38,7 +38,6 @@ public interface IDeclarative {
 	 * 
 	 * @return the document url
 	 */
-    @Deprecated // TODO move to context
 	String getViewLocation();
 
 	/**
@@ -54,14 +53,6 @@ public interface IDeclarative {
 	 * @return the document url
 	 */
 	URL getDocumentURL();
-	
-	/**
-	 * Contains locale-specific objects.
-	 *
-	 * @return the resource bundle for the UI document
-	 */
-    @Deprecated // TODO migrate Perspective
-	ResourceBundle getResourceBundle();
 
 
 	/**

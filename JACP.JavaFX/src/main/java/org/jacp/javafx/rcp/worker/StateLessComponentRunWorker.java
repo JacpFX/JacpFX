@@ -51,7 +51,7 @@ public class StateLessComponentRunWorker
 	public StateLessComponentRunWorker(
 			final ISubComponent<EventHandler<Event>, Event, Object> component,
 			final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> parent) {
-		super(component.getName() + component);
+		super(component.getContext().getName() + component);
 		this.component = component;
 		this.parent = parent;
 	}
@@ -88,7 +88,7 @@ public class StateLessComponentRunWorker
 		try {
 			component = this.get();
 			// check if component was deactivated and is still in instance list
-			if (!component.isActive()
+			if (!component.getContext().isActive()
 					&& parent.getInstances().contains(component)) {
 				forceShutdown(component, parent);
 			}

@@ -37,9 +37,10 @@ import org.jacp.api.component.ISubComponent;
 import org.jacp.api.component.IUIComponent;
 import org.jacp.api.util.UIType;
 import org.jacp.javafx.rcp.action.FXAction;
+import org.jacp.javafx.rcp.component.AComponent;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
-import org.jacp.javafx.rcp.util.Checkable;
+import org.jacp.javafx.rcp.context.JACPContextImpl;
 import org.jacp.javafx.rcp.util.FXUtil;
 import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
 
@@ -89,7 +90,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 	final void addComponentByType(
 			final Node validContainer,
 			final IUIComponent<Node, EventHandler<Event>, Event, Object> component) {
-		this.handleAdd(validContainer, component.getRoot(), component.getName());
+		this.handleAdd(validContainer, component.getRoot(), component.getContext().getName());
 		this.handleViewState(validContainer, true);
 
 	}
@@ -151,9 +152,9 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
             final IAction<Event, Object> myAction) {
 		if (value != null && targetId != null
 				&& !myAction.getMessage().equals("init")) {
-			final IActionListener<EventHandler<Event>, Event, Object> listener = comp
+			final IActionListener<EventHandler<Event>, Event, Object> listener = comp.getContext()
 					.getActionListener(null);
-			listener.notifyComponents(new FXAction(comp.getId(), targetId,
+			listener.notifyComponents(new FXAction(comp.getContext().getId(), targetId,
 					value, null));
 		}
 	}
@@ -338,7 +339,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
         if (bundleLocation.equals(""))
             return;
         final String localeID = component.getLocaleID();
-        component.setResourceBundle(ResourceBundle.getBundle(bundleLocation,
+        JACPContextImpl.class.cast(component.getContext()).setResourceBundle(ResourceBundle.getBundle(bundleLocation,
                 FXUtil.getCorrectLocale(localeID)));
 
     }
@@ -357,7 +358,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
     void runCallbackPostExecution(
             final ISubComponent<EventHandler<Event>, Event, Object> component) {
 		if (!component.isStarted())
-			FXUtil.setPrivateMemberValue(Checkable.class, component,
+			FXUtil.setPrivateMemberValue(AComponent.class, component,
 					FXUtil.ACOMPONENT_STARTED, true);
 	}
 
@@ -370,8 +371,8 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
             final ISubComponent<EventHandler<Event>, Event, Object> component) {
 
 		// turn off component
-		if (!component.isActive()) {
-			FXUtil.setPrivateMemberValue(Checkable.class, component,
+		if (!component.getContext().isActive()) {
+			FXUtil.setPrivateMemberValue(AComponent.class, component,
 					FXUtil.ACOMPONENT_STARTED, false);
 			// run teardown
 			FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class, component.getComponentHandle());

@@ -92,13 +92,13 @@ public class FXPerspectiveHandler
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
 		if (component.isBlocked() && component.isStarted()) {
 			this.putMessageToQueue(component, action);
-			this.log("ADD TO QUEUE:::" + component.getName());
+			this.log("ADD TO QUEUE:::" + component.getContext().getName());
 		} else {
 			this.executeComponentReplaceThread(this.perspectiveLayout,
 					component, action, this.layout);
 
 		}
-		this.log("DONE EXECUTE REPLACE:::" + component.getName());
+		this.log("DONE EXECUTE REPLACE:::" + component.getContext().getName());
 	}
 
 	/**
@@ -113,19 +113,19 @@ public class FXPerspectiveHandler
 			final ISubComponent<EventHandler<Event>, Event, Object> component,
 			final IAction<Event, Object> action, final FXComponentLayout layout) {
 		if (AStatelessCallbackComponent.class.isAssignableFrom(component.getClass())) {
-			this.log("RUN STATELESS COMPONENTS:::" + component.getName());
+			this.log("RUN STATELESS COMPONENTS:::" + component.getContext().getName());
 			this.runStatelessCallbackComponent(
 					((AStatelessCallbackComponent) component), action);
 			return;
 		}
 		this.putMessageToQueue(component, action);
 		if (AFXComponent.class.isAssignableFrom(component.getClass())) {
-			this.log("CREATE NEW THREAD:::" + component.getName());			
+			this.log("CREATE NEW THREAD:::" + component.getContext().getName());
 			this.runFXComponent(perspectiveLayout, component, layout);
 			return;
 		} 		
 		if (ASubComponent.class.isAssignableFrom(component.getClass())) {
-			this.log("CREATE NEW THREAD:::" + component.getName());
+			this.log("CREATE NEW THREAD:::" + component.getContext().getName());
 			this.runStateComponent(action, component);
         }
 		
@@ -186,7 +186,7 @@ public class FXPerspectiveHandler
 	private void handleInit(final IAction<Event, Object> action,
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
 		if (AFXComponent.class.isAssignableFrom(component.getClass())) {
-			this.log("COMPONENT EXECUTE INIT:::" + component.getName());
+			this.log("COMPONENT EXECUTE INIT:::" + component.getContext().getName());
 			this.executor.execute(new FXComponentInitWorker(
                     this.perspectiveLayout.getTargetLayoutComponents(),
                     ((AFXComponent) component), action, this.layout));
@@ -195,13 +195,13 @@ public class FXPerspectiveHandler
 
 		if (AStatelessCallbackComponent.class.isAssignableFrom(component.getClass())) {
 			this.log("SATELESS BACKGROUND COMPONENT EXECUTE INIT:::"
-					+ component.getName());
+					+ component.getContext().getName());
 			this.runStatelessCallbackComponent(
 					((AStatelessCallbackComponent) component), action);
         }// else if END
         if (ASubComponent.class.isAssignableFrom(component.getClass())) {
             this.log("BACKGROUND COMPONENT EXECUTE INIT:::"
-                    + component.getName());
+                    + component.getContext().getName());
             this.putMessageToQueue(component, action);
             this.runStateComponent(action,component);
             return;

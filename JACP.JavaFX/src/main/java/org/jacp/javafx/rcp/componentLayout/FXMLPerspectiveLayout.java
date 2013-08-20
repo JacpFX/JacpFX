@@ -43,7 +43,7 @@ public class FXMLPerspectiveLayout extends PerspectiveLayout{
 	
 	@Override
 	public final void registerRootComponent(final Node comp) {
-		super.checkPolicy(this.rootComponent, "Do Not Set rootComponent manually in FXML components");
+
 	}
 
 }

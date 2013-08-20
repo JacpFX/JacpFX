@@ -18,4 +18,5 @@ public class EmbeddedFXPerspective extends AFXPerspective {
                 this.perspectiveHandler = perspective;
     }
 
+
 }

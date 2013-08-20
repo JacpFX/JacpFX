@@ -95,7 +95,7 @@ public abstract class AFXPerspective extends AComponent implements
         this.messageDelegateQueue = messageDelegateQueue;
         this.globalMessageQueue = globalMessageQueue;
         this.launcher = launcher;
-        this.context = new JACPContextImpl(this.getId(), this.getName(), this.globalMessageQueue);
+        this.context = new JACPContextImpl(this.globalMessageQueue);
     }
 
 
@@ -112,7 +112,7 @@ public abstract class AFXPerspective extends AComponent implements
         this.componentCoordinator.setComponentHandler(this.componentHandler);
         this.componentCoordinator
                 .setMessageDelegateQueue(this.messageDelegateQueue);
-        this.componentCoordinator.setParentId(this.getId());
+        this.componentCoordinator.setParentId(this.getContext().getId());
         initSubcomponentsAndHandlers();
         if (this.subcomponents != null) this.registerSubcomponents(this.subcomponents);
     }
@@ -188,10 +188,10 @@ public abstract class AFXPerspective extends AComponent implements
     public final void registerComponent(
             final ISubComponent<EventHandler<Event>, Event, Object> component) {
         synchronized (lock) {
-            this.handleMetaAnnotation(component);
-            this.log("register component: " + component.getId());
-            component.initEnv(this.getId(),
+            component.initEnv(this.getContext().getId(),
                     this.componentCoordinator.getMessageQueue());
+            this.handleMetaAnnotation(component);
+            this.log("register component: " + component.getContext().getId());
             ComponentRegistry.registerComponent(component);
             if (!this.subcomponents.contains(component)) {
                 this.subcomponents.add(component);
@@ -262,25 +262,14 @@ public abstract class AFXPerspective extends AComponent implements
 
     private void setRessourceBundleLocation(final AFXComponent component, String bundleLocation) {
         if (component.getResourceBundleLocation() != null)
-            FXUtil.setPrivateMemberValue(ASubComponent.class, component, FXUtil.IDECLARATIVECOMPONENT_BUNDLE_LOCATION,
-                    bundleLocation);
-    }
-
-    private void setLocale(final AFXComponent component, String locale) {
-        if (component.getLocaleID() != null)
-            FXUtil.setPrivateMemberValue(ASubComponent.class, component, FXUtil.IDECLARATIVECOMPONENT_LOCALE,
-                    locale);
-    }
-
-   /* private void setRessourceBundleLocation(final AFXComponent component, String bundleLocation) {
-        if (component.getResourceBundleLocation() != null)
             component.setResourceBundleLocation(bundleLocation);
     }
-        //TODO  when perspective is also moved to interface that remove reflection and use this
+
     private void setLocale(final AFXComponent component, String locale) {
         if (component.getLocaleID() != null)
             component.setLocaleID(locale);
-    }*/
+    }
+
 
     private void setExecutionTarget(final AFXComponent component, String value) {
         if (component.getExecutionTarget().length() <= 1)
@@ -299,16 +288,16 @@ public abstract class AFXPerspective extends AComponent implements
     private void handleBaseAttributes(Class<?> clazz,
                                       final ISubComponent<EventHandler<Event>, Event, Object> component, final String id, final boolean active,
                                       final String name) {
-        if (id != null) component.setId(id);
-        component.setActive(active);
-        if (name != null) component.setName(name);
+        if (id != null) JACPContextImpl.class.cast(component.getContext()).setId(id);
+        component.getContext().setActive(active);
+        if (name != null) JACPContextImpl.class.cast(component.getContext()).setName(name);
     }
 
     @Override
     public final void unregisterComponent(
             final ISubComponent<EventHandler<Event>, Event, Object> component) {
         synchronized (lock) {
-            this.log("unregister component: " + component.getId());
+            this.log("unregister component: " + component.getContext().getId());
             component.initEnv(null, null);
             ComponentRegistry.removeComponent(component);
             if (this.subcomponents.contains(component)) {
@@ -326,14 +315,14 @@ public abstract class AFXPerspective extends AComponent implements
                 .getSubcomponents();
         if (components == null) return;
         components.parallelStream().forEach(component -> {
-            if (component.getId().equals(targetId)) {
+            if (component.getContext().getId().equals(targetId)) {
                 this.log("3.4.4.2: subcomponent init with custom action");
                 this.componentHandler.initComponent(action, component);
             } // else END
-            else if (component.isActive() && !component.isStarted()) {
+            else if (component.getContext().isActive() && !component.isStarted()) {
                 this.log("3.4.4.2: subcomponent init with default action");
                 this.componentHandler.initComponent(
-                        new FXAction(component.getId(), component.getId(),
+                        new FXAction(component.getContext().getId(), component.getContext().getId(),
                                 "init", null), component);
             } // if END
         });
@@ -396,7 +385,6 @@ public abstract class AFXPerspective extends AComponent implements
 
     @Override
     public final void setViewLocation(String documentURL) {
-        super.checkPolicy(this.viewLocation, "Do Not Set document manually");
         this.viewLocation = documentURL;
         this.type = UIType.DECLARATIVE;
     }
@@ -418,14 +406,6 @@ public abstract class AFXPerspective extends AComponent implements
         return documentURL;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @Deprecated
-    public final ResourceBundle getResourceBundle() {
-        return resourceBundle;
-    }
 
     /**
      * {@inheritDoc}
@@ -444,22 +424,9 @@ public abstract class AFXPerspective extends AComponent implements
     }
 
     public final void setLocaleID(String localeID) {
-        super.checkPolicy(this.localeID, "Do Not Set document manually");
         this.localeID = localeID;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final String getResourceBundleLocation() {
-        return resourceBundleLocation;
-    }
-
-    public final void setResourceBundleLocation(String resourceBundleLocation) {
-        super.checkPolicy(this.resourceBundleLocation, "Do Not Set document manually");
-        this.resourceBundleLocation = resourceBundleLocation;
-    }
 
     public FXPerspective getFXPerspectiveHandler() {
         return FXPerspective.class.cast(getPerspectiveHandler());

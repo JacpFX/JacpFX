@@ -58,7 +58,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
             final Map<String, Node> targetComponents,
             final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue,
             final AFXComponent component, final FXComponentLayout layout) {
-        super(component.getName());
+        super(component.getContext().getName());
         this.targetComponents = targetComponents;
         this.component = component;
         this.layout = layout;
@@ -83,17 +83,17 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
                 final IAction<Event, Object> myAction = this.component
                         .getNextIncomingMessage();
                 this.log(" //1.1.1.1.1// handle replace component BEGIN: "
-                        + this.component.getName());
+                        + this.component.getContext().getName());
 
                 final Node previousContainer = this.component.getRoot();
                 final String currentTaget = this.component.getExecutionTarget();
                 // run code
                 this.log(" //1.1.1.1.2// handle component: "
-                        + this.component.getName());
+                        + this.component.getContext().getName());
                 final Node handleReturnValue = this.prepareAndRunHandleMethod(
                         this.component, myAction);
                 this.log(" //1.1.1.1.3// publish component: "
-                        + this.component.getName());
+                        + this.component.getContext().getName());
 
                 this.publish(this.component, myAction, this.targetComponents,
                         this.layout, handleReturnValue, previousContainer,
@@ -126,9 +126,8 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
         this.invokeOnFXThreadAndWait(() -> {
             setCacheHints(true, CacheHint.SPEED, component);
             // check if component was set to inactive, if so remove
-            // TODO active will be set on context!!
             try {
-                if (component.isActive()) {
+                if (component.getContext().isActive()) {
                     FXComponentReplaceWorker.this.publishComponentValue(
                             component, myAction, targetComponents, layout,
                             handleReturnValue, previousContainer, currentTaget);
@@ -175,8 +174,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
         if (previousContainer != null) {
             // check again if component was set to inactive (in postHandle), if
             // so remove
-            // TODO active will be set on context!!
-            if (component.isActive()) {
+            if (component.getContext().isActive()) {
                 this.removeOldComponentValue(component, previousContainer,
                         currentTaget);
                 this.checkAndHandleTargetChange(component, previousContainer,
@@ -219,7 +217,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
         } else if (root != null && root != previousContainer) {
             // add new view
             this.log(" //1.1.1.1.4// handle new component insert: "
-                    + component.getName());
+                    + component.getContext().getName());
             this.handleViewState(root, true);
             this.handleNewComponentValue(this.componentDelegateQueue,
                     component, this.targetComponents, parentNode, currentTarget);
@@ -254,10 +252,10 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
         try {
             component = this.get();
         } catch (final InterruptedException e) {
-            logger.info("execution interrupted for component: " + this.component.getName());
+            logger.info("execution interrupted for component: " + this.component.getContext().getName());
         } catch (final ExecutionException e) {
             if (e.getCause() instanceof InterruptedException) {
-                logger.info("execution interrupted for component: " + this.component.getName());
+                logger.info("execution interrupted for component: " + this.component.getContext().getName());
             } else {
                 e.printStackTrace();
             }

@@ -58,6 +58,20 @@ public interface Context<L, A, M>  {
     ResourceBundle getResourceBundle();
 
     /**
+     * Get the default active status of component.
+     *
+     * @return the active state of component
+     */
+    boolean isActive();
+
+    /**
+     * Set default active state of component.
+     *
+     * @param active ; the component active state.
+     */
+    void setActive(final boolean active);
+
+    /**
      * Set component target id which is targeted by background component return
      * value; the return value will be handled like an average message and will
      * be delivered to targeted component.

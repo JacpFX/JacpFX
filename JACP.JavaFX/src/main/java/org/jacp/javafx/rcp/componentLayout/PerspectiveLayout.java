@@ -24,7 +24,6 @@ package org.jacp.javafx.rcp.componentLayout;
 
 import javafx.scene.Node;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
-import org.jacp.javafx.rcp.util.Checkable;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,7 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 
  * @author Andy Moncsek
  */
-public abstract class PerspectiveLayout extends Checkable implements IPerspectiveLayout<Node, Node> {
+public abstract class PerspectiveLayout implements IPerspectiveLayout<Node, Node> {
 	Node rootComponent;
 	private volatile  Map<String, Node> targetComponents = new ConcurrentHashMap<>();
 	
@@ -42,7 +41,6 @@ public abstract class PerspectiveLayout extends Checkable implements IPerspectiv
 	}
 	
 	public PerspectiveLayout(final Node rootComponent) {
-		super.started=true;
 		this.rootComponent = rootComponent;
 	}	
 

@@ -104,7 +104,7 @@ public class FXMessageDelegator extends Thread implements
 							FXUtil.getTargetComponentId(target),
 							this.perspectives);
 			if (perspectiveTemp != null) {
-				final String tempTargetId = perspectiveTemp.getId().concat(".")
+				final String tempTargetId = perspectiveTemp.getContext().getId().concat(".")
 						.concat(FXUtil.getTargetComponentId(target));
 				this.callComponentDelegate(tempTargetId, action);
 			} else {
@@ -125,7 +125,7 @@ public class FXMessageDelegator extends Thread implements
 	private void handleComponentHit(final String target,
 			final IAction<Event, Object> action,
 			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
-		if (perspective.isActive()) {
+		if (perspective.getContext().isActive()) {
 			this.handleMessageToActivePerspective(target, action, perspective);
 		} // End if
 		else {
@@ -163,7 +163,7 @@ public class FXMessageDelegator extends Thread implements
 
 	<P extends IComponent<EventHandler<Event>, Event, Object>> void handleInActivePerspective(
             final P component, final IAction<Event, Object> action) {
-		component.setActive(true);
+		component.getContext().setActive(true);
 		Platform.runLater(() -> FXMessageDelegator.this.componentHandler
                 .initComponent(
                         action,
@@ -197,7 +197,7 @@ public class FXMessageDelegator extends Thread implements
 				.getObserveableById(FXUtil.getTargetPerspectiveId(target),
 						this.perspectives);
 		if (perspective != null) {
-			if (!perspective.isActive()) {
+			if (!perspective.getContext().isActive()) {
 				this.handleInActivePerspective(perspective, action);
 			} // End inner if
 			else {

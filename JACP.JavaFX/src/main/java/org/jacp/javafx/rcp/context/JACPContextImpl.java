@@ -35,6 +35,8 @@ public class JACPContextImpl implements JACPContext {
     // TODO remove ResourceBundle from AFXComponent
     private ResourceBundle resourceBundle;
 
+    private volatile boolean active;
+
     public JACPContextImpl(final String id, final String name, final BlockingQueue<IAction<Event, Object>> globalMessageQueue) {
         this.id = id;
         this.name = name;
@@ -42,10 +44,14 @@ public class JACPContextImpl implements JACPContext {
 
     }
 
+    public JACPContextImpl(final BlockingQueue<IAction<Event, Object>> globalMessageQueue) {
+        this.globalMessageQueue = globalMessageQueue;
+
+    }
+
     /**
      * {@inheritDoc}
      */
-    // TODO remove getActionListener from AComponent
     @Override
     public final IActionListener<EventHandler<Event>, Event, Object> getActionListener(
             final Object message) {
@@ -64,8 +70,12 @@ public class JACPContextImpl implements JACPContext {
     }
 
     @Override
-    public final String getId(){
+    public final String getId() {
         return this.id;
+    }
+
+    public final void setId(final String id) {
+        this.id = id;
     }
 
     /**
@@ -75,26 +85,44 @@ public class JACPContextImpl implements JACPContext {
     public String getName() {
         return this.name;
     }
+
+    public final void setName(final String name) {
+        this.name = name;
+    }
+
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public final ResourceBundle getResourceBundle(){
+    public final ResourceBundle getResourceBundle() {
         return this.resourceBundle;
+    }
+
+    @Override
+    public boolean isActive() {
+        return this.active;
+    }
+
+    @Override
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public void setResourceBundle(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
     }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public <T> ManagedDialogHandler<T> getManagedDialogHandler(final Class<T> clazz)  {
+    public <T> ManagedDialogHandler<T> getManagedDialogHandler(final Class<T> clazz) {
         // TODO check if call is from UI component, otherwise throw exception
         final String callerClassName = customSecurityManager.getCallerClassName();
-        return JACPManagedDialog.getInstance().getManagedDialog(clazz,callerClassName);
+        return JACPManagedDialog.getInstance().getManagedDialog(clazz, callerClassName);
     }
+
     /**
      * {@inheritDoc}
      */
@@ -102,6 +130,7 @@ public class JACPContextImpl implements JACPContext {
     public void showModalDialog(final Node node) {
         JACPModalDialog.getInstance().showModalDialog(node);
     }
+
     /**
      * {@inheritDoc}
      */
@@ -118,7 +147,7 @@ public class JACPContextImpl implements JACPContext {
      * @return the target id
      */
     public final String getHandleTargetAndClear() {
-        String returnVal= String.valueOf(this.handleComponentTarget);
+        String returnVal = String.valueOf(this.handleComponentTarget);
         this.handleComponentTarget = null;
         return returnVal;
     }

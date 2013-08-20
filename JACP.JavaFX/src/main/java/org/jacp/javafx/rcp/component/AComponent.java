@@ -30,7 +30,6 @@ import org.jacp.api.component.IComponent;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.action.FXActionListener;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
-import org.jacp.javafx.rcp.util.Checkable;
 
 import java.util.concurrent.BlockingQueue;
 
@@ -41,99 +40,59 @@ import java.util.concurrent.BlockingQueue;
  * @author Andy Moncsek
  */
 
-public abstract class AComponent extends Checkable implements
+public abstract class AComponent implements
         IComponent<EventHandler<Event>, Event, Object> {
-    private String id;
-    private String name;
-    private volatile boolean active;
+
+    protected volatile boolean started = false;
+    private String localeID = "";
+    private String resourceBundleLocation = "";
     protected JACPContextImpl context;
     protected volatile BlockingQueue<IAction<Event, Object>> globalMessageQueue;
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final IActionListener<EventHandler<Event>, Event, Object> getActionListener(
-            final Object message) {
-        return new FXActionListener(new FXAction(this.id, message),
-                this.globalMessageQueue);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final IActionListener<EventHandler<Event>, Event, Object> getActionListener(
-            final String targetId, final Object message) {
-        return new FXActionListener(new FXAction(this.id, targetId, message, null),
-                this.globalMessageQueue);
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final String getId() {
-        if (this.id == null) {
-            throw new UnsupportedOperationException("No id set");
-        }
-        return this.id;
-
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final void setId(final String id) {
-        super.checkPolicy(this.id, "Do Not Set document manually");
-        this.id = id;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final boolean isActive() {
-        return this.active;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final void setActive(final boolean active) {
-        this.active = active;
-
-    }
 
     /**
      * {@inheritDoc}
      */
     @Override
     public final boolean isStarted() {
-        return super.started;
+        return this.started;
+    }
+
+    @Override
+    public void setStarted(boolean started) {
+        this.started = started;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public final String getName() {
-        if (this.name == null) {
-            throw new UnsupportedOperationException("No name set");
-        }
-        return this.name;
+    public String getLocaleID() {
+        return localeID;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public final void setName(final String name) {
-        super.checkPolicy(this.name, "Do Not Set document manually");
-        this.name = name;
+    public void setLocaleID(String localeID) {
+        this.localeID = localeID;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final String getResourceBundleLocation() {
+        return resourceBundleLocation;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void setResourceBundleLocation(String resourceBundleLocation) {
+        this.resourceBundleLocation = resourceBundleLocation;
     }
 
 
@@ -142,6 +101,6 @@ public abstract class AComponent extends Checkable implements
      */
     @Override
     public int compareTo(String o) {
-        return this.getId().compareTo(o);
+        return this.getContext().getId().compareTo(o);
     }
 }

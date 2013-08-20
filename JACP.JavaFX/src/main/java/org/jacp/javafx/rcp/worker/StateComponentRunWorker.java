@@ -46,7 +46,7 @@ public class StateComponentRunWorker
 	public StateComponentRunWorker(
 			final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
-		super(component.getName());
+		super(component.getContext().getName());
 		this.component = component;
 		this.delegateQueue = delegateQueue;
 	}
@@ -96,7 +96,7 @@ public class StateComponentRunWorker
 			final String currentTaget) {
 		final String targetNew = comp.getExecutionTarget();
 		if (!targetNew.equals(currentTaget)) {
-			if (!component.isActive())
+			if (!component.getContext().isActive())
 				throw new UnsupportedOperationException(
 						"CallbackComponent may be moved or set to inactive but not both");
 			this.changeComponentTarget(this.delegateQueue, comp);

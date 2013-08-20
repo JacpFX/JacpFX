@@ -116,7 +116,7 @@ public class FXWorkbenchHandler implements
                 .getIPerspectiveLayout();
         this.log("3.4.5: perspective init bar entries");
         this.initPerspectiveUI(perspectiveLayout);
-        PerspectiveRegistry.getAndSetCurrentVisiblePerspective(perspective.getId());
+        PerspectiveRegistry.getAndSetCurrentVisiblePerspective(perspective.getContext().getId());
 
     }
 
@@ -158,7 +158,7 @@ public class FXWorkbenchHandler implements
         if (subcomponents == null)
             return;
         subcomponents.forEach(subComp -> {
-            if (subComp instanceof AFXComponent && subComp.isActive()) {
+            if (subComp instanceof AFXComponent && subComp.getContext().isActive()) {
                 final AFXComponent subComponent = (AFXComponent) subComp;
                 this.addComponentByType(subComponent, layout);
             } // End outer if
@@ -211,7 +211,7 @@ public class FXWorkbenchHandler implements
         if (!perspective.equals(previousPerspective)) {
             // execute OnShow
             FXUtil.invokeHandleMethodsByAnnotation(OnShow.class, perspective, layout,
-                    perspectiveView.getDocumentURL(), perspectiveView.getResourceBundle());
+                    perspectiveView.getDocumentURL(), perspectiveView.getContext().getResourceBundle());
         }
         if (!oldComp.equals(newComp)) {
             children.remove(oldComp);
@@ -227,9 +227,9 @@ public class FXWorkbenchHandler implements
      * @return
      */
     private IPerspective<EventHandler<Event>, Event, Object> getPreviousPerspective(final IPerspective<EventHandler<Event>, Event, Object> perspective) {
-        final String previousId = PerspectiveRegistry.getAndSetCurrentVisiblePerspective(perspective.getId());
+        final String previousId = PerspectiveRegistry.getAndSetCurrentVisiblePerspective(perspective.getContext().getId());
         if (previousId == null) return perspective;
-        return perspective.getId().equals(previousId) ? perspective : PerspectiveRegistry.findPerspectiveById(previousId);
+        return perspective.getContext().getId().equals(previousId) ? perspective : PerspectiveRegistry.findPerspectiveById(previousId);
     }
 
     /**
@@ -271,13 +271,13 @@ public class FXWorkbenchHandler implements
             // TODO handle non UI Perspectives (not present 10.04.2012)
         }
 
-        if (FXUtil.getTargetPerspectiveId(action.getTargetId()).equals(perspective.getId())) {
+        if (FXUtil.getTargetPerspectiveId(action.getTargetId()).equals(perspective.getContext().getId())) {
             this.log("3.4.3.1: perspective handle with custom action");
             perspective.handlePerspective(action);
         } // End if
         else {
             this.log("3.4.3.1: perspective handle with default >>init<< action");
-            perspective.handlePerspective(new FXAction(perspective.getId(), perspective.getId(), "init", null));
+            perspective.handlePerspective(new FXAction(perspective.getContext().getId(), perspective.getContext().getId(), "init", null));
         } // End else
     }
 
@@ -358,7 +358,7 @@ public class FXWorkbenchHandler implements
             final IPerspectiveView<Node, EventHandler<Event>, Event, Object> perspectiveView = ((IPerspectiveView<Node, EventHandler<Event>, Event, Object>) previousPerspective);
             final FXComponentLayout layout = new FXComponentLayout(this.getWorkbenchLayout());
             FXUtil.invokeHandleMethodsByAnnotation(OnHide.class, previousPerspective, layout,
-                    perspectiveView.getDocumentURL(), perspectiveView.getResourceBundle());
+                    perspectiveView.getDocumentURL(), perspectiveView.getContext().getResourceBundle());
         }
 
     }

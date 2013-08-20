@@ -56,13 +56,8 @@ public abstract class ASubComponent extends AComponent implements
             1000);
 
 
-
-
     private IComponentHandle<?, EventHandler<Event>, Event, Object> componentHandle;
 
-    private String localeID = "";
-
-    private String resourceBundleLocation = "";
 
     /**
      * {@inheritDoc}
@@ -72,7 +67,7 @@ public abstract class ASubComponent extends AComponent implements
                               final BlockingQueue<IAction<Event, Object>> messageQueue) {
         this.parentId = parentId;
         this.globalMessageQueue = messageQueue;
-        this.context = new JACPContextImpl(this.getId(), this.getName(), this.globalMessageQueue);
+        this.context = new JACPContextImpl(this.globalMessageQueue);
     }
 
     /**
@@ -188,49 +183,5 @@ public abstract class ASubComponent extends AComponent implements
         this.componentHandle = handle;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getLocaleID() {
-        return localeID;
-    }
-    /**
-     * {@inheritDoc}
-     *//*
-    @Override
-	public void setLocaleID(String localeID) {
-		super.checkPolicy(this.localeID, "Do Not Set document manually");
-		this.localeID = localeID;
-	}*/
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getResourceBundleLocation() {
-        return resourceBundleLocation;
-    }
-    /**
-     * {@inheritDoc}
-     *//*
-    @Override
-	public final void setResourceBundleLocation(String resourceBundleLocation) {
-		super.checkPolicy(this.resourceBundleLocation, "Do Not Set document manually");
-		this.resourceBundleLocation = resourceBundleLocation;
-	}*/
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setResourceBundle(final ResourceBundle resourceBundle) {
-        initResourceToContext(resourceBundle);
-    }
-
-    protected void initResourceToContext(final ResourceBundle resourceBundle) {
-        Context context = this.getContext();
-        JACPContextImpl jContext = JACPContextImpl.class.cast(context);
-        jContext.setResourceBundle(resourceBundle);
-    }
 }

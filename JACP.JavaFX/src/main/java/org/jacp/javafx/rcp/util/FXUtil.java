@@ -359,7 +359,7 @@ public class FXUtil {
      */
     public static <P extends IComponent<EventHandler<Event>, Event, Object>> P getObserveableById(
             final String id, final List<P> components) {
-        final Optional<P> filter = components.parallelStream().filter(c -> c.getId().equals(id)).findFirst();
+        final Optional<P> filter = components.parallelStream().filter(c -> c.getContext().getId().equals(id)).findFirst();
         if (filter.isPresent()) return filter.get();
         return null;
     }
@@ -380,7 +380,7 @@ public class FXUtil {
                 parallelStream().
                 filter(perspective ->
                         perspective.getSubcomponents().
-                                parallelStream().map(ISubComponent::getId).
+                                parallelStream().map(s->s.getContext().getId()).
                                 anyMatch(cId -> cId.equals(id))).findFirst();
         if (result.isPresent()) return result.get();
         return null;
