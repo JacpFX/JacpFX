@@ -132,6 +132,7 @@ public abstract class AFXWorkbench
 
         this.log("3: handle initialisation sequence");
         this.perspectives = createPerspectiveInstances();
+        if(perspectives==null) return;
         this.componentHandler = new FXWorkbenchHandler(this.launcher,
                 this.workbenchLayout, this.root, this.perspectives);
         this.perspectiveCoordinator.setComponentHandler(this.componentHandler);

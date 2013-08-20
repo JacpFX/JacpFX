@@ -70,6 +70,7 @@ public class TearDownHandler {
 			throw new UnsupportedOperationException("can't teardown workbench");
 		final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = rootWorkbench
 				.getPerspectives();
+        if(perspectives==null) return;
 		for (final IPerspective<EventHandler<Event>, Event, Object> perspective : perspectives) {
 			// TODO ... teardown perspective itself
 			final List<ISubComponent<EventHandler<Event>, Event, Object>> subcomponents = perspective
