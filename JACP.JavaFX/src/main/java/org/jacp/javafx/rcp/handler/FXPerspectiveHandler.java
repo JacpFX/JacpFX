@@ -22,7 +22,6 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.handler;
 
-import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -195,7 +194,7 @@ public class FXPerspectiveHandler
 
 		if (AStatelessCallbackComponent.class.isAssignableFrom(component.getClass())) {
 			this.log("SATELESS BACKGROUND COMPONENT EXECUTE INIT:::"
-					+ component.getContext().getName());
+                    + component.getContext().getName());
 			this.runStatelessCallbackComponent(
 					((AStatelessCallbackComponent) component), action);
         }// else if END

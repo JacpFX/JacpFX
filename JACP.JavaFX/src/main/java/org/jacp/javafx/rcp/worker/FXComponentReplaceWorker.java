@@ -86,7 +86,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
                         + this.component.getContext().getName());
 
                 final Node previousContainer = this.component.getRoot();
-                final String currentTaget = this.component.getExecutionTarget();
+                final String currentTarget = this.component.getExecutionTarget();
                 // run code
                 this.log(" //1.1.1.1.2// handle component: "
                         + this.component.getContext().getName());
@@ -97,7 +97,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
 
                 this.publish(this.component, myAction, this.targetComponents,
                         this.layout, handleReturnValue, previousContainer,
-                        currentTaget);
+                        currentTarget);
 
             }
         } catch (final IllegalStateException e) {
@@ -135,7 +135,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
                     // TODO merge with code from  publishComponentValue
                     // unregister component
                     FXComponentReplaceWorker.this.removeComponentValue(
-                            component, previousContainer, layout);
+                             previousContainer);
                     // run teardown
                     FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
                             component.getComponentHandle(), layout);
@@ -147,8 +147,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
     }
 
 
-    private void removeComponentValue(final AFXComponent component,
-                                      final Node previousContainer, final FXComponentLayout layout) {
+    private void removeComponentValue(final Node previousContainer) {
         if (previousContainer != null) {
             final Node parent = previousContainer.getParent();
             if (parent != null) {
@@ -181,7 +180,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
                         currentTaget, layout);
             } else {
                 // unregister component
-                this.removeComponentValue(component, previousContainer, layout);
+                this.removeComponentValue(previousContainer);
                 // run teardown
                 FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
                         component.getComponentHandle(), layout);
@@ -200,7 +199,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
         if (!currentTaget.equals(component.getExecutionTarget())
                 || root == null || root != previousContainer) {
             // remove old view
-            this.removeComponentValue(component, previousContainer, this.layout);
+            this.removeComponentValue(previousContainer);
         }
     }
 

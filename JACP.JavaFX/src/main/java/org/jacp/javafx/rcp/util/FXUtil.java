@@ -30,7 +30,9 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.Resource;
-import org.jacp.api.component.*;
+import org.jacp.api.component.IComponent;
+import org.jacp.api.component.IPerspective;
+import org.jacp.api.component.Injectable;
 import org.jacp.api.context.Context;
 
 import java.io.IOException;
@@ -380,7 +382,7 @@ public class FXUtil {
                 parallelStream().
                 filter(perspective ->
                         perspective.getSubcomponents().
-                                parallelStream().map(s->s.getContext().getId()).
+                                parallelStream().map(s -> s.getContext().getId()).
                                 anyMatch(cId -> cId.equals(id))).findFirst();
         if (result.isPresent()) return result.get();
         return null;

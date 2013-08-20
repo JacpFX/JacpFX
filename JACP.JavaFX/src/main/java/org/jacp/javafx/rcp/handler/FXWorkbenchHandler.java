@@ -56,12 +56,10 @@ import org.jacp.javafx.rcp.util.PerspectiveRegistry;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
 
 /**
  * Handles initialization and re assignment of perspectives in workbench.

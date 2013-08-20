@@ -30,7 +30,6 @@ import org.jacp.api.component.ISubComponent;
 import org.jacp.api.context.Context;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
 
-import java.util.ResourceBundle;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Semaphore;

@@ -25,10 +25,7 @@ package org.jacp.javafx.rcp.component;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import org.jacp.api.action.IAction;
-import org.jacp.api.action.IActionListener;
 import org.jacp.api.component.IComponent;
-import org.jacp.javafx.rcp.action.FXAction;
-import org.jacp.javafx.rcp.action.FXActionListener;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
 
 import java.util.concurrent.BlockingQueue;

@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2012
  *
  * [AFX2ComponentWorker.java]
@@ -57,281 +57,280 @@ import java.util.logging.Logger;
 
 /**
  * handles component methods in own thread;
- * 
+ *
  * @author Andy Moncsek
  */
 public abstract class AFXComponentWorker<T> extends Task<T> {
 
-	private final String componentName;
+    private final String componentName;
 
-	public AFXComponentWorker(final String componentName) {
-		this.componentName = componentName;
-	}
+    public AFXComponentWorker(final String componentName) {
+        this.componentName = componentName;
+    }
 
-	/**
-	 * find valid target component in perspective
-	 * 
-	 * @param targetComponents
-	 * @param id
-	 * @return
-	 */
-	final Node getValidContainerById(
+    /**
+     * find valid target component in perspective
+     *
+     * @param targetComponents
+     * @param id
+     * @return returns a target node by id
+     */
+    Node getValidContainerById(
             final Map<String, Node> targetComponents, final String id) {
-		return targetComponents.get(id);
-	}
+        return targetComponents.get(id);
+    }
 
-	/**
-	 * find valid target and add type specific new component. Handles Container,
-	 * ScrollPanes, Menus and Bar Entries from user
-	 * 
-	 * @param validContainer
-	 * @param component
-	 */
-	final void addComponentByType(
-			final Node validContainer,
-			final IUIComponent<Node, EventHandler<Event>, Event, Object> component) {
-		this.handleAdd(validContainer, component.getRoot(), component.getContext().getName());
-		this.handleViewState(validContainer, true);
+    /**
+     * find valid target and add type specific new component. Handles Container,
+     * ScrollPanes, Menus and Bar Entries from user
+     *
+     * @param validContainer
+     * @param component
+     */
+    void addComponentByType(
+            final Node validContainer,
+            final IUIComponent<Node, EventHandler<Event>, Event, Object> component) {
+        this.handleAdd(validContainer, component.getRoot());
+        this.handleViewState(validContainer, true);
 
-	}
+    }
 
-	/**
-	 * enables component an add to container
-	 * 
-	 * @param validContainer
-	 * @param IUIComponent
-	 * @param name
-	 */
-	private void handleAdd(final Node validContainer, final Node IUIComponent,
-			final String name) {
-		if (validContainer != null && IUIComponent != null) {
-			this.handleViewState(IUIComponent, true);
-			final ObservableList<Node> children = FXUtil
-					.getChildren(validContainer);
-			children.add(IUIComponent);
-		}
+    /**
+     * enables component an add to container
+     *
+     * @param validContainer
+     * @param IUIComponent
+     */
+    private void handleAdd(final Node validContainer, final Node IUIComponent) {
+        if (validContainer != null && IUIComponent != null) {
+            this.handleViewState(IUIComponent, true);
+            final ObservableList<Node> children = FXUtil
+                    .getChildren(validContainer);
+            children.add(IUIComponent);
+        }
 
-	}
+    }
 
-	/**
-	 * removes old ui component of subcomponent form parent ui component
-	 * 
-	 * @param parent
-	 * @param currentContainer
-	 */
-	final void handleOldComponentRemove(final Node parent,
-			final Node currentContainer) {
-		this.handleViewState(currentContainer, false);
-		final ObservableList<Node> children = FXUtil.getChildren(parent);
-		children.remove(currentContainer);
-	}
+    /**
+     * removes old ui component of subcomponent form parent ui component
+     *
+     * @param parent
+     * @param currentContainer
+     */
+    void handleOldComponentRemove(final Node parent,
+                                        final Node currentContainer) {
+        this.handleViewState(currentContainer, false);
+        final ObservableList<Node> children = FXUtil.getChildren(parent);
+        children.remove(currentContainer);
+    }
 
-	/**
-	 * set visibility and enable/disable
-	 * 
-	 * @param IUIComponent
-	 * @param state
-	 */
-	final void handleViewState(final Node IUIComponent,
-			final boolean state) {
-		IUIComponent.setVisible(state);
-		IUIComponent.setDisable(!state);
+    /**
+     * set visibility and enable/disable
+     *
+     * @param IUIComponent
+     * @param state
+     */
+    void handleViewState(final Node IUIComponent,
+                               final boolean state) {
+        IUIComponent.setVisible(state);
+        IUIComponent.setDisable(!state);
         IUIComponent.setManaged(state);
-	}
+    }
 
-	/**
-	 * delegate components handle return value to specified target
-	 * 
-	 * @param comp
-	 * @param targetId
-	 * @param value
-	 */
+    /**
+     * delegate components handle return value to specified target
+     *
+     * @param comp
+     * @param targetId
+     * @param value
+     */
     void delegateReturnValue(
             final ISubComponent<EventHandler<Event>, Event, Object> comp,
             final String targetId, final Object value,
             final IAction<Event, Object> myAction) {
-		if (value != null && targetId != null
-				&& !myAction.getMessage().equals("init")) {
-			final IActionListener<EventHandler<Event>, Event, Object> listener = comp.getContext()
-					.getActionListener(null);
-			listener.notifyComponents(new FXAction(comp.getContext().getId(), targetId,
-					value, null));
-		}
-	}
+        if (value != null && targetId != null
+                && !myAction.getMessage().equals("init")) {
+            final IActionListener<EventHandler<Event>, Event, Object> listener = comp.getContext()
+                    .getActionListener(null);
+            listener.notifyComponents(new FXAction(comp.getContext().getId(), targetId,
+                    value, null));
+        }
+    }
 
-	/**
-	 * set new ui component to parent ui component, be careful! call this method
-	 * only in EDT... never run from separate thread
-	 * 
-	 * @param component
-	 * @param parent
-	 * @param currentTaget
-	 */
+    /**
+     * set new ui component to parent ui component, be careful! call this method
+     * only in EDT... never run from separate thread
+     *
+     * @param component
+     * @param parent
+     * @param currentTaget
+     */
     void handleNewComponentValue(
             final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
             final IUIComponent<Node, EventHandler<Event>, Event, Object> component,
             final Map<String, Node> targetComponents, final Node parent,
             final String currentTaget) {
-		if (parent == null) {
-			final String validId = this.getValidTargetId(currentTaget,
-					component.getExecutionTarget());
-			this.handleTargetChange(delegateQueue, component, targetComponents,
-					validId);
-		} else if (currentTaget.equals(component.getExecutionTarget())) {
-			this.addComponentByType(parent, component);
-		} else {
-			final String validId = this.getValidTargetId(currentTaget,
-					component.getExecutionTarget());
-			this.handleTargetChange(delegateQueue, component, targetComponents,
-					validId);
-		}
-	}
+        if (parent == null) {
+            final String validId = this.getValidTargetId(currentTaget,
+                    component.getExecutionTarget());
+            this.handleTargetChange(delegateQueue, component, targetComponents,
+                    validId);
+        } else if (currentTaget.equals(component.getExecutionTarget())) {
+            this.addComponentByType(parent, component);
+        } else {
+            final String validId = this.getValidTargetId(currentTaget,
+                    component.getExecutionTarget());
+            this.handleTargetChange(delegateQueue, component, targetComponents,
+                    validId);
+        }
+    }
 
-	/**
-	 * currentTarget.length < 2 Happens when component changed target from one
-	 * perspective to an other
-	 * 
-	 * @param currentTaget
-	 * @param futureTarget
-	 * @return
-	 */
+    /**
+     * currentTarget.length < 2 Happens when component changed target from one
+     * perspective to an other
+     *
+     * @param currentTaget
+     * @param futureTarget
+     * @return
+     */
     String getValidTargetId(final String currentTaget,
                             final String futureTarget) {
-		return currentTaget.length() < 2 ? FXUtil
-				.getTargetComponentId(futureTarget) : futureTarget;
-	}
+        return currentTaget.length() < 2 ? FXUtil
+                .getTargetComponentId(futureTarget) : futureTarget;
+    }
 
-	/**
-	 * Handle component when target has changed
-	 * 
-	 * @param component
-	 * @param targetComponents
-	 */
+    /**
+     * Handle component when target has changed
+     *
+     * @param component
+     * @param targetComponents
+     */
     void handleTargetChange(
             final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
             final IUIComponent<Node, EventHandler<Event>, Event, Object> component,
             final Map<String, Node> targetComponents, final String target) {
-		final Node validContainer = this.getValidContainerById(
-				targetComponents, target);
-		if (validContainer != null) {
-			this.handleLocalTargetChange(component, targetComponents,
-					validContainer);
-		} else {
-			// handle target outside current perspective
-			this.changeComponentTarget(delegateQueue, component);
-		}
-	}
+        final Node validContainer = this.getValidContainerById(
+                targetComponents, target);
+        if (validContainer != null) {
+            this.handleLocalTargetChange(component, targetComponents,
+                    validContainer);
+        } else {
+            // handle target outside current perspective
+            this.changeComponentTarget(delegateQueue, component);
+        }
+    }
 
-	/**
-	 * Handle target change inside perspective.
-	 * 
-	 * @param component
-	 * @param targetComponents
-	 * @param validContainer
-	 */
+    /**
+     * Handle target change inside perspective.
+     *
+     * @param component
+     * @param targetComponents
+     * @param validContainer
+     */
     void handleLocalTargetChange(
             final IUIComponent<Node, EventHandler<Event>, Event, Object> component,
             final Map<String, Node> targetComponents, final Node validContainer) {
-		this.addComponentByType(validContainer, component);
-	}
+        this.addComponentByType(validContainer, component);
+    }
 
-	/**
-	 * Handle target change to an other perspective. If target component not
-	 * found in current perspective, move to an other perspective and run
-	 * teardown.
-	 * 
-	 * @param delegateQueue
-	 * @param component
-	 * @param layout
-	 */
+    /**
+     * Handle target change to an other perspective. If target component not
+     * found in current perspective, move to an other perspective and run
+     * teardown.
+     *
+     * @param delegateQueue
+     * @param component
+     * @param layout
+     */
     void handlePerspectiveChange(
             final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
             final IUIComponent<Node, EventHandler<Event>, Event, Object> component,
             final FXComponentLayout layout) {
-		if (component instanceof AFXComponent) {
-			FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class, component,
-					layout);
-		}
-		// handle target outside current perspective
-		this.changeComponentTarget(delegateQueue, component);
-	}
+        if (component instanceof AFXComponent) {
+            FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class, component,
+                    layout);
+        }
+        // handle target outside current perspective
+        this.changeComponentTarget(delegateQueue, component);
+    }
 
-	/**
-	 * Move component to new target in perspective.
-	 * 
-	 * @param component
-	 */
-	final void changeComponentTarget(
+    /**
+     * Move component to new target in perspective.
+     *
+     * @param component
+     */
+    void changeComponentTarget(
             final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
             final ISubComponent<EventHandler<Event>, Event, Object> component) {
-		final String targetId = component.getExecutionTarget();
-		final String parentIdOld = component.getParentId();
-		final String parentId = FXUtil.getTargetParentId(targetId);
-		if (!parentIdOld.equals(parentId)) {
-			// delegate to perspective observer
-			delegateQueue.add(component);
+        final String targetId = component.getExecutionTarget();
+        final String parentIdOld = component.getParentId();
+        final String parentId = FXUtil.getTargetParentId(targetId);
+        if (!parentIdOld.equals(parentId)) {
+            // delegate to perspective observer
+            delegateQueue.add(component);
 
-		}
-	}
+        }
+    }
 
-	/**
-	 * Runs the handle method of a componentView.
-	 * 
-	 * @param component
-	 * @param action
-	 * @return
-	 */
-	final Node prepareAndRunHandleMethod(
+    /**
+     * Runs the handle method of a componentView.
+     *
+     * @param component
+     * @param action
+     * @return
+     */
+    Node prepareAndRunHandleMethod(
             final IUIComponent<Node, EventHandler<Event>, Event, Object> component,
             final IAction<Event, Object> action) throws Exception {
-		return component.getComponentViewHandle().handle(action);
+        return component.getComponentViewHandle().handle(action);
 
-	}
+    }
 
-	/**
-	 * Executes post handle method in application main thread. The result value
-	 * of handle method (from worker thread) is Input for the postHandle Method.
-	 * The return value or the handleReturnValue are the root node of this
-	 * component.
-	 * 
-	 * @param component
-	 * @param action
-	 */
+    /**
+     * Executes post handle method in application main thread. The result value
+     * of handle method (from worker thread) is Input for the postHandle Method.
+     * The return value or the handleReturnValue are the root node of this
+     * component.
+     *
+     * @param component
+     * @param action
+     */
     void executeComponentViewPostHandle(final Node handleReturnValue,
                                         final AFXComponent component, final IAction<Event, Object> action) throws Exception {
 
-		Node potsHandleReturnValue = component.getComponentViewHandle().postHandle(handleReturnValue,
-				action);
-		if (potsHandleReturnValue == null) {
-			potsHandleReturnValue = handleReturnValue;
-		} else if (component.getType().equals(UIType.DECLARATIVE)) {
-			throw new UnsupportedOperationException(
-					"declarative components should not have a return value in postHandle method, otherwise you would overwrite the FXML root node.");
-		}
-		if (potsHandleReturnValue != null
-				&& component.getType().equals(UIType.PROGRAMMATIC)) {
-			potsHandleReturnValue.setVisible(true);
+        Node potsHandleReturnValue = component.getComponentViewHandle().postHandle(handleReturnValue,
+                action);
+        if (potsHandleReturnValue == null) {
+            potsHandleReturnValue = handleReturnValue;
+        } else if (component.getType().equals(UIType.DECLARATIVE)) {
+            throw new UnsupportedOperationException(
+                    "declarative components should not have a return value in postHandle method, otherwise you would overwrite the FXML root node.");
+        }
+        if (potsHandleReturnValue != null
+                && component.getType().equals(UIType.PROGRAMMATIC)) {
+            potsHandleReturnValue.setVisible(true);
             component.setRoot(potsHandleReturnValue);
-		}
-	}
+        }
+    }
 
-	/**
-	 * checks if component started, if so run PostConstruct annotations
-	 * 
-	 * @param component
-	 */
+    /**
+     * checks if component started, if so run PostConstruct annotations
+     *
+     * @param component
+     */
     void runCallbackOnStartMethods(
             final ISubComponent<EventHandler<Event>, Event, Object> component) {
-		if (!component.isStarted())   {
+        if (!component.isStarted()) {
             initLocalization(component);
             handleContextInjection(component);
             FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, component.getComponentHandle());
         }
 
-	}
+    }
 
     /**
      * Set Resource Bundle
+     *
      * @param component
      */
     private void initLocalization(final ISubComponent<EventHandler<Event>, Event, Object> component) {
@@ -351,57 +350,57 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 
 
     /**
-	 * Check if component was not started yet an activate it.
-	 * 
-	 * @param component
-	 */
+     * Check if component was not started yet an activate it.
+     *
+     * @param component
+     */
     void runCallbackPostExecution(
             final ISubComponent<EventHandler<Event>, Event, Object> component) {
-		if (!component.isStarted())
-			FXUtil.setPrivateMemberValue(AComponent.class, component,
-					FXUtil.ACOMPONENT_STARTED, true);
-	}
+        if (!component.isStarted())
+            FXUtil.setPrivateMemberValue(AComponent.class, component,
+                    FXUtil.ACOMPONENT_STARTED, true);
+    }
 
-	/**
-	 * checks if component was deactivated, if so run OnTeardown annotations.
-	 * 
-	 * @param component
-	 */
+    /**
+     * checks if component was deactivated, if so run OnTeardown annotations.
+     *
+     * @param component
+     */
     void runCallbackOnTeardownMethods(
             final ISubComponent<EventHandler<Event>, Event, Object> component) {
 
-		// turn off component
-		if (!component.getContext().isActive()) {
-			FXUtil.setPrivateMemberValue(AComponent.class, component,
-					FXUtil.ACOMPONENT_STARTED, false);
-			// run teardown
-			FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class, component.getComponentHandle());
-		}
-	}
+        // turn off component
+        if (!component.getContext().isActive()) {
+            FXUtil.setPrivateMemberValue(AComponent.class, component,
+                    FXUtil.ACOMPONENT_STARTED, false);
+            // run teardown
+            FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class, component.getComponentHandle());
+        }
+    }
 
-	void log(final String message) {
-		if (Logger.getLogger(AFXComponentWorker.class.getName()).isLoggable(
-				Level.FINE)) {
-			Logger.getLogger(AFXComponentWorker.class.getName()).fine(
-					">> " + message);
-		}
-	}
+    void log(final String message) {
+        if (Logger.getLogger(AFXComponentWorker.class.getName()).isLoggable(
+                Level.FINE)) {
+            Logger.getLogger(AFXComponentWorker.class.getName()).fine(
+                    ">> " + message);
+        }
+    }
 
-	/**
-	 * invokes a runnable on application thread and waits until execution is
-	 * finished
-	 * 
-	 * @param runnable
-	 * @throws InterruptedException
-	 */
-    void invokeOnFXThreadAndWait(final Runnable runnable)
-			throws InterruptedException {
-		final Lock lock = new ReentrantLock();
-		final Condition condition = lock.newCondition();
-		final AtomicBoolean conditionReady = new AtomicBoolean(false);
-		lock.lock();
-		try {
-			Platform.runLater(() -> {
+    /**
+     * invokes a runnable on application thread and waits until execution is
+     * finished
+     *
+     * @param runnable
+     * @throws InterruptedException
+     */
+    final void invokeOnFXThreadAndWait(final Runnable runnable)
+            throws InterruptedException {
+        final Lock lock = new ReentrantLock();
+        final Condition condition = lock.newCondition();
+        final AtomicBoolean conditionReady = new AtomicBoolean(false);
+        lock.lock();
+        try {
+            Platform.runLater(() -> {
                 lock.lock();
                 try {
 
@@ -417,19 +416,19 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
                 }
 
             });
-			// wait until execution is finished and check if application is
-			// still running to prevent wait
-			while (!conditionReady.get()
-					&& ShutdownThreadsHandler.APPLICATION_RUNNING.get())
-				condition.await(ShutdownThreadsHandler.WAIT,
-						TimeUnit.MILLISECONDS);
-		} finally {
-			lock.unlock();
-		}
-	}
+            // wait until execution is finished and check if application is
+            // still running to prevent wait
+            while (!conditionReady.get()
+                    && ShutdownThreadsHandler.APPLICATION_RUNNING.get())
+                condition.await(ShutdownThreadsHandler.WAIT,
+                        TimeUnit.MILLISECONDS);
+        } finally {
+            lock.unlock();
+        }
+    }
 
-	public String getComponentName() {
-		return componentName;
-	}
+    public String getComponentName() {
+        return componentName;
+    }
 
 }

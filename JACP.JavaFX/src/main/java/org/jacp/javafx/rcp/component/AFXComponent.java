@@ -29,7 +29,6 @@ import javafx.scene.Node;
 import org.jacp.api.component.IDeclarative;
 import org.jacp.api.component.IUIComponent;
 import org.jacp.api.util.UIType;
-import org.jacp.javafx.rcp.context.JACPContext;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
 
 import java.net.URL;

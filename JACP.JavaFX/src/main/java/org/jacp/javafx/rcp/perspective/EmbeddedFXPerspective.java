@@ -1,9 +1,6 @@
 package org.jacp.javafx.rcp.perspective;
 
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import org.jacp.api.component.Injectable;
-import org.jacp.api.context.Context;
 
 /**
  * Created with IntelliJ IDEA.

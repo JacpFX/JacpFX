@@ -2,8 +2,6 @@ package org.jacp.javafx.rcp.component;
 
 import org.jacp.api.component.IComponentView;
 
-import java.util.ResourceBundle;
-
 /**
  * Created with IntelliJ IDEA.
  * User: Andy Moncsek
