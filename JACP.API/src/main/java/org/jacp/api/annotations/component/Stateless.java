@@ -1,4 +1,4 @@
-package org.jacp.api.annotations;
+package org.jacp.api.annotations.component;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

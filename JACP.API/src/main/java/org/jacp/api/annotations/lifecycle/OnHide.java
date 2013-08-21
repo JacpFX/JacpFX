@@ -1,4 +1,4 @@
-package org.jacp.api.annotations;
+package org.jacp.api.annotations.lifecycle;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -10,9 +10,9 @@ import java.lang.annotation.Target;
  * User: Andy Moncsek
  * Date: 27.05.13
  * Time: 21:32
- * Marks component/perspective methods that will be executed when components appear in visible area.
+ * Marks component/perspective methods that will be executed when components disappear from visible area.
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface OnShow {
+public @interface OnHide {
 }

@@ -1,6 +1,6 @@
 /************************************************************************
  * 
- * Copyright (C) 2010 - 2013
+ * Copyright (C) 2010 - 2012
  *
  * [Component.java]
  * AHCP Project (http://jacp.googlecode.com/)
@@ -20,9 +20,7 @@
  *
  *
  ************************************************************************/
-package org.jacp.api.annotations;
-
-import org.jacp.api.dialog.Scope;
+package org.jacp.api.annotations.component;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -30,44 +28,49 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Defines a managed dialog component, A dialog has a parent component
- * accessible by @Ressource annotation, the Dialog should either extend a Node
- * or define a viewLocation pointing to fxml.
+ * This annotation defines the meta definition of an JACP UI component.
  * 
  * @author Andy Moncsek
  * 
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Dialog {
-	/**
-	 * The component id.
-	 * 
-	 * @return The component Id
-	 */
-	String id();
+public @interface Component {
+    /**
+     * The components name.
+     * 
+     * @return The component name
+     */
+    String name();
 
-	/**
-	 * Defines the Scope of the Dialog, default is Singleton.
-	 * 
-	 * @return The dialog {@link Scope}
-	 */
-	Scope scope() default Scope.SINGLETON;
+    /**
+     * The component id.
+     * 
+     * @return The component Id
+     */
+    String id();
 
-	/**
-	 * Represents the location (URI) of the declarative UI.
-	 * 
-	 * @return The view location (like bundle.messages)
-	 */
-	String viewLocation() default "";
+    /**
+     * The active state at start time.
+     * 
+     * @return True
+     */
+    boolean active() default true;
 
-	/**
-	 * Represents the location of your resource bundle file.
-	 * 
-	 * @return The default resource bundle location (like bundle.messages)
-	 */
-	String resourceBundleLocation() default "";
-	
+    /**
+     * The execution target at start time.
+     * 
+     * @return The default execution target defined by perspective
+     */
+    @Deprecated // should be moved to default targetLayout (which defines a target in perspective; an executionTarget should define a perspective)
+    String targetLayout() default "";
+
+    /**
+     * Represents the location of your resource bundle file.
+     * 
+     * @return The default resource bundle location (like bundle.messages)
+     */
+    String resourceBundleLocation() default "";
 
     /**
      * Represents the Locale ID. see:
@@ -76,4 +79,5 @@ public @interface Dialog {
      * @return The default locale Id
      */
     String localeID() default "";
+
 }

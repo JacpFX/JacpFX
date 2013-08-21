@@ -45,6 +45,12 @@ public interface Context<L, A, M>  {
     String getId();
 
     /**
+     * Returns the ID of parent component/perspective.
+     * @return a component id
+     */
+    String getParentId();
+
+    /**
      * Returns the name of a component.
      *
      * @return the component name
@@ -72,13 +78,25 @@ public interface Context<L, A, M>  {
     void setActive(final boolean active);
 
     /**
-     * Set component target id which is targeted by background component return
+     * Set component targetId which is the target of a background components return
      * value; the return value will be handled like an average message and will
      * be delivered to targeted component.
      *
      * @param componentTargetId ; represents a component id to return the value to
      */
-    void setHandleTarget(final String componentTargetId);
+    void setReturnTarget(final String componentTargetId);
+
+    /**
+     * Defines the perspective in which the component should executed in.
+     * @param id, the id of the parent perspective where the component should be executed in.
+     */
+    void setExecutionTarget(final String id);
+
+    /**
+     * Defines the target layoutId, where the UI component should appear in,the layout is registered in perspective and is a placeholder for the component.
+     * @param targetLayout, a target layout label.
+     */
+    void setTargetLayout(final String targetLayout);
 
 
 }
