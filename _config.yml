@@ -1,0 +1,6 @@
+name: JacpFX project
+markdown: redcarpet
+safe: true
+lsi: false
+pygments: true
+baseurl: /JacpFX
