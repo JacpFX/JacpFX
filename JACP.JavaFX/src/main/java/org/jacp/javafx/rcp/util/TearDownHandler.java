@@ -24,7 +24,7 @@ package org.jacp.javafx.rcp.util;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import org.jacp.api.annotations.PreDestroy;
+import org.jacp.api.annotations.lifecycle.PreDestroy;
 import org.jacp.api.component.IPerspective;
 import org.jacp.api.component.IStatelessCallabackComponent;
 import org.jacp.api.component.ISubComponent;
@@ -91,6 +91,9 @@ public class TearDownHandler {
 			}
 			if (!handleAsync.isEmpty())
 				handleAsyncTearDown(handleAsync);
+
+            FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
+                    perspective.getPerspectiveHandle());
 
 		}
 		executor.shutdown();

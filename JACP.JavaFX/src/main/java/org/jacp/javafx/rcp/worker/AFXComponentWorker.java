@@ -30,8 +30,8 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
-import org.jacp.api.annotations.PostConstruct;
-import org.jacp.api.annotations.PreDestroy;
+import org.jacp.api.annotations.lifecycle.PostConstruct;
+import org.jacp.api.annotations.lifecycle.PreDestroy;
 import org.jacp.api.component.IComponentHandle;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.component.IUIComponent;
@@ -247,7 +247,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
             final IUIComponent<Node, EventHandler<Event>, Event, Object> component,
             final FXComponentLayout layout) {
         if (component instanceof AFXComponent) {
-            FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class, component,
+            FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class, component.getComponentHandle(),
                     layout);
         }
         // handle target outside current perspective

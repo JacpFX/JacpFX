@@ -30,10 +30,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IDelegateDTO;
-import org.jacp.api.annotations.Component;
-import org.jacp.api.annotations.Declarative;
-import org.jacp.api.annotations.Perspective;
-import org.jacp.api.annotations.Stateless;
+import org.jacp.api.annotations.component.Component;
+import org.jacp.api.annotations.component.Declarative;
+import org.jacp.api.annotations.perspective.Perspective;
+import org.jacp.api.annotations.component.Stateless;
 import org.jacp.api.component.*;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.context.Context;
@@ -79,11 +79,9 @@ public abstract class AFXPerspective extends AComponent implements
     private IComponentCoordinator<EventHandler<Event>, Event, Object> componentCoordinator;
     private String viewLocation;
     private URL documentURL;
-    private ResourceBundle resourceBundle;
     private IPerspectiveLayout<Node, Node> perspectiveLayout;
     private UIType type = UIType.PROGRAMMATIC;
     private String localeID = "";
-    private String resourceBundleLocation = "";
     private final Object lock = new Object();
     private Launcher<?> launcher;
 
@@ -121,7 +119,7 @@ public abstract class AFXPerspective extends AComponent implements
     }
 
     private String[] getComponentIds() {
-        final Injectable handler =  this.getPerspectiveHandler();
+        final Injectable handler =  this.getPerspectiveHandle();
         if(handler==null) throw new IllegalArgumentException("no perspective annotatation found");
         final Perspective perspectiveAnnotation = handler.getClass()
                 .getAnnotation(Perspective.class);
@@ -257,7 +255,7 @@ public abstract class AFXPerspective extends AComponent implements
      * @param component
      */
     private void handleComponentAnnotation(final Component componentAnnotation, final AFXComponent component) {
-        setExecutionTarget(component, componentAnnotation.defaultExecutionTarget());
+        setExecutionTarget(component, componentAnnotation.targetLayout());
         setLocale(component, componentAnnotation.localeID());
         setRessourceBundleLocation(component, componentAnnotation.resourceBundleLocation());
         this.log("register component with annotations : " + componentAnnotation.id());
@@ -395,7 +393,6 @@ public abstract class AFXPerspective extends AComponent implements
     @Override
     public final void initialize(URL url, ResourceBundle resourceBundle) {
         this.documentURL = url;
-        this.resourceBundle = resourceBundle;
         JACPContextImpl.class.cast(context).setResourceBundle(resourceBundle);
     }
 
@@ -432,10 +429,11 @@ public abstract class AFXPerspective extends AComponent implements
 
 
     public FXPerspective getFXPerspectiveHandler() {
-        return FXPerspective.class.cast(getPerspectiveHandler());
+        return FXPerspective.class.cast(getPerspectiveHandle());
     }
 
-    public Injectable getPerspectiveHandler(){
+    @Override
+    public Injectable getPerspectiveHandle(){
         return this.perspectiveHandler;
     }
 

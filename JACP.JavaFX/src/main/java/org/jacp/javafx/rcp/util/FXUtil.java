@@ -154,7 +154,7 @@ public class FXUtil {
 
                 } catch (final IllegalArgumentException e) {
                     throw new UnsupportedOperationException(
-                            "use @PostConstruct and @OnTeardown either with paramter extending IBaseLayout<Node> layout (like FXComponentLayout) or with no arguments  ",
+                            "use @PostConstruct and @PreDestroy either with paramter extending IBaseLayout<Node> layout (like FXComponentLayout) or with no arguments  ",
                             e.getCause());
                 } catch (final IllegalAccessException | InvocationTargetException e) {
                     Logger.getLogger(FXUtil.class.getName()).log(Level.SEVERE,
@@ -201,7 +201,6 @@ public class FXUtil {
                                                   Object... value) {
         final List<Object> resultList = Arrays.asList(types).
                 parallelStream().map(t -> findByClass(t, value)).
-                filter(result -> result != null).
                 collect(Collectors.toList());
         return resultList.isEmpty()==false?resultList.toArray(new Object[resultList.size()]):new Object[types.length];
     }

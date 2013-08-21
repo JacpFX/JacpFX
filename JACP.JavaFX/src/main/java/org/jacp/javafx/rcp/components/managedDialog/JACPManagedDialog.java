@@ -25,7 +25,7 @@ package org.jacp.javafx.rcp.components.managedDialog;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import org.jacp.api.annotations.Dialog;
+import org.jacp.api.annotations.dialog.Dialog;
 import org.jacp.api.annotations.Resource;
 import org.jacp.api.component.IComponentHandle;
 import org.jacp.api.component.ISubComponent;

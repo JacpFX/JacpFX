@@ -35,8 +35,9 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
-import org.jacp.api.annotations.Perspective;
-import org.jacp.api.annotations.Workbench;
+import org.jacp.api.annotations.perspective.Perspective;
+import org.jacp.api.annotations.workbench.Workbench;
+import org.jacp.api.component.IDeclarative;
 import org.jacp.api.component.IPerspective;
 import org.jacp.api.component.IRootComponent;
 import org.jacp.api.component.Injectable;
@@ -53,6 +54,7 @@ import org.jacp.api.util.UIType;
 import org.jacp.api.workbench.IWorkbench;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.action.FXActionListener;
+import org.jacp.javafx.rcp.component.AComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.componentLayout.FXWorkbenchLayout;
 import org.jacp.javafx.rcp.components.managedDialog.JACPManagedDialog;
@@ -282,7 +284,7 @@ public abstract class AFXWorkbench
      */
     private void handleMetaAnnotation(
             final IPerspective<EventHandler<Event>, Event, Object> perspective) {
-        final Injectable handler = perspective.getPerspectiveHandler();
+        final Injectable handler = perspective.getPerspectiveHandle();
         final Perspective perspectiveAnnotation = handler.getClass()
                 .getAnnotation(Perspective.class);
         final JACPContextImpl context = JACPContextImpl.class.cast(perspective.getContext());
@@ -295,23 +297,20 @@ public abstract class AFXWorkbench
             this.log("register perspective with annotations : "
                     + perspectiveAnnotation.id());
             final String viewLocation = perspectiveAnnotation.viewLocation();
-            if (viewLocation.length() > 1)
-                FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,
-                        FXUtil.IDECLARATIVECOMPONENT_VIEW_LOCATION,
-                        perspectiveAnnotation.viewLocation());
-            if (viewLocation.length() > 1)
+            if (viewLocation.length() > 1 && IDeclarative.class.isAssignableFrom(perspective.getClass())){
+                IDeclarative.class.cast(perspective).setViewLocation(perspectiveAnnotation.viewLocation());
                 FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,
                         FXUtil.IDECLARATIVECOMPONENT_TYPE, UIType.DECLARATIVE);
+            }
+
             final String localeID = perspectiveAnnotation.localeID();
             if (localeID.length() > 1)
-                FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,
-                        FXUtil.IDECLARATIVECOMPONENT_LOCALE, localeID);
+                perspective.setLocaleID(localeID);
             final String resourceBundleLocation = perspectiveAnnotation
                     .resourceBundleLocation();
             if (resourceBundleLocation.length() > 1)
-                FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,
-                        FXUtil.IDECLARATIVECOMPONENT_BUNDLE_LOCATION,
-                        resourceBundleLocation);
+                perspective.setResourceBundleLocation(resourceBundleLocation);
+
         }
     }
 

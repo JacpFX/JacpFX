@@ -1,7 +1,7 @@
 package org.jacp.javafx.rcp.util;
 
-import org.jacp.api.annotations.Component;
-import org.jacp.api.annotations.Perspective;
+import org.jacp.api.annotations.component.Component;
+import org.jacp.api.annotations.perspective.Perspective;
 
 import java.util.Collections;
 import java.util.List;

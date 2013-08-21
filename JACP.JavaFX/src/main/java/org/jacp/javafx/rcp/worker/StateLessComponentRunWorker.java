@@ -66,10 +66,10 @@ public class StateLessComponentRunWorker
 					final IAction<Event, Object> myAction = this.component
 							.getNextIncomingMessage();
                     final JACPContextImpl context = JACPContextImpl.class.cast(this.component.getContext());
-                    context.setHandleTarget(myAction.getSourceId());
+                    context.setReturnTarget(myAction.getSourceId());
                     final Object value = this.component.getComponentHandle().handle(myAction);
                     final String targetId = context
-                            .getHandleTargetAndClear();
+                            .getReturnTargetAndClear();
 					this.delegateReturnValue(this.component, targetId, value,
 							myAction);
 				}

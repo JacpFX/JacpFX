@@ -24,7 +24,7 @@ package org.jacp.javafx.rcp.worker;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import org.jacp.api.annotations.PreDestroy;
+import org.jacp.api.annotations.lifecycle.PreDestroy;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.javafx.rcp.util.FXUtil;
 

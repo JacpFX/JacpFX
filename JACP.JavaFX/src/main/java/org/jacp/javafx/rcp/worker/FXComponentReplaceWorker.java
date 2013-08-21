@@ -27,7 +27,7 @@ import javafx.event.EventHandler;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import org.jacp.api.action.IAction;
-import org.jacp.api.annotations.PreDestroy;
+import org.jacp.api.annotations.lifecycle.PreDestroy;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;

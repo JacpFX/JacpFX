@@ -62,13 +62,13 @@ public class StateComponentRunWorker
 					final IAction<Event, Object> myAction = this.component
 							.getNextIncomingMessage();
                     final JACPContextImpl context = JACPContextImpl.class.cast(this.component.getContext());
-                    context.setHandleTarget(myAction.getSourceId());
+                    context.setReturnTarget(myAction.getSourceId());
                       // TODO move execution target to Context!
 					final String targetCurrent = this.component
 							.getExecutionTarget();
 					final Object value = this.component.getComponentHandle().handle(myAction);
 					final String targetId = context
-							.getHandleTargetAndClear();
+							.getReturnTargetAndClear();
 					this.delegateReturnValue(this.component, targetId, value,
 							myAction);
 					this.checkAndHandleTargetChange(this.component,

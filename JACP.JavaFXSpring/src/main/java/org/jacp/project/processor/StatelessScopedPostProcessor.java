@@ -23,8 +23,7 @@
 package org.jacp.project.processor;
 
 
-import org.jacp.api.annotations.Stateless;
-import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
+import org.jacp.api.annotations.component.Stateless;
 import org.jacp.javafx.rcp.component.CallbackComponent;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;

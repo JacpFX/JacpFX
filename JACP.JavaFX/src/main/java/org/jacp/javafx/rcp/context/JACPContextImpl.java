@@ -26,13 +26,13 @@ public class JACPContextImpl implements JACPContext {
 
     protected volatile BlockingQueue<IAction<Event, Object>> globalMessageQueue;
     private String id;
+    private volatile String parentId;
+
     private String name;
-    private volatile String handleComponentTarget;
+    private volatile String returnTarget;
     private final static CustomSecurityManager customSecurityManager =
             new CustomSecurityManager();
 
-
-    // TODO remove ResourceBundle from AFXComponent
     private ResourceBundle resourceBundle;
 
     private volatile boolean active;
@@ -68,10 +68,23 @@ public class JACPContextImpl implements JACPContext {
         return new FXActionListener(new FXAction(this.id, targetId, message, null),
                 this.globalMessageQueue);
     }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final String getId() {
         return this.id;
+    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getParentId() {
+        return this.parentId;
+    }
+
+    public final void setParentId(final String parentId) {
+          this.parentId = parentId;
     }
 
     public final void setId(final String id) {
@@ -98,12 +111,16 @@ public class JACPContextImpl implements JACPContext {
     public final ResourceBundle getResourceBundle() {
         return this.resourceBundle;
     }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isActive() {
         return this.active;
     }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setActive(boolean active) {
         this.active = active;
@@ -146,14 +163,31 @@ public class JACPContextImpl implements JACPContext {
      *
      * @return the target id
      */
-    public final String getHandleTargetAndClear() {
-        String returnVal = String.valueOf(this.handleComponentTarget);
-        this.handleComponentTarget = null;
+    // TODO check that only callables can call this
+    public final String getReturnTargetAndClear() {
+        String returnVal = String.valueOf(this.returnTarget);
+        this.returnTarget = null;
         return returnVal;
     }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public final void setHandleTarget(final String componentTargetId) {
-        this.handleComponentTarget = componentTargetId;
+    public final void setReturnTarget(final String returnTargetId) {
+        this.returnTarget = returnTargetId;
+    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setExecutionTarget(String id) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setTargetLayout(String targetLayout) {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 }

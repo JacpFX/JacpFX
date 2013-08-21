@@ -27,7 +27,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import org.jacp.api.action.IAction;
-import org.jacp.api.annotations.PostConstruct;
+import org.jacp.api.annotations.lifecycle.PostConstruct;
 import org.jacp.api.component.IComponentHandle;
 import org.jacp.api.util.UIType;
 import org.jacp.javafx.rcp.component.AComponent;
