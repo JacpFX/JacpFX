@@ -3,4 +3,5 @@ markdown: redcarpet
 safe: true
 lsi: false
 pygments: true
-baseurl: http://jacpfx.github.io/JacpFX/
+
+baseurl: '/JacpFX'
