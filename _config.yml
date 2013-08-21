@@ -4,4 +4,4 @@ safe: true
 lsi: false
 pygments: true
 
-baseurl: '/JacpFX'
+baseurl: /JacpFX
