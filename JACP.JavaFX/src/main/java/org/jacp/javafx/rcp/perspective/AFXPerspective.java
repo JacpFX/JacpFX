@@ -191,6 +191,7 @@ public abstract class AFXPerspective extends AComponent implements
         synchronized (lock) {
             component.initEnv(this.getContext().getId(),
                     this.componentCoordinator.getMessageQueue());
+            JACPContextImpl.class.cast(component.getContext()).setParentId(this.getContext().getId());
             this.handleMetaAnnotation(component);
             this.log("register component: " + component.getContext().getId());
             ComponentRegistry.registerComponent(component);
@@ -238,12 +239,12 @@ public abstract class AFXPerspective extends AComponent implements
     }
 
     private void handleCallbackAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component, final Component callbackAnnotation) {
-        handleBaseAttributes(AComponent.class, component, callbackAnnotation.id(), callbackAnnotation.active(),
+        handleBaseAttributes(component, callbackAnnotation.id(), callbackAnnotation.active(),
                 callbackAnnotation.name());
     }
 
     private void handleComponentAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component, final Component componentAnnotation) {
-        handleBaseAttributes(AComponent.class, component, componentAnnotation.id(), componentAnnotation.active(),
+        handleBaseAttributes(component, componentAnnotation.id(), componentAnnotation.active(),
                 componentAnnotation.name());
         handleComponentAnnotation(componentAnnotation, (AFXComponent) component);
     }
@@ -280,14 +281,12 @@ public abstract class AFXPerspective extends AComponent implements
     /**
      * set base component members
      *
-     * @param clazz
      * @param component
      * @param id
      * @param active
      * @param name
      */
-    private void handleBaseAttributes(Class<?> clazz,
-                                      final ISubComponent<EventHandler<Event>, Event, Object> component, final String id, final boolean active,
+    private void handleBaseAttributes(final ISubComponent<EventHandler<Event>, Event, Object> component, final String id, final boolean active,
                                       final String name) {
         if (id != null) JACPContextImpl.class.cast(component.getContext()).setId(id);
         component.getContext().setActive(active);
@@ -338,8 +337,8 @@ public abstract class AFXPerspective extends AComponent implements
     /**
      * Register components at componentHandler.
      *
-     * @param <M>
-     * @param components
+     * @param <M> , a list of components extending ISubComponents
+     * @param components, a list of registered components
      */
     private <M extends ISubComponent<EventHandler<Event>, Event, Object>> void registerSubcomponents(
             final List<M> components) {

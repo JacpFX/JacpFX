@@ -62,7 +62,6 @@ public @interface Component {
      * 
      * @return The default execution target defined by perspective
      */
-    @Deprecated // should be moved to default targetLayout (which defines a target in perspective; an executionTarget should define a perspective)
     String targetLayout() default "";
 
     /**

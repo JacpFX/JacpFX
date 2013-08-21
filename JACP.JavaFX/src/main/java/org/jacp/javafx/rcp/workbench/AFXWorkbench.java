@@ -151,9 +151,9 @@ public abstract class AFXWorkbench
                     .map(this::mapToInjectable)
                     .collect(Collectors.toList());
             return perspectiveHandlerList.stream().map(this::mapToPerspective).collect(Collectors.toList());
+        } else {
+            throw new InvalidParameterException("missing @Workbench annotation");
         }
-
-        return null;
     }
 
     private IPerspective<EventHandler<Event>, Event, Object>  mapToPerspective(Injectable handler) {
@@ -288,6 +288,7 @@ public abstract class AFXWorkbench
         final Perspective perspectiveAnnotation = handler.getClass()
                 .getAnnotation(Perspective.class);
         final JACPContextImpl context = JACPContextImpl.class.cast(perspective.getContext());
+        context.setParentId(this.getClass().getAnnotation(Workbench.class).id());
         if (perspectiveAnnotation != null) {
             final String id = perspectiveAnnotation.id();
             if (id == null) throw new IllegalArgumentException("no perspective id set");
