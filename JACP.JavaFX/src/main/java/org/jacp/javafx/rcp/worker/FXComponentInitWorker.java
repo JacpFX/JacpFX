@@ -33,6 +33,7 @@ import org.jacp.api.util.UIType;
 import org.jacp.javafx.rcp.component.AComponent;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
+import org.jacp.javafx.rcp.context.JACPContextImpl;
 import org.jacp.javafx.rcp.util.FXUtil;
 
 import java.io.IOException;
@@ -128,13 +129,12 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 						this.component, this.action);
 				this.log("3.4.4.2.2: subcomponent handle init get valid container: "
 						+ name);
-				// expect always local target id
-				this.component.setExecutionTarget(FXUtil
-						.getTargetComponentId(this.component
-								.getExecutionTarget()));
-				final Node validContainer = this.getValidContainerById(
+                final String targetLayout = JACPContextImpl.class.cast(this.component.getContext()).getTargetLayout();
+				// TODO implement execution environment
+                final Node validContainer = this.getValidContainerById(
 						this.targetComponents,
-						this.component.getExecutionTarget());
+                        targetLayout);
+
 				this.log("3.4.4.2.3: subcomponent handle init add component by type: "
 						+ name);
 				this.addComponent(validContainer, handleReturnValue,

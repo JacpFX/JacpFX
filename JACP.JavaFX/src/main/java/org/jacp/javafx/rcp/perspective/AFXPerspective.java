@@ -274,8 +274,9 @@ public abstract class AFXPerspective extends AComponent implements
 
 
     private void setExecutionTarget(final AFXComponent component, String value) {
-        if (component.getExecutionTarget().length() <= 1)
-            component.setExecutionTarget(value);
+        final String targetLayout = JACPContextImpl.class.cast(component.getContext()).getTargetLayout();
+        if (targetLayout==null)
+            component.getContext().setTargetLayout(value);
     }
 
     /**

@@ -30,6 +30,8 @@ public class JACPContextImpl implements JACPContext {
 
     private String name;
     private volatile String returnTarget;
+    private volatile String targetLayout;
+    private volatile String executionTarget;
     private final static CustomSecurityManager customSecurityManager =
             new CustomSecurityManager();
 
@@ -181,13 +183,22 @@ public class JACPContextImpl implements JACPContext {
      */
     @Override
     public void setExecutionTarget(String id) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        this.executionTarget = id;
+    }
+
+    public String getExecutionTarget() {
+        return this.executionTarget;
     }
     /**
      * {@inheritDoc}
      */
     @Override
     public void setTargetLayout(String targetLayout) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        if(targetLayout==null) throw new IllegalArgumentException("targetLayout should not be null");
+        this.targetLayout = targetLayout;
+    }
+
+    public final String getTargetLayout(){
+        return this.targetLayout;
     }
 }

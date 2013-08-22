@@ -22,6 +22,7 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.worker;
 
+
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.CacheHint;
@@ -31,6 +32,7 @@ import org.jacp.api.annotations.lifecycle.PreDestroy;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
+import org.jacp.javafx.rcp.context.JACPContextImpl;
 import org.jacp.javafx.rcp.util.FXUtil;
 
 import java.util.Map;
@@ -86,7 +88,8 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
                         + this.component.getContext().getName());
 
                 final Node previousContainer = this.component.getRoot();
-                final String currentTarget = this.component.getExecutionTarget();
+                final String currentTargetLayout = JACPContextImpl.class.cast(this.component.getContext()).getTargetLayout();
+                final String currentExecutionTarget = JACPContextImpl.class.cast(this.component.getContext()).getExecutionTarget();
                 // run code
                 this.log(" //1.1.1.1.2// handle component: "
                         + this.component.getContext().getName());
@@ -97,7 +100,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
 
                 this.publish(this.component, myAction, this.targetComponents,
                         this.layout, handleReturnValue, previousContainer,
-                        currentTarget);
+                        currentTargetLayout, currentExecutionTarget);
 
             }
         } catch (final IllegalStateException e) {
@@ -121,7 +124,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
                          final IAction<Event, Object> myAction,
                          final Map<String, Node> targetComponents,
                          final FXComponentLayout layout, final Node handleReturnValue,
-                         final Node previousContainer, final String currentTaget)
+                         final Node previousContainer, final String currentTargetLayout, final String currentExecutionTarget)
             throws InterruptedException {
         this.invokeOnFXThreadAndWait(() -> {
             setCacheHints(true, CacheHint.SPEED, component);
@@ -130,12 +133,12 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
                 if (component.getContext().isActive()) {
                     FXComponentReplaceWorker.this.publishComponentValue(
                             component, myAction, targetComponents, layout,
-                            handleReturnValue, previousContainer, currentTaget);
+                            handleReturnValue, previousContainer, currentTargetLayout, currentExecutionTarget);
                 } else {
                     // TODO merge with code from  publishComponentValue
                     // unregister component
                     FXComponentReplaceWorker.this.removeComponentValue(
-                             previousContainer);
+                            previousContainer);
                     // run teardown
                     FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
                             component.getComponentHandle(), layout);
@@ -161,23 +164,34 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
      * run in thread
      *
      * @param previousContainer
-     * @param currentTaget
+     * @param currentTargetLayout
      */
     private void publishComponentValue(final AFXComponent component,
                                        final IAction<Event, Object> action,
                                        final Map<String, Node> targetComponents,
                                        final FXComponentLayout layout, final Node handleReturnValue,
-                                       final Node previousContainer, final String currentTaget) throws Exception {
+                                       final Node previousContainer, final String currentTargetLayout, final String currentExecutionTarget) throws Exception {
         executeComponentViewPostHandle(handleReturnValue, component,
                 action);
         if (previousContainer != null) {
             // check again if component was set to inactive (in postHandle), if
             // so remove
             if (component.getContext().isActive()) {
-                this.removeOldComponentValue(component, previousContainer,
-                        currentTaget);
-                this.checkAndHandleTargetChange(component, previousContainer,
-                        currentTaget, layout);
+                // TODO check if execution target has changed before update targetLayout
+                final String newExecutionTarget = JACPContextImpl.class.cast(this.component.getContext()).getExecutionTarget();
+                if (currentExecutionTarget != null && newExecutionTarget != null && !currentExecutionTarget.equalsIgnoreCase(newExecutionTarget)) {
+                    // TODO remove from view and move to different perspective
+                    this.removeComponentValue(previousContainer);
+                    this.handlePerspectiveChange(this.componentDelegateQueue,
+                            component, layout);
+                } else {
+                    final String newTargetLayout = JACPContextImpl.class.cast(this.component.getContext()).getTargetLayout();
+                    this.removeOldComponentValue(component, previousContainer,
+                            currentTargetLayout, newTargetLayout);
+                    this.checkAndHandleLayoutTargetChange(component, previousContainer,
+                            currentTargetLayout, newTargetLayout, targetComponents);
+                }
+
             } else {
                 // unregister component
                 this.removeComponentValue(previousContainer);
@@ -193,10 +207,10 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
      * remove old component value from root node
      */
     private void removeOldComponentValue(final AFXComponent component,
-                                         final Node previousContainer, final String currentTaget) {
+                                         final Node previousContainer, final String currentTargetLayout, final String newTargetLayout) {
         final Node root = component.getRoot();
         // avoid remove/add when root component did not changed!
-        if (!currentTaget.equals(component.getExecutionTarget())
+        if (!currentTargetLayout.equals(newTargetLayout)
                 || root == null || root != previousContainer) {
             // remove old view
             this.removeComponentValue(previousContainer);
@@ -206,20 +220,18 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
     /**
      * add new component value to root node
      */
-    private void checkAndHandleTargetChange(final AFXComponent component,
-                                            final Node previousContainer, final String currentTarget,
-                                            final FXComponentLayout layout) {
+    private void checkAndHandleLayoutTargetChange(final AFXComponent component,
+                                                  final Node previousContainer, final String currentTargetLayout, final String newTargetLayout, final Map<String, Node> targetComponents) {
+
         final Node root = component.getRoot();
-        final Node parentNode = previousContainer.getParent();
-        if (!currentTarget.equals(component.getExecutionTarget())) {
-            executeTargetChange(component, currentTarget);
+        if (!currentTargetLayout.equals(newTargetLayout)) {
+            executeLayoutTargetUpdate(component, newTargetLayout, targetComponents);
         } else if (root != null && root != previousContainer) {
             // add new view
             this.log(" //1.1.1.1.4// handle new component insert: "
                     + component.getContext().getName());
             this.handleViewState(root, true);
-            this.handleNewComponentValue(this.componentDelegateQueue,
-                    component, this.targetComponents, parentNode, currentTarget);
+            executeLayoutTargetUpdate(component, newTargetLayout, targetComponents);
         }
 
     }
@@ -228,20 +240,17 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
      * Performs target change of component or perspective
      *
      * @param component
-     * @param currentTarget
+     * @param newTargetLayout
      */
-    private void executeTargetChange(final AFXComponent component,
-                                     final String currentTarget) {
-        final String validId = this.getValidTargetId(currentTarget,
-                component.getExecutionTarget());
+    private void executeLayoutTargetUpdate(final AFXComponent component,
+                                           final String newTargetLayout, final Map<String, Node> targetComponents) {
         final Node validContainer = this.getValidContainerById(
-                this.targetComponents, validId);
+                targetComponents, newTargetLayout);
         if (validContainer != null) {
-            this.handleLocalTargetChange(component, this.targetComponents,
+            this.handleLayoutTargetChange(component,
                     validContainer);
         } else {
-            this.handlePerspectiveChange(this.componentDelegateQueue,
-                    component, layout);
+            throw new IllegalArgumentException("no targetLayout " + newTargetLayout + " found");
         }
     }
 

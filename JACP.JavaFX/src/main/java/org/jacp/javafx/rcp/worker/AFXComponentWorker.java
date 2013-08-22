@@ -165,6 +165,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
      * @param parent
      * @param currentTaget
      */
+    // TODO this is crappy!
     void handleNewComponentValue(
             final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
             final IUIComponent<Node, EventHandler<Event>, Event, Object> component,
@@ -212,7 +213,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
         final Node validContainer = this.getValidContainerById(
                 targetComponents, target);
         if (validContainer != null) {
-            this.handleLocalTargetChange(component, targetComponents,
+            this.handleLayoutTargetChange(component,
                     validContainer);
         } else {
             // handle target outside current perspective
@@ -224,12 +225,11 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
      * Handle target change inside perspective.
      *
      * @param component
-     * @param targetComponents
      * @param validContainer
      */
-    void handleLocalTargetChange(
+    void handleLayoutTargetChange(
             final IUIComponent<Node, EventHandler<Event>, Event, Object> component,
-            final Map<String, Node> targetComponents, final Node validContainer) {
+            final Node validContainer) {
         this.addComponentByType(validContainer, component);
     }
 
