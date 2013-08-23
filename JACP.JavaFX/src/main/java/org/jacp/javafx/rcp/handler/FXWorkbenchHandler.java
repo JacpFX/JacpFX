@@ -49,6 +49,7 @@ import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.componentLayout.FXMLPerspectiveLayout;
 import org.jacp.javafx.rcp.componentLayout.FXPerspectiveLayout;
 import org.jacp.javafx.rcp.componentLayout.FXWorkbenchLayout;
+import org.jacp.javafx.rcp.context.JACPContextImpl;
 import org.jacp.javafx.rcp.perspective.AFXPerspective;
 import org.jacp.javafx.rcp.util.FXUtil;
 import org.jacp.javafx.rcp.util.PerspectiveRegistry;
@@ -133,25 +134,12 @@ public class FXWorkbenchHandler implements
     }
 
     /**
-     * add all active subcomponents to replaced perspective
-     *
-     * @param layout
+     * add all active subcomponents to current perspective
      * @param perspective
+     * @param layout
      */
     private void reassignSubcomponents(final IPerspective<EventHandler<Event>, Event, Object> perspective,
                                        final IPerspectiveLayout<? extends Node, Node> layout) {
-        this.runReassign(perspective, layout);
-
-    }
-
-    /**
-     * call reassign of all components in perspective
-     *
-     * @param layout
-     * @param perspective
-     */
-    private void runReassign(final IPerspective<EventHandler<Event>, Event, Object> perspective,
-                             final IPerspectiveLayout<? extends Node, Node> layout) {
         final List<ISubComponent<EventHandler<Event>, Event, Object>> subcomponents = perspective.getSubcomponents();
         if (subcomponents == null)
             return;
@@ -164,6 +152,7 @@ public class FXWorkbenchHandler implements
 
     }
 
+
     /**
      * find valid target and add type specific new ui component
      *
@@ -172,7 +161,8 @@ public class FXWorkbenchHandler implements
      */
     private void addComponentByType(final IUIComponent<Node, EventHandler<Event>, Event, Object> component,
                                     final IPerspectiveLayout<? extends Node, Node> layout) {
-        final Node validContainer = layout.getTargetLayoutComponents().get(component.getExecutionTarget());
+        final String targetLayout = JACPContextImpl.class.cast(component.getContext()).getTargetLayout();
+        final Node validContainer = layout.getTargetLayoutComponents().get(targetLayout);
         final ObservableList<Node> children = FXUtil.getChildren(validContainer);
         final Node root = component.getRoot();
         if (children == null || root == null) return;
