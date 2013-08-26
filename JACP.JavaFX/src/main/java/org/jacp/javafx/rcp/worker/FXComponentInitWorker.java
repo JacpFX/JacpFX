@@ -39,6 +39,7 @@ import org.jacp.javafx.rcp.util.FXUtil;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.security.InvalidParameterException;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -134,7 +135,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
                 final Node validContainer = this.getValidContainerById(
 						this.targetComponents,
                         targetLayout);
-
+                if(validContainer==null) throw new InvalidParameterException("no targetLayout for layoutID: "+targetLayout+" found");
 				this.log("3.4.4.2.3: subcomponent handle init add component by type: "
 						+ name);
 				this.addComponent(validContainer, handleReturnValue,

@@ -138,6 +138,7 @@ public abstract class AFXPerspective extends AComponent implements
 
     private Injectable mapToInjectAble(final String id) {
         final Class componentClass = ClassRegistry.getComponentClassById(id);
+        if(componentClass==null)throw new InvalidParameterException("Component with id: "+id+" not found");
         final Scope scope = getCorrectScopeOfComponent(componentClass);
         final Object component = launcher.registerAndGetBean(componentClass, id, scope);
         if(Injectable.class.isAssignableFrom(component.getClass())) {

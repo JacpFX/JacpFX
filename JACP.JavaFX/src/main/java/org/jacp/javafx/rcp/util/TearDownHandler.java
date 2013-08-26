@@ -75,22 +75,25 @@ public class TearDownHandler {
 			// TODO ... teardown perspective itself
 			final List<ISubComponent<EventHandler<Event>, Event, Object>> subcomponents = perspective
 					.getSubcomponents();
-			final List<ISubComponent<EventHandler<Event>, Event, Object>> handleAsync = new ArrayList<>();
-            // TODO FIXME for teardow all parameters in PreDestroyed should be passed -- see init process
-			for (final ISubComponent<EventHandler<Event>, Event, Object> component : subcomponents) {
-				if (CallbackComponent.class.isAssignableFrom(component.getClass())) {
-					handleAsync
-							.add((ISubComponent<EventHandler<Event>, Event, Object>) component);
-				}
-                else {
-                    // run teardown in app thread
-                    FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
-                            component.getComponentHandle());
-				}
+            if(subcomponents!=null) {
+                final List<ISubComponent<EventHandler<Event>, Event, Object>> handleAsync = new ArrayList<>();
+                // TODO FIXME for teardow all parameters in PreDestroyed should be passed -- see init process
+                for (final ISubComponent<EventHandler<Event>, Event, Object> component : subcomponents) {
+                    if (CallbackComponent.class.isAssignableFrom(component.getClass())) {
+                        handleAsync
+                                .add((ISubComponent<EventHandler<Event>, Event, Object>) component);
+                    }
+                    else {
+                        // run teardown in app thread
+                        FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
+                                component.getComponentHandle());
+                    }
 
-			}
-			if (!handleAsync.isEmpty())
-				handleAsyncTearDown(handleAsync);
+                }
+                if (!handleAsync.isEmpty())
+                    handleAsyncTearDown(handleAsync);
+
+            }
 
             FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
                     perspective.getPerspectiveHandle());
