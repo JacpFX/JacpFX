@@ -43,19 +43,6 @@ import java.util.concurrent.BlockingQueue;
  *            defines the basic message type
  */
 public interface ISubComponent<L, A, M> extends IComponent<L, A, M> {
-	/**
-	 * Returns the target id where component will be displayed in.
-	 * 
-	 * @return target id
-	 */
-	String getExecutionTarget();
-
-	/**
-	 * Set the target id where component will be displayed in.
-	 * 
-	 * @param target
-	 */
-	void setExecutionTarget(final String target);
 
 	/**
 	 * Returns true if component has message in pipe.

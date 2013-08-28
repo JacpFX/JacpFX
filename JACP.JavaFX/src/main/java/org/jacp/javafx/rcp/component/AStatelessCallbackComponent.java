@@ -88,10 +88,7 @@ public abstract class AStatelessCallbackComponent extends ASubComponent
         context.setId(this.getContext().getId());
         context.setActive(this.getContext().isActive());
         context.setName(this.getContext().getName());
-
-		FXUtil.setPrivateMemberValue(ASubComponent.class, comp,
-				FXUtil.ACOMPONENT_EXTARGET, this.getExecutionTarget());
-
+        context.setExecutionTarget(JACPContextImpl.class.cast(context).getExecutionTarget());
 		return comp;
 	}
 

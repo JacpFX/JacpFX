@@ -69,22 +69,6 @@ public abstract class ASubComponent extends AComponent implements
         this.context = new JACPContextImpl(this.globalMessageQueue);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final String getExecutionTarget() {
-        return this.executionTarget;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final void setExecutionTarget(final String target) {
-        this.executionTarget = target;
-
-    }
 
     /**
      * {@inheritDoc}

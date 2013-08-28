@@ -64,15 +64,14 @@ public class StateComponentRunWorker
                     final JACPContextImpl context = JACPContextImpl.class.cast(this.component.getContext());
                     context.setReturnTarget(myAction.getSourceId());
                       // TODO move execution target to Context!
-					final String targetCurrent = this.component
-							.getExecutionTarget();
+                    final String currentExecutionTarget = context.getExecutionTarget();
 					final Object value = this.component.getComponentHandle().handle(myAction);
 					final String targetId = context
 							.getReturnTargetAndClear();
 					this.delegateReturnValue(this.component, targetId, value,
 							myAction);
 					this.checkAndHandleTargetChange(this.component,
-							targetCurrent);
+                            currentExecutionTarget);
 				}
 				runCallbackPostExecution(this.component);
 				runCallbackOnTeardownMethods(this.component);
@@ -89,13 +88,13 @@ public class StateComponentRunWorker
 	 * check if target has changed
 	 * 
 	 * @param comp
-	 * @param currentTaget
+	 * @param currentExecutionTarget
 	 */
 	private void checkAndHandleTargetChange(
 			final ISubComponent<EventHandler<Event>, Event, Object> comp,
-			final String currentTaget) {
-		final String targetNew = comp.getExecutionTarget();
-		if (!targetNew.equals(currentTaget)) {
+			final String currentExecutionTarget) {
+		final String targetNew = JACPContextImpl.class.cast(comp.getContext()).getExecutionTarget();
+		if (!targetNew.equals(currentExecutionTarget)) {
 			if (!component.getContext().isActive())
 				throw new UnsupportedOperationException(
 						"CallbackComponent may be moved or set to inactive but not both");

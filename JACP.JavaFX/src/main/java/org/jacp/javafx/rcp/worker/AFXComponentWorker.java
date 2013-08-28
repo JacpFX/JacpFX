@@ -157,34 +157,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
         }
     }
 
-    /**
-     * set new ui component to parent ui component, be careful! call this method
-     * only in EDT... never run from separate thread
-     *
-     * @param component
-     * @param parent
-     * @param currentTaget
-     */
-    // TODO this is crappy!
-    void handleNewComponentValue(
-            final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
-            final IUIComponent<Node, EventHandler<Event>, Event, Object> component,
-            final Map<String, Node> targetComponents, final Node parent,
-            final String currentTaget) {
-        if (parent == null) {
-            final String validId = this.getValidTargetId(currentTaget,
-                    component.getExecutionTarget());
-            this.handleTargetChange(delegateQueue, component, targetComponents,
-                    validId);
-        } else if (currentTaget.equals(component.getExecutionTarget())) {
-            this.addComponentByType(parent, component);
-        } else {
-            final String validId = this.getValidTargetId(currentTaget,
-                    component.getExecutionTarget());
-            this.handleTargetChange(delegateQueue, component, targetComponents,
-                    validId);
-        }
-    }
+
 
     /**
      * currentTarget.length < 2 Happens when component changed target from one
@@ -262,7 +235,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
     void changeComponentTarget(
             final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
             final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        final String targetId = component.getExecutionTarget();
+        final String targetId = JACPContextImpl.class.cast(component.getContext()).getExecutionTarget();
         final String parentIdOld = component.getParentId();
         final String parentId = FXUtil.getTargetParentId(targetId);
         if (!parentIdOld.equals(parentId)) {

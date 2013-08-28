@@ -160,6 +160,17 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
 
     }
 
+    private boolean checkExecutionTargetCondition(final String newExecutionTarget, final String currentExecutionTarget) {
+        if (currentExecutionTarget == null && newExecutionTarget != null) {
+            return true;
+        } else if (currentExecutionTarget != null && newExecutionTarget == null) {
+            return true;
+        } else if (currentExecutionTarget == null && newExecutionTarget == null) {
+            return false;
+        }
+        return !currentExecutionTarget.equalsIgnoreCase(newExecutionTarget);
+    }
+
     /**
      * run in thread
      *
@@ -179,7 +190,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
             if (component.getContext().isActive()) {
                 // TODO check if execution target has changed before update targetLayout
                 final String newExecutionTarget = JACPContextImpl.class.cast(this.component.getContext()).getExecutionTarget();
-                if (currentExecutionTarget != null && newExecutionTarget != null && !currentExecutionTarget.equalsIgnoreCase(newExecutionTarget)) {
+                if (checkExecutionTargetCondition(newExecutionTarget,currentExecutionTarget)) {
                     // TODO remove from view and move to different perspective
                     this.removeComponentValue(previousContainer);
                     this.handlePerspectiveChange(this.componentDelegateQueue,

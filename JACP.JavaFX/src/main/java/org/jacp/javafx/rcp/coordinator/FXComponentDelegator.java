@@ -32,6 +32,7 @@ import org.jacp.api.component.ISubComponent;
 import org.jacp.api.coordinator.IComponentDelegator;
 import org.jacp.api.handler.IComponentHandler;
 import org.jacp.javafx.rcp.action.FXAction;
+import org.jacp.javafx.rcp.context.JACPContextImpl;
 import org.jacp.javafx.rcp.util.FXUtil;
 import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
 
@@ -66,8 +67,7 @@ public class FXComponentDelegator extends Thread implements
 			try {
 				final ISubComponent<EventHandler<Event>, Event, Object> component = this.componentDelegateQueue
 						.take();
-				final String targetId = component.getExecutionTarget();
-
+                final String targetId = JACPContextImpl.class.cast(component.getContext()).getExecutionTarget();
 				this.delegateTargetChange(targetId, component);
 
 			} catch (final InterruptedException e) {
