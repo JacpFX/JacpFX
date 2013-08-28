@@ -52,18 +52,16 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
 
     private final Map<String, Node> targetComponents;
     private final AFXComponent component;
-    private final FXComponentLayout layout;
     private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
     private static final Logger logger = Logger.getLogger("FXComponentReplaceWorker");
 
     public FXComponentReplaceWorker(
             final Map<String, Node> targetComponents,
             final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue,
-            final AFXComponent component, final FXComponentLayout layout) {
+            final AFXComponent component) {
         super(component.getContext().getName());
         this.targetComponents = targetComponents;
         this.component = component;
-        this.layout = layout;
         this.componentDelegateQueue = componentDelegateQueue;
     }
 
@@ -99,7 +97,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
                         + this.component.getContext().getName());
 
                 this.publish(this.component, myAction, this.targetComponents,
-                        this.layout, handleReturnValue, previousContainer,
+                        handleReturnValue, previousContainer,
                         currentTargetLayout, currentExecutionTarget);
 
             }
@@ -123,13 +121,14 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
     private void publish(final AFXComponent component,
                          final IAction<Event, Object> myAction,
                          final Map<String, Node> targetComponents,
-                         final FXComponentLayout layout, final Node handleReturnValue,
+                         final Node handleReturnValue,
                          final Node previousContainer, final String currentTargetLayout, final String currentExecutionTarget)
             throws InterruptedException {
         this.invokeOnFXThreadAndWait(() -> {
             setCacheHints(true, CacheHint.SPEED, component);
             // check if component was set to inactive, if so remove
             try {
+                final FXComponentLayout layout = JACPContextImpl.class.cast(component.getContext()).getComponentLayout();
                 if (component.getContext().isActive()) {
                     FXComponentReplaceWorker.this.publishComponentValue(
                             component, myAction, targetComponents, layout,
@@ -161,13 +160,15 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
     }
 
     private boolean checkExecutionTargetCondition(final String newExecutionTarget, final String currentExecutionTarget) {
-        if (currentExecutionTarget == null && newExecutionTarget != null) {
-            return true;
-        } else if (currentExecutionTarget != null && newExecutionTarget == null) {
-            return true;
-        } else if (currentExecutionTarget == null && newExecutionTarget == null) {
+        if (currentExecutionTarget == null && newExecutionTarget == null) {
             return false;
+        } else if (currentExecutionTarget == null) {
+            return true;
+        } else if (newExecutionTarget == null) {
+            return true;
         }
+
+
         return !currentExecutionTarget.equalsIgnoreCase(newExecutionTarget);
     }
 
@@ -190,7 +191,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
             if (component.getContext().isActive()) {
                 // TODO check if execution target has changed before update targetLayout
                 final String newExecutionTarget = JACPContextImpl.class.cast(this.component.getContext()).getExecutionTarget();
-                if (checkExecutionTargetCondition(newExecutionTarget,currentExecutionTarget)) {
+                if (checkExecutionTargetCondition(newExecutionTarget, currentExecutionTarget)) {
                     // TODO remove from view and move to different perspective
                     this.removeComponentValue(previousContainer);
                     this.handlePerspectiveChange(this.componentDelegateQueue,

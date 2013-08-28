@@ -4,6 +4,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import org.jacp.api.context.Context;
+import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.components.managedDialog.ManagedDialogHandler;
 
 /**
@@ -33,4 +34,10 @@ public interface JACPContext extends Context<EventHandler<Event>, Event, Object>
      * hides the current modal dialog
      */
     void hideModalDialog();
+
+    /**
+     * Retruns the component layout
+     * @return The ComponentLayout handler
+     */
+    FXComponentLayout getComponentLayout();
 }

@@ -32,8 +32,8 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.action.IDelegateDTO;
 import org.jacp.api.annotations.component.Component;
 import org.jacp.api.annotations.component.Declarative;
-import org.jacp.api.annotations.perspective.Perspective;
 import org.jacp.api.annotations.component.Stateless;
+import org.jacp.api.annotations.perspective.Perspective;
 import org.jacp.api.component.*;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.context.Context;
@@ -192,7 +192,9 @@ public abstract class AFXPerspective extends AComponent implements
         synchronized (lock) {
             component.initEnv(this.getContext().getId(),
                     this.componentCoordinator.getMessageQueue());
-            JACPContextImpl.class.cast(component.getContext()).setParentId(this.getContext().getId());
+            final JACPContextImpl context =  JACPContextImpl.class.cast(component.getContext());
+            context.setParentId(this.getContext().getId());
+            context.setFXComponentLayout(JACPContextImpl.class.cast(this.getContext()).getComponentLayout());
             this.handleMetaAnnotation(component);
             this.log("register component: " + component.getContext().getId());
             ComponentRegistry.registerComponent(component);

@@ -8,6 +8,7 @@ import org.jacp.api.action.IActionListener;
 import org.jacp.api.util.CustomSecurityManager;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.action.FXActionListener;
+import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.components.managedDialog.JACPManagedDialog;
 import org.jacp.javafx.rcp.components.managedDialog.ManagedDialogHandler;
 import org.jacp.javafx.rcp.components.modalDialog.JACPModalDialog;
@@ -34,7 +35,7 @@ public class JACPContextImpl implements JACPContext {
     private volatile String executionTarget;
     private final static CustomSecurityManager customSecurityManager =
             new CustomSecurityManager();
-
+    private FXComponentLayout layout;
     private ResourceBundle resourceBundle;
 
     private volatile boolean active;
@@ -156,6 +157,17 @@ public class JACPContextImpl implements JACPContext {
     @Override
     public void hideModalDialog() {
         JACPModalDialog.getInstance().hideModalDialog();
+    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FXComponentLayout getComponentLayout() {
+        return this.layout;
+    }
+
+    public void setFXComponentLayout(final FXComponentLayout layout) {
+          this.layout = layout;
     }
 
     /**

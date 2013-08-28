@@ -34,7 +34,6 @@ import org.jacp.api.launcher.Launcher;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
 import org.jacp.javafx.rcp.component.ASubComponent;
-import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.scheduler.StatelessCallbackScheduler;
 import org.jacp.javafx.rcp.util.HandlerThreadFactory;
 import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
@@ -58,8 +57,6 @@ public class FXPerspectiveHandler
 		implements
 		IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, IAction<Event, Object>> {
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
-	public static int MAX_INCTANCE_COUNT;
-	private final FXComponentLayout layout;
 	private final StatelessCallbackScheduler scheduler;
 	private final IPerspectiveLayout<Node, Node> perspectiveLayout;
 	private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
@@ -69,10 +66,8 @@ public class FXPerspectiveHandler
 
 	public FXPerspectiveHandler(
 			final Launcher<?> launcher,
-			final FXComponentLayout layout,
 			final IPerspectiveLayout<Node, Node> perspectiveLayout,
 			final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue) {
-		this.layout = layout;
 		this.perspectiveLayout = perspectiveLayout;
 		this.componentDelegateQueue = componentDelegateQueue;
 		this.scheduler = new StatelessCallbackScheduler(launcher);
@@ -94,7 +89,7 @@ public class FXPerspectiveHandler
 			this.log("ADD TO QUEUE:::" + component.getContext().getName());
 		} else {
 			this.executeComponentReplaceThread(this.perspectiveLayout,
-					component, action, this.layout);
+					component, action);
 
 		}
 		this.log("DONE EXECUTE REPLACE:::" + component.getContext().getName());
@@ -104,13 +99,14 @@ public class FXPerspectiveHandler
 	 * start component replace thread, be aware that all actions are in
 	 * components message box!
 	 * 
-	 * @param layout
-	 * @param component
+	 * @param perspectiveLayout The parent perspective layout
+	 * @param component The component to execute
+     * @param action The current action
 	 */
 	private void executeComponentReplaceThread(
 			final IPerspectiveLayout<? extends Node, Node> perspectiveLayout,
 			final ISubComponent<EventHandler<Event>, Event, Object> component,
-			final IAction<Event, Object> action, final FXComponentLayout layout) {
+			final IAction<Event, Object> action) {
 		if (AStatelessCallbackComponent.class.isAssignableFrom(component.getClass())) {
 			this.log("RUN STATELESS COMPONENTS:::" + component.getContext().getName());
 			this.runStatelessCallbackComponent(
@@ -120,12 +116,12 @@ public class FXPerspectiveHandler
 		this.putMessageToQueue(component, action);
 		if (AFXComponent.class.isAssignableFrom(component.getClass())) {
 			this.log("CREATE NEW THREAD:::" + component.getContext().getName());
-			this.runFXComponent(perspectiveLayout, component, layout);
+			this.runFXComponent(perspectiveLayout, component);
 			return;
 		} 		
 		if (ASubComponent.class.isAssignableFrom(component.getClass())) {
 			this.log("CREATE NEW THREAD:::" + component.getContext().getName());
-			this.runStateComponent(action, component);
+			this.runStateComponent(component);
         }
 		
 
@@ -151,26 +147,24 @@ public class FXPerspectiveHandler
 	/**
 	 * Run component in background thread.
 	 * 
-	 * @param layout
+	 * @param perspectiveLayout
 	 * @param component
 	 */
 	private void runFXComponent(
 			final IPerspectiveLayout<? extends Node, Node> perspectiveLayout,
-			final ISubComponent<EventHandler<Event>, Event, Object> component,
-			final FXComponentLayout layout) {
+			final ISubComponent<EventHandler<Event>, Event, Object> component)
+			 {
 		this.executor.execute(new FXComponentReplaceWorker(perspectiveLayout
 				.getTargetLayoutComponents(), this.componentDelegateQueue,
-				((AFXComponent) component), layout));
+				((AFXComponent) component)));
 	}
 
 	/**
 	 * Run background components thread.
-	 * 
-	 * @param action
+	 *
 	 * @param component
 	 */
 	private void runStateComponent(
-			final IAction<Event, Object> action,
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
 		this.executor.execute(new StateComponentRunWorker(
 				this.componentDelegateQueue, component));
@@ -188,7 +182,7 @@ public class FXPerspectiveHandler
 			this.log("COMPONENT EXECUTE INIT:::" + component.getContext().getName());
 			this.executor.execute(new FXComponentInitWorker(
                     this.perspectiveLayout.getTargetLayoutComponents(),
-                    ((AFXComponent) component), action, this.layout));
+                    ((AFXComponent) component), action));
 			return;
 		}// if END
 
@@ -202,7 +196,7 @@ public class FXPerspectiveHandler
             this.log("BACKGROUND COMPONENT EXECUTE INIT:::"
                     + component.getContext().getName());
             this.putMessageToQueue(component, action);
-            this.runStateComponent(action,component);
+            this.runStateComponent(component);
             return;
         }// else if END
 

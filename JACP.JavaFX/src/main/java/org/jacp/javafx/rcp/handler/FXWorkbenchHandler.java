@@ -135,8 +135,8 @@ public class FXWorkbenchHandler implements
 
     /**
      * add all active subcomponents to current perspective
-     * @param perspective
-     * @param layout
+     * @param perspective, The perspective where to reassign
+     * @param layout, The perspective layout
      */
     private void reassignSubcomponents(final IPerspective<EventHandler<Event>, Event, Object> perspective,
                                        final IPerspectiveLayout<? extends Node, Node> layout) {
@@ -156,8 +156,8 @@ public class FXWorkbenchHandler implements
     /**
      * find valid target and add type specific new ui component
      *
-     * @param component
-     * @param layout
+     * @param component, The ui component to add
+     * @param layout, The perspective layout
      */
     private void addComponentByType(final IUIComponent<Node, EventHandler<Event>, Event, Object> component,
                                     final IPerspectiveLayout<? extends Node, Node> layout) {
@@ -185,8 +185,9 @@ public class FXWorkbenchHandler implements
     /**
      * handle reassignment of components in perspective ui
      *
-     * @param oldComp
-     * @param newComp
+     * @param perspective, The current perspective
+     * @param oldComp, The old component Node
+     * @param newComp, The new component Node
      */
     private void reassignChild(final IPerspective<EventHandler<Event>, Event, Object> perspective, final Node oldComp, final Node newComp) {
         final ObservableList<Node> children = this.root.getChildren();
@@ -209,10 +210,10 @@ public class FXWorkbenchHandler implements
     }
 
     /**
-     * returns the previous perspective
+     * returns the previous visible perspective
      *
-     * @param perspective
-     * @return
+     * @param perspective, The current perspective
+     * @return Returns the previous visible perspective
      */
     private IPerspective<EventHandler<Event>, Event, Object> getPreviousPerspective(final IPerspective<EventHandler<Event>, Event, Object> perspective) {
         final String previousId = PerspectiveRegistry.getAndSetCurrentVisiblePerspective(perspective.getContext().getId());
@@ -223,7 +224,7 @@ public class FXWorkbenchHandler implements
     /**
      * add perspective UI to workbench root component
      *
-     * @param perspectiveLayout
+     * @param perspectiveLayout, The perspective layout
      */
     private void initPerspectiveUI(final IPerspectiveLayout<? extends Node, Node> perspectiveLayout) {
         this.log("3.4.6: perspective init SINGLE_PANE");
@@ -242,18 +243,19 @@ public class FXWorkbenchHandler implements
     private void handlePerspectiveInitMethod(final IAction<Event, Object> action,
                                              final IPerspective<EventHandler<Event>, Event, Object> perspective) {
         if (perspective instanceof IPerspectiveView) {
-            final FXComponentLayout layout = new FXComponentLayout(this.getWorkbenchLayout());
+            final JACPContextImpl context = JACPContextImpl.class.cast(perspective.getContext());
+            context.setFXComponentLayout(new FXComponentLayout(this.getWorkbenchLayout()));
             final IPerspectiveView<Node, EventHandler<Event>, Event, Object> perspectiveView = ((IPerspectiveView<Node, EventHandler<Event>, Event, Object>) perspective);
 
             if (perspectiveView.getType().equals(UIType.DECLARATIVE)) {
-                handleDeclarativePerspective(perspective, layout, perspectiveView);
+                handleDeclarativePerspective(perspective, context.getComponentLayout(), perspectiveView);
             } else {
-                handleDefaultPerspective(perspective, layout);
+                handleDefaultPerspective(perspective, context.getComponentLayout());
             }
 
             final IPerspectiveLayout<Node, Node> perspectiveLayout = (IPerspectiveLayout<Node, Node>) perspectiveView
                     .getIPerspectiveLayout();
-            perspective.postInit(new FXPerspectiveHandler(this.launcher, layout, perspectiveLayout, perspective
+            perspective.postInit(new FXPerspectiveHandler(this.launcher, perspectiveLayout, perspective
                     .getComponentDelegateQueue()));
         } else {
             // TODO handle non UI Perspectives (not present 10.04.2012)
@@ -317,7 +319,7 @@ public class FXWorkbenchHandler implements
     /**
      * get perspectives ui root container
      *
-     * @param layout
+     * @param layout, The perspective layout
      * @return the root Node
      */
     private Node getLayoutComponentFromPerspectiveLayout(final IPerspectiveLayout<? extends Node, Node> layout) {
@@ -327,7 +329,7 @@ public class FXWorkbenchHandler implements
     /**
      * set all child components to invisible
      *
-     * @param children
+     * @param children, The list of children which should be set invisible
      */
     private void hideChildren(final ObservableList<Node> children) {
         children.forEach(c -> {
@@ -361,7 +363,4 @@ public class FXWorkbenchHandler implements
         return (FXWorkbenchLayout) this.workbenchLayout;
     }
 
-    public final List<IPerspective<EventHandler<Event>, Event, Object>> getPerspectives() {
-        return this.perspectives;
-    }
 }

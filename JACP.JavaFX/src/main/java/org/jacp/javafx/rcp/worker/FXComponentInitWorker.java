@@ -24,7 +24,6 @@ package org.jacp.javafx.rcp.worker;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.lifecycle.PostConstruct;
@@ -36,12 +35,10 @@ import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
 import org.jacp.javafx.rcp.util.FXUtil;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.security.InvalidParameterException;
 import java.util.Map;
-import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
 
@@ -54,7 +51,6 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 
 	private final Map<String, Node> targetComponents;
 	private final AFXComponent component;
-	private final FXComponentLayout layout;
 	private final IAction<Event, Object> action;
 
 	/**
@@ -68,13 +64,11 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	 *            ; the init action
 	 */
 	public FXComponentInitWorker(final Map<String, Node> targetComponents,
-			final AFXComponent component, final IAction<Event, Object> action,
-			final FXComponentLayout layout) {
+			final AFXComponent component, final IAction<Event, Object> action) {
 		super(component.getContext().getName());
 		this.targetComponents = targetComponents;
 		this.component = component;
 		this.action = action;
-		this.layout = layout;
 	}
 
 	/**
@@ -86,11 +80,12 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	 */
 	private void runPreInitMethods() throws InterruptedException {
 		this.invokeOnFXThreadAndWait(()->{
+                final FXComponentLayout layout = JACPContextImpl.class.cast(component.getContext()).getComponentLayout();
 				if (component.getType().equals(UIType.DECLARATIVE)) {
 					final URL url = getClass().getResource(
 							component.getViewLocation());
 					initLocalization(url, component);
-                    component.setRoot(FXUtil.loadFXMLandSetController(component,component.getContext().getResourceBundle(), url));
+                    component.setRoot(FXUtil.loadFXMLandSetController(component, component.getContext().getResourceBundle(), url));
                     performContextInjection(component);
 					runComponentOnStartupSequence(component, layout,
 							component.getDocumentURL(),

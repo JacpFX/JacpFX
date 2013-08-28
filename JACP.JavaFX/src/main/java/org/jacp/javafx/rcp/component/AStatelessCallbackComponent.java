@@ -28,7 +28,6 @@ import org.jacp.api.component.IComponentHandle;
 import org.jacp.api.component.IStatelessCallabackComponent;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
-import org.jacp.javafx.rcp.util.FXUtil;
 import org.jacp.javafx.rcp.util.HandlerThreadFactory;
 import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
 
