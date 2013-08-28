@@ -90,7 +90,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 					final URL url = getClass().getResource(
 							component.getViewLocation());
 					initLocalization(url, component);
-                    component.setRoot(loadFXMLandSetController(component, url));
+                    component.setRoot(FXUtil.loadFXMLandSetController(component,component.getContext().getResourceBundle(), url));
                     performContextInjection(component);
 					runComponentOnStartupSequence(component, layout,
 							component.getDocumentURL(),
@@ -175,31 +175,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 		FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, component.getComponentHandle(), param);
 	}
 
-	/**
-	 * Loads the FXML document provided by viewLocation-
-	 * 
-	 * @param fxmlComponent
-	 *            a FXML aware component
-	 * @return The components root Node.
-	 */
-	private Node loadFXMLandSetController(final AFXComponent fxmlComponent,
-			final URL url) {
-		final FXMLLoader fxmlLoader = new FXMLLoader();
-		if (fxmlComponent.getContext().getResourceBundle() != null) {
-			fxmlLoader.setResources(fxmlComponent.getContext().getResourceBundle());
-		}
-		fxmlLoader.setLocation(url);
-		fxmlLoader.setController(fxmlComponent.getComponentHandle());
-		try {
-			return (Node) fxmlLoader.load();
-		} catch (IOException e) {
-			throw new MissingResourceException(
-					"fxml file not found --  place in resource folder and reference like this: viewLocation = \"/myUIFile.fxml\"",
-					fxmlComponent.getViewLocation(), "");
-		}
-	}
 
-	
 
 	/**
 	 * Handles "component add" in EDT must be called outside EDT.

@@ -258,7 +258,6 @@ public class FXUtil {
      * @param url    the fxml url
      * @return The components root Node.
      */
-    // TODO merge with loadFXMLandSetController in FXComponentInit
     public static <T> Node loadFXMLandSetController(final T bean,
                                                     final ResourceBundle bundle, final URL url) {
         final FXMLLoader fxmlLoader = new FXMLLoader();
