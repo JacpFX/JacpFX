@@ -32,7 +32,7 @@ public class JACPContextImpl implements JACPContext {
     private String name;
     private volatile String returnTarget;
     private volatile String targetLayout;
-    private volatile String executionTarget;
+    private volatile String executionTarget="";
     private final static CustomSecurityManager customSecurityManager =
             new CustomSecurityManager();
     private FXComponentLayout layout;
@@ -195,6 +195,10 @@ public class JACPContextImpl implements JACPContext {
      */
     @Override
     public void setExecutionTarget(String id) {
+        if(id==null){
+            this.executionTarget ="";
+            return;
+        }
         this.executionTarget = id;
     }
 

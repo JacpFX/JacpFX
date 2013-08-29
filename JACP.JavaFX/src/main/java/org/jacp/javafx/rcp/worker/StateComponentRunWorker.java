@@ -63,7 +63,6 @@ public class StateComponentRunWorker
 							.getNextIncomingMessage();
                     final JACPContextImpl context = JACPContextImpl.class.cast(this.component.getContext());
                     context.setReturnTarget(myAction.getSourceId());
-                      // TODO move execution target to Context!
                     final String currentExecutionTarget = context.getExecutionTarget();
 					final Object value = this.component.getComponentHandle().handle(myAction);
 					final String targetId = context

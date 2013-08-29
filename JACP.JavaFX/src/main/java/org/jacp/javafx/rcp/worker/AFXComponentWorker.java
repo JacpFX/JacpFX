@@ -160,41 +160,6 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 
 
     /**
-     * currentTarget.length < 2 Happens when component changed target from one
-     * perspective to an other
-     *
-     * @param currentTaget
-     * @param futureTarget
-     * @return
-     */
-    String getValidTargetId(final String currentTaget,
-                            final String futureTarget) {
-        return currentTaget.length() < 2 ? FXUtil
-                .getTargetComponentId(futureTarget) : futureTarget;
-    }
-
-    /**
-     * Handle component when target has changed
-     *
-     * @param component
-     * @param targetComponents
-     */
-    void handleTargetChange(
-            final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
-            final IUIComponent<Node, EventHandler<Event>, Event, Object> component,
-            final Map<String, Node> targetComponents, final String target) {
-        final Node validContainer = this.getValidContainerById(
-                targetComponents, target);
-        if (validContainer != null) {
-            this.handleLayoutTargetChange(component,
-                    validContainer);
-        } else {
-            // handle target outside current perspective
-            this.changeComponentTarget(delegateQueue, component);
-        }
-    }
-
-    /**
      * Handle target change inside perspective.
      *
      * @param component
@@ -398,10 +363,6 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
         } finally {
             lock.unlock();
         }
-    }
-
-    public String getComponentName() {
-        return componentName;
     }
 
 }

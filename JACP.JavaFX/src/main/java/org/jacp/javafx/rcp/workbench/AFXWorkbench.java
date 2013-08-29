@@ -387,7 +387,7 @@ public abstract class AFXWorkbench
             // OSX will always be DECORATED due to fullscreen option!
             stage.initStyle(StageStyle.DECORATED);
         } else {
-            stage.initStyle((StageStyle) this.getWorkbenchLayout().getStyle());
+            stage.initStyle(this.getWorkbenchLayout().getStyle());
         }
 
         this.initBaseLayout();

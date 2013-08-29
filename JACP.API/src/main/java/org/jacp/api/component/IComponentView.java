@@ -56,4 +56,5 @@ public interface IComponentView<C, L, A, M>  extends IComponentHandle<C, L, A, M
 	 */
 	C postHandle(final C node, final IAction<A, M> action) throws Exception;
 
+
 }

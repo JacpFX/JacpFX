@@ -197,7 +197,6 @@ public class FXPerspectiveHandler
                     + component.getContext().getName());
             this.putMessageToQueue(component, action);
             this.runStateComponent(component);
-            return;
         }// else if END
 
 	}

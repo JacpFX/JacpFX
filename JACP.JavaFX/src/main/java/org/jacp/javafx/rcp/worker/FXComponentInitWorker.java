@@ -85,7 +85,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 					final URL url = getClass().getResource(
 							component.getViewLocation());
 					initLocalization(url, component);
-                    component.setRoot(FXUtil.loadFXMLandSetController(component, component.getContext().getResourceBundle(), url));
+                    component.setRoot(FXUtil.loadFXMLandSetController(component.getComponentHandle(), component.getContext().getResourceBundle(), url));
                     performContextInjection(component);
 					runComponentOnStartupSequence(component, layout,
 							component.getDocumentURL(),
@@ -126,8 +126,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 				this.log("3.4.4.2.2: subcomponent handle init get valid container: "
 						+ name);
                 final String targetLayout = JACPContextImpl.class.cast(this.component.getContext()).getTargetLayout();
-				// TODO implement execution environment
-                final Node validContainer = this.getValidContainerById(
+                 final Node validContainer = this.getValidContainerById(
 						this.targetComponents,
                         targetLayout);
                 if(validContainer==null) throw new InvalidParameterException("no targetLayout for layoutID: "+targetLayout+" found");

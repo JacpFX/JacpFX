@@ -202,7 +202,7 @@ public class FXUtil {
         final List<Object> resultList = Arrays.asList(types).
                 parallelStream().map(t -> findByClass(t, value)).
                 collect(Collectors.toList());
-        return resultList.isEmpty()==false?resultList.toArray(new Object[resultList.size()]):new Object[types.length];
+        return !resultList.isEmpty() ?resultList.toArray(new Object[resultList.size()]):new Object[types.length];
     }
 
     private static Object findByClass(Class<?> key, Object[] values) {

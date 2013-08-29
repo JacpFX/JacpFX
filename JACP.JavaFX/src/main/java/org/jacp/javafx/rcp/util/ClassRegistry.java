@@ -42,7 +42,7 @@ public class ClassRegistry {
      */
     public static Class getComponentClassById(final String id) {
         final Optional<Class> result = allClasses.parallelStream()
-                .filter(c -> checkForAnntotation(c))
+                .filter(ClassRegistry::checkForAnntotation)
                 .filter(component -> checkIdMatch(component,id))
                 .findFirst();
 
@@ -57,7 +57,7 @@ public class ClassRegistry {
      */
     public static Class getPerspectiveClassById(final String id) {
         final Optional<Class> result = allClasses.parallelStream()
-                .filter(c -> checkForPerspectiveAnntotation(c))
+                .filter(ClassRegistry::checkForPerspectiveAnntotation)
                 .filter(component -> checkPerspectiveIdMatch(component,id))
                 .findFirst();
 

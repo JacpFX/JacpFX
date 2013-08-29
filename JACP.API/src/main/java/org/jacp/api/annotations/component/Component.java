@@ -28,7 +28,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * This annotation defines the meta definition of an JACP UI component.
+ * This annotation defines the meta definition of an JACP component.
  * 
  * @author Andy Moncsek
  * 
@@ -56,13 +56,6 @@ public @interface Component {
      * @return True
      */
     boolean active() default true;
-
-    /**
-     * The execution target at start time.
-     * 
-     * @return The default execution target defined by perspective
-     */
-    String targetLayout() default "";
 
     /**
      * Represents the location of your resource bundle file.

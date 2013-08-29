@@ -31,8 +31,9 @@ import javafx.scene.Node;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IDelegateDTO;
 import org.jacp.api.annotations.component.Component;
-import org.jacp.api.annotations.component.Declarative;
+import org.jacp.api.annotations.component.DeclarativeView;
 import org.jacp.api.annotations.component.Stateless;
+import org.jacp.api.annotations.component.View;
 import org.jacp.api.annotations.perspective.Perspective;
 import org.jacp.api.component.*;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
@@ -213,31 +214,37 @@ public abstract class AFXPerspective extends AComponent implements
     private void handleMetaAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component) {
         final IComponentHandle<?,EventHandler<Event>,Event,Object> handler = component.getComponentHandle();
         if(handler==null)return;
-
-        final Declarative declarativeComponent = handler.getClass()
-                .getAnnotation(Declarative.class);
-        if (declarativeComponent != null && FXComponent.class.isAssignableFrom(handler.getClass())) {
-            handleDeclarativeComponentAnnotation(component, declarativeComponent);
-        }
-
         final Component componentAnnotation = handler.getClass().getAnnotation(Component.class);
-        if(componentAnnotation==null)return;
-
+        if(componentAnnotation==null)throw new IllegalArgumentException("no @Component annotation found.");
+        final DeclarativeView declarativeComponent = handler.getClass()
+                .getAnnotation(DeclarativeView.class);
+        if (declarativeComponent != null && FXComponent.class.isAssignableFrom(handler.getClass())) {
+            handleDeclarativeComponentAnnotation(component,componentAnnotation, declarativeComponent);
+            return;
+        }
         if(CallbackComponent.class.isAssignableFrom(handler.getClass())){
             handleCallbackAnnotation(component, componentAnnotation);
             this.log("register CallbackComponent with annotations : " + componentAnnotation.id());
             return;
         }
-
-        if (FXComponent.class.isAssignableFrom(handler.getClass())) {
-            handleComponentAnnotation(component, componentAnnotation);
+        final View viewComponent = handler.getClass()
+                .getAnnotation(View.class);
+        if (viewComponent !=null && FXComponent.class.isAssignableFrom(handler.getClass())) {
+            handleComponentAnnotation(component,viewComponent, componentAnnotation);
             this.log("register component with annotations : " + componentAnnotation.id());
             return;
         }
 
+        if(FXComponent.class.isAssignableFrom(handler.getClass()) && declarativeComponent==null && viewComponent==null) {
+            throw new IllegalArgumentException("FXComponents must declare either @View or @DeclarativeView! no valid annotation found for component:"+componentAnnotation.id());
+        }
+
     }
 
-    private void handleDeclarativeComponentAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component, final Declarative declarativeComponent) {
+    private void handleDeclarativeComponentAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component, final Component componentAnnotation, final DeclarativeView declarativeComponent) {
+        setInitialLayoutTarget(component, declarativeComponent.initialTargetLayoutId());
+        handleBaseAttributes(component, componentAnnotation.id(), componentAnnotation.active(),
+                componentAnnotation.name());
         AFXComponent.class.cast(component).setViewLocation(declarativeComponent.viewLocation());
     }
 
@@ -246,37 +253,38 @@ public abstract class AFXPerspective extends AComponent implements
                 callbackAnnotation.name());
     }
 
-    private void handleComponentAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component, final Component componentAnnotation) {
+    private void handleComponentAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component,final View viewComponent,  final Component componentAnnotation) {
         handleBaseAttributes(component, componentAnnotation.id(), componentAnnotation.active(),
                 componentAnnotation.name());
-        handleComponentAnnotation(componentAnnotation, (AFXComponent) component);
+        handleComponentAnnotation(viewComponent,componentAnnotation, component);
     }
 
     /**
      * set component members
      *
-     * @param componentAnnotation
-     * @param component
+     * @param  viewComponent, the @View annotation
+     * @param componentAnnotation, the @Component annotation
+     * @param component, the component
      */
-    private void handleComponentAnnotation(final Component componentAnnotation, final AFXComponent component) {
-        setExecutionTarget(component, componentAnnotation.targetLayout());
+    private void handleComponentAnnotation(final View viewComponent, final Component componentAnnotation, final ISubComponent<EventHandler<Event>, Event, Object> component) {
+        setInitialLayoutTarget(component, viewComponent.initialTargetLayoutId());
         setLocale(component, componentAnnotation.localeID());
         setRessourceBundleLocation(component, componentAnnotation.resourceBundleLocation());
         this.log("register component with annotations : " + componentAnnotation.id());
     }
 
-    private void setRessourceBundleLocation(final AFXComponent component, String bundleLocation) {
+    private void setRessourceBundleLocation(final ISubComponent<EventHandler<Event>, Event, Object> component, String bundleLocation) {
         if (component.getResourceBundleLocation() != null)
             component.setResourceBundleLocation(bundleLocation);
     }
 
-    private void setLocale(final AFXComponent component, String locale) {
+    private void setLocale(final ISubComponent<EventHandler<Event>, Event, Object> component, String locale) {
         if (component.getLocaleID() != null)
             component.setLocaleID(locale);
     }
 
 
-    private void setExecutionTarget(final AFXComponent component, String value) {
+    private void setInitialLayoutTarget(final ISubComponent<EventHandler<Event>, Event, Object> component, String value) {
         final String targetLayout = JACPContextImpl.class.cast(component.getContext()).getTargetLayout();
         if (targetLayout==null)
             component.getContext().setTargetLayout(value);

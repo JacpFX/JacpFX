@@ -78,25 +78,15 @@ public class JACPOptionButton extends Button {
         CSSUtil.addCSSClass("top-arrow", arrow);
         CSSUtil.setBackgroundColor(options, "#333333");
         this.hoverMenu.getChildren().setAll(arrow, options);
-        this.hoverMenu.widthProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            //  ----------
-            //  |        |
-            //  ----------
-            //      A
-            // ------------
-            // |           |
+        this.hoverMenu.widthProperty().addListener((observableValue, number, number2) -> {
+            // get padding to center hovermenu
+            padding.set((getWidth() - hoverMenu.getWidth()) / 2);
 
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number number2) {
-                // get padding to center hovermenu
-                padding.set((getWidth() - hoverMenu.getWidth()) / 2);
-
-            }
         });
     }
 
     private void initAction() {
-        this.setOnAction((EventHandler<ActionEvent>)(actionEvent)-> {
+        this.setOnAction((actionEvent)-> {
                 // get location of the optionbutton
                 Point2D translate = localToScene(getBoundsInLocal().getMinX(), getBoundsInLocal().getMaxY());
                 buttonXLocation.set(translate.getX());
@@ -123,12 +113,9 @@ public class JACPOptionButton extends Button {
     public void addOption(Button option) {
         option.setMaxWidth(Integer.MAX_VALUE);
         options.getChildren().add(option);
-        option.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                // hide option when button is pressed
-                hideOptions();
-            }
+        option.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            // hide option when button is pressed
+            hideOptions();
         });
         VBox.setMargin(option, new Insets(5,5,5,5));
     }

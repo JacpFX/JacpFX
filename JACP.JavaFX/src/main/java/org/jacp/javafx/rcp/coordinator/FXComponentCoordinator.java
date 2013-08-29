@@ -72,7 +72,7 @@ public class FXComponentCoordinator extends AFXCoordinator implements
         final String targetPerspectiveId = component.getParentId();
         if (this.parentId.equals(targetPerspectiveId)) {
             this.log(" //1.1.1// component HIT: " + action.getTargetId());
-            this.handleComponentHit(targetId, action, component);
+            this.handleComponentHit(action, component);
         } else {
             // search target component in an other perspective
             this.delegateMessageToCorrectPerspective(targetId, action,
@@ -124,18 +124,16 @@ public class FXComponentCoordinator extends AFXCoordinator implements
         final ISubComponent<EventHandler<Event>, Event, Object> component = getTargetComponent(targetId, action);
         this.log(" //1.1// component message to: " + action.getTargetId());
         this.log(" //1.1.1// component HIT: " + action.getTargetId());
-        this.handleComponentHit(targetId, action, component);
+        this.handleComponentHit(action, component);
     }
 
     /**
      * handle method if component was found in local context
      *
-     * @param targetId
      * @param action
      * @param component
      */
-    private void handleComponentHit(final String targetId,
-                                    final IAction<Event, Object> action,
+    private void handleComponentHit(final IAction<Event, Object> action,
                                     final ISubComponent<EventHandler<Event>, Event, Object> component) {
         if (component.getContext().isActive()) {
             this.log(" //1.1.1.1// component HIT handle ACTIVE: "

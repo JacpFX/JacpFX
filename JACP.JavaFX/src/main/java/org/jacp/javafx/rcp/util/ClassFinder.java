@@ -84,7 +84,7 @@ public class ClassFinder {
             }
         });
 
-        final List<Class> result = exctractClasses(packageDir, packageName, files);
+        final List<Class> result = exctractClasses(packageDir, files);
 
         return result.toArray(new Class[result.size()]);
 
@@ -92,7 +92,7 @@ public class ClassFinder {
 
     }
 
-    private List<Class> exctractClasses(final String packageDir, final String packageName, List<String> files) {
+    private List<Class> exctractClasses(final String packageDir, List<String> files) {
 
         return files.parallelStream()
                 .map(dir -> dir.substring(dir.lastIndexOf(packageDir), dir.length()))

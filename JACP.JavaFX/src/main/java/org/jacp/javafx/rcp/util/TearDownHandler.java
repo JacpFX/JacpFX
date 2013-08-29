@@ -81,7 +81,7 @@ public class TearDownHandler {
                 for (final ISubComponent<EventHandler<Event>, Event, Object> component : subcomponents) {
                     if (CallbackComponent.class.isAssignableFrom(component.getClass())) {
                         handleAsync
-                                .add((ISubComponent<EventHandler<Event>, Event, Object>) component);
+                                .add(component);
                     }
                     else {
                         // run teardown in app thread

@@ -125,7 +125,7 @@ public class JACPModalDialog extends StackPane implements IModalMessageNode {
      */
     private Timeline getHideTimeline() {
         if(hideTimeline==null){
-            hideTimeline = new Timeline(new KeyFrame(Duration.millis(250), (EventHandler<ActionEvent>)(t)-> {
+            hideTimeline = new Timeline(new KeyFrame(Duration.millis(250), (t)-> {
                 JACPModalDialog.this.setCache(false);
                 JACPModalDialog.this.setVisible(false);
             }, new KeyValue(this.opacityProperty(), 0, Interpolator.EASE_BOTH)));
@@ -139,7 +139,7 @@ public class JACPModalDialog extends StackPane implements IModalMessageNode {
      */
     private Timeline getShowTimeline() {
         if(showTimeline==null) {
-            showTimeline = new Timeline(new KeyFrame(Duration.millis(250), (EventHandler<ActionEvent>)(t)-> JACPModalDialog.this.setCache(false), new KeyValue(this.opacityProperty(), 1, Interpolator.EASE_BOTH)));
+            showTimeline = new Timeline(new KeyFrame(Duration.millis(250), (t)-> JACPModalDialog.this.setCache(false), new KeyValue(this.opacityProperty(), 1, Interpolator.EASE_BOTH)));
         }
         return showTimeline;
     }

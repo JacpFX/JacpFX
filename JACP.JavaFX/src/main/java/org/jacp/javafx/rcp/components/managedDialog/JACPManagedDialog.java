@@ -126,7 +126,7 @@ public class JACPManagedDialog {
         if (bean instanceof Node)
             return new ManagedDialogHandler<>(bean, (Node) bean, id);
 
-        return putDialogToCache(id, scope, createFXMLDialog(dialogAnnotation, id, scope, bean, bundle));
+        return putDialogToCache(id, scope, createFXMLDialog(dialogAnnotation, id, bean, bundle));
     }
     /**
      * Creates a managed dialog.
@@ -161,16 +161,15 @@ public class JACPManagedDialog {
     /**
      * create the root node from FXML
      *
+     *
      * @param dialogAnnotation
      * @param id
-     * @param scope
      * @param bean
      * @param bundle
-     * @param <T>
      * @return
      */
     private <T> ManagedDialogHandler<T> createFXMLDialog(
-            final Dialog dialogAnnotation, final String id, final Scope scope,
+            final Dialog dialogAnnotation, final String id,
             final T bean, final ResourceBundle bundle) {
         final String viewLocation = dialogAnnotation.viewLocation();
         if (viewLocation == null)
@@ -212,9 +211,7 @@ public class JACPManagedDialog {
                         handleParentComponentContextAnnotation(bean, field, resource,
                                 callerClassName);
                     }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                } catch (ClassNotFoundException e) {
+                } catch (IllegalAccessException | ClassNotFoundException e) {
                     e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                 }
             }

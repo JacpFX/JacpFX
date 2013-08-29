@@ -76,7 +76,6 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
 
     @Override
     protected AFXComponent call() throws Exception {
-        // TODO handle locks to components write methods
         try {
             this.component.lock();
             while (this.component.hasIncomingMessage()) {
@@ -159,18 +158,6 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
 
     }
 
-    private boolean checkExecutionTargetCondition(final String newExecutionTarget, final String currentExecutionTarget) {
-        if (currentExecutionTarget == null && newExecutionTarget == null) {
-            return false;
-        } else if (currentExecutionTarget == null) {
-            return true;
-        } else if (newExecutionTarget == null) {
-            return true;
-        }
-
-
-        return !currentExecutionTarget.equalsIgnoreCase(newExecutionTarget);
-    }
 
     /**
      * run in thread
@@ -189,10 +176,8 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
             // check again if component was set to inactive (in postHandle), if
             // so remove
             if (component.getContext().isActive()) {
-                // TODO check if execution target has changed before update targetLayout
                 final String newExecutionTarget = JACPContextImpl.class.cast(this.component.getContext()).getExecutionTarget();
-                if (checkExecutionTargetCondition(newExecutionTarget, currentExecutionTarget)) {
-                    // TODO remove from view and move to different perspective
+                if (!currentExecutionTarget.equalsIgnoreCase(newExecutionTarget)) {
                     this.removeComponentValue(previousContainer);
                     this.handlePerspectiveChange(this.componentDelegateQueue,
                             component, layout);
