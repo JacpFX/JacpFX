@@ -55,7 +55,7 @@ public class JACPContextImpl implements JACPContext {
     /**
      * {@inheritDoc}
      */
-    @Override
+    @Override        // TODO check access, workbench is not allowed to use this method
     public final IActionListener<EventHandler<Event>, Event, Object> getActionListener(
             final Object message) {
         return new FXActionListener(new FXAction(this.id, message),

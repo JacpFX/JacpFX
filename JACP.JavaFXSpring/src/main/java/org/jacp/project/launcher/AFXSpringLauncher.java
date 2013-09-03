@@ -1,11 +1,16 @@
 package org.jacp.project.launcher;
 
+import org.jacp.api.annotations.workbench.Workbench;
+import org.jacp.api.dialog.Scope;
 import org.jacp.api.launcher.Launcher;
 import org.jacp.api.workbench.IWorkbench;
 import org.jacp.javafx.rcp.util.ClassFinder;
 import org.jacp.javafx.rcp.util.ClassRegistry;
 import org.jacp.javafx.rcp.util.ComponentRegistry;
+import org.jacp.javafx.rcp.util.FXUtil;
 import org.jacp.javafx.rcp.workbench.AFXWorkbench;
+import org.jacp.javafx.rcp.workbench.EmbeddedFXWorkbench;
+import org.jacp.javafx.rcp.workbench.FXWorkbench;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javafx.application.Application;
@@ -14,6 +19,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 
+import java.security.InvalidParameterException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,16 +53,29 @@ public abstract class AFXSpringLauncher extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
         scanPackegesAndInitRegestry();
-        Launcher<ClassPathXmlApplicationContext> launcher = new SpringLauncher(this.springXML);
-		final IWorkbench<Node, EventHandler<Event>, Event, Object> workbench = (IWorkbench<Node, EventHandler<Event>, Event, Object>) launcher
-				.getContext().getBean(
-						this.workbenchName != null ? this.workbenchName
-								: "workbench");
-		workbench.init(launcher);
-		((AFXWorkbench) workbench).start(stage);
-		postInit(stage);
+        final Launcher<ClassPathXmlApplicationContext> launcher = new SpringLauncher(this.springXML);
+        final Class<? extends FXWorkbench> workbenchHandler = getWorkbechClass();
+        if(workbenchHandler==null)throw new InvalidParameterException("no FXWorkbench class defined");
+        if(workbenchHandler.isAnnotationPresent(Workbench.class)) {
+            final EmbeddedFXWorkbench workbench = createWorkbench(workbenchHandler,launcher);
+            workbench.init(launcher);
+            workbench.start(stage);
+            postInit(stage);
+        } else {
+            throw new InvalidParameterException("no @Workbench annotation found on class");
+        }
+
 
 	}
+
+    private EmbeddedFXWorkbench createWorkbench(final Class<? extends FXWorkbench> workbenchHandler,final Launcher<ClassPathXmlApplicationContext> launcher) {
+        final Workbench annotation = workbenchHandler.getAnnotation(Workbench.class);
+        final String id = annotation.id();
+        final FXWorkbench handler = launcher.registerAndGetBean(workbenchHandler, id, Scope.SINGLETON);
+        return  new EmbeddedFXWorkbench(handler);
+    }
+
+    protected abstract Class<? extends FXWorkbench> getWorkbechClass();
 
     private void scanPackegesAndInitRegestry() {
        final String[] packages = getBasePackages();

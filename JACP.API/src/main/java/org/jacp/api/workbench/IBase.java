@@ -22,7 +22,10 @@
  ************************************************************************/
 package org.jacp.api.workbench;
 
+import org.jacp.api.component.IComponentHandle;
 import org.jacp.api.component.IPerspective;
+import org.jacp.api.component.Injectable;
+import org.jacp.api.context.Context;
 import org.jacp.api.launcher.Launcher;
 
 import java.util.List;
@@ -64,5 +67,24 @@ public interface IBase<L, A, M> {
 	 *            for di container
 	 */
 	void init(final Launcher<?> launcher);
+
+    /**
+     * Returns the components context object.
+     * @return the context object.
+     */
+    Context<L, A, M> getContext();
+
+    /**
+     * Returns the component handle class, this is the users implementation of the component.
+     * @return IComponentHandle, the component handle.
+     */
+    <X extends Injectable> X  getComponentHandle();
+
+    /**
+     * Set the component handle class. This is the users implementation of the component.
+     * @param handle
+     * @param <X>
+     */
+    <X extends Injectable>  void setComponentHandle(final X  handle);
 
 }

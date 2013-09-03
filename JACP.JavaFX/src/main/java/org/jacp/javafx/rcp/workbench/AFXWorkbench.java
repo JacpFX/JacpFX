@@ -42,6 +42,7 @@ import org.jacp.api.component.IPerspective;
 import org.jacp.api.component.IRootComponent;
 import org.jacp.api.component.Injectable;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
+import org.jacp.api.context.Context;
 import org.jacp.api.coordinator.IComponentDelegator;
 import org.jacp.api.coordinator.IMessageDelegator;
 import org.jacp.api.coordinator.IPerspectiveCoordinator;
@@ -51,6 +52,7 @@ import org.jacp.api.launcher.Launcher;
 import org.jacp.api.util.OS;
 import org.jacp.api.util.ToolbarPosition;
 import org.jacp.api.util.UIType;
+import org.jacp.api.workbench.IBase;
 import org.jacp.api.workbench.IWorkbench;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.action.FXActionListener;
@@ -59,6 +61,7 @@ import org.jacp.javafx.rcp.componentLayout.FXWorkbenchLayout;
 import org.jacp.javafx.rcp.components.managedDialog.JACPManagedDialog;
 import org.jacp.javafx.rcp.components.modalDialog.JACPModalDialog;
 import org.jacp.javafx.rcp.components.toolBar.JACPToolBar;
+import org.jacp.javafx.rcp.context.JACPContext;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
 import org.jacp.javafx.rcp.coordinator.FXComponentDelegator;
 import org.jacp.javafx.rcp.coordinator.FXMessageDelegator;
@@ -85,7 +88,7 @@ import java.util.stream.Collectors;
  */
 public abstract class AFXWorkbench
         implements
-        IWorkbench<Node, EventHandler<Event>, Event, Object>,
+        IBase<EventHandler<Event>, Event, Object>,
         IRootComponent<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> {
 
     private List<IPerspective<EventHandler<Event>, Event, Object>> perspectives;
@@ -104,9 +107,11 @@ public abstract class AFXWorkbench
     private GridPane base;
     private Pane glassPane;
     private JACPModalDialog dimmer;
+    private JACPContext context;
+    private FXWorkbench handle;
 
     /**
-     * JavaFX2 specific start sequence
+     * JavaFX specific start sequence
      *
      * @param stage
      * @throws Exception
@@ -121,17 +126,17 @@ public abstract class AFXWorkbench
         });
         this.log("1: init workbench");
         // init user defined workspace
-        this.handleInitialLayout(new FXAction("TODO", "init"),
-                this.getWorkbenchLayout());
+        getWorkbenchHandle().handleInitialLayout(new FXAction("TODO", "init"),
+                this.getWorkbenchLayout(), stage);
         this.setBasicLayout(stage);
 
-        this.postHandle(new FXComponentLayout(this.getWorkbenchLayout()
+        getWorkbenchHandle().postHandle(new FXComponentLayout(this.getWorkbenchLayout()
                 .getMenu(), this.getWorkbenchLayout().getRegisteredToolbars(),
                 this.glassPane));
 
         this.log("3: handle initialisation sequence");
-        this.perspectives = createPerspectiveInstances();
-        if(perspectives==null) return;
+        this.perspectives = WorkbenchUtil.getInstance(launcher).createPerspectiveInstances(getWorkbenchAnnotation());
+        if (perspectives == null) return;
         this.componentHandler = new FXWorkbenchHandler(this.launcher,
                 this.workbenchLayout, this.root, this.perspectives);
         this.perspectiveCoordinator.setComponentHandler(this.componentHandler);
@@ -141,42 +146,22 @@ public abstract class AFXWorkbench
     }
 
 
-    private List<IPerspective<EventHandler<Event>, Event, Object>>  createPerspectiveInstances() {
-        if(this.getClass().isAnnotationPresent(Workbench.class)){
-            final Workbench annotation = this.getClass().getAnnotation(Workbench.class);
-            final String[] ids = annotation.perspectives();
-            final List<String> componentIds = Arrays.asList(ids);
-            final List<Injectable> perspectiveHandlerList = componentIds.stream()
-                    .map(this::mapToInjectable)
-                    .collect(Collectors.toList());
-            return perspectiveHandlerList.stream().map(this::mapToPerspective).collect(Collectors.toList());
-        } else {
-            throw new InvalidParameterException("missing @Workbench annotation");
-        }
-    }
-
-    private IPerspective<EventHandler<Event>, Event, Object>  mapToPerspective(Injectable handler) {
-           return new EmbeddedFXPerspective(handler);
-    }
-
-    private Injectable mapToInjectable(final String id) {
-        final Class perspectiveClass = ClassRegistry.getPerspectiveClassById(id);
-        final Object component = launcher.registerAndGetBean(perspectiveClass, id, Scope.SINGLETON);
-        if(Injectable.class.isAssignableFrom(component.getClass())) {
-            return Injectable.class.cast(component);
-        } else {
-            throw new InvalidParameterException("Only IPerspective components are allowed");
-        }
-    }
-
     @Override
     /**
      * {@inheritDoc}
      */
-    // TODO init method also defined in perspective!!!!
     public void init(final Launcher<?> launcher) {
         this.launcher = launcher;
         JACPManagedDialog.initManagedDialog(launcher);
+        final Workbench annotation = getWorkbenchAnnotation();
+        this.context = new JACPContextImpl(annotation.id(), annotation.name(), this.perspectiveCoordinator.getMessageQueue());
+        FXUtil.performResourceInjection(this.getWorkbenchHandle(), this.context);
+    }
+
+
+    private Workbench getWorkbenchAnnotation() {
+        FXWorkbench handler = this.getWorkbenchHandle();
+        return handler.getClass().getAnnotation(Workbench.class);
     }
 
     @Override
@@ -192,16 +177,16 @@ public abstract class AFXWorkbench
                     // again?
                     this.log("3.4.2: create perspective menu");
                     if (perspective.getContext().isActive()) {
-                        final Runnable r =   ()-> AFXWorkbench.this.componentHandler.initComponent(
+                        final Runnable r = () -> AFXWorkbench.this.componentHandler.initComponent(
                                 new FXAction(perspective.getContext().getId(), perspective
                                         .getContext().getId(), "init", null), perspective);
-                        if(Platform.isFxApplicationThread()) {
-                             r.run();
+                        if (Platform.isFxApplicationThread()) {
+                            r.run();
                         } else {
                             Platform.runLater(r);
-                                    
+
                         }
-                        
+
                     }
                 });
     }
@@ -230,33 +215,6 @@ public abstract class AFXWorkbench
         });
     }
 
-    @Override
-    /**
-     * {@inheritDoc}
-     */
-    public void handleInitialLayout(final IAction<Event, Object> action,
-                                    final IWorkbenchLayout<Node> layout) {
-        this.handleInitialLayout(action, layout, this.stage);
-    }
-
-    /**
-     * JavaFX2 specific initialization method to create a workbench instance
-     *
-     * @param action, the initial event
-     * @param layout, the workbench layout
-     * @param stage, the JavaFX stage
-     */
-    public abstract void handleInitialLayout(
-            final IAction<Event, Object> action,
-            final IWorkbenchLayout<Node> layout, final Stage stage);
-
-    /**
-     * Handle menu and bar entries created in @see
-     * {@link org.jacp.javafx.rcp.workbench.AFXWorkbench#handleInitialLayout(IAction, IWorkbenchLayout, Stage)}
-     *
-     * @param layout, the component layout
-     */
-    public abstract void postHandle(final FXComponentLayout layout);
 
     @Override
     /**
@@ -268,52 +226,13 @@ public abstract class AFXWorkbench
 
         perspective.init(this.componentDelegator.getComponentDelegateQueue(),
                 this.messageDelegator.getMessageDelegateQueue(),
-                this.perspectiveCoordinator.getMessageQueue(),this.launcher);
-        this.handleMetaAnnotation(perspective);
+                this.perspectiveCoordinator.getMessageQueue(), this.launcher);
+        WorkbenchUtil.handleMetaAnnotation(perspective, this.getWorkbenchAnnotation().id());
         this.perspectiveCoordinator.addPerspective(perspective);
         this.componentDelegator.addPerspective(perspective);
         this.messageDelegator.addPerspective(perspective);
         PerspectiveRegistry.registerPerspective(perspective);
     }
-
-    /**
-     * set meta attributes defined in annotations
-     *
-     * @param perspective
-     */
-    private void handleMetaAnnotation(
-            final IPerspective<EventHandler<Event>, Event, Object> perspective) {
-        final Injectable handler = perspective.getPerspectiveHandle();
-        final Perspective perspectiveAnnotation = handler.getClass()
-                .getAnnotation(Perspective.class);
-        final JACPContextImpl context = JACPContextImpl.class.cast(perspective.getContext());
-        context.setParentId(this.getClass().getAnnotation(Workbench.class).id());
-        if (perspectiveAnnotation != null) {
-            final String id = perspectiveAnnotation.id();
-            if (id == null) throw new IllegalArgumentException("no perspective id set");
-            context.setId(id);
-            context.setActive(perspectiveAnnotation.active());
-            context.setName(perspectiveAnnotation.name());
-            this.log("register perspective with annotations : "
-                    + perspectiveAnnotation.id());
-            final String viewLocation = perspectiveAnnotation.viewLocation();
-            if (viewLocation.length() > 1 && IDeclarative.class.isAssignableFrom(perspective.getClass())){
-                IDeclarative.class.cast(perspective).setViewLocation(perspectiveAnnotation.viewLocation());
-                FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,
-                        FXUtil.IDECLARATIVECOMPONENT_TYPE, UIType.DECLARATIVE);
-            }
-
-            final String localeID = perspectiveAnnotation.localeID();
-            if (localeID.length() > 1)
-                perspective.setLocaleID(localeID);
-            final String resourceBundleLocation = perspectiveAnnotation
-                    .resourceBundleLocation();
-            if (resourceBundleLocation.length() > 1)
-                perspective.setResourceBundleLocation(resourceBundleLocation);
-
-        }
-    }
-
 
 
     @Override
@@ -330,11 +249,11 @@ public abstract class AFXWorkbench
         PerspectiveRegistry.removePerspective(perspective);
     }
 
-    @Override
+
     /**
      * {@inheritDoc}
      */
-    public final FXWorkbenchLayout getWorkbenchLayout() {
+    private FXWorkbenchLayout getWorkbenchLayout() {
         return (FXWorkbenchLayout) this.workbenchLayout;
     }
 
@@ -361,13 +280,6 @@ public abstract class AFXWorkbench
         return this.perspectives;
     }
 
-    @Override
-    public final IActionListener<EventHandler<Event>, Event, Object> getActionListener(
-            final String targetId, final Object message) {
-        return new FXActionListener(
-                new FXAction("workbench", targetId, message, null),
-                this.perspectiveCoordinator.getMessageQueue());
-    }
 
     /**
      * set basic layout manager for workspace
@@ -523,5 +435,24 @@ public abstract class AFXWorkbench
         if (this.logger.isLoggable(Level.FINE)) {
             this.logger.fine(">> " + message);
         }
+    }
+
+    @Override
+    public Context<EventHandler<Event>, Event, Object> getContext() {
+        return context;
+    }
+
+    private FXWorkbench getWorkbenchHandle() {
+        return getComponentHandle();
+    }
+
+    @Override
+    public FXWorkbench getComponentHandle() {
+        return this.handle;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public <X extends Injectable> void setComponentHandle(X handle) {
+        this.handle = (FXWorkbench) handle;
     }
 }
