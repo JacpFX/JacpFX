@@ -35,6 +35,7 @@ import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
 import org.jacp.javafx.rcp.util.FXUtil;
 
+import java.security.InvalidParameterException;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
@@ -118,7 +119,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
      * @throws InterruptedException
      */
     private void publish(final AFXComponent component,
-                         final IAction<Event, Object> myAction,
+                         final IAction<Event, Object> action,
                          final Map<String, Node> targetComponents,
                          final Node handleReturnValue,
                          final Node previousContainer, final String currentTargetLayout, final String currentExecutionTarget)
@@ -129,9 +130,11 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
             try {
                 final FXComponentLayout layout = JACPContextImpl.class.cast(component.getContext()).getComponentLayout();
                 if (component.getContext().isActive()) {
+                    executeComponentViewPostHandle(handleReturnValue, component,
+                            action);
                     FXComponentReplaceWorker.this.publishComponentValue(
-                            component, myAction, targetComponents, layout,
-                            handleReturnValue, previousContainer, currentTargetLayout, currentExecutionTarget);
+                            component, targetComponents, layout,
+                            previousContainer, currentTargetLayout, currentExecutionTarget);
                 } else {
                     // TODO merge with code from  publishComponentValue
                     // unregister component
@@ -166,12 +169,10 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
      * @param currentTargetLayout
      */
     private void publishComponentValue(final AFXComponent component,
-                                       final IAction<Event, Object> action,
                                        final Map<String, Node> targetComponents,
-                                       final FXComponentLayout layout, final Node handleReturnValue,
+                                       final FXComponentLayout layout,
                                        final Node previousContainer, final String currentTargetLayout, final String currentExecutionTarget) throws Exception {
-        executeComponentViewPostHandle(handleReturnValue, component,
-                action);
+
         if (previousContainer != null) {
             // check again if component was set to inactive (in postHandle), if
             // so remove
@@ -243,6 +244,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
                                            final String newTargetLayout, final Map<String, Node> targetComponents) {
         final Node validContainer = this.getValidContainerById(
                 targetComponents, newTargetLayout);
+        if(validContainer==null && component.getRoot()!=null) throw new InvalidParameterException("no targetLayout for layoutID: "+newTargetLayout+" found");
         if (validContainer != null) {
             this.handleLayoutTargetChange(component,
                     validContainer);

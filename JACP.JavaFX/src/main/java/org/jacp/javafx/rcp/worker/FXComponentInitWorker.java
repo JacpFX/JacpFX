@@ -125,15 +125,10 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 						this.component, this.action);
 				this.log("3.4.4.2.2: subcomponent handle init get valid container: "
 						+ name);
-                final String targetLayout = JACPContextImpl.class.cast(this.component.getContext()).getTargetLayout();
-                 final Node validContainer = this.getValidContainerById(
-						this.targetComponents,
-                        targetLayout);
-                if(validContainer==null) throw new InvalidParameterException("no targetLayout for layoutID: "+targetLayout+" found");
 				this.log("3.4.4.2.3: subcomponent handle init add component by type: "
 						+ name);
-				this.addComponent(validContainer, handleReturnValue,
-						this.component, this.action);
+				this.addComponent(handleReturnValue,
+						this.component, this.action,this.targetComponents);
 				this.log("3.4.4.2.4: subcomponent handle init END: "
 						+ name);
 			} finally {
@@ -174,16 +169,16 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	/**
 	 * Handles "component add" in EDT must be called outside EDT.
 	 * 
-	 * @param validContainer
-	 *            , a valid target where the component ui node is included
+	 * @param targetComponents
+	 *            , possible targets in perspective
 	 * @param myComponent
 	 *            , the ui component
 	 * @throws InterruptedException
 	 * @throws InvocationTargetException
 	 */
-	private void addComponent(final Node validContainer,
+	private void addComponent(
 			final Node handleReturnValue, final AFXComponent myComponent,
-			final IAction<Event, Object> myAction) throws Exception {
+			final IAction<Event, Object> myAction,final Map<String, Node> targetComponents) throws Exception {
 		invokeOnFXThreadAndWait(() -> {
             try {
                 executeComponentViewPostHandle(
@@ -191,6 +186,9 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
             } catch (Exception e) {
                 e.printStackTrace(); // TODO pass exception
             }
+            final String targetLayout = JACPContextImpl.class.cast(this.component.getContext()).getTargetLayout();
+            final Node validContainer = this.getValidContainerById(targetComponents,targetLayout);
+            if(validContainer==null && myComponent.getRoot()!=null) throw new InvalidParameterException("no targetLayout for layoutID: "+targetLayout+" found");
             if (validContainer == null || myComponent.getRoot() == null) {
                 return;
             }
