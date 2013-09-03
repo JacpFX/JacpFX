@@ -89,22 +89,31 @@ public class WorkbenchUtil {
         initContext(perspective.getContext(), parentId, id, perspectiveAnnotation.active(), perspectiveAnnotation.name());
         LOGGER.fine("register perspective with annotations : "
                 + perspectiveAnnotation.id());
+        initDeclarativePerspectiveParts(perspective,perspectiveAnnotation);
+        initLocaleAttributes(perspective,perspectiveAnnotation);
+        initResourceBundleAttributes(perspective,perspectiveAnnotation);
+    }
+
+    private static void initResourceBundleAttributes(final IPerspective<EventHandler<Event>, Event, Object> perspective,final Perspective perspectiveAnnotation) {
+        final String resourceBundleLocation = perspectiveAnnotation
+                .resourceBundleLocation();
+        if (resourceBundleLocation.length() > 1)
+            perspective.setResourceBundleLocation(resourceBundleLocation);
+    }
+
+    private static void initLocaleAttributes(final IPerspective<EventHandler<Event>, Event, Object> perspective,final Perspective perspectiveAnnotation) {
+        final String localeID = perspectiveAnnotation.localeID();
+        if (localeID.length() > 1)
+            perspective.setLocaleID(localeID);
+    }
+
+    private static void initDeclarativePerspectiveParts(final IPerspective<EventHandler<Event>, Event, Object> perspective,final Perspective perspectiveAnnotation) {
         final String viewLocation = perspectiveAnnotation.viewLocation();
         if (viewLocation.length() > 1 && IDeclarative.class.isAssignableFrom(perspective.getClass())) {
             IDeclarative.class.cast(perspective).setViewLocation(perspectiveAnnotation.viewLocation());
             FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,
                     FXUtil.IDECLARATIVECOMPONENT_TYPE, UIType.DECLARATIVE);
         }
-
-        final String localeID = perspectiveAnnotation.localeID();
-        if (localeID.length() > 1)
-            perspective.setLocaleID(localeID);
-        final String resourceBundleLocation = perspectiveAnnotation
-                .resourceBundleLocation();
-        if (resourceBundleLocation.length() > 1)
-            perspective.setResourceBundleLocation(resourceBundleLocation);
-
-
     }
 
     private static void initContext(final Context contextInterface, final String parentId, final String id, final boolean active, final String name) {

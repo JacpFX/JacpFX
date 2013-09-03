@@ -243,6 +243,8 @@ public abstract class AFXPerspective extends AComponent implements
 
     private void handleDeclarativeComponentAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component, final Component componentAnnotation, final DeclarativeView declarativeComponent) {
         setInitialLayoutTarget(component, declarativeComponent.initialTargetLayoutId());
+        setLocale(component, componentAnnotation.localeID());
+        setRessourceBundleLocation(component, componentAnnotation.resourceBundleLocation());
         handleBaseAttributes(component, componentAnnotation.id(), componentAnnotation.active(),
                 componentAnnotation.name());
         AFXComponent.class.cast(component).setViewLocation(declarativeComponent.viewLocation());
