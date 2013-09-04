@@ -62,17 +62,15 @@ import java.util.logging.Logger;
  */
 public abstract class AFXComponentWorker<T> extends Task<T> {
 
-    private final String componentName;
 
-    public AFXComponentWorker(final String componentName) {
-        this.componentName = componentName;
+    public AFXComponentWorker() {
     }
 
     /**
      * find valid target component in perspective
      *
-     * @param targetComponents
-     * @param id
+     * @param targetComponents, the target components provided by the parent perspective
+     * @param id, a target id
      * @return returns a target node by id
      */
     Node getValidContainerById(
@@ -84,8 +82,8 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
      * find valid target and add type specific new component. Handles Container,
      * ScrollPanes, Menus and Bar Entries from user
      *
-     * @param validContainer
-     * @param component
+     * @param validContainer, a valid container where components root will be added
+     * @param component, the component
      */
     void addComponentByType(
             final Node validContainer,
@@ -98,8 +96,8 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
     /**
      * enables component an add to container
      *
-     * @param validContainer
-     * @param IUIComponent
+     * @param validContainer , a valid container where components root will be added
+     * @param IUIComponent , the component
      */
     private void handleAdd(final Node validContainer, final Node IUIComponent) {
         if (validContainer != null && IUIComponent != null) {
@@ -114,8 +112,8 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
     /**
      * removes old ui component of subcomponent form parent ui component
      *
-     * @param parent
-     * @param currentContainer
+     * @param parent, the parent node
+     * @param currentContainer, a valid container which contains components root
      */
     void handleOldComponentRemove(final Node parent,
                                         final Node currentContainer) {
@@ -127,8 +125,8 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
     /**
      * set visibility and enable/disable
      *
-     * @param IUIComponent
-     * @param state
+     * @param IUIComponent, a Node where to set the state
+     * @param state, the boolean value of the state
      */
     void handleViewState(final Node IUIComponent,
                                final boolean state) {
@@ -140,16 +138,17 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
     /**
      * delegate components handle return value to specified target
      *
-     * @param comp
-     * @param targetId
-     * @param value
+     * @param comp, the component
+     * @param targetId, the message target id
+     * @param value, the message value
+     * @param action, the action
      */
     void delegateReturnValue(
             final ISubComponent<EventHandler<Event>, Event, Object> comp,
             final String targetId, final Object value,
-            final IAction<Event, Object> myAction) {
+            final IAction<Event, Object> action) {
         if (value != null && targetId != null
-                && !myAction.getMessage().equals("init")) {
+                && !action.isMessage("init")) {
             final IActionListener<EventHandler<Event>, Event, Object> listener = comp.getContext()
                     .getActionListener(null);
             listener.notifyComponents(new FXAction(comp.getContext().getId(), targetId,
@@ -162,8 +161,8 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
     /**
      * Handle target change inside perspective.
      *
-     * @param component
-     * @param validContainer
+     * @param component, the component
+     * @param validContainer, a valid JavaFX Node
      */
     void handleLayoutTargetChange(
             final IUIComponent<Node, EventHandler<Event>, Event, Object> component,
@@ -176,9 +175,9 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
      * found in current perspective, move to an other perspective and run
      * teardown.
      *
-     * @param delegateQueue
-     * @param component
-     * @param layout
+     * @param delegateQueue, the component delegate queue
+     * @param component, a component
+     * @param layout, the component layout handler
      */
     void handlePerspectiveChange(
             final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
@@ -195,7 +194,8 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
     /**
      * Move component to new target in perspective.
      *
-     * @param component
+     * @param delegateQueue, the component delegate queue
+     * @param component, the component
      */
     void changeComponentTarget(
             final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
@@ -213,9 +213,9 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
     /**
      * Runs the handle method of a componentView.
      *
-     * @param component
-     * @param action
-     * @return
+     * @param component, the component
+     * @param action, the current action
+     * @return a returned node from component execution
      */
     Node prepareAndRunHandleMethod(
             final IUIComponent<Node, EventHandler<Event>, Event, Object> component,
@@ -230,8 +230,8 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
      * The return value or the handleReturnValue are the root node of this
      * component.
      *
-     * @param component
-     * @param action
+     * @param component, a component
+     * @param action, the current action
      */
     void executeComponentViewPostHandle(final Node handleReturnValue,
                                         final AFXComponent component, final IAction<Event, Object> action) throws Exception {
@@ -254,7 +254,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
     /**
      * checks if component started, if so run PostConstruct annotations
      *
-     * @param component
+     * @param component, the component
      */
     void runCallbackOnStartMethods(
             final ISubComponent<EventHandler<Event>, Event, Object> component) {
@@ -269,7 +269,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
     /**
      * Set Resource Bundle
      *
-     * @param component
+     * @param component, the component
      */
     private void initLocalization(final ISubComponent<EventHandler<Event>, Event, Object> component) {
         final String bundleLocation = component.getResourceBundleLocation();
@@ -290,7 +290,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
     /**
      * Check if component was not started yet an activate it.
      *
-     * @param component
+     * @param component, the component
      */
     void runCallbackPostExecution(
             final ISubComponent<EventHandler<Event>, Event, Object> component) {
@@ -302,7 +302,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
     /**
      * checks if component was deactivated, if so run OnTeardown annotations.
      *
-     * @param component
+     * @param component, the component
      */
     void runCallbackOnTeardownMethods(
             final ISubComponent<EventHandler<Event>, Event, Object> component) {
@@ -328,7 +328,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
      * invokes a runnable on application thread and waits until execution is
      * finished
      *
-     * @param runnable
+     * @param runnable, a runnable which will be invoked and wait until execution is finished
      * @throws InterruptedException
      */
     final void invokeOnFXThreadAndWait(final Runnable runnable)

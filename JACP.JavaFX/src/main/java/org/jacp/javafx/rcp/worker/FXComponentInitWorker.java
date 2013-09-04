@@ -65,7 +65,6 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	 */
 	public FXComponentInitWorker(final Map<String, Node> targetComponents,
 			final AFXComponent component, final IAction<Event, Object> action) {
-		super(component.getContext().getName());
 		this.targetComponents = targetComponents;
 		this.component = component;
 		this.action = action;
@@ -103,7 +102,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 
     /**
      * Inject Context object.
-     * @param component
+     * @param component, the component where to inject the context
      */
     private void performContextInjection(AFXComponent component) {
         IComponentHandle<?, EventHandler<Event>, Event, Object> handler = component.getComponentHandle();
@@ -141,8 +140,8 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 
     /**
      * Set Resource Bundle
-     * @param url
-     * @param component
+     * @param url, the FXML url
+     * @param component, the component
      */
 	private void initLocalization(final URL url, final AFXComponent component) {
 		final String bundleLocation = component.getResourceBundleLocation();
@@ -157,7 +156,8 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	/**
 	 * Run at startup method in perspective.
 	 * 
-	 * @param component
+	 * @param component, the component
+     * @param param, all parameters
 	 */
 	private void runComponentOnStartupSequence(AFXComponent component,
 			Object... param) {

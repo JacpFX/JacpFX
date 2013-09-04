@@ -113,10 +113,10 @@ public abstract class AFXWorkbench
     /**
      * JavaFX specific start sequence
      *
-     * @param stage
+     * @param stage, The JavaFX stage
      * @throws Exception
      */
-    public final void start(final Stage stage) throws Exception {
+    public final void start(final Stage stage) {
         this.stage = stage;
         TearDownHandler.registerBase(this);
         stage.setOnCloseRequest(arg0 -> {
@@ -407,9 +407,9 @@ public abstract class AFXWorkbench
     /**
      * set toolBars to correct position
      *
-     * @param position
-     * @param bar
-     * @param pane
+     * @param position, The toolbar position
+     * @param bar, the affected toolbar
+     * @param pane, the root pane
      */
     private void assignCorrectToolBarLayout(final ToolbarPosition position,
                                             final ToolBar bar, final BorderPane pane) {
@@ -446,9 +446,10 @@ public abstract class AFXWorkbench
         return getComponentHandle();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public FXWorkbench getComponentHandle() {
-        return this.handle;  //To change body of implemented methods use File | Settings | File Templates.
+        return this.handle;
     }
 
     @Override

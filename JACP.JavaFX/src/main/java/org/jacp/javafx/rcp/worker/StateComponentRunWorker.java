@@ -46,7 +46,6 @@ public class StateComponentRunWorker
 	public StateComponentRunWorker(
 			final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
-		super(component.getContext().getName());
 		this.component = component;
 		this.delegateQueue = delegateQueue;
 	}
@@ -86,8 +85,8 @@ public class StateComponentRunWorker
 	/**
 	 * check if target has changed
 	 * 
-	 * @param comp
-	 * @param currentExecutionTarget
+	 * @param comp, the component
+	 * @param currentExecutionTarget, the current execution target... which was valid before execution
 	 */
 	private void checkAndHandleTargetChange(
 			final ISubComponent<EventHandler<Event>, Event, Object> comp,

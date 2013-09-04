@@ -183,7 +183,7 @@ public abstract class AFXPerspective extends AComponent implements
     @Override
     public void handlePerspective(final IAction<Event, Object> action) {
         getFXPerspectiveHandler().handlePerspective(action,
-                (PerspectiveLayout) this.perspectiveLayout);
+                (PerspectiveLayout) this.getIPerspectiveLayout());
 
     }
 
@@ -295,10 +295,10 @@ public abstract class AFXPerspective extends AComponent implements
     /**
      * set base component members
      *
-     * @param component
-     * @param id
-     * @param active
-     * @param name
+     * @param component, the component where the base attributes are set
+     * @param id, the component id
+     * @param active, is component active
+     * @param name , the components name
      */
     private void handleBaseAttributes(final ISubComponent<EventHandler<Event>, Event, Object> component, final String id, final boolean active,
                                       final String name) {

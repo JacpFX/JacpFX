@@ -60,7 +60,6 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
             final Map<String, Node> targetComponents,
             final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue,
             final AFXComponent component) {
-        super(component.getContext().getName());
         this.targetComponents = targetComponents;
         this.component = component;
         this.componentDelegateQueue = componentDelegateQueue;
@@ -165,13 +164,16 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
     /**
      * run in thread
      *
-     * @param previousContainer
-     * @param currentTargetLayout
+     * @param component, the component
+     * @param targetComponents, all layoutTargets of the parent perspective
+     * @param previousContainer, the previous container where the component.root was in
+     * @param currentTargetLayout, the previous targetLayout
+     * @param currentExecutionTarget, the current executionTarget
      */
     private void publishComponentValue(final AFXComponent component,
                                        final Map<String, Node> targetComponents,
                                        final FXComponentLayout layout,
-                                       final Node previousContainer, final String currentTargetLayout, final String currentExecutionTarget) throws Exception {
+                                       final Node previousContainer, final String currentTargetLayout, final String currentExecutionTarget) {
 
         if (previousContainer != null) {
             // check again if component was set to inactive (in postHandle), if
@@ -237,8 +239,9 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
     /**
      * Performs target change of component or perspective
      *
-     * @param component
-     * @param newTargetLayout
+     * @param component, the component
+     * @param newTargetLayout, the new target layout id
+     * @param targetComponents, the target components provided by parent perspective
      */
     private void executeLayoutTargetUpdate(final AFXComponent component,
                                            final String newTargetLayout, final Map<String, Node> targetComponents) {
