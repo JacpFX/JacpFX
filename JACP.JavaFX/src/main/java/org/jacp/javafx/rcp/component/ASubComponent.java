@@ -153,6 +153,7 @@ public abstract class ASubComponent extends AComponent implements
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
     @Override
     public final IComponentHandle<?, EventHandler<Event>, Event, Object> getComponentHandle() {
         return componentHandle;

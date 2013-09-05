@@ -85,7 +85,7 @@ public class FXPerspectiveHandler
 			final IAction<Event, Object> action,
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
 		if (component.isBlocked() && component.isStarted()) {
-			this.putMessageToQueue(component, action);
+			this.putMessageToQueue(action,component);
 			this.log("ADD TO QUEUE:::" + component.getContext().getName());
 		} else {
 			this.executeComponentReplaceThread(this.perspectiveLayout,
@@ -113,7 +113,7 @@ public class FXPerspectiveHandler
 					((AStatelessCallbackComponent) component), action);
 			return;
 		}
-		this.putMessageToQueue(component, action);
+		this.putMessageToQueue(action,component);
 		if (AFXComponent.class.isAssignableFrom(component.getClass())) {
 			this.log("CREATE NEW THREAD:::" + component.getContext().getName());
 			this.runFXComponent(perspectiveLayout, component);
@@ -134,8 +134,8 @@ public class FXPerspectiveHandler
 	/**
 	 * Handle state less callback component. This Method is invoked when an action is triggered.
 	 * 
-	 * @param component
-	 * @param action
+	 * @param component, the target component
+	 * @param action, the action
 	 */
 	private void runStatelessCallbackComponent(
 			final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> component,
@@ -147,8 +147,8 @@ public class FXPerspectiveHandler
 	/**
 	 * Run component in background thread.
 	 * 
-	 * @param perspectiveLayout
-	 * @param component
+	 * @param perspectiveLayout, the layout object to pass
+	 * @param component, the component
 	 */
 	private void runFXComponent(
 			final IPerspectiveLayout<? extends Node, Node> perspectiveLayout,
@@ -162,7 +162,7 @@ public class FXPerspectiveHandler
 	/**
 	 * Run background components thread.
 	 *
-	 * @param component
+	 * @param component, the component to execute
 	 */
 	private void runStateComponent(
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
@@ -173,8 +173,8 @@ public class FXPerspectiveHandler
 	/**
 	 * Execute subComponent initialization. This methods run's on "init" action while bootstrap.
 	 * 
-	 * @param action
-	 * @param component
+	 * @param action, the initial action
+	 * @param component, the component to init
 	 */
 	private void handleInit(final IAction<Event, Object> action,
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
@@ -195,7 +195,7 @@ public class FXPerspectiveHandler
         if (ASubComponent.class.isAssignableFrom(component.getClass())) {
             this.log("BACKGROUND COMPONENT EXECUTE INIT:::"
                     + component.getContext().getName());
-            this.putMessageToQueue(component, action);
+            this.putMessageToQueue(action,component);
             this.runStateComponent(component);
         }// else if END
 
@@ -206,12 +206,12 @@ public class FXPerspectiveHandler
 	/**
 	 * set component blocked and add message to queue
 	 * 
-	 * @param component
-	 * @param action
+	 * @param component, the component where the action will be placed in queue
+	 * @param action, the action
 	 */
-	private void putMessageToQueue(
-			final ISubComponent<EventHandler<Event>, Event, Object> component,
-			final IAction<Event, Object> action) {
+	private void putMessageToQueue(final IAction<Event, Object> action,
+			final ISubComponent<EventHandler<Event>, Event, Object> component
+			) {
 		component.putIncomingMessage(action);
 	}
 

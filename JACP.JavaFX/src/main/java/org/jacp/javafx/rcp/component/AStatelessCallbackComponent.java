@@ -75,8 +75,8 @@ public abstract class AStatelessCallbackComponent extends ASubComponent
 	/**
 	 * init cloned instance with values of blueprint
 	 * 
-	 * @param handler
-	 * @return
+	 * @param handler, the component handler which represents the implemented component
+	 * @return a statless callback component
 	 */
 	public final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> init(
 			final IComponentHandle<Object,EventHandler<Event>, Event, Object> handler) {

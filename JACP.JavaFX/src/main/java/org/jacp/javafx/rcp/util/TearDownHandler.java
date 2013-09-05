@@ -54,7 +54,7 @@ public class TearDownHandler {
 	 * Register the parent workbench, from here all perspectives and component
 	 * should be reachable.
 	 * 
-	 * @param rootWorkbench
+	 * @param rootWorkbench, the root workbench
 	 */
 	public static void registerBase(
 			IBase<EventHandler<Event>, Event, Object> rootWorkbench) {
@@ -106,7 +106,7 @@ public class TearDownHandler {
 	 * executes all methods in ICallbackComponent, annotated with @OnTeardown
 	 * outside application thread.
 	 * 
-	 * @param components
+	 * @param components, all components that should execute an async teardown
 	 */
 	@SafeVarargs
     public static void handleAsyncTearDown(
@@ -120,7 +120,7 @@ public class TearDownHandler {
 	 * executes all methods in ICallbackComponent, annotated with @OnTeardown
 	 * outside application thread.
 	 * 
-	 * @param components
+	 * @param components, all components that should execute an async teardown
 	 */
 	public static void handleAsyncTearDown(
 			final List<ISubComponent<EventHandler<Event>, Event, Object>> components) {

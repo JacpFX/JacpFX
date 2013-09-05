@@ -34,10 +34,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.jacp.api.action.IAction;
-import org.jacp.api.action.IActionListener;
-import org.jacp.api.annotations.perspective.Perspective;
 import org.jacp.api.annotations.workbench.Workbench;
-import org.jacp.api.component.IDeclarative;
 import org.jacp.api.component.IPerspective;
 import org.jacp.api.component.IRootComponent;
 import org.jacp.api.component.Injectable;
@@ -46,16 +43,12 @@ import org.jacp.api.context.Context;
 import org.jacp.api.coordinator.IComponentDelegator;
 import org.jacp.api.coordinator.IMessageDelegator;
 import org.jacp.api.coordinator.IPerspectiveCoordinator;
-import org.jacp.api.dialog.Scope;
 import org.jacp.api.handler.IComponentHandler;
 import org.jacp.api.launcher.Launcher;
 import org.jacp.api.util.OS;
 import org.jacp.api.util.ToolbarPosition;
-import org.jacp.api.util.UIType;
 import org.jacp.api.workbench.IBase;
-import org.jacp.api.workbench.IWorkbench;
 import org.jacp.javafx.rcp.action.FXAction;
-import org.jacp.javafx.rcp.action.FXActionListener;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.componentLayout.FXWorkbenchLayout;
 import org.jacp.javafx.rcp.components.managedDialog.JACPManagedDialog;
@@ -68,17 +61,13 @@ import org.jacp.javafx.rcp.coordinator.FXMessageDelegator;
 import org.jacp.javafx.rcp.coordinator.FXPerspectiveCoordinator;
 import org.jacp.javafx.rcp.handler.FXWorkbenchHandler;
 import org.jacp.javafx.rcp.perspective.AFXPerspective;
-import org.jacp.javafx.rcp.perspective.EmbeddedFXPerspective;
 import org.jacp.javafx.rcp.util.*;
 
-import java.security.InvalidParameterException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
  * represents the basic JavaFX2 workbench instance; handles perspectives and
@@ -138,7 +127,7 @@ public abstract class AFXWorkbench
         this.perspectives = WorkbenchUtil.getInstance(launcher).createPerspectiveInstances(getWorkbenchAnnotation());
         if (perspectives == null) return;
         this.componentHandler = new FXWorkbenchHandler(this.launcher,
-                this.workbenchLayout, this.root, this.perspectives);
+                this.workbenchLayout, this.root);
         this.perspectiveCoordinator.setComponentHandler(this.componentHandler);
         this.componentDelegator.setComponentHandler(this.componentHandler);
         this.messageDelegator.setComponentHandler(this.componentHandler);

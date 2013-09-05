@@ -72,16 +72,14 @@ public class FXWorkbenchHandler implements
     private final Logger logger = Logger.getLogger(this.getClass().getName());
     private final IWorkbenchLayout<Node> workbenchLayout;
     private final Launcher<?> launcher;
-    private final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives;
     private final GridPane root;
 
 
 
     public FXWorkbenchHandler(final Launcher<?> launcher, final IWorkbenchLayout<Node> workbenchLayout,
-                              final GridPane root, final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives) {
+                              final GridPane root) {
         this.workbenchLayout = workbenchLayout;
         this.root = root;
-        this.perspectives = perspectives;
         this.launcher = launcher;
     }
 
@@ -253,7 +251,7 @@ public class FXWorkbenchHandler implements
                 handleDefaultPerspective(perspective, context.getComponentLayout());
             }
 
-            final IPerspectiveLayout<Node, Node> perspectiveLayout = (IPerspectiveLayout<Node, Node>) perspectiveView
+            @SuppressWarnings("unchecked") final IPerspectiveLayout<Node, Node> perspectiveLayout = (IPerspectiveLayout<Node, Node>) perspectiveView
                     .getIPerspectiveLayout();
             perspective.postInit(new FXPerspectiveHandler(this.launcher, perspectiveLayout, perspective
                     .getComponentDelegateQueue()));
@@ -340,7 +338,9 @@ public class FXWorkbenchHandler implements
     /**
      * set all child components to invisible
      *
-     * @param children
+     * @param perspective, the current perspective
+     * @param previousPerspective, the previous visible perspective
+     * @param children, JavaFX node children
      */
     private void hideChildrenAndExecuteOnHide(final IPerspective<EventHandler<Event>, Event, Object> perspective, final IPerspective<EventHandler<Event>, Event, Object> previousPerspective, final ObservableList<Node> children) {
         hideChildren(children);

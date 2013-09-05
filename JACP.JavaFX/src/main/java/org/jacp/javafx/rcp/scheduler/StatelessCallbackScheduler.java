@@ -50,6 +50,9 @@ public class StatelessCallbackScheduler implements
     }
 
     @Override
+/**
+ * {@inheritDoc }
+ */
     public final void incomingMessage(
             final IAction<Event, Object> message,
             final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent) {
@@ -89,8 +92,9 @@ public class StatelessCallbackScheduler implements
     /**
      * block component, put message to component's queue and run in thread
      *
-     * @param comp
-     * @param message
+     * @param baseComponent, the parent component
+     * @param comp, the child component
+     * @param message, the message
      */
     private void instanceRun(
             final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent,
@@ -104,8 +108,8 @@ public class StatelessCallbackScheduler implements
     /**
      * if max thread count is not reached and all available component instances
      * are blocked create a new one, block it an run in thread
-     *
-     * @param message
+     * @param baseComponent, the parent component
+     * @param message, the current message
      */
     private void createInstanceAndRun(
             final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent,
@@ -118,7 +122,11 @@ public class StatelessCallbackScheduler implements
         this.instanceRun(baseComponent, comp, message);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
+    /**
+     * {@inheritDoc }
+     */
     public final <T extends IStatelessCallabackComponent<EventHandler<Event>, Event, Object>, H extends IComponentHandle> IStatelessCallabackComponent<EventHandler<Event>, Event, Object> getCloneBean(
             final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent,
             final Class<H> clazz) {
@@ -129,7 +137,8 @@ public class StatelessCallbackScheduler implements
     /**
      * Returns a component instance that is currently not blocked.
      *
-     * @return
+     * @param baseComponent, the parent component
+     * @return an available subcomponent
      */
     private ISubComponent<EventHandler<Event>, Event, Object> getActiveComponent(
             final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent) {
@@ -148,7 +157,8 @@ public class StatelessCallbackScheduler implements
      * seek to first running component in instance list and add message to queue
      * of selected component
      *
-     * @param message
+     * @param baseComponent, the root component
+     * @param message, the current message
      */
     private void seekAndPutMessage(
             final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent,

@@ -11,7 +11,6 @@ import org.jacp.api.context.Context;
 import org.jacp.api.dialog.Scope;
 import org.jacp.api.launcher.Launcher;
 import org.jacp.api.util.UIType;
-import org.jacp.javafx.rcp.context.JACPContext;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
 import org.jacp.javafx.rcp.perspective.AFXPerspective;
 import org.jacp.javafx.rcp.perspective.EmbeddedFXPerspective;
@@ -47,8 +46,8 @@ public class WorkbenchUtil {
     /**
      * Creates all perspective instances by annotated id's in @Workbench annotation
      *
-     * @param annotation
-     * @return
+     * @param annotation , the workbench annotation
+     * @return  a list with all perspectives associated with a workbench
      */
     public List<IPerspective<EventHandler<Event>, Event, Object>> createPerspectiveInstances(final Workbench annotation) {
         final String[] ids = annotation.perspectives();
@@ -76,7 +75,8 @@ public class WorkbenchUtil {
     /**
      * set meta attributes defined in annotations
      *
-     * @param perspective
+     * @param perspective, the perspective where to handle the metadata
+     * @param parentId, the id of parent workbench
      */
     public static void handleMetaAnnotation(
             final IPerspective<EventHandler<Event>, Event, Object> perspective, final String parentId) {
