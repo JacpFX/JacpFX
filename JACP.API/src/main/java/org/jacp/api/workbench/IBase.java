@@ -65,8 +65,9 @@ public interface IBase<L, A, M> {
 	 * 
 	 * @param launcher
 	 *            for di container
+     * @param root, the UIToolkit root object
 	 */
-	void init(final Launcher<?> launcher);
+	void init(final Launcher<?> launcher, final Object root);
 
     /**
      * Returns the components context object.

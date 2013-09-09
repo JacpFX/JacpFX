@@ -105,7 +105,7 @@ public abstract class AFXWorkbench
      * @param stage, The JavaFX stage
      * @throws Exception
      */
-    public final void start(final Stage stage) {
+    private void start(final Stage stage) {
         this.stage = stage;
         TearDownHandler.registerBase(this);
         stage.setOnCloseRequest(arg0 -> {
@@ -128,9 +128,9 @@ public abstract class AFXWorkbench
         if (perspectives == null) return;
         this.componentHandler = new FXWorkbenchHandler(this.launcher,
                 this.workbenchLayout, this.root);
-        this.perspectiveCoordinator.setComponentHandler(this.componentHandler);
-        this.componentDelegator.setComponentHandler(this.componentHandler);
-        this.messageDelegator.setComponentHandler(this.componentHandler);
+        this.perspectiveCoordinator.setComponentHandler(this.getComponentHandler());
+        this.componentDelegator.setComponentHandler(this.getComponentHandler());
+        this.messageDelegator.setComponentHandler(this.getComponentHandler());
         this.handleInitialisationSequence();
     }
 
@@ -139,12 +139,13 @@ public abstract class AFXWorkbench
     /**
      * {@inheritDoc}
      */
-    public void init(final Launcher<?> launcher) {
+    public void init(final Launcher<?> launcher, Object root) {
         this.launcher = launcher;
         JACPManagedDialog.initManagedDialog(launcher);
         final Workbench annotation = getWorkbenchAnnotation();
         this.context = new JACPContextImpl(annotation.id(), annotation.name(), this.perspectiveCoordinator.getMessageQueue());
         FXUtil.performResourceInjection(this.getWorkbenchHandle(), this.context);
+        start(Stage.class.cast(root));
     }
 
 
@@ -166,7 +167,7 @@ public abstract class AFXWorkbench
                     // again?
                     this.log("3.4.2: create perspective menu");
                     if (perspective.getContext().isActive()) {
-                        final Runnable r = () -> AFXWorkbench.this.componentHandler.initComponent(
+                        final Runnable r = () -> AFXWorkbench.this.getComponentHandler().initComponent(
                                 new FXAction(perspective.getContext().getId(), perspective
                                         .getContext().getId(), "init", null), perspective);
                         if (Platform.isFxApplicationThread()) {

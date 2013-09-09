@@ -35,6 +35,7 @@ import java.util.List;
 public abstract class AFXSpringLauncher extends Application {
     private final String springXML;
 	private final String workbenchName;
+    private AFXWorkbench workbench;
 	/**
 	 * default constructor; add reference to valid spring.xml
 	 * @param springXML
@@ -57,9 +58,8 @@ public abstract class AFXSpringLauncher extends Application {
         final Class<? extends FXWorkbench> workbenchHandler = getWorkbechClass();
         if(workbenchHandler==null)throw new InvalidParameterException("no FXWorkbench class defined");
         if(workbenchHandler.isAnnotationPresent(Workbench.class)) {
-            final EmbeddedFXWorkbench workbench = createWorkbench(workbenchHandler,launcher);
-            workbench.init(launcher);
-            workbench.start(stage);
+            this.workbench = createWorkbench(workbenchHandler,launcher);
+            workbench.init(launcher, stage);
             postInit(stage);
         } else {
             throw new InvalidParameterException("no @Workbench annotation found on class");
@@ -73,6 +73,10 @@ public abstract class AFXSpringLauncher extends Application {
         final String id = annotation.id();
         final FXWorkbench handler = launcher.registerAndGetBean(workbenchHandler, id, Scope.SINGLETON);
         return  new EmbeddedFXWorkbench(handler);
+    }
+
+    public AFXWorkbench getWorkbench() {
+        return this.workbench;
     }
 
     protected abstract Class<? extends FXWorkbench> getWorkbechClass();
