@@ -14,6 +14,7 @@ import org.jacp.api.component.Injectable;
 import org.jacp.api.context.Context;
 import org.jacp.api.handler.IComponentHandler;
 import org.jacp.javafx.rcp.context.JACPContext;
+import org.jacp.javafx.rcp.util.ClassRegistry;
 import org.jacp.javafx.rcp.workbench.AFXWorkbench;
 import org.jacp.javafx.rcp.workbench.FXWorkbench;
 import org.jacp.test.main.ApplicationLauncher;
@@ -30,7 +31,7 @@ import static junit.framework.TestCase.assertNotNull;
 
 /**
  * Created with IntelliJ IDEA.
- * User: ady
+ * User: Andy Moncsek
  * Date: 06.09.13
  * Time: 08:38
  * To change this template use File | Settings | File Templates.
@@ -65,6 +66,15 @@ public class BasicInitialisationTests {
     public void checkApplicationLauncher() {
         ApplicationLauncher launcher =  ApplicationLauncher.instance[0];
         assertNotNull(launcher);
+    }
+
+    @Test
+    public void checkComponentScanning() {
+        ApplicationLauncher launcher =  new ApplicationLauncher();
+        assertNotNull(launcher);
+        launcher.startComponentScaning();
+        assertNotNull(ClassRegistry.getAllClasses());
+        assertFalse(ClassRegistry.getAllClasses().isEmpty());
     }
 
     @Test
