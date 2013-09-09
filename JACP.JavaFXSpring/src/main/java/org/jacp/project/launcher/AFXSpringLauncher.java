@@ -2,6 +2,8 @@ package org.jacp.project.launcher;
 
 import org.jacp.api.annotations.workbench.Workbench;
 import org.jacp.api.dialog.Scope;
+import org.jacp.api.exceptions.AnnotationNotFoundException;
+import org.jacp.api.exceptions.ComponentNotFoundException;
 import org.jacp.api.launcher.Launcher;
 import org.jacp.api.workbench.IWorkbench;
 import org.jacp.javafx.rcp.util.ClassFinder;
@@ -56,13 +58,13 @@ public abstract class AFXSpringLauncher extends Application {
         scanPackegesAndInitRegestry();
         final Launcher<ClassPathXmlApplicationContext> launcher = new SpringLauncher(this.springXML);
         final Class<? extends FXWorkbench> workbenchHandler = getWorkbechClass();
-        if(workbenchHandler==null)throw new InvalidParameterException("no FXWorkbench class defined");
+        if(workbenchHandler==null)throw new ComponentNotFoundException("no FXWorkbench class defined");
         if(workbenchHandler.isAnnotationPresent(Workbench.class)) {
             this.workbench = createWorkbench(workbenchHandler,launcher);
             workbench.init(launcher, stage);
             postInit(stage);
         } else {
-            throw new InvalidParameterException("no @Workbench annotation found on class");
+            throw new AnnotationNotFoundException("no @Workbench annotation found on class");
         }
 
 
@@ -81,8 +83,9 @@ public abstract class AFXSpringLauncher extends Application {
 
     protected abstract Class<? extends FXWorkbench> getWorkbechClass();
 
-    private void scanPackegesAndInitRegestry() {
+    protected void scanPackegesAndInitRegestry() {
        final String[] packages = getBasePackages();
+       if(packages==null) throw new InvalidParameterException("no packes declared, declare all packages containing perspectives and components");
        final List<String> packageList = Arrays.asList(packages);
        final ClassFinder finder = new ClassFinder();
        packageList.parallelStream().forEach(p->{
