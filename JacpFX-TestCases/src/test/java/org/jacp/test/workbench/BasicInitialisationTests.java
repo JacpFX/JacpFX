@@ -1,6 +1,7 @@
 package org.jacp.test.workbench;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.stage.Stage;
@@ -18,6 +19,7 @@ import org.jacp.javafx.rcp.util.ClassRegistry;
 import org.jacp.javafx.rcp.workbench.AFXWorkbench;
 import org.jacp.javafx.rcp.workbench.FXWorkbench;
 import org.jacp.test.main.ApplicationLauncher;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -37,12 +39,22 @@ import static junit.framework.TestCase.assertNotNull;
  * To change this template use File | Settings | File Templates.
  */
 public class BasicInitialisationTests {
+    static Thread t;
+    @AfterClass
+    public static void exitWorkBench() {
+        Platform.exit();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+    }
 
     @BeforeClass
     public static void initWorkbench() {
 
 
-        Thread t = new Thread("JavaFX Init Thread") {
+        t = new Thread("JavaFX Init Thread") {
             public void run() {
 
                 ApplicationLauncher.main(new String[0]);

@@ -61,7 +61,7 @@ public class ApplicationLauncherMissconfigWorkbench2 extends AFXSpringLauncher {
      * @param args
      */
     public static void main(final String[] args) {
-        ApplicationLauncherMissconfigWorkbench2.launch(args);
+        Application.launch(args);
     }
 
     @Override

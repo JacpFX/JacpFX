@@ -1,10 +1,12 @@
 package org.jacp.test.missconfig;
 
+import javafx.application.Platform;
 import org.jacp.api.exceptions.ComponentNotFoundException;
 import org.jacp.javafx.rcp.util.ClassRegistry;
 import org.jacp.test.main.ApplicationLauncher;
 import org.jacp.test.main.ApplicationLauncherMissconfigWorkbench;
 import org.jacp.test.main.ApplicationLauncherMissconfigWorkbench2;
+import org.junit.AfterClass;
 import org.junit.Test;
 
 import java.security.InvalidParameterException;
@@ -35,6 +37,7 @@ public class MissconfigLauncherTest {
         try
         {
             latch.await();
+            Platform.exit();
         }
         catch (InterruptedException e)
         {
@@ -54,6 +57,7 @@ public class MissconfigLauncherTest {
         try
         {
             latch.await();
+            Platform.exit();
         }
         catch (InterruptedException e)
         {
@@ -67,5 +71,15 @@ public class MissconfigLauncherTest {
         launcher.startComponentScaning();
         assertNotNull(ClassRegistry.getAllClasses());
         assertTrue(ClassRegistry.getAllClasses().isEmpty());
+    }
+
+    @AfterClass
+    public static void exitWorkBench() {
+        Platform.exit();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
     }
 }

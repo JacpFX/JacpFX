@@ -1,5 +1,6 @@
 package org.jacp.test.missconfig;
 
+import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import org.jacp.api.component.IPerspective;
@@ -9,6 +10,7 @@ import org.jacp.test.main.ApplicationLauncherMissconfigWorkbench;
 import org.jacp.test.main.ApplicationLauncherMissingPerspectives;
 import org.jacp.test.workbench.Workbench;
 import org.jacp.test.workbench.WorkbenchMissingPerspectives;
+import org.junit.AfterClass;
 import org.junit.Test;
 
 import java.util.List;
@@ -26,6 +28,17 @@ import static junit.framework.TestCase.assertNotNull;
  * To change this template use File | Settings | File Templates.
  */
 public class MissconfigWorkbenchTest {
+
+    @AfterClass
+    public static void exitWorkBench() {
+        Platform.setImplicitExit(true);
+        Platform.exit();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+    }
 
     @Test
     public void noPerspectivesAnnotatedTest() {

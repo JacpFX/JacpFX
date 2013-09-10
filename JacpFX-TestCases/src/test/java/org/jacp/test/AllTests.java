@@ -13,8 +13,7 @@ import org.junit.runners.Suite;
  * Time: 21:40
  * To change this template use File | Settings | File Templates.
  */
-@RunWith(SleepySuite.class)
+@RunWith(Suite.class)
 @Suite.SuiteClasses({ BasicInitialisationTests.class, MissconfigLauncherTest.class,MissconfigWorkbenchTest.class })
-@SleepySuite.SleepSec(5)
 public class AllTests {
 }

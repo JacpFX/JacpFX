@@ -62,7 +62,7 @@ public class ApplicationLauncherMissingPerspectives extends AFXSpringLauncher {
      * @param args
      */
     public static void main(final String[] args) {
-        ApplicationLauncherMissingPerspectives.launch(args);
+        Application.launch(args);
     }
 
     @Override
@@ -85,6 +85,7 @@ public class ApplicationLauncherMissingPerspectives extends AFXSpringLauncher {
     @Override
     public void postInit(final Stage stage) {
         initStyles();
+        System.out.println("POST INIT");
         stage.setMinHeight(580);
         stage.setMinWidth(800);
         final Scene scene = stage.getScene();
@@ -92,7 +93,7 @@ public class ApplicationLauncherMissingPerspectives extends AFXSpringLauncher {
         // add style sheet
         scene.getStylesheets().add(STYLES[0]);
         instance[0]=this;
-        this.latch.countDown();
+        ApplicationLauncherMissingPerspectives.latch.countDown();
     }
 
     private static void initStyles() {
