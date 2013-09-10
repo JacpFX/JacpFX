@@ -6,3 +6,5 @@
 *.iml
 target
 .svn
+.idea
+*.log
