@@ -3,6 +3,7 @@ package org.jacp.project.launcher;
 import org.jacp.api.annotations.workbench.Workbench;
 import org.jacp.api.dialog.Scope;
 import org.jacp.api.exceptions.AnnotationNotFoundException;
+import org.jacp.api.exceptions.AttributeNotFoundException;
 import org.jacp.api.exceptions.ComponentNotFoundException;
 import org.jacp.api.launcher.Launcher;
 import org.jacp.api.workbench.IWorkbench;
@@ -73,6 +74,7 @@ public abstract class AFXSpringLauncher extends Application {
     private EmbeddedFXWorkbench createWorkbench(final Class<? extends FXWorkbench> workbenchHandler,final Launcher<ClassPathXmlApplicationContext> launcher) {
         final Workbench annotation = workbenchHandler.getAnnotation(Workbench.class);
         final String id = annotation.id();
+        if(id.isEmpty()) throw new AttributeNotFoundException("no workbench id found for: "+workbenchHandler.getClass());
         final FXWorkbench handler = launcher.registerAndGetBean(workbenchHandler, id, Scope.SINGLETON);
         return  new EmbeddedFXWorkbench(handler);
     }

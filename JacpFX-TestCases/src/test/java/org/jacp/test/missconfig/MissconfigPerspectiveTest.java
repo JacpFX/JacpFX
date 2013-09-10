@@ -3,7 +3,9 @@ package org.jacp.test.missconfig;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import org.jacp.api.annotations.perspective.Perspective;
 import org.jacp.api.component.IPerspective;
+import org.jacp.api.component.Injectable;
 import org.jacp.api.context.Context;
 import org.jacp.javafx.rcp.workbench.AFXWorkbench;
 import org.jacp.test.main.ApplicationLauncher;
@@ -94,5 +96,36 @@ public class MissconfigPerspectiveTest {
             assertNotNull(context.getName());
             assertNotNull(context.getResourceBundle());
         }
+    }
+
+    @Test
+    public void checkComponents() {
+        ApplicationLauncherMissconfigComponents launcher =  ApplicationLauncherMissconfigComponents.instance[0];
+        assertNotNull(launcher);
+        AFXWorkbench workbench = launcher.getWorkbench();
+        assertNotNull(workbench);
+        List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        assertNotNull(perspectives);
+        assertFalse(perspectives.isEmpty());
+        assertTrue(getPerspectiveAnnotations().length==perspectives.size());
+        for(IPerspective<EventHandler<Event>, Event, Object> p :perspectives) {
+            assertNotNull(p.getComponentHandler());
+            assertNotNull(p.getContext());
+            assertNotNull(p.getComponentsMessageQueue());
+            assertNotNull(p.getMessageDelegateQueue());
+            Context<EventHandler<Event>, Event, Object> context = p.getContext();
+            assertNotNull(context.getParentId());
+            assertNotNull(context.getId());
+            assertNotNull(context.getName());
+            assertNotNull(context.getResourceBundle());
+            Injectable handler = p.getPerspectiveHandle();
+            Perspective annotation = handler.getClass().getAnnotation(Perspective.class);
+            String[] components = annotation.components();
+            assertTrue(components.length==0);
+
+            assertTrue(p.getSubcomponents().isEmpty());
+        }
+
+
     }
 }
