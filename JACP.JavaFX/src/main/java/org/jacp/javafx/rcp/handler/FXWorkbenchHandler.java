@@ -198,7 +198,8 @@ public class FXWorkbenchHandler implements
         if (!perspective.equals(previousPerspective)) {
             // execute OnShow
             FXUtil.invokeHandleMethodsByAnnotation(OnShow.class, perspective.getPerspectiveHandle(), layout,
-                    perspectiveView.getDocumentURL(), perspectiveView.getContext().getResourceBundle());
+                    perspectiveView.getType().equals(UIType.DECLARATIVE)?perspectiveView.getDocumentURL():null, perspectiveView.getContext().getResourceBundle());
+
         }
         if (!oldComp.equals(newComp)) {
             children.remove(oldComp);
@@ -348,7 +349,8 @@ public class FXWorkbenchHandler implements
             final IPerspectiveView<Node, EventHandler<Event>, Event, Object> perspectiveView = ((IPerspectiveView<Node, EventHandler<Event>, Event, Object>) previousPerspective);
             final FXComponentLayout layout = new FXComponentLayout(this.getWorkbenchLayout());
             FXUtil.invokeHandleMethodsByAnnotation(OnHide.class, previousPerspective.getPerspectiveHandle(), layout,
-                    perspectiveView.getDocumentURL(), perspectiveView.getContext().getResourceBundle());
+            perspectiveView.getType().equals(UIType.DECLARATIVE)?perspectiveView.getDocumentURL():null, perspectiveView.getContext().getResourceBundle());
+
         }
 
     }
