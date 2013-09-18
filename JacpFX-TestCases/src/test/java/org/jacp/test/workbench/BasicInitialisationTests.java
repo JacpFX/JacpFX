@@ -1,5 +1,6 @@
 package org.jacp.test.workbench;
 
+import com.sun.javafx.application.LauncherImpl;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.Event;
@@ -18,13 +19,16 @@ import org.jacp.javafx.rcp.context.JACPContext;
 import org.jacp.javafx.rcp.util.ClassRegistry;
 import org.jacp.javafx.rcp.workbench.AFXWorkbench;
 import org.jacp.javafx.rcp.workbench.FXWorkbench;
+import org.jacp.test.AllTests;
 import org.jacp.test.main.ApplicationLauncher;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
@@ -43,11 +47,9 @@ public class BasicInitialisationTests {
     @AfterClass
     public static void exitWorkBench() {
         Platform.exit();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+        AllTests.resetApplication();
+
+
     }
 
     @BeforeClass

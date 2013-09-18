@@ -5,6 +5,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import org.jacp.api.component.IPerspective;
 import org.jacp.javafx.rcp.workbench.AFXWorkbench;
+import org.jacp.test.AllTests;
 import org.jacp.test.main.ApplicationLauncherMissingPerspectives;
 import org.jacp.test.main.ApplicationLauncherMissingWorkbenchId;
 import org.jacp.test.workbench.WorkbenchMissingPerspectives;
@@ -18,10 +19,10 @@ import static junit.framework.TestCase.assertNotNull;
 
 /**
  * Created with IntelliJ IDEA.
- * User: ady
+ * User: Andy Moncsek
  * Date: 09.09.13
  * Time: 20:57
- * To change this template use File | Settings | File Templates.
+ * Tests if id attribute in workbench is missing
  */
 public class MissconfigWorkbenchIdTest {
 
@@ -32,6 +33,7 @@ public class MissconfigWorkbenchIdTest {
         ApplicationLauncherMissingWorkbenchId.main(new String[0]);
         Platform.setImplicitExit(true);
         Platform.exit();
+        AllTests.resetApplication();
     }
 
     private String[] getPerspectiveAnnotations() {

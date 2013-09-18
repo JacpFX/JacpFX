@@ -24,10 +24,6 @@ package org.jacp.test.perspectives;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.geometry.Orientation;
-import javafx.scene.Node;
-import javafx.scene.control.SplitPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -36,10 +32,8 @@ import org.jacp.api.annotations.lifecycle.OnShow;
 import org.jacp.api.annotations.lifecycle.PostConstruct;
 import org.jacp.api.annotations.lifecycle.PreDestroy;
 import org.jacp.api.annotations.perspective.Perspective;
-import org.jacp.api.util.ToolbarPosition;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.componentLayout.PerspectiveLayout;
-import org.jacp.javafx.rcp.components.toolBar.JACPToolBar;
 import org.jacp.javafx.rcp.perspective.FXPerspective;
 import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 import org.jacp.test.main.ApplicationLauncher;
@@ -52,13 +46,13 @@ import java.util.ResourceBundle;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@Perspective(id = "id01", name = "contactPerspective",
+@Perspective(id = "", name = "contactPerspective",
         components ={
                 "id002"} ,
-       // viewLocation = "/fxml/perspectiveOne.fxml",
+        viewLocation = "/fxml/perspectiveOne.fxml",
         resourceBundleLocation = "bundles.languageBundle" ,
         localeID="en_US")
-public class PerspectiveOne implements FXPerspective {
+public class PerspectiveMissingIdInPerspective implements FXPerspective {
     @FXML
     private HBox content1;
     @FXML
@@ -71,7 +65,6 @@ public class PerspectiveOne implements FXPerspective {
                                   final PerspectiveLayout perspectiveLayout) {
         if (action.isMessage(MessageUtil.INIT)) {
 
-            perspectiveLayout.registerRootComponent(createRoot());
             GridPane.setVgrow(perspectiveLayout.getRootComponent(),
                     Priority.ALWAYS);
             GridPane.setHgrow(perspectiveLayout.getRootComponent(),
@@ -87,28 +80,6 @@ public class PerspectiveOne implements FXPerspective {
             ApplicationLauncher.latch.countDown();
         }
 
-    }
-
-    private Node createRoot() {
-        BorderPane pane = new BorderPane();
-        SplitPane splitPane = new SplitPane();
-        splitPane.setDividerPositions(Double.valueOf(0.2506265664160401));
-
-        content1 = new HBox();
-        HBox paneRight = new HBox();
-        splitPane.getItems().addAll(content1,paneRight);
-        SplitPane contentSplitPane = new SplitPane();
-        contentSplitPane.setPrefWidth(800);
-        contentSplitPane.setDividerPositions(Double.valueOf(0.5));
-        contentSplitPane.setOrientation(Orientation.VERTICAL);
-
-        content2 = new HBox();
-        content3 = new HBox();
-        contentSplitPane.getItems().addAll(content2,content3);
-        paneRight.getChildren().add(contentSplitPane);
-        pane.setCenter(splitPane);
-
-        return pane;
     }
 
     @OnShow

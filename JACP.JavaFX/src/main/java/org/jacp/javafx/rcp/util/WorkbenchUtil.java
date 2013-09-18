@@ -9,6 +9,7 @@ import org.jacp.api.component.IPerspective;
 import org.jacp.api.component.Injectable;
 import org.jacp.api.context.Context;
 import org.jacp.api.dialog.Scope;
+import org.jacp.api.exceptions.ComponentNotFoundException;
 import org.jacp.api.launcher.Launcher;
 import org.jacp.api.util.UIType;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
@@ -18,8 +19,11 @@ import org.jacp.javafx.rcp.perspective.EmbeddedFXPerspective;
 import java.security.InvalidParameterException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created with IntelliJ IDEA.
@@ -55,7 +59,21 @@ public class WorkbenchUtil {
         final List<Injectable> perspectiveHandlerList = componentIds.stream()
                 .map(this::mapToInjectable)
                 .collect(Collectors.toList());
-        return perspectiveHandlerList.stream().map(this::mapToPerspective).collect(Collectors.toList());
+
+        final List<IPerspective<EventHandler<Event>, Event, Object>> result = perspectiveHandlerList.stream().map(this::mapToPerspective).collect(Collectors.toList());
+
+        if(ids.length != result.size()) {
+                 throw new ComponentNotFoundException("following perspective ids are not found: "+findUnresolvedPerspectiveIds(result,Arrays.asList(ids)));
+        }
+        return result;
+    }
+
+    private List<String> findUnresolvedPerspectiveIds(final List<IPerspective<EventHandler<Event>, Event, Object>> result, final List<String> ids) {
+         return ids.parallelStream().filter(p->notContainsId(result, p)).collect(Collectors.toList());
+    }
+
+    private boolean notContainsId(final List<IPerspective<EventHandler<Event>, Event, Object>> result, final String id){
+        return !result.parallelStream().filter(p -> p.getContext().getId().equalsIgnoreCase(id)).findFirst().isPresent();
     }
 
     private IPerspective<EventHandler<Event>, Event, Object> mapToPerspective(Injectable handler) {
@@ -63,7 +81,9 @@ public class WorkbenchUtil {
     }
 
     private Injectable mapToInjectable(final String id) {
+        if(id==null || id.isEmpty())  throw new ComponentNotFoundException("following perspective id was not found: "+id);
         final Class perspectiveClass = ClassRegistry.getPerspectiveClassById(id);
+        if(perspectiveClass==null)  throw new ComponentNotFoundException("following perspective id was not found: "+id);
         final Object component = launcher.registerAndGetBean(perspectiveClass, id, Scope.SINGLETON);
         if (Injectable.class.isAssignableFrom(component.getClass())) {
             return Injectable.class.cast(component);

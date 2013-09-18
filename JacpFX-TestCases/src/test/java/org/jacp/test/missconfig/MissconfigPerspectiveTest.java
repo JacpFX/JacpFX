@@ -8,6 +8,7 @@ import org.jacp.api.component.IPerspective;
 import org.jacp.api.component.Injectable;
 import org.jacp.api.context.Context;
 import org.jacp.javafx.rcp.workbench.AFXWorkbench;
+import org.jacp.test.AllTests;
 import org.jacp.test.main.ApplicationLauncher;
 import org.jacp.test.main.ApplicationLauncherMissconfigComponents;
 import org.jacp.test.workbench.Workbench;
@@ -34,11 +35,7 @@ public class MissconfigPerspectiveTest {
     @AfterClass
     public static void exitWorkBench() {
         Platform.exit();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
+        AllTests.resetApplication();
     }
 
     @BeforeClass
