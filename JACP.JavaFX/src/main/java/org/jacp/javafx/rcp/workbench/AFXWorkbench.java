@@ -159,26 +159,27 @@ public abstract class AFXWorkbench
      * {@inheritDoc}
      */
     public final void initComponents(final IAction<Event, Object> action) {
-        this.perspectives.forEach(perspective ->
-                {
-                    this.registerComponent(perspective);
-                    this.log("3.4.1: register component: " + perspective.getContext().getName());
-                    // TODO what if component removed an initialized later
-                    // again?
-                    this.log("3.4.2: create perspective menu");
-                    if (perspective.getContext().isActive()) {
-                        final Runnable r = () -> AFXWorkbench.this.getComponentHandler().initComponent(
-                                new FXAction(perspective.getContext().getId(), perspective
-                                        .getContext().getId(), "init", null), perspective);
-                        if (Platform.isFxApplicationThread()) {
-                            r.run();
-                        } else {
-                            Platform.runLater(r);
+        this.perspectives.forEach(this::initPerspective);
+    }
 
-                        }
+    private void initPerspective(IPerspective<EventHandler<Event>, Event, Object> perspective) {
+        this.registerComponent(perspective);
+        this.log("3.4.1: register component: " + perspective.getContext().getName());
+        // TODO what if component removed an initialized later
+        // again?
+        this.log("3.4.2: create perspective menu");
+        if (perspective.getContext().isActive()) {
+            final Runnable r = () -> AFXWorkbench.this.getComponentHandler().initComponent(
+                    new FXAction(perspective.getContext().getId(), perspective
+                            .getContext().getId(), "init", null), perspective);
+            if (Platform.isFxApplicationThread()) {
+                r.run();
+            } else {
+                Platform.runLater(r);
 
-                    }
-                });
+            }
+
+        }
     }
 
     /**
@@ -186,23 +187,20 @@ public abstract class AFXWorkbench
      * initialisation
      */
     private void handleInitialisationSequence() {
-        Platform.runLater(() -> {
-            AFXWorkbench.this.stage.show();
-            // start perspective Observer worker thread
-            // TODO create status daemon which observes
-            // thread component on
-            // failure and restarts if needed!!
-            ((FXPerspectiveCoordinator) AFXWorkbench.this.perspectiveCoordinator)
-                    .start();
-            ((FXComponentDelegator) AFXWorkbench.this.componentDelegator)
-                    .start();
-            ((FXMessageDelegator) AFXWorkbench.this.messageDelegator)
-                    .start();
-            // handle perspectives
-            AFXWorkbench.this.log("3.3: workbench init perspectives");
-            AFXWorkbench.this.initComponents(null);
-
-        });
+        AFXWorkbench.this.stage.show();
+        // start perspective Observer worker thread
+        // TODO create status daemon which observes
+        // thread component on
+        // failure and restarts if needed!!
+        ((FXPerspectiveCoordinator) AFXWorkbench.this.perspectiveCoordinator)
+                .start();
+        ((FXComponentDelegator) AFXWorkbench.this.componentDelegator)
+                .start();
+        ((FXMessageDelegator) AFXWorkbench.this.messageDelegator)
+                .start();
+        // handle perspectives
+        AFXWorkbench.this.log("3.3: workbench init perspectives");
+        AFXWorkbench.this.initComponents(null);
     }
 
 
