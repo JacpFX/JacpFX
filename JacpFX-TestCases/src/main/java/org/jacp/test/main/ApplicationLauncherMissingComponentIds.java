@@ -29,6 +29,7 @@ import javafx.stage.Stage;
 import org.jacp.javafx.rcp.workbench.FXWorkbench;
 import org.jacp.project.launcher.AFXSpringLauncher;
 import org.jacp.test.workbench.Workbench;
+import org.jacp.test.workbench.WorkbenchMissingComponentids;
 
 import java.net.URL;
 import java.util.concurrent.CountDownLatch;
@@ -39,20 +40,20 @@ import java.util.logging.Logger;
  *
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
-public class ApplicationLauncher extends AFXSpringLauncher {
-    private static final Logger log = Logger.getLogger(ApplicationLauncher.class
+public class ApplicationLauncherMissingComponentIds extends AFXSpringLauncher {
+    private static final Logger log = Logger.getLogger(ApplicationLauncherMissingComponentIds.class
             .getName());
     public static final String[] STYLES = new String[2];
     private static final String[] STYLE_FILES = {"/styles/style_light.css", "/styles/style_dark.css"};
     /// binary style sheets created while deployment
     private static final String[] BINARY_FILES = {"/styles/style_light.bss", "/styles/style_dark.bss"};
-      public static CountDownLatch latch = new CountDownLatch(6);
-    public static volatile ApplicationLauncher[] instance = new ApplicationLauncher[1];
-    public ApplicationLauncher() {
+      public static CountDownLatch latch = new CountDownLatch(1);
+    public static volatile ApplicationLauncherMissingComponentIds[] instance = new ApplicationLauncherMissingComponentIds[1];
+    public ApplicationLauncherMissingComponentIds() {
         super("main.xml");
     }
 
-    public ApplicationLauncher(CountDownLatch latch) {
+    public ApplicationLauncherMissingComponentIds(CountDownLatch latch) {
         super("main.xml");
         this.latch =latch;
     }
@@ -66,7 +67,7 @@ public class ApplicationLauncher extends AFXSpringLauncher {
 
     @Override
     protected Class<? extends FXWorkbench> getWorkbechClass() {
-        return Workbench.class;
+        return WorkbenchMissingComponentids.class;
     }
 
     @Override
@@ -91,14 +92,14 @@ public class ApplicationLauncher extends AFXSpringLauncher {
         // add style sheet
         scene.getStylesheets().add(STYLES[0]);
         instance[0]=this;
-        ApplicationLauncher.latch.countDown();
+        ApplicationLauncherMissingComponentIds.latch.countDown();
     }
 
     private static void initStyles() {
         for (int i = 0; i < 2; i++) {
-            URL res = ApplicationLauncher.class.getResource(BINARY_FILES[i]);
+            URL res = ApplicationLauncherMissingComponentIds.class.getResource(BINARY_FILES[i]);
             if (res == null)
-                res = ApplicationLauncher.class.getResource(STYLE_FILES[i]);
+                res = ApplicationLauncherMissingComponentIds.class.getResource(STYLE_FILES[i]);
             STYLES[i] = res.toExternalForm();
             log.info("found: " + STYLES[i] + " stylesheet");
         }

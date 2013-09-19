@@ -18,10 +18,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Time: 21:40
  * To change this template use File | Settings | File Templates.
  */
-@RunWith(Suite.class)
-@Suite.SuiteClasses({ BasicInitialisationTests.class, MissconfigLauncherTest.class,MissconfigWorkbenchTest.class, MissconfigWorkbenchIdTest.class })
+//@RunWith(Suite.class)
+//@Suite.SuiteClasses({ BasicInitialisationTests.class, MissconfigLauncherTest.class,MissconfigWorkbenchTest.class, MissconfigWorkbenchIdTest.class })
 public class AllTests {
-
+  // TODO do not use allTests due to problems with main thread.
     public static void resetApplication() {
         Field launchCalledField = null;
         try {

@@ -1,18 +1,10 @@
 package org.jacp.test.missconfig;
 
 import javafx.application.Platform;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import org.jacp.api.component.IPerspective;
-import org.jacp.javafx.rcp.workbench.AFXWorkbench;
 import org.jacp.test.AllTests;
-import org.jacp.test.main.ApplicationLauncherMissingPerspectives;
 import org.jacp.test.main.ApplicationLauncherMissingWorkbenchId;
 import org.jacp.test.workbench.WorkbenchMissingPerspectives;
-import org.junit.AfterClass;
 import org.junit.Test;
-
-import java.util.List;
 
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.assertNotNull;
@@ -30,7 +22,13 @@ public class MissconfigWorkbenchIdTest {
 
     @Test(expected = RuntimeException.class)
     public void noIDSetOnWorkbench() {
-        ApplicationLauncherMissingWorkbenchId.main(new String[0]);
+
+        try {
+            ApplicationLauncherMissingWorkbenchId.main(new String[0]);
+        } catch (Exception e){
+            e.printStackTrace();
+            throw e;
+        }
         Platform.setImplicitExit(true);
         Platform.exit();
         AllTests.resetApplication();

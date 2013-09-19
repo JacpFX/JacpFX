@@ -27,11 +27,9 @@ package org.jacp.test.components;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import org.jacp.api.action.IAction;
@@ -54,15 +52,15 @@ import java.util.logging.Logger;
  *
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
-@Component(id = "id003", name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
-@View(initialTargetLayoutId = "content1")
-public class TestTwoView implements FXComponent {
+@Component(id = "id006", name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
+@View(initialTargetLayoutId = "")
+public class ComponentMissingInitialTargetId implements FXComponent {
 
-    private final Logger log = Logger.getLogger(TestTwoView.class
+    private final Logger log = Logger.getLogger(ComponentMissingInitialTargetId.class
             .getName());
 
-    String current = "";
-    Button button = new Button("move");
+    String current = "content0";
+    Button button = new Button("move to next target");
     VBox container = new VBox();
     Label label = new Label();
 
@@ -83,13 +81,12 @@ public class TestTwoView implements FXComponent {
      */
     public Node postHandle(final Node arg0,
                                  final IAction<Event, Object> action) {
-        current = context.getParentId();
         if (!action.isMessage(FXUtil.MessageUtil.INIT)) {
-
-            current =   context.getParentId().equals("id02")?"id03":"id02";
-            context.setExecutionTarget(current);
-            label.setText(" current Perspective: "+current);
-
+            String number = current.replace("content","");
+            String value = current.replace(number,"").concat(String.valueOf((Integer.valueOf(number)+1)%3));
+            current = value;
+            context.setTargetLayout(current);
+            label.setText(" current Tagret: "+current);
         } else {
             button.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
@@ -101,13 +98,14 @@ public class TestTwoView implements FXComponent {
                 }
             });
             button.setStyle("-fx-background-color: red");
-            label.setText(" current Perspective: "+current);
+            label.setText(" current Tagret: "+current);
             container.getChildren().addAll(button,label);
             ApplicationLauncher.latch.countDown();
         }
 
         return container;
     }
+
 
 
     @PostConstruct
@@ -119,8 +117,7 @@ public class TestTwoView implements FXComponent {
     public void onStartComponent(final FXComponentLayout arg0,
                                  final ResourceBundle resourceBundle) {
 
-        System.out.println("START TWO");
-        container = new VBox();
+
     }
 
     @PreDestroy

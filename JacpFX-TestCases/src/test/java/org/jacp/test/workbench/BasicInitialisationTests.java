@@ -1,13 +1,8 @@
 package org.jacp.test.workbench;
 
-import com.sun.javafx.application.LauncherImpl;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.stage.Stage;
-import junit.framework.Assert;
-import junit.framework.TestCase;
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.perspective.Perspective;
 import org.jacp.api.component.IPerspective;
@@ -15,7 +10,6 @@ import org.jacp.api.component.ISubComponent;
 import org.jacp.api.component.Injectable;
 import org.jacp.api.context.Context;
 import org.jacp.api.handler.IComponentHandler;
-import org.jacp.javafx.rcp.context.JACPContext;
 import org.jacp.javafx.rcp.util.ClassRegistry;
 import org.jacp.javafx.rcp.workbench.AFXWorkbench;
 import org.jacp.javafx.rcp.workbench.FXWorkbench;
@@ -25,10 +19,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.lang.reflect.Field;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;

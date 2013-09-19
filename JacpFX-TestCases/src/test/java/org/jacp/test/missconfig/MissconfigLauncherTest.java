@@ -1,10 +1,8 @@
 package org.jacp.test.missconfig;
 
 import javafx.application.Platform;
-import org.jacp.api.exceptions.ComponentNotFoundException;
 import org.jacp.javafx.rcp.util.ClassRegistry;
 import org.jacp.test.AllTests;
-import org.jacp.test.main.ApplicationLauncher;
 import org.jacp.test.main.ApplicationLauncherMissconfigWorkbench;
 import org.jacp.test.main.ApplicationLauncherMissconfigWorkbench2;
 import org.junit.AfterClass;

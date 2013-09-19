@@ -1,11 +1,8 @@
 package org.jacp.test.missconfig;
 
 import javafx.application.Platform;
-import org.jacp.api.exceptions.ComponentNotFoundException;
 import org.jacp.test.AllTests;
-import org.jacp.test.main.ApplicationLauncher;
 import org.jacp.test.main.ApplicationLauncherMissingIdInPerspective;
-import org.jacp.test.main.ApplicationLauncherMissingWorkbenchId;
 import org.jacp.test.workbench.WorkbenchMissingPerspectives;
 import org.junit.AfterClass;
 import org.junit.Test;
@@ -25,8 +22,13 @@ public class MissconfigWorkbenchMissingIdInPerspective {
 
     @Test(expected = RuntimeException.class)
     public void failedToStartPerspective() throws Exception {
+         try {
+             ApplicationLauncherMissingIdInPerspective.main(new String[0]);
+         } catch (Exception e){
+             e.printStackTrace();
+             throw e;
+         }
 
-        ApplicationLauncherMissingIdInPerspective.main(new String[0]);
         // Pause briefly to give FX a chance to start
         ApplicationLauncherMissingIdInPerspective.latch.await(5000, TimeUnit.MILLISECONDS);
 

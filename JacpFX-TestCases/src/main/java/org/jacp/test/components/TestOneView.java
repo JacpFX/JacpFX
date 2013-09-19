@@ -61,11 +61,6 @@ public class TestOneView implements FXComponent {
 
     private final Logger log = Logger.getLogger(TestOneView.class
             .getName());
-    @FXML
-    private TextField message;
-
-    @FXML
-    private VBox chatField;
 
     String current = "content0";
     Button button = new Button("move to next target");

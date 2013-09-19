@@ -7,14 +7,12 @@ import org.jacp.api.component.IPerspective;
 import org.jacp.javafx.rcp.workbench.AFXWorkbench;
 import org.jacp.test.AllTests;
 import org.jacp.test.main.*;
-import org.jacp.test.workbench.Workbench;
 import org.jacp.test.workbench.WorkbenchMissingPerspectives;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.assertFalse;
