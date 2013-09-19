@@ -74,7 +74,7 @@ public abstract class AFXSpringLauncher extends Application {
     private EmbeddedFXWorkbench createWorkbench(final Class<? extends FXWorkbench> workbenchHandler,final Launcher<ClassPathXmlApplicationContext> launcher) {
         final Workbench annotation = workbenchHandler.getAnnotation(Workbench.class);
         final String id = annotation.id();
-        if(id.isEmpty()) throw new AttributeNotFoundException("no workbench id found for: "+workbenchHandler.getClass());
+        if(id.isEmpty()) throw new AttributeNotFoundException("no workbench id found for: "+workbenchHandler);
         final FXWorkbench handler = launcher.registerAndGetBean(workbenchHandler, id, Scope.SINGLETON);
         return  new EmbeddedFXWorkbench(handler);
     }

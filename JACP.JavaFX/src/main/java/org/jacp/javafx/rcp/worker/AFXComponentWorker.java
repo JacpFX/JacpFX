@@ -341,12 +341,9 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
             Platform.runLater(() -> {
                 lock.lock();
                 try {
-
                     // prevent execution when application is closed
                     if (ShutdownThreadsHandler.APPLICATION_RUNNING.get())
                         runnable.run();
-                } catch (Exception e) {
-                    e.printStackTrace();
                 } finally {
                     conditionReady.set(true);
                     condition.signal();

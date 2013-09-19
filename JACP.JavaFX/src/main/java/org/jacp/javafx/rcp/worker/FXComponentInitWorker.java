@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2012
  *
  * [FX2ComponentInitWorker.java]
@@ -28,6 +28,7 @@ import javafx.scene.Node;
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.lifecycle.PostConstruct;
 import org.jacp.api.component.IComponentHandle;
+import org.jacp.api.exceptions.AnnotationMissconfigurationException;
 import org.jacp.api.util.UIType;
 import org.jacp.javafx.rcp.component.AComponent;
 import org.jacp.javafx.rcp.component.AFXComponent;
@@ -39,12 +40,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.security.InvalidParameterException;
 import java.util.Map;
+import java.util.Queue;
 import java.util.ResourceBundle;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutionException;
 
 /**
  * Background Worker to execute components; handle method to init component.
- * 
+ *
  * @author Andy Moncsek
  */
 public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
@@ -52,10 +55,11 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	private final Map<String, Node> targetComponents;
 	private final AFXComponent component;
 	private final IAction<Event, Object> action;
+    private final Queue<Exception> exceptionQueue = new ConcurrentLinkedQueue<>();
 
 	/**
 	 * The workers constructor.
-	 * 
+	 *
 	 * @param targetComponents
 	 *            ; a map with all targets provided by perspective
 	 * @param component
@@ -74,7 +78,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	 * Run all methods that need to be invoked before worker thread start to
 	 * run. Programmatic components runs PostConstruct; declarative components init
 	 * the FXML and set the value to root node.
-	 * 
+	 *
 	 * @throws InterruptedException
 	 */
 	private void runPreInitMethods() throws InterruptedException {
@@ -113,7 +117,6 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 
 	@Override
 	protected AFXComponent call() throws Exception {
-		synchronized (this.component) {
 			this.component.lock();
 			runPreInitMethods();
 			try {
@@ -135,7 +138,6 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 			}
 
 			return this.component;
-		}
 	}
 
     /**
@@ -155,7 +157,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 
 	/**
 	 * Run at startup method in perspective.
-	 * 
+	 *
 	 * @param component, the component
      * @param param, all parameters
 	 */
@@ -168,7 +170,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 
 	/**
 	 * Handles "component add" in EDT must be called outside EDT.
-	 * 
+	 *
 	 * @param targetComponents
 	 *            , possible targets in perspective
 	 * @param myComponent
@@ -179,16 +181,17 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	private void addComponent(
 			final Node handleReturnValue, final AFXComponent myComponent,
 			final IAction<Event, Object> myAction,final Map<String, Node> targetComponents) throws Exception {
+        final Thread t = Thread.currentThread();
 		invokeOnFXThreadAndWait(() -> {
             try {
                 executeComponentViewPostHandle(
                         handleReturnValue, myComponent, myAction);
             } catch (Exception e) {
-                e.printStackTrace(); // TODO pass exception
+                t.getUncaughtExceptionHandler().uncaughtException(t, e);
             }
             final String targetLayout = JACPContextImpl.class.cast(this.component.getContext()).getTargetLayout();
             final Node validContainer = this.getValidContainerById(targetComponents,targetLayout);
-            if(validContainer==null && myComponent.getRoot()!=null) throw new InvalidParameterException("no targetLayout for layoutID: "+targetLayout+" found");
+            if(validContainer==null && myComponent.getRoot()!=null) throw new AnnotationMissconfigurationException("no targetLayout for layoutID: "+targetLayout+" found");
             if (validContainer == null || myComponent.getRoot() == null) {
                 return;
             }
@@ -199,7 +202,6 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 
 	@Override
 	public final void done() {
-		synchronized (this.component) {
 			try {
 				this.get();
 			} catch (final InterruptedException e) {
@@ -230,7 +232,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 						FXUtil.ACOMPONENT_STARTED, true);
 			}
 
-		}
+
 	}
 
 }

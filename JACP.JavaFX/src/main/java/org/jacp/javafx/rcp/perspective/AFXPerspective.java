@@ -40,6 +40,7 @@ import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.context.Context;
 import org.jacp.api.coordinator.IComponentCoordinator;
 import org.jacp.api.dialog.Scope;
+import org.jacp.api.exceptions.AnnotationNotFoundException;
 import org.jacp.api.handler.IComponentHandler;
 import org.jacp.api.launcher.Launcher;
 import org.jacp.api.util.UIType;
@@ -236,7 +237,7 @@ public abstract class AFXPerspective extends AComponent implements
         }
 
         if(FXComponent.class.isAssignableFrom(handler.getClass()) && declarativeComponent==null && viewComponent==null) {
-            throw new IllegalArgumentException("FXComponents must declare either @View or @DeclarativeView! no valid annotation found for component:"+componentAnnotation.id());
+            throw new AnnotationNotFoundException("FXComponents must declare either @View or @DeclarativeView! no valid annotation found for component:"+componentAnnotation.id());
         }
 
     }
