@@ -54,26 +54,11 @@ public class WorkbenchUtil {
      * @return  a list with all perspectives associated with a workbench
      */
     public List<IPerspective<EventHandler<Event>, Event, Object>> createPerspectiveInstances(final Workbench annotation) {
-        final String[] ids = annotation.perspectives();
-        final List<String> componentIds = Arrays.asList(ids);
+        final List<String> componentIds = CommonUtil.getNonEmtyStringListFromArray(annotation.perspectives());
         final List<Injectable> perspectiveHandlerList = componentIds.stream()
                 .map(this::mapToInjectable)
                 .collect(Collectors.toList());
-
-        final List<IPerspective<EventHandler<Event>, Event, Object>> result = perspectiveHandlerList.stream().map(this::mapToPerspective).collect(Collectors.toList());
-
-        if(ids.length != result.size()) {
-                 throw new ComponentNotFoundException("following perspective ids are not found: "+findUnresolvedPerspectiveIds(result,Arrays.asList(ids)));
-        }
-        return result;
-    }
-
-    private List<String> findUnresolvedPerspectiveIds(final List<IPerspective<EventHandler<Event>, Event, Object>> result, final List<String> ids) {
-         return ids.parallelStream().filter(p->notContainsId(result, p)).collect(Collectors.toList());
-    }
-
-    private boolean notContainsId(final List<IPerspective<EventHandler<Event>, Event, Object>> result, final String id){
-        return !result.parallelStream().filter(p -> p.getContext().getId().equalsIgnoreCase(id)).findFirst().isPresent();
+        return perspectiveHandlerList.stream().map(this::mapToPerspective).collect(Collectors.toList());
     }
 
     private IPerspective<EventHandler<Event>, Event, Object> mapToPerspective(Injectable handler) {
@@ -81,7 +66,6 @@ public class WorkbenchUtil {
     }
 
     private Injectable mapToInjectable(final String id) {
-        if(id==null || id.isEmpty())  throw new ComponentNotFoundException("following perspective id was not found: "+id);
         final Class perspectiveClass = ClassRegistry.getPerspectiveClassById(id);
         final Object component = launcher.registerAndGetBean(perspectiveClass, id, Scope.SINGLETON);
         if (Injectable.class.isAssignableFrom(component.getClass())) {

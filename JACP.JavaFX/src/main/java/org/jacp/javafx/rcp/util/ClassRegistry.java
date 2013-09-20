@@ -44,6 +44,7 @@ public class ClassRegistry {
      * @return The component class for requested id
      */
     public static Class getComponentClassById(final String id) {
+        if(id==null || id.isEmpty())   throw new ComponentNotFoundException("following component id was not found: "+id);
         final List<Class> result = allClasses.parallelStream()
                 .filter(ClassRegistry::checkForAnntotation)
                 .filter(component -> checkIdMatch(component,id))
@@ -58,6 +59,7 @@ public class ClassRegistry {
      * @return The perspective class for requested id
      */
     public static Class getPerspectiveClassById(final String id) {
+        if(id==null || id.isEmpty())   throw new ComponentNotFoundException("following perspective id was not found: "+id);
         final List<Class> result = allClasses.parallelStream()
                 .filter(ClassRegistry::checkForPerspectiveAnntotation)
                 .filter(component -> checkPerspectiveIdMatch(component, id)).collect(Collectors.toList());
@@ -65,7 +67,7 @@ public class ClassRegistry {
     }
 
     private static Class checkAndGetClassSearch(final List<Class> result,final String id) {
-        if(result.isEmpty()) throw new ComponentNotFoundException("following perspective id was not found: "+id);
+        if(result.isEmpty()) throw new ComponentNotFoundException("following perspective or component id was not found: "+id);
         if(result.size()>1) throw new NonUniqueComponentException("more than one component found for id "+id +" components: "+result);
         return result.get(0);
     }

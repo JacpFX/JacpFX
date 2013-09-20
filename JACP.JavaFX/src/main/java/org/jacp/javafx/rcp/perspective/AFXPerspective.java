@@ -50,12 +50,14 @@ import org.jacp.javafx.rcp.componentLayout.PerspectiveLayout;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
 import org.jacp.javafx.rcp.coordinator.FXComponentCoordinator;
 import org.jacp.javafx.rcp.util.ClassRegistry;
+import org.jacp.javafx.rcp.util.CommonUtil;
 import org.jacp.javafx.rcp.util.ComponentRegistry;
 import org.jacp.javafx.rcp.util.FXUtil;
 
 import java.net.URL;
 import java.security.InvalidParameterException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.BlockingQueue;
@@ -133,14 +135,13 @@ public abstract class AFXPerspective extends AComponent implements
     }
 
     private List<Injectable> getInjectAbles() {
-        final String[] ids = getComponentIds();
-        final List<String> componentIds = Arrays.asList(ids);
-        return componentIds.parallelStream().map(this::mapToInjectAble).collect(Collectors.toList());
+        final List<String> componentIds = CommonUtil.getNonEmtyStringListFromArray(getComponentIds()) ;
+        return componentIds.parallelStream().map(this::mapToInjectAbleComponent).collect(Collectors.toList());
     }
 
-    private Injectable mapToInjectAble(final String id) {
+    // TODO move to Util Class and merge with WorkbenchUitl
+    private Injectable mapToInjectAbleComponent(final String id) {
         final Class componentClass = ClassRegistry.getComponentClassById(id);
-        if(componentClass==null)throw new InvalidParameterException("Component with id: "+id+" not found");
         final Scope scope = getCorrectScopeOfComponent(componentClass);
         final Object component = launcher.registerAndGetBean(componentClass, id, scope);
         if(Injectable.class.isAssignableFrom(component.getClass())) {
