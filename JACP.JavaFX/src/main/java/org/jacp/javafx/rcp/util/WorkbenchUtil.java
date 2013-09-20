@@ -83,7 +83,6 @@ public class WorkbenchUtil {
     private Injectable mapToInjectable(final String id) {
         if(id==null || id.isEmpty())  throw new ComponentNotFoundException("following perspective id was not found: "+id);
         final Class perspectiveClass = ClassRegistry.getPerspectiveClassById(id);
-        if(perspectiveClass==null)  throw new ComponentNotFoundException("following perspective id was not found: "+id);
         final Object component = launcher.registerAndGetBean(perspectiveClass, id, Scope.SINGLETON);
         if (Injectable.class.isAssignableFrom(component.getClass())) {
             return Injectable.class.cast(component);

@@ -103,17 +103,23 @@ public abstract class AFXWorkbench
      * JavaFX specific start sequence
      *
      * @param stage, The JavaFX stage
-     * @throws Exception
      */
     private void start(final Stage stage) {
         this.stage = stage;
-        TearDownHandler.registerBase(this);
-        stage.setOnCloseRequest(arg0 -> {
-            ShutdownThreadsHandler.shutdowAll();
-            TearDownHandler.handleGlobalTearDown();
-            Platform.exit();
-        });
+        this.registerTeardownActions();
         this.log("1: init workbench");
+
+        initWorkbenchHandle(stage);
+
+        this.log("3: handle initialisation sequence");
+        this.perspectives = WorkbenchUtil.getInstance(launcher).createPerspectiveInstances(getWorkbenchAnnotation());
+        if (perspectives == null) return;
+
+        this.initSubsystem();
+        this.handleInitialisationSequence();
+    }
+
+    private void initWorkbenchHandle(final Stage stage) {
         // init user defined workspace
         getWorkbenchHandle().handleInitialLayout(new FXAction("TODO", "init"),
                 this.getWorkbenchLayout(), stage);
@@ -122,16 +128,23 @@ public abstract class AFXWorkbench
         getWorkbenchHandle().postHandle(new FXComponentLayout(this.getWorkbenchLayout()
                 .getMenu(), this.getWorkbenchLayout().getRegisteredToolbars(),
                 this.glassPane));
+    }
 
-        this.log("3: handle initialisation sequence");
-        this.perspectives = WorkbenchUtil.getInstance(launcher).createPerspectiveInstances(getWorkbenchAnnotation());
-        if (perspectives == null) return;
+    private void registerTeardownActions() {
+        TearDownHandler.registerBase(this);
+        stage.setOnCloseRequest(arg0 -> {
+            ShutdownThreadsHandler.shutdowAll();
+            TearDownHandler.handleGlobalTearDown();
+            Platform.exit();
+        });
+    }
+
+    private void initSubsystem() {
         this.componentHandler = new FXWorkbenchHandler(this.launcher,
                 this.workbenchLayout, this.root);
         this.perspectiveCoordinator.setComponentHandler(this.getComponentHandler());
         this.componentDelegator.setComponentHandler(this.getComponentHandler());
         this.messageDelegator.setComponentHandler(this.getComponentHandler());
-        this.handleInitialisationSequence();
     }
 
 

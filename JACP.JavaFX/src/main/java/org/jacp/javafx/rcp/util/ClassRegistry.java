@@ -2,11 +2,14 @@ package org.jacp.javafx.rcp.util;
 
 import org.jacp.api.annotations.component.Component;
 import org.jacp.api.annotations.perspective.Perspective;
+import org.jacp.api.exceptions.ComponentNotFoundException;
+import org.jacp.api.exceptions.NonUniqueComponentException;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 /**
  * Created with IntelliJ IDEA.
@@ -38,30 +41,33 @@ public class ClassRegistry {
     /**
      * Returns a component class by ID
      * @param id
-     * @return
+     * @return The component class for requested id
      */
     public static Class getComponentClassById(final String id) {
-        final Optional<Class> result = allClasses.parallelStream()
+        final List<Class> result = allClasses.parallelStream()
                 .filter(ClassRegistry::checkForAnntotation)
                 .filter(component -> checkIdMatch(component,id))
-                .findFirst();
-
-        return result.isPresent()?result.get():null;
+                .collect(Collectors.toList());
+        return checkAndGetClassSearch(result,id);
 
     }
 
     /**
      * Returns a perspective class by ID.
      * @param id
-     * @return
+     * @return The perspective class for requested id
      */
     public static Class getPerspectiveClassById(final String id) {
-        final Optional<Class> result = allClasses.parallelStream()
+        final List<Class> result = allClasses.parallelStream()
                 .filter(ClassRegistry::checkForPerspectiveAnntotation)
-                .filter(component -> checkPerspectiveIdMatch(component,id))
-                .findFirst();
+                .filter(component -> checkPerspectiveIdMatch(component, id)).collect(Collectors.toList());
+        return checkAndGetClassSearch(result,id);
+    }
 
-        return result.isPresent()?result.get():null;
+    private static Class checkAndGetClassSearch(final List<Class> result,final String id) {
+        if(result.isEmpty()) throw new ComponentNotFoundException("following perspective id was not found: "+id);
+        if(result.size()>1) throw new NonUniqueComponentException("more than one component found for id "+id +" components: "+result);
+        return result.get(0);
     }
 
     private static boolean checkForAnntotation(final Class c) {
