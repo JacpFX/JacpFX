@@ -45,7 +45,14 @@ public interface IPerspectiveView<C, L, A, M> extends IPerspective<L, A, M>, IDe
 	 * @return an IPerspectiveLayout instance to define basic layout stuff for
 	 *         perspective
 	 */
-	IPerspectiveLayout<? extends C, C> getIPerspectiveLayout();
+	IPerspectiveLayout<C, C> getIPerspectiveLayout();
+
+
+    /**
+     * Set the default perspective layout entity for the perspective.
+     * @param layout, The layout dto
+     */
+    void setIPerspectiveLayout(IPerspectiveLayout<C, C> layout);
 
 	
 	

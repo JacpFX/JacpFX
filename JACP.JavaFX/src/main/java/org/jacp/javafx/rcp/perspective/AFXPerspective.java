@@ -30,37 +30,31 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IDelegateDTO;
-import org.jacp.api.annotations.component.Component;
-import org.jacp.api.annotations.component.DeclarativeView;
-import org.jacp.api.annotations.component.Stateless;
-import org.jacp.api.annotations.component.View;
 import org.jacp.api.annotations.perspective.Perspective;
-import org.jacp.api.component.*;
+import org.jacp.api.component.IPerspectiveView;
+import org.jacp.api.component.ISubComponent;
+import org.jacp.api.component.Injectable;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.context.Context;
 import org.jacp.api.coordinator.IComponentCoordinator;
-import org.jacp.api.dialog.Scope;
-import org.jacp.api.exceptions.AnnotationNotFoundException;
 import org.jacp.api.handler.IComponentHandler;
 import org.jacp.api.launcher.Launcher;
 import org.jacp.api.util.UIType;
 import org.jacp.javafx.rcp.action.FXAction;
-import org.jacp.javafx.rcp.component.*;
+import org.jacp.javafx.rcp.component.AComponent;
 import org.jacp.javafx.rcp.componentLayout.PerspectiveLayout;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
 import org.jacp.javafx.rcp.coordinator.FXComponentCoordinator;
-import org.jacp.javafx.rcp.util.*;
+import org.jacp.javafx.rcp.util.ComponentRegistry;
+import org.jacp.javafx.rcp.util.FXUtil;
+import org.jacp.javafx.rcp.util.PerspectiveUtil;
 
 import java.net.URL;
-import java.security.InvalidParameterException;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
  * represents a basic javafx2 perspective that handles subcomponents,
@@ -118,12 +112,12 @@ public abstract class AFXPerspective extends AComponent implements
                 .setMessageDelegateQueue(this.messageDelegateQueue);
         this.componentCoordinator.setParentId(this.getContext().getId());
         this.subcomponents = createAllDeclaredSubcomponents();
-        if (this.subcomponents != null) this.registerSubcomponents(this.subcomponents);
+        if (this.getSubcomponents() != null) this.registerSubcomponents(this.getSubcomponents());
     }
 
     /**
      * Create an returns all declared subcomponents by Perspective annotation.
-     * @return
+     * @return all declared subcomponents
      */
    private List<ISubComponent<EventHandler<Event>, Event, Object>> createAllDeclaredSubcomponents() {
        final Injectable handler =  this.getPerspectiveHandle();
@@ -156,15 +150,12 @@ public abstract class AFXPerspective extends AComponent implements
             PerspectiveUtil.handleComponentMetaAnnotation(component);
             this.log("register component: " + component.getContext().getId());
             ComponentRegistry.registerComponent(component);
-            if (!this.subcomponents.contains(component)) {
-                this.subcomponents.add(component);
+            if (!this.getSubcomponents().contains(component)) {
+                this.getSubcomponents().add(component);
             }
         }
 
     }
-
-
-
 
 
     @Override
@@ -174,8 +165,8 @@ public abstract class AFXPerspective extends AComponent implements
             this.log("unregister component: " + component.getContext().getId());
             component.initEnv(null, null);
             ComponentRegistry.removeComponent(component);
-            if (this.subcomponents.contains(component)) {
-                this.subcomponents.remove(component);
+            if (this.getSubcomponents().contains(component)) {
+                this.getSubcomponents().remove(component);
             }
         }
     }
@@ -225,8 +216,13 @@ public abstract class AFXPerspective extends AComponent implements
     }
 
     @Override
-    public final IPerspectiveLayout<? extends Node, Node> getIPerspectiveLayout() {
+    public final IPerspectiveLayout<Node, Node> getIPerspectiveLayout() {
         return this.perspectiveLayout;
+    }
+
+    @Override
+    public final void setIPerspectiveLayout(final IPerspectiveLayout<Node, Node> layout){
+        this.perspectiveLayout = layout;
     }
 
     @Override

@@ -272,9 +272,8 @@ public class FXWorkbenchHandler implements
 
     private void handleDefaultPerspective(final IPerspective<EventHandler<Event>, Event, Object> perspective, final FXComponentLayout layout) {
         // init default IPerspectiveLayout
-        initLocalization(null, (AFXPerspective) perspective);
-        FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,
-                FXUtil.AFXPERSPECTIVE_PERSPECTIVE_LAYOUT, new FXPerspectiveLayout());
+        initLocalization(null, AFXPerspective.class.cast(perspective));
+        AFXPerspective.class.cast(perspective).setIPerspectiveLayout(new FXPerspectiveLayout());
         FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, perspective.getPerspectiveHandle(), layout, perspective.getContext().getResourceBundle());
     }
 
@@ -282,8 +281,7 @@ public class FXWorkbenchHandler implements
         // init IPerspectiveLayout for FXML
         final URL url = getClass().getResource(perspectiveView.getViewLocation());
         initLocalization(url, (AFXPerspective) perspective);
-        FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,
-                FXUtil.AFXPERSPECTIVE_PERSPECTIVE_LAYOUT, new FXMLPerspectiveLayout(
+        AFXPerspective.class.cast(perspective).setIPerspectiveLayout(new FXMLPerspectiveLayout(
                 loadFXMLandSetController((AFXPerspective) perspectiveView, url)));
         FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, perspective.getPerspectiveHandle(), layout,
                 perspectiveView.getDocumentURL(), perspectiveView.getContext().getResourceBundle());
