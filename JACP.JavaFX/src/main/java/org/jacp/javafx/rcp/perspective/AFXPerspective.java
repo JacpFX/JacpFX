@@ -49,10 +49,7 @@ import org.jacp.javafx.rcp.component.*;
 import org.jacp.javafx.rcp.componentLayout.PerspectiveLayout;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
 import org.jacp.javafx.rcp.coordinator.FXComponentCoordinator;
-import org.jacp.javafx.rcp.util.ClassRegistry;
-import org.jacp.javafx.rcp.util.CommonUtil;
-import org.jacp.javafx.rcp.util.ComponentRegistry;
-import org.jacp.javafx.rcp.util.FXUtil;
+import org.jacp.javafx.rcp.util.*;
 
 import java.net.URL;
 import java.security.InvalidParameterException;
@@ -90,7 +87,9 @@ public abstract class AFXPerspective extends AComponent implements
     private Launcher<?> launcher;
 
     protected Injectable perspectiveHandler;
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void init(
             final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue,
@@ -118,70 +117,26 @@ public abstract class AFXPerspective extends AComponent implements
         this.componentCoordinator
                 .setMessageDelegateQueue(this.messageDelegateQueue);
         this.componentCoordinator.setParentId(this.getContext().getId());
-        initSubcomponentsAndHandlers();
+        this.subcomponents = createAllDeclaredSubcomponents();
         if (this.subcomponents != null) this.registerSubcomponents(this.subcomponents);
     }
 
-    private String[] getComponentIds() {
-        final Injectable handler =  this.getPerspectiveHandle();
-        if(handler==null) throw new IllegalArgumentException("no perspective annotatation found");
-        final Perspective perspectiveAnnotation = handler.getClass()
-                .getAnnotation(Perspective.class);
-        if (perspectiveAnnotation != null) {
-            return perspectiveAnnotation.components();
-        }   else {
-              throw new IllegalArgumentException("no perspective annotatation found");
-        }
-    }
+    /**
+     * Create an returns all declared subcomponents by Perspective annotation.
+     * @return
+     */
+   private List<ISubComponent<EventHandler<Event>, Event, Object>> createAllDeclaredSubcomponents() {
+       final Injectable handler =  this.getPerspectiveHandle();
+       if(handler==null) throw new IllegalArgumentException("No perspective annotatation found");
+       final Perspective perspectiveAnnotation = handler.getClass()
+               .getAnnotation(Perspective.class);
+       return PerspectiveUtil.getInstance(this.launcher).createSubcomponents(perspectiveAnnotation);
 
-    private List<Injectable> getInjectAbles() {
-        final List<String> componentIds = CommonUtil.getNonEmtyStringListFromArray(getComponentIds()) ;
-        return componentIds.parallelStream().map(this::mapToInjectAbleComponent).collect(Collectors.toList());
-    }
+   }
 
-    // TODO move to Util Class and merge with WorkbenchUitl
-    private Injectable mapToInjectAbleComponent(final String id) {
-        final Class componentClass = ClassRegistry.getComponentClassById(id);
-        final Scope scope = getCorrectScopeOfComponent(componentClass);
-        final Object component = launcher.registerAndGetBean(componentClass, id, scope);
-        if(Injectable.class.isAssignableFrom(component.getClass())) {
-            return Injectable.class.cast(component);
-        } else {
-            throw new InvalidParameterException("Only Injectable components are allowed");
-        }
-    }
-
-    private Scope getCorrectScopeOfComponent(final Class componentClass) {
-        Scope scope = Scope.SINGLETON;
-        if(componentClass.isAnnotationPresent(Stateless.class)) {
-            scope = Scope.PROTOTYPE;
-        }
-        return scope;
-    }
-
-    private void initSubcomponentsAndHandlers() {
-        final List<? extends Injectable> handlers = getInjectAbles();
-        if(handlers==null) return;
-        this.subcomponents = handlers.parallelStream().map(this::mapToSubcomponent).collect(Collectors.toList());
-    }
-
-      private ISubComponent<EventHandler<Event>, Event, Object> mapToSubcomponent(Injectable handler) {
-          if(IComponentView.class.isAssignableFrom(handler.getClass())) {
-              return new EmbeddedFXComponent(IComponentView.class.cast(handler));
-          } else if(IComponentHandle.class.isAssignableFrom(handler.getClass())) {
-              if(handler.getClass().isAnnotationPresent(Stateless.class)){
-                  // stateless components
-                  return new EmbeddedStatelessCallbackComponent(IComponentHandle.class.cast(handler));
-              }else {
-                  return new EmbeddedStatefulComponent(IComponentHandle.class.cast(handler));
-              }
-          }else {
-              throw new InvalidParameterException("no useable component interface found");
-          }
-
-      }
-
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void handlePerspective(final IAction<Event, Object> action) {
         getFXPerspectiveHandler().handlePerspective(action,
@@ -198,7 +153,7 @@ public abstract class AFXPerspective extends AComponent implements
             final JACPContextImpl context =  JACPContextImpl.class.cast(component.getContext());
             context.setParentId(this.getContext().getId());
             context.setFXComponentLayout(JACPContextImpl.class.cast(this.getContext()).getComponentLayout());
-            this.handleMetaAnnotation(component);
+            PerspectiveUtil.handleComponentMetaAnnotation(component);
             this.log("register component: " + component.getContext().getId());
             ComponentRegistry.registerComponent(component);
             if (!this.subcomponents.contains(component)) {
@@ -208,106 +163,9 @@ public abstract class AFXPerspective extends AComponent implements
 
     }
 
-    /**
-     * Set meta attributes defined in annotations.
-     *
-     * @param component ; the component containing metadata.
-     */
-    private void handleMetaAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        final IComponentHandle<?,EventHandler<Event>,Event,Object> handler = component.getComponentHandle();
-        if(handler==null)return;
-        final Component componentAnnotation = handler.getClass().getAnnotation(Component.class);
-        if(componentAnnotation==null)throw new IllegalArgumentException("no @Component annotation found.");
-        final DeclarativeView declarativeComponent = handler.getClass()
-                .getAnnotation(DeclarativeView.class);
-        if (declarativeComponent != null && FXComponent.class.isAssignableFrom(handler.getClass())) {
-            handleDeclarativeComponentAnnotation(component,componentAnnotation, declarativeComponent);
-            return;
-        }
-        if(CallbackComponent.class.isAssignableFrom(handler.getClass())){
-            handleCallbackAnnotation(component, componentAnnotation);
-            this.log("register CallbackComponent with annotations : " + componentAnnotation.id());
-            return;
-        }
-        final View viewComponent = handler.getClass()
-                .getAnnotation(View.class);
-        if (viewComponent !=null && FXComponent.class.isAssignableFrom(handler.getClass())) {
-            handleComponentAnnotation(component,viewComponent, componentAnnotation);
-            this.log("register component with annotations : " + componentAnnotation.id());
-            return;
-        }
-
-        if(FXComponent.class.isAssignableFrom(handler.getClass()) && declarativeComponent==null && viewComponent==null) {
-            throw new AnnotationNotFoundException("FXComponents must declare either @View or @DeclarativeView! no valid annotation found for component:"+componentAnnotation.id());
-        }
-
-    }
-
-    private void handleDeclarativeComponentAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component, final Component componentAnnotation, final DeclarativeView declarativeComponent) {
-        setInitialLayoutTarget(component, declarativeComponent.initialTargetLayoutId());
-        setLocale(component, componentAnnotation.localeID());
-        setRessourceBundleLocation(component, componentAnnotation.resourceBundleLocation());
-        handleBaseAttributes(component, componentAnnotation.id(), componentAnnotation.active(),
-                componentAnnotation.name());
-        AFXComponent.class.cast(component).setViewLocation(declarativeComponent.viewLocation());
-    }
-
-    private void handleCallbackAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component, final Component callbackAnnotation) {
-        handleBaseAttributes(component, callbackAnnotation.id(), callbackAnnotation.active(),
-                callbackAnnotation.name());
-    }
-
-    private void handleComponentAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component,final View viewComponent,  final Component componentAnnotation) {
-        handleBaseAttributes(component, componentAnnotation.id(), componentAnnotation.active(),
-                componentAnnotation.name());
-        handleComponentAnnotation(viewComponent,componentAnnotation, component);
-    }
-
-    /**
-     * set component members
-     *
-     * @param  viewComponent, the @View annotation
-     * @param componentAnnotation, the @Component annotation
-     * @param component, the component
-     */
-    private void handleComponentAnnotation(final View viewComponent, final Component componentAnnotation, final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        setInitialLayoutTarget(component, viewComponent.initialTargetLayoutId());
-        setLocale(component, componentAnnotation.localeID());
-        setRessourceBundleLocation(component, componentAnnotation.resourceBundleLocation());
-        this.log("register component with annotations : " + componentAnnotation.id());
-    }
-
-    private void setRessourceBundleLocation(final ISubComponent<EventHandler<Event>, Event, Object> component, String bundleLocation) {
-        if (component.getResourceBundleLocation() != null)
-            component.setResourceBundleLocation(bundleLocation);
-    }
-
-    private void setLocale(final ISubComponent<EventHandler<Event>, Event, Object> component, String locale) {
-        if (component.getLocaleID() != null)
-            component.setLocaleID(locale);
-    }
 
 
-    private void setInitialLayoutTarget(final ISubComponent<EventHandler<Event>, Event, Object> component, String value) {
-        final String targetLayout = JACPContextImpl.class.cast(component.getContext()).getTargetLayout();
-        if (targetLayout==null)
-            component.getContext().setTargetLayout(value);
-    }
 
-    /**
-     * set base component members
-     *
-     * @param component, the component where the base attributes are set
-     * @param id, the component id
-     * @param active, is component active
-     * @param name , the components name
-     */
-    private void handleBaseAttributes(final ISubComponent<EventHandler<Event>, Event, Object> component, final String id, final boolean active,
-                                      final String name) {
-        if (id != null) JACPContextImpl.class.cast(component.getContext()).setId(id);
-        component.getContext().setActive(active);
-        if (name != null) JACPContextImpl.class.cast(component.getContext()).setName(name);
-    }
 
     @Override
     public final void unregisterComponent(
@@ -333,11 +191,11 @@ public abstract class AFXPerspective extends AComponent implements
         components.parallelStream().forEach(component -> {
             if (component.getContext().getId().equals(targetId)) {
                 this.log("3.4.4.2: subcomponent init with custom action");
-                this.componentHandler.initComponent(action, component);
+                this.getComponentHandler().initComponent(action, component);
             } // else END
             else if (component.getContext().isActive() && !component.isStarted()) {
                 this.log("3.4.4.2: subcomponent init with default action");
-                this.componentHandler.initComponent(
+                this.getComponentHandler().initComponent(
                         new FXAction(component.getContext().getId(), component.getContext().getId(),
                                 "init", null), component);
             } // if END

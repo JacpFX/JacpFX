@@ -42,6 +42,11 @@ public class WorkbenchUtil {
         this.launcher = launcher;
     }
 
+    /**
+     * Returns an instance of the WorkbenchUtil
+     * @param launcher
+     * @return  The WorkbechUtil instance
+     */
     public static WorkbenchUtil getInstance(final Launcher<?> launcher) {
         return new WorkbenchUtil(launcher);
     }
