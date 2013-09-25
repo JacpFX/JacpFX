@@ -67,7 +67,7 @@ public class PerspectiveMessagingTestP2 implements FXPerspective {
     @FXML
     private HBox content3;
     @Resource
-    private JACPContext context;
+    private static JACPContext context;
     private AtomicInteger counter = new AtomicInteger(1000);
     public static CountDownLatch wait = new CountDownLatch(1);
 
