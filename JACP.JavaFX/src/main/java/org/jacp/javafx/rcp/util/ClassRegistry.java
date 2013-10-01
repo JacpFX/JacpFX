@@ -1,6 +1,8 @@
 package org.jacp.javafx.rcp.util;
 
 import org.jacp.api.annotations.component.Component;
+import org.jacp.api.annotations.component.DeclarativeView;
+import org.jacp.api.annotations.component.View;
 import org.jacp.api.annotations.perspective.Perspective;
 import org.jacp.api.exceptions.ComponentNotFoundException;
 import org.jacp.api.exceptions.NonUniqueComponentException;
@@ -73,7 +75,7 @@ public class ClassRegistry {
     }
 
     private static boolean checkForAnntotation(final Class c) {
-        return c.isAnnotationPresent(Component.class);
+        return c.isAnnotationPresent(Component.class) || c.isAnnotationPresent(View.class) || c.isAnnotationPresent(DeclarativeView.class);
     }
 
     private static boolean checkForPerspectiveAnntotation(final Class c) {
@@ -81,8 +83,14 @@ public class ClassRegistry {
     }
 
     private static boolean checkIdMatch(final Class component, final String id) {
-        final Component annotation = (Component) component.getAnnotation(Component.class);
-        return annotation.id().equalsIgnoreCase(id);
+        return getIdFromAnnotation(component).equalsIgnoreCase(id);
+    }
+
+    private static String getIdFromAnnotation(final Class component) {
+        if(component.isAnnotationPresent(Component.class))return Component.class.cast(component.getAnnotation(Component.class)).id();
+        if(component.isAnnotationPresent(View.class))return View.class.cast(component.getAnnotation(View.class)).id();
+        if(component.isAnnotationPresent(DeclarativeView.class))return DeclarativeView.class.cast(component.getAnnotation(DeclarativeView.class)).id();
+        return "";
     }
 
     private static boolean checkPerspectiveIdMatch(final Class perspective, final String id) {

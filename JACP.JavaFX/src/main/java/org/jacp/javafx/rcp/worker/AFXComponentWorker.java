@@ -27,6 +27,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
@@ -322,6 +323,23 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
             Logger.getLogger(AFXComponentWorker.class.getName()).fine(
                     ">> " + message);
         }
+    }
+
+    /**
+     * Set desired caching to component
+     * @param cache, chache enabled
+     * @param hint, the cache hint
+     * @param component, the component
+     */
+    void setCacheHints(boolean cache, CacheHint hint, final AFXComponent component) {
+        final Node currentRoot = component.getRoot();
+        if(currentRoot==null) return;
+        final Node parentNode = currentRoot.getParent();
+        if(parentNode==null) return;
+        if (currentRoot.getParent().isCache() != cache)
+            currentRoot.getParent().setCache(cache);
+        if (!currentRoot.getParent().getCacheHint().equals(hint))
+            currentRoot.getParent().setCacheHint(CacheHint.SPEED);
     }
 
     /**

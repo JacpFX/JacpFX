@@ -3,6 +3,7 @@ package org.jacp.javafx.rcp.util;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,6 +21,15 @@ public class CommonUtil {
      * @return
      */
      public static List<String> getNonEmtyStringListFromArray(String[] ids) {
-         return Arrays.asList(ids).stream().filter(id->!id.isEmpty()).collect(Collectors.toList());
+         return Stream.of(ids).filter(id->!id.isEmpty()).collect(Collectors.toList());
      }
+
+    /**
+     * Returns a stream of strings from a string array
+     * @param ids
+     * @return
+     */
+    public static Stream<String> getStringStreamFromArray(String[] ids) {
+        return Stream.of(ids);
+    }
 }

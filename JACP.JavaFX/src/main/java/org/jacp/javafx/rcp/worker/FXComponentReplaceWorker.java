@@ -65,14 +65,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
         this.componentDelegateQueue = componentDelegateQueue;
     }
 
-    private void setCacheHints(boolean cache, CacheHint hint, final AFXComponent component) {
-        final Node currentRoot = component.getRoot();
-        if (currentRoot != null && currentRoot.getParent() != null) {
-            if (currentRoot.getParent().isCache() != cache) currentRoot.getParent().setCache(cache);
-            if (!currentRoot.getParent().getCacheHint().equals(hint))
-                currentRoot.getParent().setCacheHint(CacheHint.SPEED);
-        }
-    }
+
 
     @Override
     protected AFXComponent call() throws Exception {

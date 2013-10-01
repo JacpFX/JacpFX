@@ -16,6 +16,26 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DeclarativeView {
     /**
+     * The components name.
+     *
+     * @return The component name
+     */
+    String name();
+
+    /**
+     * The component id.
+     *
+     * @return The component Id
+     */
+    String id();
+
+    /**
+     * The active state at start time.
+     *
+     * @return True
+     */
+    boolean active() default true;
+    /**
      * Represents the location (URI) of the declarative UI.
      * @return The view location.
      */
@@ -27,4 +47,19 @@ public @interface DeclarativeView {
      * @return  A valid targetLayout id from perspective.
      */
     String initialTargetLayoutId();
+
+    /**
+     * Represents the location of your resource bundle file.
+     *
+     * @return The default resource bundle location (like bundle.messages)
+     */
+    String resourceBundleLocation() default "";
+
+    /**
+     * Represents the Locale ID. see:
+     * http://www.oracle.com/technetwork/java/javase/locales-137662.html
+     *
+     * @return The default locale Id
+     */
+    String localeID() default "";
 }

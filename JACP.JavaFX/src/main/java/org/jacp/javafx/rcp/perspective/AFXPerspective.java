@@ -138,6 +138,7 @@ public abstract class AFXPerspective extends AComponent implements
 
     }
 
+    //TODO extract metadata initialisation to perform this on parallel stream!!!
     @Override
     public final void registerComponent(
             final ISubComponent<EventHandler<Event>, Event, Object> component) {

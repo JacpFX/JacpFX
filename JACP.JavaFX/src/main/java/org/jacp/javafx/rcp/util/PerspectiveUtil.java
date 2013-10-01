@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created with IntelliJ IDEA.
@@ -66,9 +67,10 @@ public class PerspectiveUtil {
      * @param perspectiveAnnotation
      * @return
      */
+    // TODO return a stream here instead of a list!!
     private List<Injectable> getInjectAbles(final Perspective perspectiveAnnotation) {
-        final List<String> componentIds = CommonUtil.getNonEmtyStringListFromArray(getComponentIds(perspectiveAnnotation));
-        return componentIds.parallelStream().map(this::mapToInjectAbleComponent).collect(Collectors.toList());
+        final Stream<String> idStream = CommonUtil.getStringStreamFromArray(getComponentIds(perspectiveAnnotation));
+        return idStream.parallel().filter(id->!id.isEmpty()).map(this::mapToInjectAbleComponent).collect(Collectors.toList());
     }
 
     /**
@@ -139,15 +141,14 @@ public class PerspectiveUtil {
     public static void  handleComponentMetaAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component) {
         final IComponentHandle<?,EventHandler<Event>,Event,Object> handler = component.getComponentHandle();
         if(handler==null)return;
-        final Component componentAnnotation = handler.getClass().getAnnotation(Component.class);
-        if(componentAnnotation==null)throw new IllegalArgumentException("no @Component annotation found.");
         final DeclarativeView declarativeComponent = handler.getClass()
                 .getAnnotation(DeclarativeView.class);
         if (declarativeComponent != null && FXComponent.class.isAssignableFrom(handler.getClass())) {
-            handleDeclarativeComponentAnnotation(component,componentAnnotation, declarativeComponent);
+            handleDeclarativeComponentAnnotation(component,declarativeComponent);
             return;
         }
-        if(CallbackComponent.class.isAssignableFrom(handler.getClass())){
+        final Component componentAnnotation = handler.getClass().getAnnotation(Component.class);
+        if(componentAnnotation !=null && CallbackComponent.class.isAssignableFrom(handler.getClass())){
             handleCallbackAnnotation(component, componentAnnotation);
             log("register CallbackComponent with annotations : " + componentAnnotation.id());
             return;
@@ -155,13 +156,15 @@ public class PerspectiveUtil {
         final View viewComponent = handler.getClass()
                 .getAnnotation(View.class);
         if (viewComponent !=null && FXComponent.class.isAssignableFrom(handler.getClass())) {
-            handleComponentAnnotation(component,viewComponent, componentAnnotation);
-            log("register component with annotations : " + componentAnnotation.id());
+            handleViewComponentAnnotation(component, viewComponent);
+            log("register component with annotations : " + viewComponent.id());
             return;
         }
 
         if(FXComponent.class.isAssignableFrom(handler.getClass()) && declarativeComponent==null && viewComponent==null) {
             throw new AnnotationNotFoundException("FXComponents must declare either @View or @DeclarativeView! no valid annotation found for component:"+componentAnnotation.id());
+        } else if(CallbackComponent.class.isAssignableFrom(handler.getClass()) && componentAnnotation==null) {
+            throw new IllegalArgumentException("no @Component annotation found.");
         }
 
     }
@@ -169,15 +172,14 @@ public class PerspectiveUtil {
     /**
      * Handle all metadata for an declarative component.
      * @param component, The target component.
-     * @param componentAnnotation, The @Component annotation.
      * @param declarativeComponent, The @Declarative component annotation.
      */
-    private static void handleDeclarativeComponentAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component, final Component componentAnnotation, final DeclarativeView declarativeComponent) {
+    private static void handleDeclarativeComponentAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component, final DeclarativeView declarativeComponent) {
         setInitialLayoutTarget(component, declarativeComponent.initialTargetLayoutId());
-        setLocale(component, componentAnnotation.localeID());
-        setResourceBundleLocation(component, componentAnnotation.resourceBundleLocation());
-        handleBaseAttributes(component, componentAnnotation.id(), componentAnnotation.active(),
-                componentAnnotation.name());
+        setLocale(component, declarativeComponent.localeID());
+        setResourceBundleLocation(component, declarativeComponent.resourceBundleLocation());
+        handleBaseAttributes(component, declarativeComponent.id(), declarativeComponent.active(),
+                declarativeComponent.name());
         AFXComponent.class.cast(component).setViewLocation(declarativeComponent.viewLocation());
     }
 
@@ -195,12 +197,14 @@ public class PerspectiveUtil {
      * Set all metadata from @View and @Component annotation to the target component.
      * @param component, The target component.
      * @param viewComponent, The @View annotation.
-     * @param componentAnnotation, The @Component annotation.
      */
-    private static void handleComponentAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component,final View viewComponent,  final Component componentAnnotation) {
-        handleBaseAttributes(component, componentAnnotation.id(), componentAnnotation.active(),
-                componentAnnotation.name());
-        handleComponentAnnotation(viewComponent,componentAnnotation, component);
+    private static void handleViewComponentAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component,final View viewComponent) {
+        handleBaseAttributes(component, viewComponent.id(), viewComponent.active(),
+                viewComponent.name());
+        setInitialLayoutTarget(component, viewComponent.initialTargetLayoutId());
+        setLocale(component, viewComponent.localeID());
+        setResourceBundleLocation(component, viewComponent.resourceBundleLocation());
+        log("register component with annotations : " + viewComponent.id());
     }
 
     /**
@@ -218,19 +222,6 @@ public class PerspectiveUtil {
         if (name != null) JACPContextImpl.class.cast(component.getContext()).setName(name);
     }
 
-    /**
-     * set component members
-     *
-     * @param  viewComponent, the @View annotation
-     * @param componentAnnotation, the @Component annotation
-     * @param component, the component
-     */
-    private static void handleComponentAnnotation(final View viewComponent, final Component componentAnnotation, final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        setInitialLayoutTarget(component, viewComponent.initialTargetLayoutId());
-        setLocale(component, componentAnnotation.localeID());
-        setResourceBundleLocation(component, componentAnnotation.resourceBundleLocation());
-        log("register component with annotations : " + componentAnnotation.id());
-    }
 
     /**
      * Set the resource bundle location to component.
