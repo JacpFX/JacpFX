@@ -1,6 +1,7 @@
 package org.jacp.javafx.rcp.component;
 
 import org.jacp.api.component.IComponentView;
+import org.jacp.api.util.UIType;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,6 +18,7 @@ public class EmbeddedFXComponent extends AFXComponent{
     public EmbeddedFXComponent(IComponentView handle) {
         this.setComponentHandle(handle);
     }
+
 
 
 }

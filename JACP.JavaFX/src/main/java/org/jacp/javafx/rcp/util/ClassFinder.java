@@ -7,7 +7,9 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created with IntelliJ IDEA.
@@ -54,8 +56,8 @@ public class ClassFinder {
      */
     private List<Path> initClassPathDir() {
         final String[] cs = CLASSPATH.split(File.pathSeparator);
-        final List<String> entries = Arrays.asList(cs);
-        return entries.parallelStream()
+        final Stream<String> entries = Stream.of(cs);
+        return entries.parallel()
                 .map(s -> FileSystems.getDefault().getPath(s))
                 .filter(s -> Files.isDirectory(s, LinkOption.NOFOLLOW_LINKS)).collect(Collectors.toList());
 
@@ -72,7 +74,7 @@ public class ClassFinder {
     public Class[] getAll(final String packageName) throws ClassNotFoundException {
 
         final String packageDir = convertPackege(packageName);
-        final List<String> files = new ArrayList<>();
+        final List<String> files = new CopyOnWriteArrayList<>();
         final PathMatcher folderMatcher =
                 FileSystems.getDefault().getPathMatcher("glob:**"+packageDir+"**");
         final SimpleFileVisitor <Path> visitor =   new CollectingFileVisitor(files,folderMatcher);
@@ -119,8 +121,7 @@ public class ClassFinder {
      * @return relativ directory to the package
      */
     private String convertPackege(String packageName) {
-        String sep = File.separator;
-        return packageName.replace(".", sep);
+        return packageName.replace(".", File.separator);
     }
 
     private class CollectingFileVisitor extends SimpleFileVisitor<Path>{

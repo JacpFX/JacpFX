@@ -59,17 +59,26 @@ public class WorkbenchUtil {
      * @return  a list with all perspectives associated with a workbench
      */
     public List<IPerspective<EventHandler<Event>, Event, Object>> createPerspectiveInstances(final Workbench annotation) {
-        final List<String> componentIds = CommonUtil.getNonEmtyStringListFromArray(annotation.perspectives());
-        final List<Injectable> perspectiveHandlerList = componentIds.stream()
-                .map(this::mapToInjectable)
-                .collect(Collectors.toList());
-        return perspectiveHandlerList.stream().map(this::mapToPerspective).collect(Collectors.toList());
+        final Stream<String> componentIds = CommonUtil.getStringStreamFromArray(annotation.perspectives());
+        final Stream<Injectable> perspectiveHandlerList = componentIds
+                .map(this::mapToInjectable);
+        return perspectiveHandlerList.map(this::mapToPerspective).collect(Collectors.toList());
     }
 
+    /**
+     * Returns a FXPerspective instance.
+     * @param handler, the handler
+     * @return The FXPerspective instance
+     */
     private IPerspective<EventHandler<Event>, Event, Object> mapToPerspective(Injectable handler) {
         return new EmbeddedFXPerspective(handler);
     }
 
+    /**
+     * Returns a handler by id.
+     * @param id, The component id
+     * @return, The handler instance.
+     */
     private Injectable mapToInjectable(final String id) {
         final Class perspectiveClass = ClassRegistry.getPerspectiveClassById(id);
         final Object component = launcher.registerAndGetBean(perspectiveClass, id, Scope.SINGLETON);
@@ -102,6 +111,11 @@ public class WorkbenchUtil {
         initResourceBundleAttributes(perspective,perspectiveAnnotation);
     }
 
+    /**
+     * Set all resource bundle attributes.
+     * @param perspective, the perspective instance
+     * @param perspectiveAnnotation, the @Perspective annotation
+     */
     private static void initResourceBundleAttributes(final IPerspective<EventHandler<Event>, Event, Object> perspective,final Perspective perspectiveAnnotation) {
         final String resourceBundleLocation = perspectiveAnnotation
                 .resourceBundleLocation();
@@ -109,21 +123,39 @@ public class WorkbenchUtil {
             perspective.setResourceBundleLocation(resourceBundleLocation);
     }
 
+    /**
+     * Set locale attributes.
+     * @param perspective , the perspective instance
+     * @param perspectiveAnnotation, the @Perspective annotation
+     */
     private static void initLocaleAttributes(final IPerspective<EventHandler<Event>, Event, Object> perspective,final Perspective perspectiveAnnotation) {
         final String localeID = perspectiveAnnotation.localeID();
         if (localeID.length() > 1)
             perspective.setLocaleID(localeID);
     }
 
+    /**
+     * Set all metadata for a declarative perspective
+     * @param perspective , the perspective instance
+     * @param perspectiveAnnotation,the @Perspective annotation
+     */
     private static void initDeclarativePerspectiveParts(final IPerspective<EventHandler<Event>, Event, Object> perspective,final Perspective perspectiveAnnotation) {
         final String viewLocation = perspectiveAnnotation.viewLocation();
         if (viewLocation.length() > 1 && IDeclarative.class.isAssignableFrom(perspective.getClass())) {
-            IDeclarative.class.cast(perspective).setViewLocation(perspectiveAnnotation.viewLocation());
-            FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,
-                    FXUtil.IDECLARATIVECOMPONENT_TYPE, UIType.DECLARATIVE);
+            final IDeclarative declarative = IDeclarative.class.cast(perspective);
+            declarative.setViewLocation(perspectiveAnnotation.viewLocation());
+            declarative.setUIType(UIType.DECLARATIVE);
         }
     }
 
+    /**
+     * Create context object instance.
+     * @param contextInterface, the context instance
+     * @param parentId, the parent id
+     * @param id, the component id
+     * @param active, the active state
+     * @param name, the component name
+     */
     private static void initContext(final Context contextInterface, final String parentId, final String id, final boolean active, final String name) {
         final JACPContextImpl context = JACPContextImpl.class.cast(contextInterface);
         context.setParentId(parentId);

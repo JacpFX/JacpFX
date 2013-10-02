@@ -57,9 +57,8 @@ public class PerspectiveUtil {
      * @return  a list of al declared subcomponent instances.
      */
     public List<ISubComponent<EventHandler<Event>, Event, Object>> createSubcomponents(final Perspective perspectiveAnnotation) {
-        final List<? extends Injectable> handlers = getInjectAbles(perspectiveAnnotation);
-        if (handlers == null) Collections.emptyList();
-        return handlers.parallelStream().map(this::mapToSubcomponent).collect(Collectors.toList());
+        final Stream<? extends Injectable> handlers = getInjectAbles(perspectiveAnnotation);
+        return handlers.map(this::mapToSubcomponent).collect(Collectors.toList());
     }
 
     /**
@@ -67,10 +66,9 @@ public class PerspectiveUtil {
      * @param perspectiveAnnotation
      * @return
      */
-    // TODO return a stream here instead of a list!!
-    private List<Injectable> getInjectAbles(final Perspective perspectiveAnnotation) {
+    private Stream<Injectable> getInjectAbles(final Perspective perspectiveAnnotation) {
         final Stream<String> idStream = CommonUtil.getStringStreamFromArray(getComponentIds(perspectiveAnnotation));
-        return idStream.parallel().filter(id->!id.isEmpty()).map(this::mapToInjectAbleComponent).collect(Collectors.toList());
+        return idStream.parallel().filter(id->!id.isEmpty()).map(this::mapToInjectAbleComponent);
     }
 
     /**

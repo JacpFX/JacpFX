@@ -113,6 +113,12 @@ public abstract class AFXComponent extends ASubComponent implements
 	public final UIType getType() {
 		return type;
 	}
-
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setUIType(UIType type) {
+        this.type = type;
+    }
 
 }

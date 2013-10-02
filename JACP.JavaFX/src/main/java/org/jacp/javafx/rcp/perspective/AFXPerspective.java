@@ -284,6 +284,13 @@ public abstract class AFXPerspective extends AComponent implements
     public final UIType getType() {
         return type;
     }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setUIType(UIType type){
+        this.type = type;
+    }
 
     /**
      * {@inheritDoc}

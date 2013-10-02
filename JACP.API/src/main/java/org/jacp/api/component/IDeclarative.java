@@ -61,4 +61,10 @@ public interface IDeclarative {
 	 */
 	UIType getType();
 
+    /**
+     * Set the UI type to distinguish component types
+     * @param type
+     */
+    void setUIType(UIType type);
+
 }
