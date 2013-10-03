@@ -43,6 +43,7 @@ import org.jacp.javafx.rcp.context.JACPContext;
 import org.jacp.javafx.rcp.perspective.FXPerspective;
 import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 import org.jacp.test.main.ApplicationLauncher;
+import org.jacp.test.main.ApplicationLauncherPerspectiveMessaginTest;
 
 import java.util.ResourceBundle;
 import java.util.concurrent.CountDownLatch;
@@ -68,7 +69,7 @@ public class PerspectiveMessagingTestP2 implements FXPerspective {
     private HBox content3;
     @Resource
     private static JACPContext context;
-    private AtomicInteger counter = new AtomicInteger(1000);
+    public static AtomicInteger counter = new AtomicInteger(10000);
     public static CountDownLatch wait = new CountDownLatch(1);
 
     @Override
@@ -89,13 +90,15 @@ public class PerspectiveMessagingTestP2 implements FXPerspective {
                     this.content2);
             perspectiveLayout.registerTargetLayoutComponent("content2",
                     this.content3);
-            ApplicationLauncher.latch.countDown();
+            ApplicationLauncherPerspectiveMessaginTest.latch.countDown();
         } else {
             if(counter.get()>1){
-                System.out.println("Perspective id10: "+counter.decrementAndGet());
-                context.getActionListener("id09","message").performAction(null);
+                counter.decrementAndGet();
+                context.getActionListener("id10","message").performAction(null);
             }else{
-                wait.countDown();
+                System.out.println("Perspective id11: FINISH");
+               if(wait.getCount()>0) wait.countDown();
+               if(PerspectiveMessagingTestP1.wait.getCount()>0)context.getActionListener("id10","message").performAction(null);
 
             }
 
@@ -105,7 +108,7 @@ public class PerspectiveMessagingTestP2 implements FXPerspective {
 
 
     public static void fireMessage() {
-        context.getActionListener("id09","message").performAction(null);
+        context.getActionListener("id10","message").performAction(null);
     }
 
     private Node createRoot() {
