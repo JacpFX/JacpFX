@@ -42,7 +42,6 @@ import org.jacp.javafx.rcp.componentLayout.PerspectiveLayout;
 import org.jacp.javafx.rcp.context.JACPContext;
 import org.jacp.javafx.rcp.perspective.FXPerspective;
 import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
-import org.jacp.test.main.ApplicationLauncher;
 import org.jacp.test.main.ApplicationLauncherPerspectiveMessaginTest;
 
 import java.util.ResourceBundle;
@@ -55,12 +54,12 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@Perspective(id = "id11", name = "contactPerspective",
+@Perspective(id = "id12", name = "contactPerspective",
         components ={} ,
        // viewLocation = "/fxml/perspectiveOne.fxml",
         resourceBundleLocation = "bundles.languageBundle" ,
         localeID="en_US")
-public class PerspectiveMessagingTestP2 implements FXPerspective {
+public class PerspectiveMessagingTestP3 implements FXPerspective {
     @FXML
     private HBox content1;
     @FXML
@@ -94,11 +93,11 @@ public class PerspectiveMessagingTestP2 implements FXPerspective {
         } else {
             if(counter.get()>1){
                 counter.decrementAndGet();
-                context.getActionListener("id12","message").performAction(null);
+                context.getActionListener("id10","message").performAction(null);
             }else{
-                System.out.println("Perspective id11: FINISH");
+                System.out.println("Perspective id12: FINISH");
                if(wait.getCount()>0) wait.countDown();
-               if(PerspectiveMessagingTestP1.wait.getCount()>0)context.getActionListener("id12","message").performAction(null);
+               if(PerspectiveMessagingTestP1.wait.getCount()>0)context.getActionListener("id10","message").performAction(null);
 
             }
 

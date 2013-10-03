@@ -55,8 +55,8 @@ import java.util.List;
  *
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
-@org.jacp.api.annotations.workbench.Workbench(id = "id1", name="workbench",perspectives = {"id10","id11","id12"})
-public class WorkbenchPerspectiveMessageTesting implements FXWorkbench {
+@org.jacp.api.annotations.workbench.Workbench(id = "id1", name="workbench",perspectives = {"id13"})
+public class WorkbenchComponentMessageTesting1 implements FXWorkbench {
     private Stage stage;
     @Resource
     JACPContext context;
@@ -97,7 +97,7 @@ public class WorkbenchPerspectiveMessageTesting implements FXWorkbench {
         itemHelp.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(final ActionEvent arg0) {
-                final Scene scene = WorkbenchPerspectiveMessageTesting.this.stage.getScene();
+                final Scene scene = WorkbenchComponentMessageTesting1.this.stage.getScene();
                 // index 0 is always the default JACP style
                 scene.getStylesheets().remove(1);
                 scene.getStylesheets().add(ApplicationLauncher.STYLES[count]);

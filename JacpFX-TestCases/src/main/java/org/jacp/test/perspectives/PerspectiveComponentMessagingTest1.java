@@ -42,7 +42,7 @@ import org.jacp.javafx.rcp.componentLayout.PerspectiveLayout;
 import org.jacp.javafx.rcp.context.JACPContext;
 import org.jacp.javafx.rcp.perspective.FXPerspective;
 import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
-import org.jacp.test.main.ApplicationLauncher;
+import org.jacp.test.main.ApplicationLauncherComponentMessaginTest1;
 import org.jacp.test.main.ApplicationLauncherPerspectiveMessaginTest;
 
 import java.util.ResourceBundle;
@@ -55,12 +55,12 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@Perspective(id = "id11", name = "contactPerspective",
-        components ={} ,
+@Perspective(id = "id13", name = "contactPerspective",
+        components ={"id007","id008"} ,
        // viewLocation = "/fxml/perspectiveOne.fxml",
         resourceBundleLocation = "bundles.languageBundle" ,
         localeID="en_US")
-public class PerspectiveMessagingTestP2 implements FXPerspective {
+public class PerspectiveComponentMessagingTest1 implements FXPerspective {
     @FXML
     private HBox content1;
     @FXML
@@ -69,7 +69,7 @@ public class PerspectiveMessagingTestP2 implements FXPerspective {
     private HBox content3;
     @Resource
     private static JACPContext context;
-    public static AtomicInteger counter = new AtomicInteger(10000);
+
     public static CountDownLatch wait = new CountDownLatch(1);
 
     @Override
@@ -90,25 +90,14 @@ public class PerspectiveMessagingTestP2 implements FXPerspective {
                     this.content2);
             perspectiveLayout.registerTargetLayoutComponent("content2",
                     this.content3);
-            ApplicationLauncherPerspectiveMessaginTest.latch.countDown();
-        } else {
-            if(counter.get()>1){
-                counter.decrementAndGet();
-                context.getActionListener("id12","message").performAction(null);
-            }else{
-                System.out.println("Perspective id11: FINISH");
-               if(wait.getCount()>0) wait.countDown();
-               if(PerspectiveMessagingTestP1.wait.getCount()>0)context.getActionListener("id12","message").performAction(null);
-
-            }
-
+            ApplicationLauncherComponentMessaginTest1.latch.countDown();
         }
 
     }
 
 
     public static void fireMessage() {
-        context.getActionListener("id10","message").performAction(null);
+        context.getActionListener("id13.id007","message").performAction(null);
     }
 
     private Node createRoot() {

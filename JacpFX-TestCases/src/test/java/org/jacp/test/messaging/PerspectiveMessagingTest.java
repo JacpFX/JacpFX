@@ -7,6 +7,7 @@ import org.jacp.test.main.ApplicationLauncher;
 import org.jacp.test.main.ApplicationLauncherPerspectiveMessaginTest;
 import org.jacp.test.perspectives.PerspectiveMessagingTestP1;
 import org.jacp.test.perspectives.PerspectiveMessagingTestP2;
+import org.jacp.test.perspectives.PerspectiveMessagingTestP3;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -58,11 +59,14 @@ public class PerspectiveMessagingTest {
     private void executeMessaging() throws InterruptedException {
         PerspectiveMessagingTestP1.wait= new CountDownLatch(1);
         PerspectiveMessagingTestP2.wait= new CountDownLatch(1);
+        PerspectiveMessagingTestP3.wait= new CountDownLatch(1);
         PerspectiveMessagingTestP1.counter = new AtomicInteger(10000);
         PerspectiveMessagingTestP2.counter = new AtomicInteger(10000);
+        PerspectiveMessagingTestP3.counter = new AtomicInteger(10000);
         PerspectiveMessagingTestP1.fireMessage();
         PerspectiveMessagingTestP1.wait.await();
         PerspectiveMessagingTestP2.wait.await();
+        PerspectiveMessagingTestP3.wait.await();
     }
 
     private void warmUp() throws InterruptedException {
@@ -70,7 +74,7 @@ public class PerspectiveMessagingTest {
     }
 
     @Test
-    // default execution time was 54312 ms (linux)
+    // default execution time was 54312 ms (linux) , macos 17826ms  // macos with 3 persp. and 300000 messages Execution time was 28494 ms.
     public void testPerspectiveMessaging() throws InterruptedException {
         warmUp();
         long start = System.currentTimeMillis();

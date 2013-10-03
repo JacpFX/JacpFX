@@ -28,7 +28,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.jacp.javafx.rcp.workbench.FXWorkbench;
 import org.jacp.project.launcher.AFXSpringLauncher;
-import org.jacp.test.workbench.Workbench;
+import org.jacp.test.workbench.WorkbenchComponentMessageTesting1;
 import org.jacp.test.workbench.WorkbenchPerspectiveMessageTesting;
 
 import java.net.URL;
@@ -40,20 +40,20 @@ import java.util.logging.Logger;
  *
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
-public class ApplicationLauncherPerspectiveMessaginTest extends AFXSpringLauncher {
-    private static final Logger log = Logger.getLogger(ApplicationLauncherPerspectiveMessaginTest.class
+public class ApplicationLauncherComponentMessaginTest1 extends AFXSpringLauncher {
+    private static final Logger log = Logger.getLogger(ApplicationLauncherComponentMessaginTest1.class
             .getName());
     public static final String[] STYLES = new String[2];
     private static final String[] STYLE_FILES = {"/styles/style_light.css", "/styles/style_dark.css"};
     /// binary style sheets created while deployment
     private static final String[] BINARY_FILES = {"/styles/style_light.bss", "/styles/style_dark.bss"};
       public static CountDownLatch latch = new CountDownLatch(4);
-    public static volatile ApplicationLauncherPerspectiveMessaginTest[] instance = new ApplicationLauncherPerspectiveMessaginTest[1];
-    public ApplicationLauncherPerspectiveMessaginTest() {
+    public static volatile ApplicationLauncherComponentMessaginTest1[] instance = new ApplicationLauncherComponentMessaginTest1[1];
+    public ApplicationLauncherComponentMessaginTest1() {
         super("main.xml");
     }
 
-    public ApplicationLauncherPerspectiveMessaginTest(CountDownLatch latch) {
+    public ApplicationLauncherComponentMessaginTest1(CountDownLatch latch) {
         super("main.xml");
         this.latch =latch;
     }
@@ -67,7 +67,7 @@ public class ApplicationLauncherPerspectiveMessaginTest extends AFXSpringLaunche
 
     @Override
     protected Class<? extends FXWorkbench> getWorkbechClass() {
-        return WorkbenchPerspectiveMessageTesting.class;
+        return WorkbenchComponentMessageTesting1.class;
     }
 
     @Override
@@ -92,14 +92,14 @@ public class ApplicationLauncherPerspectiveMessaginTest extends AFXSpringLaunche
         // add style sheet
         scene.getStylesheets().add(STYLES[0]);
         instance[0]=this;
-        ApplicationLauncherPerspectiveMessaginTest.latch.countDown();
+        ApplicationLauncherComponentMessaginTest1.latch.countDown();
     }
 
     private static void initStyles() {
         for (int i = 0; i < 2; i++) {
-            URL res = ApplicationLauncherPerspectiveMessaginTest.class.getResource(BINARY_FILES[i]);
+            URL res = ApplicationLauncherComponentMessaginTest1.class.getResource(BINARY_FILES[i]);
             if (res == null)
-                res = ApplicationLauncherPerspectiveMessaginTest.class.getResource(STYLE_FILES[i]);
+                res = ApplicationLauncherComponentMessaginTest1.class.getResource(STYLE_FILES[i]);
             STYLES[i] = res.toExternalForm();
             log.info("found: " + STYLES[i] + " stylesheet");
         }
