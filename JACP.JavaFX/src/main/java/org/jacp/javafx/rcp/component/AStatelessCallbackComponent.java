@@ -83,13 +83,17 @@ public abstract class AStatelessCallbackComponent extends ASubComponent
 
         final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> comp = new EmbeddedStatelessCallbackComponent(handler);
         comp.initEnv(this.getParentId(), this.globalMessageQueue);
+        initContextObject(comp);
+		return comp;
+	}
+
+    private void initContextObject(final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> comp) {
         JACPContextImpl context = JACPContextImpl.class.cast(comp.getContext());
         context.setId(this.getContext().getId());
         context.setActive(this.getContext().isActive());
         context.setName(this.getContext().getName());
         context.setExecutionTarget(JACPContextImpl.class.cast(context).getExecutionTarget());
-		return comp;
-	}
+    }
 
 	@Override
 	public final List<ISubComponent<EventHandler<Event>, Event, Object>> getInstances() {

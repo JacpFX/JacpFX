@@ -224,7 +224,7 @@ public abstract class AFXWorkbench
     public final void registerComponent(
             final IPerspective<EventHandler<Event>, Event, Object> perspective) {
 
-
+          // use compleatableFuture
         perspective.init(this.componentDelegator.getComponentDelegateQueue(),
                 this.messageDelegator.getMessageDelegateQueue(),
                 this.perspectiveCoordinator.getMessageQueue(), this.launcher);
