@@ -84,14 +84,8 @@ public class FXPerspectiveHandler
 	public final void handleAndReplaceComponent(
 			final IAction<Event, Object> action,
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
-		if (component.isBlocked() && component.isStarted()) {
-			this.putMessageToQueue(action,component);
-			this.log("ADD TO QUEUE:::" + component.getContext().getName());
-		} else {
-			this.executeComponentReplaceThread(this.perspectiveLayout,
-					component, action);
-
-		}
+        this.executeComponentReplaceThread(this.perspectiveLayout,
+                component, action);
 		this.log("DONE EXECUTE REPLACE:::" + component.getContext().getName());
 	}
 
@@ -154,9 +148,11 @@ public class FXPerspectiveHandler
 			final IPerspectiveLayout<? extends Node, Node> perspectiveLayout,
 			final ISubComponent<EventHandler<Event>, Event, Object> component)
 			 {
-		this.executor.execute(new FXComponentReplaceWorker(perspectiveLayout
-				.getTargetLayoutComponents(), this.componentDelegateQueue,
-				((AFXComponent) component)));
+                 if (!component.isBlocked()) {
+		            this.executor.execute(new FXComponentReplaceWorker(perspectiveLayout
+                        .getTargetLayoutComponents(), this.componentDelegateQueue,
+                        ((AFXComponent) component)));
+                 }  // otherwise message is already in queue and will be handled in worker loop
 	}
 
 	/**

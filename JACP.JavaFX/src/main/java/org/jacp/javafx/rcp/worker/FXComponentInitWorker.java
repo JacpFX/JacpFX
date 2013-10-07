@@ -81,7 +81,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	 *
 	 * @throws InterruptedException
 	 */
-	private void runPreInitMethods() throws InterruptedException {
+	private void runPreInitMethods() throws InterruptedException, ExecutionException {
 		this.invokeOnFXThreadAndWait(()->{
                 final FXComponentLayout layout = JACPContextImpl.class.cast(component.getContext()).getComponentLayout();
 				if (component.getType().equals(UIType.DECLARATIVE)) {

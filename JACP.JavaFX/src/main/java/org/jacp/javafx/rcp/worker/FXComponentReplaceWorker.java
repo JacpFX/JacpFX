@@ -39,6 +39,7 @@ import java.security.InvalidParameterException;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
 /**
@@ -70,8 +71,9 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
     @Override
     protected AFXComponent call() throws Exception {
         try {
-            this.component.lock();
+
             while (this.component.hasIncomingMessage()) {
+                this.component.lock();
                 final IAction<Event, Object> myAction = this.component
                         .getNextIncomingMessage();
                 this.log(" //1.1.1.1.1// handle replace component BEGIN: "
@@ -87,11 +89,10 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
                         this.component, myAction);
                 this.log(" //1.1.1.1.3// publish component: "
                         + this.component.getContext().getName());
-
                 this.publish(this.component, myAction, this.targetComponents,
                         handleReturnValue, previousContainer,
                         currentTargetLayout, currentExecutionTarget);
-
+                this.component.release();
             }
         } catch (final IllegalStateException e) {
             if (e.getMessage().contains("Not on FX application thread")) {
@@ -100,7 +101,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
                         e);
             }
         } finally {
-            this.component.release();
+            if(this.component.isBlocked())this.component.release();
         }
         return this.component;
     }
@@ -115,7 +116,8 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
                          final Map<String, Node> targetComponents,
                          final Node handleReturnValue,
                          final Node previousContainer, final String currentTargetLayout, final String currentExecutionTarget)
-            throws InterruptedException {
+            throws InterruptedException, ExecutionException {
+        //final ThrowableWrapper throwableWrapper = new ThrowableWrapper();
         this.invokeOnFXThreadAndWait(() -> {
             setCacheHints(true, CacheHint.SPEED, component);
             // check if component was set to inactive, if so remove
@@ -128,7 +130,6 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
                             component, targetComponents, layout,
                             previousContainer, currentTargetLayout, currentExecutionTarget);
                 } else {
-                    // TODO merge with code from  publishComponentValue
                     // unregister component
                     FXComponentReplaceWorker.this.removeComponentValue(
                             previousContainer);

@@ -78,7 +78,7 @@ public class FXComponentMessagingTest {
     }
 
     @Test
-    // default Execution time with was 21496 ms. with ui --  without ui 15524ms (mac)
+    // default Execution with ui time was 82442/82854/79245 ms.. with ui --  without ui 41751/41750/40689 linux
     public void testComponentMessaging() throws InterruptedException {
         warmUp();
         withUI();

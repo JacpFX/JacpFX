@@ -48,6 +48,8 @@ import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Condition;
@@ -349,7 +351,12 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
      * @param runnable, a runnable which will be invoked and wait until execution is finished
      * @throws InterruptedException
      */
-    final void invokeOnFXThreadAndWait(final Runnable runnable)
+    final void invokeOnFXThreadAndWait(Runnable runnable) throws InterruptedException, ExecutionException {
+        final FutureTask future = new FutureTask(runnable, null);
+        Platform.runLater(future);
+        future.get();
+    }
+    /*final void invokeOnFXThreadAndWait(final Runnable runnable)
             throws InterruptedException {
         final Lock lock = new ReentrantLock();
         final Condition condition = lock.newCondition();
@@ -378,6 +385,6 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
         } finally {
             lock.unlock();
         }
-    }
+    }*/
 
 }
