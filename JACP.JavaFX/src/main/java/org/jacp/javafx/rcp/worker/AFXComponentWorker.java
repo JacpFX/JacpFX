@@ -44,12 +44,12 @@ import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
 import org.jacp.javafx.rcp.util.FXUtil;
 import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
+import org.jacp.javafx.rcp.util.ThrowableWrapper;
 
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Condition;
@@ -349,18 +349,19 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
      * finished
      *
      * @param runnable, a runnable which will be invoked and wait until execution is finished
-     * @throws InterruptedException
+     * @throws InterruptedException,ExecutionException
      */
-    final void invokeOnFXThreadAndWait(Runnable runnable) throws InterruptedException, ExecutionException {
+/*    final void invokeOnFXThreadAndWait(Runnable runnable) throws InterruptedException, ExecutionException {
         final FutureTask future = new FutureTask(runnable, null);
         Platform.runLater(future);
         future.get();
-    }
-    /*final void invokeOnFXThreadAndWait(final Runnable runnable)
-            throws InterruptedException {
+    }*/
+    final void invokeOnFXThreadAndWait(final Runnable runnable)
+            throws InterruptedException,ExecutionException {
         final Lock lock = new ReentrantLock();
         final Condition condition = lock.newCondition();
         final AtomicBoolean conditionReady = new AtomicBoolean(false);
+        final ThrowableWrapper throwableWrapper = new ThrowableWrapper();
         lock.lock();
         try {
             Platform.runLater(() -> {
@@ -369,7 +370,10 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
                     // prevent execution when application is closed
                     if (ShutdownThreadsHandler.APPLICATION_RUNNING.get())
                         runnable.run();
-                } finally {
+                }catch (Throwable t) {
+                    throwableWrapper.t = t;
+                }
+                finally {
                     conditionReady.set(true);
                     condition.signal();
                     lock.unlock();
@@ -382,9 +386,12 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
                     && ShutdownThreadsHandler.APPLICATION_RUNNING.get())
                 condition.await(ShutdownThreadsHandler.WAIT,
                         TimeUnit.MILLISECONDS);
+            if (throwableWrapper.t != null) {
+                throw new ExecutionException(throwableWrapper.t);
+            }
         } finally {
             lock.unlock();
         }
-    }*/
+    }
 
 }
