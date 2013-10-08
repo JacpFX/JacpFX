@@ -29,6 +29,7 @@ import org.jacp.api.action.IDelegateDTO;
 import org.jacp.api.component.IComponent;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.coordinator.IComponentCoordinator;
+import org.jacp.api.exceptions.ComponentNotFoundException;
 import org.jacp.api.handler.IComponentHandler;
 import org.jacp.javafx.rcp.registry.ComponentRegistry;
 import org.jacp.javafx.rcp.util.FXUtil;
@@ -40,13 +41,13 @@ import java.util.concurrent.BlockingQueue;
  *
  * @author Andy Moncsek
  */
-public class FXComponentCoordinator extends AFXCoordinator implements
+public class FXComponentMessageCoordinator extends AFXCoordinator implements
         IComponentCoordinator<EventHandler<Event>, Event, Object> {
     private IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler;
     private BlockingQueue<IDelegateDTO<Event, Object>> delegateQueue;
     private String parentId;
 
-    public FXComponentCoordinator() {
+    public FXComponentMessageCoordinator() {
         super("FXComponentCoordinator");
     }
 
@@ -107,8 +108,8 @@ public class FXComponentCoordinator extends AFXCoordinator implements
                                                                                  final IAction<Event, Object> action) {
         final ISubComponent<EventHandler<Event>, Event, Object> component = ComponentRegistry.findComponentById(targetId);
 
-        if (component == null) throw new UnsupportedOperationException(
-                "invalid component id handling not supported yet. Source: "
+        if (component == null) throw new ComponentNotFoundException(
+                "invalid component id. Source: "
                         + action.getSourceId() + " target: "
                         + action.getTargetId());
         return component;

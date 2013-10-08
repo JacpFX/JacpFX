@@ -27,6 +27,7 @@ import javafx.event.EventHandler;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IDelegateDTO;
 import org.jacp.api.coordinator.ICoordinator;
+import org.jacp.javafx.rcp.delegator.DelegateDTO;
 import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
 
 import java.util.concurrent.ArrayBlockingQueue;

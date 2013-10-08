@@ -40,13 +40,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * 
  * @author Andy Moncsek
  */
-public class FXPerspectiveCoordinator extends AFXCoordinator implements
+public class FXPerspectiveMessageCoordinator extends AFXCoordinator implements
 		IPerspectiveCoordinator<EventHandler<Event>, Event, Object> {
 
 	private final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = new CopyOnWriteArrayList<>();
 	private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler;
 
-	public FXPerspectiveCoordinator() {
+	public FXPerspectiveMessageCoordinator() {
 		super("FXPerspectiveCoordinator");
 	}
 
@@ -117,7 +117,7 @@ public class FXPerspectiveCoordinator extends AFXCoordinator implements
 	@Override
 	public <P extends IComponent<EventHandler<Event>, Event, Object>> void handleActive(
 			final P component, final IAction<Event, Object> action) {
-		Platform.runLater(() -> FXPerspectiveCoordinator.this.componentHandler
+		Platform.runLater(() -> FXPerspectiveMessageCoordinator.this.componentHandler
                 .handleAndReplaceComponent(
                         action,
                         (IPerspective<EventHandler<Event>, Event, Object>) component) // End runnable
@@ -128,7 +128,7 @@ public class FXPerspectiveCoordinator extends AFXCoordinator implements
 	public <P extends IComponent<EventHandler<Event>, Event, Object>> void handleInActive(
 			final P component, final IAction<Event, Object> action) {
 		component.getContext().setActive(true);
-		Platform.runLater(() -> FXPerspectiveCoordinator.this.componentHandler
+		Platform.runLater(() -> FXPerspectiveMessageCoordinator.this.componentHandler
                 .initComponent(
                         action,
                         (IPerspective<EventHandler<Event>, Event, Object>) component));

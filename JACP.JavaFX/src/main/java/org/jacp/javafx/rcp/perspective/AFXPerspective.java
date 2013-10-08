@@ -44,7 +44,7 @@ import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.component.AComponent;
 import org.jacp.javafx.rcp.componentLayout.PerspectiveLayout;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
-import org.jacp.javafx.rcp.coordinator.FXComponentCoordinator;
+import org.jacp.javafx.rcp.coordinator.FXComponentMessageCoordinator;
 import org.jacp.javafx.rcp.registry.ComponentRegistry;
 import org.jacp.javafx.rcp.util.FXUtil;
 import org.jacp.javafx.rcp.util.PerspectiveUtil;
@@ -105,8 +105,8 @@ public abstract class AFXPerspective extends AComponent implements
             final IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler) {
         // init component handler
         this.componentHandler = componentHandler;
-        this.componentCoordinator = new FXComponentCoordinator();
-        ((FXComponentCoordinator) this.componentCoordinator).start();
+        this.componentCoordinator = new FXComponentMessageCoordinator();
+        ((FXComponentMessageCoordinator) this.componentCoordinator).start();
         this.componentCoordinator.setComponentHandler(this.componentHandler);
         this.componentCoordinator
                 .setMessageDelegateQueue(this.messageDelegateQueue);

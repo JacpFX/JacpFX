@@ -40,8 +40,8 @@ import org.jacp.api.component.IRootComponent;
 import org.jacp.api.component.Injectable;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
 import org.jacp.api.context.Context;
-import org.jacp.api.coordinator.IComponentDelegator;
-import org.jacp.api.coordinator.IMessageDelegator;
+import org.jacp.api.delegator.IComponentDelegator;
+import org.jacp.api.delegator.IMessageDelegator;
 import org.jacp.api.coordinator.IPerspectiveCoordinator;
 import org.jacp.api.handler.IComponentHandler;
 import org.jacp.api.launcher.Launcher;
@@ -56,10 +56,10 @@ import org.jacp.javafx.rcp.components.modalDialog.JACPModalDialog;
 import org.jacp.javafx.rcp.components.toolBar.JACPToolBar;
 import org.jacp.javafx.rcp.context.JACPContext;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
-import org.jacp.javafx.rcp.coordinator.FXComponentDelegator;
-import org.jacp.javafx.rcp.coordinator.FXMessageDelegator;
-import org.jacp.javafx.rcp.coordinator.FXPerspectiveCoordinator;
-import org.jacp.javafx.rcp.handler.FXWorkbenchHandler;
+import org.jacp.javafx.rcp.delegator.FXComponentDelegator;
+import org.jacp.javafx.rcp.delegator.FXMessageDelegator;
+import org.jacp.javafx.rcp.coordinator.FXPerspectiveMessageCoordinator;
+import org.jacp.javafx.rcp.handler.FXPerspectiveHandler;
 import org.jacp.javafx.rcp.perspective.AFXPerspective;
 import org.jacp.javafx.rcp.registry.PerspectiveRegistry;
 import org.jacp.javafx.rcp.util.*;
@@ -84,7 +84,7 @@ public abstract class AFXWorkbench
     private List<IPerspective<EventHandler<Event>, Event, Object>> perspectives;
 
     private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler;
-    private final IPerspectiveCoordinator<EventHandler<Event>, Event, Object> perspectiveCoordinator = new FXPerspectiveCoordinator();
+    private final IPerspectiveCoordinator<EventHandler<Event>, Event, Object> perspectiveCoordinator = new FXPerspectiveMessageCoordinator();
     private final IComponentDelegator<EventHandler<Event>, Event, Object> componentDelegator = new FXComponentDelegator();
     private final IMessageDelegator<EventHandler<Event>, Event, Object> messageDelegator = new FXMessageDelegator();
     private final IWorkbenchLayout<Node> workbenchLayout = new FXWorkbenchLayout();
@@ -141,7 +141,7 @@ public abstract class AFXWorkbench
     }
 
     private void initSubsystem() {
-        this.componentHandler = new FXWorkbenchHandler(this.launcher,
+        this.componentHandler = new FXPerspectiveHandler(this.launcher,
                 this.workbenchLayout, this.root);
         this.perspectiveCoordinator.setComponentHandler(this.getComponentHandler());
         this.componentDelegator.setComponentHandler(this.getComponentHandler());
@@ -206,7 +206,7 @@ public abstract class AFXWorkbench
         // TODO create status daemon which observes
         // thread component on
         // failure and restarts if needed!!
-        ((FXPerspectiveCoordinator) AFXWorkbench.this.perspectiveCoordinator)
+        ((FXPerspectiveMessageCoordinator) AFXWorkbench.this.perspectiveCoordinator)
                 .start();
         ((FXComponentDelegator) AFXWorkbench.this.componentDelegator)
                 .start();
