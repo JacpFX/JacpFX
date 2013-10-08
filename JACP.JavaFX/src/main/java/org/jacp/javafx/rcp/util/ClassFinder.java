@@ -23,6 +23,7 @@ public class ClassFinder {
      * Defined classpath
      */
     private static final String CLASSPATH = System.getProperty("java.class.path");
+    private static String OS = System.getProperty("os.name").toLowerCase();
     /**
      * List with the jar files on the classpath
      */
@@ -39,7 +40,17 @@ public class ClassFinder {
     private final PathMatcher matcher =
             FileSystems.getDefault().getPathMatcher("glob:*.class");
 
+    private static final String FILE_SEPERATOR;
 
+    static{
+        FILE_SEPERATOR=isWindows()?File.separator+""+File.separator:File.separator;
+    }
+
+    public static boolean isWindows() {
+
+        return (OS.indexOf("win") >= 0);
+
+    }
 
     /**
      * Default constructur initializes the directories indicated by the
@@ -76,7 +87,7 @@ public class ClassFinder {
         final String packageDir = convertPackege(packageName);
         final List<String> files = new CopyOnWriteArrayList<>();
         final PathMatcher folderMatcher =
-                FileSystems.getDefault().getPathMatcher("glob:**"+packageDir+"**");
+                FileSystems.getDefault().getPathMatcher("glob:**"+convertPackageToRegex(packageName)+"**");
         final SimpleFileVisitor <Path> visitor =   new CollectingFileVisitor(files,folderMatcher);
         binDirs.parallelStream().forEach(dir -> {
             try {
@@ -98,7 +109,7 @@ public class ClassFinder {
 
         return files.parallelStream()
                 .map(dir -> dir.substring(dir.lastIndexOf(packageDir), dir.length()))
-                .map(subdir -> subdir.replace(File.separator, "."))
+                .map(subDir -> subDir.replace(File.separator, "."))
                 .map(className -> className.substring(0, className
                         .lastIndexOf(".class")))
                 .filter(classFile -> !classFile.contains("$"))
@@ -121,7 +132,12 @@ public class ClassFinder {
      * @return relativ directory to the package
      */
     private String convertPackege(String packageName) {
+
         return packageName.replace(".", File.separator);
+    }
+
+    private String convertPackageToRegex(String packageName){
+        return packageName.replace(".", FILE_SEPERATOR);
     }
 
     private class CollectingFileVisitor extends SimpleFileVisitor<Path>{
