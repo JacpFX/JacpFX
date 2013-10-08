@@ -20,11 +20,12 @@
  *
  *
  ************************************************************************/
-package org.jacp.javafx.rcp.util;
+package org.jacp.javafx.rcp.registry;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import org.jacp.api.component.ISubComponent;
+import org.jacp.javafx.rcp.util.FXUtil;
 
 import java.util.List;
 import java.util.Optional;
@@ -86,7 +87,7 @@ public class ComponentRegistry {
 		lock.readLock().lock();
 		try{
 			return FXUtil.getObserveableById(FXUtil.getTargetComponentId(targetId),
-					components);
+                    components);
 		}finally{
 			lock.readLock().unlock();
 		}		

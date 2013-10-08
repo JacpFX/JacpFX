@@ -1,4 +1,4 @@
-package org.jacp.javafx.rcp.util;
+package org.jacp.javafx.rcp.registry;
 
 import org.jacp.api.annotations.component.Component;
 import org.jacp.api.annotations.component.DeclarativeView;
@@ -9,7 +9,6 @@ import org.jacp.api.exceptions.NonUniqueComponentException;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 

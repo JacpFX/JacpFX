@@ -6,20 +6,14 @@ import org.jacp.api.exceptions.AnnotationNotFoundException;
 import org.jacp.api.exceptions.AttributeNotFoundException;
 import org.jacp.api.exceptions.ComponentNotFoundException;
 import org.jacp.api.launcher.Launcher;
-import org.jacp.api.workbench.IWorkbench;
 import org.jacp.javafx.rcp.util.ClassFinder;
-import org.jacp.javafx.rcp.util.ClassRegistry;
-import org.jacp.javafx.rcp.util.ComponentRegistry;
-import org.jacp.javafx.rcp.util.FXUtil;
+import org.jacp.javafx.rcp.registry.ClassRegistry;
 import org.jacp.javafx.rcp.workbench.AFXWorkbench;
 import org.jacp.javafx.rcp.workbench.EmbeddedFXWorkbench;
 import org.jacp.javafx.rcp.workbench.FXWorkbench;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javafx.application.Application;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.stage.Stage;
 
 import java.security.InvalidParameterException;

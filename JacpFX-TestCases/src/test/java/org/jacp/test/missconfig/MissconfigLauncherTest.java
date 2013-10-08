@@ -1,7 +1,7 @@
 package org.jacp.test.missconfig;
 
 import javafx.application.Platform;
-import org.jacp.javafx.rcp.util.ClassRegistry;
+import org.jacp.javafx.rcp.registry.ClassRegistry;
 import org.jacp.test.AllTests;
 import org.jacp.test.main.ApplicationLauncherMissconfigWorkbench;
 import org.jacp.test.main.ApplicationLauncherMissconfigWorkbench2;

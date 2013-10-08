@@ -1,8 +1,9 @@
-package org.jacp.javafx.rcp.util;
+package org.jacp.javafx.rcp.registry;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import org.jacp.api.component.IPerspective;
+import org.jacp.javafx.rcp.util.FXUtil;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -16,9 +16,9 @@ import org.jacp.api.exceptions.AnnotationNotFoundException;
 import org.jacp.api.launcher.Launcher;
 import org.jacp.javafx.rcp.component.*;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
+import org.jacp.javafx.rcp.registry.ClassRegistry;
 
 import java.security.InvalidParameterException;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;

@@ -45,7 +45,7 @@ import org.jacp.javafx.rcp.component.AComponent;
 import org.jacp.javafx.rcp.componentLayout.PerspectiveLayout;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
 import org.jacp.javafx.rcp.coordinator.FXComponentCoordinator;
-import org.jacp.javafx.rcp.util.ComponentRegistry;
+import org.jacp.javafx.rcp.registry.ComponentRegistry;
 import org.jacp.javafx.rcp.util.FXUtil;
 import org.jacp.javafx.rcp.util.PerspectiveUtil;
 

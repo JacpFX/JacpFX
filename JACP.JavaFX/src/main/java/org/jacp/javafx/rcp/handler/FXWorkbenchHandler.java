@@ -52,7 +52,7 @@ import org.jacp.javafx.rcp.componentLayout.FXWorkbenchLayout;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
 import org.jacp.javafx.rcp.perspective.AFXPerspective;
 import org.jacp.javafx.rcp.util.FXUtil;
-import org.jacp.javafx.rcp.util.PerspectiveRegistry;
+import org.jacp.javafx.rcp.registry.PerspectiveRegistry;
 
 import java.io.IOException;
 import java.net.URL;

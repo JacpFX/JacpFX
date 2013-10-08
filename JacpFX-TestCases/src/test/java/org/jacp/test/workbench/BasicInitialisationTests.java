@@ -10,7 +10,7 @@ import org.jacp.api.component.ISubComponent;
 import org.jacp.api.component.Injectable;
 import org.jacp.api.context.Context;
 import org.jacp.api.handler.IComponentHandler;
-import org.jacp.javafx.rcp.util.ClassRegistry;
+import org.jacp.javafx.rcp.registry.ClassRegistry;
 import org.jacp.javafx.rcp.workbench.AFXWorkbench;
 import org.jacp.javafx.rcp.workbench.FXWorkbench;
 import org.jacp.test.AllTests;
@@ -20,7 +20,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.List;
-import java.util.Objects;
 
 import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;

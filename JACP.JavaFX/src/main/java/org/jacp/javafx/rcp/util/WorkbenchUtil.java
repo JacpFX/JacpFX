@@ -9,19 +9,15 @@ import org.jacp.api.component.IPerspective;
 import org.jacp.api.component.Injectable;
 import org.jacp.api.context.Context;
 import org.jacp.api.dialog.Scope;
-import org.jacp.api.exceptions.ComponentNotFoundException;
 import org.jacp.api.launcher.Launcher;
 import org.jacp.api.util.UIType;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
-import org.jacp.javafx.rcp.perspective.AFXPerspective;
 import org.jacp.javafx.rcp.perspective.EmbeddedFXPerspective;
+import org.jacp.javafx.rcp.registry.ClassRegistry;
 
 import java.security.InvalidParameterException;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Logger;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 

@@ -30,7 +30,7 @@ import org.jacp.api.component.IComponent;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.coordinator.IComponentCoordinator;
 import org.jacp.api.handler.IComponentHandler;
-import org.jacp.javafx.rcp.util.ComponentRegistry;
+import org.jacp.javafx.rcp.registry.ComponentRegistry;
 import org.jacp.javafx.rcp.util.FXUtil;
 
 import java.util.concurrent.BlockingQueue;
