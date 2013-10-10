@@ -51,6 +51,7 @@ public abstract class AFXComponent extends ASubComponent implements
 	private URL documentURL;
 	
 	private UIType type = UIType.PROGRAMMATIC;
+
 	
 
 	/**

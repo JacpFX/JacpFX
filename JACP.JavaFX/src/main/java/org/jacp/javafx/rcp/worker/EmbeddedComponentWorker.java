@@ -63,11 +63,12 @@ import java.util.logging.Logger;
  *
  * @author Andy Moncsek
  */
-@Deprecated
-public abstract class AFXComponentWorker<T> extends Task<T> {
+public abstract class EmbeddedComponentWorker<T> extends Thread {
 
 
-    public AFXComponentWorker() {
+    public EmbeddedComponentWorker(final String name) {
+        super(name);
+        this.setDaemon(true);
     }
 
     /**
@@ -321,9 +322,9 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
     }
 
     void log(final String message) {
-        if (Logger.getLogger(AFXComponentWorker.class.getName()).isLoggable(
+        if (Logger.getLogger(EmbeddedComponentWorker.class.getName()).isLoggable(
                 Level.FINE)) {
-            Logger.getLogger(AFXComponentWorker.class.getName()).fine(
+            Logger.getLogger(EmbeddedComponentWorker.class.getName()).fine(
                     ">> " + message);
         }
     }
@@ -350,7 +351,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
      * finished
      *
      * @param runnable, a runnable which will be invoked and wait until execution is finished
-     * @throws InterruptedException,ExecutionException
+     * @throws InterruptedException,java.util.concurrent.ExecutionException
      */
 /*    final void invokeOnFXThreadAndWait(Runnable runnable) throws InterruptedException, ExecutionException {
         final FutureTask future = new FutureTask(runnable, null);

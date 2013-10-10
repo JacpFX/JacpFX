@@ -63,7 +63,7 @@ public interface ISubComponent<L, A, M> extends IComponent<L, A, M> {
 	 * 
 	 * @return the next action to handle
 	 */
-	IAction<A, M> getNextIncomingMessage();
+	IAction<A, M> getNextIncomingMessage() throws InterruptedException;
 
 	/**
 	 * Component is blocked when executed in thread.

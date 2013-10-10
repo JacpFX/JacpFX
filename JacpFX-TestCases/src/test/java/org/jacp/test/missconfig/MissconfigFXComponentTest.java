@@ -3,6 +3,7 @@ package org.jacp.test.missconfig;
 import javafx.application.Platform;
 import junit.framework.TestCase;
 import org.jacp.test.main.*;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.concurrent.TimeUnit;
@@ -46,7 +47,7 @@ public class MissconfigFXComponentTest {
 
     }
 
-    @Test
+    @Test (expected = RuntimeException.class)
     public void failedToStartMissingTargetId() throws Exception {
 
         try {
