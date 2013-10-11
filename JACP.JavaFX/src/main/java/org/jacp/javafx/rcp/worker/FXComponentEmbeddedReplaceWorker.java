@@ -34,12 +34,12 @@ import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
 import org.jacp.javafx.rcp.util.FXUtil;
+import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
 
 import java.security.InvalidParameterException;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
 /**
@@ -50,33 +50,32 @@ import java.util.logging.Logger;
  *
  * @author Andy Moncsek
  */
-@Deprecated
-public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
+public class FXComponentEmbeddedReplaceWorker extends EmbeddedComponentWorker<AFXComponent> {
 
     private final Map<String, Node> targetComponents;
     private final AFXComponent component;
     private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
-    private static final Logger logger = Logger.getLogger("FXComponentReplaceWorker");
 
-    public FXComponentReplaceWorker(
+    public FXComponentEmbeddedReplaceWorker(
             final Map<String, Node> targetComponents,
             final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue,
             final AFXComponent component) {
+        super(component.getContext().getName());
         this.targetComponents = targetComponents;
         this.component = component;
         this.componentDelegateQueue = componentDelegateQueue;
+        ShutdownThreadsHandler.registerThread(this);
     }
 
-
-
     @Override
-    protected AFXComponent call() throws Exception {
+    public void run() {
         try {
 
-            while (this.component.hasIncomingMessage()) {
+            while (!Thread.interrupted()) {
                 this.component.lock();
                 final IAction<Event, Object> myAction = this.component
                         .getNextIncomingMessage();
+              //  System.err.println("WORKER: "+this);
                 this.log(" //1.1.1.1.1// handle replace component BEGIN: "
                         + this.component.getContext().getName());
 
@@ -101,11 +100,17 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
                         "Do not reuse Node components in handleAction method, use postHandleAction instead to verify that you change nodes in JavaFX main Thread:",
                         e);
             }
+        } catch (InterruptedException e) {
+            //e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (ExecutionException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } finally {
             if(this.component.isBlocked())this.component.release();
         }
-        return this.component;
     }
+
 
     /**
      * publish handle result in application main thread
@@ -127,12 +132,12 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
                 if (component.getContext().isActive()) {
                     executeComponentViewPostHandle(handleReturnValue, component,
                             action);
-                    FXComponentReplaceWorker.this.publishComponentValue(
+                    FXComponentEmbeddedReplaceWorker.this.publishComponentValue(
                             component, targetComponents, layout,
                             previousContainer, currentTargetLayout, currentExecutionTarget);
                 } else {
                     // unregister component
-                    FXComponentReplaceWorker.this.removeComponentValue(
+                    FXComponentEmbeddedReplaceWorker.this.removeComponentValue(
                             previousContainer);
                     // run teardown
                     FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
@@ -251,7 +256,7 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
         }
     }
 
-    @Override
+  /*  @Override
     protected final void done() {
         AFXComponent component = null;
         try {
@@ -278,5 +283,5 @@ public class FXComponentReplaceWorker extends AFXComponentWorker<AFXComponent> {
         }
 
     }
-
+*/
 }

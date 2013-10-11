@@ -110,7 +110,7 @@ public class FXComponentHandler
 		this.putMessageToQueue(action,component);
 		if (AFXComponent.class.isAssignableFrom(component.getClass())) {
 			this.log("CREATE NEW THREAD:::" + component.getContext().getName());
-			this.runFXComponent(perspectiveLayout, component);
+			//this.runFXComponent(perspectiveLayout, component);
 			return;
 		} 		
 		if (ASubComponent.class.isAssignableFrom(component.getClass())) {
@@ -178,7 +178,7 @@ public class FXComponentHandler
 			this.log("COMPONENT EXECUTE INIT:::" + component.getContext().getName());
 			this.executor.execute(new FXComponentInitWorker(
                     this.perspectiveLayout.getTargetLayoutComponents(),
-                    ((AFXComponent) component), action));
+                    ((AFXComponent) component), action,this.componentDelegateQueue));
 			return;
 		}// if END
 

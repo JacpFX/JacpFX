@@ -28,6 +28,7 @@ import javafx.scene.Node;
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.lifecycle.PostConstruct;
 import org.jacp.api.component.IComponentHandle;
+import org.jacp.api.component.ISubComponent;
 import org.jacp.api.exceptions.AnnotationMissconfigurationException;
 import org.jacp.api.util.UIType;
 import org.jacp.javafx.rcp.component.AComponent;
@@ -42,6 +43,7 @@ import java.security.InvalidParameterException;
 import java.util.Map;
 import java.util.Queue;
 import java.util.ResourceBundle;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutionException;
 
@@ -55,7 +57,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	private final Map<String, Node> targetComponents;
 	private final AFXComponent component;
 	private final IAction<Event, Object> action;
-    private final Queue<Exception> exceptionQueue = new ConcurrentLinkedQueue<>();
+    private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
 
 	/**
 	 * The workers constructor.
@@ -68,10 +70,11 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	 *            ; the init action
 	 */
 	public FXComponentInitWorker(final Map<String, Node> targetComponents,
-			final AFXComponent component, final IAction<Event, Object> action) {
+			final AFXComponent component, final IAction<Event, Object> action,final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue) {
 		this.targetComponents = targetComponents;
 		this.component = component;
 		this.action = action;
+        this.componentDelegateQueue = componentDelegateQueue;
 	}
 
 	/**
@@ -133,7 +136,12 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 						this.component, this.action,this.targetComponents);
 				this.log("3.4.4.2.4: subcomponent handle init END: "
 						+ name);
+                FXComponentEmbeddedReplaceWorker worker =new FXComponentEmbeddedReplaceWorker(this.targetComponents,this.componentDelegateQueue,this.component);
+                this.component.setWorker(new FXComponentEmbeddedReplaceWorker(this.targetComponents,this.componentDelegateQueue,this.component));
+                worker.start();
 			} finally {
+                FXUtil.setPrivateMemberValue(AComponent.class, this.component,
+                        FXUtil.ACOMPONENT_STARTED, true);
 				this.component.release();
 			}
 

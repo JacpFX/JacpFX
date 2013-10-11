@@ -29,6 +29,8 @@ import org.jacp.api.component.IComponentHandle;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.context.Context;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
+import org.jacp.javafx.rcp.worker.AFXComponentWorker;
+import org.jacp.javafx.rcp.worker.EmbeddedComponentWorker;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -56,6 +58,8 @@ public abstract class ASubComponent extends AComponent implements
 
 
     private IComponentHandle<?, EventHandler<Event>, Event, Object> componentHandle;
+
+    private EmbeddedComponentWorker<?> worker;
 
 
     /**
@@ -95,15 +99,8 @@ public abstract class ASubComponent extends AComponent implements
      * {@inheritDoc}
      */
     @Override
-    public final IAction<Event, Object> getNextIncomingMessage() {
-        if (this.hasIncomingMessage()) {
-            try {
-                return this.incomingMessage.take();
-            } catch (final InterruptedException e) {
-                logger.info("massage take failed:");
-            }
-        }
-        return null;
+    public final IAction<Event, Object> getNextIncomingMessage()throws InterruptedException{
+        return this.incomingMessage.take();
     }
 
     /**
@@ -165,6 +162,14 @@ public abstract class ASubComponent extends AComponent implements
     @Override
     public <X extends IComponentHandle<?, EventHandler<Event>, Event, Object>> void setComponentHandle(final X handle) {
         this.componentHandle = handle;
+    }
+
+    public EmbeddedComponentWorker<?> getWorker() {
+        return worker;
+    }
+
+    public void setWorker(EmbeddedComponentWorker<?> worker) {
+        this.worker = worker;
     }
 
 
