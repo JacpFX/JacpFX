@@ -27,6 +27,7 @@ import javafx.event.EventHandler;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IActionListener;
 
+import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 
 /**
@@ -49,7 +50,8 @@ public class FXActionListener implements EventHandler<Event>,
 
 	@Override
 	public void notifyComponents(final IAction<Event, Object> action) {
-		this.globalMessageQueue.add(action);
+        Objects.requireNonNull(action,"action cannot be null");
+        this.globalMessageQueue.add(action);
 	}
 
 	@Override

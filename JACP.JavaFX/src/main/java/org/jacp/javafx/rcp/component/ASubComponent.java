@@ -29,8 +29,7 @@ import org.jacp.api.component.IComponentHandle;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.context.Context;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
-import org.jacp.javafx.rcp.worker.AFXComponentWorker;
-import org.jacp.javafx.rcp.worker.EmbeddedComponentWorker;
+import org.jacp.javafx.rcp.worker.AEmbeddedComponentWorker;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -54,12 +53,12 @@ public abstract class ASubComponent extends AComponent implements
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     private volatile BlockingQueue<IAction<Event, Object>> incomingMessage = new ArrayBlockingQueue<>(
-            1000);
+            100000);
 
 
     private IComponentHandle<?, EventHandler<Event>, Event, Object> componentHandle;
 
-    private EmbeddedComponentWorker<?> worker;
+    private AEmbeddedComponentWorker<?> worker;
 
 
     /**
@@ -164,11 +163,11 @@ public abstract class ASubComponent extends AComponent implements
         this.componentHandle = handle;
     }
 
-    public EmbeddedComponentWorker<?> getWorker() {
+    public AEmbeddedComponentWorker<?> getWorker() {
         return worker;
     }
 
-    public void setWorker(EmbeddedComponentWorker<?> worker) {
+    public void setWorker(AEmbeddedComponentWorker<?> worker) {
         this.worker = worker;
     }
 

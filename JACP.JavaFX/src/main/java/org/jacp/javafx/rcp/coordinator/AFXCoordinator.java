@@ -45,7 +45,7 @@ public abstract class AFXCoordinator extends Thread implements
 
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	private volatile BlockingQueue<IAction<Event, Object>> messages = new ArrayBlockingQueue<>(
-			100000);
+			500000);
 
 	AFXCoordinator(String name) {
 		super(name);

@@ -35,12 +35,12 @@ import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
 import org.jacp.javafx.rcp.util.FXUtil;
 import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
+import org.jacp.javafx.rcp.util.WorkerUtil;
 
 import java.security.InvalidParameterException;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
-import java.util.logging.Logger;
 
 /**
  * Background Worker to execute components handle method in separate thread and
@@ -50,13 +50,13 @@ import java.util.logging.Logger;
  *
  * @author Andy Moncsek
  */
-public class FXComponentEmbeddedReplaceWorker extends EmbeddedComponentWorker<AFXComponent> {
+public class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker<AFXComponent> {
 
     private final Map<String, Node> targetComponents;
     private final AFXComponent component;
     private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
 
-    public FXComponentEmbeddedReplaceWorker(
+    public EmbeddedFXComponentWorker(
             final Map<String, Node> targetComponents,
             final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue,
             final AFXComponent component) {
@@ -124,20 +124,20 @@ public class FXComponentEmbeddedReplaceWorker extends EmbeddedComponentWorker<AF
                          final Node previousContainer, final String currentTargetLayout, final String currentExecutionTarget)
             throws InterruptedException, ExecutionException {
         //final ThrowableWrapper throwableWrapper = new ThrowableWrapper();
-        this.invokeOnFXThreadAndWait(() -> {
+        WorkerUtil.invokeOnFXThreadAndWait(() -> {
             setCacheHints(true, CacheHint.SPEED, component);
             // check if component was set to inactive, if so remove
             try {
                 final FXComponentLayout layout = JACPContextImpl.class.cast(component.getContext()).getComponentLayout();
                 if (component.getContext().isActive()) {
-                    executeComponentViewPostHandle(handleReturnValue, component,
+                    WorkerUtil.executeComponentViewPostHandle(handleReturnValue, component,
                             action);
-                    FXComponentEmbeddedReplaceWorker.this.publishComponentValue(
+                    EmbeddedFXComponentWorker.this.publishComponentValue(
                             component, targetComponents, layout,
                             previousContainer, currentTargetLayout, currentExecutionTarget);
                 } else {
                     // unregister component
-                    FXComponentEmbeddedReplaceWorker.this.removeComponentValue(
+                    EmbeddedFXComponentWorker.this.removeComponentValue(
                             previousContainer);
                     // run teardown
                     FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,

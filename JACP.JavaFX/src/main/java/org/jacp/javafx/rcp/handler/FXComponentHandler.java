@@ -37,9 +37,8 @@ import org.jacp.javafx.rcp.component.ASubComponent;
 import org.jacp.javafx.rcp.scheduler.StatelessCallbackScheduler;
 import org.jacp.javafx.rcp.util.HandlerThreadFactory;
 import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
+import org.jacp.javafx.rcp.worker.CallbackComponentInitWorker;
 import org.jacp.javafx.rcp.worker.FXComponentInitWorker;
-import org.jacp.javafx.rcp.worker.FXComponentReplaceWorker;
-import org.jacp.javafx.rcp.worker.StateComponentRunWorker;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -84,46 +83,17 @@ public class FXComponentHandler
 	public final void handleAndReplaceComponent(
 			final IAction<Event, Object> action,
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        this.executeComponentReplaceThread(this.perspectiveLayout,
-                component, action);
-		this.log("DONE EXECUTE REPLACE:::" + component.getContext().getName());
-	}
-
-	/**
-	 * start component replace thread, be aware that all actions are in
-	 * components message box!
-	 * 
-	 * @param perspectiveLayout The parent perspective layout
-	 * @param component The component to execute
-     * @param action The current action
-	 */
-	private void executeComponentReplaceThread(
-			final IPerspectiveLayout<? extends Node, Node> perspectiveLayout,
-			final ISubComponent<EventHandler<Event>, Event, Object> component,
-			final IAction<Event, Object> action) {
-		if (AStatelessCallbackComponent.class.isAssignableFrom(component.getClass())) {
-			this.log("RUN STATELESS COMPONENTS:::" + component.getContext().getName());
-			this.runStatelessCallbackComponent(
-					((AStatelessCallbackComponent) component), action);
-			return;
-		}
-		this.putMessageToQueue(action,component);
-		if (AFXComponent.class.isAssignableFrom(component.getClass())) {
-			this.log("CREATE NEW THREAD:::" + component.getContext().getName());
-			//this.runFXComponent(perspectiveLayout, component);
-			return;
-		} 		
-		if (ASubComponent.class.isAssignableFrom(component.getClass())) {
-			this.log("CREATE NEW THREAD:::" + component.getContext().getName());
-			this.runStateComponent(component);
+        if (AStatelessCallbackComponent.class.isAssignableFrom(component.getClass())) {
+            this.log("RUN STATELESS COMPONENTS:::" + component.getContext().getName());
+            this.runStatelessCallbackComponent(
+                    ((AStatelessCallbackComponent) component), action);
+            return;
         }
-		
-
+        // all others
+        this.putMessageToQueue(action,component);
+        this.log("DONE EXECUTE REPLACE:::" + component.getContext().getName());
 	}
 
-	
-	
-	
 
 	/**
 	 * Handle state less callback component. This Method is invoked when an action is triggered.
@@ -137,35 +107,6 @@ public class FXComponentHandler
 		this.scheduler.incomingMessage(action, component);
 	}
 	
-	
-	/**
-	 * Run component in background thread.
-	 * 
-	 * @param perspectiveLayout, the layout object to pass
-	 * @param component, the component
-	 */
-	private void runFXComponent(
-			final IPerspectiveLayout<? extends Node, Node> perspectiveLayout,
-			final ISubComponent<EventHandler<Event>, Event, Object> component)
-			 {
-                 if (!component.isBlocked()) {
-		            this.executor.execute(new FXComponentReplaceWorker(perspectiveLayout
-                        .getTargetLayoutComponents(), this.componentDelegateQueue,
-                        ((AFXComponent) component)));
-                 }  // otherwise message is already in queue and will be handled in worker loop
-	}
-
-	/**
-	 * Run background components thread.
-	 *
-	 * @param component, the component to execute
-	 */
-	private void runStateComponent(
-			final ISubComponent<EventHandler<Event>, Event, Object> component) {
-		this.executor.execute(new StateComponentRunWorker(
-				this.componentDelegateQueue, component));
-	}
-
 	/**
 	 * Execute subComponent initialization. This methods run's on "init" action while bootstrap.
 	 * 
@@ -181,18 +122,18 @@ public class FXComponentHandler
                     ((AFXComponent) component), action,this.componentDelegateQueue));
 			return;
 		}// if END
-
 		if (AStatelessCallbackComponent.class.isAssignableFrom(component.getClass())) {
 			this.log("SATELESS BACKGROUND COMPONENT EXECUTE INIT:::"
                     + component.getContext().getName());
 			this.runStatelessCallbackComponent(
 					((AStatelessCallbackComponent) component), action);
+            return;
         }// else if END
         if (ASubComponent.class.isAssignableFrom(component.getClass())) {
             this.log("BACKGROUND COMPONENT EXECUTE INIT:::"
                     + component.getContext().getName());
-            this.putMessageToQueue(action,component);
-            this.runStateComponent(component);
+            this.executor.execute(new CallbackComponentInitWorker(
+                    this.componentDelegateQueue,((ASubComponent) component),action));
         }// else if END
 
 	}

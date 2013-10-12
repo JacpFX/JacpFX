@@ -82,6 +82,7 @@ public class CallbackComponentMessagingTest1Component1 implements CallbackCompon
         }else {
             if(counter.get()>1){
                 counter.decrementAndGet();
+
             }else{
                 System.out.println("Component id009: FINISH");
                 if(wait.getCount()>0) wait.countDown();
@@ -95,6 +96,20 @@ public class CallbackComponentMessagingTest1Component1 implements CallbackCompon
 
     public static void fireMessage() {
         context.getActionListener("id14.id010","message").performAction(null);
+    }
+
+    public static void fireBurst(final int count) {
+           Thread t = new Thread(()->{
+                for(int i=0; i<count;i++) {
+                    getContext().getActionListener("id14.id010","message").performAction(null);
+                }
+           }) ;
+        t.setDaemon(true);
+        t.start();
+    }
+
+    public static synchronized JACPContext getContext() {
+        return context;
     }
 
 

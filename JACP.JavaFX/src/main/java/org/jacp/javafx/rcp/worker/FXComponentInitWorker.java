@@ -36,15 +36,13 @@ import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
 import org.jacp.javafx.rcp.util.FXUtil;
+import org.jacp.javafx.rcp.util.WorkerUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
-import java.security.InvalidParameterException;
 import java.util.Map;
-import java.util.Queue;
 import java.util.ResourceBundle;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -85,26 +83,26 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	 * @throws InterruptedException
 	 */
 	private void runPreInitMethods() throws InterruptedException, ExecutionException {
-		this.invokeOnFXThreadAndWait(()->{
-                final FXComponentLayout layout = JACPContextImpl.class.cast(component.getContext()).getComponentLayout();
-				if (component.getType().equals(UIType.DECLARATIVE)) {
-					final URL url = getClass().getResource(
-							component.getViewLocation());
-					initLocalization(url, component);
-                    component.setRoot(FXUtil.loadFXMLandSetController(component.getComponentHandle(), component.getContext().getResourceBundle(), url));
-                    performContextInjection(component);
-					runComponentOnStartupSequence(component, layout,
-							component.getDocumentURL(),
-							component.getContext().getResourceBundle());
-					return;
-
-				}
-				initLocalization(null, component);
+        WorkerUtil.invokeOnFXThreadAndWait(() -> {
+            final FXComponentLayout layout = JACPContextImpl.class.cast(component.getContext()).getComponentLayout();
+            if (component.getType().equals(UIType.DECLARATIVE)) {
+                final URL url = getClass().getResource(
+                        component.getViewLocation());
+                initLocalization(url, component);
+                component.setRoot(FXUtil.loadFXMLandSetController(component.getComponentHandle(), component.getContext().getResourceBundle(), url));
                 performContextInjection(component);
-				runComponentOnStartupSequence(component, layout,
-						component.getContext().getResourceBundle());
+                runComponentOnStartupSequence(component, layout,
+                        component.getDocumentURL(),
+                        component.getContext().getResourceBundle());
+                return;
 
-		});
+            }
+            initLocalization(null, component);
+            performContextInjection(component);
+            runComponentOnStartupSequence(component, layout,
+                    component.getContext().getResourceBundle());
+
+        });
 	}
 
     /**
@@ -136,12 +134,13 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 						this.component, this.action,this.targetComponents);
 				this.log("3.4.4.2.4: subcomponent handle init END: "
 						+ name);
-                FXComponentEmbeddedReplaceWorker worker =new FXComponentEmbeddedReplaceWorker(this.targetComponents,this.componentDelegateQueue,this.component);
-                this.component.setWorker(new FXComponentEmbeddedReplaceWorker(this.targetComponents,this.componentDelegateQueue,this.component));
+                final EmbeddedFXComponentWorker worker =new EmbeddedFXComponentWorker(this.targetComponents,this.componentDelegateQueue,this.component);
+                this.component.setWorker(worker);
                 worker.start();
-			} finally {
                 FXUtil.setPrivateMemberValue(AComponent.class, this.component,
                         FXUtil.ACOMPONENT_STARTED, true);
+			} finally {
+
 				this.component.release();
 			}
 
@@ -190,9 +189,9 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 			final Node handleReturnValue, final AFXComponent myComponent,
 			final IAction<Event, Object> myAction,final Map<String, Node> targetComponents) throws Exception {
         final Thread t = Thread.currentThread();
-		invokeOnFXThreadAndWait(() -> {
+        WorkerUtil.invokeOnFXThreadAndWait(() -> {
             try {
-                executeComponentViewPostHandle(
+                WorkerUtil.executeComponentViewPostHandle(
                         handleReturnValue, myComponent, myAction);
             } catch (Exception e) {
                 t.getUncaughtExceptionHandler().uncaughtException(t, e);

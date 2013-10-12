@@ -68,6 +68,8 @@ public class CallbackComponentMessagingTest1Component2 implements CallbackCompon
     public static AtomicInteger counter = new AtomicInteger(10000);
     public static CountDownLatch wait = new CountDownLatch(1);
 
+    public static String MESSAGE="message";
+
     @Override
     /**
      * The handleAction method always runs outside the main application thread. You can create new nodes, execute long running tasks but you are not allowed to manipulate existing nodes here.
@@ -78,15 +80,16 @@ public class CallbackComponentMessagingTest1Component2 implements CallbackCompon
         }else {
             if(counter.get()>1){
                 counter.decrementAndGet();
+
             }else{
                 System.out.println("Component id010: FINISH");
                 if(wait.getCount()>0) wait.countDown();
 
-                  return "message";
+                  return MESSAGE;
             }
         }
 
-            return "message";
+            return MESSAGE;
     }
 
 

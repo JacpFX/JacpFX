@@ -77,10 +77,26 @@ public class FXComponentCallBackMessagingTest {
     }
 
     @Test
-    // default Execution with ui time was 82442/82854/79245 ms.. with ui --  without ui 41751/41750/40689 linux ... / mac ui 26120 ... non ui 21269ms    ---windows ui 121747ms  --- nonui 65836ms
+    // default Execution time was 6147 ms..  linux ...
     public void testComponentMessaging() throws InterruptedException {
         warmUp();
         withoutUI();
+    }
+    @Test
+    public void testBurstMessaging() throws InterruptedException {
+        long start = System.currentTimeMillis();
+        CallbackComponentMessagingTest1Component1.wait= new CountDownLatch(1);
+        CallbackComponentMessagingTest1Component2.wait= new CountDownLatch(1);
+        CallbackComponentMessagingTest1Component1.counter = new AtomicInteger(0);
+        CallbackComponentMessagingTest1Component2.counter = new AtomicInteger(200000);
+        CallbackComponentMessagingTest1Component2.MESSAGE=null;
+        CallbackComponentMessagingTest1Component1.fireBurst(200000);
+
+        //CallbackComponentMessagingTest1Component1.wait.await();
+        CallbackComponentMessagingTest1Component2.wait.await();
+        long end = System.currentTimeMillis();
+
+        System.out.println("Execution testBurstMessaging time was "+(end-start)+" ms.");
     }
 
 

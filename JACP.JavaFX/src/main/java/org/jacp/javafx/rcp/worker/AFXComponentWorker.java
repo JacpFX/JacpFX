@@ -63,7 +63,6 @@ import java.util.logging.Logger;
  *
  * @author Andy Moncsek
  */
-@Deprecated
 public abstract class AFXComponentWorker<T> extends Task<T> {
 
 
@@ -113,18 +112,6 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 
     }
 
-    /**
-     * removes old ui component of subcomponent form parent ui component
-     *
-     * @param parent, the parent node
-     * @param currentContainer, a valid container which contains components root
-     */
-    void handleOldComponentRemove(final Node parent,
-                                        final Node currentContainer) {
-        this.handleViewState(currentContainer, false);
-        final ObservableList<Node> children = FXUtil.getChildren(parent);
-        children.remove(currentContainer);
-    }
 
     /**
      * set visibility and enable/disable
@@ -161,40 +148,6 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
     }
 
 
-
-    /**
-     * Handle target change inside perspective.
-     *
-     * @param component, the component
-     * @param validContainer, a valid JavaFX Node
-     */
-    void handleLayoutTargetChange(
-            final IUIComponent<Node, EventHandler<Event>, Event, Object> component,
-            final Node validContainer) {
-        this.addComponentByType(validContainer, component);
-    }
-
-    /**
-     * Handle target change to an other perspective. If target component not
-     * found in current perspective, move to an other perspective and run
-     * teardown.
-     *
-     * @param delegateQueue, the component delegate queue
-     * @param component, a component
-     * @param layout, the component layout handler
-     */
-    void handlePerspectiveChange(
-            final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
-            final IUIComponent<Node, EventHandler<Event>, Event, Object> component,
-            final FXComponentLayout layout) {
-        if (component instanceof AFXComponent) {
-            FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class, component.getComponentHandle(),
-                    layout);
-        }
-        // handle target outside current perspective
-        this.changeComponentTarget(delegateQueue, component);
-    }
-
     /**
      * Move component to new target in perspective.
      *
@@ -228,32 +181,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 
     }
 
-    /**
-     * Executes post handle method in application main thread. The result value
-     * of handle method (from worker thread) is Input for the postHandle Method.
-     * The return value or the handleReturnValue are the root node of this
-     * component.
-     *
-     * @param component, a component
-     * @param action, the current action
-     */
-    void executeComponentViewPostHandle(final Node handleReturnValue,
-                                        final AFXComponent component, final IAction<Event, Object> action) throws Exception {
 
-        Node potsHandleReturnValue = component.getComponentViewHandle().postHandle(handleReturnValue,
-                action);
-        if (potsHandleReturnValue == null) {
-            potsHandleReturnValue = handleReturnValue;
-        } else if (component.getType().equals(UIType.DECLARATIVE)) {
-            throw new UnsupportedOperationException(
-                    "declarative components should not have a return value in postHandle method, otherwise you would overwrite the FXML root node.");
-        }
-        if (potsHandleReturnValue != null
-                && component.getType().equals(UIType.PROGRAMMATIC)) {
-            potsHandleReturnValue.setVisible(true);
-            component.setRoot(potsHandleReturnValue);
-        }
-    }
 
     /**
      * checks if component started, if so run PostConstruct annotations
@@ -296,28 +224,11 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
      *
      * @param component, the component
      */
-    void runCallbackPostExecution(
+    void runPostExecution(
             final ISubComponent<EventHandler<Event>, Event, Object> component) {
         if (!component.isStarted())
             FXUtil.setPrivateMemberValue(AComponent.class, component,
                     FXUtil.ACOMPONENT_STARTED, true);
-    }
-
-    /**
-     * checks if component was deactivated, if so run OnTeardown annotations.
-     *
-     * @param component, the component
-     */
-    void runCallbackOnTeardownMethods(
-            final ISubComponent<EventHandler<Event>, Event, Object> component) {
-
-        // turn off component
-        if (!component.getContext().isActive()) {
-            FXUtil.setPrivateMemberValue(AComponent.class, component,
-                    FXUtil.ACOMPONENT_STARTED, false);
-            // run teardown
-            FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class, component.getComponentHandle());
-        }
     }
 
     void log(final String message) {
@@ -328,71 +239,6 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
         }
     }
 
-    /**
-     * Set desired caching to component
-     * @param cache, chache enabled
-     * @param hint, the cache hint
-     * @param component, the component
-     */
-    void setCacheHints(boolean cache, CacheHint hint, final AFXComponent component) {
-        final Node currentRoot = component.getRoot();
-        if(currentRoot==null) return;
-        final Node parentNode = currentRoot.getParent();
-        if(parentNode==null) return;
-        if (currentRoot.getParent().isCache() != cache)
-            currentRoot.getParent().setCache(cache);
-        if (!currentRoot.getParent().getCacheHint().equals(hint))
-            currentRoot.getParent().setCacheHint(CacheHint.SPEED);
-    }
 
-    /**
-     * invokes a runnable on application thread and waits until execution is
-     * finished
-     *
-     * @param runnable, a runnable which will be invoked and wait until execution is finished
-     * @throws InterruptedException,ExecutionException
-     */
-/*    final void invokeOnFXThreadAndWait(Runnable runnable) throws InterruptedException, ExecutionException {
-        final FutureTask future = new FutureTask(runnable, null);
-        Platform.runLater(future);
-        future.get();
-    }*/
-    final void invokeOnFXThreadAndWait(final Runnable runnable)
-            throws InterruptedException,ExecutionException {
-        final Lock lock = new ReentrantLock();
-        final Condition condition = lock.newCondition();
-        final AtomicBoolean conditionReady = new AtomicBoolean(false);
-        final ThrowableWrapper throwableWrapper = new ThrowableWrapper();
-        lock.lock();
-        try {
-            Platform.runLater(() -> {
-                lock.lock();
-                try {
-                    // prevent execution when application is closed
-                    if (ShutdownThreadsHandler.APPLICATION_RUNNING.get())
-                        runnable.run();
-                }catch (Throwable t) {
-                    throwableWrapper.t = t;
-                }
-                finally {
-                    conditionReady.set(true);
-                    condition.signal();
-                    lock.unlock();
-                }
-
-            });
-            // wait until execution is finished and check if application is
-            // still running to prevent wait
-            while (!conditionReady.get()
-                    && ShutdownThreadsHandler.APPLICATION_RUNNING.get())
-                condition.await(ShutdownThreadsHandler.WAIT,
-                        TimeUnit.MILLISECONDS);
-            if (throwableWrapper.t != null) {
-                throw new ExecutionException(throwableWrapper.t);
-            }
-        } finally {
-            lock.unlock();
-        }
-    }
 
 }

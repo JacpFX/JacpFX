@@ -72,7 +72,7 @@ public class StateLessComponentRunWorker
 					this.delegateReturnValue(this.component, targetId, value,
 							myAction);
 				}
-				runCallbackPostExecution(this.component);
+				runPostExecution(this.component);
 			} finally {
 				this.component.release();
 			}

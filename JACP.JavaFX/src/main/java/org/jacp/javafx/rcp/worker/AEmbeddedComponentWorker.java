@@ -24,7 +24,6 @@ package org.jacp.javafx.rcp.worker;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.CacheHint;
@@ -63,10 +62,10 @@ import java.util.logging.Logger;
  *
  * @author Andy Moncsek
  */
-public abstract class EmbeddedComponentWorker<T> extends Thread {
+public abstract class AEmbeddedComponentWorker<T> extends Thread {
 
 
-    public EmbeddedComponentWorker(final String name) {
+    public AEmbeddedComponentWorker(final String name) {
         super(name);
         this.setDaemon(true);
     }
@@ -229,102 +228,11 @@ public abstract class EmbeddedComponentWorker<T> extends Thread {
 
     }
 
-    /**
-     * Executes post handle method in application main thread. The result value
-     * of handle method (from worker thread) is Input for the postHandle Method.
-     * The return value or the handleReturnValue are the root node of this
-     * component.
-     *
-     * @param component, a component
-     * @param action, the current action
-     */
-    void executeComponentViewPostHandle(final Node handleReturnValue,
-                                        final AFXComponent component, final IAction<Event, Object> action) throws Exception {
-
-        Node potsHandleReturnValue = component.getComponentViewHandle().postHandle(handleReturnValue,
-                action);
-        if (potsHandleReturnValue == null) {
-            potsHandleReturnValue = handleReturnValue;
-        } else if (component.getType().equals(UIType.DECLARATIVE)) {
-            throw new UnsupportedOperationException(
-                    "declarative components should not have a return value in postHandle method, otherwise you would overwrite the FXML root node.");
-        }
-        if (potsHandleReturnValue != null
-                && component.getType().equals(UIType.PROGRAMMATIC)) {
-            potsHandleReturnValue.setVisible(true);
-            component.setRoot(potsHandleReturnValue);
-        }
-    }
-
-    /**
-     * checks if component started, if so run PostConstruct annotations
-     *
-     * @param component, the component
-     */
-    void runCallbackOnStartMethods(
-            final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        if (!component.isStarted()) {
-            initLocalization(component);
-            handleContextInjection(component);
-            FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, component.getComponentHandle());
-        }
-
-    }
-
-    /**
-     * Set Resource Bundle
-     *
-     * @param component, the component
-     */
-    private void initLocalization(final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        final String bundleLocation = component.getResourceBundleLocation();
-        if (bundleLocation.equals(""))
-            return;
-        final String localeID = component.getLocaleID();
-        JACPContextImpl.class.cast(component.getContext()).setResourceBundle(ResourceBundle.getBundle(bundleLocation,
-                FXUtil.getCorrectLocale(localeID)));
-
-    }
-
-    private void handleContextInjection(final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        final IComponentHandle<?, EventHandler<Event>, Event, Object> handler = component.getComponentHandle();
-        FXUtil.performResourceInjection(handler, component.getContext());
-    }
-
-
-    /**
-     * Check if component was not started yet an activate it.
-     *
-     * @param component, the component
-     */
-    void runCallbackPostExecution(
-            final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        if (!component.isStarted())
-            FXUtil.setPrivateMemberValue(AComponent.class, component,
-                    FXUtil.ACOMPONENT_STARTED, true);
-    }
-
-    /**
-     * checks if component was deactivated, if so run OnTeardown annotations.
-     *
-     * @param component, the component
-     */
-    void runCallbackOnTeardownMethods(
-            final ISubComponent<EventHandler<Event>, Event, Object> component) {
-
-        // turn off component
-        if (!component.getContext().isActive()) {
-            FXUtil.setPrivateMemberValue(AComponent.class, component,
-                    FXUtil.ACOMPONENT_STARTED, false);
-            // run teardown
-            FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class, component.getComponentHandle());
-        }
-    }
 
     void log(final String message) {
-        if (Logger.getLogger(EmbeddedComponentWorker.class.getName()).isLoggable(
+        if (Logger.getLogger(AEmbeddedComponentWorker.class.getName()).isLoggable(
                 Level.FINE)) {
-            Logger.getLogger(EmbeddedComponentWorker.class.getName()).fine(
+            Logger.getLogger(AEmbeddedComponentWorker.class.getName()).fine(
                     ">> " + message);
         }
     }
@@ -346,54 +254,5 @@ public abstract class EmbeddedComponentWorker<T> extends Thread {
             currentRoot.getParent().setCacheHint(CacheHint.SPEED);
     }
 
-    /**
-     * invokes a runnable on application thread and waits until execution is
-     * finished
-     *
-     * @param runnable, a runnable which will be invoked and wait until execution is finished
-     * @throws InterruptedException,java.util.concurrent.ExecutionException
-     */
-/*    final void invokeOnFXThreadAndWait(Runnable runnable) throws InterruptedException, ExecutionException {
-        final FutureTask future = new FutureTask(runnable, null);
-        Platform.runLater(future);
-        future.get();
-    }*/
-    final void invokeOnFXThreadAndWait(final Runnable runnable)
-            throws InterruptedException,ExecutionException {
-        final Lock lock = new ReentrantLock();
-        final Condition condition = lock.newCondition();
-        final AtomicBoolean conditionReady = new AtomicBoolean(false);
-        final ThrowableWrapper throwableWrapper = new ThrowableWrapper();
-        lock.lock();
-        try {
-            Platform.runLater(() -> {
-                lock.lock();
-                try {
-                    // prevent execution when application is closed
-                    if (ShutdownThreadsHandler.APPLICATION_RUNNING.get())
-                        runnable.run();
-                }catch (Throwable t) {
-                    throwableWrapper.t = t;
-                }
-                finally {
-                    conditionReady.set(true);
-                    condition.signal();
-                    lock.unlock();
-                }
-
-            });
-            // wait until execution is finished and check if application is
-            // still running to prevent wait
-            while (!conditionReady.get()
-                    && ShutdownThreadsHandler.APPLICATION_RUNNING.get())
-                condition.await(ShutdownThreadsHandler.WAIT,
-                        TimeUnit.MILLISECONDS);
-            if (throwableWrapper.t != null) {
-                throw new ExecutionException(throwableWrapper.t);
-            }
-        } finally {
-            lock.unlock();
-        }
-    }
 
 }
