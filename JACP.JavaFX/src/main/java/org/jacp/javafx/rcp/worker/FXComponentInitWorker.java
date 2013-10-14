@@ -124,7 +124,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
                 final String name = this.component.getContext().getName();
 				this.log("3.4.4.2.1: subcomponent handle init START: "
 						+ name);
-				final Node handleReturnValue = this.prepareAndRunHandleMethod(
+				final Node handleReturnValue = WorkerUtil.prepareAndRunHandleMethod(
 						this.component, this.action);
 				this.log("3.4.4.2.2: subcomponent handle init get valid container: "
 						+ name);
@@ -202,7 +202,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
             if (validContainer == null || myComponent.getRoot() == null) {
                 return;
             }
-            addComponentByType(validContainer,
+            WorkerUtil.addComponentByType(validContainer,
                     myComponent);
         });
 	}

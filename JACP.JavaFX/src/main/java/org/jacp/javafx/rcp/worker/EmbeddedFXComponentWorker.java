@@ -85,7 +85,7 @@ public class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker<AFXCompo
                 // run code
                 this.log(" //1.1.1.1.2// handle component: "
                         + this.component.getContext().getName());
-                final Node handleReturnValue = this.prepareAndRunHandleMethod(
+                final Node handleReturnValue = WorkerUtil.prepareAndRunHandleMethod(
                         this.component, myAction);
                 this.log(" //1.1.1.1.3// publish component: "
                         + this.component.getContext().getName());
@@ -230,7 +230,7 @@ public class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker<AFXCompo
             // add new view
             this.log(" //1.1.1.1.4// handle new component insert: "
                     + component.getContext().getName());
-            this.handleViewState(root, true);
+            WorkerUtil.handleViewState(root, true);
             executeLayoutTargetUpdate(component, newTargetLayout, targetComponents);
         }
 

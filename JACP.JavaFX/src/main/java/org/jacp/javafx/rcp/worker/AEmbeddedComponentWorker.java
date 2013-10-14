@@ -44,6 +44,7 @@ import org.jacp.javafx.rcp.context.JACPContextImpl;
 import org.jacp.javafx.rcp.util.FXUtil;
 import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
 import org.jacp.javafx.rcp.util.ThrowableWrapper;
+import org.jacp.javafx.rcp.util.WorkerUtil;
 
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -74,7 +75,7 @@ public abstract class AEmbeddedComponentWorker<T> extends Thread {
      * find valid target component in perspective
      *
      * @param targetComponents, the target components provided by the parent perspective
-     * @param id, a target id
+     * @param id,               a target id
      * @return returns a target node by id
      */
     Node getValidContainerById(
@@ -83,95 +84,29 @@ public abstract class AEmbeddedComponentWorker<T> extends Thread {
     }
 
     /**
-     * find valid target and add type specific new component. Handles Container,
-     * ScrollPanes, Menus and Bar Entries from user
-     *
-     * @param validContainer, a valid container where components root will be added
-     * @param component, the component
-     */
-    void addComponentByType(
-            final Node validContainer,
-            final IUIComponent<Node, EventHandler<Event>, Event, Object> component) {
-        this.handleAdd(validContainer, component.getRoot());
-        this.handleViewState(validContainer, true);
-
-    }
-
-    /**
-     * enables component an add to container
-     *
-     * @param validContainer , a valid container where components root will be added
-     * @param IUIComponent , the component
-     */
-    private void handleAdd(final Node validContainer, final Node IUIComponent) {
-        if (validContainer != null && IUIComponent != null) {
-            this.handleViewState(IUIComponent, true);
-            final ObservableList<Node> children = FXUtil
-                    .getChildren(validContainer);
-            children.add(IUIComponent);
-        }
-
-    }
-
-    /**
      * removes old ui component of subcomponent form parent ui component
      *
-     * @param parent, the parent node
+     * @param parent,           the parent node
      * @param currentContainer, a valid container which contains components root
      */
     void handleOldComponentRemove(final Node parent,
-                                        final Node currentContainer) {
-        this.handleViewState(currentContainer, false);
+                                  final Node currentContainer) {
+        WorkerUtil.handleViewState(currentContainer, false);
         final ObservableList<Node> children = FXUtil.getChildren(parent);
         children.remove(currentContainer);
     }
-
-    /**
-     * set visibility and enable/disable
-     *
-     * @param IUIComponent, a Node where to set the state
-     * @param state, the boolean value of the state
-     */
-    void handleViewState(final Node IUIComponent,
-                               final boolean state) {
-        IUIComponent.setVisible(state);
-        IUIComponent.setDisable(!state);
-        IUIComponent.setManaged(state);
-    }
-
-    /**
-     * delegate components handle return value to specified target
-     *
-     * @param comp, the component
-     * @param targetId, the message target id
-     * @param value, the message value
-     * @param action, the action
-     */
-    void delegateReturnValue(
-            final ISubComponent<EventHandler<Event>, Event, Object> comp,
-            final String targetId, final Object value,
-            final IAction<Event, Object> action) {
-        if (value != null && targetId != null
-                && !action.isMessage("init")) {
-            final IActionListener<EventHandler<Event>, Event, Object> listener = comp.getContext()
-                    .getActionListener(null);
-            listener.notifyComponents(new FXAction(comp.getContext().getId(), targetId,
-                    value, null));
-        }
-    }
-
 
 
     /**
      * Handle target change inside perspective.
      *
-     * @param component, the component
+     * @param component,      the component
      * @param validContainer, a valid JavaFX Node
      */
     void handleLayoutTargetChange(
             final IUIComponent<Node, EventHandler<Event>, Event, Object> component,
             final Node validContainer) {
-        this.addComponentByType(validContainer, component);
+        WorkerUtil.addComponentByType(validContainer, component);
     }
 
     /**
@@ -180,8 +115,8 @@ public abstract class AEmbeddedComponentWorker<T> extends Thread {
      * teardown.
      *
      * @param delegateQueue, the component delegate queue
-     * @param component, a component
-     * @param layout, the component layout handler
+     * @param component,     a component
+     * @param layout,        the component layout handler
      */
     void handlePerspectiveChange(
             final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
@@ -192,42 +127,8 @@ public abstract class AEmbeddedComponentWorker<T> extends Thread {
                     layout);
         }
         // handle target outside current perspective
-        this.changeComponentTarget(delegateQueue, component);
+        WorkerUtil.changeComponentTarget(delegateQueue, component);
     }
-
-    /**
-     * Move component to new target in perspective.
-     *
-     * @param delegateQueue, the component delegate queue
-     * @param component, the component
-     */
-    void changeComponentTarget(
-            final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
-            final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        final String targetId = JACPContextImpl.class.cast(component.getContext()).getExecutionTarget();
-        final String parentIdOld = component.getParentId();
-        final String parentId = FXUtil.getTargetParentId(targetId);
-        if (!parentIdOld.equals(parentId)) {
-            // delegate to perspective observer
-            delegateQueue.add(component);
-
-        }
-    }
-
-    /**
-     * Runs the handle method of a componentView.
-     *
-     * @param component, the component
-     * @param action, the current action
-     * @return a returned node from component execution
-     */
-    Node prepareAndRunHandleMethod(
-            final IUIComponent<Node, EventHandler<Event>, Event, Object> component,
-            final IAction<Event, Object> action) throws Exception {
-        return component.getComponentViewHandle().handle(action);
-
-    }
-
 
     void log(final String message) {
         if (Logger.getLogger(AEmbeddedComponentWorker.class.getName()).isLoggable(
@@ -239,15 +140,16 @@ public abstract class AEmbeddedComponentWorker<T> extends Thread {
 
     /**
      * Set desired caching to component
-     * @param cache, chache enabled
-     * @param hint, the cache hint
+     *
+     * @param cache,     chache enabled
+     * @param hint,      the cache hint
      * @param component, the component
      */
     void setCacheHints(boolean cache, CacheHint hint, final AFXComponent component) {
         final Node currentRoot = component.getRoot();
-        if(currentRoot==null) return;
+        if (currentRoot == null) return;
         final Node parentNode = currentRoot.getParent();
-        if(parentNode==null) return;
+        if (parentNode == null) return;
         if (currentRoot.getParent().isCache() != cache)
             currentRoot.getParent().setCache(cache);
         if (!currentRoot.getParent().getCacheHint().equals(hint))

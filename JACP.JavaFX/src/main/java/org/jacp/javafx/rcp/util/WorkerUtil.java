@@ -1,16 +1,22 @@
 package org.jacp.javafx.rcp.util;
 
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import org.jacp.api.action.IAction;
+import org.jacp.api.action.IActionListener;
 import org.jacp.api.annotations.lifecycle.PreDestroy;
 import org.jacp.api.component.ISubComponent;
+import org.jacp.api.component.IUIComponent;
 import org.jacp.api.util.UIType;
+import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.component.AComponent;
 import org.jacp.javafx.rcp.component.AFXComponent;
+import org.jacp.javafx.rcp.context.JACPContextImpl;
 
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -33,9 +39,10 @@ public class WorkerUtil {
      *
      * @param runnable, a runnable which will be invoked and wait until execution is finished
      * @throws InterruptedException,java.util.concurrent.ExecutionException
+     *
      */
     public static final void invokeOnFXThreadAndWait(final Runnable runnable)
-            throws InterruptedException,ExecutionException {
+            throws InterruptedException, ExecutionException {
         final Lock lock = new ReentrantLock();
         final Condition condition = lock.newCondition();
         final AtomicBoolean conditionReady = new AtomicBoolean(false);
@@ -89,16 +96,81 @@ public class WorkerUtil {
     }
 
     /**
+     * find valid target and add type specific new component. Handles Container,
+     * ScrollPanes, Menus and Bar Entries from user
+     *
+     * @param validContainer, a valid container where components root will be added
+     * @param component,      the component
+     */
+    public static void addComponentByType(
+            final Node validContainer,
+            final IUIComponent<Node, EventHandler<Event>, Event, Object> component) {
+        handleAdd(validContainer, component.getRoot());
+        handleViewState(validContainer, true);
+
+    }
+
+    /**
+     * enables component an add to container
+     *
+     * @param validContainer , a valid container where components root will be added
+     * @param IUIComponent   , the component
+     */
+    private static void handleAdd(final Node validContainer, final Node IUIComponent) {
+        if (validContainer != null && IUIComponent != null) {
+            handleViewState(IUIComponent, true);
+            final ObservableList<Node> children = FXUtil
+                    .getChildren(validContainer);
+            children.add(IUIComponent);
+        }
+
+    }
+
+    /**
+     * set visibility and enable/disable
+     *
+     * @param IUIComponent, a Node where to set the state
+     * @param state,        the boolean value of the state
+     */
+    public static void handleViewState(final Node IUIComponent,
+                                       final boolean state) {
+        IUIComponent.setVisible(state);
+        IUIComponent.setDisable(!state);
+        IUIComponent.setManaged(state);
+    }
+
+    /**
+     * delegate components handle return value to specified target
+     *
+     * @param comp,     the component
+     * @param targetId, the message target id
+     * @param value,    the message value
+     * @param action,   the action
+     */
+    public static void delegateReturnValue(
+            final ISubComponent<EventHandler<Event>, Event, Object> comp,
+            final String targetId, final Object value,
+            final IAction<Event, Object> action) {
+        if (value != null && targetId != null
+                && !action.isMessage("init")) {
+            final IActionListener<EventHandler<Event>, Event, Object> listener = comp.getContext()
+                    .getActionListener(null);
+            listener.notifyComponents(new FXAction(comp.getContext().getId(), targetId,
+                    value, null));
+        }
+    }
+
+    /**
      * Executes post handle method in application main thread. The result value
      * of handle method (from worker thread) is Input for the postHandle Method.
      * The return value or the handleReturnValue are the root node of this
      * component.
      *
      * @param component, a component
-     * @param action, the current action
+     * @param action,    the current action
      */
     public static final void executeComponentViewPostHandle(final Node handleReturnValue,
-                                        final AFXComponent component, final IAction<Event, Object> action) throws Exception {
+                                                            final AFXComponent component, final IAction<Event, Object> action) throws Exception {
 
         Node potsHandleReturnValue = component.getComponentViewHandle().postHandle(handleReturnValue,
                 action);
@@ -113,6 +185,39 @@ public class WorkerUtil {
             potsHandleReturnValue.setVisible(true);
             component.setRoot(potsHandleReturnValue);
         }
+    }
+
+    /**
+     * Move component to new target in perspective.
+     *
+     * @param delegateQueue, the component delegate queue
+     * @param component,     the component
+     */
+    public static void changeComponentTarget(
+            final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
+            final ISubComponent<EventHandler<Event>, Event, Object> component) {
+        final String targetId = JACPContextImpl.class.cast(component.getContext()).getExecutionTarget();
+        final String parentIdOld = component.getParentId();
+        final String parentId = FXUtil.getTargetParentId(targetId);
+        if (!parentIdOld.equals(parentId)) {
+            // delegate to perspective observer
+            delegateQueue.add(component);
+
+        }
+    }
+
+    /**
+     * Runs the handle method of a componentView.
+     *
+     * @param component, the component
+     * @param action,    the current action
+     * @return a returned node from component execution
+     */
+    public static Node prepareAndRunHandleMethod(
+            final IUIComponent<Node, EventHandler<Event>, Event, Object> component,
+            final IAction<Event, Object> action) throws Exception {
+        return component.getComponentViewHandle().handle(action);
+
     }
 
 }

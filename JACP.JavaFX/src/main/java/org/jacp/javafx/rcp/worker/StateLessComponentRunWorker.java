@@ -30,6 +30,7 @@ import org.jacp.api.component.IStatelessCallabackComponent;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
 import org.jacp.javafx.rcp.util.TearDownHandler;
+import org.jacp.javafx.rcp.util.WorkerUtil;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -69,8 +70,8 @@ public class StateLessComponentRunWorker
                     final Object value = this.component.getComponentHandle().handle(myAction);
                     final String targetId = context
                             .getReturnTargetAndClear();
-					this.delegateReturnValue(this.component, targetId, value,
-							myAction);
+					WorkerUtil.delegateReturnValue(this.component, targetId, value,
+                            myAction);
 				}
 				runPostExecution(this.component);
 			} finally {

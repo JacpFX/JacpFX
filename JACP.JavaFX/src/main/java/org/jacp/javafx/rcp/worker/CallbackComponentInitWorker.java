@@ -68,7 +68,7 @@ public class CallbackComponentInitWorker
             final Object value = this.component.getComponentHandle().handle(myAction);
             final String targetId = context
                     .getReturnTargetAndClear();
-            this.delegateReturnValue(this.component, targetId, value,
+            WorkerUtil.delegateReturnValue(this.component, targetId, value,
                     myAction);
             this.checkAndHandleTargetChange(this.component,
                     currentExecutionTarget);
@@ -98,7 +98,7 @@ public class CallbackComponentInitWorker
             if (!component.getContext().isActive())
                 throw new UnsupportedOperationException(
                         "CallbackComponent may be moved or set to inactive but not both");
-            this.changeComponentTarget(this.delegateQueue, comp);
+            WorkerUtil.changeComponentTarget(this.delegateQueue, comp);
         }
     }
 
