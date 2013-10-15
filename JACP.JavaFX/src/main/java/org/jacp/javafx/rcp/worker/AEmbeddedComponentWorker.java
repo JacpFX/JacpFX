@@ -63,7 +63,7 @@ import java.util.logging.Logger;
  *
  * @author Andy Moncsek
  */
-public abstract class AEmbeddedComponentWorker<T> extends Thread {
+public abstract class AEmbeddedComponentWorker extends Thread {
 
 
     public AEmbeddedComponentWorker(final String name) {

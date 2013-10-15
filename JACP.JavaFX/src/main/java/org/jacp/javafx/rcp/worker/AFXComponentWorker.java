@@ -116,7 +116,6 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
         FXUtil.performResourceInjection(handler, component.getContext());
     }
 
-
     /**
      * Check if component was not started yet an activate it.
      *

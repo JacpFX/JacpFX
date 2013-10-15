@@ -50,7 +50,7 @@ import java.util.concurrent.ExecutionException;
  *
  * @author Andy Moncsek
  */
-public class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker<AFXComponent> {
+public class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
 
     private final Map<String, Node> targetComponents;
     private final AFXComponent component;

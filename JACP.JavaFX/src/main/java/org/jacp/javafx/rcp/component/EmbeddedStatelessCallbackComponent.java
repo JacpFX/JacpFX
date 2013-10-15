@@ -10,9 +10,6 @@ import org.jacp.api.component.IComponentHandle;
  * This is an implementation of an AStatelessCallbackComponent which will be used to encapsulate handles on application startup.
  */
 public class EmbeddedStatelessCallbackComponent extends AStatelessCallbackComponent{
-    public EmbeddedStatelessCallbackComponent() {
-        super();
-    }
 
     public EmbeddedStatelessCallbackComponent(IComponentHandle handle) {
         super();

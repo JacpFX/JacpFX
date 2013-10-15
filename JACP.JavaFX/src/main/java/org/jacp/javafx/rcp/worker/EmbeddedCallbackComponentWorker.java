@@ -39,7 +39,7 @@ import java.util.concurrent.ExecutionException;
  */
 public class EmbeddedCallbackComponentWorker
         extends
-        AEmbeddedComponentWorker<ISubComponent<EventHandler<Event>, Event, Object>> {
+        AEmbeddedComponentWorker {
     private final ISubComponent<EventHandler<Event>, Event, Object> component;
     private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue;
 

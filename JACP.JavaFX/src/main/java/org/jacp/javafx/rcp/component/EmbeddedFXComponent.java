@@ -11,9 +11,6 @@ import org.jacp.api.util.UIType;
  * This is an implementation of an AFXComponent which will be used to encapsulate handles on application startup.
  */
 public class EmbeddedFXComponent extends AFXComponent{
-    public EmbeddedFXComponent() {
-
-    }
 
     public EmbeddedFXComponent(IComponentView handle) {
         this.setComponentHandle(handle);

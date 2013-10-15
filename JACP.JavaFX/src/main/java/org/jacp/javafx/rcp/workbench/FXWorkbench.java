@@ -21,7 +21,7 @@ public interface FXWorkbench extends Injectable {
      * Handle menu and bar entries created
      * @param layout, the component layout
      */
-    abstract void postHandle(final FXComponentLayout layout);
+    void postHandle(final FXComponentLayout layout);
 
     /**
      * JavaFX2 specific initialization method to create a workbench instance
@@ -30,7 +30,7 @@ public interface FXWorkbench extends Injectable {
      * @param layout, the workbench layout
      * @param stage, the JavaFX stage
      */
-    abstract void handleInitialLayout(
+    void handleInitialLayout(
             final IAction<Event, Object> action,
             final IWorkbenchLayout<Node> layout, final Stage stage);
 
