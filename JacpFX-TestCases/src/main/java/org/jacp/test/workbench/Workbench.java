@@ -36,16 +36,15 @@ import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.Resource;
 import org.jacp.api.componentLayout.IWorkbenchLayout;
 import org.jacp.api.util.ToolbarPosition;
-import org.jacp.javafx.rcp.context.JACPContext;
-import org.jacp.javafx.rcp.workbench.FXWorkbench;
-import org.jacp.test.main.ApplicationLauncher;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.components.menuBar.JACPMenuBar;
 import org.jacp.javafx.rcp.components.modalDialog.JACPModalDialog;
+import org.jacp.javafx.rcp.context.JACPContext;
 import org.jacp.javafx.rcp.controls.optionPane.JACPDialogButton;
 import org.jacp.javafx.rcp.controls.optionPane.JACPDialogUtil;
 import org.jacp.javafx.rcp.controls.optionPane.JACPOptionPane;
-import org.jacp.javafx.rcp.workbench.AFXWorkbench;
+import org.jacp.javafx.rcp.workbench.FXWorkbench;
+import org.jacp.test.main.ApplicationLauncher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +55,7 @@ import java.util.List;
  *
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
-@org.jacp.api.annotations.workbench.Workbench(id = "id1", name="workbench",perspectives = {"id03","id02","id01"})
+@org.jacp.api.annotations.workbench.Workbench(id = "id1", name = "workbench", perspectives = {"id03", "id02", "id01"})
 public class Workbench implements FXWorkbench {
     private Stage stage;
     @Resource
@@ -84,8 +83,8 @@ public class Workbench implements FXWorkbench {
         for (int i = 0; i < ApplicationLauncher.STYLES.length; i++) {
             menuStyles.getItems().add(getStyle(i));
         }
-         menuTests.getItems().addAll(getTestMenuItems());
-        menu.getMenus().addAll(menuFile,menuTests, menuStyles);
+        menuTests.getItems().addAll(getTestMenuItems());
+        menu.getMenus().addAll(menuFile, menuTests, menuStyles);
 
 
         // show windowButtons
@@ -139,7 +138,7 @@ public class Workbench implements FXWorkbench {
             @Override
             public void handle(final ActionEvent arg0) {
                 // create a modal dialog
-                context.getActionListener("id01","show").performAction(arg0);
+                context.getActionListener("id01", "show").performAction(arg0);
 
             }
         });
@@ -148,7 +147,7 @@ public class Workbench implements FXWorkbench {
             @Override
             public void handle(final ActionEvent arg0) {
                 // create a modal dialog
-                context.getActionListener("id02","show").performAction(arg0);
+                context.getActionListener("id02", "show").performAction(arg0);
 
             }
         });

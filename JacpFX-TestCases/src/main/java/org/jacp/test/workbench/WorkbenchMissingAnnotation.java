@@ -82,8 +82,8 @@ public class WorkbenchMissingAnnotation implements FXWorkbench {
         for (int i = 0; i < ApplicationLauncher.STYLES.length; i++) {
             menuStyles.getItems().add(getStyle(i));
         }
-         menuTests.getItems().addAll(getTestMenuItems());
-        menu.getMenus().addAll(menuFile,menuTests, menuStyles);
+        menuTests.getItems().addAll(getTestMenuItems());
+        menu.getMenus().addAll(menuFile, menuTests, menuStyles);
 
 
         // show windowButtons
@@ -137,7 +137,7 @@ public class WorkbenchMissingAnnotation implements FXWorkbench {
             @Override
             public void handle(final ActionEvent arg0) {
                 // create a modal dialog
-                context.getActionListener("id01","show").performAction(arg0);
+                context.getActionListener("id01", "show").performAction(arg0);
 
             }
         });
@@ -146,7 +146,7 @@ public class WorkbenchMissingAnnotation implements FXWorkbench {
             @Override
             public void handle(final ActionEvent arg0) {
                 // create a modal dialog
-                context.getActionListener("id02","show").performAction(arg0);
+                context.getActionListener("id02", "show").performAction(arg0);
 
             }
         });

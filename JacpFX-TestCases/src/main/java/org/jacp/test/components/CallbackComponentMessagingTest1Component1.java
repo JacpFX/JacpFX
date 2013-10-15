@@ -26,23 +26,19 @@
 package org.jacp.test.components;
 
 import javafx.event.Event;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.Resource;
 import org.jacp.api.annotations.component.Component;
-import org.jacp.api.annotations.component.View;
 import org.jacp.api.annotations.lifecycle.PostConstruct;
 import org.jacp.api.annotations.lifecycle.PreDestroy;
 import org.jacp.javafx.rcp.component.CallbackComponent;
-import org.jacp.javafx.rcp.component.FXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.context.JACPContext;
 import org.jacp.javafx.rcp.util.FXUtil;
 import org.jacp.test.main.ApplicationLauncherCallbackComponentMessaginTest1;
-import org.jacp.test.main.ApplicationLauncherComponentMessaginTest1;
 
 import java.util.ResourceBundle;
 import java.util.concurrent.CountDownLatch;
@@ -65,9 +61,10 @@ public class CallbackComponentMessagingTest1Component1 implements CallbackCompon
     Button button = new Button("move to next target");
     VBox container = new VBox();
     Label label = new Label();
-    public static boolean ui=false;
+    public static boolean ui = false;
 
-    @Resource private static JACPContext context;
+    @Resource
+    private static JACPContext context;
 
     public static AtomicInteger counter = new AtomicInteger(10000);
     public static CountDownLatch wait = new CountDownLatch(1);
@@ -79,31 +76,31 @@ public class CallbackComponentMessagingTest1Component1 implements CallbackCompon
     public Object handle(final IAction<Event, Object> action) {
         if (action.isMessage(FXUtil.MessageUtil.INIT)) {
             ApplicationLauncherCallbackComponentMessaginTest1.latch.countDown();
-        }else {
-            if(counter.get()>1){
+        } else {
+            if (counter.get() > 1) {
                 counter.decrementAndGet();
 
-            }else{
+            } else {
                 System.out.println("Component id009: FINISH");
-                if(wait.getCount()>0) wait.countDown();
+                if (wait.getCount() > 0) wait.countDown();
 
-                  return null;
+                return null;
             }
         }
 
-            return "message";
+        return "message";
     }
 
     public static void fireMessage() {
-        context.getActionListener("id14.id010","message").performAction(null);
+        context.getActionListener("id14.id010", "message").performAction(null);
     }
 
     public static void fireBurst(final int count) {
-           Thread t = new Thread(()->{
-                for(int i=0; i<count;i++) {
-                    getContext().getActionListener("id14.id010","message").performAction(null);
-                }
-           }) ;
+        Thread t = new Thread(() -> {
+            for (int i = 0; i < count; i++) {
+                getContext().getActionListener("id14.id010", "message").performAction(null);
+            }
+        });
         t.setDaemon(true);
         t.start();
     }
@@ -134,7 +131,6 @@ public class CallbackComponentMessagingTest1Component1 implements CallbackCompon
         this.log.info("run on tear down of ComponentRight ");
 
     }
-
 
 
 }

@@ -21,19 +21,17 @@ public class MissconfigComponentTest {
     public void failedToStartComponents() throws Exception {
         try {
             ApplicationLauncherMissingComponentIds.main(new String[0]);
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println("EXCEPTION");
             e.printStackTrace();
             throw e;
         }
 
         // Pause briefly to give FX a chance to start
-       ApplicationLauncherMissingComponentIds.latch.await(1000, TimeUnit.MILLISECONDS);
+        ApplicationLauncherMissingComponentIds.latch.await(1000, TimeUnit.MILLISECONDS);
 
 
     }
-
-
 
 
     private String[] getPerspectiveAnnotations() {

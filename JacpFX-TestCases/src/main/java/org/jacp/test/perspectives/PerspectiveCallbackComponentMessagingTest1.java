@@ -23,13 +23,10 @@
 package org.jacp.test.perspectives;
 
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -40,15 +37,12 @@ import org.jacp.api.annotations.lifecycle.OnShow;
 import org.jacp.api.annotations.lifecycle.PostConstruct;
 import org.jacp.api.annotations.lifecycle.PreDestroy;
 import org.jacp.api.annotations.perspective.Perspective;
-import org.jacp.api.util.ToolbarPosition;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.componentLayout.PerspectiveLayout;
-import org.jacp.javafx.rcp.components.toolBar.JACPToolBar;
 import org.jacp.javafx.rcp.context.JACPContext;
 import org.jacp.javafx.rcp.perspective.FXPerspective;
 import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 import org.jacp.test.main.ApplicationLauncherCallbackComponentMessaginTest1;
-import org.jacp.test.main.ApplicationLauncherComponentMessaginTest1;
 
 import java.util.ResourceBundle;
 import java.util.concurrent.CountDownLatch;
@@ -60,10 +54,10 @@ import java.util.concurrent.CountDownLatch;
  */
 
 @Perspective(id = "id14", name = "contactPerspective",
-        components ={"id009","id010"} ,
-       // viewLocation = "/fxml/perspectiveOne.fxml",
-        resourceBundleLocation = "bundles.languageBundle" ,
-        localeID="en_US")
+        components = {"id009", "id010"},
+        // viewLocation = "/fxml/perspectiveOne.fxml",
+        resourceBundleLocation = "bundles.languageBundle",
+        localeID = "en_US")
 public class PerspectiveCallbackComponentMessagingTest1 implements FXPerspective {
     @FXML
     private HBox content1;
@@ -100,8 +94,6 @@ public class PerspectiveCallbackComponentMessagingTest1 implements FXPerspective
     }
 
 
-
-
     private Node createRoot() {
         BorderPane pane = new BorderPane();
         SplitPane splitPane = new SplitPane();
@@ -110,7 +102,7 @@ public class PerspectiveCallbackComponentMessagingTest1 implements FXPerspective
 
         content1 = new HBox();
         HBox paneRight = new HBox();
-        splitPane.getItems().addAll(content1,paneRight);
+        splitPane.getItems().addAll(content1, paneRight);
         SplitPane contentSplitPane = new SplitPane();
         contentSplitPane.setPrefWidth(800);
         contentSplitPane.setDividerPositions(Double.valueOf(0.5));
@@ -118,7 +110,7 @@ public class PerspectiveCallbackComponentMessagingTest1 implements FXPerspective
 
         content2 = new HBox();
         content3 = new HBox();
-        contentSplitPane.getItems().addAll(content2,content3);
+        contentSplitPane.getItems().addAll(content2, content3);
         paneRight.getChildren().add(contentSplitPane);
         pane.setCenter(splitPane);
 

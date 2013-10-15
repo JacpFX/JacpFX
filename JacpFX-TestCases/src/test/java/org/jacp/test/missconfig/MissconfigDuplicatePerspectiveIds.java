@@ -18,7 +18,7 @@ public class MissconfigDuplicatePerspectiveIds {
     public void failedToStartDuplicatePerspectives() throws Exception {
         try {
             ApplicationLauncher.main(new String[0]);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             throw e;
         }

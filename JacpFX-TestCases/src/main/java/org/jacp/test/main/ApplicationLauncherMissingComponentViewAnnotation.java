@@ -28,7 +28,6 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.jacp.javafx.rcp.workbench.FXWorkbench;
 import org.jacp.project.launcher.AFXSpringLauncher;
-import org.jacp.test.workbench.Workbench;
 import org.jacp.test.workbench.WorkbenchMissingComponentViewAnnotation;
 
 import java.net.URL;
@@ -47,15 +46,16 @@ public class ApplicationLauncherMissingComponentViewAnnotation extends AFXSpring
     private static final String[] STYLE_FILES = {"/styles/style_light.css", "/styles/style_dark.css"};
     /// binary style sheets created while deployment
     private static final String[] BINARY_FILES = {"/styles/style_light.bss", "/styles/style_dark.bss"};
-      public static CountDownLatch latch = new CountDownLatch(2);
+    public static CountDownLatch latch = new CountDownLatch(2);
     public static volatile ApplicationLauncherMissingComponentViewAnnotation[] instance = new ApplicationLauncherMissingComponentViewAnnotation[1];
+
     public ApplicationLauncherMissingComponentViewAnnotation() {
         super("main.xml");
     }
 
     public ApplicationLauncherMissingComponentViewAnnotation(CountDownLatch latch) {
         super("main.xml");
-        this.latch =latch;
+        this.latch = latch;
     }
 
     /**
@@ -91,7 +91,7 @@ public class ApplicationLauncherMissingComponentViewAnnotation extends AFXSpring
         stage.getIcons().add(new Image("images/icons/JACP_512_512.png"));
         // add style sheet
         scene.getStylesheets().add(STYLES[0]);
-        instance[0]=this;
+        instance[0] = this;
         ApplicationLauncherMissingComponentViewAnnotation.latch.countDown();
     }
 
@@ -105,8 +105,6 @@ public class ApplicationLauncherMissingComponentViewAnnotation extends AFXSpring
         }
 
     }
-
-
 
 
 }

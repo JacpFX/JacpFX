@@ -38,7 +38,7 @@ import org.jacp.javafx.rcp.component.CallbackComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.context.JACPContext;
 import org.jacp.javafx.rcp.util.FXUtil;
-import org.jacp.test.main.ApplicationLauncherCallbackComponentMessaginTest1;
+import org.jacp.test.main.ApplicationLauncherComponentToCallbackComponentMessaginTest1;
 
 import java.util.ResourceBundle;
 import java.util.concurrent.CountDownLatch;
@@ -51,10 +51,10 @@ import java.util.logging.Logger;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@Component(id = "id010", name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
-public class CallbackComponentMessagingTest1Component2 implements CallbackComponent {
+@Component(id = "id014", name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
+public class ComponentToCallbackMessagingTest1Component2 implements CallbackComponent {
 
-    private final Logger log = Logger.getLogger(CallbackComponentMessagingTest1Component2.class
+    private final Logger log = Logger.getLogger(ComponentToCallbackMessagingTest1Component2.class
             .getName());
 
     String current = "content0";
@@ -77,13 +77,13 @@ public class CallbackComponentMessagingTest1Component2 implements CallbackCompon
      */
     public Object handle(final IAction<Event, Object> action) {
         if (action.isMessage(FXUtil.MessageUtil.INIT)) {
-            ApplicationLauncherCallbackComponentMessaginTest1.latch.countDown();
+            ApplicationLauncherComponentToCallbackComponentMessaginTest1.latch.countDown();
         } else {
             if (counter.get() > 1) {
                 counter.decrementAndGet();
 
             } else {
-                System.out.println("Component id010: FINISH");
+                System.out.println("Component id014: FINISH");
                 if (wait.getCount() > 0) wait.countDown();
 
                 return MESSAGE;

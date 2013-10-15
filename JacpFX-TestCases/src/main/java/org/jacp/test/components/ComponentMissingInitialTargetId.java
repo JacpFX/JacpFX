@@ -34,7 +34,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.Resource;
-import org.jacp.api.annotations.component.Component;
 import org.jacp.api.annotations.component.View;
 import org.jacp.api.annotations.lifecycle.PostConstruct;
 import org.jacp.api.annotations.lifecycle.PreDestroy;
@@ -52,7 +51,7 @@ import java.util.logging.Logger;
  *
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
-@View(id = "id006", name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US",initialTargetLayoutId = "")
+@View(id = "id006", name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", initialTargetLayoutId = "")
 public class ComponentMissingInitialTargetId implements FXComponent {
 
     private final Logger log = Logger.getLogger(ComponentMissingInitialTargetId.class
@@ -63,7 +62,8 @@ public class ComponentMissingInitialTargetId implements FXComponent {
     VBox container = new VBox();
     Label label = new Label();
 
-    @Resource private JACPContext context;
+    @Resource
+    private JACPContext context;
 
     @Override
     /**
@@ -79,15 +79,15 @@ public class ComponentMissingInitialTargetId implements FXComponent {
      * The postHandleAction method runs always in the main application thread.
      */
     public Node postHandle(final Node arg0,
-                                 final IAction<Event, Object> action) {
+                           final IAction<Event, Object> action) {
         if (!action.isMessage(FXUtil.MessageUtil.INIT)) {
-            String number = current.replace("content","");
-            String value = current.replace(number,"").concat(String.valueOf((Integer.valueOf(number)+1)%3));
+            String number = current.replace("content", "");
+            String value = current.replace(number, "").concat(String.valueOf((Integer.valueOf(number) + 1) % 3));
             current = value;
             context.setTargetLayout(current);
-            label.setText(" current Tagret: "+current);
+            label.setText(" current Tagret: " + current);
         } else {
-            button.setOnMouseClicked(new EventHandler<MouseEvent>(){
+            button.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
                 @Override
                 public void handle(MouseEvent event) {
@@ -97,14 +97,13 @@ public class ComponentMissingInitialTargetId implements FXComponent {
                 }
             });
             button.setStyle("-fx-background-color: red");
-            label.setText(" current Tagret: "+current);
-            container.getChildren().addAll(button,label);
+            label.setText(" current Tagret: " + current);
+            container.getChildren().addAll(button, label);
             ApplicationLauncher.latch.countDown();
         }
 
         return container;
     }
-
 
 
     @PostConstruct
@@ -128,7 +127,6 @@ public class ComponentMissingInitialTargetId implements FXComponent {
         this.log.info("run on tear down of ComponentRight ");
 
     }
-
 
 
 }

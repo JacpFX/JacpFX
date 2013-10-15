@@ -21,7 +21,6 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertNotNull;
@@ -35,6 +34,7 @@ import static junit.framework.TestCase.assertNotNull;
  */
 public class BasicInitialisationTests {
     static Thread t;
+
     @AfterClass
     public static void exitWorkBench() {
         Platform.exit();
@@ -57,25 +57,22 @@ public class BasicInitialisationTests {
         t.setDaemon(true);
         t.start();
         // Pause briefly to give FX a chance to start
-        try
-        {
+        try {
             ApplicationLauncher.latch.await();
-        }
-        catch (InterruptedException e)
-        {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
     @Test
     public void checkApplicationLauncher() {
-        ApplicationLauncher launcher =  ApplicationLauncher.instance[0];
+        ApplicationLauncher launcher = ApplicationLauncher.instance[0];
         assertNotNull(launcher);
     }
 
     @Test
     public void checkComponentScanning() {
-        ApplicationLauncher launcher =  new ApplicationLauncher();
+        ApplicationLauncher launcher = new ApplicationLauncher();
         assertNotNull(launcher);
         launcher.startComponentScaning();
         assertNotNull(ClassRegistry.getAllClasses());
@@ -84,7 +81,7 @@ public class BasicInitialisationTests {
 
     @Test
     public void checkWorkspace() {
-        ApplicationLauncher launcher =  ApplicationLauncher.instance[0];
+        ApplicationLauncher launcher = ApplicationLauncher.instance[0];
         assertNotNull(launcher);
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
@@ -94,12 +91,12 @@ public class BasicInitialisationTests {
 
     @Test
     public void checkWorkspaceAnnotations() {
-        ApplicationLauncher launcher =  ApplicationLauncher.instance[0];
+        ApplicationLauncher launcher = ApplicationLauncher.instance[0];
         assertNotNull(launcher);
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
         assertNotNull(getPerspectiveAnnotations());
-        assertTrue(getPerspectiveAnnotations().length>0);
+        assertTrue(getPerspectiveAnnotations().length > 0);
         FXWorkbench fxworkbench = workbench.getComponentHandle();
         assertNotNull(fxworkbench);
 
@@ -107,15 +104,15 @@ public class BasicInitialisationTests {
 
     @Test
     public void checkWorkspaceContext() {
-        ApplicationLauncher launcher =  ApplicationLauncher.instance[0];
+        ApplicationLauncher launcher = ApplicationLauncher.instance[0];
         assertNotNull(launcher);
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
-        Context<EventHandler<Event>,Event,Object> context = workbench.getContext();
+        Context<EventHandler<Event>, Event, Object> context = workbench.getContext();
         assertNotNull(context);
         assertNotNull(context.getName());
         assertNotNull(context.getId());
-       // assertNotNull(context.getResourceBundle());
+        // assertNotNull(context.getResourceBundle());
 
     }
 
@@ -123,17 +120,18 @@ public class BasicInitialisationTests {
         org.jacp.api.annotations.workbench.Workbench annotations = Workbench.class.getAnnotation(org.jacp.api.annotations.workbench.Workbench.class);
         return annotations.perspectives();
     }
+
     @Test
     public void checkPerspectives() {
-        ApplicationLauncher launcher =  ApplicationLauncher.instance[0];
+        ApplicationLauncher launcher = ApplicationLauncher.instance[0];
         assertNotNull(launcher);
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
         List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
-        assertTrue(getPerspectiveAnnotations().length==perspectives.size());
-        for(IPerspective<EventHandler<Event>, Event, Object> p :perspectives) {
+        assertTrue(getPerspectiveAnnotations().length == perspectives.size());
+        for (IPerspective<EventHandler<Event>, Event, Object> p : perspectives) {
             assertNotNull(p.getComponentHandler());
             assertNotNull(p.getContext());
             assertNotNull(p.getComponentsMessageQueue());
@@ -148,28 +146,28 @@ public class BasicInitialisationTests {
 
     @Test
     public void checkComponents() {
-        ApplicationLauncher launcher =  ApplicationLauncher.instance[0];
+        ApplicationLauncher launcher = ApplicationLauncher.instance[0];
         assertNotNull(launcher);
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
         List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
-        assertTrue(getPerspectiveAnnotations().length==perspectives.size());
-        for(IPerspective<EventHandler<Event>, Event, Object> p :perspectives) {
+        assertTrue(getPerspectiveAnnotations().length == perspectives.size());
+        for (IPerspective<EventHandler<Event>, Event, Object> p : perspectives) {
             Injectable handler = p.getPerspectiveHandle();
             Perspective annotation = handler.getClass().getAnnotation(Perspective.class);
             String[] components = annotation.components();
-            if(components.length==0) {
+            if (components.length == 0) {
                 assertTrue(p.getSubcomponents().isEmpty());
             } else {
                 assertNotNull(p.getSubcomponents());
                 assertFalse(p.getSubcomponents().isEmpty());
-                assertTrue(components.length==p.getSubcomponents().size());
-                List<ISubComponent<EventHandler<Event>,Event,Object>> subcomponents = p.getSubcomponents();
-                for(ISubComponent<EventHandler<Event>,Event,Object> c : subcomponents) {
-                       assertNotNull(c.getParentId());
-                       assertTrue(c.getParentId().equals(p.getContext().getId()));
+                assertTrue(components.length == p.getSubcomponents().size());
+                List<ISubComponent<EventHandler<Event>, Event, Object>> subcomponents = p.getSubcomponents();
+                for (ISubComponent<EventHandler<Event>, Event, Object> c : subcomponents) {
+                    assertNotNull(c.getParentId());
+                    assertTrue(c.getParentId().equals(p.getContext().getId()));
                     Context<EventHandler<Event>, Event, Object> context = c.getContext();
                     assertNotNull(context.getParentId());
                     assertNotNull(context.getId());

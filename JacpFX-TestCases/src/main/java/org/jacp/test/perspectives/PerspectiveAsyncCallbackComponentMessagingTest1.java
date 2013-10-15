@@ -43,7 +43,6 @@ import org.jacp.javafx.rcp.context.JACPContext;
 import org.jacp.javafx.rcp.perspective.FXPerspective;
 import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 import org.jacp.test.main.ApplicationLauncherAsyncCallbackComponentMessaginTest1;
-import org.jacp.test.main.ApplicationLauncherCallbackComponentMessaginTest1;
 
 import java.util.ResourceBundle;
 import java.util.concurrent.CountDownLatch;
@@ -55,10 +54,10 @@ import java.util.concurrent.CountDownLatch;
  */
 
 @Perspective(id = "id15", name = "contactPerspective",
-        components ={"id011","id012"} ,
-       // viewLocation = "/fxml/perspectiveOne.fxml",
-        resourceBundleLocation = "bundles.languageBundle" ,
-        localeID="en_US")
+        components = {"id011", "id012"},
+        // viewLocation = "/fxml/perspectiveOne.fxml",
+        resourceBundleLocation = "bundles.languageBundle",
+        localeID = "en_US")
 public class PerspectiveAsyncCallbackComponentMessagingTest1 implements FXPerspective {
     @FXML
     private HBox content1;
@@ -95,8 +94,6 @@ public class PerspectiveAsyncCallbackComponentMessagingTest1 implements FXPerspe
     }
 
 
-
-
     private Node createRoot() {
         BorderPane pane = new BorderPane();
         SplitPane splitPane = new SplitPane();
@@ -105,7 +102,7 @@ public class PerspectiveAsyncCallbackComponentMessagingTest1 implements FXPerspe
 
         content1 = new HBox();
         HBox paneRight = new HBox();
-        splitPane.getItems().addAll(content1,paneRight);
+        splitPane.getItems().addAll(content1, paneRight);
         SplitPane contentSplitPane = new SplitPane();
         contentSplitPane.setPrefWidth(800);
         contentSplitPane.setDividerPositions(Double.valueOf(0.5));
@@ -113,7 +110,7 @@ public class PerspectiveAsyncCallbackComponentMessagingTest1 implements FXPerspe
 
         content2 = new HBox();
         content3 = new HBox();
-        contentSplitPane.getItems().addAll(content2,content3);
+        contentSplitPane.getItems().addAll(content2, content3);
         paneRight.getChildren().add(contentSplitPane);
         pane.setCenter(splitPane);
 

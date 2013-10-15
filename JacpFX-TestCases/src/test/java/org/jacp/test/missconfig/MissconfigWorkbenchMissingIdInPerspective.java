@@ -19,15 +19,14 @@ import java.util.concurrent.TimeUnit;
 public class MissconfigWorkbenchMissingIdInPerspective {
 
 
-
     @Test(expected = RuntimeException.class)
     public void failedToStartPerspective() throws Exception {
-         try {
-             ApplicationLauncherMissingIdInPerspective.main(new String[0]);
-         } catch (Exception e){
-             e.printStackTrace();
-             throw e;
-         }
+        try {
+            ApplicationLauncherMissingIdInPerspective.main(new String[0]);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
 
         // Pause briefly to give FX a chance to start
         ApplicationLauncherMissingIdInPerspective.latch.await(5000, TimeUnit.MILLISECONDS);

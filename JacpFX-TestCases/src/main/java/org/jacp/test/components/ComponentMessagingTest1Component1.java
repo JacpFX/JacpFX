@@ -26,11 +26,9 @@
 package org.jacp.test.components;
 
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.Resource;
@@ -41,9 +39,7 @@ import org.jacp.javafx.rcp.component.FXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.context.JACPContext;
 import org.jacp.javafx.rcp.util.FXUtil;
-import org.jacp.test.main.ApplicationLauncher;
 import org.jacp.test.main.ApplicationLauncherComponentMessaginTest1;
-import org.jacp.test.perspectives.PerspectiveMessagingTestP1;
 
 import java.util.ResourceBundle;
 import java.util.concurrent.CountDownLatch;
@@ -56,7 +52,7 @@ import java.util.logging.Logger;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@View(id = "id007", name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US",initialTargetLayoutId = "content1")
+@View(id = "id007", name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", initialTargetLayoutId = "content1")
 public class ComponentMessagingTest1Component1 implements FXComponent {
 
     private final Logger log = Logger.getLogger(ComponentMessagingTest1Component1.class
@@ -66,9 +62,10 @@ public class ComponentMessagingTest1Component1 implements FXComponent {
     Button button = new Button("move to next target");
     VBox container = new VBox();
     Label label = new Label();
-    public static boolean ui=false;
+    public static boolean ui = false;
 
-    @Resource private JACPContext context;
+    @Resource
+    private JACPContext context;
 
     public static AtomicInteger counter = new AtomicInteger(10000);
     public static CountDownLatch wait = new CountDownLatch(1);
@@ -87,24 +84,25 @@ public class ComponentMessagingTest1Component1 implements FXComponent {
      * The postHandleAction method runs always in the main application thread.
      */
     public Node postHandle(final Node arg0,
-                                 final IAction<Event, Object> action) {
+                           final IAction<Event, Object> action) {
         if (action.isMessage(FXUtil.MessageUtil.INIT)) {
 
-            label.setText(" current Tagret: "+current);
+            label.setText(" current Tagret: " + current);
             container.getChildren().addAll(label);
             ApplicationLauncherComponentMessaginTest1.latch.countDown();
-        }else {
-            if(counter.get()>1){
-                if(ui){
+        } else {
+            if (counter.get() > 1) {
+                if (ui) {
                     label.setText(" current Counter: " + counter.decrementAndGet());
-                }   else {
+                } else {
                     counter.decrementAndGet();
                 }
-                context.getActionListener("id008","message").performAction(null);
-            }else{
+                context.getActionListener("id008", "message").performAction(null);
+            } else {
                 System.out.println("Component id007: FINISH");
-                if(wait.getCount()>0) wait.countDown();
-                if(ComponentMessagingTest1Component2.wait.getCount()>0)context.getActionListener("id008","message").performAction(null);
+                if (wait.getCount() > 0) wait.countDown();
+                if (ComponentMessagingTest1Component2.wait.getCount() > 0)
+                    context.getActionListener("id008", "message").performAction(null);
 
             }
 
@@ -113,7 +111,6 @@ public class ComponentMessagingTest1Component1 implements FXComponent {
 
         return container;
     }
-
 
 
     @PostConstruct
@@ -137,7 +134,6 @@ public class ComponentMessagingTest1Component1 implements FXComponent {
         this.log.info("run on tear down of ComponentRight ");
 
     }
-
 
 
 }

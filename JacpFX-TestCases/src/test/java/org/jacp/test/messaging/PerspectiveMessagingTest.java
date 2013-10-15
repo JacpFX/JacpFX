@@ -1,9 +1,7 @@
 package org.jacp.test.messaging;
 
 import javafx.application.Platform;
-import junit.framework.Assert;
 import org.jacp.test.AllTests;
-import org.jacp.test.main.ApplicationLauncher;
 import org.jacp.test.main.ApplicationLauncherPerspectiveMessaginTest;
 import org.jacp.test.perspectives.PerspectiveMessagingTestP1;
 import org.jacp.test.perspectives.PerspectiveMessagingTestP2;
@@ -15,6 +13,8 @@ import org.junit.Test;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.junit.Assert.assertTrue;
+
 /**
  * Created with IntelliJ IDEA.
  * User: amo
@@ -24,6 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class PerspectiveMessagingTest {
     static Thread t;
+
     @AfterClass
     public static void exitWorkBench() {
         Platform.exit();
@@ -46,20 +47,17 @@ public class PerspectiveMessagingTest {
         t.setDaemon(true);
         t.start();
         // Pause briefly to give FX a chance to start
-        try
-        {
+        try {
             ApplicationLauncherPerspectiveMessaginTest.latch.await();
-        }
-        catch (InterruptedException e)
-        {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
     private void executeMessaging() throws InterruptedException {
-        PerspectiveMessagingTestP1.wait= new CountDownLatch(1);
-        PerspectiveMessagingTestP2.wait= new CountDownLatch(1);
-        PerspectiveMessagingTestP3.wait= new CountDownLatch(1);
+        PerspectiveMessagingTestP1.wait = new CountDownLatch(1);
+        PerspectiveMessagingTestP2.wait = new CountDownLatch(1);
+        PerspectiveMessagingTestP3.wait = new CountDownLatch(1);
         PerspectiveMessagingTestP1.counter = new AtomicInteger(10000);
         PerspectiveMessagingTestP2.counter = new AtomicInteger(10000);
         PerspectiveMessagingTestP3.counter = new AtomicInteger(10000);
@@ -78,15 +76,15 @@ public class PerspectiveMessagingTest {
     public void testPerspectiveMessaging() throws InterruptedException {
         warmUp();
         long start = System.currentTimeMillis();
-        int i=0;
-        while(i<10){
+        int i = 0;
+        while (i < 10) {
             executeMessaging();
-            Assert.assertTrue(true);
+            assertTrue(true);
             i++;
         }
 
         long end = System.currentTimeMillis();
 
-        System.out.println("Execution time was "+(end-start)+" ms.");
+        System.out.println("Execution time was " + (end - start) + " ms.");
     }
 }

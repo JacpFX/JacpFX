@@ -6,9 +6,6 @@ import org.jacp.test.main.ApplicationLauncherMissingWorkbenchId;
 import org.jacp.test.workbench.WorkbenchMissingPerspectives;
 import org.junit.Test;
 
-import static junit.framework.Assert.assertTrue;
-import static junit.framework.TestCase.assertNotNull;
-
 /**
  * Created with IntelliJ IDEA.
  * User: Andy Moncsek
@@ -19,13 +16,12 @@ import static junit.framework.TestCase.assertNotNull;
 public class MissconfigWorkbenchIdTest {
 
 
-
     @Test(expected = RuntimeException.class)
     public void noIDSetOnWorkbench() {
 
         try {
             ApplicationLauncherMissingWorkbenchId.main(new String[0]);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             throw e;
         }

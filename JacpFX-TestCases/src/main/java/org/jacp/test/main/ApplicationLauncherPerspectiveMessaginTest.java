@@ -28,7 +28,6 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.jacp.javafx.rcp.workbench.FXWorkbench;
 import org.jacp.project.launcher.AFXSpringLauncher;
-import org.jacp.test.workbench.Workbench;
 import org.jacp.test.workbench.WorkbenchPerspectiveMessageTesting;
 
 import java.net.URL;
@@ -47,15 +46,16 @@ public class ApplicationLauncherPerspectiveMessaginTest extends AFXSpringLaunche
     private static final String[] STYLE_FILES = {"/styles/style_light.css", "/styles/style_dark.css"};
     /// binary style sheets created while deployment
     private static final String[] BINARY_FILES = {"/styles/style_light.bss", "/styles/style_dark.bss"};
-      public static CountDownLatch latch = new CountDownLatch(4);
+    public static CountDownLatch latch = new CountDownLatch(4);
     public static volatile ApplicationLauncherPerspectiveMessaginTest[] instance = new ApplicationLauncherPerspectiveMessaginTest[1];
+
     public ApplicationLauncherPerspectiveMessaginTest() {
         super("main.xml");
     }
 
     public ApplicationLauncherPerspectiveMessaginTest(CountDownLatch latch) {
         super("main.xml");
-        this.latch =latch;
+        this.latch = latch;
     }
 
     /**
@@ -91,7 +91,7 @@ public class ApplicationLauncherPerspectiveMessaginTest extends AFXSpringLaunche
         stage.getIcons().add(new Image("images/icons/JACP_512_512.png"));
         // add style sheet
         scene.getStylesheets().add(STYLES[0]);
-        instance[0]=this;
+        instance[0] = this;
         ApplicationLauncherPerspectiveMessaginTest.latch.countDown();
     }
 
@@ -105,8 +105,6 @@ public class ApplicationLauncherPerspectiveMessaginTest extends AFXSpringLaunche
         }
 
     }
-
-
 
 
 }

@@ -55,10 +55,10 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 
 @Perspective(id = "id12", name = "contactPerspective",
-        components ={} ,
-       // viewLocation = "/fxml/perspectiveOne.fxml",
-        resourceBundleLocation = "bundles.languageBundle" ,
-        localeID="en_US")
+        components = {},
+        // viewLocation = "/fxml/perspectiveOne.fxml",
+        resourceBundleLocation = "bundles.languageBundle",
+        localeID = "en_US")
 public class PerspectiveMessagingTestP3 implements FXPerspective {
     @FXML
     private HBox content1;
@@ -91,13 +91,14 @@ public class PerspectiveMessagingTestP3 implements FXPerspective {
                     this.content3);
             ApplicationLauncherPerspectiveMessaginTest.latch.countDown();
         } else {
-            if(counter.get()>1){
+            if (counter.get() > 1) {
                 counter.decrementAndGet();
-                context.getActionListener("id10","message").performAction(null);
-            }else{
+                context.getActionListener("id10", "message").performAction(null);
+            } else {
                 System.out.println("Perspective id12: FINISH");
-               if(wait.getCount()>0) wait.countDown();
-               if(PerspectiveMessagingTestP1.wait.getCount()>0)context.getActionListener("id10","message").performAction(null);
+                if (wait.getCount() > 0) wait.countDown();
+                if (PerspectiveMessagingTestP1.wait.getCount() > 0)
+                    context.getActionListener("id10", "message").performAction(null);
 
             }
 
@@ -107,7 +108,7 @@ public class PerspectiveMessagingTestP3 implements FXPerspective {
 
 
     public static void fireMessage() {
-        context.getActionListener("id10","message").performAction(null);
+        context.getActionListener("id10", "message").performAction(null);
     }
 
     private Node createRoot() {
@@ -118,7 +119,7 @@ public class PerspectiveMessagingTestP3 implements FXPerspective {
 
         content1 = new HBox();
         HBox paneRight = new HBox();
-        splitPane.getItems().addAll(content1,paneRight);
+        splitPane.getItems().addAll(content1, paneRight);
         SplitPane contentSplitPane = new SplitPane();
         contentSplitPane.setPrefWidth(800);
         contentSplitPane.setDividerPositions(Double.valueOf(0.5));
@@ -126,7 +127,7 @@ public class PerspectiveMessagingTestP3 implements FXPerspective {
 
         content2 = new HBox();
         content3 = new HBox();
-        contentSplitPane.getItems().addAll(content2,content3);
+        contentSplitPane.getItems().addAll(content2, content3);
         paneRight.getChildren().add(contentSplitPane);
         pane.setCenter(splitPane);
 

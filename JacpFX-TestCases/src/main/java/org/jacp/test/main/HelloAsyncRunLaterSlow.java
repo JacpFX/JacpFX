@@ -7,6 +7,7 @@ package org.jacp.test.main;
  * Time: 09:12
  * To change this template use File | Settings | File Templates.
  */
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -17,12 +18,11 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-import java.util.concurrent.CountDownLatch;
-
 /**
  */
 public class HelloAsyncRunLaterSlow extends Application {
-    @Override public void start(Stage primaryStage) throws Exception {
+    @Override
+    public void start(Stage primaryStage) throws Exception {
         System.err.println("Application.start");
 
         final Button startButton = new Button("Start");
@@ -32,7 +32,8 @@ public class HelloAsyncRunLaterSlow extends Application {
         box.setCache(true);
         box.getChildren().addAll(startButton);
         startButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent event) {
+            @Override
+            public void handle(ActionEvent event) {
                 createThread(box).start();
                 createThread(box).start();
                 createThread(box).start();
@@ -58,28 +59,29 @@ public class HelloAsyncRunLaterSlow extends Application {
     }
 
     private Thread createThread(final HBox box) {
-        return new Thread(()->{
-            for(int i=0;i<100000;i++) {
-                final int counter =i;
+        return new Thread(() -> {
+            for (int i = 0; i < 100000; i++) {
+                final int counter = i;
                 try {
                     Thread.sleep(10);
                 } catch (InterruptedException e) {
                     e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                 }
-                Platform.runLater(()->{
+                Platform.runLater(() -> {
 
                     box.setCacheHint(CacheHint.SPEED);
                     box.getChildren().clear();
-                    box.getChildren().add(new Button("counter: "+counter+" in Thread:"+Thread.currentThread()));
+                    box.getChildren().add(new Button("counter: " + counter + " in Thread:" + Thread.currentThread()));
                     box.setCacheHint(CacheHint.QUALITY);
-                })  ;
+                });
 
             }
 
         });
     }
 
-    @Override public void stop() throws Exception {
+    @Override
+    public void stop() throws Exception {
         System.err.println("Application.stop");
     }
 

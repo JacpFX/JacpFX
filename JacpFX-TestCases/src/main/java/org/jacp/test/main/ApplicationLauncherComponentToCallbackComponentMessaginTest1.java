@@ -28,7 +28,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.jacp.javafx.rcp.workbench.FXWorkbench;
 import org.jacp.project.launcher.AFXSpringLauncher;
-import org.jacp.test.workbench.WorkbenchMissingIdInPerspective;
+import org.jacp.test.workbench.WorkbenchComponentToCallbackComponentMessageTesting1;
 
 import java.net.URL;
 import java.util.concurrent.CountDownLatch;
@@ -39,21 +39,21 @@ import java.util.logging.Logger;
  *
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
-public class ApplicationLauncherMissingIdInPerspective extends AFXSpringLauncher {
-    private static final Logger log = Logger.getLogger(ApplicationLauncherMissingIdInPerspective.class
+public class ApplicationLauncherComponentToCallbackComponentMessaginTest1 extends AFXSpringLauncher {
+    private static final Logger log = Logger.getLogger(ApplicationLauncherComponentToCallbackComponentMessaginTest1.class
             .getName());
     public static final String[] STYLES = new String[2];
     private static final String[] STYLE_FILES = {"/styles/style_light.css", "/styles/style_dark.css"};
     /// binary style sheets created while deployment
     private static final String[] BINARY_FILES = {"/styles/style_light.bss", "/styles/style_dark.bss"};
-    public static CountDownLatch latch = new CountDownLatch(1);
-    public static volatile ApplicationLauncherMissingIdInPerspective[] instance = new ApplicationLauncherMissingIdInPerspective[1];
+    public static CountDownLatch latch = new CountDownLatch(4);
+    public static volatile ApplicationLauncherComponentToCallbackComponentMessaginTest1[] instance = new ApplicationLauncherComponentToCallbackComponentMessaginTest1[1];
 
-    public ApplicationLauncherMissingIdInPerspective() {
+    public ApplicationLauncherComponentToCallbackComponentMessaginTest1() {
         super("main.xml");
     }
 
-    public ApplicationLauncherMissingIdInPerspective(CountDownLatch latch) {
+    public ApplicationLauncherComponentToCallbackComponentMessaginTest1(CountDownLatch latch) {
         super("main.xml");
         this.latch = latch;
     }
@@ -67,7 +67,7 @@ public class ApplicationLauncherMissingIdInPerspective extends AFXSpringLauncher
 
     @Override
     protected Class<? extends FXWorkbench> getWorkbechClass() {
-        return WorkbenchMissingIdInPerspective.class;
+        return WorkbenchComponentToCallbackComponentMessageTesting1.class;
     }
 
     @Override
@@ -92,14 +92,14 @@ public class ApplicationLauncherMissingIdInPerspective extends AFXSpringLauncher
         // add style sheet
         scene.getStylesheets().add(STYLES[0]);
         instance[0] = this;
-        ApplicationLauncherMissingIdInPerspective.latch.countDown();
+        ApplicationLauncherComponentToCallbackComponentMessaginTest1.latch.countDown();
     }
 
     private static void initStyles() {
         for (int i = 0; i < 2; i++) {
-            URL res = ApplicationLauncherMissingIdInPerspective.class.getResource(BINARY_FILES[i]);
+            URL res = ApplicationLauncherComponentToCallbackComponentMessaginTest1.class.getResource(BINARY_FILES[i]);
             if (res == null)
-                res = ApplicationLauncherMissingIdInPerspective.class.getResource(STYLE_FILES[i]);
+                res = ApplicationLauncherComponentToCallbackComponentMessaginTest1.class.getResource(STYLE_FILES[i]);
             STYLES[i] = res.toExternalForm();
             log.info("found: " + STYLES[i] + " stylesheet");
         }

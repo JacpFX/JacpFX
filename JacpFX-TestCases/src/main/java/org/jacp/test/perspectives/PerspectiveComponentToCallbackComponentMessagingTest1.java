@@ -23,13 +23,10 @@
 package org.jacp.test.perspectives;
 
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -40,14 +37,12 @@ import org.jacp.api.annotations.lifecycle.OnShow;
 import org.jacp.api.annotations.lifecycle.PostConstruct;
 import org.jacp.api.annotations.lifecycle.PreDestroy;
 import org.jacp.api.annotations.perspective.Perspective;
-import org.jacp.api.util.ToolbarPosition;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.componentLayout.PerspectiveLayout;
-import org.jacp.javafx.rcp.components.toolBar.JACPToolBar;
 import org.jacp.javafx.rcp.context.JACPContext;
 import org.jacp.javafx.rcp.perspective.FXPerspective;
 import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
-import org.jacp.test.main.ApplicationLauncherComponentMessaginTest1;
+import org.jacp.test.main.ApplicationLauncherComponentToCallbackComponentMessaginTest1;
 
 import java.util.ResourceBundle;
 import java.util.concurrent.CountDownLatch;
@@ -58,12 +53,12 @@ import java.util.concurrent.CountDownLatch;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@Perspective(id = "id13", name = "contactPerspective",
-        components = {"id007", "id008"},
+@Perspective(id = "id16", name = "contactPerspective",
+        components = {"id013", "id014"},
         // viewLocation = "/fxml/perspectiveOne.fxml",
         resourceBundleLocation = "bundles.languageBundle",
         localeID = "en_US")
-public class PerspectiveComponentMessagingTest1 implements FXPerspective {
+public class PerspectiveComponentToCallbackComponentMessagingTest1 implements FXPerspective {
     @FXML
     private HBox content1;
     @FXML
@@ -93,15 +88,16 @@ public class PerspectiveComponentMessagingTest1 implements FXPerspective {
                     this.content2);
             perspectiveLayout.registerTargetLayoutComponent("content2",
                     this.content3);
-            ApplicationLauncherComponentMessaginTest1.latch.countDown();
+            ApplicationLauncherComponentToCallbackComponentMessaginTest1.latch.countDown();
         }
 
-    }
 
+    }
 
     public static void fireMessage() {
-        context.getActionListener("id13.id007", "message").performAction(null);
+        context.getActionListener("id16.id013", "message").performAction(null);
     }
+
 
     private Node createRoot() {
         BorderPane pane = new BorderPane();
@@ -139,15 +135,7 @@ public class PerspectiveComponentMessagingTest1 implements FXPerspective {
      */
     public void onStartPerspective(final FXComponentLayout layout,
                                    final ResourceBundle resourceBundle) {
-        JACPToolBar south = layout.getRegisteredToolBar(ToolbarPosition.SOUTH);
-        Button b = new Button("start");
-        b.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                fireMessage();
-            }
-        });
-        south.add("xy", b);
+
 
     }
 

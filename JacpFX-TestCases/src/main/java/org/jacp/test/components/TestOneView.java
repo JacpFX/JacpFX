@@ -27,16 +27,13 @@ package org.jacp.test.components;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.Resource;
-import org.jacp.api.annotations.component.Component;
 import org.jacp.api.annotations.component.View;
 import org.jacp.api.annotations.lifecycle.PostConstruct;
 import org.jacp.api.annotations.lifecycle.PreDestroy;
@@ -45,7 +42,6 @@ import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.context.JACPContext;
 import org.jacp.javafx.rcp.util.FXUtil;
 import org.jacp.test.main.ApplicationLauncher;
-
 
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
@@ -56,7 +52,7 @@ import java.util.logging.Logger;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@View(id = "id002", name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US",initialTargetLayoutId = "content0")
+@View(id = "id002", name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", initialTargetLayoutId = "content0")
 public class TestOneView implements FXComponent {
 
     private final Logger log = Logger.getLogger(TestOneView.class
@@ -67,7 +63,8 @@ public class TestOneView implements FXComponent {
     VBox container = new VBox();
     Label label = new Label();
 
-    @Resource private JACPContext context;
+    @Resource
+    private JACPContext context;
 
     @Override
     /**
@@ -83,15 +80,15 @@ public class TestOneView implements FXComponent {
      * The postHandleAction method runs always in the main application thread.
      */
     public Node postHandle(final Node arg0,
-                                 final IAction<Event, Object> action) {
+                           final IAction<Event, Object> action) {
         if (!action.isMessage(FXUtil.MessageUtil.INIT)) {
-            String number = current.replace("content","");
-            String value = current.replace(number,"").concat(String.valueOf((Integer.valueOf(number)+1)%3));
+            String number = current.replace("content", "");
+            String value = current.replace(number, "").concat(String.valueOf((Integer.valueOf(number) + 1) % 3));
             current = value;
             context.setTargetLayout(current);
-            label.setText(" current Tagret: "+current);
+            label.setText(" current Tagret: " + current);
         } else {
-            button.setOnMouseClicked(new EventHandler<MouseEvent>(){
+            button.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
                 @Override
                 public void handle(MouseEvent event) {
@@ -101,14 +98,13 @@ public class TestOneView implements FXComponent {
                 }
             });
             button.setStyle("-fx-background-color: red");
-            label.setText(" current Tagret: "+current);
-            container.getChildren().addAll(button,label);
+            label.setText(" current Tagret: " + current);
+            container.getChildren().addAll(button, label);
             ApplicationLauncher.latch.countDown();
         }
 
         return container;
     }
-
 
 
     @PostConstruct
@@ -132,7 +128,6 @@ public class TestOneView implements FXComponent {
         this.log.info("run on tear down of ComponentRight ");
 
     }
-
 
 
 }

@@ -2,8 +2,9 @@ package org.jacp.test.missconfig;
 
 import javafx.application.Platform;
 import junit.framework.TestCase;
-import org.jacp.test.main.*;
-import org.junit.Ignore;
+import org.jacp.test.main.ApplicationLauncherMissingComponentDeclarativeViewAnnotation;
+import org.jacp.test.main.ApplicationLauncherMissingComponentInitialTargetId;
+import org.jacp.test.main.ApplicationLauncherMissingComponentViewAnnotation;
 import org.junit.Test;
 
 import java.util.concurrent.TimeUnit;
@@ -21,7 +22,7 @@ public class MissconfigFXComponentTest {
     public void failedToStartFXComponent() throws Exception {
         try {
             ApplicationLauncherMissingComponentViewAnnotation.main(new String[0]);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             throw e;
         }
@@ -36,7 +37,7 @@ public class MissconfigFXComponentTest {
     public void failedToStartDeclarativeComponents() throws Exception {
         try {
             ApplicationLauncherMissingComponentDeclarativeViewAnnotation.main(new String[0]);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             throw e;
         }
@@ -47,11 +48,11 @@ public class MissconfigFXComponentTest {
 
     }
 
-    @Test (expected = RuntimeException.class)
+    @Test(expected = RuntimeException.class)
     public void failedToStartMissingTargetId() throws Exception {
 
         try {
-            ApplicationLauncherMissingComponentInitialTargetId.handler=new Thread.UncaughtExceptionHandler() {
+            ApplicationLauncherMissingComponentInitialTargetId.handler = new Thread.UncaughtExceptionHandler() {
                 @Override
                 public void uncaughtException(Thread t, Throwable e) {
                     TestCase.assertTrue(e.getMessage().contains("no targetLayout for layoutID:"));
@@ -60,7 +61,7 @@ public class MissconfigFXComponentTest {
                 }
             };
             ApplicationLauncherMissingComponentInitialTargetId.main(new String[0]);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             throw e;
         }

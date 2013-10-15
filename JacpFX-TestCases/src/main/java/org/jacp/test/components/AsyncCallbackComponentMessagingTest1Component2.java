@@ -40,7 +40,6 @@ import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.context.JACPContext;
 import org.jacp.javafx.rcp.util.FXUtil;
 import org.jacp.test.main.ApplicationLauncherAsyncCallbackComponentMessaginTest1;
-import org.jacp.test.main.ApplicationLauncherCallbackComponentMessaginTest1;
 
 import java.util.ResourceBundle;
 import java.util.concurrent.CountDownLatch;
@@ -64,39 +63,38 @@ public class AsyncCallbackComponentMessagingTest1Component2 implements CallbackC
     Button button = new Button("move to next target");
     VBox container = new VBox();
     Label label = new Label();
-    public static boolean ui=false;
+    public static boolean ui = false;
 
-    @Resource private JACPContext context;
+    @Resource
+    private JACPContext context;
 
     public static AtomicInteger counter = new AtomicInteger(10000);
     public static CountDownLatch wait = new CountDownLatch(1);
 
-    public static String MESSAGE="message";
+    public static String MESSAGE = "message";
 
     @Override
     /**
      * The handleAction method always runs outside the main application thread. You can create new nodes, execute long running tasks but you are not allowed to manipulate existing nodes here.
      */
     public Object handle(final IAction<Event, Object> action) {
-       // System.err.println("Message id12 : "+action+"  :: "+this);
+        // System.err.println("Message id12 : "+action+"  :: "+this);
         if (action.isMessage(FXUtil.MessageUtil.INIT)) {
             ApplicationLauncherAsyncCallbackComponentMessaginTest1.latch.countDown();
-        }else {
-            if(counter.get()>1){
+        } else {
+            if (counter.get() > 1) {
                 counter.decrementAndGet();
 
-            }else{
+            } else {
                 System.out.println("Component id012: FINISH");
-                if(wait.getCount()>0) wait.countDown();
+                if (wait.getCount() > 0) wait.countDown();
 
-                  return MESSAGE;
+                return MESSAGE;
             }
         }
 
-            return MESSAGE;
+        return MESSAGE;
     }
-
-
 
 
     @PostConstruct
@@ -120,7 +118,6 @@ public class AsyncCallbackComponentMessagingTest1Component2 implements CallbackC
         this.log.info("run on tear down of ComponentRight ");
 
     }
-
 
 
 }

@@ -6,7 +6,7 @@ import javafx.event.EventHandler;
 import org.jacp.api.component.IPerspective;
 import org.jacp.javafx.rcp.workbench.AFXWorkbench;
 import org.jacp.test.AllTests;
-import org.jacp.test.main.*;
+import org.jacp.test.main.ApplicationLauncherMissingPerspectives;
 import org.jacp.test.workbench.WorkbenchMissingPerspectives;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -15,7 +15,6 @@ import org.junit.Test;
 import java.util.List;
 
 import static junit.framework.Assert.assertTrue;
-import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertNotNull;
 
 /**
@@ -28,6 +27,7 @@ import static junit.framework.TestCase.assertNotNull;
 public class MissconfigWorkbenchTest {
 
     static Thread t;
+
     @AfterClass
     public static void exitWorkBench() {
         Platform.exit();
@@ -48,12 +48,9 @@ public class MissconfigWorkbenchTest {
         t.setDaemon(true);
         t.start();
         // Pause briefly to give FX a chance to start
-        try
-        {
+        try {
             ApplicationLauncherMissingPerspectives.latch.await();
-        }
-        catch (InterruptedException e)
-        {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -62,9 +59,9 @@ public class MissconfigWorkbenchTest {
     public void noPerspectivesAnnotatedTest() {
 
         assertNotNull(getPerspectiveAnnotations());
-        assertTrue(getPerspectiveAnnotations().length==0);
+        assertTrue(getPerspectiveAnnotations().length == 0);
 
-        ApplicationLauncherMissingPerspectives launcher =  ApplicationLauncherMissingPerspectives.instance[0];
+        ApplicationLauncherMissingPerspectives launcher = ApplicationLauncherMissingPerspectives.instance[0];
         assertNotNull(launcher);
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);

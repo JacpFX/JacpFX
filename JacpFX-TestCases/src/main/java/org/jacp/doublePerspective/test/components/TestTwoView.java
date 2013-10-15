@@ -34,7 +34,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.Resource;
-import org.jacp.api.annotations.component.Component;
 import org.jacp.api.annotations.component.View;
 import org.jacp.api.annotations.lifecycle.PostConstruct;
 import org.jacp.api.annotations.lifecycle.PreDestroy;
@@ -52,7 +51,7 @@ import java.util.logging.Logger;
  *
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
-@View(id = "id002", name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US",initialTargetLayoutId = "content1")
+@View(id = "id002", name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", initialTargetLayoutId = "content1")
 public class TestTwoView implements FXComponent {
 
     private final Logger log = Logger.getLogger(TestTwoView.class
@@ -63,7 +62,8 @@ public class TestTwoView implements FXComponent {
     VBox container = new VBox();
     Label label = new Label();
 
-    @Resource private JACPContext context;
+    @Resource
+    private JACPContext context;
 
     @Override
     /**
@@ -79,16 +79,16 @@ public class TestTwoView implements FXComponent {
      * The postHandleAction method runs always in the main application thread.
      */
     public Node postHandle(final Node arg0,
-                                 final IAction<Event, Object> action) {
+                           final IAction<Event, Object> action) {
         current = context.getParentId();
         if (!action.isMessage(FXUtil.MessageUtil.INIT)) {
 
-            current =   context.getParentId().equals("id02")?"id03":"id02";
+            current = context.getParentId().equals("id02") ? "id03" : "id02";
             context.setExecutionTarget(current);
-            label.setText(" current Perspective: "+current);
+            label.setText(" current Perspective: " + current);
 
         } else {
-            button.setOnMouseClicked(new EventHandler<MouseEvent>(){
+            button.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
                 @Override
                 public void handle(MouseEvent event) {
@@ -98,8 +98,8 @@ public class TestTwoView implements FXComponent {
                 }
             });
             button.setStyle("-fx-background-color: red");
-            label.setText(" current Perspective: "+current);
-            container.getChildren().addAll(button,label);
+            label.setText(" current Perspective: " + current);
+            container.getChildren().addAll(button, label);
             ApplicationLauncher.latch.countDown();
         }
 
@@ -129,7 +129,6 @@ public class TestTwoView implements FXComponent {
         this.log.info("run on tear down of ComponentRight ");
 
     }
-
 
 
 }

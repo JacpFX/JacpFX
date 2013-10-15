@@ -8,12 +8,11 @@ package org.jacp.test.main;
  * To change this template use File | Settings | File Templates.
  */
 
-import java.lang.reflect.Field;
-
-
 import sun.misc.Unsafe;
 
-import java.lang.invoke.*;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
@@ -93,7 +92,7 @@ public class Benchmarks {
                 100_000_000L
         };
 
-        for (long times: timesArray) {
+        for (long times : timesArray) {
             long start = 0;
             long end = 0;
             long regularTime;
@@ -106,7 +105,7 @@ public class Benchmarks {
 
             System.out.printf("<h4> %,d</h4> \n", times);
             //warm up
-            for (int index =0 ; index < times; index++) {
+            for (int index = 0; index < times; index++) {
                 employee.getName();
                 name = (String) methodHandle.invokeExact(employee);
                 name = (String) method.invoke(employee);
@@ -120,7 +119,7 @@ public class Benchmarks {
 
 
             start = System.nanoTime();
-            for (int index =0 ; index < times; index++) {
+            for (int index = 0; index < times; index++) {
                 name = employee.getName();
             }
             end = System.nanoTime();
@@ -129,10 +128,10 @@ public class Benchmarks {
                     "                  \n" +
                     "                      \n" +
                     "                      \n" +
-                    "                  \n", regularTime/times);
+                    "                  \n", regularTime / times);
 
             start = System.nanoTime();
-            for (int index =0 ; index < times; index++) {
+            for (int index = 0; index < times; index++) {
                 name = (String) methodHandle.invokeExact(employee);
             }
             end = System.nanoTime();
@@ -142,11 +141,11 @@ public class Benchmarks {
                     "                  \n" +
                     "                      \n" +
                     "                      \n" +
-                    "                  \n", invokeDynamicTime/times);
+                    "                  \n", invokeDynamicTime / times);
 
 
             start = System.nanoTime();
-            for (int index =0 ; index < times; index++) {
+            for (int index = 0; index < times; index++) {
                 name = (String) method.invoke(employee);
             }
             end = System.nanoTime();
@@ -155,12 +154,11 @@ public class Benchmarks {
                     "                  \n" +
                     "                      \n" +
                     "                      \n" +
-                    "                  \n", reflectionTime/times);
-
+                    "                  \n", reflectionTime / times);
 
 
             start = System.nanoTime();
-            for (int index =0 ; index < times; index++) {
+            for (int index = 0; index < times; index++) {
                 name = (String) methodHandleFieldDirect.invokeExact(employee);
             }
             end = System.nanoTime();
@@ -169,12 +167,12 @@ public class Benchmarks {
                     "                  \n" +
                     "                      \n" +
                     "                      \n" +
-                    "                  \n", invokeDynamicTimeUsingField/times);
+                    "                  \n", invokeDynamicTimeUsingField / times);
 
 
             //old school reflection
             start = System.nanoTime();
-            for (int index =0 ; index < times; index++) {
+            for (int index = 0; index < times; index++) {
                 name = (String) fieldName.get(employee);
             }
             end = System.nanoTime();
@@ -183,15 +181,12 @@ public class Benchmarks {
                     "                  \n" +
                     "                      \n" +
                     "                      \n" +
-                    "                  \n", fieldDirect/times);
-
-
-
+                    "                  \n", fieldDirect / times);
 
 
             //unsafe refection
             start = System.nanoTime();
-            for (int index =0 ; index < times; index++) {
+            for (int index = 0; index < times; index++) {
                 name = (String) unsafe.getObject(employee, offset);
             }
             end = System.nanoTime();
@@ -200,11 +195,11 @@ public class Benchmarks {
                     "                  \n" +
                     "                      \n" +
                     "                      \n" +
-                    "                  \n", unsafeField/times);
+                    "                  \n", unsafeField / times);
 
             //unsafe refection
             start = System.nanoTime();
-            for (int index =0 ; index < times; index++) {
+            for (int index = 0; index < times; index++) {
                 name = employee.name;
             }
             end = System.nanoTime();
@@ -213,10 +208,10 @@ public class Benchmarks {
                     "                  \n" +
                     "                      \n" +
                     "                      \n" +
-                    "                  \n", direct/times);
+                    "                  \n", direct / times);
 
 
-           // System.out.printf("\n <table><tbody><tr><th>description</th><th>duration in nanoseconds</th></tr><tr><td>regular method call time</td><td>%d</td></tr> <tr><td>invoke dynamic method call time</td><td>%d</td></tr><tr><td>reflection method call time</td><td>%d</td></tr><tr><td>field method invoke dynamic call time</td><td>%d</td></tr><tr><td>field method invoke reflection call time</td><td>%d</td></tr><tr><td>unsafe field access time</td><td>%d</td></tr><tr><td>direct</td><td>%d</td></tr></tbody></table>\n");
+            // System.out.printf("\n <table><tbody><tr><th>description</th><th>duration in nanoseconds</th></tr><tr><td>regular method call time</td><td>%d</td></tr> <tr><td>invoke dynamic method call time</td><td>%d</td></tr><tr><td>reflection method call time</td><td>%d</td></tr><tr><td>field method invoke dynamic call time</td><td>%d</td></tr><tr><td>field method invoke reflection call time</td><td>%d</td></tr><tr><td>unsafe field access time</td><td>%d</td></tr><tr><td>direct</td><td>%d</td></tr></tbody></table>\n");
 
         }
     }

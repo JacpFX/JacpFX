@@ -1,11 +1,8 @@
 package org.jacp.test.perspectives;
 
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -36,10 +33,10 @@ import java.util.ResourceBundle;
  * To change this template use File | Settings | File Templates.
  */
 @Perspective(id = "id03", name = "contactPerspective",
-        components ={} ,
+        components = {},
         viewLocation = "/fxml/perspectiveOne.fxml",
-        resourceBundleLocation = "bundles.languageBundle" ,
-        localeID="en_US",active = true)
+        resourceBundleLocation = "bundles.languageBundle",
+        localeID = "en_US", active = true)
 public class PerspectiveTestTwoB implements FXPerspective {
     @FXML
     private HBox content1;
@@ -79,11 +76,12 @@ public class PerspectiveTestTwoB implements FXPerspective {
         final List<Node> breadCrumbButtons = north.getNodes("id02");
         setVisibility(breadCrumbButtons, false);
     }
-     @OnShow
-    public void onShow(final FXComponentLayout layout){
-         final JACPToolBar north = layout.getRegisteredToolBar(ToolbarPosition.SOUTH);
-         final List<Node> breadCrumbButtons = north.getNodes("id02");
-         setVisibility(breadCrumbButtons, true);
+
+    @OnShow
+    public void onShow(final FXComponentLayout layout) {
+        final JACPToolBar north = layout.getRegisteredToolBar(ToolbarPosition.SOUTH);
+        final List<Node> breadCrumbButtons = north.getNodes("id02");
+        setVisibility(breadCrumbButtons, true);
     }
 
     @PostConstruct
@@ -98,7 +96,7 @@ public class PerspectiveTestTwoB implements FXPerspective {
     }
 
     private void setVisibility(List<Node> nodes, boolean visibility) {
-     nodes.forEach(n->n.setVisible(visibility));
+        nodes.forEach(n -> n.setVisible(visibility));
     }
 
     @PreDestroy

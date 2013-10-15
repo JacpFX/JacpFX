@@ -34,7 +34,7 @@ import java.util.List;
  * Time: 19:22
  * Test duplicate component id's
  */
-@org.jacp.api.annotations.workbench.Workbench(id = "id1", name="workbench",perspectives = {"id03"})
+@org.jacp.api.annotations.workbench.Workbench(id = "id1", name = "workbench", perspectives = {"id03"})
 public class WorkbenchDuplicateComponentsTest implements FXWorkbench {
     private Stage stage;
     @Resource
@@ -63,7 +63,7 @@ public class WorkbenchDuplicateComponentsTest implements FXWorkbench {
             menuStyles.getItems().add(getStyle(i));
         }
         menuTests.getItems().addAll(getTestMenuItems());
-        menu.getMenus().addAll(menuFile,menuTests, menuStyles);
+        menu.getMenus().addAll(menuFile, menuTests, menuStyles);
 
 
         // show windowButtons
@@ -117,7 +117,7 @@ public class WorkbenchDuplicateComponentsTest implements FXWorkbench {
             @Override
             public void handle(final ActionEvent arg0) {
                 // create a modal dialog
-                context.getActionListener("id01","show").performAction(arg0);
+                context.getActionListener("id01", "show").performAction(arg0);
 
             }
         });
@@ -126,7 +126,7 @@ public class WorkbenchDuplicateComponentsTest implements FXWorkbench {
             @Override
             public void handle(final ActionEvent arg0) {
                 // create a modal dialog
-                context.getActionListener("id02","show").performAction(arg0);
+                context.getActionListener("id02", "show").performAction(arg0);
 
             }
         });

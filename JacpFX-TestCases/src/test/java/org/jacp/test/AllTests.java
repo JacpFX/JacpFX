@@ -1,12 +1,6 @@
 package org.jacp.test;
 
 import com.sun.javafx.application.LauncherImpl;
-import org.jacp.test.missconfig.MissconfigLauncherTest;
-import org.jacp.test.missconfig.MissconfigWorkbenchIdTest;
-import org.jacp.test.missconfig.MissconfigWorkbenchTest;
-import org.jacp.test.workbench.BasicInitialisationTests;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
 
 import java.lang.reflect.Field;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -21,7 +15,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 //@RunWith(Suite.class)
 //@Suite.SuiteClasses({ BasicInitialisationTests.class, MissconfigLauncherTest.class,MissconfigWorkbenchTest.class, MissconfigWorkbenchIdTest.class })
 public class AllTests {
-  // TODO do not use allTests due to problems with main thread.
+    // TODO do not use allTests due to problems with main thread.
     public static void resetApplication() {
         Field launchCalledField = null;
         try {

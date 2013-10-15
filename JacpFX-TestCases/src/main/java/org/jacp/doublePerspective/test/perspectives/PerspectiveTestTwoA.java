@@ -36,10 +36,10 @@ import java.util.ResourceBundle;
  * To change this template use File | Settings | File Templates.
  */
 @Perspective(id = "id02", name = "contactPerspective",
-        components ={""} ,
+        components = {""},
         viewLocation = "/fxml/perspectiveOne.fxml",
-        resourceBundleLocation = "bundles.languageBundle" ,
-        localeID="en_US",active = true)
+        resourceBundleLocation = "bundles.languageBundle",
+        localeID = "en_US", active = true)
 public class PerspectiveTestTwoA implements FXPerspective {
     @FXML
     private HBox content1;
@@ -78,11 +78,12 @@ public class PerspectiveTestTwoA implements FXPerspective {
         final List<Node> breadCrumbButtons = north.getNodes("id02");
         setVisibility(breadCrumbButtons, false);
     }
-     @OnShow
-    public void onShow(final FXComponentLayout layout){
-         final JACPToolBar north = layout.getRegisteredToolBar(ToolbarPosition.SOUTH);
-         final List<Node> breadCrumbButtons = north.getNodes("id02");
-         setVisibility(breadCrumbButtons, true);
+
+    @OnShow
+    public void onShow(final FXComponentLayout layout) {
+        final JACPToolBar north = layout.getRegisteredToolBar(ToolbarPosition.SOUTH);
+        final List<Node> breadCrumbButtons = north.getNodes("id02");
+        setVisibility(breadCrumbButtons, true);
     }
 
     @PostConstruct
@@ -93,29 +94,29 @@ public class PerspectiveTestTwoA implements FXPerspective {
      */
     public void onStartPerspective(final FXComponentLayout layout,
                                    final ResourceBundle resourceBundle) {
-        System.out.println("START"+layout);
+        System.out.println("START" + layout);
         final JACPToolBar toolbar = layout.getRegisteredToolBar(ToolbarPosition.SOUTH);
         final Button p1 = new Button("Perspective A");
         p1.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                context.getActionListener("id02","show").performAction(event);
+                context.getActionListener("id02", "show").performAction(event);
             }
         });
         final Button p2 = new Button("Perspective B");
         p2.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                context.getActionListener("id03","show").performAction(event);
+                context.getActionListener("id03", "show").performAction(event);
             }
         });
         p1.setVisible(false);
         p2.setVisible(false);
-        toolbar.addAllOnEnd("id02",p1,p2);
+        toolbar.addAllOnEnd("id02", p1, p2);
     }
 
     private void setVisibility(List<Node> nodes, boolean visibility) {
-     nodes.forEach(n->n.setVisible(visibility));
+        nodes.forEach(n -> n.setVisible(visibility));
     }
 
     @PreDestroy

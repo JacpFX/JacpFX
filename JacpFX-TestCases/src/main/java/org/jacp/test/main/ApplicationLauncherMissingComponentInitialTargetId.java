@@ -23,13 +23,11 @@
 package org.jacp.test.main;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.jacp.javafx.rcp.workbench.FXWorkbench;
 import org.jacp.project.launcher.AFXSpringLauncher;
-import org.jacp.test.workbench.Workbench;
 import org.jacp.test.workbench.WorkbenchMissingComponentInitialTargetId;
 
 import java.net.URL;
@@ -48,16 +46,17 @@ public class ApplicationLauncherMissingComponentInitialTargetId extends AFXSprin
     private static final String[] STYLE_FILES = {"/styles/style_light.css", "/styles/style_dark.css"};
     /// binary style sheets created while deployment
     private static final String[] BINARY_FILES = {"/styles/style_light.bss", "/styles/style_dark.bss"};
-      public static CountDownLatch latch = new CountDownLatch(2);
-    public static Thread.UncaughtExceptionHandler handler =null;
+    public static CountDownLatch latch = new CountDownLatch(2);
+    public static Thread.UncaughtExceptionHandler handler = null;
     public static volatile ApplicationLauncherMissingComponentInitialTargetId[] instance = new ApplicationLauncherMissingComponentInitialTargetId[1];
+
     public ApplicationLauncherMissingComponentInitialTargetId() {
         super("main.xml");
     }
 
     public ApplicationLauncherMissingComponentInitialTargetId(CountDownLatch latch) {
         super("main.xml");
-        this.latch =latch;
+        this.latch = latch;
     }
 
     /**
@@ -93,7 +92,7 @@ public class ApplicationLauncherMissingComponentInitialTargetId extends AFXSprin
         stage.getIcons().add(new Image("images/icons/JACP_512_512.png"));
         // add style sheet
         scene.getStylesheets().add(STYLES[0]);
-        instance[0]=this;
+        instance[0] = this;
         Thread.currentThread().setUncaughtExceptionHandler(handler);
         ApplicationLauncherMissingComponentInitialTargetId.latch.countDown();
 
@@ -109,8 +108,6 @@ public class ApplicationLauncherMissingComponentInitialTargetId extends AFXSprin
         }
 
     }
-
-
 
 
 }

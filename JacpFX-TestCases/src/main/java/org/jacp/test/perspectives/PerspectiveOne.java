@@ -36,10 +36,8 @@ import org.jacp.api.annotations.lifecycle.OnShow;
 import org.jacp.api.annotations.lifecycle.PostConstruct;
 import org.jacp.api.annotations.lifecycle.PreDestroy;
 import org.jacp.api.annotations.perspective.Perspective;
-import org.jacp.api.util.ToolbarPosition;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.componentLayout.PerspectiveLayout;
-import org.jacp.javafx.rcp.components.toolBar.JACPToolBar;
 import org.jacp.javafx.rcp.perspective.FXPerspective;
 import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 import org.jacp.test.main.ApplicationLauncher;
@@ -53,11 +51,11 @@ import java.util.ResourceBundle;
  */
 
 @Perspective(id = "id01", name = "contactPerspective",
-        components ={
-                "id002"} ,
-       // viewLocation = "/fxml/perspectiveOne.fxml",
-        resourceBundleLocation = "bundles.languageBundle" ,
-        localeID="en_US")
+        components = {
+                "id002"},
+        // viewLocation = "/fxml/perspectiveOne.fxml",
+        resourceBundleLocation = "bundles.languageBundle",
+        localeID = "en_US")
 public class PerspectiveOne implements FXPerspective {
     @FXML
     private HBox content1;
@@ -80,7 +78,7 @@ public class PerspectiveOne implements FXPerspective {
             // register left panel
             perspectiveLayout.registerTargetLayoutComponent("content0",
                     this.content1);
-           perspectiveLayout.registerTargetLayoutComponent("content1",
+            perspectiveLayout.registerTargetLayoutComponent("content1",
                     this.content2);
             perspectiveLayout.registerTargetLayoutComponent("content2",
                     this.content3);
@@ -97,7 +95,7 @@ public class PerspectiveOne implements FXPerspective {
 
         content1 = new HBox();
         HBox paneRight = new HBox();
-        splitPane.getItems().addAll(content1,paneRight);
+        splitPane.getItems().addAll(content1, paneRight);
         SplitPane contentSplitPane = new SplitPane();
         contentSplitPane.setPrefWidth(800);
         contentSplitPane.setDividerPositions(Double.valueOf(0.5));
@@ -105,7 +103,7 @@ public class PerspectiveOne implements FXPerspective {
 
         content2 = new HBox();
         content3 = new HBox();
-        contentSplitPane.getItems().addAll(content2,content3);
+        contentSplitPane.getItems().addAll(content2, content3);
         paneRight.getChildren().add(contentSplitPane);
         pane.setCenter(splitPane);
 

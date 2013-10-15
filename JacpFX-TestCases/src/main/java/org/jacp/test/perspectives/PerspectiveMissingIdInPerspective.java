@@ -47,11 +47,11 @@ import java.util.ResourceBundle;
  */
 
 @Perspective(id = "", name = "contactPerspective",
-        components ={
-                "id002"} ,
+        components = {
+                "id002"},
         viewLocation = "/fxml/perspectiveOne.fxml",
-        resourceBundleLocation = "bundles.languageBundle" ,
-        localeID="en_US")
+        resourceBundleLocation = "bundles.languageBundle",
+        localeID = "en_US")
 public class PerspectiveMissingIdInPerspective implements FXPerspective {
     @FXML
     private HBox content1;
@@ -73,7 +73,7 @@ public class PerspectiveMissingIdInPerspective implements FXPerspective {
             // register left panel
             perspectiveLayout.registerTargetLayoutComponent("content0",
                     this.content1);
-           perspectiveLayout.registerTargetLayoutComponent("content1",
+            perspectiveLayout.registerTargetLayoutComponent("content1",
                     this.content2);
             perspectiveLayout.registerTargetLayoutComponent("content2",
                     this.content3);

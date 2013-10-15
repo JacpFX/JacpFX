@@ -26,19 +26,20 @@
 package org.jacp.test.components;
 
 import javafx.event.Event;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.Resource;
-import org.jacp.api.annotations.component.Component;
+import org.jacp.api.annotations.component.View;
 import org.jacp.api.annotations.lifecycle.PostConstruct;
 import org.jacp.api.annotations.lifecycle.PreDestroy;
-import org.jacp.javafx.rcp.component.CallbackComponent;
+import org.jacp.javafx.rcp.component.FXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.context.JACPContext;
 import org.jacp.javafx.rcp.util.FXUtil;
-import org.jacp.test.main.ApplicationLauncherCallbackComponentMessaginTest1;
+import org.jacp.test.main.ApplicationLauncherComponentToCallbackComponentMessaginTest1;
 
 import java.util.ResourceBundle;
 import java.util.concurrent.CountDownLatch;
@@ -51,10 +52,10 @@ import java.util.logging.Logger;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@Component(id = "id010", name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
-public class CallbackComponentMessagingTest1Component2 implements CallbackComponent {
+@View(id = "id013", name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", initialTargetLayoutId = "content1")
+public class ComponentToCallbackMessagingTest1Component1 implements FXComponent {
 
-    private final Logger log = Logger.getLogger(CallbackComponentMessagingTest1Component2.class
+    private final Logger log = Logger.getLogger(ComponentToCallbackMessagingTest1Component1.class
             .getName());
 
     String current = "content0";
@@ -69,28 +70,46 @@ public class CallbackComponentMessagingTest1Component2 implements CallbackCompon
     public static AtomicInteger counter = new AtomicInteger(10000);
     public static CountDownLatch wait = new CountDownLatch(1);
 
-    public static String MESSAGE = "message";
-
     @Override
     /**
      * The handleAction method always runs outside the main application thread. You can create new nodes, execute long running tasks but you are not allowed to manipulate existing nodes here.
      */
-    public Object handle(final IAction<Event, Object> action) {
+    public Node handle(final IAction<Event, Object> action) {
+
+        return null;
+    }
+
+    @Override
+    /**
+     * The postHandleAction method runs always in the main application thread.
+     */
+    public Node postHandle(final Node arg0,
+                           final IAction<Event, Object> action) {
         if (action.isMessage(FXUtil.MessageUtil.INIT)) {
-            ApplicationLauncherCallbackComponentMessaginTest1.latch.countDown();
+
+            label.setText(" current Tagret: " + current);
+            container.getChildren().addAll(label);
+            ApplicationLauncherComponentToCallbackComponentMessaginTest1.latch.countDown();
         } else {
             if (counter.get() > 1) {
-                counter.decrementAndGet();
-
+                if (ui) {
+                    label.setText(" current Counter: " + counter.decrementAndGet());
+                } else {
+                    counter.decrementAndGet();
+                }
+                context.getActionListener("id014", "message").performAction(null);
             } else {
-                System.out.println("Component id010: FINISH");
+                System.out.println("Component id013: FINISH");
                 if (wait.getCount() > 0) wait.countDown();
+                if (ComponentToCallbackMessagingTest1Component2.wait.getCount() > 0)
+                    context.getActionListener("id014", "message").performAction(null);
 
-                return MESSAGE;
             }
+
         }
 
-        return MESSAGE;
+
+        return container;
     }
 
 

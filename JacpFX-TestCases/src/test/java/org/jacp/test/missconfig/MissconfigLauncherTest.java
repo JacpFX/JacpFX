@@ -11,7 +11,6 @@ import org.junit.Test;
 import java.security.InvalidParameterException;
 import java.util.concurrent.CountDownLatch;
 
-import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -29,18 +28,15 @@ public class MissconfigLauncherTest {
         CountDownLatch latch = new CountDownLatch(1);
         try {
             ApplicationLauncherMissconfigWorkbench.main(new String[0]);
-        }   finally{
+        } finally {
             latch.countDown();
         }
         // Pause briefly to give FX a chance to start
-        try
-        {
+        try {
             latch.await();
             Platform.exit();
             AllTests.resetApplication();
-        }
-        catch (InterruptedException e)
-        {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -50,18 +46,15 @@ public class MissconfigLauncherTest {
         CountDownLatch latch = new CountDownLatch(1);
         try {
             ApplicationLauncherMissconfigWorkbench2.main(new String[0]);
-        }   finally{
+        } finally {
             latch.countDown();
         }
         // Pause briefly to give FX a chance to start
-        try
-        {
+        try {
             latch.await();
             Platform.exit();
             AllTests.resetApplication();
-        }
-        catch (InterruptedException e)
-        {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }

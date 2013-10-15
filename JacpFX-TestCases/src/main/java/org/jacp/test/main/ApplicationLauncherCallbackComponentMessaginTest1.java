@@ -29,7 +29,6 @@ import javafx.stage.Stage;
 import org.jacp.javafx.rcp.workbench.FXWorkbench;
 import org.jacp.project.launcher.AFXSpringLauncher;
 import org.jacp.test.workbench.WorkbenchCallbackComponentMessageTesting1;
-import org.jacp.test.workbench.WorkbenchComponentMessageTesting1;
 
 import java.net.URL;
 import java.util.concurrent.CountDownLatch;
@@ -47,15 +46,16 @@ public class ApplicationLauncherCallbackComponentMessaginTest1 extends AFXSpring
     private static final String[] STYLE_FILES = {"/styles/style_light.css", "/styles/style_dark.css"};
     /// binary style sheets created while deployment
     private static final String[] BINARY_FILES = {"/styles/style_light.bss", "/styles/style_dark.bss"};
-      public static CountDownLatch latch = new CountDownLatch(4);
+    public static CountDownLatch latch = new CountDownLatch(4);
     public static volatile ApplicationLauncherCallbackComponentMessaginTest1[] instance = new ApplicationLauncherCallbackComponentMessaginTest1[1];
+
     public ApplicationLauncherCallbackComponentMessaginTest1() {
         super("main.xml");
     }
 
     public ApplicationLauncherCallbackComponentMessaginTest1(CountDownLatch latch) {
         super("main.xml");
-        this.latch =latch;
+        this.latch = latch;
     }
 
     /**
@@ -91,7 +91,7 @@ public class ApplicationLauncherCallbackComponentMessaginTest1 extends AFXSpring
         stage.getIcons().add(new Image("images/icons/JACP_512_512.png"));
         // add style sheet
         scene.getStylesheets().add(STYLES[0]);
-        instance[0]=this;
+        instance[0] = this;
         ApplicationLauncherCallbackComponentMessaginTest1.latch.countDown();
     }
 
@@ -105,8 +105,6 @@ public class ApplicationLauncherCallbackComponentMessaginTest1 extends AFXSpring
         }
 
     }
-
-
 
 
 }

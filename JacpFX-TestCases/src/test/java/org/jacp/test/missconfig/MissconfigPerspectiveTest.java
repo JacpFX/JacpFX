@@ -30,6 +30,7 @@ import static junit.framework.TestCase.assertNotNull;
  */
 public class MissconfigPerspectiveTest {
     static Thread t;
+
     @AfterClass
     public static void exitWorkBench() {
         Platform.exit();
@@ -50,19 +51,16 @@ public class MissconfigPerspectiveTest {
         t.setDaemon(true);
         t.start();
         // Pause briefly to give FX a chance to start
-        try
-        {
+        try {
             ApplicationLauncherMissconfigComponents.latch.await();
-        }
-        catch (InterruptedException e)
-        {
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
     @Test
     public void checkApplicationLauncher() {
-        ApplicationLauncherMissconfigComponents launcher =  ApplicationLauncherMissconfigComponents.instance[0];
+        ApplicationLauncherMissconfigComponents launcher = ApplicationLauncherMissconfigComponents.instance[0];
         assertNotNull(launcher);
     }
 
@@ -70,17 +68,18 @@ public class MissconfigPerspectiveTest {
         org.jacp.api.annotations.workbench.Workbench annotations = WorkbenchMissingComponents.class.getAnnotation(org.jacp.api.annotations.workbench.Workbench.class);
         return annotations.perspectives();
     }
+
     @Test
     public void checkPerspectives() {
-        ApplicationLauncherMissconfigComponents launcher =  ApplicationLauncherMissconfigComponents.instance[0];
+        ApplicationLauncherMissconfigComponents launcher = ApplicationLauncherMissconfigComponents.instance[0];
         assertNotNull(launcher);
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
         List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
-        assertTrue(getPerspectiveAnnotations().length==perspectives.size());
-        for(IPerspective<EventHandler<Event>, Event, Object> p :perspectives) {
+        assertTrue(getPerspectiveAnnotations().length == perspectives.size());
+        for (IPerspective<EventHandler<Event>, Event, Object> p : perspectives) {
             assertNotNull(p.getComponentHandler());
             assertNotNull(p.getContext());
             assertNotNull(p.getComponentsMessageQueue());
@@ -95,15 +94,15 @@ public class MissconfigPerspectiveTest {
 
     @Test
     public void checkComponents() {
-        ApplicationLauncherMissconfigComponents launcher =  ApplicationLauncherMissconfigComponents.instance[0];
+        ApplicationLauncherMissconfigComponents launcher = ApplicationLauncherMissconfigComponents.instance[0];
         assertNotNull(launcher);
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
         List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
-        assertTrue(getPerspectiveAnnotations().length==perspectives.size());
-        for(IPerspective<EventHandler<Event>, Event, Object> p :perspectives) {
+        assertTrue(getPerspectiveAnnotations().length == perspectives.size());
+        for (IPerspective<EventHandler<Event>, Event, Object> p : perspectives) {
             assertNotNull(p.getComponentHandler());
             assertNotNull(p.getContext());
             assertNotNull(p.getComponentsMessageQueue());
@@ -116,7 +115,7 @@ public class MissconfigPerspectiveTest {
             Injectable handler = p.getPerspectiveHandle();
             Perspective annotation = handler.getClass().getAnnotation(Perspective.class);
             String[] components = annotation.components();
-            assertTrue(components.length==0);
+            assertTrue(components.length == 0);
 
             assertTrue(p.getSubcomponents().isEmpty());
         }

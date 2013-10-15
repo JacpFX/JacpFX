@@ -17,7 +17,7 @@ public class MissconfigDuplicateComponentIds {
     public void failedToStartDuplicatePerspectives() throws Exception {
         try {
             ApplicationLauncherDuplicateComponentTest.main(new String[0]);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             throw e;
         }

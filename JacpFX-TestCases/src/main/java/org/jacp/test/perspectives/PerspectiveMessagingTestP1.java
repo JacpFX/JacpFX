@@ -42,7 +42,6 @@ import org.jacp.javafx.rcp.componentLayout.PerspectiveLayout;
 import org.jacp.javafx.rcp.context.JACPContext;
 import org.jacp.javafx.rcp.perspective.FXPerspective;
 import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
-import org.jacp.test.main.ApplicationLauncher;
 import org.jacp.test.main.ApplicationLauncherPerspectiveMessaginTest;
 
 import java.util.ResourceBundle;
@@ -56,10 +55,10 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 
 @Perspective(id = "id10", name = "contactPerspective",
-        components ={} ,
-       // viewLocation = "/fxml/perspectiveOne.fxml",
-        resourceBundleLocation = "bundles.languageBundle" ,
-        localeID="en_US")
+        components = {},
+        // viewLocation = "/fxml/perspectiveOne.fxml",
+        resourceBundleLocation = "bundles.languageBundle",
+        localeID = "en_US")
 public class PerspectiveMessagingTestP1 implements FXPerspective {
     @FXML
     private HBox content1;
@@ -86,19 +85,20 @@ public class PerspectiveMessagingTestP1 implements FXPerspective {
             // register left panel
             perspectiveLayout.registerTargetLayoutComponent("content0",
                     this.content1);
-           perspectiveLayout.registerTargetLayoutComponent("content1",
+            perspectiveLayout.registerTargetLayoutComponent("content1",
                     this.content2);
             perspectiveLayout.registerTargetLayoutComponent("content2",
                     this.content3);
             ApplicationLauncherPerspectiveMessaginTest.latch.countDown();
         } else {
-            if(counter.get()>1){
+            if (counter.get() > 1) {
                 counter.decrementAndGet();
-                context.getActionListener("id11","message").performAction(null);
-            }else{
+                context.getActionListener("id11", "message").performAction(null);
+            } else {
                 System.out.println("Perspective id10: FINISH");
-                if(wait.getCount()>0) wait.countDown();
-                if(PerspectiveMessagingTestP2.wait.getCount()>0)context.getActionListener("id10","message").performAction(null);
+                if (wait.getCount() > 0) wait.countDown();
+                if (PerspectiveMessagingTestP2.wait.getCount() > 0)
+                    context.getActionListener("id10", "message").performAction(null);
 
             }
 
@@ -108,7 +108,7 @@ public class PerspectiveMessagingTestP1 implements FXPerspective {
 
 
     public static void fireMessage() {
-        context.getActionListener("id11","message").performAction(null);
+        context.getActionListener("id11", "message").performAction(null);
     }
 
     private Node createRoot() {
@@ -119,7 +119,7 @@ public class PerspectiveMessagingTestP1 implements FXPerspective {
 
         content1 = new HBox();
         HBox paneRight = new HBox();
-        splitPane.getItems().addAll(content1,paneRight);
+        splitPane.getItems().addAll(content1, paneRight);
         SplitPane contentSplitPane = new SplitPane();
         contentSplitPane.setPrefWidth(800);
         contentSplitPane.setDividerPositions(Double.valueOf(0.5));
@@ -127,7 +127,7 @@ public class PerspectiveMessagingTestP1 implements FXPerspective {
 
         content2 = new HBox();
         content3 = new HBox();
-        contentSplitPane.getItems().addAll(content2,content3);
+        contentSplitPane.getItems().addAll(content2, content3);
         paneRight.getChildren().add(contentSplitPane);
         pane.setCenter(splitPane);
 

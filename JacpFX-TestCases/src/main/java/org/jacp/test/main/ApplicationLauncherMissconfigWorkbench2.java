@@ -46,15 +46,16 @@ public class ApplicationLauncherMissconfigWorkbench2 extends AFXSpringLauncher {
     private static final String[] STYLE_FILES = {"/styles/style_light.css", "/styles/style_dark.css"};
     /// binary style sheets created while deployment
     private static final String[] BINARY_FILES = {"/styles/style_light.bss", "/styles/style_dark.bss"};
-      public static CountDownLatch latch = new CountDownLatch(6);
+    public static CountDownLatch latch = new CountDownLatch(6);
     public static volatile ApplicationLauncherMissconfigWorkbench2[] instance = new ApplicationLauncherMissconfigWorkbench2[1];
+
     public ApplicationLauncherMissconfigWorkbench2() {
         super("main.xml");
     }
 
     public ApplicationLauncherMissconfigWorkbench2(CountDownLatch latch) {
         super("main.xml");
-        this.latch =latch;
+        this.latch = latch;
     }
 
     /**
@@ -78,7 +79,7 @@ public class ApplicationLauncherMissconfigWorkbench2 extends AFXSpringLauncher {
      * only for testing
      */
     public void startComponentScaning() {
-           this.scanPackegesAndInitRegestry();
+        this.scanPackegesAndInitRegestry();
     }
 
     @Override
@@ -90,7 +91,7 @@ public class ApplicationLauncherMissconfigWorkbench2 extends AFXSpringLauncher {
         stage.getIcons().add(new Image("images/icons/JACP_512_512.png"));
         // add style sheet
         scene.getStylesheets().add(STYLES[0]);
-        instance[0]=this;
+        instance[0] = this;
         this.latch.countDown();
     }
 
@@ -104,8 +105,6 @@ public class ApplicationLauncherMissconfigWorkbench2 extends AFXSpringLauncher {
         }
 
     }
-
-
 
 
 }
