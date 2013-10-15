@@ -2,10 +2,10 @@ package org.jacp.test.messaging;
 
 /**
  * Created with IntelliJ IDEA.
- * User: amo
- * Date: 10.09.13
- * Time: 21:49
+ * User: ady
+ * Date: 15.10.13
+ * Time: 13:58
  * To change this template use File | Settings | File Templates.
  */
-public class CallBackMessagingTest {
+public class FXComponentToCallbackMessagingTest {
 }

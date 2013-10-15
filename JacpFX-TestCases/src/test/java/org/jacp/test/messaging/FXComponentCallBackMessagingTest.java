@@ -83,6 +83,7 @@ public class FXComponentCallBackMessagingTest {
         withoutUI();
     }
     @Test
+    // 1805ms in linux
     public void testBurstMessaging() throws InterruptedException {
         long start = System.currentTimeMillis();
         CallbackComponentMessagingTest1Component1.wait= new CountDownLatch(1);
