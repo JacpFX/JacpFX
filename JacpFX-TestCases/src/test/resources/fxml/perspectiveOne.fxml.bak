@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<BorderPane id="BorderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+            xmlns:fx="http://javafx.com/fxml">
+    <center>
+        <SplitPane id="splitPaneHorizontal1" styleClass="hsplitpane" cache="true" cacheHint="SPEED"
+                   dividerPositions="0.25" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                   minHeight="100.0" minWidth="200.0" prefHeight="600.0" prefWidth="800.0">
+            <items>
+                <HBox fx:id="paneLeft" cache="true" maxHeight="1.7976931348623157E308"
+                      maxWidth="1.7976931348623157E308">
+                </HBox>
+                <HBox fx:id="paneRight">
+
+                </HBox>
+            </items>
+        </SplitPane>
+    </center>
+</BorderPane>
