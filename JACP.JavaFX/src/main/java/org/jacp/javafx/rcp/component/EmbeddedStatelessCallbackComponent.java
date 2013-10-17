@@ -15,4 +15,10 @@ public class EmbeddedStatelessCallbackComponent extends AStatelessCallbackCompon
         super();
         this.setComponentHandle(handle);
     }
+
+    @Override
+    public String toString() {
+        return this.getContext() != null ? this.getContext().getId() : this.getComponentHandle().toString();
+    }
+
 }

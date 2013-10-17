@@ -16,7 +16,10 @@ public class EmbeddedFXComponent extends AFXComponent{
         this.setComponentHandle(handle);
     }
 
-
+    @Override
+    public String toString() {
+        return this.getContext() != null ? this.getContext().getId() : this.getComponentHandle().toString();
+    }
 
 }
 
