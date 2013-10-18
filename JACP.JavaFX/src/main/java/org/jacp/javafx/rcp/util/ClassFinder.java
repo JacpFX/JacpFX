@@ -23,7 +23,7 @@ public class ClassFinder {
      * Defined classpath
      */
     private static final String CLASSPATH = System.getProperty("java.class.path");
-    private static String OS = System.getProperty("os.name").toLowerCase();
+    private static final String OS = System.getProperty("os.name").toLowerCase();
     /**
      * List with the jar files on the classpath
      */
@@ -33,10 +33,7 @@ public class ClassFinder {
      */
     //  private static String[] binDirs;
     private List<Path> binDirs;
-    /**
-     * All Classpath elements
-     */
-    private static Path[] classPathDirs = null;
+
     private final PathMatcher matcher =
             FileSystems.getDefault().getPathMatcher("glob:*.class");
 
@@ -46,9 +43,9 @@ public class ClassFinder {
         FILE_SEPERATOR=isWindows()?File.separator+""+File.separator:File.separator;
     }
 
-    public static boolean isWindows() {
+    private static boolean isWindows() {
 
-        return (OS.indexOf("win") >= 0);
+        return (OS.contains("win"));
 
     }
 
@@ -57,9 +54,7 @@ public class ClassFinder {
      * CLASSPATH, if they are not yet initialized.
      */
     public ClassFinder() {
-        if (classPathDirs == null) {
-            binDirs = initClassPathDir();
-        }
+        binDirs = initClassPathDir();
     }
 
     /**
@@ -93,7 +88,7 @@ public class ClassFinder {
             try {
                 Files.walkFileTree(dir, visitor);
             } catch (IOException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                e.printStackTrace();
             }
         });
 

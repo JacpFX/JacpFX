@@ -66,7 +66,7 @@ import java.util.logging.Logger;
 public abstract class AEmbeddedComponentWorker extends Thread {
 
 
-    public AEmbeddedComponentWorker(final String name) {
+    AEmbeddedComponentWorker(final String name) {
         super(name);
         this.setDaemon(true);
     }

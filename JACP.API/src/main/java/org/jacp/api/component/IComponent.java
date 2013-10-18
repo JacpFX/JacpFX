@@ -38,7 +38,7 @@ import org.jacp.api.context.Context;
  * @param <M>
  *            defines the basic message type
  */
-public interface IComponent<L, A, M> extends Comparable<String>{
+public interface IComponent<L, A, M> extends Comparable<IComponent<L, A, M>>{
 
 
 

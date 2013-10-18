@@ -7,11 +7,15 @@ import org.jacp.javafx.rcp.util.FXUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.StampedLock;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,10 +31,11 @@ public class PerspectiveRegistry {
 
     /**
      * Set a new perspective id and returns the current id.
+     *
      * @param id, the new perspective id
-     * @return   the previous perspective id
+     * @return the previous perspective id
      */
-    public static String getAndSetCurrentVisiblePerspective(final String id){
+    public static String getAndSetCurrentVisiblePerspective(final String id) {
         return currentVisiblePerspectiveId.getAndSet(id);
     }
 
@@ -43,10 +48,10 @@ public class PerspectiveRegistry {
     public static void registerPerspective(
             final IPerspective<EventHandler<Event>, Event, Object> perspective) {
         final long stamp = lock.tryWriteLock();
-        try{
+        try {
             if (!perspectives.contains(perspective))
                 perspectives.add(perspective);
-        }finally{
+        } finally {
             lock.unlockWrite(stamp);
         }
 
@@ -60,14 +65,57 @@ public class PerspectiveRegistry {
     public static void removePerspective(
             final IPerspective<EventHandler<Event>, Event, Object> perspective) {
         final long stamp = lock.tryWriteLock();
-        try{
+        try {
             if (perspectives.contains(perspective))
                 perspectives.remove(perspective);
-        }finally{
+        } finally {
             lock.unlockWrite(stamp);
         }
 
     }
+
+    /**
+     * Returns the next active perspective. This can happen when a perspective was set to inactive. In this case the next underlying perspective should be displayed.
+     *
+     * @return
+     */
+    public static IPerspective<EventHandler<Event>, Event, Object> findNextActivePerspective(final IPerspective<EventHandler<Event>, Event, Object> current) {
+        long stamp;
+        if ((stamp = lock.tryOptimisticRead()) != 0L) { // optimistic
+            final List<IPerspective<EventHandler<Event>, Event, Object>> p = perspectives;
+            if (lock.validate(stamp)) {
+                return getNextValidPerspective(p, current);
+            }
+        }
+        stamp = lock.readLock(); // fall back to read lock
+        try {
+            return getNextValidPerspective(perspectives, current);
+        } finally {
+            lock.unlockRead(stamp);
+        }
+    }
+
+    /**
+     * Return an active perspective
+     * @param p, The List with all Perspectives
+     * @param current, the current perspective
+     * @return
+     */
+    private static IPerspective<EventHandler<Event>, Event, Object> getNextValidPerspective(final List<IPerspective<EventHandler<Event>, Event, Object>> p, final IPerspective<EventHandler<Event>, Event, Object> current) {
+        final TreeSet<IPerspective<EventHandler<Event>, Event, Object>> allActive = p.stream()
+                .filter(active->active.getContext().isActive() || active.equals(current))
+                .collect(Collector.of(TreeSet::new, TreeSet::add,
+                (left, right) -> {
+                    left.addAll(right);
+                    return left;
+                }));
+
+        IPerspective<EventHandler<Event>, Event, Object> targetId = allActive.higher(current);
+        if (targetId == null) targetId = allActive.lower(current);
+        if (targetId == null) return null;
+        return targetId;
+    }
+
 
     /**
      * Returns a component by component id
@@ -85,37 +133,39 @@ public class PerspectiveRegistry {
                         p);
         }
         stamp = lock.readLock(); // fall back to read lock
-        try{
+        try {
             return FXUtil.getObserveableById(FXUtil.getTargetComponentId(targetId),
                     perspectives);
-        }finally{
+        } finally {
             lock.unlockRead(stamp);
         }
 
     }
+
     /**
      * Returns the a component by class.
+     *
      * @param clazz , a perspective class
-     * @return   a perspective
+     * @return a perspective
      */
     public static IPerspective<EventHandler<Event>, Event, Object> findPerspectiveByClass(final Class<?> clazz) {
         long stamp;
         if ((stamp = lock.tryOptimisticRead()) != 0L) { // optimistic
             final List<IPerspective<EventHandler<Event>, Event, Object>> p = perspectives;
-            if (lock.validate(stamp)){
-                for(final IPerspective<EventHandler<Event>, Event, Object> comp : p) {
-                    if(comp.getClass().isAssignableFrom(clazz))return comp;
+            if (lock.validate(stamp)) {
+                for (final IPerspective<EventHandler<Event>, Event, Object> comp : p) {
+                    if (comp.getClass().isAssignableFrom(clazz)) return comp;
                 }
                 return null;
             }
         }
         stamp = lock.readLock(); // fall back to read lock
-        try{
-            for(final IPerspective<EventHandler<Event>, Event, Object> comp : perspectives) {
-                if(comp.getClass().isAssignableFrom(clazz))return comp;
+        try {
+            for (final IPerspective<EventHandler<Event>, Event, Object> comp : perspectives) {
+                if (comp.getClass().isAssignableFrom(clazz)) return comp;
             }
             return null;
-        }finally{
+        } finally {
             lock.unlockRead(stamp);
         }
     }

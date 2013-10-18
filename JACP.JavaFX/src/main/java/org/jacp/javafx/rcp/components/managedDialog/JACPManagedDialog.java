@@ -243,7 +243,7 @@ public class JACPManagedDialog {
 
     private ISubComponent<EventHandler<Event>, Event, Object> findSubcomponent(final Resource resource,final String callerClassName) throws ClassNotFoundException {
         final String parentId = resource.parentId();
-        ISubComponent<EventHandler<Event>, Event, Object> comp = null;
+        ISubComponent<EventHandler<Event>, Event, Object> comp;
         if (parentId.isEmpty()) {
             comp = ComponentRegistry.findComponentByClass(Class
                     .forName(callerClassName));

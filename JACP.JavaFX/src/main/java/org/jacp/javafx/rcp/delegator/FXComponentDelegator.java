@@ -129,7 +129,8 @@ public class FXComponentDelegator extends Thread implements
 			final P component, final IAction<Event, Object> action) {
 		component.getContext().setActive(true);
         // TODO remove runLater and ensure in workbench handler that correct thread is used... for perspecive handler this is not nessesary
-		Platform.runLater(() -> FXComponentDelegator.this.componentHandler
+        //noinspection unchecked
+        Platform.runLater(() -> FXComponentDelegator.this.componentHandler
                 .initComponent(
                         action,
                         (IPerspective<EventHandler<Event>, Event, Object>) component));

@@ -101,11 +101,9 @@ public class FXMessageDelegator extends Thread implements
 			// try to find correct perspective by searching in all perspectives;
 			// this can only be a subcomponent
             final CompletableFuture<IPerspective<EventHandler<Event>, Event, Object>> perspectiveFuture =
-                    CompletableFuture.supplyAsync(()->{ return FXUtil.getTargetComponentId(target); })
-                            .thenApplyAsync(id -> {
-                                return FXUtil
-                                        .findRootByObserveableId(id, this.perspectives);
-                            });
+                    CompletableFuture.supplyAsync(()-> FXUtil.getTargetComponentId(target))
+                            .thenApplyAsync(id -> FXUtil
+                                    .findRootByObserveableId(id, this.perspectives));
 			final IPerspective<EventHandler<Event>, Event, Object> perspectiveTemp = perspectiveFuture.get();
 			if (perspectiveTemp != null) {
 				final String tempTargetId = perspectiveTemp.getContext().getId().concat(".")
@@ -212,16 +210,7 @@ public class FXMessageDelegator extends Thread implements
 
 	}
 
-	BlockingQueue<IDelegateDTO<Event, Object>> getComponentDelegateQueue() {
-		return this.messageDelegateQueue;
-	}
-
-	public void setComponentDelegateQueue(
-			final BlockingQueue<IDelegateDTO<Event, Object>> componentDelegateQueue) {
-		this.messageDelegateQueue = componentDelegateQueue;
-	}
-
-	@Override
+    @Override
 	public void delegateMessage(final IDelegateDTO<Event, Object> messageDTO) {
         this.messageDelegateQueue.add(messageDTO);
 

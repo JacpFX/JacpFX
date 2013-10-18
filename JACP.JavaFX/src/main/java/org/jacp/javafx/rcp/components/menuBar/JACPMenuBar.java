@@ -154,7 +154,7 @@ public class JACPMenuBar extends HBox {
      * @param node
      *            the node
      */
-    public void addNode(final JACPMenuBarButtonOrientation orientation, final Node... node) {
+    void addNode(final JACPMenuBarButtonOrientation orientation, final Node... node) {
         if (JACPMenuBarButtonOrientation.LEFT.equals(orientation)) {
             this.leftBar.getItems().addAll(node);
         } else {
@@ -162,7 +162,7 @@ public class JACPMenuBar extends HBox {
         }
     }
 
-    public void removeNode(final JACPMenuBarButtonOrientation orientation, final Node... node) {
+    void removeNode(final JACPMenuBarButtonOrientation orientation, final Node... node) {
         if (JACPMenuBarButtonOrientation.LEFT.equals(orientation)) {
             this.leftBar.getItems().removeAll(node);
         } else {
@@ -197,14 +197,14 @@ public class JACPMenuBar extends HBox {
         });
     }
 
-    public void minimize() {
+    void minimize() {
         this.stage.setIconified(true);
     }
 
     /**
      * Maximize.
      */
-    public void maximize() {
+    void maximize() {
         if (this.stage != null) {
             if (!this.maximized) {
                 final Screen screen = Screen.getPrimary();

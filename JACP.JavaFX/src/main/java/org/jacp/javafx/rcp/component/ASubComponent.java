@@ -44,8 +44,6 @@ import java.util.logging.Logger;
 public abstract class ASubComponent extends AComponent implements
         ISubComponent<EventHandler<Event>, Event, Object> {
 
-    private volatile String executionTarget = "";
-
     private volatile String parentId;
 
     private final Semaphore lock = new Semaphore(1);
@@ -161,10 +159,6 @@ public abstract class ASubComponent extends AComponent implements
     @Override
     public <X extends IComponentHandle<?, EventHandler<Event>, Event, Object>> void setComponentHandle(final X handle) {
         this.componentHandle = handle;
-    }
-
-    public AEmbeddedComponentWorker getWorker() {
-        return worker;
     }
 
     public void setWorker(AEmbeddedComponentWorker worker) {

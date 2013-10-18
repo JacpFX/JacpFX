@@ -123,7 +123,7 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
      *
      * @param node the node
      */
-    public void remove(final Node node) {
+    void remove(final Node node) {
         if (this.getOrientation() == Orientation.HORIZONTAL) {
             this.leftButtons.getChildren().remove(node);
             this.centerButtons.getChildren().remove(node);
@@ -161,7 +161,7 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
      * @param node
      *            the node
      */
-    public void addToCenter(String id, final Node node) {
+    void addToCenter(String id, final Node node) {
         if (this.getOrientation() == Orientation.HORIZONTAL) {
             HBox.setMargin(node, new Insets(0, 2, 0, 2));
             this.centerButtons.getChildren().add(node);

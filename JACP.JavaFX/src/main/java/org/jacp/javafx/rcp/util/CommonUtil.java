@@ -12,17 +12,8 @@ import java.util.stream.Stream;
  * Time: 15:37
  * All common util methods
  */
-public class CommonUtil {
+class CommonUtil {
 
-
-    /**
-     * Return a clean arrayList with non empty strings
-     * @param ids
-     * @return
-     */
-     public static List<String> getNonEmtyStringListFromArray(String[] ids) {
-         return Stream.of(ids).filter(id->!id.isEmpty()).collect(Collectors.toList());
-     }
 
     /**
      * Returns a stream of strings from a string array

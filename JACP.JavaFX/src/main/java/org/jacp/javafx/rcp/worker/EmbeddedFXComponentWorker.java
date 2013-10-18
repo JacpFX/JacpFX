@@ -50,7 +50,7 @@ import java.util.concurrent.ExecutionException;
  *
  * @author Andy Moncsek
  */
-public class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
+class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
 
     private final Map<String, Node> targetComponents;
     private final AFXComponent component;
@@ -102,8 +102,6 @@ public class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
             }
         } catch (InterruptedException e) {
             //e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (ExecutionException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } finally {

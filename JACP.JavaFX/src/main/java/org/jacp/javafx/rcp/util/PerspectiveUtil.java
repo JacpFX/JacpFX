@@ -38,7 +38,7 @@ public class PerspectiveUtil {
 
     private final Launcher<?> launcher;
 
-    public PerspectiveUtil(final Launcher<?> launcher) {
+    private PerspectiveUtil(final Launcher<?> launcher) {
         this.launcher = launcher;
     }
 
@@ -160,7 +160,7 @@ public class PerspectiveUtil {
         }
 
         if(FXComponent.class.isAssignableFrom(handler.getClass()) && declarativeComponent==null && viewComponent==null) {
-            throw new AnnotationNotFoundException("FXComponents must declare either @View or @DeclarativeView! no valid annotation found for component:"+componentAnnotation.id());
+            throw new AnnotationNotFoundException("FXComponents must declare either @View or @DeclarativeView! no valid annotation found for component:"+ (componentAnnotation != null ? componentAnnotation.id() : null));
         } else if(CallbackComponent.class.isAssignableFrom(handler.getClass()) && componentAnnotation==null) {
             throw new IllegalArgumentException("no @Component annotation found.");
         }

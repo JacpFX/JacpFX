@@ -25,7 +25,7 @@ import java.util.concurrent.BlockingQueue;
  */
 public class JACPContextImpl implements JACPContext {
 
-    protected volatile BlockingQueue<IAction<Event, Object>> globalMessageQueue;
+    private volatile BlockingQueue<IAction<Event, Object>> globalMessageQueue;
     private String id;
     private volatile String parentId;
 
@@ -216,5 +216,44 @@ public class JACPContextImpl implements JACPContext {
 
     public final String getTargetLayout(){
         return this.targetLayout;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        JACPContextImpl that = (JACPContextImpl) o;
+
+        if (active != that.active) return false;
+        if (executionTarget != null ? !executionTarget.equals(that.executionTarget) : that.executionTarget != null)
+            return false;
+        if (globalMessageQueue != null ? !globalMessageQueue.equals(that.globalMessageQueue) : that.globalMessageQueue != null)
+            return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (layout != null ? !layout.equals(that.layout) : that.layout != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (parentId != null ? !parentId.equals(that.parentId) : that.parentId != null) return false;
+        if (resourceBundle != null ? !resourceBundle.equals(that.resourceBundle) : that.resourceBundle != null)
+            return false;
+        if (returnTarget != null ? !returnTarget.equals(that.returnTarget) : that.returnTarget != null) return false;
+        if (targetLayout != null ? !targetLayout.equals(that.targetLayout) : that.targetLayout != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = globalMessageQueue != null ? globalMessageQueue.hashCode() : 0;
+        result = 31 * result + (id != null ? id.hashCode() : 0);
+        result = 31 * result + (parentId != null ? parentId.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (returnTarget != null ? returnTarget.hashCode() : 0);
+        result = 31 * result + (targetLayout != null ? targetLayout.hashCode() : 0);
+        result = 31 * result + (executionTarget != null ? executionTarget.hashCode() : 0);
+        result = 31 * result + (layout != null ? layout.hashCode() : 0);
+        result = 31 * result + (resourceBundle != null ? resourceBundle.hashCode() : 0);
+        result = 31 * result + (active ? 1 : 0);
+        return result;
     }
 }

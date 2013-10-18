@@ -80,7 +80,7 @@ public abstract class AFXPerspective extends AComponent implements
     private final Object lock = new Object();
     private Launcher<?> launcher;
 
-    protected Injectable perspectiveHandler;
+    Injectable perspectiveHandler;
     /**
      * {@inheritDoc}
      */
@@ -305,7 +305,7 @@ public abstract class AFXPerspective extends AComponent implements
     }
 
 
-    public FXPerspective getFXPerspectiveHandler() {
+    FXPerspective getFXPerspectiveHandler() {
         return FXPerspective.class.cast(getPerspectiveHandle());
     }
 
@@ -318,5 +318,4 @@ public abstract class AFXPerspective extends AComponent implements
     public Context<EventHandler<Event>, Event, Object> getContext() {
         return this.context;
     }
-
 }

@@ -37,7 +37,7 @@ import java.util.concurrent.ExecutionException;
  *
  * @author Andy Moncsek
  */
-public class EmbeddedCallbackComponentWorker
+class EmbeddedCallbackComponentWorker
         extends
         AEmbeddedComponentWorker {
     private final ISubComponent<EventHandler<Event>, Event, Object> component;
@@ -109,5 +109,7 @@ public class EmbeddedCallbackComponentWorker
             WorkerUtil.changeComponentTarget(this.delegateQueue, comp);
         }
     }
+
+
 
 }

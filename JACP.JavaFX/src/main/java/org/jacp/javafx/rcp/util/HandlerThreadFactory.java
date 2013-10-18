@@ -30,7 +30,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  */
 public class HandlerThreadFactory implements ThreadFactory {
-	public static String PREFIX="JacpFX-Worker-";
+	public static final String PREFIX="JacpFX-Worker-";
 	private final String name;
 	private static final AtomicInteger counter = new AtomicInteger(0);
 	public HandlerThreadFactory(String name) {

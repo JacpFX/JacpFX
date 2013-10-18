@@ -34,7 +34,7 @@ public class WorkbenchUtil {
 
     private final Launcher<?> launcher;
 
-    public WorkbenchUtil(final Launcher<?> launcher) {
+    private WorkbenchUtil(final Launcher<?> launcher) {
         this.launcher = launcher;
     }
 

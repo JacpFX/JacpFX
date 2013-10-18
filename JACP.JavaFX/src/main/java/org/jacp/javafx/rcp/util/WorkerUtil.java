@@ -41,7 +41,7 @@ public class WorkerUtil {
      * @throws InterruptedException,java.util.concurrent.ExecutionException
      *
      */
-    public static final void invokeOnFXThreadAndWait(final Runnable runnable)
+    public static void invokeOnFXThreadAndWait(final Runnable runnable)
             throws InterruptedException, ExecutionException {
         final Lock lock = new ReentrantLock();
         final Condition condition = lock.newCondition();
@@ -83,7 +83,7 @@ public class WorkerUtil {
      *
      * @param component, the component
      */
-    public static final void runCallbackOnTeardownMethods(
+    public static void runCallbackOnTeardownMethods(
             final ISubComponent<EventHandler<Event>, Event, Object> component) {
 
         // turn off component
@@ -169,7 +169,7 @@ public class WorkerUtil {
      * @param component, a component
      * @param action,    the current action
      */
-    public static final void executeComponentViewPostHandle(final Node handleReturnValue,
+    public static void executeComponentViewPostHandle(final Node handleReturnValue,
                                                             final AFXComponent component, final IAction<Event, Object> action) throws Exception {
 
         Node potsHandleReturnValue = component.getComponentViewHandle().postHandle(handleReturnValue,

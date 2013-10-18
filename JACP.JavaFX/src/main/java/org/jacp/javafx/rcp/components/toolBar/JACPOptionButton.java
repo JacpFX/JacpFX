@@ -42,9 +42,9 @@ import java.util.logging.Logger;
  *
  * @author Patrick Symmangk
  */
-public class JACPOptionButton extends Button {
+class JACPOptionButton extends Button {
 
-    private Pane glassPane;
+    private final Pane glassPane;
 
     private VBox hoverMenu;
 
@@ -52,11 +52,11 @@ public class JACPOptionButton extends Button {
 
     private Logger LOGGER = Logger.getLogger(JACPOptionButton.class.getName());
 
-    private SimpleDoubleProperty padding         = new SimpleDoubleProperty();
-    private SimpleDoubleProperty buttonXLocation = new SimpleDoubleProperty();
-    private SimpleDoubleProperty buttonYLocation = new SimpleDoubleProperty();
+    private final SimpleDoubleProperty padding         = new SimpleDoubleProperty();
+    private final SimpleDoubleProperty buttonXLocation = new SimpleDoubleProperty();
+    private final SimpleDoubleProperty buttonYLocation = new SimpleDoubleProperty();
 
-    public JACPOptionButton(String label, final FXComponentLayout layout) {
+    private JACPOptionButton(String label, final FXComponentLayout layout) {
         super(label);
         this.glassPane  = layout.getGlassPane();
         initAction();
@@ -74,11 +74,7 @@ public class JACPOptionButton extends Button {
         CSSUtil.addCSSClass("top-arrow", arrow);
         CSSUtil.setBackgroundColor(options, "#333333");
         this.hoverMenu.getChildren().setAll(arrow, options);
-        this.hoverMenu.widthProperty().addListener((observableValue, number, number2) -> {
-            // get padding to center hovermenu
-            padding.set((getWidth() - hoverMenu.getWidth()) / 2);
-
-        });
+        this.hoverMenu.widthProperty().addListener((observableValue, number, number2) -> padding.set((getWidth() - hoverMenu.getWidth()) / 2));
     }
 
     private void initAction() {
@@ -109,15 +105,12 @@ public class JACPOptionButton extends Button {
     public void addOption(Button option) {
         option.setMaxWidth(Integer.MAX_VALUE);
         options.getChildren().add(option);
-        option.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            // hide option when button is pressed
-            hideOptions();
-        });
+        option.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> hideOptions());
         VBox.setMargin(option, new Insets(5,5,5,5));
     }
 
 
-    public void hideOptions(){
+    void hideOptions(){
         this.glassPane.setVisible(false);
         this.hoverMenu.setVisible(false);
     }

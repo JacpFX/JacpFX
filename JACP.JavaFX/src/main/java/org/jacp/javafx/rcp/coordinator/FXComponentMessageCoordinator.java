@@ -154,6 +154,7 @@ public class FXComponentMessageCoordinator extends AFXCoordinator implements
             final P component, final IAction<Event, Object> action) {
         this.log(" //1.1.1.1.1// component " + action.getTargetId()
                 + " delegate to perspective: " + this.parentId);
+        //noinspection unchecked
         this.componentHandler.handleAndReplaceComponent(action,
                 (ISubComponent<EventHandler<Event>, Event, Object>) component);
 
