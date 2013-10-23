@@ -60,8 +60,10 @@ public final class ShutdownThreadsHandler{
 	public static void shutdownThreads() {
 		APPLICATION_RUNNING.set(false);
 		for(final Thread t:registeredThreads) {
-			logger.info("shutdown thread: "+t);
-			t.interrupt();
+            if(t.isAlive()){
+                logger.info("shutdown thread: "+t);
+                t.interrupt();
+            }
 		}
 	}
 	/**
@@ -79,8 +81,10 @@ public final class ShutdownThreadsHandler{
 	public static void shutdowAll() {
 		APPLICATION_RUNNING.set(false);
 		for(final Thread t:registeredThreads) {
-			logger.info("shutdown thread: "+t);
-			t.interrupt();
+            if(t.isAlive()){
+                logger.info("shutdown thread: "+t);
+                t.interrupt();
+            }
 		}
 		for(final ExecutorService e: registeredExecutors) {
 			e.shutdown();
@@ -89,7 +93,7 @@ public final class ShutdownThreadsHandler{
 		// force to interrupt all threads in waiting condition
 		for(final Thread t: threadSet) {
 			if(t.getName().contains(HandlerThreadFactory.PREFIX) && !t.isInterrupted()) {
-				t.interrupt();
+                t.interrupt();
 			}
 		}
 		

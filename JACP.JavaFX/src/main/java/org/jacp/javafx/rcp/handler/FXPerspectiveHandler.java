@@ -100,7 +100,6 @@ public class FXPerspectiveHandler implements
                 // 2 second active perspective available, current perspective is the one which is disabled: find the other perspective, handle OnShow, add not to workbench
                 // 3 second perspective is available, other perspective is currently displayed: turn off the perspective
                 FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class, perspective.getPerspectiveHandle(), perspectiveLayout, perspective.getContext().getResourceBundle());
-                // TODO : search for active perspective, execute @OnShow and pass
                 final IPerspective<EventHandler<Event>, Event, Object> possiblePerspectiveToShow = PerspectiveRegistry.findNextActivePerspective(perspective);
                 removePerspectiveNodeFromWorkbench(perspectiveLayout, componentOld);
                 if (possiblePerspectiveToShow != null) {
