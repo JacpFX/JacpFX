@@ -56,6 +56,7 @@ public abstract class ASubComponent extends AComponent implements
 
     private IComponentHandle<?, EventHandler<Event>, Event, Object> componentHandle;
 
+
     private AEmbeddedComponentWorker worker;
 
 
@@ -166,4 +167,7 @@ public abstract class ASubComponent extends AComponent implements
     }
 
 
+    public AEmbeddedComponentWorker getWorker() {
+        return worker;
+    }
 }

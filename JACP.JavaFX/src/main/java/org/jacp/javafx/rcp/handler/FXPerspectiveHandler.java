@@ -55,6 +55,7 @@ import org.jacp.javafx.rcp.context.JACPContextImpl;
 import org.jacp.javafx.rcp.perspective.AFXPerspective;
 import org.jacp.javafx.rcp.util.FXUtil;
 import org.jacp.javafx.rcp.registry.PerspectiveRegistry;
+import org.jacp.javafx.rcp.util.TearDownHandler;
 
 import java.io.IOException;
 import java.net.URL;
@@ -117,8 +118,13 @@ public class FXPerspectiveHandler implements
 
                 }
 
-
                 // TODO shutdown all children
+
+                List<ISubComponent<EventHandler<Event>, Event, Object>> componentsToShutdown = perspective.getSubcomponents();
+                componentsToShutdown.parallelStream()
+                        .filter(c->c.getContext().isActive()) ;
+                       // .forEach(component->TearDownHandler.shutDownFXComponent(component));
+
                 return;
             }
             if (componentOld != null) {

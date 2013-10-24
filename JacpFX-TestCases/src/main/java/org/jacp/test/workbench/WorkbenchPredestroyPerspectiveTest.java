@@ -55,7 +55,7 @@ import java.util.List;
  *
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
-@org.jacp.api.annotations.workbench.Workbench(id = "id1", name = "workbench", perspectives = {"id17"})
+@org.jacp.api.annotations.workbench.Workbench(id = "id1", name = "workbench", perspectives = {"id17","id18"})
 public class WorkbenchPredestroyPerspectiveTest implements FXWorkbench {
     private Stage stage;
     @Resource
@@ -77,6 +77,7 @@ public class WorkbenchPredestroyPerspectiveTest implements FXWorkbench {
         final JACPMenuBar menu = layout.getMenu();
         final Menu menuFile = new Menu("File");
         final Menu menuTests = new Menu("Tests");
+        final Menu menuClose = new Menu("Close Perspectives");
         final Menu menuStyles = new Menu("Styles");
         menuFile.getItems().add(getHelpItem());
         // add style selection
@@ -84,7 +85,8 @@ public class WorkbenchPredestroyPerspectiveTest implements FXWorkbench {
             menuStyles.getItems().add(getStyle(i));
         }
         menuTests.getItems().addAll(getTestMenuItems());
-        menu.getMenus().addAll(menuFile, menuTests, menuStyles);
+        menuClose.getItems().addAll(getCloseMenuItems());
+        menu.getMenus().addAll(menuFile, menuTests, menuClose,menuStyles);
 
 
         // show windowButtons
@@ -133,21 +135,48 @@ public class WorkbenchPredestroyPerspectiveTest implements FXWorkbench {
 
     private List<MenuItem> getTestMenuItems() {
         List<MenuItem> result = new ArrayList<>();
-        final MenuItem test1 = new MenuItem("Test1: layoutTargetSwitch");
+        final MenuItem test1 = new MenuItem("Test1: P1");
         test1.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(final ActionEvent arg0) {
                 // create a modal dialog
-                context.getActionListener("id01", "show").performAction(arg0);
+                context.getActionListener("id17", "show").performAction(arg0);
 
             }
         });
-        final MenuItem test2 = new MenuItem("Test2: executionTargetSwitch");
+        final MenuItem test2 = new MenuItem("Test2: P2");
         test2.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(final ActionEvent arg0) {
                 // create a modal dialog
-                context.getActionListener("id02", "show").performAction(arg0);
+                context.getActionListener("id18", "show").performAction(arg0);
+
+            }
+        });
+
+
+        result.add(test1);
+        result.add(test2);
+        return result;
+    }
+
+    private List<MenuItem> getCloseMenuItems() {
+        List<MenuItem> result = new ArrayList<>();
+        final MenuItem test1 = new MenuItem("Test1: P1");
+        test1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(final ActionEvent arg0) {
+                // create a modal dialog
+                context.getActionListener("id17", "stop").performAction(arg0);
+
+            }
+        });
+        final MenuItem test2 = new MenuItem("Test2: P2");
+        test2.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(final ActionEvent arg0) {
+                // create a modal dialog
+                context.getActionListener("id18", "stop").performAction(arg0);
 
             }
         });

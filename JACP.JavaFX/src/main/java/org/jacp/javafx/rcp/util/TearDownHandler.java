@@ -29,7 +29,9 @@ import org.jacp.api.component.IPerspective;
 import org.jacp.api.component.IStatelessCallabackComponent;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.workbench.IBase;
+import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.component.CallbackComponent;
+import org.jacp.javafx.rcp.worker.AEmbeddedComponentWorker;
 import org.jacp.javafx.rcp.worker.AFXComponentWorker;
 import org.jacp.javafx.rcp.worker.TearDownWorker;
 
@@ -150,6 +152,16 @@ public class TearDownHandler {
 		}
 
 	}
+
+    public static void shutDownFXComponent(final AFXComponent component, final Object ...params) {
+        // run teardown
+        FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
+                component.getComponentHandle(), params);
+        AEmbeddedComponentWorker worker = component.getWorker();
+        if(worker.isAlive()) {
+            worker.interrupt();
+        }
+    }
 
 	private static void log(final String message) {
 		if (Logger.getLogger(AFXComponentWorker.class.getName()).isLoggable(

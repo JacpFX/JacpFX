@@ -32,12 +32,14 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import org.jacp.api.action.IAction;
+import org.jacp.api.annotations.Resource;
 import org.jacp.api.annotations.lifecycle.OnShow;
 import org.jacp.api.annotations.lifecycle.PostConstruct;
 import org.jacp.api.annotations.lifecycle.PreDestroy;
 import org.jacp.api.annotations.perspective.Perspective;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.componentLayout.PerspectiveLayout;
+import org.jacp.javafx.rcp.context.JACPContext;
 import org.jacp.javafx.rcp.perspective.FXPerspective;
 import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 import org.jacp.test.main.ApplicationLauncher;
@@ -50,9 +52,8 @@ import java.util.ResourceBundle;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@Perspective(id = "id16", name = "contactPerspective",
-        components = {
-                "id002"},
+@Perspective(id = "id17", name = "contactPerspective",
+        components = {"id016","id017"},
         // viewLocation = "/fxml/perspectiveOne.fxml",
         resourceBundleLocation = "bundles.languageBundle",
         localeID = "en_US")
@@ -63,11 +64,14 @@ public class PerspectiveOnePredestroyPerspectiveTest implements FXPerspective {
     private HBox content2;
     @FXML
     private HBox content3;
+    @Resource
+    private static JACPContext context;
 
     @Override
     public void handlePerspective(final IAction<Event, Object> action,
                                   final PerspectiveLayout perspectiveLayout) {
-        if (action.isMessage(MessageUtil.INIT)) {
+        System.out.println("Perspective 18: "+action.getMessage());
+        if (!action.isMessage("stop")) {
 
             perspectiveLayout.registerRootComponent(createRoot());
             GridPane.setVgrow(perspectiveLayout.getRootComponent(),
@@ -83,6 +87,10 @@ public class PerspectiveOnePredestroyPerspectiveTest implements FXPerspective {
             perspectiveLayout.registerTargetLayoutComponent("content2",
                     this.content3);
             ApplicationLauncher.latch.countDown();
+        }
+        else if (action.isMessage("stop")) {
+            System.err.println("STOP MESSAGE P17");
+            context.setActive(false);
         }
 
     }
@@ -112,7 +120,7 @@ public class PerspectiveOnePredestroyPerspectiveTest implements FXPerspective {
 
     @OnShow
     public void onShow(final FXComponentLayout layout) {
-
+        System.out.println("on show p 17");
     }
 
     @PostConstruct
@@ -123,7 +131,7 @@ public class PerspectiveOnePredestroyPerspectiveTest implements FXPerspective {
      */
     public void onStartPerspective(final FXComponentLayout layout,
                                    final ResourceBundle resourceBundle) {
-
+        System.out.println("on postconstruct p 17");
     }
 
     @PreDestroy
@@ -133,7 +141,7 @@ public class PerspectiveOnePredestroyPerspectiveTest implements FXPerspective {
      */
     public void onTearDownPerspective(final FXComponentLayout arg0) {
         // remove toolbars and menu entries when close perspective
-
+        System.out.println("on predestroy p 17");
     }
 
 }

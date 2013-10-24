@@ -35,6 +35,7 @@ import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
 import org.jacp.javafx.rcp.util.FXUtil;
 import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
+import org.jacp.javafx.rcp.util.TearDownHandler;
 import org.jacp.javafx.rcp.util.WorkerUtil;
 
 import java.security.InvalidParameterException;
@@ -134,12 +135,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
                             component, targetComponents, layout,
                             previousContainer, currentTargetLayout, currentExecutionTarget);
                 } else {
-                    // unregister component
-                    EmbeddedFXComponentWorker.this.removeComponentValue(
-                            previousContainer);
-                    // run teardown
-                    FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
-                            component.getComponentHandle(), layout);
+                    shutDownComponent(component,layout,previousContainer);
                 }
             } catch (Exception e) {
                 e.printStackTrace(); // TODO pass exception
@@ -191,14 +187,17 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
                 }
 
             } else {
-                // unregister component
-                this.removeComponentValue(previousContainer);
-                // run teardown
-                FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
-                        component.getComponentHandle(), layout);
+                shutDownComponent(component,layout,previousContainer);
+
             }
 
         }
+    }
+
+    private void shutDownComponent(final AFXComponent component,final FXComponentLayout layout,final Node previousContainer) {
+        // unregister component
+        this.removeComponentValue(previousContainer);
+        TearDownHandler.shutDownFXComponent(component,layout);
     }
 
     /**
@@ -254,32 +253,4 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
         }
     }
 
-  /*  @Override
-    protected final void done() {
-        AFXComponent component = null;
-        try {
-            component = this.get();
-        } catch (final InterruptedException e) {
-            logger.info("execution interrupted for component: " + this.component.getContext().getName());
-        } catch (final ExecutionException e) {
-            if (e.getCause() instanceof InterruptedException) {
-                logger.info("execution interrupted for component: " + this.component.getContext().getName());
-            } else {
-                e.printStackTrace();
-            }
-
-            // TODO add to error queue and restart thread if
-            // messages in
-            // queue
-        } catch (final Exception e) {
-            e.printStackTrace();
-            // TODO add to error queue and restart thread if
-            // messages in
-            // queue
-        } finally {
-            if (component != null) setCacheHints(true, CacheHint.DEFAULT, component);
-        }
-
-    }
-*/
 }
