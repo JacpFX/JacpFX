@@ -122,8 +122,13 @@ public class FXPerspectiveHandler implements
 
                 List<ISubComponent<EventHandler<Event>, Event, Object>> componentsToShutdown = perspective.getSubcomponents();
                 componentsToShutdown.parallelStream()
-                        .filter(c->c.getContext().isActive()) ;
-                       // .forEach(component->TearDownHandler.shutDownFXComponent(component));
+                        .filter(c->c.getContext().isActive())
+                        .forEach(component->
+
+                                {
+                                    if(AFXComponent.class.isAssignableFrom(component.getClass()))
+                                        TearDownHandler.shutDownFXComponent(AFXComponent.class.cast(component));
+                                });
 
                 return;
             }
@@ -140,6 +145,7 @@ public class FXPerspectiveHandler implements
     private void removePerspectiveNodeFromWorkbench(final IPerspectiveLayout<? extends Node, Node> perspectiveLayout, final Node componentOld) {
         this.root.setCacheHint(CacheHint.SPEED);
         final Node nodeToRemove = componentOld != null ? componentOld : this.getLayoutComponentFromPerspectiveLayout(perspectiveLayout);
+        FXUtil.getChildren(nodeToRemove).clear();
         final ObservableList<Node> children = this.root.getChildren();
         children.remove(nodeToRemove);
         this.root.setCacheHint(CacheHint.DEFAULT);
