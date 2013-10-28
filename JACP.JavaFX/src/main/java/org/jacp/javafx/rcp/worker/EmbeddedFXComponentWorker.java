@@ -253,4 +253,9 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
         }
     }
 
+    @Override
+    public void cleanAfterInterrupt() {
+        this.component.release();
+        ShutdownThreadsHandler.unRegisterThread(this);
+    }
 }

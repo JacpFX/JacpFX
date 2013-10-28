@@ -47,6 +47,16 @@ public final class ShutdownThreadsHandler{
 	public static <T extends Thread> void registerThread(T t) {
 		registeredThreads.add(t);
 	}
+
+    /**
+     * unregister a Thread.
+     * @param t
+     */
+    public static <T extends Thread> void unRegisterThread(T t) {
+        if(registeredThreads.contains(t)){
+            registeredThreads.remove(t);
+        }
+    }
 	/**
 	 * Register an Executor service.
 	 * @param t

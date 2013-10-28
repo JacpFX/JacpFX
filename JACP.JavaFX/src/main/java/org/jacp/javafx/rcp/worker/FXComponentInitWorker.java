@@ -134,9 +134,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 						this.component, this.action,this.targetComponents);
 				this.log("3.4.4.2.4: subcomponent handle init END: "
 						+ name);
-                final EmbeddedFXComponentWorker worker =new EmbeddedFXComponentWorker(this.targetComponents,this.componentDelegateQueue,this.component);
-                this.component.setWorker(worker);
-                worker.start();
+                this.component.initWorker(new EmbeddedFXComponentWorker(this.targetComponents,this.componentDelegateQueue,this.component));
                 FXUtil.setPrivateMemberValue(AComponent.class, this.component,
                         FXUtil.ACOMPONENT_STARTED, true);
 			} finally {

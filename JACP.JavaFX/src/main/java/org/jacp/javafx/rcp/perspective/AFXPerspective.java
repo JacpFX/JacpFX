@@ -111,8 +111,9 @@ public abstract class AFXPerspective extends AComponent implements
         this.componentCoordinator
                 .setMessageDelegateQueue(this.messageDelegateQueue);
         this.componentCoordinator.setParentId(this.getContext().getId());
+        if(this.subcomponents!=null)this.subcomponents.clear();
         this.subcomponents = createAllDeclaredSubcomponents();
-        if (this.getSubcomponents() != null) this.registerSubcomponents(this.getSubcomponents());
+        if (this.getSubcomponents() != null) this.registerSubcomponents(this.subcomponents);
     }
 
     /**

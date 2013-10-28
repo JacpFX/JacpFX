@@ -27,6 +27,7 @@ import javafx.event.EventHandler;
 import org.jacp.api.action.IAction;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
+import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
 import org.jacp.javafx.rcp.util.WorkerUtil;
 
 import java.util.concurrent.BlockingQueue;
@@ -49,6 +50,7 @@ class EmbeddedCallbackComponentWorker
         super(component.getContext().getName());
         this.component = component;
         this.delegateQueue = delegateQueue;
+        ShutdownThreadsHandler.registerThread(this);
     }
 
     // TODO check behavior when component set to active==false and other messages are in pipe
@@ -110,6 +112,10 @@ class EmbeddedCallbackComponentWorker
         }
     }
 
-
+    @Override
+    public void cleanAfterInterrupt() {
+        this.component.release();
+        ShutdownThreadsHandler.unRegisterThread(this);
+    }
 
 }

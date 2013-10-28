@@ -31,6 +31,7 @@ import org.jacp.api.component.ISubComponent;
 import org.jacp.api.workbench.IBase;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.component.CallbackComponent;
+import org.jacp.javafx.rcp.registry.ComponentRegistry;
 import org.jacp.javafx.rcp.worker.AEmbeddedComponentWorker;
 import org.jacp.javafx.rcp.worker.AFXComponentWorker;
 import org.jacp.javafx.rcp.worker.TearDownWorker;
@@ -157,10 +158,9 @@ public class TearDownHandler {
         // run teardown
         FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
                 component.getComponentHandle(), params);
-        AEmbeddedComponentWorker worker = component.getWorker();
-        if(worker.isAlive()) {
-            worker.interrupt();
-        }
+        component.interruptWorker();
+        component.initEnv(null, null);
+        ComponentRegistry.removeComponent(component);
     }
 
 	private static void log(final String message) {

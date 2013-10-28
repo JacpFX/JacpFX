@@ -72,6 +72,11 @@ public abstract class AEmbeddedComponentWorker extends Thread {
     }
 
     /**
+     * perform all cleanings after worker was interrupted.
+     */
+    public abstract void cleanAfterInterrupt();
+
+    /**
      * find valid target component in perspective
      *
      * @param targetComponents, the target components provided by the parent perspective

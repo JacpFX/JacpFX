@@ -162,12 +162,16 @@ public abstract class ASubComponent extends AComponent implements
         this.componentHandle = handle;
     }
 
-    public void setWorker(AEmbeddedComponentWorker worker) {
+    public void initWorker(AEmbeddedComponentWorker worker) {
         this.worker = worker;
+        this.worker.start();
     }
 
-
-    public AEmbeddedComponentWorker getWorker() {
-        return worker;
+    public void interruptWorker() {
+        if(worker.isAlive()) {
+            worker.interrupt();
+        }
+        worker.cleanAfterInterrupt();
     }
+
 }

@@ -126,9 +126,14 @@ public class FXPerspectiveHandler implements
                         .forEach(component->
 
                                 {
-                                    if(AFXComponent.class.isAssignableFrom(component.getClass()))
+
+                                    if(AFXComponent.class.isAssignableFrom(component.getClass()))  {
                                         TearDownHandler.shutDownFXComponent(AFXComponent.class.cast(component));
+                                    }
+
+
                                 });
+                perspective.getSubcomponents().clear();
 
                 return;
             }
