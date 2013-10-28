@@ -88,12 +88,13 @@ public class PredestroyTestComponentOne implements FXComponent {
             context.setTargetLayout(current);
             label.setText(" current Tagret: " + current);
         } else {
+
             button.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
                 @Override
                 public void handle(MouseEvent event) {
 
-
+                    System.out.println("context in c17: "+context);
                     context.getActionListener("update").performAction(null);
                 }
             });
@@ -115,7 +116,11 @@ public class PredestroyTestComponentOne implements FXComponent {
      */
     public void onStartComponent(final FXComponentLayout arg0,
                                  final ResourceBundle resourceBundle) {
-
+        button = new Button("move to next target");
+        container = new VBox();
+        label = new Label();
+        current = "content0";
+        System.out.println("on postconstruct c 016");
 
     }
 

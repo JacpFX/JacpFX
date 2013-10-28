@@ -93,7 +93,7 @@ public class PredestroyTestComponentTwo implements FXComponent {
                 @Override
                 public void handle(MouseEvent event) {
 
-
+                    System.out.println("context in c17: "+context);
                     context.getActionListener("update").performAction(null);
                 }
             });
@@ -116,8 +116,10 @@ public class PredestroyTestComponentTwo implements FXComponent {
     public void onStartComponent(final FXComponentLayout arg0,
                                  final ResourceBundle resourceBundle) {
 
-        System.out.println("START TWO");
+        System.out.println("on postconstruct c 017");
+        button =  new Button("move");
         container = new VBox();
+        label = new Label();
     }
 
     @PreDestroy

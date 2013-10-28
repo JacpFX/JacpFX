@@ -70,7 +70,7 @@ public class PerspectiveOnePredestroyPerspectiveTest implements FXPerspective {
     @Override
     public void handlePerspective(final IAction<Event, Object> action,
                                   final PerspectiveLayout perspectiveLayout) {
-        System.out.println("Perspective 18: "+action.getMessage());
+        System.out.println("Perspective 17: "+action.getMessage());
         if (!action.isMessage("stop")) {
 
             perspectiveLayout.registerRootComponent(createRoot());
