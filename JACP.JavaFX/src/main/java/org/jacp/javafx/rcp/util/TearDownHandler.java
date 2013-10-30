@@ -30,6 +30,7 @@ import org.jacp.api.component.IStatelessCallabackComponent;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.workbench.IBase;
 import org.jacp.javafx.rcp.component.AFXComponent;
+import org.jacp.javafx.rcp.component.ASubComponent;
 import org.jacp.javafx.rcp.component.CallbackComponent;
 import org.jacp.javafx.rcp.registry.ComponentRegistry;
 import org.jacp.javafx.rcp.worker.AEmbeddedComponentWorker;
@@ -161,6 +162,23 @@ public class TearDownHandler {
         component.interruptWorker();
         component.initEnv(null, null);
         ComponentRegistry.removeComponent(component);
+    }
+
+    public static void shutDownAsyncComponent(final ASubComponent component, final Object ...params) {
+        if(component instanceof IStatelessCallabackComponent){
+
+        } else {
+            try {
+                executor.submit(new TearDownWorker(component)).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+            component.interruptWorker();
+            component.initEnv(null, null);
+            ComponentRegistry.removeComponent(component);
+        }
     }
 
 	private static void log(final String message) {

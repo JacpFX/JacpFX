@@ -47,6 +47,8 @@ import org.jacp.api.launcher.Launcher;
 import org.jacp.api.util.UIType;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.component.AFXComponent;
+import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
+import org.jacp.javafx.rcp.component.ASubComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.componentLayout.FXMLPerspectiveLayout;
 import org.jacp.javafx.rcp.componentLayout.FXPerspectiveLayout;
@@ -101,27 +103,13 @@ public class FXPerspectiveHandler implements
                 // 2 second active perspective available, current perspective is the one which is disabled: find the other perspective, handle OnShow, add not to workbench
                 // 3 second perspective is available, other perspective is currently displayed: turn off the perspective
                 FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class, perspective.getPerspectiveHandle(), perspectiveLayout, perspective.getContext().getResourceBundle());
-                final IPerspective<EventHandler<Event>, Event, Object> possiblePerspectiveToShow = PerspectiveRegistry.findNextActivePerspective(perspective);
                 removePerspectiveNodeFromWorkbench(perspectiveLayout, componentOld);
-                if (possiblePerspectiveToShow != null) {
-                    final String possiblePerspectiveId = possiblePerspectiveToShow.getContext().getId();
-                    final String perspectiveIdBefore = PerspectiveRegistry.getAndSetCurrentVisiblePerspective(possiblePerspectiveToShow.getContext().getId());
-                    if (!possiblePerspectiveId.equals(perspectiveIdBefore)) {
-                        final IPerspectiveLayout<? extends Node, Node> perspectiveLayoutReplacementComponent = ((AFXPerspective) possiblePerspectiveToShow)
-                                .getIPerspectiveLayout();
-                        final IPerspectiveView<Node, EventHandler<Event>, Event, Object> perspectiveView = ((IPerspectiveView<Node, EventHandler<Event>, Event, Object>) possiblePerspectiveToShow);
-                        // execute OnShow
-                        FXUtil.invokeHandleMethodsByAnnotation(OnShow.class, possiblePerspectiveToShow.getPerspectiveHandle(), perspectiveLayoutReplacementComponent,
-                                perspectiveView.getType().equals(UIType.DECLARATIVE) ? perspectiveView.getDocumentURL() : null, possiblePerspectiveToShow.getContext().getResourceBundle());
-                        this.handlePerspectiveReassignment(possiblePerspectiveToShow, perspectiveLayoutReplacementComponent, this.getLayoutComponentFromPerspectiveLayout(perspectiveLayoutReplacementComponent));
-                    }
-
-                }
+                displayNextPossiblePerspective(perspective);
 
                 // TODO shutdown all children
 
                 List<ISubComponent<EventHandler<Event>, Event, Object>> componentsToShutdown = perspective.getSubcomponents();
-                componentsToShutdown.parallelStream()
+                componentsToShutdown.stream()
                         .filter(c->c.getContext().isActive())
                         .forEach(component->
 
@@ -129,6 +117,10 @@ public class FXPerspectiveHandler implements
 
                                     if(AFXComponent.class.isAssignableFrom(component.getClass()))  {
                                         TearDownHandler.shutDownFXComponent(AFXComponent.class.cast(component));
+                                    } else if(AStatelessCallbackComponent.class.isAssignableFrom(component.getClass())) {
+
+                                    } else {
+                                        TearDownHandler.shutDownAsyncComponent(ASubComponent.class.cast(component));
                                     }
 
 
@@ -145,6 +137,24 @@ public class FXPerspectiveHandler implements
             } // End else
         }); // End runlater
 
+    }
+
+    private void displayNextPossiblePerspective(final IPerspective<EventHandler<Event>, Event, Object> current) {
+        final IPerspective<EventHandler<Event>, Event, Object> possiblePerspectiveToShow = PerspectiveRegistry.findNextActivePerspective(current);
+        if (possiblePerspectiveToShow != null) {
+            final String possiblePerspectiveId = possiblePerspectiveToShow.getContext().getId();
+            final String perspectiveIdBefore = PerspectiveRegistry.getAndSetCurrentVisiblePerspective(possiblePerspectiveToShow.getContext().getId());
+            if (!possiblePerspectiveId.equals(perspectiveIdBefore)) {
+                final IPerspectiveLayout<? extends Node, Node> perspectiveLayoutReplacementComponent = ((AFXPerspective) possiblePerspectiveToShow)
+                        .getIPerspectiveLayout();
+                final IPerspectiveView<Node, EventHandler<Event>, Event, Object> perspectiveView = ((IPerspectiveView<Node, EventHandler<Event>, Event, Object>) possiblePerspectiveToShow);
+                // execute OnShow
+                FXUtil.invokeHandleMethodsByAnnotation(OnShow.class, possiblePerspectiveToShow.getPerspectiveHandle(), perspectiveLayoutReplacementComponent,
+                        perspectiveView.getType().equals(UIType.DECLARATIVE) ? perspectiveView.getDocumentURL() : null, possiblePerspectiveToShow.getContext().getResourceBundle());
+                this.handlePerspectiveReassignment(possiblePerspectiveToShow, perspectiveLayoutReplacementComponent, this.getLayoutComponentFromPerspectiveLayout(perspectiveLayoutReplacementComponent));
+            }
+
+        }
     }
 
     private void removePerspectiveNodeFromWorkbench(final IPerspectiveLayout<? extends Node, Node> perspectiveLayout, final Node componentOld) {
