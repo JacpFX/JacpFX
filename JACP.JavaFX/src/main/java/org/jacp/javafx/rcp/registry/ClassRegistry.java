@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * Contains registered classes found by scanning. This class should be thread save by convention. addClasses Method is performed ONCE while bootstrapping the application, while getClasses/Perspectives is called during initialisation of workbench and perspective.
  */
 public class ClassRegistry {
-    private static volatile List<Class>  allClasses = new CopyOnWriteArrayList<>();
+    private static final List<Class>  allClasses = new CopyOnWriteArrayList<>();
 
     /**
      * Add classes that were found while package scanning at application start up.
@@ -62,7 +62,7 @@ public class ClassRegistry {
     public static Class getPerspectiveClassById(final String id) {
         if(id==null || id.isEmpty())   throw new ComponentNotFoundException("following perspective id was not found: "+id);
         final List<Class> result = allClasses.parallelStream()
-                .filter(ClassRegistry::checkForPerspectiveAnntotation)
+                .filter(clazz->clazz.isAnnotationPresent(Perspective.class))
                 .filter(component -> checkPerspectiveIdMatch(component, id)).collect(Collectors.toList());
         return checkAndGetClassSearch(result,id);
     }
@@ -75,10 +75,6 @@ public class ClassRegistry {
 
     private static boolean checkForAnntotation(final Class c) {
         return c.isAnnotationPresent(Component.class) || c.isAnnotationPresent(View.class) || c.isAnnotationPresent(DeclarativeView.class);
-    }
-
-    private static boolean checkForPerspectiveAnntotation(final Class c) {
-        return c.isAnnotationPresent(Perspective.class);
     }
 
     private static boolean checkIdMatch(final Class component, final String id) {

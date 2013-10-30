@@ -50,14 +50,14 @@ public abstract class ASubComponent extends AComponent implements
 
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
-    private volatile BlockingQueue<IAction<Event, Object>> incomingMessage = new ArrayBlockingQueue<>(
+    private final BlockingQueue<IAction<Event, Object>> incomingMessage = new ArrayBlockingQueue<>(
             100000);
 
 
-    private IComponentHandle<?, EventHandler<Event>, Event, Object> componentHandle;
+    private volatile IComponentHandle<?, EventHandler<Event>, Event, Object> componentHandle;
 
 
-    private AEmbeddedComponentWorker worker;
+    private volatile AEmbeddedComponentWorker worker;
 
 
     /**
@@ -162,12 +162,13 @@ public abstract class ASubComponent extends AComponent implements
         this.componentHandle = handle;
     }
 
-    public void initWorker(AEmbeddedComponentWorker worker) {
+    public synchronized void initWorker(AEmbeddedComponentWorker worker) {
         this.worker = worker;
         this.worker.start();
     }
 
-    public void interruptWorker() {
+    public synchronized void interruptWorker() {
+        if(worker==null)return;
         if(worker.isAlive()) {
             worker.interrupt();
         }

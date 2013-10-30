@@ -76,7 +76,6 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
                 this.component.lock();
                 final IAction<Event, Object> myAction = this.component
                         .getNextIncomingMessage();
-              //  System.err.println("WORKER: "+this);
                 this.log(" //1.1.1.1.1// handle replace component BEGIN: "
                         + this.component.getContext().getName());
 

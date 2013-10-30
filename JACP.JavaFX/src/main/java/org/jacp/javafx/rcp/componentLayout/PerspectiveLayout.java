@@ -34,7 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public abstract class PerspectiveLayout implements IPerspectiveLayout<Node, Node> {
 	Node rootComponent;
-	private volatile  Map<String, Node> targetComponents = new ConcurrentHashMap<>();
+	private final Map<String, Node> targetComponents = new ConcurrentHashMap<>();
 	
 	public PerspectiveLayout() {
 		

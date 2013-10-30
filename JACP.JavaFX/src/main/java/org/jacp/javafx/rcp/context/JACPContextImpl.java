@@ -26,17 +26,22 @@ import java.util.concurrent.BlockingQueue;
 public class JACPContextImpl implements JACPContext {
 
     private volatile BlockingQueue<IAction<Event, Object>> globalMessageQueue;
+    /**
+     * will be set on init
+     */
     private String id;
     private volatile String parentId;
-
+    /**
+     * will be set on init
+     */
     private String name;
     private volatile String returnTarget;
     private volatile String targetLayout;
     private volatile String executionTarget="";
     private final static CustomSecurityManager customSecurityManager =
             new CustomSecurityManager();
-    private FXComponentLayout layout;
-    private ResourceBundle resourceBundle;
+    private volatile FXComponentLayout layout;
+    private volatile ResourceBundle resourceBundle;
 
     private volatile boolean active;
 

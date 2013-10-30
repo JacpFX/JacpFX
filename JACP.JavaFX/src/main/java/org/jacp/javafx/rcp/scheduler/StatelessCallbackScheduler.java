@@ -43,7 +43,7 @@ public class StatelessCallbackScheduler implements
 
     private final Launcher<?> launcher;
 
-    private static volatile ReadWriteLock lock = new ReentrantReadWriteLock();
+    private static final ReadWriteLock lock = new ReentrantReadWriteLock();
 
     public StatelessCallbackScheduler(final Launcher<?> launcher) {
         this.launcher = launcher;

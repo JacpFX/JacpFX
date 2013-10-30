@@ -45,11 +45,17 @@ public abstract class AFXComponent extends ASubComponent implements
 		Initializable  {
 
 	private volatile Node root;
-
+    /**
+     * will be set on init
+     */
 	private String viewLocation;
-
+    /**
+     * will be set on init
+     */
 	private URL documentURL;
-	
+    /**
+     * will be set on init
+     */
 	private UIType type = UIType.PROGRAMMATIC;
 
 	

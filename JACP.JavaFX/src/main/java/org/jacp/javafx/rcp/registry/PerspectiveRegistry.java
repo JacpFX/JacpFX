@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  */
 public class PerspectiveRegistry {
     private static volatile List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = new ArrayList<>();
-    private static volatile StampedLock lock = new StampedLock();
+    private static final StampedLock lock = new StampedLock();
     private static final AtomicReference<String> currentVisiblePerspectiveId = new AtomicReference<>();
 
     /**
