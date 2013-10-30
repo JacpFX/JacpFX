@@ -26,26 +26,24 @@
 package org.jacp.test.components;
 
 import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.Resource;
-import org.jacp.api.annotations.component.View;
+import org.jacp.api.annotations.component.Component;
 import org.jacp.api.annotations.lifecycle.PostConstruct;
 import org.jacp.api.annotations.lifecycle.PreDestroy;
-import org.jacp.javafx.rcp.component.FXComponent;
+import org.jacp.javafx.rcp.component.CallbackComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.context.JACPContext;
 import org.jacp.javafx.rcp.util.FXUtil;
-import org.jacp.test.main.ApplicationLauncher;
+import org.jacp.test.main.ApplicationLauncherCallbackComponentMessaginTest1;
 import org.jacp.test.main.ApplicationPredestroyPerspectiveTest;
 
 import java.util.ResourceBundle;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
 /**
@@ -53,60 +51,47 @@ import java.util.logging.Logger;
  *
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
-@View(id = "id017", name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", initialTargetLayoutId = "content1")
-public class PredestroyTestComponentTwo implements FXComponent {
 
-    private final Logger log = Logger.getLogger(PredestroyTestComponentTwo.class
+@Component(id = "id018", name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
+public class PredestroyTestComponentThree implements CallbackComponent {
+
+    private final Logger log = Logger.getLogger(PredestroyTestComponentThree.class
             .getName());
 
-    String current = "";
-    Button button = new Button("move");
+    String current = "content0";
+    Button button = new Button("move to next target");
     VBox container = new VBox();
     Label label = new Label();
+    public static boolean ui = false;
 
-    public static CountDownLatch latch = new CountDownLatch(1);
     @Resource
     private JACPContext context;
+
+    public static AtomicInteger counter = new AtomicInteger(10000);
+    public static CountDownLatch wait = new CountDownLatch(1);
+    public static CountDownLatch latch = new CountDownLatch(1);
+    public static String MESSAGE = "message";
 
     @Override
     /**
      * The handleAction method always runs outside the main application thread. You can create new nodes, execute long running tasks but you are not allowed to manipulate existing nodes here.
      */
-    public Node handle(final IAction<Event, Object> action) {
-
-        return null;
-    }
-
-    @Override
-    /**
-     * The postHandleAction method runs always in the main application thread.
-     */
-    public Node postHandle(final Node arg0,
-                           final IAction<Event, Object> action) {
-        current = context.getParentId();
-        if (!action.isMessage(FXUtil.MessageUtil.INIT)) {
-
-            current = context.getParentId().equals("id02") ? "id03" : "id02";
-            context.setExecutionTarget(current);
-            label.setText(" current Perspective: " + current);
-
-        } else {
-            button.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-                @Override
-                public void handle(MouseEvent event) {
-
-                    System.out.println("context in c17: "+context);
-                    context.getActionListener("update").performAction(null);
-                }
-            });
-            button.setStyle("-fx-background-color: red");
-            label.setText(" current Perspective: " + current);
-            container.getChildren().addAll(button, label);
+    public Object handle(final IAction<Event, Object> action) {
+        if (action.isMessage(FXUtil.MessageUtil.INIT)) {
             ApplicationPredestroyPerspectiveTest.latch.countDown();
+        } else {
+            if (counter.get() > 1) {
+                counter.decrementAndGet();
+
+            } else {
+                System.out.println("Component id010: FINISH");
+                if (wait.getCount() > 0) wait.countDown();
+
+                return MESSAGE;
+            }
         }
 
-        return container;
+        return MESSAGE;
     }
 
 
@@ -119,10 +104,7 @@ public class PredestroyTestComponentTwo implements FXComponent {
     public void onStartComponent(final FXComponentLayout arg0,
                                  final ResourceBundle resourceBundle) {
 
-        System.out.println("on postconstruct c 017");
-        button =  new Button("move");
-        container = new VBox();
-        label = new Label();
+
     }
 
     @PreDestroy
@@ -130,9 +112,10 @@ public class PredestroyTestComponentTwo implements FXComponent {
      * The @OnTearDown annotations labels methods executed when the component is set to inactive
      * @param arg0
      */
-    public void onTearDownComponent(final FXComponentLayout arg0) {
+    public void onTearDownComponent() {
+
         this.log.info("run on tear down of ComponentRight ");
-        System.out.println("on predestroy c 017");
+        System.out.println("on predestroy c 018"+Thread.currentThread());
         latch.countDown();
     }
 

@@ -43,8 +43,10 @@ import org.jacp.javafx.rcp.context.JACPContext;
 import org.jacp.javafx.rcp.perspective.FXPerspective;
 import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 import org.jacp.test.main.ApplicationLauncher;
+import org.jacp.test.main.ApplicationPredestroyPerspectiveTest;
 
 import java.util.ResourceBundle;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * A simple perspective defining a split pane
@@ -53,7 +55,7 @@ import java.util.ResourceBundle;
  */
 
 @Perspective(id = "id17", name = "contactPerspective",
-        components = {"id016","id017"},
+        components = {"id016","id017","id018"},
         // viewLocation = "/fxml/perspectiveOne.fxml",
         resourceBundleLocation = "bundles.languageBundle",
         localeID = "en_US")
@@ -66,6 +68,9 @@ public class PerspectiveOnePredestroyPerspectiveTest implements FXPerspective {
     private HBox content3;
     @Resource
     private static JACPContext context;
+
+    public static CountDownLatch latch = new CountDownLatch(1);
+
 
     @Override
     public void handlePerspective(final IAction<Event, Object> action,
@@ -86,7 +91,7 @@ public class PerspectiveOnePredestroyPerspectiveTest implements FXPerspective {
                     this.content2);
             perspectiveLayout.registerTargetLayoutComponent("content2",
                     this.content3);
-            ApplicationLauncher.latch.countDown();
+            ApplicationPredestroyPerspectiveTest.latch.countDown();
         }
         else if (action.isMessage("stop")) {
             System.err.println("STOP MESSAGE P17");
@@ -94,7 +99,9 @@ public class PerspectiveOnePredestroyPerspectiveTest implements FXPerspective {
         }
 
     }
-
+    public static void stop() {
+        context.getActionListener("stop").performAction(null);
+    }
     private Node createRoot() {
         BorderPane pane = new BorderPane();
         SplitPane splitPane = new SplitPane();
@@ -142,6 +149,7 @@ public class PerspectiveOnePredestroyPerspectiveTest implements FXPerspective {
     public void onTearDownPerspective(final FXComponentLayout arg0) {
         // remove toolbars and menu entries when close perspective
         System.out.println("on predestroy p 17");
+        latch.countDown();
     }
 
 }

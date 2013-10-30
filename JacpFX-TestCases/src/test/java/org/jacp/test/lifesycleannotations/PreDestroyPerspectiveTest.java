@@ -2,8 +2,11 @@ package org.jacp.test.lifesycleannotations;
 
 import javafx.application.Platform;
 import org.jacp.test.AllTests;
+import org.jacp.test.components.PredestroyTestComponentOne;
+import org.jacp.test.components.PredestroyTestComponentTwo;
 import org.jacp.test.main.ApplicationLauncherPerspectiveMessaginTest;
 import org.jacp.test.main.ApplicationPredestroyPerspectiveTest;
+import org.jacp.test.perspectives.PerspectiveOnePredestroyPerspectiveTest;
 import org.jacp.test.perspectives.PerspectiveTwoPredestroyPerspectiveTest;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -51,8 +54,10 @@ public class PreDestroyPerspectiveTest {
 
     @Test
     public void testPreDestroyAnnotation() throws InterruptedException {
-        PerspectiveTwoPredestroyPerspectiveTest.stop();
-        PerspectiveTwoPredestroyPerspectiveTest.latch.await();
+        PerspectiveOnePredestroyPerspectiveTest.stop();
+        PerspectiveOnePredestroyPerspectiveTest.latch.await();
+        PredestroyTestComponentOne.latch.await();
+        PredestroyTestComponentTwo.latch.await();
     }
 
 }

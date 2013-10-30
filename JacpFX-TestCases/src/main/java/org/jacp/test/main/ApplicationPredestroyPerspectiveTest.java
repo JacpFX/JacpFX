@@ -47,7 +47,7 @@ public class ApplicationPredestroyPerspectiveTest extends AFXSpringLauncher {
     private static final String[] STYLE_FILES = {"/styles/style_light.css", "/styles/style_dark.css"};
     /// binary style sheets created while deployment
     private static final String[] BINARY_FILES = {"/styles/style_light.bss", "/styles/style_dark.bss"};
-    public static CountDownLatch latch = new CountDownLatch(2);
+    public static CountDownLatch latch = new CountDownLatch(6);
     public static volatile ApplicationPredestroyPerspectiveTest[] instance = new ApplicationPredestroyPerspectiveTest[1];
 
     public ApplicationPredestroyPerspectiveTest() {

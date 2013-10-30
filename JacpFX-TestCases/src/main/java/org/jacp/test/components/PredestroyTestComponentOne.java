@@ -42,8 +42,10 @@ import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.context.JACPContext;
 import org.jacp.javafx.rcp.util.FXUtil;
 import org.jacp.test.main.ApplicationLauncher;
+import org.jacp.test.main.ApplicationPredestroyPerspectiveTest;
 
 import java.util.ResourceBundle;
+import java.util.concurrent.CountDownLatch;
 import java.util.logging.Logger;
 
 /**
@@ -63,6 +65,7 @@ public class PredestroyTestComponentOne implements FXComponent {
     VBox container = new VBox();
     Label label = new Label();
 
+    public static CountDownLatch latch = new CountDownLatch(1);
     @Resource
     private JACPContext context;
 
@@ -101,7 +104,7 @@ public class PredestroyTestComponentOne implements FXComponent {
             button.setStyle("-fx-background-color: red");
             label.setText(" current Tagret: " + current);
             container.getChildren().addAll(button, label);
-            ApplicationLauncher.latch.countDown();
+            ApplicationPredestroyPerspectiveTest.latch.countDown();
         }
 
         return container;
@@ -132,6 +135,7 @@ public class PredestroyTestComponentOne implements FXComponent {
     public void onTearDownComponent(final FXComponentLayout arg0) {
         this.log.info("run on tear down of ComponentRight ");
         System.out.println("on predestroy c 016");
+        latch.countDown();
     }
 
 
