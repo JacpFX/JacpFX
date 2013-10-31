@@ -118,7 +118,7 @@ public class FXPerspectiveHandler implements
                                     if(AFXComponent.class.isAssignableFrom(component.getClass()))  {
                                         TearDownHandler.shutDownFXComponent(AFXComponent.class.cast(component));
                                     } else if(AStatelessCallbackComponent.class.isAssignableFrom(component.getClass())) {
-
+                                        TearDownHandler.shutDownAsyncComponent(ASubComponent.class.cast(component));
                                     } else {
                                         TearDownHandler.shutDownAsyncComponent(ASubComponent.class.cast(component));
                                     }

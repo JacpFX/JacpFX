@@ -55,7 +55,7 @@ import java.util.concurrent.CountDownLatch;
  */
 
 @Perspective(id = "id17", name = "contactPerspective",
-        components = {"id016","id017","id018"},
+        components = {"id016","id017","id018","id019"},
         // viewLocation = "/fxml/perspectiveOne.fxml",
         resourceBundleLocation = "bundles.languageBundle",
         localeID = "en_US")
@@ -99,6 +99,45 @@ public class PerspectiveOnePredestroyPerspectiveTest implements FXPerspective {
         }
 
     }
+
+    public static void fireBurst(final int count) {
+        Thread t = new Thread(() -> {
+            for (int i = 0; i < count; i++) {
+                getContext().getActionListener("id17.id016", "message").performAction(null);
+            }
+        });
+        t.setDaemon(true);
+        t.start();
+
+        Thread t2 = new Thread(() -> {
+            for (int i = 0; i < count; i++) {
+                getContext().getActionListener("id17.id017", "message").performAction(null);
+            }
+        });
+        t2.setDaemon(true);
+        t2.start();
+
+        Thread t3 = new Thread(() -> {
+            for (int i = 0; i < count; i++) {
+                getContext().getActionListener("id17.id018", "message").performAction(null);
+            }
+        });
+        t3.setDaemon(true);
+        t3.start();
+
+        Thread t4 = new Thread(() -> {
+            for (int i = 0; i < count; i++) {
+                getContext().getActionListener("id17.id019", "message").performAction(null);
+            }
+        });
+        t4.setDaemon(true);
+        t4.start();
+    }
+
+    public static synchronized JACPContext getContext() {
+        return context;
+    }
+
     public static void stop() {
         context.getActionListener("stop").performAction(null);
     }

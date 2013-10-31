@@ -70,6 +70,7 @@ public class PredestroyTestComponentThree implements CallbackComponent {
     public static AtomicInteger counter = new AtomicInteger(10000);
     public static CountDownLatch wait = new CountDownLatch(1);
     public static CountDownLatch latch = new CountDownLatch(1);
+    public static CountDownLatch countdownlatch = new CountDownLatch(1);
     public static String MESSAGE = "message";
 
     @Override
@@ -80,15 +81,10 @@ public class PredestroyTestComponentThree implements CallbackComponent {
         if (action.isMessage(FXUtil.MessageUtil.INIT)) {
             ApplicationPredestroyPerspectiveTest.latch.countDown();
         } else {
-            if (counter.get() > 1) {
-                counter.decrementAndGet();
+            countdownlatch.countDown();
+            System.out.println("message in c18: ");
+            return null;
 
-            } else {
-                System.out.println("Component id010: FINISH");
-                if (wait.getCount() > 0) wait.countDown();
-
-                return MESSAGE;
-            }
         }
 
         return MESSAGE;

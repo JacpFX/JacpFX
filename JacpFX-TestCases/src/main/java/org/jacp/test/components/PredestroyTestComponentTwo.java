@@ -65,6 +65,7 @@ public class PredestroyTestComponentTwo implements FXComponent {
     Label label = new Label();
 
     public static CountDownLatch latch = new CountDownLatch(1);
+    public static CountDownLatch countdownlatch = new CountDownLatch(1);
     @Resource
     private JACPContext context;
 
@@ -86,9 +87,8 @@ public class PredestroyTestComponentTwo implements FXComponent {
         current = context.getParentId();
         if (!action.isMessage(FXUtil.MessageUtil.INIT)) {
 
-            current = context.getParentId().equals("id02") ? "id03" : "id02";
-            context.setExecutionTarget(current);
-            label.setText(" current Perspective: " + current);
+            countdownlatch.countDown();
+            System.out.println("message in c17: ");
 
         } else {
             button.setOnMouseClicked(new EventHandler<MouseEvent>() {

@@ -140,15 +140,7 @@ public class TearDownHandler {
 				}
 				set.add(executor.submit(new TearDownWorker(component)));
 			}
-			// await termination
-			for (final Future<Boolean> future : set) {
-				try {
-					future.get();
-				} catch (InterruptedException | ExecutionException e) {
-					log("error while handle TearDown");
-					e.printStackTrace();
-				}
-            }
+            awaitTermination(set);
 		} catch (RejectedExecutionException e) {
 			log("component teardown was not executed");
 		}
@@ -164,9 +156,30 @@ public class TearDownHandler {
         ComponentRegistry.removeComponent(component);
     }
 
+    private static void awaitTermination(Set<Future<Boolean>> set) {
+        // await termination
+        for (final Future<Boolean> future : set) {
+            try {
+                future.get();
+            } catch (InterruptedException | ExecutionException e) {
+                log("error while handle TearDown");
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static void shutDownAsyncComponent(final ASubComponent component, final Object ...params) {
         if(component instanceof IStatelessCallabackComponent){
-
+            final Set<Future<Boolean>> set = new HashSet<>();
+            final IStatelessCallabackComponent<EventHandler<Event>, Event, Object>tmp = (IStatelessCallabackComponent<EventHandler<Event>, Event, Object>) component;
+            final List<ISubComponent<EventHandler<Event>, Event, Object>> instances = tmp.getInstances();
+            for(final ISubComponent<EventHandler<Event>, Event, Object> instance : instances) {
+                set.add(executor.submit(new TearDownWorker(instance)));
+            }
+            awaitTermination(set);
+            tmp.getExecutorService().shutdownNow();
+            instances.clear();
+            ComponentRegistry.removeComponent(component);
         } else {
             try {
                 executor.submit(new TearDownWorker(component)).get();

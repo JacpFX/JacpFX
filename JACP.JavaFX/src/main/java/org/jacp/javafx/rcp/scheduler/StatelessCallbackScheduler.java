@@ -101,6 +101,7 @@ public class StatelessCallbackScheduler implements
             final ISubComponent<EventHandler<Event>, Event, Object> comp,
             final IAction<Event, Object> message) {
         comp.putIncomingMessage(message);
+        // TODO switch to embedded worker!!
         baseComponent.getExecutorService().submit(new StateLessComponentRunWorker(
                 comp, baseComponent));
     }

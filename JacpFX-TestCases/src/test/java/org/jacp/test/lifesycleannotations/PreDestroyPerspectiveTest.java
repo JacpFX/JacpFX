@@ -2,7 +2,9 @@ package org.jacp.test.lifesycleannotations;
 
 import javafx.application.Platform;
 import org.jacp.test.AllTests;
+import org.jacp.test.components.PredestroyTestComponentFour;
 import org.jacp.test.components.PredestroyTestComponentOne;
+import org.jacp.test.components.PredestroyTestComponentThree;
 import org.jacp.test.components.PredestroyTestComponentTwo;
 import org.jacp.test.main.ApplicationLauncherPerspectiveMessaginTest;
 import org.jacp.test.main.ApplicationPredestroyPerspectiveTest;
@@ -11,6 +13,8 @@ import org.jacp.test.perspectives.PerspectiveTwoPredestroyPerspectiveTest;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.util.concurrent.CountDownLatch;
 
 /**
  * Created with IntelliJ IDEA.
@@ -58,6 +62,34 @@ public class PreDestroyPerspectiveTest {
         PerspectiveOnePredestroyPerspectiveTest.latch.await();
         PredestroyTestComponentOne.latch.await();
         PredestroyTestComponentTwo.latch.await();
+        PredestroyTestComponentThree.latch.await();
+        PredestroyTestComponentFour.latch.await();
+    }
+
+    @Test
+    public void testPreDestroyAnnotationAfterUse() throws InterruptedException {
+        PredestroyTestComponentOne.countdownlatch = new CountDownLatch(10000);
+        PredestroyTestComponentTwo.countdownlatch = new CountDownLatch(10000);
+        PredestroyTestComponentThree.countdownlatch = new CountDownLatch(10000);
+        PredestroyTestComponentFour.countdownlatch = new CountDownLatch(10000);
+
+
+        PerspectiveOnePredestroyPerspectiveTest.fireBurst(10000);
+
+        PredestroyTestComponentOne.countdownlatch.await();
+
+        PredestroyTestComponentTwo.countdownlatch.await();
+
+        PredestroyTestComponentThree.countdownlatch.await();
+
+        PredestroyTestComponentFour.countdownlatch.await();
+
+        PerspectiveOnePredestroyPerspectiveTest.stop();
+        PerspectiveOnePredestroyPerspectiveTest.latch.await();
+        PredestroyTestComponentOne.latch.await();
+        PredestroyTestComponentTwo.latch.await();
+        PredestroyTestComponentThree.latch.await();
+        PredestroyTestComponentFour.latch.await();
     }
 
 }
