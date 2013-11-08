@@ -59,7 +59,7 @@ import java.util.List;
 public class WorkbenchPredestroyPerspectiveTest implements FXWorkbench {
     private Stage stage;
     @Resource
-    JACPContext context;
+    static JACPContext context;
 
     @Override
     public void handleInitialLayout(final IAction<Event, Object> action,
@@ -185,6 +185,10 @@ public class WorkbenchPredestroyPerspectiveTest implements FXWorkbench {
         result.add(test1);
         result.add(test2);
         return result;
+    }
+
+    public static void startPerspective() {
+        context.getActionListener("id17","INIT").performAction(null);
     }
 
 }

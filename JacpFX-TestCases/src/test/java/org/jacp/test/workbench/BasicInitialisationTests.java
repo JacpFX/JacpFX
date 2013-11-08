@@ -155,7 +155,7 @@ public class BasicInitialisationTests {
         assertFalse(perspectives.isEmpty());
         assertTrue(getPerspectiveAnnotations().length == perspectives.size());
         for (IPerspective<EventHandler<Event>, Event, Object> p : perspectives) {
-            Injectable handler = p.getPerspectiveHandle();
+            Injectable handler = p.getPerspective();
             Perspective annotation = handler.getClass().getAnnotation(Perspective.class);
             String[] components = annotation.components();
             if (components.length == 0) {

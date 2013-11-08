@@ -3,7 +3,6 @@ package org.jacp.test.lifesycleannotations;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import junit.framework.Assert;
 import org.jacp.api.component.IPerspective;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.component.Injectable;
@@ -29,12 +28,12 @@ import static junit.framework.TestCase.assertTrue;
 
 /**
  * Created with IntelliJ IDEA.
- * User: amo
- * Date: 16.10.13
- * Time: 21:19
+ * User: ady
+ * Date: 08.11.13
+ * Time: 14:54
  * To change this template use File | Settings | File Templates.
  */
-public class PreDestroyPerspectiveTest {
+public class RestartPerspectiveTest {
     static Thread t;
 
     @AfterClass
@@ -65,40 +64,8 @@ public class PreDestroyPerspectiveTest {
             e.printStackTrace();
         }
     }
-
-
     @Test
-    public void test2PreDestroyAnnotation() throws InterruptedException {
-        ApplicationPredestroyPerspectiveTest launcher = ApplicationPredestroyPerspectiveTest.instance[0];
-        AFXWorkbench workbench = launcher.getWorkbench();
-        assertNotNull(workbench);
-        List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
-        assertNotNull(perspectives);
-        assertFalse(perspectives.isEmpty());
-
-        PerspectiveOnePredestroyPerspectiveTest.stop();
-        PerspectiveOnePredestroyPerspectiveTest.latch.await();
-        PredestroyTestComponentOne.latch.await();
-        PredestroyTestComponentTwo.latch.await();
-        PredestroyTestComponentThree.latch.await();
-        PredestroyTestComponentFour.latch.await();
-
-
-
-        for(IPerspective<EventHandler<Event>, Event, Object> p:perspectives) {
-            Injectable handler = p.getPerspective();
-            if(handler.getClass().isAssignableFrom(PerspectiveOnePredestroyPerspectiveTest.class)) {
-                assertFalse(p.getContext().isActive());
-                List<ISubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
-                assertTrue(components.isEmpty());
-            }else {
-                assertTrue(p.getContext().isActive());
-            }
-        }
-    }
-
-    @Test
-    public void test1PreDestroyAnnotationAfterUse() throws InterruptedException {
+    public void test3DestroyAndRestart() throws InterruptedException {
         PredestroyTestComponentOne.countdownlatch = new CountDownLatch(10000);
         PredestroyTestComponentTwo.countdownlatch = new CountDownLatch(10000);
         PredestroyTestComponentThree.countdownlatch = new CountDownLatch(10000);
@@ -151,6 +118,23 @@ public class PreDestroyPerspectiveTest {
             }
         }
 
+        ApplicationPredestroyPerspectiveTest.latch = new CountDownLatch(5);
+        WorkbenchPredestroyPerspectiveTest.startPerspective();
+        try {
+            ApplicationPredestroyPerspectiveTest.latch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        for(IPerspective<EventHandler<Event>, Event, Object> p:perspectives) {
+            Injectable handler = p.getPerspective();
+            if(handler.getClass().isAssignableFrom(PerspectiveOnePredestroyPerspectiveTest.class)) {
+                assertTrue(p.getContext().isActive());
+                List<ISubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
+                assertFalse(components.isEmpty());
+            }else {
+                assertTrue(p.getContext().isActive());
+            }
+        }
     }
 
 }

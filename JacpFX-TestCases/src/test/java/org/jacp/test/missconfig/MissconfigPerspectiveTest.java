@@ -112,7 +112,7 @@ public class MissconfigPerspectiveTest {
             assertNotNull(context.getId());
             assertNotNull(context.getName());
             assertNotNull(context.getResourceBundle());
-            Injectable handler = p.getPerspectiveHandle();
+            Injectable handler = p.getPerspective();
             Perspective annotation = handler.getClass().getAnnotation(Perspective.class);
             String[] components = annotation.components();
             assertTrue(components.length == 0);
