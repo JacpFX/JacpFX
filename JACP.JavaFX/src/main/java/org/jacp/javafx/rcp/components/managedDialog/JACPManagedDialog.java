@@ -226,7 +226,7 @@ public class JACPManagedDialog {
         if (comp == null)
             throw new IllegalArgumentException("component could not be found");
         field.setAccessible(true);
-        field.set(bean, comp.getComponentHandle());
+        field.set(bean, comp.getComponent());
     }
 
     private <T> void handleParentComponentContextAnnotation(final T bean,

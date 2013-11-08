@@ -31,7 +31,6 @@ import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
 import org.jacp.javafx.rcp.util.WorkerUtil;
 
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutionException;
 
 /**
  * This class handles running stateful background components
@@ -66,7 +65,7 @@ class EmbeddedCallbackComponentWorker
                 String id = myAction.getSourceId();
                 context.setReturnTarget(id);
                 final String currentExecutionTarget = context.getExecutionTarget();
-                final Object value = this.component.getComponentHandle().handle(myAction);
+                final Object value = this.component.getComponent().handle(myAction);
                 final String targetId = context
                         .getReturnTargetAndClear();
                 WorkerUtil.delegateReturnValue(this.component, targetId, value,

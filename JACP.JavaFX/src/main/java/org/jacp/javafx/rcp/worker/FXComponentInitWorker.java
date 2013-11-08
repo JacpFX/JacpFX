@@ -89,7 +89,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
                 final URL url = getClass().getResource(
                         component.getViewLocation());
                 initLocalization(url, component);
-                component.setRoot(FXUtil.loadFXMLandSetController(component.getComponentHandle(), component.getContext().getResourceBundle(), url));
+                component.setRoot(FXUtil.loadFXMLandSetController(component.getComponent(), component.getContext().getResourceBundle(), url));
                 performContextInjection(component);
                 runComponentOnStartupSequence(component, layout,
                         component.getDocumentURL(),
@@ -110,7 +110,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
      * @param component, the component where to inject the context
      */
     private void performContextInjection(AFXComponent component) {
-        IComponentHandle<?, EventHandler<Event>, Event, Object> handler = component.getComponentHandle();
+        IComponentHandle<?, EventHandler<Event>, Event, Object> handler = component.getComponent();
         FXUtil.performResourceInjection(handler,component.getContext());
     }
 
@@ -168,7 +168,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	 */
 	private void runComponentOnStartupSequence(AFXComponent component,
 			Object... param) {
-		FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, component.getComponentHandle(), param);
+		FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, component.getComponent(), param);
 	}
 
 

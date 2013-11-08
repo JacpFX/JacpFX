@@ -111,6 +111,6 @@ public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
      * Returns the injected perspective representation. This Injectable is the implementation of a perspective which includes all handle methods.
      * @return
      */
-    Injectable getPerspectiveHandle();
+    Injectable getPerspective();
 
 }

@@ -12,12 +12,12 @@ import org.jacp.api.component.Injectable;
 public class EmbeddedFXPerspective extends AFXPerspective {
 
     public EmbeddedFXPerspective(Injectable perspective) {
-        this.perspectiveHandler = perspective;
+        this.perspective = perspective;
     }
 
     @Override
     public String toString() {
-        return this.getContext() != null ? this.getContext().getId() : this.perspectiveHandler.toString();
+        return this.getContext() != null ? this.getContext().getId() : this.perspective.toString();
     }
 
     @Override

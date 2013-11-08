@@ -44,7 +44,7 @@ public class TearDownWorker implements Callable<Boolean>{
 	public Boolean call() throws Exception {
         // run teardown
         if (component.getContext().isActive())FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
-                component.getComponentHandle());
+                component.getComponent());
 		return true;
 	}
 

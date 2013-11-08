@@ -30,7 +30,6 @@ import org.jacp.javafx.rcp.util.FXUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -102,7 +101,7 @@ public class ComponentRegistry {
     public static ISubComponent<EventHandler<Event>, Event, Object> findComponentByClass(final Class<?> clazz) {
         lock.readLock().lock();
         try{
-            final Optional<ISubComponent<EventHandler<Event>, Event, Object>> returnVal = components.parallelStream().filter(c -> c.getComponentHandle().getClass().isAssignableFrom(clazz)).findFirst();
+            final Optional<ISubComponent<EventHandler<Event>, Event, Object>> returnVal = components.parallelStream().filter(c -> c.getComponent().getClass().isAssignableFrom(clazz)).findFirst();
             if(returnVal.isPresent())return returnVal.get();
 
             return null;

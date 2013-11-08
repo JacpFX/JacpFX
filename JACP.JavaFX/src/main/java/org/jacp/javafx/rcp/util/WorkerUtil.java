@@ -91,7 +91,7 @@ public class WorkerUtil {
             FXUtil.setPrivateMemberValue(AComponent.class, component,
                     FXUtil.ACOMPONENT_STARTED, false);
             // run teardown
-            FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class, component.getComponentHandle());
+            FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class, component.getComponent());
         }
     }
 

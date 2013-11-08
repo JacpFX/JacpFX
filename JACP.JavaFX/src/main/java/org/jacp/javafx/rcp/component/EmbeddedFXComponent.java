@@ -1,7 +1,6 @@
 package org.jacp.javafx.rcp.component;
 
 import org.jacp.api.component.IComponentView;
-import org.jacp.api.util.UIType;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,12 +12,12 @@ import org.jacp.api.util.UIType;
 public class EmbeddedFXComponent extends AFXComponent{
 
     public EmbeddedFXComponent(IComponentView handle) {
-        this.setComponentHandle(handle);
+        this.setComponent(handle);
     }
 
     @Override
     public String toString() {
-        return this.getContext() != null ? this.getContext().getId() : this.getComponentHandle().toString();
+        return this.getContext() != null ? this.getContext().getId() : this.getComponent().toString();
     }
 
 }

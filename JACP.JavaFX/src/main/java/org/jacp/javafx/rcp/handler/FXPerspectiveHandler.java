@@ -102,29 +102,10 @@ public class FXPerspectiveHandler implements
                 // 1 only one Perspective which is deactivated:  remove...
                 // 2 second active perspective available, current perspective is the one which is disabled: find the other perspective, handle OnShow, add not to workbench
                 // 3 second perspective is available, other perspective is currently displayed: turn off the perspective
-                FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class, perspective.getPerspectiveHandle(), perspectiveLayout, perspective.getContext().getResourceBundle());
+                FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class, perspective.getPerspective(), perspectiveLayout, perspective.getContext().getResourceBundle());
                 removePerspectiveNodeFromWorkbench(perspectiveLayout, componentOld);
                 displayNextPossiblePerspective(perspective);
-
-                // TODO shutdown all children
-
-                List<ISubComponent<EventHandler<Event>, Event, Object>> componentsToShutdown = perspective.getSubcomponents();
-                componentsToShutdown.stream()
-                        .filter(c->c.getContext().isActive())
-                        .forEach(component->
-
-                                {
-
-                                    if(AFXComponent.class.isAssignableFrom(component.getClass()))  {
-                                        TearDownHandler.shutDownFXComponent(AFXComponent.class.cast(component));
-                                    } else if(AStatelessCallbackComponent.class.isAssignableFrom(component.getClass())) {
-                                        TearDownHandler.shutDownAsyncComponent(ASubComponent.class.cast(component));
-                                    } else {
-                                        TearDownHandler.shutDownAsyncComponent(ASubComponent.class.cast(component));
-                                    }
-
-
-                                });
+                shutDownComponents(perspective);
                 perspective.getSubcomponents().clear();
 
                 return;
@@ -139,6 +120,26 @@ public class FXPerspectiveHandler implements
 
     }
 
+    private void shutDownComponents(final IPerspective<EventHandler<Event>, Event, Object> perspective) {
+        final List<ISubComponent<EventHandler<Event>, Event, Object>> componentsToShutdown = perspective.getSubcomponents();
+        componentsToShutdown.stream()
+                .filter(c->c.getContext().isActive())
+                .forEach(component->
+
+                        {
+
+                            if(AFXComponent.class.isAssignableFrom(component.getClass()))  {
+                                TearDownHandler.shutDownFXComponent(AFXComponent.class.cast(component));
+                            } else if(AStatelessCallbackComponent.class.isAssignableFrom(component.getClass())) {
+                                TearDownHandler.shutDownAsyncComponent(ASubComponent.class.cast(component));
+                            } else {
+                                TearDownHandler.shutDownAsyncComponent(ASubComponent.class.cast(component));
+                            }
+
+
+                        });
+    }
+
     private void displayNextPossiblePerspective(final IPerspective<EventHandler<Event>, Event, Object> current) {
         final IPerspective<EventHandler<Event>, Event, Object> possiblePerspectiveToShow = PerspectiveRegistry.findNextActivePerspective(current);
         if (possiblePerspectiveToShow != null) {
@@ -149,7 +150,7 @@ public class FXPerspectiveHandler implements
                         .getIPerspectiveLayout();
                 final IPerspectiveView<Node, EventHandler<Event>, Event, Object> perspectiveView = ((IPerspectiveView<Node, EventHandler<Event>, Event, Object>) possiblePerspectiveToShow);
                 // execute OnShow
-                FXUtil.invokeHandleMethodsByAnnotation(OnShow.class, possiblePerspectiveToShow.getPerspectiveHandle(), perspectiveLayoutReplacementComponent,
+                FXUtil.invokeHandleMethodsByAnnotation(OnShow.class, possiblePerspectiveToShow.getPerspective(), perspectiveLayoutReplacementComponent,
                         perspectiveView.getType().equals(UIType.DECLARATIVE) ? perspectiveView.getDocumentURL() : null, possiblePerspectiveToShow.getContext().getResourceBundle());
                 this.handlePerspectiveReassignment(possiblePerspectiveToShow, perspectiveLayoutReplacementComponent, this.getLayoutComponentFromPerspectiveLayout(perspectiveLayoutReplacementComponent));
             }
@@ -171,7 +172,7 @@ public class FXPerspectiveHandler implements
                                     final IPerspective<EventHandler<Event>, Event, Object> perspective) {
 
         this.log("3.4.3: perspective handle init");
-        FXUtil.performResourceInjection(perspective.getPerspectiveHandle(), perspective.getContext());
+        FXUtil.performResourceInjection(perspective.getPerspective(), perspective.getContext());
         this.handlePerspectiveInitMethod(action, perspective);
         this.log("3.4.4: perspective init subcomponents");
         perspective.initComponents(action);
@@ -264,7 +265,7 @@ public class FXPerspectiveHandler implements
         final FXComponentLayout layout = new FXComponentLayout(this.getWorkbenchLayout());
         if (!perspective.equals(previousPerspective)) {
             // execute OnShow
-            FXUtil.invokeHandleMethodsByAnnotation(OnShow.class, perspective.getPerspectiveHandle(), layout,
+            FXUtil.invokeHandleMethodsByAnnotation(OnShow.class, perspective.getPerspective(), layout,
                     perspectiveView.getType().equals(UIType.DECLARATIVE) ? perspectiveView.getDocumentURL() : null, perspectiveView.getContext().getResourceBundle());
 
         }
@@ -341,7 +342,7 @@ public class FXPerspectiveHandler implements
         // init default IPerspectiveLayout
         initLocalization(null, AFXPerspective.class.cast(perspective));
         AFXPerspective.class.cast(perspective).setIPerspectiveLayout(new FXPerspectiveLayout());
-        FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, perspective.getPerspectiveHandle(), layout, perspective.getContext().getResourceBundle());
+        FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, perspective.getPerspective(), layout, perspective.getContext().getResourceBundle());
     }
 
     private void handleDeclarativePerspective(final IPerspective<EventHandler<Event>, Event, Object> perspective, final FXComponentLayout layout, final IPerspectiveView<Node, EventHandler<Event>, Event, Object> perspectiveView) {
@@ -350,7 +351,7 @@ public class FXPerspectiveHandler implements
         initLocalization(url, (AFXPerspective) perspective);
         AFXPerspective.class.cast(perspective).setIPerspectiveLayout(new FXMLPerspectiveLayout(
                 loadFXMLandSetController((AFXPerspective) perspectiveView, url)));
-        FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, perspective.getPerspectiveHandle(), layout,
+        FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, perspective.getPerspective(), layout,
                 perspectiveView.getDocumentURL(), perspectiveView.getContext().getResourceBundle());
     }
 
@@ -369,7 +370,7 @@ public class FXPerspectiveHandler implements
             fxmlLoader.setResources(perspectiveView.getContext().getResourceBundle());
         }
         fxmlLoader.setLocation(url);
-        fxmlLoader.setController(perspectiveView.getPerspectiveHandle());
+        fxmlLoader.setController(perspectiveView.getPerspective());
         try {
             return (Node) fxmlLoader.load();
         } catch (IOException e) {
@@ -413,7 +414,7 @@ public class FXPerspectiveHandler implements
         if (previousPerspective != null && !previousPerspective.equals(perspective)) {
             final IPerspectiveView<Node, EventHandler<Event>, Event, Object> perspectiveView = ((IPerspectiveView<Node, EventHandler<Event>, Event, Object>) previousPerspective);
             final FXComponentLayout layout = new FXComponentLayout(this.getWorkbenchLayout());
-            FXUtil.invokeHandleMethodsByAnnotation(OnHide.class, previousPerspective.getPerspectiveHandle(), layout,
+            FXUtil.invokeHandleMethodsByAnnotation(OnHide.class, previousPerspective.getPerspective(), layout,
                     perspectiveView.getType().equals(UIType.DECLARATIVE) ? perspectiveView.getDocumentURL() : null, perspectiveView.getContext().getResourceBundle());
 
         }

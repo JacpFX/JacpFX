@@ -67,7 +67,7 @@ public class StatelessCallbackScheduler implements
             if (comp != null) {
                 if (componentInstances.size() < AStatelessCallbackComponent.MAX_INCTANCE_COUNT) {
                     // create new instance as buffer
-                    IComponentHandle<?, EventHandler<Event>, Event, Object> handle = baseComponent.getComponentHandle();
+                    IComponentHandle<?, EventHandler<Event>, Event, Object> handle = baseComponent.getComponent();
                     componentInstances.add(this.getCloneBean(baseComponent,
                             handle.getClass()));
                 } // End inner if
@@ -115,7 +115,7 @@ public class StatelessCallbackScheduler implements
     private void createInstanceAndRun(
             final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent,
             final IAction<Event, Object> message) {
-        IComponentHandle<?, EventHandler<Event>, Event, Object> handle = baseComponent.getComponentHandle();
+        IComponentHandle<?, EventHandler<Event>, Event, Object> handle = baseComponent.getComponent();
         final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> comp = this
                 .getCloneBean(baseComponent,
                         handle.getClass());

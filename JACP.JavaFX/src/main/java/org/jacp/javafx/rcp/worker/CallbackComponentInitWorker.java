@@ -65,7 +65,7 @@ public class CallbackComponentInitWorker
             final JACPContextImpl context = JACPContextImpl.class.cast(this.component.getContext());
             context.setReturnTarget(myAction.getSourceId());
             final String currentExecutionTarget = context.getExecutionTarget();
-            final Object value = this.component.getComponentHandle().handle(myAction);
+            final Object value = this.component.getComponent().handle(myAction);
             final String targetId = context
                     .getReturnTargetAndClear();
             WorkerUtil.delegateReturnValue(this.component, targetId, value,

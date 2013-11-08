@@ -12,12 +12,12 @@ import org.jacp.api.component.IComponentHandle;
 public class EmbeddedStatefulComponent extends ASubComponent{
 
     public EmbeddedStatefulComponent(IComponentHandle handle) {
-        this.setComponentHandle(handle);
+        this.setComponent(handle);
     }
 
     @Override
     public String toString() {
-        return this.getContext() != null ? this.getContext().getId() : this.getComponentHandle().toString();
+        return this.getContext() != null ? this.getContext().getId() : this.getComponent().toString();
     }
 
 }

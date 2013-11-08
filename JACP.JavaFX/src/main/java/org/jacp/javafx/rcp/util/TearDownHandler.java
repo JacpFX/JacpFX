@@ -33,7 +33,6 @@ import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.component.ASubComponent;
 import org.jacp.javafx.rcp.component.CallbackComponent;
 import org.jacp.javafx.rcp.registry.ComponentRegistry;
-import org.jacp.javafx.rcp.worker.AEmbeddedComponentWorker;
 import org.jacp.javafx.rcp.worker.AFXComponentWorker;
 import org.jacp.javafx.rcp.worker.TearDownWorker;
 
@@ -90,7 +89,7 @@ public class TearDownHandler {
                     else {
                         // run teardown in app thread
                         FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
-                                component.getComponentHandle());
+                                component.getComponent());
                     }
 
                 }
@@ -100,7 +99,7 @@ public class TearDownHandler {
             }
 
             FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
-                    perspective.getPerspectiveHandle());
+                    perspective.getPerspective());
 
 		}
 		executor.shutdown();
@@ -150,7 +149,7 @@ public class TearDownHandler {
     public static void shutDownFXComponent(final AFXComponent component, final Object ...params) {
         // run teardown
         FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
-                component.getComponentHandle(), params);
+                component.getComponent(), params);
         component.interruptWorker();
         component.initEnv(null, null);
         ComponentRegistry.removeComponent(component);

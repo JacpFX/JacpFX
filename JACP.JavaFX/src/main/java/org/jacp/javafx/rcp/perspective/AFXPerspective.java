@@ -80,7 +80,7 @@ public abstract class AFXPerspective extends AComponent implements
     private final Object lock = new Object();
     private Launcher<?> launcher;
 
-    Injectable perspectiveHandler;
+    Injectable perspective;
     /**
      * {@inheritDoc}
      */
@@ -121,7 +121,7 @@ public abstract class AFXPerspective extends AComponent implements
      * @return all declared subcomponents
      */
    private List<ISubComponent<EventHandler<Event>, Event, Object>> createAllDeclaredSubcomponents() {
-       final Injectable handler =  this.getPerspectiveHandle();
+       final Injectable handler =  this.getPerspective();
        if(handler==null) throw new IllegalArgumentException("No perspective annotatation found");
        final Perspective perspectiveAnnotation = handler.getClass()
                .getAnnotation(Perspective.class);
@@ -307,12 +307,12 @@ public abstract class AFXPerspective extends AComponent implements
 
 
     FXPerspective getFXPerspectiveHandler() {
-        return FXPerspective.class.cast(getPerspectiveHandle());
+        return FXPerspective.class.cast(getPerspective());
     }
 
     @Override
-    public Injectable getPerspectiveHandle(){
-        return this.perspectiveHandler;
+    public Injectable getPerspective(){
+        return this.perspective;
     }
 
     @Override

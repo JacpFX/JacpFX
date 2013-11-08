@@ -57,7 +57,7 @@ public interface IUIComponent<C, L, A, M> extends ISubComponent<L, A, M> {
      * @return IComponentHandle, the component handle.
      */
     public default <X extends IComponentView<C, L, A, M>> X  getComponentViewHandle(){
-        return (X) this.getComponentHandle();
+        return (X) this.getComponent();
     }
 
 }

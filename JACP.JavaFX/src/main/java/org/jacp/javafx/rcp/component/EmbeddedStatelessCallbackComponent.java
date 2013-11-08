@@ -13,12 +13,12 @@ public class EmbeddedStatelessCallbackComponent extends AStatelessCallbackCompon
 
     public EmbeddedStatelessCallbackComponent(IComponentHandle handle) {
         super();
-        this.setComponentHandle(handle);
+        this.setComponent(handle);
     }
 
     @Override
     public String toString() {
-        return this.getContext() != null ? this.getContext().getId() : this.getComponentHandle().toString();
+        return this.getContext() != null ? this.getContext().getId() : this.getComponent().toString();
     }
 
 }

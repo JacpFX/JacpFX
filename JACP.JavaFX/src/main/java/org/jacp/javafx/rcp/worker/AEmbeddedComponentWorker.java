@@ -22,39 +22,21 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.worker;
 
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
-import org.jacp.api.action.IAction;
-import org.jacp.api.action.IActionListener;
-import org.jacp.api.annotations.lifecycle.PostConstruct;
 import org.jacp.api.annotations.lifecycle.PreDestroy;
-import org.jacp.api.component.IComponentHandle;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.component.IUIComponent;
-import org.jacp.api.util.UIType;
-import org.jacp.javafx.rcp.action.FXAction;
-import org.jacp.javafx.rcp.component.AComponent;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
-import org.jacp.javafx.rcp.context.JACPContextImpl;
 import org.jacp.javafx.rcp.util.FXUtil;
-import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
-import org.jacp.javafx.rcp.util.ThrowableWrapper;
 import org.jacp.javafx.rcp.util.WorkerUtil;
 
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -128,7 +110,7 @@ public abstract class AEmbeddedComponentWorker extends Thread {
             final IUIComponent<Node, EventHandler<Event>, Event, Object> component,
             final FXComponentLayout layout) {
         if (component instanceof AFXComponent) {
-            FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class, component.getComponentHandle(),
+            FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class, component.getComponent(),
                     layout);
         }
         // handle target outside current perspective

@@ -22,39 +22,19 @@
  ************************************************************************/
 package org.jacp.javafx.rcp.worker;
 
-import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.CacheHint;
 import javafx.scene.Node;
-import org.jacp.api.action.IAction;
-import org.jacp.api.action.IActionListener;
 import org.jacp.api.annotations.lifecycle.PostConstruct;
-import org.jacp.api.annotations.lifecycle.PreDestroy;
 import org.jacp.api.component.IComponentHandle;
 import org.jacp.api.component.ISubComponent;
-import org.jacp.api.component.IUIComponent;
-import org.jacp.api.util.UIType;
-import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.component.AComponent;
-import org.jacp.javafx.rcp.component.AFXComponent;
-import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
 import org.jacp.javafx.rcp.util.FXUtil;
-import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
-import org.jacp.javafx.rcp.util.ThrowableWrapper;
 
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -91,7 +71,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
         if (!component.isStarted()) {
             initLocalization(component);
             handleContextInjection(component);
-            FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, component.getComponentHandle());
+            FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, component.getComponent());
         }
 
     }
@@ -112,7 +92,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
     }
 
     private void handleContextInjection(final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        final IComponentHandle<?, EventHandler<Event>, Event, Object> handler = component.getComponentHandle();
+        final IComponentHandle<?, EventHandler<Event>, Event, Object> handler = component.getComponent();
         FXUtil.performResourceInjection(handler, component.getContext());
     }
 

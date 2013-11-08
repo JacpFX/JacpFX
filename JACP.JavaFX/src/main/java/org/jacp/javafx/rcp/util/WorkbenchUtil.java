@@ -93,7 +93,7 @@ public class WorkbenchUtil {
      */
     public static void handleMetaAnnotation(
             final IPerspective<EventHandler<Event>, Event, Object> perspective, final String parentId) {
-        final Injectable handler = perspective.getPerspectiveHandle();
+        final Injectable handler = perspective.getPerspective();
         final Perspective perspectiveAnnotation = handler.getClass()
                 .getAnnotation(Perspective.class);
         if (perspectiveAnnotation == null) throw new IllegalArgumentException("no perspective annotation found");
