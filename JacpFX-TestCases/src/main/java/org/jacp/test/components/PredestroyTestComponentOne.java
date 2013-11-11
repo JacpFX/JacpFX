@@ -67,6 +67,7 @@ public class PredestroyTestComponentOne implements FXComponent {
 
     public static CountDownLatch latch = new CountDownLatch(1);
     public static CountDownLatch countdownlatch = new CountDownLatch(1);
+    public static CountDownLatch startLatch = new CountDownLatch(1);
     @Resource
     private JACPContext context;
 
@@ -87,7 +88,7 @@ public class PredestroyTestComponentOne implements FXComponent {
                            final IAction<Event, Object> action) {
         if (!action.isMessage(FXUtil.MessageUtil.INIT)) {
             countdownlatch.countDown();
-            System.out.println("message in c16: ");
+
         } else {
 
             button.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -122,6 +123,7 @@ public class PredestroyTestComponentOne implements FXComponent {
         label = new Label();
         current = "content0";
         System.out.println("on postconstruct c 016");
+        startLatch.countDown();
 
     }
 

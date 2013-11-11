@@ -73,6 +73,7 @@ public class PredestroyTestComponentFour implements CallbackComponent {
     public static CountDownLatch wait = new CountDownLatch(1);
     public static CountDownLatch latch = new CountDownLatch(AStatelessCallbackComponent.MAX_INCTANCE_COUNT);
     public static CountDownLatch countdownlatch = new CountDownLatch(1);
+    public static CountDownLatch startLatch = new CountDownLatch(1);
 
     @Override
     /**
@@ -84,7 +85,7 @@ public class PredestroyTestComponentFour implements CallbackComponent {
             ApplicationPredestroyPerspectiveTest.latch.countDown();
         } else {
             countdownlatch.countDown();
-            System.out.println("message in c19: ");
+
             return null;
         }
 
@@ -119,7 +120,7 @@ public class PredestroyTestComponentFour implements CallbackComponent {
     public void onStartComponent(final FXComponentLayout arg0,
                                  final ResourceBundle resourceBundle) {
 
-
+        startLatch.countDown();
     }
 
     @PreDestroy

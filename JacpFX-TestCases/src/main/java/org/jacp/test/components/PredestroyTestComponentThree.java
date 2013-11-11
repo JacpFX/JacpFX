@@ -71,6 +71,7 @@ public class PredestroyTestComponentThree implements CallbackComponent {
     public static CountDownLatch wait = new CountDownLatch(1);
     public static CountDownLatch latch = new CountDownLatch(1);
     public static CountDownLatch countdownlatch = new CountDownLatch(1);
+    public static CountDownLatch startLatch = new CountDownLatch(1);
     public static String MESSAGE = "message";
 
     @Override
@@ -82,7 +83,7 @@ public class PredestroyTestComponentThree implements CallbackComponent {
             ApplicationPredestroyPerspectiveTest.latch.countDown();
         } else {
             countdownlatch.countDown();
-            System.out.println("message in c18: ");
+
             return null;
 
         }
@@ -100,7 +101,7 @@ public class PredestroyTestComponentThree implements CallbackComponent {
     public void onStartComponent(final FXComponentLayout arg0,
                                  final ResourceBundle resourceBundle) {
 
-
+        startLatch.countDown();
     }
 
     @PreDestroy

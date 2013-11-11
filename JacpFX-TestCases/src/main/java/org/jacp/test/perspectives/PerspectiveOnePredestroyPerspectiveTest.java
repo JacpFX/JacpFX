@@ -70,7 +70,7 @@ public class PerspectiveOnePredestroyPerspectiveTest implements FXPerspective {
     private static JACPContext context;
 
     public static CountDownLatch latch = new CountDownLatch(1);
-
+    public static CountDownLatch startLatch = new CountDownLatch(1);
 
     @Override
     public void handlePerspective(final IAction<Event, Object> action,
@@ -178,6 +178,7 @@ public class PerspectiveOnePredestroyPerspectiveTest implements FXPerspective {
     public void onStartPerspective(final FXComponentLayout layout,
                                    final ResourceBundle resourceBundle) {
         System.out.println("on postconstruct p 17");
+        startLatch.countDown();
     }
 
     @PreDestroy
