@@ -13,7 +13,7 @@ import org.jacp.api.component.IComponentView;
  * Time: 11:07
  * Interface o implement a UI CallbackComponent in Jacp.
  */
-public interface FXComponent extends IComponentView<Node, EventHandler<Event>, Event, Object> {
+public interface FXComponent extends IComponentView<Node, Event, Object> {
 
 
 }

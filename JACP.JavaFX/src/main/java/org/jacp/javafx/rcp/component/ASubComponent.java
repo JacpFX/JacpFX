@@ -54,7 +54,7 @@ public abstract class ASubComponent extends AComponent implements
             100000);
 
 
-    private volatile IComponentHandle<?, EventHandler<Event>, Event, Object> component;
+    private volatile IComponentHandle<?, Event, Object> component;
 
 
     private volatile AEmbeddedComponentWorker worker;
@@ -150,7 +150,7 @@ public abstract class ASubComponent extends AComponent implements
      */
     @SuppressWarnings("unchecked")
     @Override
-    public final IComponentHandle<?, EventHandler<Event>, Event, Object> getComponent() {
+    public final IComponentHandle<?, Event, Object> getComponent() {
         return component;
     }
 
@@ -158,7 +158,7 @@ public abstract class ASubComponent extends AComponent implements
      * {@inheritDoc}
      */
     @Override
-    public <X extends IComponentHandle<?, EventHandler<Event>, Event, Object>> void setComponent(final X handle) {
+    public <X extends IComponentHandle<?, Event, Object>> void setComponent(final X handle) {
         this.component = handle;
     }
 

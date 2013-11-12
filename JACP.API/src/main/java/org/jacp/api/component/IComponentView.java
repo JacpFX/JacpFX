@@ -31,14 +31,12 @@ import org.jacp.api.action.IAction;
  * @author Andy Moncsek
  * @param <C>
  *            defines the base component where others extend from
- * @param <L>
- *            defines the action listener type
  * @param <A>
  *            defines the basic action type
  * @param <M>
  *            defines the basic message type
  */
-public interface IComponentView<C, L, A, M>  extends IComponentHandle<C, L, A, M> {
+public interface IComponentView<C, A, M>  extends IComponentHandle<C, A, M> {
 
 	/**
 	 * To avoid toolkit specific threading issues the postHandle method always

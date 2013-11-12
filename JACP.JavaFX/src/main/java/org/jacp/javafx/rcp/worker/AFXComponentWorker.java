@@ -92,7 +92,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
     }
 
     private void handleContextInjection(final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        final IComponentHandle<?, EventHandler<Event>, Event, Object> handler = component.getComponent();
+        final IComponentHandle<?, Event, Object> handler = component.getComponent();
         FXUtil.performResourceInjection(handler, component.getContext());
     }
 

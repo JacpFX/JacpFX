@@ -110,7 +110,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
      * @param component, the component where to inject the context
      */
     private void performContextInjection(AFXComponent component) {
-        IComponentHandle<?, EventHandler<Event>, Event, Object> handler = component.getComponent();
+        IComponentHandle<?, Event, Object> handler = component.getComponent();
         FXUtil.performResourceInjection(handler,component.getContext());
     }
 

@@ -102,14 +102,14 @@ public interface ISubComponent<L, A, M> extends IComponent<L, A, M> {
      * Returns the component handle class, this is the users implementation of the component.
      * @return IComponentHandle, the component handle.
      */
-    <X extends IComponentHandle<?, L, A, M>> X getComponent();
+    <X extends IComponentHandle<?,  A, M>> X getComponent();
 
     /**
      * Set the component handle class. This is the users implementation of the component.
      * @param handle
      * @param <X>
      */
-    <X extends IComponentHandle<?, L, A, M>>  void setComponent(final X handle);
+    <X extends IComponentHandle<?, A, M>>  void setComponent(final X handle);
 
 
 

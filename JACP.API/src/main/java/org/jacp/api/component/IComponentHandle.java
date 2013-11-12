@@ -9,7 +9,7 @@ import org.jacp.api.action.IAction;
  * Time: 16:13
  * This Interface declares a minimal component interface
  */
-public interface IComponentHandle<C, L, A, M> extends Injectable{
+public interface IComponentHandle<C, A, M> extends Injectable{
     /**
      * Handles component when called. The handle method in sub components is
      * always executed in a separate thread;

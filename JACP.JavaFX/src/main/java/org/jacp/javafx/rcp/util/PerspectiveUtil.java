@@ -137,7 +137,7 @@ public class PerspectiveUtil {
      * @param component ; the component containing metadata.
      */
     public static void  handleComponentMetaAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        final IComponentHandle<?,EventHandler<Event>,Event,Object> handler = component.getComponent();
+        final IComponentHandle<?,Event,Object> handler = component.getComponent();
         if(handler==null)return;
         final DeclarativeView declarativeComponent = handler.getClass()
                 .getAnnotation(DeclarativeView.class);
