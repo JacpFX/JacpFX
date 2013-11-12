@@ -33,6 +33,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.Resource;
+import org.jacp.api.annotations.lifecycle.OnHide;
 import org.jacp.api.annotations.lifecycle.OnShow;
 import org.jacp.api.annotations.lifecycle.PostConstruct;
 import org.jacp.api.annotations.lifecycle.PreDestroy;
@@ -72,11 +73,15 @@ public class PerspectiveTwoPredestroyPerspectiveTest implements FXPerspective {
 
     public static CountDownLatch latch = new CountDownLatch(1);
 
+    public static CountDownLatch showLatch = new CountDownLatch(1);
+
+    public static CountDownLatch hideLatch = new CountDownLatch(1);
+
     @Override
     public void handlePerspective(final IAction<Event, Object> action,
                                   final PerspectiveLayout perspectiveLayout) {
         System.out.println("Perspective 18: "+action.getMessage());
-        if (!action.isMessage("stop")) {
+        if (action.isMessage(MessageUtil.INIT)) {
 
             perspectiveLayout.registerRootComponent(createRoot());
             GridPane.setVgrow(perspectiveLayout.getRootComponent(),
@@ -93,8 +98,11 @@ public class PerspectiveTwoPredestroyPerspectiveTest implements FXPerspective {
                     this.content3);
             ApplicationPredestroyPerspectiveTest.latch.countDown();
         } else if (action.isMessage("stop")) {
-            System.err.println("STOP MESSAGE");
+            System.err.println("STOP MESSAGE p18");
             context.setActive(false);
+        }  else if (action.isMessage("SHOW")) {
+            System.err.println("SHOW MESSAGE P18");
+
         }
 
     }
@@ -129,6 +137,7 @@ public class PerspectiveTwoPredestroyPerspectiveTest implements FXPerspective {
     @OnShow
     public void onShow(final FXComponentLayout layout) {
         System.out.println("on onShow p 18");
+        showLatch.countDown();
     }
 
     @PostConstruct
@@ -151,6 +160,11 @@ public class PerspectiveTwoPredestroyPerspectiveTest implements FXPerspective {
         // remove toolbars and menu entries when close perspective
         System.out.println("on predestroy p 18");
         latch.countDown();
+    }
+
+    @OnHide
+    public void onHide(){
+        hideLatch.countDown();
     }
 
 }

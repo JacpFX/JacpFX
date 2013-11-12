@@ -3,9 +3,11 @@ package org.jacp.test.lifesycleannotations;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import junit.framework.Assert;
 import org.jacp.api.component.IPerspective;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.component.Injectable;
+import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
 import org.jacp.javafx.rcp.workbench.AFXWorkbench;
 import org.jacp.test.AllTests;
 import org.jacp.test.components.PredestroyTestComponentFour;
@@ -28,12 +30,12 @@ import static junit.framework.TestCase.assertTrue;
 
 /**
  * Created with IntelliJ IDEA.
- * User: ady
- * Date: 08.11.13
- * Time: 14:54
+ * User: amo
+ * Date: 16.10.13
+ * Time: 21:19
  * To change this template use File | Settings | File Templates.
  */
-public class RestartPerspectiveTest {
+public class PreDestroyPostCreateRestartPerspectiveTest {
     static Thread t;
 
     @AfterClass
@@ -64,8 +66,11 @@ public class RestartPerspectiveTest {
             e.printStackTrace();
         }
     }
-    @Test
-    public void test3DestroyAndRestart() throws InterruptedException {
+
+
+
+
+    private static void fireMessagesAndCheck() throws InterruptedException {
         PredestroyTestComponentOne.countdownlatch = new CountDownLatch(10000);
         PredestroyTestComponentTwo.countdownlatch = new CountDownLatch(10000);
         PredestroyTestComponentThree.countdownlatch = new CountDownLatch(10000);
@@ -99,6 +104,16 @@ public class RestartPerspectiveTest {
             }
         }
 
+    }
+
+    private static void stopComponentsAndCheck(boolean burst)throws InterruptedException {
+        ApplicationPredestroyPerspectiveTest launcher = ApplicationPredestroyPerspectiveTest.instance[0];
+
+        PerspectiveOnePredestroyPerspectiveTest.latch = new CountDownLatch(1);
+        PredestroyTestComponentOne.latch = new CountDownLatch(1);
+        PredestroyTestComponentTwo.latch = new CountDownLatch(1);
+        PredestroyTestComponentThree.latch = new CountDownLatch(1);
+        PredestroyTestComponentFour.latch = burst==true?new CountDownLatch(AStatelessCallbackComponent.MAX_INCTANCE_COUNT):new CountDownLatch(1);
 
         PerspectiveOnePredestroyPerspectiveTest.stop();
         PerspectiveOnePredestroyPerspectiveTest.latch.await();
@@ -106,6 +121,12 @@ public class RestartPerspectiveTest {
         PredestroyTestComponentTwo.latch.await();
         PredestroyTestComponentThree.latch.await();
         PredestroyTestComponentFour.latch.await();
+
+        AFXWorkbench workbench = launcher.getWorkbench();
+        assertNotNull(workbench);
+        List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        assertNotNull(perspectives);
+        assertFalse(perspectives.isEmpty());
         for(IPerspective<EventHandler<Event>, Event, Object> p:perspectives) {
             Injectable handler = p.getPerspective();
             if(handler.getClass().isAssignableFrom(PerspectiveOnePredestroyPerspectiveTest.class)) {
@@ -117,14 +138,33 @@ public class RestartPerspectiveTest {
                 assertTrue(p.getContext().isActive());
             }
         }
+    }
 
-        ApplicationPredestroyPerspectiveTest.latch = new CountDownLatch(5);
+    private static void restartComponentsAndCheck() throws InterruptedException {
+        ApplicationPredestroyPerspectiveTest launcher = ApplicationPredestroyPerspectiveTest.instance[0];
+        AFXWorkbench workbench = launcher.getWorkbench();
+        assertNotNull(workbench);
+        List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        assertNotNull(perspectives);
+        assertFalse(perspectives.isEmpty());
+
+        PerspectiveOnePredestroyPerspectiveTest.startLatch = new CountDownLatch(1);
+        PredestroyTestComponentFour.startLatch= new CountDownLatch(1);
+        PredestroyTestComponentThree .startLatch= new CountDownLatch(1);
+        PredestroyTestComponentTwo.startLatch= new CountDownLatch(1);
+        PredestroyTestComponentOne.startLatch= new CountDownLatch(1);
         WorkbenchPredestroyPerspectiveTest.startPerspective();
-        try {
-            ApplicationPredestroyPerspectiveTest.latch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        PerspectiveOnePredestroyPerspectiveTest.startLatch.await();
+        PredestroyTestComponentFour.startLatch.await();
+        PredestroyTestComponentThree .startLatch.await();
+        PredestroyTestComponentTwo.startLatch.await();
+        PredestroyTestComponentOne.startLatch.await();
+
+        assertNotNull(workbench);
+        perspectives = workbench.getPerspectives();
+        assertNotNull(perspectives);
+        assertFalse(perspectives.isEmpty());
+
         for(IPerspective<EventHandler<Event>, Event, Object> p:perspectives) {
             Injectable handler = p.getPerspective();
             if(handler.getClass().isAssignableFrom(PerspectiveOnePredestroyPerspectiveTest.class)) {
@@ -135,6 +175,49 @@ public class RestartPerspectiveTest {
                 assertTrue(p.getContext().isActive());
             }
         }
+    }
+
+    @Test
+    public void test1PreDestroyAnnotationAfterUse() throws InterruptedException {
+        fireMessagesAndCheck();
+        stopComponentsAndCheck(true);
+        restartComponentsAndCheck();
+        fireMessagesAndCheck();
+        stopComponentsAndCheck(true);
+        restartComponentsAndCheck();
+        fireMessagesAndCheck();
+        stopComponentsAndCheck(true);
+        restartComponentsAndCheck();
+        fireMessagesAndCheck();
+        stopComponentsAndCheck(true);
+        restartComponentsAndCheck();
+        fireMessagesAndCheck();
+        stopComponentsAndCheck(true);
+        restartComponentsAndCheck();
+        fireMessagesAndCheck();
+        stopComponentsAndCheck(true);
+        restartComponentsAndCheck();
+        fireMessagesAndCheck();
+        stopComponentsAndCheck(true);
+        restartComponentsAndCheck();
+        fireMessagesAndCheck();
+        stopComponentsAndCheck(true);
+        restartComponentsAndCheck();
+        fireMessagesAndCheck();
+        stopComponentsAndCheck(true);
+        restartComponentsAndCheck();
+        fireMessagesAndCheck();
+        stopComponentsAndCheck(true);
+        restartComponentsAndCheck();
+        fireMessagesAndCheck();
+        stopComponentsAndCheck(true);
+        restartComponentsAndCheck();
+        fireMessagesAndCheck();
+        stopComponentsAndCheck(true);
+        restartComponentsAndCheck();
+        fireMessagesAndCheck();
+        stopComponentsAndCheck(true);
+
     }
 
 }

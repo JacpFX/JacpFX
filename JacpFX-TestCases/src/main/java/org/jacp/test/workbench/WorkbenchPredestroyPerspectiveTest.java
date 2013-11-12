@@ -43,6 +43,7 @@ import org.jacp.javafx.rcp.context.JACPContext;
 import org.jacp.javafx.rcp.controls.optionPane.JACPDialogButton;
 import org.jacp.javafx.rcp.controls.optionPane.JACPDialogUtil;
 import org.jacp.javafx.rcp.controls.optionPane.JACPOptionPane;
+import org.jacp.javafx.rcp.util.FXUtil;
 import org.jacp.javafx.rcp.workbench.FXWorkbench;
 import org.jacp.test.main.ApplicationLauncher;
 
@@ -188,7 +189,14 @@ public class WorkbenchPredestroyPerspectiveTest implements FXWorkbench {
     }
 
     public static void startPerspective() {
-        context.getActionListener("id17","INIT").performAction(null);
+        context.getActionListener("id17", FXUtil.MessageUtil.INIT).performAction(null);
     }
 
+    public static void showPerspective1() {
+        context.getActionListener("id17","SHOW").performAction(null);
+    }
+
+    public static void showPerspective2() {
+        context.getActionListener("id18","SHOW").performAction(null);
+    }
 }

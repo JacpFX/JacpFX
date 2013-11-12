@@ -33,6 +33,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.Resource;
+import org.jacp.api.annotations.lifecycle.OnHide;
 import org.jacp.api.annotations.lifecycle.OnShow;
 import org.jacp.api.annotations.lifecycle.PostConstruct;
 import org.jacp.api.annotations.lifecycle.PreDestroy;
@@ -72,11 +73,15 @@ public class PerspectiveOnePredestroyPerspectiveTest implements FXPerspective {
     public static CountDownLatch latch = new CountDownLatch(1);
     public static CountDownLatch startLatch = new CountDownLatch(1);
 
+    public static CountDownLatch showLatch = new CountDownLatch(1);
+
+    public static CountDownLatch hideLatch = new CountDownLatch(1);
+
     @Override
     public void handlePerspective(final IAction<Event, Object> action,
                                   final PerspectiveLayout perspectiveLayout) {
         System.out.println("Perspective 17: "+action.getMessage());
-        if (!action.isMessage("stop")) {
+        if (action.isMessage(MessageUtil.INIT)) {
 
             perspectiveLayout.registerRootComponent(createRoot());
             GridPane.setVgrow(perspectiveLayout.getRootComponent(),
@@ -96,6 +101,10 @@ public class PerspectiveOnePredestroyPerspectiveTest implements FXPerspective {
         else if (action.isMessage("stop")) {
             System.err.println("STOP MESSAGE P17");
             context.setActive(false);
+        }
+        else if (action.isMessage("SHOW")) {
+            System.err.println("SHOW MESSAGE P17");
+
         }
 
     }
@@ -167,7 +176,14 @@ public class PerspectiveOnePredestroyPerspectiveTest implements FXPerspective {
     @OnShow
     public void onShow(final FXComponentLayout layout) {
         System.out.println("on show p 17");
+        showLatch.countDown();
     }
+
+    @OnHide
+    public void onHide(){
+              hideLatch.countDown();
+    }
+
 
     @PostConstruct
     /**
