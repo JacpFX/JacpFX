@@ -196,14 +196,8 @@ public class WorkerUtil {
     public static void changeComponentTarget(
             final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
             final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        final String targetId = JACPContextImpl.class.cast(component.getContext()).getExecutionTarget();
-        final String parentIdOld = component.getParentId();
-        final String parentId = FXUtil.getTargetParentId(targetId);
-        if (!parentIdOld.equals(parentId)) {
-            // delegate to perspective observer
-            delegateQueue.add(component);
-
-        }
+        // delegate to perspective observer
+        delegateQueue.add(component);
     }
 
     /**

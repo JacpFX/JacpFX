@@ -251,6 +251,12 @@ public abstract class AFXWorkbench
         PerspectiveRegistry.removePerspective(perspective);
     }
 
+    @Override
+    public final void removeAllCompnents() {
+        this.getPerspectives().forEach(this::unregisterComponent);
+        this.getPerspectives().clear();
+    }
+
 
     /**
      * {@inheritDoc}

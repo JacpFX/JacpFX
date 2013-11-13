@@ -130,7 +130,7 @@ public class FXPerspectiveHandler implements
         componentsToShutdown.stream()
                 .filter(c->c.getContext().isActive())
                 .forEach(this::shutDownComponent);
-        componentsToShutdown.clear();
+        perspective.removeAllCompnents();
     }
 
     private void shutDownComponent(final ISubComponent<EventHandler<Event>, Event, Object> component) {

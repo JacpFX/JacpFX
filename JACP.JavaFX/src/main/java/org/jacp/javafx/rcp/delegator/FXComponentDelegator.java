@@ -86,15 +86,6 @@ public class FXComponentDelegator extends Thread implements
 						this.perspectives);
 		// find correct target in perspective
 		if (responsiblePerspective != null) {
-			final String parentId = component.getParentId();
-			// unregister component from previous parent
-			if (!parentId.equals(responsiblePerspective.getContext().getId())) {
-				final IPerspective<EventHandler<Event>, Event, Object> currentParent = FXUtil
-						.getObserveableById(
-								FXUtil.getTargetPerspectiveId(parentId),
-								this.perspectives);
-				currentParent.unregisterComponent(component);
-			}
 			this.handleTargetHit(responsiblePerspective, component);
 
 		} // End if
@@ -112,18 +103,23 @@ public class FXComponentDelegator extends Thread implements
 	private void handleTargetHit(
 			final IPerspective<EventHandler<Event>, Event, Object> responsiblePerspective,
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
-		if (!responsiblePerspective.getContext().isActive()) {
-			// 1. init perspective (do not register component before perspective
-			// is active, otherwise component will be handled once again)
-			this.handleInActivePerspective(responsiblePerspective,
-					new FXAction(responsiblePerspective.getContext().getId(),
-							responsiblePerspective.getContext().getId(), FXUtil.MessageUtil.INIT, null));
-		} // End if
+        activateInactiveComponent(responsiblePerspective);
 		responsiblePerspective.registerComponent(component);
 		responsiblePerspective.getComponentHandler().initComponent(
 				new FXAction(component.getContext().getId(), component.getContext().getId(), FXUtil.MessageUtil.INIT, null),
 				component);
 	}
+
+    private void activateInactiveComponent(
+            final IPerspective<EventHandler<Event>, Event, Object> responsiblePerspective) {
+        if (!responsiblePerspective.getContext().isActive()) {
+            // 1. init perspective (do not register component before perspective
+            // is active, otherwise component will be handled once again)
+            this.handleInActivePerspective(responsiblePerspective,
+                    new FXAction(responsiblePerspective.getContext().getId(),
+                            responsiblePerspective.getContext().getId(), FXUtil.MessageUtil.INIT, null));
+        } // End if
+    }
 
 	private <P extends IComponent<EventHandler<Event>, Event, Object>> void handleInActivePerspective(
 			final P component, final IAction<Event, Object> action) {

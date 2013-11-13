@@ -174,6 +174,13 @@ public abstract class AFXPerspective extends AComponent implements
     }
 
     @Override
+    public final void removeAllCompnents() {
+        synchronized (lock) {
+            this.getSubcomponents().clear();
+        }
+    }
+
+    @Override
     public final void initComponents(final IAction<Event, Object> action) {
         final String targetId = FXUtil.getTargetComponentId(action
                 .getTargetId());

@@ -103,16 +103,10 @@ public abstract class AEmbeddedComponentWorker extends Thread {
      *
      * @param delegateQueue, the component delegate queue
      * @param component,     a component
-     * @param layout,        the component layout handler
      */
     void handlePerspectiveChange(
             final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
-            final IUIComponent<Node, EventHandler<Event>, Event, Object> component,
-            final FXComponentLayout layout) {
-        if (component instanceof AFXComponent) {
-            FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class, component.getComponent(),
-                    layout);
-        }
+            final IUIComponent<Node, EventHandler<Event>, Event, Object> component) {
         // handle target outside current perspective
         WorkerUtil.changeComponentTarget(delegateQueue, component);
     }
