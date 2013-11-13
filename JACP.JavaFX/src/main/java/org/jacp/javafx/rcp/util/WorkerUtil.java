@@ -14,7 +14,6 @@ import org.jacp.api.util.UIType;
 import org.jacp.javafx.rcp.action.FXAction;
 import org.jacp.javafx.rcp.component.AComponent;
 import org.jacp.javafx.rcp.component.AFXComponent;
-import org.jacp.javafx.rcp.context.JACPContextImpl;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
@@ -197,7 +196,12 @@ public class WorkerUtil {
             final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
             final ISubComponent<EventHandler<Event>, Event, Object> component) {
         // delegate to perspective observer
-        delegateQueue.add(component);
+        try {
+            delegateQueue.put(component);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            //TODO handle exception global
+        }
     }
 
     /**

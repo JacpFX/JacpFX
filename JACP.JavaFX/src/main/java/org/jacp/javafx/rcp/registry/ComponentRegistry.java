@@ -40,7 +40,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  *
  */
 public class ComponentRegistry {
-    private static volatile List<ISubComponent<EventHandler<Event>, Event, Object>> components = new ArrayList<>();
+    private static final List<ISubComponent<EventHandler<Event>, Event, Object>> components = new ArrayList<>();
     private static final ReadWriteLock lock = new ReentrantReadWriteLock();
     /**
      * Registers a component.

@@ -128,7 +128,7 @@ public class StateLessComponentRunWorker
 			}
 		}
 		// ad first (missing) component to list which is passed to handle
-		// teardown
+		// tear down
 		instancesCopy.add(component);
 
 		Platform.runLater(() -> TearDownHandler.handleAsyncTearDown(instancesCopy));

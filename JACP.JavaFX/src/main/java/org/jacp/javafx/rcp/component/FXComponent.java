@@ -1,7 +1,6 @@
 package org.jacp.javafx.rcp.component;
 
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 import org.jacp.api.component.IComponentView;
 

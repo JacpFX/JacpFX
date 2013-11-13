@@ -156,9 +156,14 @@ public class FXComponentDelegator extends Thread implements
 	@Override
 	public void delegateComponent(
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        this.componentDelegateQueue.add(component);
+        try {
+            this.componentDelegateQueue.put(component);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            //TODO handle exception global
+        }
 
-	}
+    }
 
 	@Override
 	public void addPerspective(

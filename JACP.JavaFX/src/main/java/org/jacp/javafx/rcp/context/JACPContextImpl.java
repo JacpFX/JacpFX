@@ -242,9 +242,8 @@ public class JACPContextImpl implements JACPContext {
         if (resourceBundle != null ? !resourceBundle.equals(that.resourceBundle) : that.resourceBundle != null)
             return false;
         if (returnTarget != null ? !returnTarget.equals(that.returnTarget) : that.returnTarget != null) return false;
-        if (targetLayout != null ? !targetLayout.equals(that.targetLayout) : that.targetLayout != null) return false;
+        return !(targetLayout != null ? !targetLayout.equals(that.targetLayout) : that.targetLayout != null);
 
-        return true;
     }
 
     @Override

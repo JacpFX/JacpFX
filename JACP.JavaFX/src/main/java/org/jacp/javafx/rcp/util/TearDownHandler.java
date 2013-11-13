@@ -182,9 +182,7 @@ public class TearDownHandler {
         } else {
             try {
                 executor.submit(new TearDownWorker(component)).get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
+            } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
             component.interruptWorker();

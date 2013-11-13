@@ -89,6 +89,7 @@ public abstract class ASubComponent extends AComponent implements
             this.incomingMessage.put(action);
         } catch (final InterruptedException e) {
             logger.info("massage put failed:");
+            //TODO handle exception global
         }
 
     }

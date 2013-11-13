@@ -205,6 +205,12 @@ public class FXUtil {
         return !resultList.isEmpty() ?resultList.toArray(new Object[resultList.size()]):new Object[types.length];
     }
 
+    /**
+     * Returns an object instance by class
+     * @param key
+     * @param values
+     * @return The instance
+     */
     private static Object findByClass(Class<?> key, Object[] values) {
         if (key == null)
             return null;
@@ -220,6 +226,11 @@ public class FXUtil {
         return null;
     }
 
+    /**
+     * Returns the correct locale by String
+     * @param localeID
+     * @return  The locale object
+     */
     public static Locale getCorrectLocale(final String localeID) {
         final Locale locale = Locale.getDefault();
         if (localeID != null && localeID.length() > 1) {
@@ -267,7 +278,7 @@ public class FXUtil {
         fxmlLoader.setLocation(url);
         fxmlLoader.setController(bean);
         try {
-            return (Node) fxmlLoader.load();
+            return fxmlLoader.load();
         } catch (IOException e) {
             throw new MissingResourceException(
                     "fxml file not found --  place in resource folder and reference like this: viewLocation = \"/myUIFile.fxml\"",
