@@ -74,6 +74,7 @@ public class FXComponentAsyncCallbackMessagingTest {
     @Test
     // default Execution time was 10959 ms..  linux ...
     //  5211 ms osx
+    // 3723ms macbook
     public void testComponentMessaging() throws InterruptedException {
         warmUp();
         withoutUI();
@@ -82,6 +83,7 @@ public class FXComponentAsyncCallbackMessagingTest {
     @Test
     // 3300ms linux
     // 2047 ms osx
+    // 1550 macbook
     public void testBurstMessaging() throws InterruptedException {
         long start = System.currentTimeMillis();
         AsyncCallbackComponentMessagingTest1Component1.wait = new CountDownLatch(1);

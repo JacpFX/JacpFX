@@ -74,6 +74,7 @@ public class CallbackComponentToFXComponentMessagingTest {
 
     @Test
     // osx: 7995 with ui ... 4184 without ui
+    // macbook 4174ms with ui ... 2654ms without ui
     public void testComponentMessaging() throws InterruptedException {
         warmUp();
         withUI();
