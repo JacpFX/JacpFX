@@ -62,6 +62,15 @@ public class PerspectiveUtil {
     }
 
     /**
+     * Returns a single SunComponent by id
+     * @param componentId
+     * @return
+     */
+    public ISubComponent<EventHandler<Event>, Event, Object> createSubcomponentById(final String componentId) {
+        return mapToSubcomponent(mapToInjectAbleComponent(FXUtil.getTargetComponentId(componentId)));
+    }
+
+    /**
      * Returns a list of all declared Injectables.
      * @param perspectiveAnnotation
      * @return

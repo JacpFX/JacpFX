@@ -32,15 +32,18 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import org.jacp.api.action.IAction;
+import org.jacp.api.annotations.Resource;
 import org.jacp.api.annotations.lifecycle.OnShow;
 import org.jacp.api.annotations.lifecycle.PostConstruct;
 import org.jacp.api.annotations.lifecycle.PreDestroy;
 import org.jacp.api.annotations.perspective.Perspective;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.componentLayout.PerspectiveLayout;
+import org.jacp.javafx.rcp.context.JACPContext;
 import org.jacp.javafx.rcp.perspective.FXPerspective;
 import org.jacp.javafx.rcp.util.FXUtil.MessageUtil;
 import org.jacp.test.main.ApplicationLauncher;
+import org.jacp.test.main.ApplicationShutdownAndRestartComponentsTest;
 
 import java.util.ResourceBundle;
 
@@ -50,19 +53,22 @@ import java.util.ResourceBundle;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@Perspective(id = "id01", name = "contactPerspective",
+@Perspective(id = "id19", name = "contactPerspective",
         components = {
-                "id002"},
+                "id0020"},
         viewLocation = "/fxml/perspectiveOne.fxml",
         resourceBundleLocation = "bundles.languageBundle",
         localeID = "en_US")
-public class PerspectiveOne implements FXPerspective {
+public class PerspectiveShutdownAndRestartComponents implements FXPerspective {
     @FXML
     private HBox content1;
     @FXML
     private HBox content2;
     @FXML
     private HBox content3;
+
+    @Resource
+    private static JACPContext context;
 
     @Override
     public void handlePerspective(final IAction<Event, Object> action,
@@ -82,7 +88,7 @@ public class PerspectiveOne implements FXPerspective {
                     this.content2);
             perspectiveLayout.registerTargetLayoutComponent("content2",
                     this.content3);
-            ApplicationLauncher.latch.countDown();
+            ApplicationShutdownAndRestartComponentsTest.latch.countDown();
         }
 
     }
@@ -108,6 +114,14 @@ public class PerspectiveOne implements FXPerspective {
         pane.setCenter(splitPane);
 
         return pane;
+    }
+
+    public static void stopFXComponent() {
+        context.getActionListener("id19.id0020","stop").performAction(null);
+    }
+
+    public static void startComponent() {
+        context.getActionListener("id19.id0020","start").performAction(null);
     }
 
     @OnShow

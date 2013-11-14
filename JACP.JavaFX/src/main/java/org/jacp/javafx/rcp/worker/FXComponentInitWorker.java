@@ -101,15 +101,20 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
             performContextInjection(component);
             runComponentOnStartupSequence(component, layout,
                     component.getContext().getResourceBundle());
+            setComponentToActive(component);
 
         });
 	}
+
+    private void setComponentToActive(final AFXComponent component) {
+        component.getContext().setActive(true);
+    }
 
     /**
      * Inject Context object.
      * @param component, the component where to inject the context
      */
-    private void performContextInjection(AFXComponent component) {
+    private void performContextInjection(final AFXComponent component) {
         IComponentHandle<?, Event, Object> handler = component.getComponent();
         FXUtil.performResourceInjection(handler,component.getContext());
     }
@@ -166,8 +171,8 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	 * @param component, the component
      * @param param, all parameters
 	 */
-	private void runComponentOnStartupSequence(AFXComponent component,
-			Object... param) {
+	private void runComponentOnStartupSequence(final AFXComponent component,
+			final Object... param) {
 		FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, component.getComponent(), param);
 	}
 

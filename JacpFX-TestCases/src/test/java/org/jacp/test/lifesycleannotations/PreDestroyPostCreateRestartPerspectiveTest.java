@@ -30,7 +30,7 @@ import static junit.framework.TestCase.assertTrue;
 
 /**
  * Created with IntelliJ IDEA.
- * User: amo
+ * User: Andy Moncsek
  * Date: 16.10.13
  * Time: 21:19
  * To change this template use File | Settings | File Templates.
