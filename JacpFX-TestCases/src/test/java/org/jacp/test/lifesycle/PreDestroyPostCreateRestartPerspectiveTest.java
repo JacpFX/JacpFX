@@ -1,9 +1,8 @@
-package org.jacp.test.lifesycleannotations;
+package org.jacp.test.lifesycle;
 
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import junit.framework.Assert;
 import org.jacp.api.component.IPerspective;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.component.Injectable;

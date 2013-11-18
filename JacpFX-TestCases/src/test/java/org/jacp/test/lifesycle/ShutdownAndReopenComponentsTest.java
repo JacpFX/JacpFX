@@ -1,18 +1,16 @@
-package org.jacp.test.lifesycleannotations;
+package org.jacp.test.lifesycle;
 
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import junit.framework.Assert;
 import org.jacp.api.component.IPerspective;
 import org.jacp.api.component.ISubComponent;
-import org.jacp.api.component.Injectable;
 import org.jacp.javafx.rcp.workbench.AFXWorkbench;
 import org.jacp.test.AllTests;
 import org.jacp.test.components.ComponentShutdownAndRestartComponentsTests1;
-import org.jacp.test.main.ApplicationPredestroyPerspectiveTest;
+import org.jacp.test.components.ComponentShutdownAndRestartComponentsTests2;
+import org.jacp.test.components.ComponentShutdownAndRestartComponentsTests3;
 import org.jacp.test.main.ApplicationShutdownAndRestartComponentsTest;
-import org.jacp.test.perspectives.PerspectiveOnePredestroyPerspectiveTest;
 import org.jacp.test.perspectives.PerspectiveShutdownAndRestartComponents;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -121,9 +119,13 @@ public class ShutdownAndReopenComponentsTest {
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
         ComponentShutdownAndRestartComponentsTests1.stopLatch = new CountDownLatch(1);
+        ComponentShutdownAndRestartComponentsTests2.stopLatch = new CountDownLatch(1);
+        ComponentShutdownAndRestartComponentsTests3.stopLatch = new CountDownLatch(1);
 
         PerspectiveShutdownAndRestartComponents.stopFXComponent();
         ComponentShutdownAndRestartComponentsTests1.stopLatch.await();
+        ComponentShutdownAndRestartComponentsTests2.stopLatch.await();
+        ComponentShutdownAndRestartComponentsTests3.stopLatch.await();
         perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
@@ -140,7 +142,7 @@ public class ShutdownAndReopenComponentsTest {
     }
 
 
-    @Test
+   // @Test
     /**
      * restartComponentTest
      */
@@ -179,9 +181,13 @@ public class ShutdownAndReopenComponentsTest {
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
         ComponentShutdownAndRestartComponentsTests1.startLatch = new CountDownLatch(1);
+        ComponentShutdownAndRestartComponentsTests2.startLatch = new CountDownLatch(1);
+        ComponentShutdownAndRestartComponentsTests3.startLatch = new CountDownLatch(1);
 
         PerspectiveShutdownAndRestartComponents.startComponent();
         ComponentShutdownAndRestartComponentsTests1.startLatch.await();
+        ComponentShutdownAndRestartComponentsTests2.startLatch.await();
+        ComponentShutdownAndRestartComponentsTests3.startLatch.await();
         Thread.sleep(100);
         for(IPerspective<EventHandler<Event>, Event, Object> p:perspectives) {
 

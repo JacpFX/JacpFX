@@ -1,4 +1,4 @@
-package org.jacp.test.lifesycleannotations;
+package org.jacp.test.lifesycle;
 
 import javafx.application.Platform;
 import org.jacp.test.AllTests;
@@ -11,7 +11,6 @@ import org.junit.Test;
 import org.jacp.test.workbench.WorkbenchPredestroyPerspectiveTest;
 
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertTrue;
 

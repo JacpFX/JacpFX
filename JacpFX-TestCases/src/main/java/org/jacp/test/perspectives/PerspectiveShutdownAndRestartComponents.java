@@ -55,7 +55,7 @@ import java.util.ResourceBundle;
 
 @Perspective(id = "id19", name = "contactPerspective",
         components = {
-                "id0020"},
+                "id0020","id0021","id0022"},
         viewLocation = "/fxml/perspectiveOne.fxml",
         resourceBundleLocation = "bundles.languageBundle",
         localeID = "en_US")
@@ -118,10 +118,12 @@ public class PerspectiveShutdownAndRestartComponents implements FXPerspective {
 
     public static void stopFXComponent() {
         context.getActionListener("id19.id0020","stop").performAction(null);
+        context.getActionListener("id19.id0021","stop").performAction(null);
     }
 
     public static void startComponent() {
         context.getActionListener("id19.id0020","start").performAction(null);
+        context.getActionListener("id19.id0021","start").performAction(null);
     }
 
     @OnShow

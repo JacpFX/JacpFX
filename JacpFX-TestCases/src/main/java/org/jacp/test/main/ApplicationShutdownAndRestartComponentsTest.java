@@ -47,7 +47,7 @@ public class ApplicationShutdownAndRestartComponentsTest extends AFXSpringLaunch
     private static final String[] STYLE_FILES = {"/styles/style_light.css", "/styles/style_dark.css"};
     /// binary style sheets created while deployment
     private static final String[] BINARY_FILES = {"/styles/style_light.bss", "/styles/style_dark.bss"};
-    public static CountDownLatch latch = new CountDownLatch(2);
+    public static CountDownLatch latch = new CountDownLatch(5);
     public static volatile ApplicationShutdownAndRestartComponentsTest[] instance = new ApplicationShutdownAndRestartComponentsTest[1];
 
     public ApplicationShutdownAndRestartComponentsTest() {
