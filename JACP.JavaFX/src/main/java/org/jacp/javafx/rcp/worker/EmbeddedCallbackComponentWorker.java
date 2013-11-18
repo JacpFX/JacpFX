@@ -25,9 +25,13 @@ package org.jacp.javafx.rcp.worker;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import org.jacp.api.action.IAction;
+import org.jacp.api.component.IPerspective;
 import org.jacp.api.component.ISubComponent;
+import org.jacp.javafx.rcp.component.ASubComponent;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
+import org.jacp.javafx.rcp.registry.PerspectiveRegistry;
 import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
+import org.jacp.javafx.rcp.util.TearDownHandler;
 import org.jacp.javafx.rcp.util.WorkerUtil;
 
 import java.util.concurrent.BlockingQueue;
@@ -72,10 +76,11 @@ class EmbeddedCallbackComponentWorker
                         myAction);
                 this.checkAndHandleTargetChange(this.component,
                         currentExecutionTarget);
+                if(!component.getContext().isActive())  break;
                 this.component.release();
 
             }
-            WorkerUtil.runCallbackOnTeardownMethods(this.component);
+            handleComponentShutdown(this.component);
         } catch (InterruptedException e) {
             //e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (final IllegalStateException e) {
@@ -90,6 +95,14 @@ class EmbeddedCallbackComponentWorker
             if (this.component.isBlocked()) this.component.release();
         }
 
+    }
+
+    private void handleComponentShutdown(final ISubComponent<EventHandler<Event>, Event, Object> component) {
+        final String parentId = component.getParentId();
+        final IPerspective<EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
+        if(parentPerspctive!=null)parentPerspctive.unregisterComponent(component);
+        TearDownHandler.executePredestroy(component);
+        TearDownHandler.shutDownAsyncComponent(ASubComponent.class.cast(component));
     }
 
 

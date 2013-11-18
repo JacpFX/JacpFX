@@ -84,6 +84,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	 */
 	private void runPreInitMethods() throws InterruptedException, ExecutionException {
         WorkerUtil.invokeOnFXThreadAndWait(() -> {
+            setComponentToActive(component);
             final FXComponentLayout layout = JACPContextImpl.class.cast(component.getContext()).getComponentLayout();
             if (component.getType().equals(UIType.DECLARATIVE)) {
                 final URL url = getClass().getResource(
@@ -101,7 +102,6 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
             performContextInjection(component);
             runComponentOnStartupSequence(component, layout,
                     component.getContext().getResourceBundle());
-            setComponentToActive(component);
 
         });
 	}
@@ -238,8 +238,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 				// queue
 				e.printStackTrace();
 			} finally {
-				FXUtil.setPrivateMemberValue(AComponent.class, this.component,
-						FXUtil.ACOMPONENT_STARTED, true);
+                runPostExecution(this.component);
 			}
 
 
