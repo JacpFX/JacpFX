@@ -83,7 +83,10 @@ public class ComponentShutdownAndRestartComponentsTests3 implements CallbackComp
         //System.err.println("Message id11 : "+action+"  :: "+this);
         if (action.isMessage(FXUtil.MessageUtil.INIT)) {
             ApplicationShutdownAndRestartComponentsTest.latch.countDown();
-        } else {
+        } else if (action.isMessage("stop")) {
+            context.setActive(false);
+            return null;
+        }else {
             countdownlatch.countDown();
 
             return null;
@@ -119,7 +122,7 @@ public class ComponentShutdownAndRestartComponentsTests3 implements CallbackComp
      */
     public void onStartComponent(final FXComponentLayout arg0,
                                  final ResourceBundle resourceBundle) {
-        this.log.info("run on start of id0022 ");
+        this.log.info("run on start of id0022 "+this);
         startLatch.countDown();
     }
 
@@ -129,7 +132,7 @@ public class ComponentShutdownAndRestartComponentsTests3 implements CallbackComp
      * @param arg0
      */
     public void onTearDownComponent(final FXComponentLayout arg0) {
-        this.log.info("run on tear down of id0022 ");
+        this.log.info("run on tear down of id0022 "+this);
         latch.countDown();
         stopLatch.countDown();
     }

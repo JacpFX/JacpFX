@@ -135,14 +135,14 @@ public class ShutdownAndReopenComponentsTest {
             assertTrue(p.getContext().isActive());
             List<ISubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
 
-            Thread.sleep(100);
+            //Thread.sleep(1000);
             assertTrue(components.isEmpty());
 
         }
     }
 
 
-   // @Test
+    @Test
     /**
      * restartComponentTest
      */
@@ -163,7 +163,7 @@ public class ShutdownAndReopenComponentsTest {
             assertTrue(components.isEmpty());
 
         }
-        int i=100;
+        int i=10000;
         while(i>1){
             testStartComponent();
             testStopComponent();
@@ -188,7 +188,7 @@ public class ShutdownAndReopenComponentsTest {
         ComponentShutdownAndRestartComponentsTests1.startLatch.await();
         ComponentShutdownAndRestartComponentsTests2.startLatch.await();
         ComponentShutdownAndRestartComponentsTests3.startLatch.await();
-        Thread.sleep(100);
+        //Thread.sleep(100);
         for(IPerspective<EventHandler<Event>, Event, Object> p:perspectives) {
 
             assertTrue(p.getContext().isActive());

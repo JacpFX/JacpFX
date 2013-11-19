@@ -119,11 +119,13 @@ public class PerspectiveShutdownAndRestartComponents implements FXPerspective {
     public static void stopFXComponent() {
         context.getActionListener("id19.id0020","stop").performAction(null);
         context.getActionListener("id19.id0021","stop").performAction(null);
+        context.getActionListener("id19.id0022","stop").performAction(null);
     }
 
     public static void startComponent() {
         context.getActionListener("id19.id0020","start").performAction(null);
         context.getActionListener("id19.id0021","start").performAction(null);
+        context.getActionListener("id19.id0022","start").performAction(null);
     }
 
     @OnShow

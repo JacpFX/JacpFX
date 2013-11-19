@@ -119,6 +119,7 @@ public class PredestroyTestComponentFour implements CallbackComponent {
      */
     public void onStartComponent(final FXComponentLayout arg0,
                                  final ResourceBundle resourceBundle) {
+        System.out.println("on start c 019 max: "+AStatelessCallbackComponent.MAX_INCTANCE_COUNT);
 
         startLatch.countDown();
     }
