@@ -125,8 +125,9 @@ public class FXComponentHandler
 		if (AStatelessCallbackComponent.class.isAssignableFrom(component.getClass())) {
 			this.log("SATELESS BACKGROUND COMPONENT EXECUTE INIT:::"
                     + component.getContext().getName());
-			this.runStatelessCallbackComponent(
-					((AStatelessCallbackComponent) component), action);
+            final AStatelessCallbackComponent asyncComponent = AStatelessCallbackComponent.class.cast(component);
+            setAsyncComponentToActive(asyncComponent);
+			this.runStatelessCallbackComponent(asyncComponent, action);
             return;
         }// else if END
         if (ASubComponent.class.isAssignableFrom(component.getClass())) {
@@ -137,6 +138,10 @@ public class FXComponentHandler
         }// else if END
 
 	}
+
+    private void setAsyncComponentToActive(AStatelessCallbackComponent component) {
+              component.getContext().setActive(true);
+    }
 
 
 	

@@ -173,7 +173,8 @@ public class TearDownHandler {
             final IStatelessCallabackComponent<EventHandler<Event>, Event, Object>tmp = (IStatelessCallabackComponent<EventHandler<Event>, Event, Object>) component;
             final List<ISubComponent<EventHandler<Event>, Event, Object>> instances = tmp.getInstances();
             for(final ISubComponent<EventHandler<Event>, Event, Object> instance : instances) {
-                if(instance.getContext().isActive())set.add(executor.submit(new TearDownWorker(instance)));
+                if(instance.isStarted())
+                    set.add(executor.submit(new TearDownWorker(instance)));
             }
             awaitTermination(set);
             tmp.getExecutorService().shutdownNow();
@@ -181,7 +182,7 @@ public class TearDownHandler {
             ComponentRegistry.removeComponent(component);
         } else {
             try {
-                if(component.getContext().isActive())executor.submit(new TearDownWorker(component)).get();
+                executor.submit(new TearDownWorker(component)).get();
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }

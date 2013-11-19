@@ -101,7 +101,6 @@ class EmbeddedCallbackComponentWorker
         final String parentId = component.getParentId();
         final IPerspective<EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
         if(parentPerspctive!=null)parentPerspctive.unregisterComponent(component);
-        TearDownHandler.executePredestroy(component);
         TearDownHandler.shutDownAsyncComponent(ASubComponent.class.cast(component));
     }
 

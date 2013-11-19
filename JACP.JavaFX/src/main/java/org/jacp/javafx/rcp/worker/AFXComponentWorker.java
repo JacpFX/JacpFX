@@ -68,10 +68,13 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
      */
     void runCallbackOnStartMethods(
             final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        component.getContext().setActive(true);
-        initLocalization(component);
-        handleContextInjection(component);
-        FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, component.getComponent());
+        if (!component.isStarted()) {
+            component.getContext().setActive(true);
+            initLocalization(component);
+            handleContextInjection(component);
+            FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, component.getComponent());
+        }
+
     }
 
     /**

@@ -26,9 +26,12 @@ import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import org.jacp.api.action.IAction;
+import org.jacp.api.component.IPerspective;
 import org.jacp.api.component.IStatelessCallabackComponent;
 import org.jacp.api.component.ISubComponent;
+import org.jacp.javafx.rcp.component.ASubComponent;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
+import org.jacp.javafx.rcp.registry.PerspectiveRegistry;
 import org.jacp.javafx.rcp.util.TearDownHandler;
 import org.jacp.javafx.rcp.util.WorkerUtil;
 
@@ -59,8 +62,8 @@ public class StateLessComponentRunWorker
 	@Override
 	protected ISubComponent<EventHandler<Event>, Event, Object> call()
 			throws Exception {
-			this.component.lock();
 			try {
+                this.component.lock();
                 runCallbackOnStartMethods(this.component);
 				while (this.component.hasIncomingMessage()) {
 					final IAction<Event, Object> myAction = this.component
@@ -87,9 +90,14 @@ public class StateLessComponentRunWorker
 		try {
 			final ISubComponent<EventHandler<Event>, Event, Object> component = this.get();
 			// check if component was deactivated and is still in instance list
-			if (!component.getContext().isActive()
-					&& parent.getInstances().contains(component)) {
-				forceShutdown(component, parent);
+			if (!component.getContext().isActive()) {
+                try{
+                    this.component.lock();
+                    if(parent.getInstances().contains(component))forceShutdown(component, parent);
+                } finally {
+                    this.component.release();
+                }
+
 			}
 		} catch (final InterruptedException | ExecutionException e) {
 			e.printStackTrace();
@@ -108,29 +116,9 @@ public class StateLessComponentRunWorker
 	private void forceShutdown(
 			final ISubComponent<EventHandler<Event>, Event, Object> component,
 			final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> parent) {
-		// remove first component from instance list
-		if (parent.getInstances().contains(component))
-			parent.getInstances().remove(component);
-		// create a copy off all remaining instances
-		final List<ISubComponent<EventHandler<Event>, Event, Object>> instances = new CopyOnWriteArrayList<>(
-				parent.getInstances());
-		// create a backup (for iteration and later to handle teardown)
-		final List<ISubComponent<EventHandler<Event>, Event, Object>> instancesCopy = new CopyOnWriteArrayList<>(
-				instances);
-		// clear all created instances
-		parent.getInstances().clear();
-		// check if execution is done and remove from list (TODO: any better
-		// idea?)
-		while (!instances.isEmpty()) {
-			for (final ISubComponent<EventHandler<Event>, Event, Object> c : instancesCopy) {
-				if (!c.isBlocked() && instances.contains(c))
-					instances.remove(c);
-			}
-		}
-		// ad first (missing) component to list which is passed to handle
-		// tear down
-		instancesCopy.add(component);
-
-		Platform.runLater(() -> TearDownHandler.handleAsyncTearDown(instancesCopy));
+        final String parentId = parent.getParentId();
+        final IPerspective<EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
+        if(parentPerspctive!=null)parentPerspctive.unregisterComponent(parent);
+        TearDownHandler.shutDownAsyncComponent(ASubComponent.class.cast(parent));
 	}
 }

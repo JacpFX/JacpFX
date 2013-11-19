@@ -56,7 +56,7 @@ public class StatelessCallbackScheduler implements
     public final void incomingMessage(
             final IAction<Event, Object> message,
             final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent) {
-        // avoid locking of whole code block
+        // TODO avoid locking of whole code block
         lock.writeLock().lock();
         try {
             // get active instance
