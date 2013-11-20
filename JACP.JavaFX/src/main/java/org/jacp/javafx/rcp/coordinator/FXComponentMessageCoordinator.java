@@ -135,8 +135,6 @@ public class FXComponentMessageCoordinator extends AFXCoordinator implements
     private void findParentPerspectiveAndRegisterComponent(final String targetId,final ISubComponent<EventHandler<Event>, Event, Object> component) {
         final IPerspective<EventHandler<Event>, Event, Object> currentPerspective = PerspectiveRegistry.findPerspectiveById(parentId);
         currentPerspective.registerComponent(component);
-        // set to inactive as activation will be performed later
-        component.getContext().setActive(false);
     }
 
     /**
@@ -160,7 +158,7 @@ public class FXComponentMessageCoordinator extends AFXCoordinator implements
      */
     private void handleComponentHit(final IAction<Event, Object> action,
                                     final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        if (component.getContext().isActive()) {
+        if (component.getContext().isActive() && component.isStarted()) {
             this.log(" //1.1.1.1// component HIT handle ACTIVE: "
                     + action.getTargetId());
             this.handleActive(component, action);

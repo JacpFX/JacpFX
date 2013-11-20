@@ -76,7 +76,6 @@ public class StateLessComponentRunWorker
 					WorkerUtil.delegateReturnValue(this.component, targetId, value,
                             myAction);
 				}
-				runPostExecution(this.component);
 			} finally {
 				this.component.release();
 			}

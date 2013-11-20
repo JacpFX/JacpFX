@@ -69,6 +69,7 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
     void runCallbackOnStartMethods(
             final ISubComponent<EventHandler<Event>, Event, Object> component) {
         if (!component.isStarted()) {
+            component.setStarted(true);
             component.getContext().setActive(true);
             initLocalization(component);
             handleContextInjection(component);
@@ -97,16 +98,6 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
         FXUtil.performResourceInjection(handler, component.getContext());
     }
 
-    /**
-     * Check if component was not started yet an activate it.
-     *
-     * @param component, the component
-     */
-    void runPostExecution(
-            final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        if (!component.isStarted())
-            component.setStarted(true);
-    }
 
     void log(final String message) {
         if (Logger.getLogger(AFXComponentWorker.class.getName()).isLoggable(

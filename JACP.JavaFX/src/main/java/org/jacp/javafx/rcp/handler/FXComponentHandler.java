@@ -126,7 +126,6 @@ public class FXComponentHandler
 			this.log("SATELESS BACKGROUND COMPONENT EXECUTE INIT:::"
                     + component.getContext().getName());
             final AStatelessCallbackComponent asyncComponent = AStatelessCallbackComponent.class.cast(component);
-            setAsyncComponentToActive(asyncComponent);
 			this.runStatelessCallbackComponent(asyncComponent, action);
             return;
         }// else if END
@@ -139,12 +138,7 @@ public class FXComponentHandler
 
 	}
 
-    private void setAsyncComponentToActive(AStatelessCallbackComponent component) {
-              component.getContext().setActive(true);
-    }
 
-
-	
 	/**
 	 * set component blocked and add message to queue
 	 * 

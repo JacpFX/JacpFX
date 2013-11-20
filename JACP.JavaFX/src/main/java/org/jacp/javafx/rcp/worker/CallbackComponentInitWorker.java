@@ -106,8 +106,6 @@ public class CallbackComponentInitWorker
         } catch (final InterruptedException | ExecutionException e) {
             // FIXME: Handle Exceptions the right way
             e.printStackTrace();
-        }  finally {
-            runPostExecution(this.component);
         }
     }
 
