@@ -29,6 +29,7 @@ import org.jacp.api.component.IComponent;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
 
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * The most abstract component, used to define components as well as
@@ -40,7 +41,7 @@ import java.util.concurrent.BlockingQueue;
 public abstract class AComponent implements
         IComponent<EventHandler<Event>, Event, Object> {
 
-    private volatile boolean started = false;
+    private volatile AtomicBoolean started =  new AtomicBoolean(false);
     private String localeID = "";
     private String resourceBundleLocation = "";
     protected JACPContextImpl context;
@@ -52,12 +53,12 @@ public abstract class AComponent implements
      */
     @Override
     public final boolean isStarted() {
-        return this.started;
+        return this.started.get();
     }
 
     @Override
     public void setStarted(boolean started) {
-        this.started = started;
+        this.started.set(started);
     }
 
     /**
@@ -108,7 +109,7 @@ public abstract class AComponent implements
 
         AComponent that = (AComponent) o;
 
-        if (started != that.started) return false;
+        if (started.get() != that.started.get()) return false;
         if (context != null ? !context.equals(that.context) : that.context != null) return false;
         if (globalMessageQueue != null ? !globalMessageQueue.equals(that.globalMessageQueue) : that.globalMessageQueue != null)
             return false;
@@ -119,7 +120,7 @@ public abstract class AComponent implements
 
     @Override
     public int hashCode() {
-        int result = (started ? 1 : 0);
+        int result = (started.get() ? 1 : 0);
         result = 31 * result + (localeID != null ? localeID.hashCode() : 0);
         result = 31 * result + (resourceBundleLocation != null ? resourceBundleLocation.hashCode() : 0);
         result = 31 * result + (context != null ? context.hashCode() : 0);
