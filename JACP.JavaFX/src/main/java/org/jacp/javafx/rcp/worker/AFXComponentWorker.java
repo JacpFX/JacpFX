@@ -29,7 +29,9 @@ import javafx.scene.Node;
 import org.jacp.api.annotations.lifecycle.PostConstruct;
 import org.jacp.api.component.IComponentHandle;
 import org.jacp.api.component.ISubComponent;
+import org.jacp.api.exceptions.InvalidComponentMatch;
 import org.jacp.javafx.rcp.component.AComponent;
+import org.jacp.javafx.rcp.component.ASubComponent;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
 import org.jacp.javafx.rcp.util.FXUtil;
 
@@ -79,13 +81,24 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
     }
 
     /**
+     * Checks if component is in correct state.
+     * @param component
+     */
+    void checkValidComponent(final ASubComponent component) {
+        final IComponentHandle<?, Event, Object> handle = component.getComponent();
+        if (handle == null) throw new InvalidComponentMatch("Component is not initialized correctly");
+        if (component == null || component.getContext() == null || component.getContext().getId() == null)
+            throw new InvalidComponentMatch("Component is in invalid state while initialisation:" + handle.getClass());
+    }
+
+    /**
      * Set Resource Bundle
      *
      * @param component, the component
      */
     private void initLocalization(final ISubComponent<EventHandler<Event>, Event, Object> component) {
         final String bundleLocation = component.getResourceBundleLocation();
-        if (bundleLocation.equals(""))
+        if (bundleLocation.isEmpty())
             return;
         final String localeID = component.getLocaleID();
         JACPContextImpl.class.cast(component.getContext()).setResourceBundle(ResourceBundle.getBundle(bundleLocation,

@@ -25,9 +25,12 @@ package org.jacp.javafx.rcp.worker;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import org.jacp.api.action.IAction;
+import org.jacp.api.component.IPerspective;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.javafx.rcp.component.ASubComponent;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
+import org.jacp.javafx.rcp.registry.PerspectiveRegistry;
+import org.jacp.javafx.rcp.util.TearDownHandler;
 import org.jacp.javafx.rcp.util.WorkerUtil;
 
 import java.util.concurrent.BlockingQueue;
@@ -53,13 +56,13 @@ public class CallbackComponentInitWorker
         this.action = action;
     }
 
-    // TODO check behavior when component set to active==alse and other messages are in pipe
     @Override
     protected ASubComponent call()
             throws Exception {
 
         try {
             this.component.lock();
+            checkValidComponent(this.component);
             runCallbackOnStartMethods(this.component);
             final IAction<Event, Object> myAction = this.action;
             final JACPContextImpl context = JACPContextImpl.class.cast(this.component.getContext());
@@ -73,11 +76,21 @@ public class CallbackComponentInitWorker
             this.checkAndHandleTargetChange(this.component,
                     currentExecutionTarget);
             this.component.initWorker(new EmbeddedCallbackComponentWorker( this.delegateQueue,this.component));
-            WorkerUtil.runCallbackOnTeardownMethods(this.component);
+            handleComponentShutdown(this.component);
         } finally {
             this.component.release();
         }
         return this.component;
+    }
+
+    private void handleComponentShutdown(final ISubComponent<EventHandler<Event>, Event, Object> component) {
+        if (!component.getContext().isActive()) {
+            component.setStarted(false);
+            final String parentId = component.getParentId();
+            final IPerspective<EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
+            if(parentPerspctive!=null)parentPerspctive.unregisterComponent(component);
+            TearDownHandler.shutDownAsyncComponent(ASubComponent.class.cast(component));
+        }
     }
 
 
@@ -101,11 +114,16 @@ public class CallbackComponentInitWorker
 
     @Override
     protected final void done() {
+        final Thread t = Thread.currentThread();
         try {
             this.get();
-        } catch (final InterruptedException | ExecutionException e) {
-            // FIXME: Handle Exceptions the right way
-            e.printStackTrace();
+        } catch (final Exception e) {
+            this.log("Exception in CallbackComponent INIT Worker, Thread interrupted: "
+                    + e.getMessage());
+            // TODO add to error queue and restart thread if
+            // messages in
+            // queue
+            t.getUncaughtExceptionHandler().uncaughtException(t, e);
         }
     }
 

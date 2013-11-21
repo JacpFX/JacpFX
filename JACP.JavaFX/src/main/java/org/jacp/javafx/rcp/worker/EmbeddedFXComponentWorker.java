@@ -71,9 +71,9 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
     @Override
     public void run() {
         try {
-
+            this.component.lock();
             while (!Thread.interrupted()) {
-                this.component.lock();
+
                 final IAction<Event, Object> myAction = this.component
                         .getNextIncomingMessage();
                 this.log(" //1.1.1.1.1// handle replace component BEGIN: "
@@ -92,8 +92,8 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
                 this.publish(this.component, myAction, this.targetComponents,
                         handleReturnValue, previousContainer,
                         currentTargetLayout, currentExecutionTarget);
-                this.component.release();
             }
+            this.component.release();
         } catch (final IllegalStateException e) {
             if (e.getMessage().contains("Not on FX application thread")) {
                 throw new UnsupportedOperationException(

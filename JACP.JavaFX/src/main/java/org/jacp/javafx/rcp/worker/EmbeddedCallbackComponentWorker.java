@@ -60,8 +60,9 @@ class EmbeddedCallbackComponentWorker
     @Override
     public void run() {
         try {
+            this.component.lock();
             while (!Thread.interrupted()) {
-                this.component.lock();
+
                 final IAction<Event, Object> myAction = this.component
                         .getNextIncomingMessage();
                 final JACPContextImpl context = JACPContextImpl.class.cast(this.component.getContext());
@@ -77,10 +78,9 @@ class EmbeddedCallbackComponentWorker
                 this.checkAndHandleTargetChange(this.component,
                         currentExecutionTarget);
                 if(!component.getContext().isActive())  break;
-                this.component.release();
-
             }
             handleComponentShutdown(this.component);
+            this.component.release();
         } catch (InterruptedException e) {
             //e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (final IllegalStateException e) {

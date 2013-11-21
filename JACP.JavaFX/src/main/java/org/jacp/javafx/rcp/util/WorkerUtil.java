@@ -77,22 +77,7 @@ public class WorkerUtil {
         }
     }
 
-    /**
-     * checks if component was deactivated, if so run OnTeardown annotations.
-     *
-     * @param component, the component
-     */
-    public static void runCallbackOnTeardownMethods(
-            final ISubComponent<EventHandler<Event>, Event, Object> component) {
 
-        // turn off component
-        if (!component.getContext().isActive()) {
-            FXUtil.setPrivateMemberValue(AComponent.class, component,
-                    FXUtil.ACOMPONENT_STARTED, false);
-            // run teardown
-            FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class, component.getComponent());
-        }
-    }
 
     /**
      * find valid target and add type specific new component. Handles Container,

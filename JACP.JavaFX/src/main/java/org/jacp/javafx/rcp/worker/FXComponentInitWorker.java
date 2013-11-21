@@ -31,9 +31,6 @@ import org.jacp.api.component.IComponentHandle;
 import org.jacp.api.component.IPerspective;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.exceptions.AnnotationMissconfigurationException;
-import org.jacp.api.exceptions.InvalidComponentMatch;
-import org.jacp.api.util.UIType;
-import org.jacp.javafx.rcp.component.AComponent;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
@@ -56,59 +53,60 @@ import java.util.concurrent.ExecutionException;
  */
 public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 
-	private final Map<String, Node> targetComponents;
-	private final AFXComponent component;
-	private final IAction<Event, Object> action;
+    private final Map<String, Node> targetComponents;
+    private final AFXComponent component;
+    private final IAction<Event, Object> action;
     private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
 
-	/**
-	 * The workers constructor.
-	 *
-	 * @param targetComponents
-	 *            ; a map with all targets provided by perspective
-	 * @param component
-	 *            ; the UI component to init
-	 * @param action
-	 *            ; the init action
-	 */
-	public FXComponentInitWorker(final Map<String, Node> targetComponents,
-			final AFXComponent component, final IAction<Event, Object> action,final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue) {
-		this.targetComponents = targetComponents;
-		this.component = component;
-		this.action = action;
+    /**
+     * The workers constructor.
+     *
+     * @param targetComponents ; a map with all targets provided by perspective
+     * @param component        ; the UI component to init
+     * @param action           ; the init action
+     */
+    public FXComponentInitWorker(final Map<String, Node> targetComponents,
+                                 final AFXComponent component, final IAction<Event, Object> action, final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue) {
+        this.targetComponents = targetComponents;
+        this.component = component;
+        this.action = action;
         this.componentDelegateQueue = componentDelegateQueue;
-	}
+    }
 
-	/**
-	 * Run all methods that need to be invoked before worker thread start to
-	 * run. Programmatic components runs PostConstruct; declarative components init
-	 * the FXML and set the value to root node.
-	 *
-	 * @throws InterruptedException
-	 */
-	private void runPreInitMethods() throws InterruptedException, ExecutionException {
+    /**
+     * Run all methods that need to be invoked before worker thread start to
+     * run. Programmatic components runs PostConstruct; declarative components init
+     * the FXML and set the value to root node.
+     *
+     * @throws InterruptedException
+     */
+    private void runPreInitMethods() throws InterruptedException, ExecutionException {
         WorkerUtil.invokeOnFXThreadAndWait(() -> {
             setComponentToActiveAndStarted(component);
             final FXComponentLayout layout = JACPContextImpl.class.cast(component.getContext()).getComponentLayout();
-            if (component.getType().equals(UIType.DECLARATIVE)) {
-                final URL url = getClass().getResource(
-                        component.getViewLocation());
-                initLocalization(url, component);
-                component.setRoot(FXUtil.loadFXMLandSetController(component.getComponent(), component.getContext().getResourceBundle(), url));
-                performContextInjection(component);
-                runComponentOnStartupSequence(component, layout,
-                        component.getDocumentURL(),
-                        component.getContext().getResourceBundle());
-                return;
-
+            switch (component.getType()) {
+                case DECLARATIVE:
+                    runPreInitOnDeclarativeComponent(component, layout);
+                    break;
+                default:
+                    initLocalization(null, component);
+                    performContextInjection(component);
+                    runComponentOnStartupSequence(component, layout,
+                            component.getContext().getResourceBundle());
             }
-            initLocalization(null, component);
-            performContextInjection(component);
-            runComponentOnStartupSequence(component, layout,
-                    component.getContext().getResourceBundle());
-
         });
-	}
+    }
+
+    private void runPreInitOnDeclarativeComponent(final AFXComponent component, final FXComponentLayout layout) {
+        final URL url = getClass().getResource(
+                component.getViewLocation());
+        initLocalization(url, component);
+        component.setRoot(FXUtil.loadFXMLandSetController(component.getComponent(), component.getContext().getResourceBundle(), url));
+        performContextInjection(component);
+        runComponentOnStartupSequence(component, layout,
+                component.getDocumentURL(),
+                component.getContext().getResourceBundle());
+    }
 
     private void setComponentToActiveAndStarted(final AFXComponent component) {
         component.getContext().setActive(true);
@@ -117,89 +115,73 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 
     /**
      * Inject Context object.
+     *
      * @param component, the component where to inject the context
      */
     private void performContextInjection(final AFXComponent component) {
         IComponentHandle<?, Event, Object> handler = component.getComponent();
-        FXUtil.performResourceInjection(handler,component.getContext());
+        FXUtil.performResourceInjection(handler, component.getContext());
     }
 
-    private void checkValidComponent(final AFXComponent component){
-       final  IComponentHandle<?,Event,Object> handle = component.getComponent();
-        if(handle==null) throw new InvalidComponentMatch("Component is not initialized correctly");
-       if(component==null || component.getContext()==null || component.getContext().getId()==null) throw new InvalidComponentMatch("Component is in invalid state :"+handle.getClass());
+    @Override
+    protected AFXComponent call() throws Exception {
+        this.component.lock();
+        checkValidComponent(this.component);
+        runPreInitMethods();
+        final String name = this.component.getContext().getName();
+        this.log("3.4.4.2.1: subcomponent handle init START: "
+                + name);
+        final Node handleReturnValue = WorkerUtil.prepareAndRunHandleMethod(
+                this.component, this.action);
+        this.log("3.4.4.2.2: subcomponent handle init get valid container: "
+                + name);
+        this.log("3.4.4.2.3: subcomponent handle init add component by type: "
+                + name);
+        this.executePostHandleAndAddComponent(handleReturnValue,
+                this.component, this.action, this.targetComponents);
+        this.log("3.4.4.2.4: subcomponent handle init END: "
+                + name);
+        // check if component was shutdown
+        if (!component.isStarted()) return this.component;
+        this.component.initWorker(new EmbeddedFXComponentWorker(this.targetComponents, this.componentDelegateQueue, this.component));
+        return this.component;
     }
-
-
-
-	@Override
-	protected AFXComponent call() throws Exception {
-			this.component.lock();
-            checkValidComponent(this.component);
-			runPreInitMethods();
-			try {
-                final String name = this.component.getContext().getName();
-				this.log("3.4.4.2.1: subcomponent handle init START: "
-						+ name);
-				final Node handleReturnValue = WorkerUtil.prepareAndRunHandleMethod(
-						this.component, this.action);
-				this.log("3.4.4.2.2: subcomponent handle init get valid container: "
-						+ name);
-				this.log("3.4.4.2.3: subcomponent handle init add component by type: "
-						+ name);
-				this.executePostHandleAndAddComponent(handleReturnValue,
-                        this.component, this.action, this.targetComponents);
-				this.log("3.4.4.2.4: subcomponent handle init END: "
-						+ name);
-                // check if component was shutdown
-                if(!component.isStarted()) return this.component;
-                this.component.initWorker(new EmbeddedFXComponentWorker(this.targetComponents,this.componentDelegateQueue,this.component));
-			} finally {
-
-				this.component.release();
-			}
-
-			return this.component;
-	}
 
     /**
      * Set Resource Bundle
-     * @param url, the FXML url
+     *
+     * @param url,       the FXML url
      * @param component, the component
      */
-	private void initLocalization(final URL url, final AFXComponent component) {
-		final String bundleLocation = component.getResourceBundleLocation();
-		if (bundleLocation.equals(""))
-			return;
-		final String localeID = component.getLocaleID();
-		component.initialize(url, ResourceBundle.getBundle(bundleLocation,
-				FXUtil.getCorrectLocale(localeID)));
+    private void initLocalization(final URL url, final AFXComponent component) {
+        final String bundleLocation = component.getResourceBundleLocation();
+        if (bundleLocation.equals(""))
+            return;
+        final String localeID = component.getLocaleID();
+        component.initialize(url, ResourceBundle.getBundle(bundleLocation,
+                FXUtil.getCorrectLocale(localeID)));
 
-	}
+    }
 
-	/**
-	 * Run at startup method in perspective.
-	 *
-	 * @param component, the component
-     * @param param, all parameters
-	 */
-	private void runComponentOnStartupSequence(final AFXComponent component,
-			final Object... param) {
-		FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, component.getComponent(), param);
-	}
+    /**
+     * Run at startup method in perspective.
+     *
+     * @param component, the component
+     * @param param,     all parameters
+     */
+    private void runComponentOnStartupSequence(final AFXComponent component,
+                                               final Object... param) {
+        FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, component.getComponent(), param);
+    }
 
-
-
-	/**
-	 * Handles "component add" in EDT must be called outside EDT.
-	 *
-	 * @param targetComponents
-	 *            , possible targets in perspective
-	 * @param myComponent
-	 *            , the ui component
-	 * @throws InterruptedException
-	 * @throws InvocationTargetException
-	 */
+    /**
+     * Handles "component add" in EDT must be called outside EDT.
+     *
+     * @param targetComponents , possible targets in perspective
+     * @param myComponent      , the ui component
+     * @throws InterruptedException
+     * @throws InvocationTargetException
+     */
     private void executePostHandleAndAddComponent(
             final Node handleReturnValue, final AFXComponent myComponent,
             final IAction<Event, Object> myAction, final Map<String, Node> targetComponents) throws Exception {
@@ -232,26 +214,28 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
         // unregister component
         final String parentId = component.getParentId();
         final IPerspective<EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
-        if(parentPerspctive!=null)parentPerspctive.unregisterComponent(component);
+        if (parentPerspctive != null) parentPerspctive.unregisterComponent(component);
         TearDownHandler.shutDownFXComponent(component);
         component.setStarted(false);
     }
 
-	@Override
-	public final void done() {
+    @Override
+    public final void done() {
         final Thread t = Thread.currentThread();
-			try {
-				this.get();
-			} catch (final Exception e) {
-				this.log("Exception in CallbackComponent INIT Worker, Thread interrupted: "
-						+ e.getMessage());
-				// TODO add to error queue and restart thread if
-				// messages in
-				// queue
-                t.getUncaughtExceptionHandler().uncaughtException(t, e);
-			}
+        try {
+            this.get();
+        } catch (final Exception e) {
+            this.log("Exception in CallbackComponent INIT Worker, Thread interrupted: "
+                    + e.getMessage());
+            // TODO add to error queue and restart thread if
+            // messages in
+            // queue
+            t.getUncaughtExceptionHandler().uncaughtException(t, e);
+        } finally {
+            this.component.release();
+        }
 
 
-	}
+    }
 
 }

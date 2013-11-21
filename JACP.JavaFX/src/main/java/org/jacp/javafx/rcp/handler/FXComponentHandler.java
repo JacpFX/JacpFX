@@ -59,18 +59,21 @@ public class FXComponentHandler
 	private final StatelessCallbackScheduler scheduler;
 	private final IPerspectiveLayout<Node, Node> perspectiveLayout;
 	private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
-	private final ExecutorService executor = Executors
-			.newCachedThreadPool(new HandlerThreadFactory("FXPerspectiveHandler:"));
+	private final ExecutorService fxInitExecutor = Executors
+			.newSingleThreadExecutor(new HandlerThreadFactory("fxInitExecutor:"));
+    private final ExecutorService callbackInitExecutor = Executors
+            .newSingleThreadExecutor(new HandlerThreadFactory("callbackInitExecutor:"));
 
 
-	public FXComponentHandler(
+    public FXComponentHandler(
             final Launcher<?> launcher,
             final IPerspectiveLayout<Node, Node> perspectiveLayout,
             final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue) {
 		this.perspectiveLayout = perspectiveLayout;
 		this.componentDelegateQueue = componentDelegateQueue;
 		this.scheduler = new StatelessCallbackScheduler(launcher);
-		ShutdownThreadsHandler.registerexecutor(executor);
+		ShutdownThreadsHandler.registerexecutor(fxInitExecutor);
+		ShutdownThreadsHandler.registerexecutor(callbackInitExecutor);
 	}
 
 	@Override
@@ -115,11 +118,11 @@ public class FXComponentHandler
 	 */
 	private void handleInit(final IAction<Event, Object> action,
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
-		if (AFXComponent.class.isAssignableFrom(component.getClass())) {
+        if (AFXComponent.class.isAssignableFrom(component.getClass())) {
 			this.log("COMPONENT EXECUTE INIT:::" + component.getContext().getName());
-			this.executor.execute(new FXComponentInitWorker(
+			this.fxInitExecutor.execute(new FXComponentInitWorker(
                     this.perspectiveLayout.getTargetLayoutComponents(),
-                    ((AFXComponent) component), action,this.componentDelegateQueue));
+                    ((AFXComponent) component), action, this.componentDelegateQueue));
 			return;
 		}// if END
 		if (AStatelessCallbackComponent.class.isAssignableFrom(component.getClass())) {
@@ -132,8 +135,8 @@ public class FXComponentHandler
         if (ASubComponent.class.isAssignableFrom(component.getClass())) {
             this.log("BACKGROUND COMPONENT EXECUTE INIT:::"
                     + component.getContext().getName());
-            this.executor.execute(new CallbackComponentInitWorker(
-                    this.componentDelegateQueue,((ASubComponent) component),action));
+            this.callbackInitExecutor.execute(new CallbackComponentInitWorker(
+                    this.componentDelegateQueue, ((ASubComponent) component), action));
         }// else if END
 
 	}
