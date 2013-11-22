@@ -131,7 +131,7 @@ public class PreDestroyPostCreateRestartPerspectiveTest {
             Injectable handler = p.getPerspective();
             if(handler.getClass().isAssignableFrom(PerspectiveOnePredestroyPerspectiveTest.class)) {
                 assertFalse(p.getContext().isActive());
-                Thread.sleep(1000);
+                Thread.sleep(100);
                 List<ISubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
                 assertTrue(components.isEmpty());
             }else {

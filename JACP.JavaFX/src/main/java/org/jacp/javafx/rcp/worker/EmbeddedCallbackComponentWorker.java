@@ -59,12 +59,14 @@ class EmbeddedCallbackComponentWorker
     // TODO check behavior when component set to active==false and other messages are in pipe
     @Override
     public void run() {
+        final Thread t = Thread.currentThread();
         try {
-            this.component.lock();
-            while (!Thread.interrupted()) {
 
+            while (!Thread.interrupted()) {
                 final IAction<Event, Object> myAction = this.component
                         .getNextIncomingMessage();
+                this.component.lock();
+                checkValidComponent(this.component);
                 final JACPContextImpl context = JACPContextImpl.class.cast(this.component.getContext());
 
                 String id = myAction.getSourceId();
@@ -77,20 +79,20 @@ class EmbeddedCallbackComponentWorker
                         myAction);
                 this.checkAndHandleTargetChange(this.component,
                         currentExecutionTarget);
-                if(!component.getContext().isActive())  break;
+                this.component.release();
+                if (!component.getContext().isActive()) break;
             }
             handleComponentShutdown(this.component);
-            this.component.release();
         } catch (InterruptedException e) {
             //e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (final IllegalStateException e) {
             if (e.getMessage().contains("Not on FX application thread")) {
-                throw new UnsupportedOperationException(
+                t.getUncaughtExceptionHandler().uncaughtException(t, new UnsupportedOperationException(
                         "Do not reuse Node components in handleAction method, use postHandleAction instead to verify that you change nodes in JavaFX main Thread:",
-                        e);
+                        e));
             }
         } catch (Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            t.getUncaughtExceptionHandler().uncaughtException(t, e);
         } finally {
             if (this.component.isBlocked()) this.component.release();
         }
@@ -98,12 +100,16 @@ class EmbeddedCallbackComponentWorker
     }
 
     private void handleComponentShutdown(final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        final String parentId = component.getParentId();
-        final IPerspective<EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
-        if(parentPerspctive!=null)parentPerspctive.unregisterComponent(component);
-        TearDownHandler.shutDownAsyncComponent(ASubComponent.class.cast(component));
+        component.lock();
+        try {
+            final String parentId = component.getParentId();
+            final IPerspective<EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
+            if (parentPerspctive != null) parentPerspctive.unregisterComponent(component);
+            TearDownHandler.shutDownAsyncComponent(ASubComponent.class.cast(component));
+        } finally {
+            component.release();
+        }
     }
-
 
     /**
      * check if target has changed

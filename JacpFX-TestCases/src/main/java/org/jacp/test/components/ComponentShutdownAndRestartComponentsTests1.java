@@ -115,7 +115,7 @@ public class ComponentShutdownAndRestartComponentsTests1 implements FXComponent 
      */
     public void onStartComponent(final FXComponentLayout arg0,
                                  final ResourceBundle resourceBundle) {
-        this.log.info("run on start of id0020 ");
+        this.log.info("run on start of id0020 "+this);
         startLatch.countDown();
 
     }
@@ -126,7 +126,7 @@ public class ComponentShutdownAndRestartComponentsTests1 implements FXComponent 
      * @param arg0
      */
     public void onTearDownComponent(final FXComponentLayout arg0) {
-        this.log.info("run on tear down of id0020 ");
+        this.log.info("run on tear down of id0020 "+this);
         stopLatch.countDown();
     }
 

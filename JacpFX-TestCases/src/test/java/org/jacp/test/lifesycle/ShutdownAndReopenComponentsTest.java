@@ -19,9 +19,7 @@ import org.junit.Test;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertTrue;
+import static junit.framework.TestCase.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -76,14 +74,15 @@ public class ShutdownAndReopenComponentsTest {
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
 
-        for(IPerspective<EventHandler<Event>, Event, Object> p:perspectives) {
+        for (IPerspective<EventHandler<Event>, Event, Object> p : perspectives) {
 
             assertTrue(p.getContext().isActive());
             List<ISubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
             assertFalse(components.isEmpty());
-            components.forEach(c-> assertTrue(c.getContext().isActive()));
+            components.forEach(c -> assertTrue(c.getContext().isActive()));
         }
     }
+
     @Test
     /**
      * Test shutDownComponent
@@ -96,20 +95,19 @@ public class ShutdownAndReopenComponentsTest {
         List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
-        for(IPerspective<EventHandler<Event>, Event, Object> p:perspectives) {
+        for (IPerspective<EventHandler<Event>, Event, Object> p : perspectives) {
 
             assertTrue(p.getContext().isActive());
             List<ISubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
             assertFalse(components.isEmpty());
 
-            components.forEach(c-> assertTrue(c.getContext().isActive()));
+            components.forEach(c -> assertTrue(c.getContext().isActive()));
         }
 
         testStopComponent();
 
 
     }
-
 
     private void testStopComponent() throws InterruptedException {
         ApplicationShutdownAndRestartComponentsTest launcher = ApplicationShutdownAndRestartComponentsTest.instance[0];
@@ -130,7 +128,7 @@ public class ShutdownAndReopenComponentsTest {
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
 
-        for(IPerspective<EventHandler<Event>, Event, Object> p:perspectives) {
+        for (IPerspective<EventHandler<Event>, Event, Object> p : perspectives) {
 
             assertTrue(p.getContext().isActive());
             List<ISubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
@@ -140,7 +138,6 @@ public class ShutdownAndReopenComponentsTest {
 
         }
     }
-
 
     @Test
     /**
@@ -154,24 +151,23 @@ public class ShutdownAndReopenComponentsTest {
         List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
-        for(IPerspective<EventHandler<Event>, Event, Object> p:perspectives) {
+        for (IPerspective<EventHandler<Event>, Event, Object> p : perspectives) {
 
             assertTrue(p.getContext().isActive());
             List<ISubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
 
-           // Thread.sleep(1000);
+            // Thread.sleep(1000);
             assertTrue(components.isEmpty());
 
         }
-        int i=10000;
-        while(i>1){
+        int i = 10;
+        while (i > 1) {
             testStartComponent();
             testStopComponent();
             i--;
         }
 
     }
-
 
     private void testStartComponent() throws InterruptedException {
         ApplicationShutdownAndRestartComponentsTest launcher = ApplicationShutdownAndRestartComponentsTest.instance[0];
@@ -189,13 +185,95 @@ public class ShutdownAndReopenComponentsTest {
         ComponentShutdownAndRestartComponentsTests2.startLatch.await();
         ComponentShutdownAndRestartComponentsTests3.startLatch.await();
         //Thread.sleep(100);
-        for(IPerspective<EventHandler<Event>, Event, Object> p:perspectives) {
+        for (IPerspective<EventHandler<Event>, Event, Object> p : perspectives) {
 
             assertTrue(p.getContext().isActive());
             List<ISubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
             assertFalse(components.isEmpty());
 
-            components.forEach(c-> assertTrue(c.getContext().isActive()));
+            components.forEach(c -> assertTrue(c.getContext().isActive()));
         }
     }
+
+    /**
+     * stop message followed by a start message
+     */
+    @Test
+    public void test4() throws InterruptedException {
+        // Component is shut down
+        ApplicationShutdownAndRestartComponentsTest launcher = ApplicationShutdownAndRestartComponentsTest.instance[0];
+        AFXWorkbench workbench = launcher.getWorkbench();
+        assertNotNull(workbench);
+        List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        assertNotNull(perspectives);
+        assertFalse(perspectives.isEmpty());
+        for (IPerspective<EventHandler<Event>, Event, Object> p : perspectives) {
+
+            assertTrue(p.getContext().isActive());
+            List<ISubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
+
+            Thread.sleep(100);
+            assertTrue(components.isEmpty());
+
+        }
+
+        int i = 0;
+        while (i < 100) {
+            CountDownLatch exceptionLatch = new CountDownLatch(1);
+            Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+                public void uncaughtException(Thread t, Throwable e) {
+                    e.printStackTrace();
+                    exceptionLatch.countDown();
+                    ;
+                }
+            });
+            ComponentShutdownAndRestartComponentsTests1.startLatch = new CountDownLatch(1);
+            ComponentShutdownAndRestartComponentsTests1.stopLatch = new CountDownLatch(1);
+            PerspectiveShutdownAndRestartComponents.stopStartFXComponent();
+            ComponentShutdownAndRestartComponentsTests1.startLatch.await();
+            ComponentShutdownAndRestartComponentsTests1.stopLatch.await();
+            exceptionLatch.await();
+            Thread.sleep(10);
+            i++;
+        }
+    }
+
+    @Test
+    public void test5() throws InterruptedException {
+        // Component is shut down
+        ApplicationShutdownAndRestartComponentsTest launcher = ApplicationShutdownAndRestartComponentsTest.instance[0];
+        AFXWorkbench workbench = launcher.getWorkbench();
+        assertNotNull(workbench);
+        List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        assertNotNull(perspectives);
+        assertFalse(perspectives.isEmpty());
+        for (IPerspective<EventHandler<Event>, Event, Object> p : perspectives) {
+
+            assertTrue(p.getContext().isActive());
+            List<ISubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
+
+            // Thread.sleep(1000);
+            assertTrue(components.isEmpty());
+
+        }
+        int i = 0;
+        while (i < 100) {
+            CountDownLatch exceptionLatch = new CountDownLatch(1);
+            Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+                public void uncaughtException(Thread t, Throwable e) {
+                    e.printStackTrace();
+                    exceptionLatch.countDown();
+                    ;
+                }
+            });
+            ComponentShutdownAndRestartComponentsTests2.startLatch = new CountDownLatch(1);
+            ComponentShutdownAndRestartComponentsTests2.stopLatch = new CountDownLatch(1);
+            PerspectiveShutdownAndRestartComponents.stopStartComponent();
+            ComponentShutdownAndRestartComponentsTests2.startLatch.await();
+            ComponentShutdownAndRestartComponentsTests2.stopLatch.await();
+            exceptionLatch.await();
+            i++;
+        }
+    }
+
 }

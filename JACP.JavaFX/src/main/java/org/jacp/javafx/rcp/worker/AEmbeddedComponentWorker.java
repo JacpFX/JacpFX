@@ -27,9 +27,12 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
+import org.jacp.api.component.IComponentHandle;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.component.IUIComponent;
+import org.jacp.api.exceptions.InvalidComponentMatch;
 import org.jacp.javafx.rcp.component.AFXComponent;
+import org.jacp.javafx.rcp.component.ASubComponent;
 import org.jacp.javafx.rcp.util.FXUtil;
 import org.jacp.javafx.rcp.util.WorkerUtil;
 
@@ -135,5 +138,14 @@ public abstract class AEmbeddedComponentWorker extends Thread {
             currentRoot.getParent().setCacheHint(CacheHint.SPEED);
     }
 
-
+    /**
+     * Checks if component is in correct state.
+     * @param component
+     */
+    void checkValidComponent(final ISubComponent<EventHandler<Event>, Event, Object> component) {
+        final IComponentHandle<?, Event, Object> handle = component.getComponent();
+        if (handle == null) throw new InvalidComponentMatch("Component is not initialized correctly");
+        if (component == null || component.getContext() == null || component.getContext().getId() == null)
+            throw new InvalidComponentMatch("Component is in invalid state while initialisation:" + handle.getClass());
+    }
 }

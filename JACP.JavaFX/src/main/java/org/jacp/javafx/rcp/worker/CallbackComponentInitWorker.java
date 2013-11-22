@@ -59,8 +59,6 @@ public class CallbackComponentInitWorker
     @Override
     protected ASubComponent call()
             throws Exception {
-
-        try {
             this.component.lock();
             checkValidComponent(this.component);
             runCallbackOnStartMethods(this.component);
@@ -77,9 +75,6 @@ public class CallbackComponentInitWorker
                     currentExecutionTarget);
             this.component.initWorker(new EmbeddedCallbackComponentWorker( this.delegateQueue,this.component));
             handleComponentShutdown(this.component);
-        } finally {
-            this.component.release();
-        }
         return this.component;
     }
 
@@ -124,6 +119,8 @@ public class CallbackComponentInitWorker
             // messages in
             // queue
             t.getUncaughtExceptionHandler().uncaughtException(t, e);
+        } finally {
+            this.component.release();
         }
     }
 
