@@ -56,7 +56,7 @@ public interface IUIComponent<C, L, A, M> extends ISubComponent<L, A, M> {
      * Returns the component handle class, this is the users implementation of the component.
      * @return IComponentHandle, the component handle.
      */
-    public default <X extends IComponentView<C, L, A, M>> X  getComponentViewHandle(){
+    public default <X extends IComponentView<C, A, M>> X  getComponentViewHandle(){
         return (X) this.getComponent();
     }
 

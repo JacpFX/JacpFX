@@ -73,7 +73,6 @@ public class CallbackComponentInitWorker
             this.checkAndHandleTargetChange(this.component,
                     currentExecutionTarget);
             this.component.initWorker(new EmbeddedCallbackComponentWorker( this.delegateQueue,this.component));
-            runPostExecution(this.component);
             WorkerUtil.runCallbackOnTeardownMethods(this.component);
         } finally {
             this.component.release();

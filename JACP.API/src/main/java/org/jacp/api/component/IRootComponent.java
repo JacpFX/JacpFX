@@ -52,6 +52,12 @@ public interface IRootComponent<T, A> {
 	 */
 	void unregisterComponent(final T component);
 
+
+    /**
+     * Remove all components when perspective is shut down.
+     */
+    void removeAllCompnents();
+
 	/**
 	 * Handles initialization of subcomponents.
 	 * 

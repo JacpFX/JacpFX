@@ -50,7 +50,7 @@ import java.util.ResourceBundle;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@Perspective(id = "id01", name = "contactPerspective",
+@Perspective(id = "id01_x1", name = "contactPerspective",
         components = {
                 "id002"},
         // viewLocation = "/fxml/perspectiveOne.fxml",

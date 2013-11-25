@@ -74,6 +74,7 @@ public class FXComponentCallBackMessagingTest {
     @Test
     // default Execution time was 6147 ms..  linux ...
     // default Execution time 2302 ms OSX
+    // 2221ms macbook
     public void testComponentMessaging() throws InterruptedException {
         warmUp();
         withoutUI();
@@ -82,6 +83,7 @@ public class FXComponentCallBackMessagingTest {
     @Test
     // 1805ms in linux
     // 1049 ms in OSX
+    // 910ms macbook
     public void testBurstMessaging() throws InterruptedException {
         long start = System.currentTimeMillis();
         CallbackComponentMessagingTest1Component1.wait = new CountDownLatch(1);

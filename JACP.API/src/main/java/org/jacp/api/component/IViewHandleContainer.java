@@ -7,7 +7,7 @@ package org.jacp.api.component;
  * Time: 23:33
  * To change this template use File | Settings | File Templates.
  */
-public interface IViewHandleContainer<C, L, A, M> {
+public interface IViewHandleContainer<C,  A, M> {
 
-    void setComponentHandle(final IComponentView<C, L, A, M>  handle);
+    void setComponentHandle(final IComponentView<C, A, M>  handle);
 }

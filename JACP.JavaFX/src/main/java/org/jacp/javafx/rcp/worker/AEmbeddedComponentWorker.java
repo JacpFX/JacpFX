@@ -27,11 +27,9 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
-import org.jacp.api.annotations.lifecycle.PreDestroy;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.component.IUIComponent;
 import org.jacp.javafx.rcp.component.AFXComponent;
-import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.util.FXUtil;
 import org.jacp.javafx.rcp.util.WorkerUtil;
 
@@ -99,20 +97,14 @@ public abstract class AEmbeddedComponentWorker extends Thread {
     /**
      * Handle target change to an other perspective. If target component not
      * found in current perspective, move to an other perspective and run
-     * teardown.
+     * tear down.
      *
      * @param delegateQueue, the component delegate queue
      * @param component,     a component
-     * @param layout,        the component layout handler
      */
     void handlePerspectiveChange(
             final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
-            final IUIComponent<Node, EventHandler<Event>, Event, Object> component,
-            final FXComponentLayout layout) {
-        if (component instanceof AFXComponent) {
-            FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class, component.getComponent(),
-                    layout);
-        }
+            final IUIComponent<Node, EventHandler<Event>, Event, Object> component) {
         // handle target outside current perspective
         WorkerUtil.changeComponentTarget(delegateQueue, component);
     }
@@ -128,7 +120,7 @@ public abstract class AEmbeddedComponentWorker extends Thread {
     /**
      * Set desired caching to component
      *
-     * @param cache,     chache enabled
+     * @param cache,     cache enabled
      * @param hint,      the cache hint
      * @param component, the component
      */

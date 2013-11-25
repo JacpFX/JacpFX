@@ -48,7 +48,7 @@ public class FXMessageDelegator extends Thread implements
 		IMessageDelegator<EventHandler<Event>, Event, Object> {
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler;
-	private BlockingQueue<IDelegateDTO<Event, Object>> messageDelegateQueue = new ArrayBlockingQueue<>(
+	private final BlockingQueue<IDelegateDTO<Event, Object>> messageDelegateQueue = new ArrayBlockingQueue<>(
 			10000);
 	private final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = new CopyOnWriteArrayList<>();
 
@@ -203,8 +203,13 @@ public class FXMessageDelegator extends Thread implements
 				this.handleInActivePerspective(perspective, action);
 			} // End inner if
 			else {
-				perspective.getComponentsMessageQueue().add(action);
-			} // End else
+                try {
+                    perspective.getComponentsMessageQueue().put(action);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    //TODO handle exception global
+                }
+            } // End else
 
 		} // End if
 
@@ -212,9 +217,14 @@ public class FXMessageDelegator extends Thread implements
 
     @Override
 	public void delegateMessage(final IDelegateDTO<Event, Object> messageDTO) {
-        this.messageDelegateQueue.add(messageDTO);
+        try {
+            this.messageDelegateQueue.put(messageDTO);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            //TODO handle exception global
+        }
 
-	}
+    }
 
 	@Override
 	public void addPerspective(

@@ -28,12 +28,12 @@ import javafx.event.EventHandler;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import org.jacp.api.action.IAction;
-import org.jacp.api.annotations.lifecycle.PreDestroy;
+import org.jacp.api.component.IPerspective;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
-import org.jacp.javafx.rcp.util.FXUtil;
+import org.jacp.javafx.rcp.registry.PerspectiveRegistry;
 import org.jacp.javafx.rcp.util.ShutdownThreadsHandler;
 import org.jacp.javafx.rcp.util.TearDownHandler;
 import org.jacp.javafx.rcp.util.WorkerUtil;
@@ -174,9 +174,11 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
             if (component.getContext().isActive()) {
                 final String newExecutionTarget = JACPContextImpl.class.cast(this.component.getContext()).getExecutionTarget();
                 if (!currentExecutionTarget.equalsIgnoreCase(newExecutionTarget)) {
-                    this.removeComponentValue(previousContainer);
+                    this.shutDownComponent(component,layout,previousContainer);
+                    // restore target execution
+                    this.component.getContext().setExecutionTarget(newExecutionTarget);
                     this.handlePerspectiveChange(this.componentDelegateQueue,
-                            component, layout);
+                            component);
                 } else {
                     final String newTargetLayout = JACPContextImpl.class.cast(this.component.getContext()).getTargetLayout();
                     this.removeOldComponentValue(component, previousContainer,
@@ -196,6 +198,9 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
     private void shutDownComponent(final AFXComponent component,final FXComponentLayout layout,final Node previousContainer) {
         // unregister component
         this.removeComponentValue(previousContainer);
+        final String parentId = component.getParentId();
+        final IPerspective<EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
+        if(parentPerspctive!=null)parentPerspctive.unregisterComponent(component);
         TearDownHandler.shutDownFXComponent(component,layout);
     }
 

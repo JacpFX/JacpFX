@@ -62,6 +62,15 @@ public class PerspectiveUtil {
     }
 
     /**
+     * Returns a single SunComponent by id
+     * @param componentId
+     * @return
+     */
+    public ISubComponent<EventHandler<Event>, Event, Object> createSubcomponentById(final String componentId) {
+        return mapToSubcomponent(mapToInjectAbleComponent(FXUtil.getTargetComponentId(componentId)));
+    }
+
+    /**
      * Returns a list of all declared Injectables.
      * @param perspectiveAnnotation
      * @return
@@ -137,7 +146,7 @@ public class PerspectiveUtil {
      * @param component ; the component containing metadata.
      */
     public static void  handleComponentMetaAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        final IComponentHandle<?,EventHandler<Event>,Event,Object> handler = component.getComponent();
+        final IComponentHandle<?,Event,Object> handler = component.getComponent();
         if(handler==null)return;
         final DeclarativeView declarativeComponent = handler.getClass()
                 .getAnnotation(DeclarativeView.class);

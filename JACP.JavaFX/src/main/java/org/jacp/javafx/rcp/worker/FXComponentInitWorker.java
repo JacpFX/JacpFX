@@ -28,14 +28,18 @@ import javafx.scene.Node;
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.lifecycle.PostConstruct;
 import org.jacp.api.component.IComponentHandle;
+import org.jacp.api.component.IPerspective;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.exceptions.AnnotationMissconfigurationException;
+import org.jacp.api.exceptions.InvalidComponentMatch;
 import org.jacp.api.util.UIType;
 import org.jacp.javafx.rcp.component.AComponent;
 import org.jacp.javafx.rcp.component.AFXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.context.JACPContextImpl;
+import org.jacp.javafx.rcp.registry.PerspectiveRegistry;
 import org.jacp.javafx.rcp.util.FXUtil;
+import org.jacp.javafx.rcp.util.TearDownHandler;
 import org.jacp.javafx.rcp.util.WorkerUtil;
 
 import java.lang.reflect.InvocationTargetException;
@@ -84,6 +88,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	 */
 	private void runPreInitMethods() throws InterruptedException, ExecutionException {
         WorkerUtil.invokeOnFXThreadAndWait(() -> {
+            setComponentToActiveAndStarted(component);
             final FXComponentLayout layout = JACPContextImpl.class.cast(component.getContext()).getComponentLayout();
             if (component.getType().equals(UIType.DECLARATIVE)) {
                 final URL url = getClass().getResource(
@@ -105,13 +110,24 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
         });
 	}
 
+    private void setComponentToActiveAndStarted(final AFXComponent component) {
+        component.getContext().setActive(true);
+        component.setStarted(true);
+    }
+
     /**
      * Inject Context object.
      * @param component, the component where to inject the context
      */
-    private void performContextInjection(AFXComponent component) {
-        IComponentHandle<?, EventHandler<Event>, Event, Object> handler = component.getComponent();
+    private void performContextInjection(final AFXComponent component) {
+        IComponentHandle<?, Event, Object> handler = component.getComponent();
         FXUtil.performResourceInjection(handler,component.getContext());
+    }
+
+    private void checkValidComponent(final AFXComponent component){
+       final  IComponentHandle<?,Event,Object> handle = component.getComponent();
+        if(handle==null) throw new InvalidComponentMatch("Component is not initialized correctly");
+       if(component==null || component.getContext()==null || component.getContext().getId()==null) throw new InvalidComponentMatch("Component is in invalid state :"+handle.getClass());
     }
 
 
@@ -119,6 +135,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	@Override
 	protected AFXComponent call() throws Exception {
 			this.component.lock();
+            checkValidComponent(this.component);
 			runPreInitMethods();
 			try {
                 final String name = this.component.getContext().getName();
@@ -130,13 +147,13 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 						+ name);
 				this.log("3.4.4.2.3: subcomponent handle init add component by type: "
 						+ name);
-				this.addComponent(handleReturnValue,
-						this.component, this.action,this.targetComponents);
+				this.executePostHandleAndAddComponent(handleReturnValue,
+                        this.component, this.action, this.targetComponents);
 				this.log("3.4.4.2.4: subcomponent handle init END: "
 						+ name);
+                // check if component was shutdown
+                if(!component.isStarted()) return this.component;
                 this.component.initWorker(new EmbeddedFXComponentWorker(this.targetComponents,this.componentDelegateQueue,this.component));
-                FXUtil.setPrivateMemberValue(AComponent.class, this.component,
-                        FXUtil.ACOMPONENT_STARTED, true);
 			} finally {
 
 				this.component.release();
@@ -166,8 +183,8 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	 * @param component, the component
      * @param param, all parameters
 	 */
-	private void runComponentOnStartupSequence(AFXComponent component,
-			Object... param) {
+	private void runComponentOnStartupSequence(final AFXComponent component,
+			final Object... param) {
 		FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, component.getComponent(), param);
 	}
 
@@ -183,58 +200,55 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 	 * @throws InterruptedException
 	 * @throws InvocationTargetException
 	 */
-	private void addComponent(
-			final Node handleReturnValue, final AFXComponent myComponent,
-			final IAction<Event, Object> myAction,final Map<String, Node> targetComponents) throws Exception {
+    private void executePostHandleAndAddComponent(
+            final Node handleReturnValue, final AFXComponent myComponent,
+            final IAction<Event, Object> myAction, final Map<String, Node> targetComponents) throws Exception {
         final Thread t = Thread.currentThread();
         WorkerUtil.invokeOnFXThreadAndWait(() -> {
             try {
                 WorkerUtil.executeComponentViewPostHandle(
                         handleReturnValue, myComponent, myAction);
             } catch (Exception e) {
+                // TODO add exceptions to error queue
                 t.getUncaughtExceptionHandler().uncaughtException(t, e);
             }
-            final String targetLayout = JACPContextImpl.class.cast(this.component.getContext()).getTargetLayout();
-            final Node validContainer = this.getValidContainerById(targetComponents,targetLayout);
-            if(validContainer==null && myComponent.getRoot()!=null) throw new AnnotationMissconfigurationException("no targetLayout for layoutID: "+targetLayout+" found");
-            if (validContainer == null || myComponent.getRoot() == null) {
-                return;
+            if (component.getContext().isActive()) {
+                final String targetLayout = JACPContextImpl.class.cast(this.component.getContext()).getTargetLayout();
+                final Node validContainer = this.getValidContainerById(targetComponents, targetLayout);
+                if (validContainer == null && myComponent.getRoot() != null)
+                    throw new AnnotationMissconfigurationException("no targetLayout for layoutID: " + targetLayout + " found");
+                if (validContainer == null || myComponent.getRoot() == null) {
+                    return;
+                }
+                WorkerUtil.addComponentByType(validContainer,
+                        myComponent);
+            } else {
+                shutDownComponent(component);
             }
-            WorkerUtil.addComponentByType(validContainer,
-                    myComponent);
         });
-	}
+    }
+
+    private void shutDownComponent(final AFXComponent component) {
+        // unregister component
+        final String parentId = component.getParentId();
+        final IPerspective<EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
+        if(parentPerspctive!=null)parentPerspctive.unregisterComponent(component);
+        TearDownHandler.shutDownFXComponent(component);
+        component.setStarted(false);
+    }
 
 	@Override
 	public final void done() {
+        final Thread t = Thread.currentThread();
 			try {
 				this.get();
-			} catch (final InterruptedException e) {
+			} catch (final Exception e) {
 				this.log("Exception in CallbackComponent INIT Worker, Thread interrupted: "
 						+ e.getMessage());
 				// TODO add to error queue and restart thread if
 				// messages in
 				// queue
-				e.printStackTrace();
-			} catch (final ExecutionException e) {
-				this.log("Exception in CallbackComponent INIT Worker, Thread Excecution Exception: "
-						+ e.getMessage());
-				// TODO add to error queue and restart thread if
-				// messages in
-				// queue
-				e.printStackTrace();
-			} catch (final UnsupportedOperationException e) {
-				e.printStackTrace();
-			} catch (final Exception e) {
-				this.log("Exception in CallbackComponent INIT Worker, Thread Exception: "
-						+ e.getMessage());
-				// TODO add to error queue and restart thread if
-				// messages in
-				// queue
-				e.printStackTrace();
-			} finally {
-				FXUtil.setPrivateMemberValue(AComponent.class, this.component,
-						FXUtil.ACOMPONENT_STARTED, true);
+                t.getUncaughtExceptionHandler().uncaughtException(t, e);
 			}
 
 

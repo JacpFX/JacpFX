@@ -1,9 +1,8 @@
-package org.jacp.test.lifesycleannotations;
+package org.jacp.test.lifesycle;
 
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import junit.framework.Assert;
 import org.jacp.api.component.IPerspective;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.api.component.Injectable;
@@ -30,12 +29,12 @@ import static junit.framework.TestCase.assertTrue;
 
 /**
  * Created with IntelliJ IDEA.
- * User: amo
+ * User: Andy Moncsek
  * Date: 16.10.13
  * Time: 21:19
  * To change this template use File | Settings | File Templates.
  */
-public class PreDestroyPerspectiveTest {
+public class PreDestroyPostCreateRestartPerspectiveTest {
     static Thread t;
 
     @AfterClass
@@ -108,13 +107,16 @@ public class PreDestroyPerspectiveTest {
 
     private static void stopComponentsAndCheck(boolean burst)throws InterruptedException {
         ApplicationPredestroyPerspectiveTest launcher = ApplicationPredestroyPerspectiveTest.instance[0];
-
+        AFXWorkbench workbench = launcher.getWorkbench();
+        assertNotNull(workbench);
+        List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         PerspectiveOnePredestroyPerspectiveTest.latch = new CountDownLatch(1);
         PredestroyTestComponentOne.latch = new CountDownLatch(1);
         PredestroyTestComponentTwo.latch = new CountDownLatch(1);
         PredestroyTestComponentThree.latch = new CountDownLatch(1);
-        PredestroyTestComponentFour.latch = burst==true?new CountDownLatch(AStatelessCallbackComponent.MAX_INCTANCE_COUNT):new CountDownLatch(1);
-
+        int val = getActiveAsyncCount(perspectives);
+        System.out.println("active async: "+val);
+        PredestroyTestComponentFour.latch = new CountDownLatch(val);
         PerspectiveOnePredestroyPerspectiveTest.stop();
         PerspectiveOnePredestroyPerspectiveTest.latch.await();
         PredestroyTestComponentOne.latch.await();
@@ -122,9 +124,7 @@ public class PreDestroyPerspectiveTest {
         PredestroyTestComponentThree.latch.await();
         PredestroyTestComponentFour.latch.await();
 
-        AFXWorkbench workbench = launcher.getWorkbench();
-        assertNotNull(workbench);
-        List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
         for(IPerspective<EventHandler<Event>, Event, Object> p:perspectives) {
@@ -175,6 +175,24 @@ public class PreDestroyPerspectiveTest {
                 assertTrue(p.getContext().isActive());
             }
         }
+    }
+
+    private static int getActiveAsyncCount(List<IPerspective<EventHandler<Event>, Event, Object>> perspectives) {
+        for(IPerspective<EventHandler<Event>, Event, Object> p:perspectives) {
+            Injectable handler = p.getPerspective();
+            if(handler.getClass().isAssignableFrom(PerspectiveOnePredestroyPerspectiveTest.class)) {
+
+                List<ISubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
+                for(ISubComponent<EventHandler<Event>, Event, Object> c: components) {
+                       if(c instanceof AStatelessCallbackComponent) {
+                           List<ISubComponent<EventHandler<Event>, Event, Object>> instances = AStatelessCallbackComponent.class.cast(c).getInstances();
+                           return Long.valueOf(instances.stream().filter(i->i.isStarted()).count()).intValue();
+                       }
+                }
+            }
+        }
+
+        return 0;
     }
 
     @Test

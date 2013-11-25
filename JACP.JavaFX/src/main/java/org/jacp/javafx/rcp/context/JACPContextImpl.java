@@ -15,6 +15,7 @@ import org.jacp.javafx.rcp.components.modalDialog.JACPModalDialog;
 
 import java.util.ResourceBundle;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Created with IntelliJ IDEA.
@@ -43,7 +44,7 @@ public class JACPContextImpl implements JACPContext {
     private volatile FXComponentLayout layout;
     private volatile ResourceBundle resourceBundle;
 
-    private volatile boolean active;
+    private volatile AtomicBoolean active = new AtomicBoolean(false);
 
     public JACPContextImpl(final String id, final String name, final BlockingQueue<IAction<Event, Object>> globalMessageQueue) {
         this.id = id;
@@ -124,14 +125,14 @@ public class JACPContextImpl implements JACPContext {
      */
     @Override
     public boolean isActive() {
-        return this.active;
+        return this.active.get();
     }
     /**
      * {@inheritDoc}
      */
     @Override
     public void setActive(boolean active) {
-        this.active = active;
+        this.active.set(active);
     }
 
     public void setResourceBundle(ResourceBundle resourceBundle) {
@@ -230,7 +231,7 @@ public class JACPContextImpl implements JACPContext {
 
         JACPContextImpl that = (JACPContextImpl) o;
 
-        if (active != that.active) return false;
+        if (active.get() != that.active.get()) return false;
         if (executionTarget != null ? !executionTarget.equals(that.executionTarget) : that.executionTarget != null)
             return false;
         if (globalMessageQueue != null ? !globalMessageQueue.equals(that.globalMessageQueue) : that.globalMessageQueue != null)
@@ -242,9 +243,8 @@ public class JACPContextImpl implements JACPContext {
         if (resourceBundle != null ? !resourceBundle.equals(that.resourceBundle) : that.resourceBundle != null)
             return false;
         if (returnTarget != null ? !returnTarget.equals(that.returnTarget) : that.returnTarget != null) return false;
-        if (targetLayout != null ? !targetLayout.equals(that.targetLayout) : that.targetLayout != null) return false;
+        return !(targetLayout != null ? !targetLayout.equals(that.targetLayout) : that.targetLayout != null);
 
-        return true;
     }
 
     @Override
@@ -258,7 +258,7 @@ public class JACPContextImpl implements JACPContext {
         result = 31 * result + (executionTarget != null ? executionTarget.hashCode() : 0);
         result = 31 * result + (layout != null ? layout.hashCode() : 0);
         result = 31 * result + (resourceBundle != null ? resourceBundle.hashCode() : 0);
-        result = 31 * result + (active ? 1 : 0);
+        result = 31 * result + (active.get() ? 1 : 0);
         return result;
     }
 }

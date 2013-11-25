@@ -36,7 +36,7 @@ import org.jacp.api.component.ISubComponent;
 import org.jacp.api.component.Injectable;
 import org.jacp.api.componentLayout.IPerspectiveLayout;
 import org.jacp.api.context.Context;
-import org.jacp.api.coordinator.IComponentCoordinator;
+import org.jacp.api.coordinator.ICoordinator;
 import org.jacp.api.handler.IComponentHandler;
 import org.jacp.api.launcher.Launcher;
 import org.jacp.api.util.UIType;
@@ -71,7 +71,7 @@ public abstract class AFXPerspective extends AComponent implements
     private IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler;
     private BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
     private BlockingQueue<IDelegateDTO<Event, Object>> messageDelegateQueue;
-    private IComponentCoordinator<EventHandler<Event>, Event, Object> componentCoordinator;
+    private ICoordinator<EventHandler<Event>, Event, Object> componentCoordinator;
     private String viewLocation;
     private URL documentURL;
     private IPerspectiveLayout<Node, Node> perspectiveLayout;
@@ -105,12 +105,9 @@ public abstract class AFXPerspective extends AComponent implements
             final IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler) {
         // init component handler
         this.componentHandler = componentHandler;
-        this.componentCoordinator = new FXComponentMessageCoordinator();
-        ((FXComponentMessageCoordinator) this.componentCoordinator).start();
+        this.componentCoordinator = new FXComponentMessageCoordinator(this.messageDelegateQueue,this.getContext().getId(),this.launcher);
         this.componentCoordinator.setComponentHandler(this.componentHandler);
-        this.componentCoordinator
-                .setMessageDelegateQueue(this.messageDelegateQueue);
-        this.componentCoordinator.setParentId(this.getContext().getId());
+        ((FXComponentMessageCoordinator) this.componentCoordinator).start();
         if(this.subcomponents!=null)this.subcomponents.clear();
         this.subcomponents = createAllDeclaredSubcomponents();
         if (this.getSubcomponents() != null) this.registerSubcomponents(this.subcomponents);
@@ -143,17 +140,19 @@ public abstract class AFXPerspective extends AComponent implements
     @Override
     public final void registerComponent(
             final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        synchronized (lock) {
-            component.initEnv(this.getContext().getId(),
-                    this.componentCoordinator.getMessageQueue());
-            final JACPContextImpl context =  JACPContextImpl.class.cast(component.getContext());
-            context.setParentId(this.getContext().getId());
-            context.setFXComponentLayout(JACPContextImpl.class.cast(this.getContext()).getComponentLayout());
-            PerspectiveUtil.handleComponentMetaAnnotation(component);
-            this.log("register component: " + component.getContext().getId());
-            ComponentRegistry.registerComponent(component);
-            if (!this.getSubcomponents().contains(component)) {
-                this.getSubcomponents().add(component);
+        component.initEnv(this.getContext().getId(),
+                this.componentCoordinator.getMessageQueue());
+        final JACPContextImpl context = JACPContextImpl.class.cast(component.getContext());
+        context.setParentId(this.getContext().getId());
+        context.setFXComponentLayout(JACPContextImpl.class.cast(this.getContext()).getComponentLayout());
+        PerspectiveUtil.handleComponentMetaAnnotation(component);
+        if (context.isActive()) {
+            synchronized (lock) {
+                this.log("register component: " + component.getContext().getId());
+                ComponentRegistry.registerComponent(component);
+                if (!this.getSubcomponents().contains(component)) {
+                    this.getSubcomponents().add(component);
+                }
             }
         }
 
@@ -165,11 +164,18 @@ public abstract class AFXPerspective extends AComponent implements
             final ISubComponent<EventHandler<Event>, Event, Object> component) {
         synchronized (lock) {
             this.log("unregister component: " + component.getContext().getId());
-            component.initEnv(null, null);
             ComponentRegistry.removeComponent(component);
+            component.initEnv(null, null);
             if (this.getSubcomponents().contains(component)) {
                 this.getSubcomponents().remove(component);
             }
+        }
+    }
+
+    @Override
+    public final void removeAllCompnents() {
+        synchronized (lock) {
+            this.getSubcomponents().clear();
         }
     }
 
@@ -181,18 +187,20 @@ public abstract class AFXPerspective extends AComponent implements
         final List<ISubComponent<EventHandler<Event>, Event, Object>> components = this
                 .getSubcomponents();
         if (components == null) return;
-        components.parallelStream().forEach(component -> {
-            if (component.getContext().getId().equals(targetId)) {
-                this.log("3.4.4.2: subcomponent init with custom action");
-                this.getComponentHandler().initComponent(action, component);
-            } // else END
-            else if (component.getContext().isActive() && !component.isStarted()) {
-                this.log("3.4.4.2: subcomponent init with default action");
-                this.getComponentHandler().initComponent(
-                        new FXAction(component.getContext().getId(), component.getContext().getId(),
-                                "init", null), component);
-            } // if END
-        });
+        components.parallelStream().forEach(component -> initComponent(component,action,targetId));
+    }
+
+    private void initComponent(final ISubComponent<EventHandler<Event>, Event, Object> component,final IAction<Event, Object> action,final String targetId ) {
+        if (component.getContext().getId().equals(targetId)) {
+            this.log("3.4.4.2: subcomponent init with custom action");
+            this.getComponentHandler().initComponent(action, component);
+        } // else END
+        else if (component.getContext().isActive() && !component.isStarted()) {
+            this.log("3.4.4.2: subcomponent init with default action");
+            this.getComponentHandler().initComponent(
+                    new FXAction(component.getContext().getId(), component.getContext().getId(),
+                            "init", null), component);
+        } // if END
     }
 
     private void log(final String message) {

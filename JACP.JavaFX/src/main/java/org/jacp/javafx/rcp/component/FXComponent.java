@@ -1,7 +1,6 @@
 package org.jacp.javafx.rcp.component;
 
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 import org.jacp.api.component.IComponentView;
 
@@ -13,7 +12,7 @@ import org.jacp.api.component.IComponentView;
  * Time: 11:07
  * Interface o implement a UI CallbackComponent in Jacp.
  */
-public interface FXComponent extends IComponentView<Node, EventHandler<Event>, Event, Object> {
+public interface FXComponent extends IComponentView<Node, Event, Object> {
 
 
 }

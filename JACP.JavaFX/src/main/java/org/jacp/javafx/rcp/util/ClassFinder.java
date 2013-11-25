@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
@@ -32,7 +30,7 @@ public class ClassFinder {
      * List with the directories on the classpath (containing .class files)
      */
     //  private static String[] binDirs;
-    private List<Path> binDirs;
+    private final List<Path> binDirs;
 
     private final PathMatcher matcher =
             FileSystems.getDefault().getPathMatcher("glob:*.class");

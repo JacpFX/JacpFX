@@ -27,12 +27,16 @@ import javafx.event.EventHandler;
 import org.jacp.api.action.IAction;
 import org.jacp.api.action.IDelegateDTO;
 import org.jacp.api.component.IComponent;
+import org.jacp.api.component.IPerspective;
 import org.jacp.api.component.ISubComponent;
-import org.jacp.api.coordinator.IComponentCoordinator;
+import org.jacp.api.coordinator.ICoordinator;
 import org.jacp.api.exceptions.ComponentNotFoundException;
 import org.jacp.api.handler.IComponentHandler;
+import org.jacp.api.launcher.Launcher;
 import org.jacp.javafx.rcp.registry.ComponentRegistry;
+import org.jacp.javafx.rcp.registry.PerspectiveRegistry;
 import org.jacp.javafx.rcp.util.FXUtil;
+import org.jacp.javafx.rcp.util.PerspectiveUtil;
 
 import java.util.concurrent.BlockingQueue;
 
@@ -42,13 +46,19 @@ import java.util.concurrent.BlockingQueue;
  * @author Andy Moncsek
  */
 public class FXComponentMessageCoordinator extends AFXCoordinator implements
-        IComponentCoordinator<EventHandler<Event>, Event, Object> {
+        ICoordinator<EventHandler<Event>, Event, Object> {
     private IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler;
-    private BlockingQueue<IDelegateDTO<Event, Object>> delegateQueue;
-    private String parentId;
+    private final BlockingQueue<IDelegateDTO<Event, Object>> delegateQueue;
+    private final String parentId;
+    private final Launcher<?> launcher;
 
-    public FXComponentMessageCoordinator() {
+    public FXComponentMessageCoordinator(final BlockingQueue<IDelegateDTO<Event, Object>> delegateQueue,
+                                         final String parentId,
+                                         final Launcher<?> launcher) {
         super("FXComponentCoordinator");
+        this.delegateQueue = delegateQueue;
+        this.parentId = parentId;
+        this.launcher = launcher;
     }
 
     @Override
@@ -106,13 +116,25 @@ public class FXComponentMessageCoordinator extends AFXCoordinator implements
      */
     private ISubComponent<EventHandler<Event>, Event, Object> getTargetComponent(final String targetId,
                                                                                  final IAction<Event, Object> action) {
-        final ISubComponent<EventHandler<Event>, Event, Object> component = ComponentRegistry.findComponentById(targetId);
-
+        ISubComponent<EventHandler<Event>, Event, Object> component = ComponentRegistry.findComponentById(targetId);
+        if(component != null){
+            // component is active
+            return component;
+        }else{
+            // start inactive component
+            component = PerspectiveUtil.getInstance(this.launcher).createSubcomponentById(targetId);
+        }
         if (component == null) throw new ComponentNotFoundException(
                 "invalid component id. Source: "
                         + action.getSourceId() + " target: "
                         + action.getTargetId());
+        findParentPerspectiveAndRegisterComponent(targetId,component);
         return component;
+    }
+
+    private void findParentPerspectiveAndRegisterComponent(final String targetId,final ISubComponent<EventHandler<Event>, Event, Object> component) {
+        final IPerspective<EventHandler<Event>, Event, Object> currentPerspective = PerspectiveRegistry.findPerspectiveById(parentId);
+        currentPerspective.registerComponent(component);
     }
 
     /**
@@ -136,7 +158,7 @@ public class FXComponentMessageCoordinator extends AFXCoordinator implements
      */
     private void handleComponentHit(final IAction<Event, Object> action,
                                     final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        if (component.getContext().isActive()) {
+        if (component.getContext().isActive() && component.isStarted()) {
             this.log(" //1.1.1.1// component HIT handle ACTIVE: "
                     + action.getTargetId());
             this.handleActive(component, action);
@@ -163,7 +185,6 @@ public class FXComponentMessageCoordinator extends AFXCoordinator implements
     @Override
     public final <P extends IComponent<EventHandler<Event>, Event, Object>> void handleInActive(
             final P component, final IAction<Event, Object> action) {
-        component.getContext().setActive(true);
         this.componentHandler.initComponent(action,
                 (ISubComponent<EventHandler<Event>, Event, Object>) component);
 
@@ -183,16 +204,4 @@ public class FXComponentMessageCoordinator extends AFXCoordinator implements
 
     }
 
-    @Override
-    public void setMessageDelegateQueue(
-            final BlockingQueue<IDelegateDTO<Event, Object>> delegateQueue) {
-        this.delegateQueue = delegateQueue;
-
-    }
-
-    @Override
-    public void setParentId(final String parentId) {
-        this.parentId = parentId;
-
-    }
 }

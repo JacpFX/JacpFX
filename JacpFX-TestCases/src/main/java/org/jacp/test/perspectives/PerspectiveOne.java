@@ -53,7 +53,7 @@ import java.util.ResourceBundle;
 @Perspective(id = "id01", name = "contactPerspective",
         components = {
                 "id002"},
-        // viewLocation = "/fxml/perspectiveOne.fxml",
+        viewLocation = "/fxml/perspectiveOne.fxml",
         resourceBundleLocation = "bundles.languageBundle",
         localeID = "en_US")
 public class PerspectiveOne implements FXPerspective {
@@ -69,7 +69,7 @@ public class PerspectiveOne implements FXPerspective {
                                   final PerspectiveLayout perspectiveLayout) {
         if (action.isMessage(MessageUtil.INIT)) {
 
-            perspectiveLayout.registerRootComponent(createRoot());
+            //perspectiveLayout.registerRootComponent(createRoot());
             GridPane.setVgrow(perspectiveLayout.getRootComponent(),
                     Priority.ALWAYS);
             GridPane.setHgrow(perspectiveLayout.getRootComponent(),

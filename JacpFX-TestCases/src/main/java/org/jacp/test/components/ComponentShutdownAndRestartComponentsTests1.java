@@ -26,26 +26,26 @@
 package org.jacp.test.components;
 
 import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import org.jacp.api.action.IAction;
 import org.jacp.api.annotations.Resource;
-import org.jacp.api.annotations.component.Component;
-import org.jacp.api.annotations.component.Stateless;
+import org.jacp.api.annotations.component.View;
 import org.jacp.api.annotations.lifecycle.PostConstruct;
 import org.jacp.api.annotations.lifecycle.PreDestroy;
-import org.jacp.javafx.rcp.component.AStatelessCallbackComponent;
-import org.jacp.javafx.rcp.component.CallbackComponent;
+import org.jacp.javafx.rcp.component.FXComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.context.JACPContext;
 import org.jacp.javafx.rcp.util.FXUtil;
-import org.jacp.test.main.ApplicationLauncherAsyncCallbackComponentMessaginTest1;
-import org.jacp.test.main.ApplicationPredestroyPerspectiveTest;
+import org.jacp.test.main.ApplicationLauncher;
+import org.jacp.test.main.ApplicationShutdownAndRestartComponentsTest;
 
 import java.util.ResourceBundle;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
 /**
@@ -54,60 +54,56 @@ import java.util.logging.Logger;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@Component(id = "id019", name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
-@Stateless
-public class PredestroyTestComponentFour implements CallbackComponent {
+@View(id = "id0020", name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", initialTargetLayoutId = "content0")
+public class ComponentShutdownAndRestartComponentsTests1 implements FXComponent {
 
-    private final Logger log = Logger.getLogger(PredestroyTestComponentFour.class
+    private final Logger log = Logger.getLogger(ComponentShutdownAndRestartComponentsTests1.class
             .getName());
 
     String current = "content0";
     Button button = new Button("move to next target");
     VBox container = new VBox();
     Label label = new Label();
-    public static boolean ui = false;
+    public static CountDownLatch stopLatch = new CountDownLatch(1);
+    public static CountDownLatch startLatch = new CountDownLatch(1);
 
     @Resource
-    private static JACPContext context;
-
-    public static CountDownLatch wait = new CountDownLatch(1);
-    public static CountDownLatch latch = new CountDownLatch(AStatelessCallbackComponent.MAX_INCTANCE_COUNT);
-    public static CountDownLatch countdownlatch = new CountDownLatch(1);
-    public static CountDownLatch startLatch = new CountDownLatch(1);
+    private JACPContext context;
 
     @Override
     /**
      * The handleAction method always runs outside the main application thread. You can create new nodes, execute long running tasks but you are not allowed to manipulate existing nodes here.
      */
-    public Object handle(final IAction<Event, Object> action) {
-        //System.err.println("Message id11 : "+action+"  :: "+this);
-        if (action.isMessage(FXUtil.MessageUtil.INIT)) {
-            ApplicationPredestroyPerspectiveTest.latch.countDown();
-        } else {
-            countdownlatch.countDown();
+    public Node handle(final IAction<Event, Object> action) {
 
-            return null;
+        return null;
+    }
+
+    @Override
+    /**
+     * The postHandleAction method runs always in the main application thread.
+     */
+    public Node postHandle(final Node arg0,
+                           final IAction<Event, Object> action) {
+        if (action.isMessage("stop")) {
+            context.setActive(false);
+        } else if(action.isMessage(FXUtil.MessageUtil.INIT)) {
+            button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+                @Override
+                public void handle(MouseEvent event) {
+
+
+                    context.getActionListener("stop").performAction(null);
+                }
+            });
+            button.setStyle("-fx-background-color: red");
+            label.setText(" current Tagret: " + current);
+            container.getChildren().addAll(button, label);
+            ApplicationShutdownAndRestartComponentsTest.latch.countDown();
         }
 
-        return "message";
-    }
-
-    public static void fireMessage() {
-        context.getActionListener("id15.id012", "message").performAction(null);
-    }
-
-    public static void fireBurst(final int count) {
-        Thread t = new Thread(() -> {
-            for (int i = 0; i < count; i++) {
-                getContext().getActionListener("id15.id012", "message").performAction(null);
-            }
-        });
-        t.setDaemon(true);
-        t.start();
-    }
-
-    public static synchronized JACPContext getContext() {
-        return context;
+        return container;
     }
 
 
@@ -119,9 +115,9 @@ public class PredestroyTestComponentFour implements CallbackComponent {
      */
     public void onStartComponent(final FXComponentLayout arg0,
                                  final ResourceBundle resourceBundle) {
-        System.out.println("on start c 019 max: "+AStatelessCallbackComponent.MAX_INCTANCE_COUNT);
-
+        this.log.info("run on start of id0020 ");
         startLatch.countDown();
+
     }
 
     @PreDestroy
@@ -130,9 +126,8 @@ public class PredestroyTestComponentFour implements CallbackComponent {
      * @param arg0
      */
     public void onTearDownComponent(final FXComponentLayout arg0) {
-        this.log.info("run on tear down of ComponentRight ");
-        System.out.println("on predestroy c 019 max: "+AStatelessCallbackComponent.MAX_INCTANCE_COUNT);
-        latch.countDown();
+        this.log.info("run on tear down of id0020 ");
+        stopLatch.countDown();
     }
 
 

@@ -125,8 +125,8 @@ public class FXComponentHandler
 		if (AStatelessCallbackComponent.class.isAssignableFrom(component.getClass())) {
 			this.log("SATELESS BACKGROUND COMPONENT EXECUTE INIT:::"
                     + component.getContext().getName());
-			this.runStatelessCallbackComponent(
-					((AStatelessCallbackComponent) component), action);
+            final AStatelessCallbackComponent asyncComponent = AStatelessCallbackComponent.class.cast(component);
+			this.runStatelessCallbackComponent(asyncComponent, action);
             return;
         }// else if END
         if (ASubComponent.class.isAssignableFrom(component.getClass())) {
@@ -139,7 +139,6 @@ public class FXComponentHandler
 	}
 
 
-	
 	/**
 	 * set component blocked and add message to queue
 	 * 

@@ -27,6 +27,7 @@ import javafx.event.EventHandler;
 import org.jacp.api.annotations.lifecycle.PreDestroy;
 import org.jacp.api.component.ISubComponent;
 import org.jacp.javafx.rcp.util.FXUtil;
+import org.jacp.javafx.rcp.util.TearDownHandler;
 
 import java.util.concurrent.Callable;
 
@@ -43,8 +44,7 @@ public class TearDownWorker implements Callable<Boolean>{
 	@Override
 	public Boolean call() throws Exception {
         // run teardown
-        if (component.getContext().isActive())FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
-                component.getComponent());
+        TearDownHandler.executePredestroy(component);
 		return true;
 	}
 

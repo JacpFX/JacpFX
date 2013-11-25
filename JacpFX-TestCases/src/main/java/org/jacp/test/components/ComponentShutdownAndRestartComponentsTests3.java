@@ -40,12 +40,11 @@ import org.jacp.javafx.rcp.component.CallbackComponent;
 import org.jacp.javafx.rcp.componentLayout.FXComponentLayout;
 import org.jacp.javafx.rcp.context.JACPContext;
 import org.jacp.javafx.rcp.util.FXUtil;
-import org.jacp.test.main.ApplicationLauncherAsyncCallbackComponentMessaginTest1;
 import org.jacp.test.main.ApplicationPredestroyPerspectiveTest;
+import org.jacp.test.main.ApplicationShutdownAndRestartComponentsTest;
 
 import java.util.ResourceBundle;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
 /**
@@ -54,11 +53,11 @@ import java.util.logging.Logger;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@Component(id = "id019", name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
+@Component(id = "id0022", name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
 @Stateless
-public class PredestroyTestComponentFour implements CallbackComponent {
+public class ComponentShutdownAndRestartComponentsTests3 implements CallbackComponent {
 
-    private final Logger log = Logger.getLogger(PredestroyTestComponentFour.class
+    private final Logger log = Logger.getLogger(ComponentShutdownAndRestartComponentsTests3.class
             .getName());
 
     String current = "content0";
@@ -73,6 +72,7 @@ public class PredestroyTestComponentFour implements CallbackComponent {
     public static CountDownLatch wait = new CountDownLatch(1);
     public static CountDownLatch latch = new CountDownLatch(AStatelessCallbackComponent.MAX_INCTANCE_COUNT);
     public static CountDownLatch countdownlatch = new CountDownLatch(1);
+    public static CountDownLatch stopLatch = new CountDownLatch(1);
     public static CountDownLatch startLatch = new CountDownLatch(1);
 
     @Override
@@ -82,8 +82,11 @@ public class PredestroyTestComponentFour implements CallbackComponent {
     public Object handle(final IAction<Event, Object> action) {
         //System.err.println("Message id11 : "+action+"  :: "+this);
         if (action.isMessage(FXUtil.MessageUtil.INIT)) {
-            ApplicationPredestroyPerspectiveTest.latch.countDown();
-        } else {
+            ApplicationShutdownAndRestartComponentsTest.latch.countDown();
+        } else if (action.isMessage("stop")) {
+            context.setActive(false);
+            return null;
+        }else {
             countdownlatch.countDown();
 
             return null;
@@ -119,8 +122,7 @@ public class PredestroyTestComponentFour implements CallbackComponent {
      */
     public void onStartComponent(final FXComponentLayout arg0,
                                  final ResourceBundle resourceBundle) {
-        System.out.println("on start c 019 max: "+AStatelessCallbackComponent.MAX_INCTANCE_COUNT);
-
+        this.log.info("run on start of id0022 "+this);
         startLatch.countDown();
     }
 
@@ -130,9 +132,9 @@ public class PredestroyTestComponentFour implements CallbackComponent {
      * @param arg0
      */
     public void onTearDownComponent(final FXComponentLayout arg0) {
-        this.log.info("run on tear down of ComponentRight ");
-        System.out.println("on predestroy c 019 max: "+AStatelessCallbackComponent.MAX_INCTANCE_COUNT);
+        this.log.info("run on tear down of id0022 "+this);
         latch.countDown();
+        stopLatch.countDown();
     }
 
 

@@ -84,7 +84,7 @@ public interface ICoordinator<L, A, M> {
 
 	/**
 	 * set associated componentHandler
-	 * 
+	 *
 	 * @param handler
 	 */
 	<P extends IComponent<L, A, M>> void setComponentHandler(

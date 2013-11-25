@@ -7,15 +7,10 @@ import org.jacp.javafx.rcp.util.FXUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.TreeSet;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.StampedLock;
 import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,7 +20,7 @@ import java.util.stream.Collectors;
  * Global registry with references to all perspectives
  */
 public class PerspectiveRegistry {
-    private static volatile List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = new ArrayList<>();
+    private static final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = new ArrayList<>();
     private static final StampedLock lock = new StampedLock();
     private static final AtomicReference<String> currentVisiblePerspectiveId = new AtomicReference<>();
 

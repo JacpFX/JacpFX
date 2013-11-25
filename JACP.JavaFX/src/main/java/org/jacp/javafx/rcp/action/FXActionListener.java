@@ -51,8 +51,13 @@ public class FXActionListener implements EventHandler<Event>,
 	@Override
 	public void notifyComponents(final IAction<Event, Object> action) {
         Objects.requireNonNull(action,"action cannot be null");
-        this.globalMessageQueue.add(action);
-	}
+        try {
+            this.globalMessageQueue.put(action);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            //TODO handle exception global
+        }
+    }
 
 	@Override
 	public IAction<Event, Object> getAction() {

@@ -173,7 +173,8 @@ public class TearDownHandler {
             final IStatelessCallabackComponent<EventHandler<Event>, Event, Object>tmp = (IStatelessCallabackComponent<EventHandler<Event>, Event, Object>) component;
             final List<ISubComponent<EventHandler<Event>, Event, Object>> instances = tmp.getInstances();
             for(final ISubComponent<EventHandler<Event>, Event, Object> instance : instances) {
-                set.add(executor.submit(new TearDownWorker(instance)));
+                if(instance.isStarted())
+                    set.add(executor.submit(new TearDownWorker(instance)));
             }
             awaitTermination(set);
             tmp.getExecutorService().shutdownNow();
@@ -182,15 +183,18 @@ public class TearDownHandler {
         } else {
             try {
                 executor.submit(new TearDownWorker(component)).get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
+            } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
             component.interruptWorker();
             component.initEnv(null, null);
             ComponentRegistry.removeComponent(component);
         }
+    }
+
+    public static void executePredestroy(final ISubComponent<EventHandler<Event>, Event, Object> component) {
+        FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
+                component.getComponent());
     }
 
 	private static void log(final String message) {

@@ -85,8 +85,13 @@ public abstract class AFXCoordinator extends Thread implements
 	final void delegateMessageToCorrectPerspective(
             final String target, final IAction<Event, Object> action,
             final BlockingQueue<IDelegateDTO<Event, Object>> queue) {
-		queue.add(new DelegateDTO(target, action));
-	}
+        try {
+            queue.put(new DelegateDTO(target, action));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            //TODO handle exception global
+        }
+    }
 
 	@Override
 	public BlockingQueue<IAction<Event, Object>> getMessageQueue() {
