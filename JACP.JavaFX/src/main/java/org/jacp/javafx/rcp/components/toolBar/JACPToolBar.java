@@ -40,6 +40,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static javafx.geometry.Orientation.HORIZONTAL;
+import static javafx.geometry.Orientation.VERTICAL;
+import static org.jacp.javafx.rcp.util.CSSUtil.CSSConstants.CLASS_JACP_TOOL_BAR;
+
 /**
  * The Class JACPToolBar.
  *
@@ -81,11 +85,11 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
      */
     public JACPToolBar() {
         super();
-        this.getStyleClass().add(CSSUtil.CSSConstants.CLASS_JACP_TOOL_BAR);
+        this.getStyleClass().add(CLASS_JACP_TOOL_BAR);
 
         this.orientationProperty().addListener(this);
         this.getItems().addListener(this);
-        if (this.getOrientation() == Orientation.VERTICAL) {
+        if (this.getOrientation() == VERTICAL) {
             this.initVerticalToolBar();
         } else {
             this.initHorizontalToolBar();
@@ -100,7 +104,7 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
      */
     public void add(String id, final Node node) {
 
-        if (this.getOrientation() == Orientation.HORIZONTAL) {
+        if (this.getOrientation() == HORIZONTAL) {
             HBox.setMargin(node, new Insets(0, 2, 0, 2));
             this.leftButtons.getChildren().add(node);
         } else {
@@ -124,7 +128,7 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
      * @param node the node
      */
     void remove(final Node node) {
-        if (this.getOrientation() == Orientation.HORIZONTAL) {
+        if (this.getOrientation() == HORIZONTAL) {
             this.leftButtons.getChildren().remove(node);
             this.centerButtons.getChildren().remove(node);
             this.rightButtons.getChildren().remove(node);
@@ -161,8 +165,8 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
      * @param node
      *            the node
      */
-    void addToCenter(String id, final Node node) {
-        if (this.getOrientation() == Orientation.HORIZONTAL) {
+    public void addToCenter(String id, final Node node) {
+        if (this.getOrientation() == HORIZONTAL) {
             HBox.setMargin(node, new Insets(0, 2, 0, 2));
             this.centerButtons.getChildren().add(node);
         } else {
@@ -181,7 +185,7 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
      *            the node
      */
     public void addOnEnd(String id, final Node node) {
-        if (this.getOrientation() == Orientation.HORIZONTAL) {
+        if (this.getOrientation() == HORIZONTAL) {
             HBox.setMargin(node, new Insets(0, 2, 0, 2));
             this.rightButtons.getChildren().add(node);
         } else {
@@ -266,7 +270,7 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
     @Override
     public void changed(final ObservableValue<? extends Orientation> arg0, final Orientation oldOrientation, final Orientation newOrientation) {
 
-        if (newOrientation == Orientation.VERTICAL) {
+        if (newOrientation == VERTICAL) {
             this.initVerticalToolBar();
         } else {
             this.initHorizontalToolBar();
@@ -293,7 +297,7 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
      * Bind.
      */
     private void bind() {
-        if (this.getOrientation() == Orientation.HORIZONTAL) {
+        if (this.getOrientation() == HORIZONTAL) {
             if (this.horizontalToolBar != null) {
                 this.horizontalToolBar.maxWidthProperty().bind(this.widthProperty().subtract(this.toolbarPadding));
                 this.horizontalToolBar.minWidthProperty().bind(this.widthProperty().subtract(this.toolbarPadding));
@@ -310,7 +314,7 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
      * Unbind.
      */
     private void unbind() {
-        if (this.getOrientation() == Orientation.HORIZONTAL) {
+        if (this.getOrientation() == HORIZONTAL) {
             if (this.horizontalToolBar != null) {
                 this.horizontalToolBar.maxWidthProperty().unbind();
                 this.horizontalToolBar.minWidthProperty().unbind();
