@@ -63,6 +63,18 @@ public interface IWorkbenchLayout<C> extends IBaseLayout<C> {
 	 */
 	Tupel<Integer, Integer> getWorkbenchSize();
 
+    /**
+     * Register multiple toolbars for the workbench
+     *
+     * All toolbars are added with the same priority, thus the priority is given
+     * by the order of registration.
+     *
+     * @param positions
+     *            - NORTH, WEST, EAST, SOUTH
+     *
+     */
+    void registerToolBars(ToolbarPosition... positions);
+
 	/**
 	 * Register a toolbar for the workbench
 	 * 
@@ -91,5 +103,4 @@ public interface IWorkbenchLayout<C> extends IBaseLayout<C> {
 	 */
 	@SuppressWarnings("rawtypes")
 	<S extends Enum> S getStyle();
-
 }

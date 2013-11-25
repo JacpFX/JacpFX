@@ -321,6 +321,7 @@ public abstract class AFXWorkbench
         LayoutUtil.GridPaneUtil.setFullGrow(Priority.ALWAYS, this.absoluteRoot);
         this.stage.setScene(new Scene(this.base, x, y));
         this.initCSS(this.stage.getScene());
+        SceneUtil.setScene(this.stage.getScene());
 
         // new Layer for Menu Effects
         this.absoluteRoot.getChildren().add(this.glassPane);
