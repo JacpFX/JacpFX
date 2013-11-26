@@ -37,7 +37,7 @@
 <div class="subNav">
 <ul class="navList">
 <li>Prev Class</li>
-<li><a href="../../../../../org/jacp/javafx/rcp/coordinator/DelegateDTO.html" title="class in org.jacp.javafx.rcp.coordinator"><span class="strong">Next Class</span></a></li>
+<li><a href="../../../../../org/jacp/javafx/rcp/coordinator/DelegateDTO.html" title="class in org.jacpfx.rcp.coordinator"><span class="strong">Next Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../../../index.html?org/jacp/javafx/rcp/coordinator/AFXCoordinator.html" target="_top">Frames</a></li>
@@ -79,7 +79,7 @@
 <!-- ========= END OF TOP NAVBAR ========= -->
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<div class="subTitle">org.jacp.javafx.rcp.coordinator</div>
+<div class="subTitle">org.jacpfx.rcp.coordinator</div>
 <h2 title="Class AFXCoordinator" class="title">Class AFXCoordinator</h2>
 </div>
 <div class="contentContainer">
@@ -90,7 +90,7 @@
 <li>java.lang.Thread</li>
 <li>
 <ul class="inheritance">
-<li>org.jacp.javafx.rcp.coordinator.AFXCoordinator</li>
+<li>org.jacpfx.rcp.coordinator.AFXCoordinator</li>
 </ul>
 </li>
 </ul>
@@ -101,17 +101,17 @@
 <li class="blockList">
 <dl>
 <dt>All Implemented Interfaces:</dt>
-<dd>java.lang.Runnable, <a href="../../../../../org/jacp/api/coordinator/ICoordinator.html" title="interface in org.jacp.api.coordinator">ICoordinator</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</dd>
+<dd>java.lang.Runnable, <a href="../../../../../org/jacp/api/coordinator/ICoordinator.html" title="interface in org.jacpfx.api.coordinator">ICoordinator</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</dd>
 </dl>
 <dl>
 <dt>Direct Known Subclasses:</dt>
-<dd><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXComponentCoordinator.html" title="class in org.jacp.javafx.rcp.coordinator">FXComponentCoordinator</a>, <a href="../../../../../org/jacp/javafx/rcp/coordinator/FXPerspectiveCoordinator.html" title="class in org.jacp.javafx.rcp.coordinator">FXPerspectiveCoordinator</a></dd>
+<dd><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXComponentCoordinator.html" title="class in org.jacpfx.rcp.coordinator">FXComponentCoordinator</a>, <a href="../../../../../org/jacp/javafx/rcp/coordinator/FXPerspectiveCoordinator.html" title="class in org.jacpfx.rcp.coordinator">FXPerspectiveCoordinator</a></dd>
 </dl>
 <hr>
 <br>
 <pre>public abstract class <span class="strong">AFXCoordinator</span>
 extends java.lang.Thread
-implements <a href="../../../../../org/jacp/api/coordinator/ICoordinator.html" title="interface in org.jacp.api.coordinator">ICoordinator</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</pre>
+implements <a href="../../../../../org/jacp/api/coordinator/ICoordinator.html" title="interface in org.jacpfx.api.coordinator">ICoordinator</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</pre>
 <div class="block">Observer handles messages and notifies correct components, the observer is
  running in an own thread so that message handling can be done in background</div>
 <dl><dt><span class="strong">Author:</span></dt>
@@ -182,7 +182,7 @@ implements <a href="../../../../../org/jacp/api/coordinator/ICoordinator.html" t
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colFirst"><code>java.util.concurrent.BlockingQueue&lt;<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacp.api.action">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;</code></td>
+<td class="colFirst"><code>java.util.concurrent.BlockingQueue&lt;<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;</code></td>
 <td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/coordinator/AFXCoordinator.html#getMessageQueue()">getMessageQueue</a></strong>()</code>
 <div class="block">Returns the message queue of coordinator.</div>
 </td>
@@ -207,11 +207,11 @@ implements <a href="../../../../../org/jacp/api/coordinator/ICoordinator.html" t
 <code>equals, getClass, hashCode, notify, notifyAll, wait, wait, wait</code></li>
 </ul>
 <ul class="blockList">
-<li class="blockList"><a name="methods_inherited_from_class_org.jacp.api.coordinator.ICoordinator">
+<li class="blockList"><a name="methods_inherited_from_class_org.jacpfx.apicoordinator.ICoordinator">
 <!--   -->
 </a>
-<h3>Methods inherited from interface&nbsp;org.jacp.api.coordinator.<a href="../../../../../org/jacp/api/coordinator/ICoordinator.html" title="interface in org.jacp.api.coordinator">ICoordinator</a></h3>
-<code><a href="../../../../../org/jacp/api/coordinator/ICoordinator.html#getComponentHandler()">getComponentHandler</a>, <a href="../../../../../org/jacp/api/coordinator/ICoordinator.html#handleActive(P, org.jacp.api.action.IAction)">handleActive</a>, <a href="../../../../../org/jacp/api/coordinator/ICoordinator.html#handleInActive(P, org.jacp.api.action.IAction)">handleInActive</a>, <a href="../../../../../org/jacp/api/coordinator/ICoordinator.html#handleMessage(java.lang.String, org.jacp.api.action.IAction)">handleMessage</a>, <a href="../../../../../org/jacp/api/coordinator/ICoordinator.html#setComponentHandler(org.jacp.api.handler.IComponentHandler)">setComponentHandler</a></code></li>
+<h3>Methods inherited from interface&nbsp;org.jacpfx.api.coordinator.<a href="../../../../../org/jacp/api/coordinator/ICoordinator.html" title="interface in org.jacpfx.api.coordinator">ICoordinator</a></h3>
+<code><a href="../../../../../org/jacp/api/coordinator/ICoordinator.html#getComponentHandler()">getComponentHandler</a>, <a href="../../../../../org/jacp/api/coordinator/ICoordinator.html#handleActive(P, org.jacpfx.apiaction.IAction)">handleActive</a>, <a href="../../../../../org/jacp/api/coordinator/ICoordinator.html#handleInActive(P, org.jacpfx.apiaction.IAction)">handleInActive</a>, <a href="../../../../../org/jacp/api/coordinator/ICoordinator.html#handleMessage(java.lang.String, org.jacpfx.apiaction.IAction)">handleMessage</a>, <a href="../../../../../org/jacp/api/coordinator/ICoordinator.html#setComponentHandler(org.jacpfx.api.handler.IComponentHandler)">setComponentHandler</a></code></li>
 </ul>
 </li>
 </ul>
@@ -265,12 +265,12 @@ implements <a href="../../../../../org/jacp/api/coordinator/ICoordinator.html" t
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getMessageQueue</h4>
-<pre>public&nbsp;java.util.concurrent.BlockingQueue&lt;<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacp.api.action">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;getMessageQueue()</pre>
+<pre>public&nbsp;java.util.concurrent.BlockingQueue&lt;<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;getMessageQueue()</pre>
 <div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/coordinator/ICoordinator.html#getMessageQueue()">ICoordinator</a></code></strong></div>
 <div class="block">Returns the message queue of coordinator.</div>
 <dl>
 <dt><strong>Specified by:</strong></dt>
-<dd><code><a href="../../../../../org/jacp/api/coordinator/ICoordinator.html#getMessageQueue()">getMessageQueue</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/coordinator/ICoordinator.html" title="interface in org.jacp.api.coordinator">ICoordinator</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</code></dd>
+<dd><code><a href="../../../../../org/jacp/api/coordinator/ICoordinator.html#getMessageQueue()">getMessageQueue</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/coordinator/ICoordinator.html" title="interface in org.jacpfx.api.coordinator">ICoordinator</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</code></dd>
 <dt><span class="strong">Returns:</span></dt><dd>the message queue</dd></dl>
 </li>
 </ul>
@@ -301,7 +301,7 @@ implements <a href="../../../../../org/jacp/api/coordinator/ICoordinator.html" t
 <div class="subNav">
 <ul class="navList">
 <li>Prev Class</li>
-<li><a href="../../../../../org/jacp/javafx/rcp/coordinator/DelegateDTO.html" title="class in org.jacp.javafx.rcp.coordinator"><span class="strong">Next Class</span></a></li>
+<li><a href="../../../../../org/jacp/javafx/rcp/coordinator/DelegateDTO.html" title="class in org.jacpfx.rcp.coordinator"><span class="strong">Next Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../../../index.html?org/jacp/javafx/rcp/coordinator/AFXCoordinator.html" target="_top">Frames</a></li>

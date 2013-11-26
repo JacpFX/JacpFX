@@ -31,7 +31,7 @@ public class MissconfigWorkbenchIdTest {
     }
 
     private String[] getPerspectiveAnnotations() {
-        org.jacp.api.annotations.workbench.Workbench annotations = WorkbenchMissingPerspectives.class.getAnnotation(org.jacp.api.annotations.workbench.Workbench.class);
+        org.jacpfx.api.annotations.workbench.Workbench annotations = WorkbenchMissingPerspectives.class.getAnnotation(org.jacpfx.api.annotations.workbench.Workbench.class);
         return annotations.perspectives();
     }
 }

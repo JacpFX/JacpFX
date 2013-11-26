@@ -36,7 +36,7 @@
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../../../../org/jacp/api/coordinator/IMessageDelegator.html" title="interface in org.jacp.api.coordinator"><span class="strong">Prev Class</span></a></li>
+<li><a href="../../../../org/jacp/api/coordinator/IMessageDelegator.html" title="interface in org.jacpfx.api.coordinator"><span class="strong">Prev Class</span></a></li>
 <li>Next Class</li>
 </ul>
 <ul class="navList">
@@ -79,7 +79,7 @@
 <!-- ========= END OF TOP NAVBAR ========= -->
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<div class="subTitle">org.jacp.api.coordinator</div>
+<div class="subTitle">org.jacpfx.api.coordinator</div>
 <h2 title="Interface IPerspectiveCoordinator" class="title">Interface IPerspectiveCoordinator&lt;L,A,M&gt;</h2>
 </div>
 <div class="contentContainer">
@@ -89,16 +89,16 @@
 <dl><dt><span class="strong">Type Parameters:</span></dt><dd><code>L</code> - defines the action listener type</dd><dd><code>A</code> - defines the basic action type</dd><dd><code>M</code> - defines the basic message type</dd></dl>
 <dl>
 <dt>All Superinterfaces:</dt>
-<dd><a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="interface in org.jacp.api.coordinator">ICoordinator</a>&lt;L,A,M&gt;</dd>
+<dd><a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="interface in org.jacpfx.api.coordinator">ICoordinator</a>&lt;L,A,M&gt;</dd>
 </dl>
 <dl>
 <dt>All Known Implementing Classes:</dt>
-<dd><a href="../../../../org/jacp/javafx/rcp/coordinator/FXPerspectiveCoordinator.html" title="class in org.jacp.javafx.rcp.coordinator">FXPerspectiveCoordinator</a></dd>
+<dd><a href="../../../../org/jacp/javafx/rcp/coordinator/FXPerspectiveCoordinator.html" title="class in org.jacpfx.rcp.coordinator">FXPerspectiveCoordinator</a></dd>
 </dl>
 <hr>
 <br>
 <pre>public interface <span class="strong">IPerspectiveCoordinator&lt;L,A,M&gt;</span>
-extends <a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="interface in org.jacp.api.coordinator">ICoordinator</a>&lt;L,A,M&gt;</pre>
+extends <a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="interface in org.jacpfx.api.coordinator">ICoordinator</a>&lt;L,A,M&gt;</pre>
 <div class="block">Notifies perspectives and components included in workbench.</div>
 <dl><dt><span class="strong">Author:</span></dt>
   <dd>Andy Moncsek</dd></dl>
@@ -122,23 +122,23 @@ extends <a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><strong><a href="../../../../org/jacp/api/coordinator/IPerspectiveCoordinator.html#addPerspective(org.jacp.api.component.IPerspective)">addPerspective</a></strong>(<a href="../../../../org/jacp/api/component/IPerspective.html" title="interface in org.jacp.api.component">IPerspective</a>&lt;<a href="../../../../org/jacp/api/coordinator/IPerspectiveCoordinator.html" title="type parameter in IPerspectiveCoordinator">L</a>,<a href="../../../../org/jacp/api/coordinator/IPerspectiveCoordinator.html" title="type parameter in IPerspectiveCoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/IPerspectiveCoordinator.html" title="type parameter in IPerspectiveCoordinator">M</a>&gt;&nbsp;perspective)</code>
+<td class="colLast"><code><strong><a href="../../../../org/jacp/api/coordinator/IPerspectiveCoordinator.html#addPerspective(org.jacpfx.apicomponent.IPerspective)">addPerspective</a></strong>(<a href="../../../../org/jacp/api/component/IPerspective.html" title="interface in org.jacpfx.api.component">IPerspective</a>&lt;<a href="../../../../org/jacp/api/coordinator/IPerspectiveCoordinator.html" title="type parameter in IPerspectiveCoordinator">L</a>,<a href="../../../../org/jacp/api/coordinator/IPerspectiveCoordinator.html" title="type parameter in IPerspectiveCoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/IPerspectiveCoordinator.html" title="type parameter in IPerspectiveCoordinator">M</a>&gt;&nbsp;perspective)</code>
 <div class="block">Add the perspective to observe.</div>
 </td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><strong><a href="../../../../org/jacp/api/coordinator/IPerspectiveCoordinator.html#removePerspective(org.jacp.api.component.IPerspective)">removePerspective</a></strong>(<a href="../../../../org/jacp/api/component/IPerspective.html" title="interface in org.jacp.api.component">IPerspective</a>&lt;<a href="../../../../org/jacp/api/coordinator/IPerspectiveCoordinator.html" title="type parameter in IPerspectiveCoordinator">L</a>,<a href="../../../../org/jacp/api/coordinator/IPerspectiveCoordinator.html" title="type parameter in IPerspectiveCoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/IPerspectiveCoordinator.html" title="type parameter in IPerspectiveCoordinator">M</a>&gt;&nbsp;perspective)</code>
+<td class="colLast"><code><strong><a href="../../../../org/jacp/api/coordinator/IPerspectiveCoordinator.html#removePerspective(org.jacpfx.apicomponent.IPerspective)">removePerspective</a></strong>(<a href="../../../../org/jacp/api/component/IPerspective.html" title="interface in org.jacpfx.api.component">IPerspective</a>&lt;<a href="../../../../org/jacp/api/coordinator/IPerspectiveCoordinator.html" title="type parameter in IPerspectiveCoordinator">L</a>,<a href="../../../../org/jacp/api/coordinator/IPerspectiveCoordinator.html" title="type parameter in IPerspectiveCoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/IPerspectiveCoordinator.html" title="type parameter in IPerspectiveCoordinator">M</a>&gt;&nbsp;perspective)</code>
 <div class="block">Remove the perspective; e.g. when perspective is deactivated</div>
 </td>
 </tr>
 </table>
 <ul class="blockList">
-<li class="blockList"><a name="methods_inherited_from_class_org.jacp.api.coordinator.ICoordinator">
+<li class="blockList"><a name="methods_inherited_from_class_org.jacpfx.apicoordinator.ICoordinator">
 <!--   -->
 </a>
-<h3>Methods inherited from interface&nbsp;org.jacp.api.coordinator.<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="interface in org.jacp.api.coordinator">ICoordinator</a></h3>
-<code><a href="../../../../org/jacp/api/coordinator/ICoordinator.html#getComponentHandler()">getComponentHandler</a>, <a href="../../../../org/jacp/api/coordinator/ICoordinator.html#getMessageQueue()">getMessageQueue</a>, <a href="../../../../org/jacp/api/coordinator/ICoordinator.html#handleActive(P, org.jacp.api.action.IAction)">handleActive</a>, <a href="../../../../org/jacp/api/coordinator/ICoordinator.html#handleInActive(P, org.jacp.api.action.IAction)">handleInActive</a>, <a href="../../../../org/jacp/api/coordinator/ICoordinator.html#handleMessage(java.lang.String, org.jacp.api.action.IAction)">handleMessage</a>, <a href="../../../../org/jacp/api/coordinator/ICoordinator.html#setComponentHandler(org.jacp.api.handler.IComponentHandler)">setComponentHandler</a></code></li>
+<h3>Methods inherited from interface&nbsp;org.jacpfx.api.coordinator.<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="interface in org.jacpfx.api.coordinator">ICoordinator</a></h3>
+<code><a href="../../../../org/jacp/api/coordinator/ICoordinator.html#getComponentHandler()">getComponentHandler</a>, <a href="../../../../org/jacp/api/coordinator/ICoordinator.html#getMessageQueue()">getMessageQueue</a>, <a href="../../../../org/jacp/api/coordinator/ICoordinator.html#handleActive(P, org.jacpfx.apiaction.IAction)">handleActive</a>, <a href="../../../../org/jacp/api/coordinator/ICoordinator.html#handleInActive(P, org.jacpfx.apiaction.IAction)">handleInActive</a>, <a href="../../../../org/jacp/api/coordinator/ICoordinator.html#handleMessage(java.lang.String, org.jacpfx.apiaction.IAction)">handleMessage</a>, <a href="../../../../org/jacp/api/coordinator/ICoordinator.html#setComponentHandler(org.jacpfx.api.handler.IComponentHandler)">setComponentHandler</a></code></li>
 </ul>
 </li>
 </ul>
@@ -154,24 +154,24 @@ extends <a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a name="addPerspective(org.jacp.api.component.IPerspective)">
+<a name="addPerspective(org.jacpfx.apicomponent.IPerspective)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>addPerspective</h4>
-<pre>void&nbsp;addPerspective(<a href="../../../../org/jacp/api/component/IPerspective.html" title="interface in org.jacp.api.component">IPerspective</a>&lt;<a href="../../../../org/jacp/api/coordinator/IPerspectiveCoordinator.html" title="type parameter in IPerspectiveCoordinator">L</a>,<a href="../../../../org/jacp/api/coordinator/IPerspectiveCoordinator.html" title="type parameter in IPerspectiveCoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/IPerspectiveCoordinator.html" title="type parameter in IPerspectiveCoordinator">M</a>&gt;&nbsp;perspective)</pre>
+<pre>void&nbsp;addPerspective(<a href="../../../../org/jacp/api/component/IPerspective.html" title="interface in org.jacpfx.api.component">IPerspective</a>&lt;<a href="../../../../org/jacp/api/coordinator/IPerspectiveCoordinator.html" title="type parameter in IPerspectiveCoordinator">L</a>,<a href="../../../../org/jacp/api/coordinator/IPerspectiveCoordinator.html" title="type parameter in IPerspectiveCoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/IPerspectiveCoordinator.html" title="type parameter in IPerspectiveCoordinator">M</a>&gt;&nbsp;perspective)</pre>
 <div class="block">Add the perspective to observe.</div>
 <dl><dt><span class="strong">Parameters:</span></dt><dd><code>perspective</code> - </dd></dl>
 </li>
 </ul>
-<a name="removePerspective(org.jacp.api.component.IPerspective)">
+<a name="removePerspective(org.jacpfx.apicomponent.IPerspective)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>removePerspective</h4>
-<pre>void&nbsp;removePerspective(<a href="../../../../org/jacp/api/component/IPerspective.html" title="interface in org.jacp.api.component">IPerspective</a>&lt;<a href="../../../../org/jacp/api/coordinator/IPerspectiveCoordinator.html" title="type parameter in IPerspectiveCoordinator">L</a>,<a href="../../../../org/jacp/api/coordinator/IPerspectiveCoordinator.html" title="type parameter in IPerspectiveCoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/IPerspectiveCoordinator.html" title="type parameter in IPerspectiveCoordinator">M</a>&gt;&nbsp;perspective)</pre>
+<pre>void&nbsp;removePerspective(<a href="../../../../org/jacp/api/component/IPerspective.html" title="interface in org.jacpfx.api.component">IPerspective</a>&lt;<a href="../../../../org/jacp/api/coordinator/IPerspectiveCoordinator.html" title="type parameter in IPerspectiveCoordinator">L</a>,<a href="../../../../org/jacp/api/coordinator/IPerspectiveCoordinator.html" title="type parameter in IPerspectiveCoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/IPerspectiveCoordinator.html" title="type parameter in IPerspectiveCoordinator">M</a>&gt;&nbsp;perspective)</pre>
 <div class="block">Remove the perspective; e.g. when perspective is deactivated</div>
 <dl><dt><span class="strong">Parameters:</span></dt><dd><code>perspective</code> - </dd></dl>
 </li>
@@ -202,7 +202,7 @@ extends <a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../../../../org/jacp/api/coordinator/IMessageDelegator.html" title="interface in org.jacp.api.coordinator"><span class="strong">Prev Class</span></a></li>
+<li><a href="../../../../org/jacp/api/coordinator/IMessageDelegator.html" title="interface in org.jacpfx.api.coordinator"><span class="strong">Prev Class</span></a></li>
 <li>Next Class</li>
 </ul>
 <ul class="navList">

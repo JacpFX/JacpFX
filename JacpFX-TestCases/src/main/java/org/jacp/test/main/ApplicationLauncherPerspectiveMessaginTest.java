@@ -26,8 +26,8 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import org.jacp.javafx.rcp.workbench.FXWorkbench;
-import org.jacp.project.launcher.AFXSpringLauncher;
+import org.jacpfx.rcp.workbench.FXWorkbench;
+import org.jacpfx.spring.launcher.AFXSpringLauncher;
 import org.jacp.test.workbench.WorkbenchPerspectiveMessageTesting;
 
 import java.net.URL;

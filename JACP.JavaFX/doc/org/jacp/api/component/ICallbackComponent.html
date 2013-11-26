@@ -37,7 +37,7 @@
 <div class="subNav">
 <ul class="navList">
 <li>Prev Class</li>
-<li><a href="../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacp.api.component"><span class="strong">Next Class</span></a></li>
+<li><a href="../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component"><span class="strong">Next Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../../index.html?org/jacp/api/component/ICallbackComponent.html" target="_top">Frames</a></li>
@@ -79,7 +79,7 @@
 <!-- ========= END OF TOP NAVBAR ========= -->
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<div class="subTitle">org.jacp.api.component</div>
+<div class="subTitle">org.jacpfx.api.component</div>
 <h2 title="Interface ICallbackComponent" class="title">Interface ICallbackComponent&lt;L,A,M&gt;</h2>
 </div>
 <div class="contentContainer">
@@ -89,20 +89,20 @@
 <dl><dt><span class="strong">Type Parameters:</span></dt><dd><code>L</code> - defines the action listener type</dd><dd><code>A</code> - defines the basic action type</dd><dd><code>M</code> - defines the basic message type</dd></dl>
 <dl>
 <dt>All Superinterfaces:</dt>
-<dd>java.lang.Cloneable, <a href="../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacp.api.component">IComponent</a>&lt;L,A,M&gt;, <a href="../../../../org/jacp/api/component/IHandleable.html" title="interface in org.jacp.api.component">IHandleable</a>&lt;A,M&gt;, <a href="../../../../org/jacp/api/component/ISubComponent.html" title="interface in org.jacp.api.component">ISubComponent</a>&lt;L,A,M&gt;</dd>
+<dd>java.lang.Cloneable, <a href="../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;L,A,M&gt;, <a href="../../../../org/jacp/api/component/IHandleable.html" title="interface in org.jacpfx.api.component">IHandleable</a>&lt;A,M&gt;, <a href="../../../../org/jacp/api/component/ISubComponent.html" title="interface in org.jacpfx.api.component">ISubComponent</a>&lt;L,A,M&gt;</dd>
 </dl>
 <dl>
 <dt>All Known Subinterfaces:</dt>
-<dd><a href="../../../../org/jacp/api/component/IStatelessCallabackComponent.html" title="interface in org.jacp.api.component">IStatelessCallabackComponent</a>&lt;L,A,M&gt;</dd>
+<dd><a href="../../../../org/jacp/api/component/IStatelessCallabackComponent.html" title="interface in org.jacpfx.api.component">IStatelessCallabackComponent</a>&lt;L,A,M&gt;</dd>
 </dl>
 <dl>
 <dt>All Known Implementing Classes:</dt>
-<dd><a href="../../../../org/jacp/javafx/rcp/component/AStatefulCallbackComponent.html" title="class in org.jacp.javafx.rcp.component">AStatefulCallbackComponent</a>, <a href="../../../../org/jacp/javafx/rcp/component/AStatelessCallbackComponent.html" title="class in org.jacp.javafx.rcp.component">AStatelessCallbackComponent</a></dd>
+<dd><a href="../../../../org/jacp/javafx/rcp/component/AStatefulCallbackComponent.html" title="class in org.jacpfx.rcp.component">AStatefulCallbackComponent</a>, <a href="../../../../org/jacp/javafx/rcp/component/AStatelessCallbackComponent.html" title="class in org.jacpfx.rcp.component">AStatelessCallbackComponent</a></dd>
 </dl>
 <hr>
 <br>
 <pre>public interface <span class="strong">ICallbackComponent&lt;L,A,M&gt;</span>
-extends <a href="../../../../org/jacp/api/component/ISubComponent.html" title="interface in org.jacp.api.component">ISubComponent</a>&lt;L,A,M&gt;, java.lang.Cloneable</pre>
+extends <a href="../../../../org/jacp/api/component/ISubComponent.html" title="interface in org.jacpfx.api.component">ISubComponent</a>&lt;L,A,M&gt;, java.lang.Cloneable</pre>
 <div class="block">This interface defines methods for background/callback non UI components. It
  acts like a typical component with a handle method but the return value must
  not be a graphical component. This component is stateful, this means you can
@@ -147,25 +147,25 @@ extends <a href="../../../../org/jacp/api/component/ISubComponent.html" title="i
 </tr>
 </table>
 <ul class="blockList">
-<li class="blockList"><a name="methods_inherited_from_class_org.jacp.api.component.ISubComponent">
+<li class="blockList"><a name="methods_inherited_from_class_org.jacpfx.apicomponent.ISubComponent">
 <!--   -->
 </a>
-<h3>Methods inherited from interface&nbsp;org.jacp.api.component.<a href="../../../../org/jacp/api/component/ISubComponent.html" title="interface in org.jacp.api.component">ISubComponent</a></h3>
-<code><a href="../../../../org/jacp/api/component/ISubComponent.html#getExecutionTarget()">getExecutionTarget</a>, <a href="../../../../org/jacp/api/component/ISubComponent.html#getNextIncomingMessage()">getNextIncomingMessage</a>, <a href="../../../../org/jacp/api/component/ISubComponent.html#getParentId()">getParentId</a>, <a href="../../../../org/jacp/api/component/ISubComponent.html#hasIncomingMessage()">hasIncomingMessage</a>, <a href="../../../../org/jacp/api/component/ISubComponent.html#initEnv(java.lang.String, java.util.concurrent.BlockingQueue)">initEnv</a>, <a href="../../../../org/jacp/api/component/ISubComponent.html#isBlocked()">isBlocked</a>, <a href="../../../../org/jacp/api/component/ISubComponent.html#lock()">lock</a>, <a href="../../../../org/jacp/api/component/ISubComponent.html#putIncomingMessage(org.jacp.api.action.IAction)">putIncomingMessage</a>, <a href="../../../../org/jacp/api/component/ISubComponent.html#release()">release</a>, <a href="../../../../org/jacp/api/component/ISubComponent.html#setExecutionTarget(java.lang.String)">setExecutionTarget</a></code></li>
+<h3>Methods inherited from interface&nbsp;org.jacpfx.api.component.<a href="../../../../org/jacp/api/component/ISubComponent.html" title="interface in org.jacpfx.api.component">ISubComponent</a></h3>
+<code><a href="../../../../org/jacp/api/component/ISubComponent.html#getExecutionTarget()">getExecutionTarget</a>, <a href="../../../../org/jacp/api/component/ISubComponent.html#getNextIncomingMessage()">getNextIncomingMessage</a>, <a href="../../../../org/jacp/api/component/ISubComponent.html#getParentId()">getParentId</a>, <a href="../../../../org/jacp/api/component/ISubComponent.html#hasIncomingMessage()">hasIncomingMessage</a>, <a href="../../../../org/jacp/api/component/ISubComponent.html#initEnv(java.lang.String, java.util.concurrent.BlockingQueue)">initEnv</a>, <a href="../../../../org/jacp/api/component/ISubComponent.html#isBlocked()">isBlocked</a>, <a href="../../../../org/jacp/api/component/ISubComponent.html#lock()">lock</a>, <a href="../../../../org/jacp/api/component/ISubComponent.html#putIncomingMessage(org.jacpfx.apiaction.IAction)">putIncomingMessage</a>, <a href="../../../../org/jacp/api/component/ISubComponent.html#release()">release</a>, <a href="../../../../org/jacp/api/component/ISubComponent.html#setExecutionTarget(java.lang.String)">setExecutionTarget</a></code></li>
 </ul>
 <ul class="blockList">
-<li class="blockList"><a name="methods_inherited_from_class_org.jacp.api.component.IComponent">
+<li class="blockList"><a name="methods_inherited_from_class_org.jacpfx.apicomponent.IComponent">
 <!--   -->
 </a>
-<h3>Methods inherited from interface&nbsp;org.jacp.api.component.<a href="../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacp.api.component">IComponent</a></h3>
+<h3>Methods inherited from interface&nbsp;org.jacpfx.api.component.<a href="../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a></h3>
 <code><a href="../../../../org/jacp/api/component/IComponent.html#getActionListener(M)">getActionListener</a>, <a href="../../../../org/jacp/api/component/IComponent.html#getActionListener(java.lang.String, M)">getActionListener</a>, <a href="../../../../org/jacp/api/component/IComponent.html#getId()">getId</a>, <a href="../../../../org/jacp/api/component/IComponent.html#getName()">getName</a>, <a href="../../../../org/jacp/api/component/IComponent.html#isActive()">isActive</a>, <a href="../../../../org/jacp/api/component/IComponent.html#isStarted()">isStarted</a>, <a href="../../../../org/jacp/api/component/IComponent.html#setActive(boolean)">setActive</a>, <a href="../../../../org/jacp/api/component/IComponent.html#setId(java.lang.String)">setId</a>, <a href="../../../../org/jacp/api/component/IComponent.html#setName(java.lang.String)">setName</a></code></li>
 </ul>
 <ul class="blockList">
-<li class="blockList"><a name="methods_inherited_from_class_org.jacp.api.component.IHandleable">
+<li class="blockList"><a name="methods_inherited_from_class_org.jacpfx.apicomponent.IHandleable">
 <!--   -->
 </a>
-<h3>Methods inherited from interface&nbsp;org.jacp.api.component.<a href="../../../../org/jacp/api/component/IHandleable.html" title="interface in org.jacp.api.component">IHandleable</a></h3>
-<code><a href="../../../../org/jacp/api/component/IHandleable.html#handle(org.jacp.api.action.IAction)">handle</a></code></li>
+<h3>Methods inherited from interface&nbsp;org.jacpfx.api.component.<a href="../../../../org/jacp/api/component/IHandleable.html" title="interface in org.jacpfx.api.component">IHandleable</a></h3>
+<code><a href="../../../../org/jacp/api/component/IHandleable.html#handle(org.jacpfx.apiaction.IAction)">handle</a></code></li>
 </ul>
 </li>
 </ul>
@@ -234,7 +234,7 @@ extends <a href="../../../../org/jacp/api/component/ISubComponent.html" title="i
 <div class="subNav">
 <ul class="navList">
 <li>Prev Class</li>
-<li><a href="../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacp.api.component"><span class="strong">Next Class</span></a></li>
+<li><a href="../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component"><span class="strong">Next Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../../index.html?org/jacp/api/component/ICallbackComponent.html" target="_top">Frames</a></li>

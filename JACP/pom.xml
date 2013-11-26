@@ -1,17 +1,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.jacp.project</groupId>
+	<groupId>org.jacpfx</groupId>
 	<artifactId>JACP</artifactId>
-	<version>1.4-SNAPSHOT</version>
+	<version>2.0-ALPHA-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>JACP Project</name>
-	<url>http://code.google.com/p/jacp/</url>
+	<name>JACPFX Project</name>
+	<url>https://github.com/JacpFX/JacpFX</url>
 
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.version>3.0.5.RELEASE</spring.version>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
 	</properties>
@@ -59,25 +58,6 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
-<!--			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>2.10</version>
-				<executions>
-					<execution>
-						<phase>verify</phase>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<xrefLocation>${basedir}/xref</xrefLocation>
-					<enableRulesSummary>false</enableRulesSummary>
-					<configLocation>checkstyle.xml</configLocation>
-					<headerLocation>checkstyle-license.txt</headerLocation>
-				</configuration>
-			</plugin>-->
 
 		</plugins>
         <pluginManagement>
@@ -97,21 +77,6 @@
             </plugins>
         </pluginManagement>
 	</build>
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>2.9.1</version>
-				<configuration>
-					<xrefLocation>${basedir}/xref</xrefLocation>
-					<enableRulesSummary>false</enableRulesSummary>
-					<configLocation>checkstyle.xml</configLocation>
-					<headerLocation>checkstyle-license.txt</headerLocation>
-				</configuration>
-			</plugin>
-		</plugins>
-	</reporting>
 	<distributionManagement>
 		<repository>
 			<id>jacp</id>

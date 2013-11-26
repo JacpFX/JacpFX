@@ -3,16 +3,16 @@ package org.jacp.test.workbench;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import org.jacp.api.action.IAction;
-import org.jacp.api.annotations.perspective.Perspective;
-import org.jacp.api.component.IPerspective;
-import org.jacp.api.component.ISubComponent;
-import org.jacp.api.component.Injectable;
-import org.jacp.api.context.Context;
-import org.jacp.api.handler.IComponentHandler;
-import org.jacp.javafx.rcp.registry.ClassRegistry;
-import org.jacp.javafx.rcp.workbench.AFXWorkbench;
-import org.jacp.javafx.rcp.workbench.FXWorkbench;
+import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.annotations.perspective.Perspective;
+import org.jacpfx.api.component.IPerspective;
+import org.jacpfx.api.component.ISubComponent;
+import org.jacpfx.api.component.Injectable;
+import org.jacpfx.api.context.Context;
+import org.jacpfx.api.handler.IComponentHandler;
+import org.jacpfx.rcp.registry.ClassRegistry;
+import org.jacpfx.rcp.workbench.AFXWorkbench;
+import org.jacpfx.rcp.workbench.FXWorkbench;
 import org.jacp.test.AllTests;
 import org.jacp.test.main.ApplicationLauncher;
 import org.junit.AfterClass;
@@ -117,7 +117,7 @@ public class BasicInitialisationTests {
     }
 
     private String[] getPerspectiveAnnotations() {
-        org.jacp.api.annotations.workbench.Workbench annotations = Workbench.class.getAnnotation(org.jacp.api.annotations.workbench.Workbench.class);
+        org.jacpfx.api.annotations.workbench.Workbench annotations = Workbench.class.getAnnotation(org.jacpfx.api.annotations.workbench.Workbench.class);
         return annotations.perspectives();
     }
 

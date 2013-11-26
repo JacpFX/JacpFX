@@ -97,11 +97,13 @@ java.lang.Object
       <IMG SRC="../../../../../resources/inherit.gif" ALT="extended by "><B>org.jacp.javafx2.rcp.coordinator.FX2MessageDelegator</B>
 </PRE>
 <DL>
-<DT><B>All Implemented Interfaces:</B> <DD>java.lang.Runnable, org.jacp.api.coordinator.IDelegator&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;, org.jacp.api.coordinator.IMessageDelegator&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</DD>
+<DT><B>All Implemented Interfaces:</B> <DD>java.lang.Runnable, org.jacpfx.api.coordinator.IDelegator&amp;amp;lt;javafx.event.EventHandler&amp;amp;lt;javafx.event.Event&amp;amp;gt;,javafx.event.Event,java.lang.Object&amp;amp;gt;,
+    org.jacpfx.api.coordinator.IMessageDelegator&amp;amp;lt;javafx.event.EventHandler&amp;amp;lt;javafx.event.Event&amp;amp;gt;,javafx.event.Event,java.lang.Object&amp;amp;gt;</DD>
 </DL>
 <HR>
 <DL>
-<DT><PRE>public class <B>FX2MessageDelegator</B><DT>extends java.lang.Thread<DT>implements org.jacp.api.coordinator.IMessageDelegator&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</DL>
+<DT><PRE>public class <B>FX2MessageDelegator</B><DT>extends java.lang.Thread<DT>implements
+    org.jacpfx.api.coordinator.IMessageDelegator&amp;lt;javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,javafx.event.Event,java.lang.Object&amp;gt;</DL>
 </PRE>
 
 <P>
@@ -181,7 +183,7 @@ The message delegator handles messages from one perspective to an other.
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/coordinator/FX2MessageDelegator.html#addPerspective(org.jacp.api.perspective.IPerspective)">addPerspective</A></B>(org.jacp.api.perspective.IPerspective&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;perspective)</CODE>
+<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/coordinator/FX2MessageDelegator.html#addPerspective(org.jacpfx.apiperspective.IPerspective)">addPerspective</A></B>(org.jacpfx.apiperspective.IPerspective&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;perspective)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -189,14 +191,14 @@ The message delegator handles messages from one perspective to an other.
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/coordinator/FX2MessageDelegator.html#delegateMessage(org.jacp.api.action.IDelegateDTO)">delegateMessage</A></B>(org.jacp.api.action.IDelegateDTO&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;messageDTO)</CODE>
+<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/coordinator/FX2MessageDelegator.html#delegateMessage(org.jacpfx.apiaction.IDelegateDTO)">delegateMessage</A></B>(org.jacpfx.api.action.IDelegateDTO&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;messageDTO)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;java.util.concurrent.BlockingQueue&lt;org.jacp.api.action.IDelegateDTO&lt;javafx.event.Event,java.lang.Object&gt;&gt;</CODE></FONT></TD>
+<CODE>&amp;nbsp;java.util.concurrent.BlockingQueue&amp;lt;org.jacpfx.api.action.IDelegateDTO&amp;lt;javafx.event.Event,java.lang.Object&amp;gt;&amp;gt;</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/coordinator/FX2MessageDelegator.html#getComponentDelegateQueue()">getComponentDelegateQueue</A></B>()</CODE>
 
 <BR>
@@ -204,7 +206,7 @@ The message delegator handles messages from one perspective to an other.
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;java.util.concurrent.BlockingQueue&lt;org.jacp.api.action.IDelegateDTO&lt;javafx.event.Event,java.lang.Object&gt;&gt;</CODE></FONT></TD>
+<CODE>&amp;nbsp;java.util.concurrent.BlockingQueue&amp;lt;org.jacpfx.api.action.IDelegateDTO&amp;lt;javafx.event.Event,java.lang.Object&amp;gt;&amp;gt;</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/coordinator/FX2MessageDelegator.html#getMessageDelegateQueue()">getMessageDelegateQueue</A></B>()</CODE>
 
 <BR>
@@ -216,14 +218,14 @@ The message delegator handles messages from one perspective to an other.
 <TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" SUMMARY="">
 <TR ALIGN="right" VALIGN="">
 <TD NOWRAP><FONT SIZE="-1">
-<CODE>&lt;P extends org.jacp.api.component.IComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt; 
+<CODE>&lt;P extends org.jacpfx.api.component.IComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt;
 <BR>
 void</CODE></FONT></TD>
 </TR>
 </TABLE>
 </CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/coordinator/FX2MessageDelegator.html#handleInActivePerspective(P, org.jacp.api.action.IAction)">handleInActivePerspective</A></B>(P&nbsp;component,
-                          org.jacp.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</CODE>
+<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/coordinator/FX2MessageDelegator.html#handleInActivePerspective(P, org.jacpfx.apiaction.IAction)">handleInActivePerspective</A></B>(P&nbsp;component,
+                          org.jacpfx.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -231,8 +233,8 @@ void</CODE></FONT></TD>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/coordinator/FX2MessageDelegator.html#handleMessage(java.lang.String, org.jacp.api.action.IAction)">handleMessage</A></B>(java.lang.String&nbsp;target,
-              org.jacp.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</CODE>
+<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/coordinator/FX2MessageDelegator.html#handleMessage(java.lang.String, org.jacpfx.apiaction.IAction)">handleMessage</A></B>(java.lang.String&nbsp;target,
+              org.jacpfx.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -240,7 +242,7 @@ void</CODE></FONT></TD>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/coordinator/FX2MessageDelegator.html#removePerspective(org.jacp.api.perspective.IPerspective)">removePerspective</A></B>(org.jacp.api.perspective.IPerspective&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;perspective)</CODE>
+<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/coordinator/FX2MessageDelegator.html#removePerspective(org.jacpfx.apiperspective.IPerspective)">removePerspective</A></B>(org.jacpfx.apiperspective.IPerspective&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;perspective)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -256,7 +258,7 @@ void</CODE></FONT></TD>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/coordinator/FX2MessageDelegator.html#setComponentDelegateQueue(java.util.concurrent.BlockingQueue)">setComponentDelegateQueue</A></B>(java.util.concurrent.BlockingQueue&lt;org.jacp.api.action.IDelegateDTO&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;componentDelegateQueue)</CODE>
+<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/coordinator/FX2MessageDelegator.html#setComponentDelegateQueue(java.util.concurrent.BlockingQueue)">setComponentDelegateQueue</A></B>(java.util.concurrent.BlockingQueue&lt;org.jacpfx.api.action.IDelegateDTO&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;componentDelegateQueue)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -267,13 +269,13 @@ void</CODE></FONT></TD>
 <TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" SUMMARY="">
 <TR ALIGN="right" VALIGN="">
 <TD NOWRAP><FONT SIZE="-1">
-<CODE>&lt;P extends org.jacp.api.component.IComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt; 
+<CODE>&lt;P extends org.jacpfx.api.component.IComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt;
 <BR>
 void</CODE></FONT></TD>
 </TR>
 </TABLE>
 </CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/coordinator/FX2MessageDelegator.html#setComponentHandler(org.jacp.api.handler.IComponentHandler)">setComponentHandler</A></B>(org.jacp.api.handler.IComponentHandler&lt;P,org.jacp.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;handler)</CODE>
+<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/coordinator/FX2MessageDelegator.html#setComponentHandler(org.jacpfx.api.handler.IComponentHandler)">setComponentHandler</A></B>(org.jacpfx.api.handler.IComponentHandler&lt;P,org.jacpfx.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;handler)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -341,11 +343,11 @@ public final void <B>run</B>()</PRE>
 </DL>
 <HR>
 
-<A NAME="handleMessage(java.lang.String, org.jacp.api.action.IAction)"><!-- --></A><H3>
+<A NAME="handleMessage(java.lang.String, org.jacpfx.apiaction.IAction)"><!-- --></A><H3>
 handleMessage</H3>
 <PRE>
 public void <B>handleMessage</B>(java.lang.String&nbsp;target,
-                          org.jacp.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</PRE>
+                          org.jacpfx.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</PRE>
 <DL>
 <DD><DL>
 </DL>
@@ -356,11 +358,11 @@ public void <B>handleMessage</B>(java.lang.String&nbsp;target,
 </DL>
 <HR>
 
-<A NAME="handleInActivePerspective(org.jacp.api.component.IComponent,org.jacp.api.action.IAction)"><!-- --></A><A NAME="handleInActivePerspective(P, org.jacp.api.action.IAction)"><!-- --></A><H3>
+<A NAME="handleInActivePerspective(org.jacpfx.apicomponent.IComponent,org.jacpfx.apiaction.IAction)"><!-- --></A><A NAME="handleInActivePerspective(P, org.jacpfx.apiaction.IAction)"><!-- --></A><H3>
 handleInActivePerspective</H3>
 <PRE>
-public &lt;P extends org.jacp.api.component.IComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt; void <B>handleInActivePerspective</B>(P&nbsp;component,
-                                                                                                                                                                       org.jacp.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</PRE>
+public &lt;P extends org.jacpfx.api.component.IComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt; void <B>handleInActivePerspective</B>(P&nbsp;component,
+                                                                                                                                                                       org.jacpfx.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</PRE>
 <DL>
 <DD><DL>
 </DL>
@@ -374,7 +376,7 @@ public &lt;P extends org.jacp.api.component.IComponent&lt;javafx.event.EventHand
 <A NAME="getComponentDelegateQueue()"><!-- --></A><H3>
 getComponentDelegateQueue</H3>
 <PRE>
-public java.util.concurrent.BlockingQueue&lt;org.jacp.api.action.IDelegateDTO&lt;javafx.event.Event,java.lang.Object&gt;&gt; <B>getComponentDelegateQueue</B>()</PRE>
+public java.util.concurrent.BlockingQueue&lt;org.jacpfx.api.action.IDelegateDTO&lt;javafx.event.Event,java.lang.Object&gt;&gt; <B>getComponentDelegateQueue</B>()</PRE>
 <DL>
 <DD><DL>
 </DL>
@@ -388,7 +390,7 @@ public java.util.concurrent.BlockingQueue&lt;org.jacp.api.action.IDelegateDTO&lt
 <A NAME="setComponentDelegateQueue(java.util.concurrent.BlockingQueue)"><!-- --></A><H3>
 setComponentDelegateQueue</H3>
 <PRE>
-public void <B>setComponentDelegateQueue</B>(java.util.concurrent.BlockingQueue&lt;org.jacp.api.action.IDelegateDTO&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;componentDelegateQueue)</PRE>
+public void <B>setComponentDelegateQueue</B>(java.util.concurrent.BlockingQueue&lt;org.jacpfx.api.action.IDelegateDTO&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;componentDelegateQueue)</PRE>
 <DL>
 <DD><DL>
 </DL>
@@ -399,13 +401,13 @@ public void <B>setComponentDelegateQueue</B>(java.util.concurrent.BlockingQueue&
 </DL>
 <HR>
 
-<A NAME="delegateMessage(org.jacp.api.action.IDelegateDTO)"><!-- --></A><H3>
+<A NAME="delegateMessage(org.jacpfx.apiaction.IDelegateDTO)"><!-- --></A><H3>
 delegateMessage</H3>
 <PRE>
-public void <B>delegateMessage</B>(org.jacp.api.action.IDelegateDTO&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;messageDTO)</PRE>
+public void <B>delegateMessage</B>(org.jacpfx.api.action.IDelegateDTO&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;messageDTO)</PRE>
 <DL>
 <DD><DL>
-<DT><B>Specified by:</B><DD><CODE>delegateMessage</CODE> in interface <CODE>org.jacp.api.coordinator.IMessageDelegator&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</CODE></DL>
+<DT><B>Specified by:</B><DD><CODE>delegateMessage</CODE> in interface <CODE>org.jacpfx.api.coordinator.IMessageDelegator&amp;lt;javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,javafx.event.Event,java.lang.Object&amp;gt;</CODE></DL>
 </DD>
 <DD><DL>
 </DL>
@@ -413,13 +415,13 @@ public void <B>delegateMessage</B>(org.jacp.api.action.IDelegateDTO&lt;javafx.ev
 </DL>
 <HR>
 
-<A NAME="addPerspective(org.jacp.api.perspective.IPerspective)"><!-- --></A><H3>
+<A NAME="addPerspective(org.jacpfx.apiperspective.IPerspective)"><!-- --></A><H3>
 addPerspective</H3>
 <PRE>
-public void <B>addPerspective</B>(org.jacp.api.perspective.IPerspective&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;perspective)</PRE>
+public void <B>addPerspective</B>(org.jacpfx.apiperspective.IPerspective&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;perspective)</PRE>
 <DL>
 <DD><DL>
-<DT><B>Specified by:</B><DD><CODE>addPerspective</CODE> in interface <CODE>org.jacp.api.coordinator.IDelegator&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</CODE></DL>
+<DT><B>Specified by:</B><DD><CODE>addPerspective</CODE> in interface <CODE>org.jacpfx.api.coordinator.IDelegator&amp;lt;javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,javafx.event.Event,java.lang.Object&amp;gt;</CODE></DL>
 </DD>
 <DD><DL>
 </DL>
@@ -427,13 +429,13 @@ public void <B>addPerspective</B>(org.jacp.api.perspective.IPerspective&lt;javaf
 </DL>
 <HR>
 
-<A NAME="removePerspective(org.jacp.api.perspective.IPerspective)"><!-- --></A><H3>
+<A NAME="removePerspective(org.jacpfx.apiperspective.IPerspective)"><!-- --></A><H3>
 removePerspective</H3>
 <PRE>
-public void <B>removePerspective</B>(org.jacp.api.perspective.IPerspective&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;perspective)</PRE>
+public void <B>removePerspective</B>(org.jacpfx.apiperspective.IPerspective&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;perspective)</PRE>
 <DL>
 <DD><DL>
-<DT><B>Specified by:</B><DD><CODE>removePerspective</CODE> in interface <CODE>org.jacp.api.coordinator.IDelegator&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</CODE></DL>
+<DT><B>Specified by:</B><DD><CODE>removePerspective</CODE> in interface <CODE>org.jacpfx.api.coordinator.IDelegator&amp;lt;javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,javafx.event.Event,java.lang.Object&amp;gt;</CODE></DL>
 </DD>
 <DD><DL>
 </DL>
@@ -441,13 +443,13 @@ public void <B>removePerspective</B>(org.jacp.api.perspective.IPerspective&lt;ja
 </DL>
 <HR>
 
-<A NAME="setComponentHandler(org.jacp.api.handler.IComponentHandler)"><!-- --></A><H3>
+<A NAME="setComponentHandler(org.jacpfx.api.handler.IComponentHandler)"><!-- --></A><H3>
 setComponentHandler</H3>
 <PRE>
-public &lt;P extends org.jacp.api.component.IComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt; void <B>setComponentHandler</B>(org.jacp.api.handler.IComponentHandler&lt;P,org.jacp.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;handler)</PRE>
+public &lt;P extends org.jacpfx.api.component.IComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt; void <B>setComponentHandler</B>(org.jacpfx.api.handler.IComponentHandler&lt;P,org.jacpfx.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;handler)</PRE>
 <DL>
 <DD><DL>
-<DT><B>Specified by:</B><DD><CODE>setComponentHandler</CODE> in interface <CODE>org.jacp.api.coordinator.IDelegator&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</CODE></DL>
+<DT><B>Specified by:</B><DD><CODE>setComponentHandler</CODE> in interface <CODE>org.jacpfx.api.coordinator.IDelegator&amp;lt;javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,javafx.event.Event,java.lang.Object&amp;gt;</CODE></DL>
 </DD>
 <DD><DL>
 </DL>
@@ -458,10 +460,10 @@ public &lt;P extends org.jacp.api.component.IComponent&lt;javafx.event.EventHand
 <A NAME="getMessageDelegateQueue()"><!-- --></A><H3>
 getMessageDelegateQueue</H3>
 <PRE>
-public java.util.concurrent.BlockingQueue&lt;org.jacp.api.action.IDelegateDTO&lt;javafx.event.Event,java.lang.Object&gt;&gt; <B>getMessageDelegateQueue</B>()</PRE>
+public java.util.concurrent.BlockingQueue&lt;org.jacpfx.api.action.IDelegateDTO&lt;javafx.event.Event,java.lang.Object&gt;&gt; <B>getMessageDelegateQueue</B>()</PRE>
 <DL>
 <DD><DL>
-<DT><B>Specified by:</B><DD><CODE>getMessageDelegateQueue</CODE> in interface <CODE>org.jacp.api.coordinator.IMessageDelegator&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</CODE></DL>
+<DT><B>Specified by:</B><DD><CODE>getMessageDelegateQueue</CODE> in interface <CODE>org.jacpfx.api.coordinator.IMessageDelegator&amp;lt;javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,javafx.event.Event,java.lang.Object&amp;gt;</CODE></DL>
 </DD>
 <DD><DL>
 </DL>

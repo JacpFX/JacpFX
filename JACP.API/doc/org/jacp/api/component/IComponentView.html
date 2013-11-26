@@ -42,8 +42,8 @@ var activeTableTab = "activeTableTab";
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../../../../org/jacp/api/component/IComponentHandle.html" title="interface in org.jacp.api.component"><span class="strong">Prev Class</span></a></li>
-<li><a href="../../../../org/jacp/api/component/IDeclarative.html" title="interface in org.jacp.api.component"><span class="strong">Next Class</span></a></li>
+<li><a href="../../../../org/jacp/api/component/IComponentHandle.html" title="interface in org.jacpfx.api.component"><span class="strong">Prev Class</span></a></li>
+<li><a href="../../../../org/jacp/api/component/IDeclarative.html" title="interface in org.jacpfx.api.component"><span class="strong">Next Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../../index.html?org/jacp/api/component/IComponentView.html" target="_top">Frames</a></li>
@@ -85,7 +85,7 @@ var activeTableTab = "activeTableTab";
 <!-- ========= END OF TOP NAVBAR ========= -->
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<div class="subTitle">org.jacp.api.component</div>
+<div class="subTitle">org.jacpfx.api.component</div>
 <h2 title="Interface IComponentView" class="title">Interface IComponentView&lt;C,L,A,M&gt;</h2>
 </div>
 <div class="contentContainer">
@@ -101,12 +101,12 @@ var activeTableTab = "activeTableTab";
 </dl>
 <dl>
 <dt>All Superinterfaces:</dt>
-<dd><a href="../../../../org/jacp/api/component/IComponentHandle.html" title="interface in org.jacp.api.component">IComponentHandle</a>&lt;C,L,A,M&gt;, <a href="../../../../org/jacp/api/component/Injectable.html" title="interface in org.jacp.api.component">Injectable</a></dd>
+<dd><a href="../../../../org/jacp/api/component/IComponentHandle.html" title="interface in org.jacpfx.api.component">IComponentHandle</a>&lt;C,L,A,M&gt;, <a href="../../../../org/jacp/api/component/Injectable.html" title="interface in org.jacpfx.api.component">Injectable</a></dd>
 </dl>
 <hr>
 <br>
 <pre>public interface <span class="strong">IComponentView&lt;C,L,A,M&gt;</span>
-extends <a href="../../../../org/jacp/api/component/IComponentHandle.html" title="interface in org.jacp.api.component">IComponentHandle</a>&lt;C,L,A,M&gt;</pre>
+extends <a href="../../../../org/jacp/api/component/IComponentHandle.html" title="interface in org.jacpfx.api.component">IComponentHandle</a>&lt;C,L,A,M&gt;</pre>
 <div class="block">Represents an UI component handled by a perspective. A IVComponent is an // *
  visible UI component displayed in a defined area of perspective.</div>
 </li>
@@ -129,19 +129,19 @@ extends <a href="../../../../org/jacp/api/component/IComponentHandle.html" title
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code><a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">C</a></code></td>
-<td class="colLast"><code><span class="strong"><a href="../../../../org/jacp/api/component/IComponentView.html#postHandle(C, org.jacp.api.action.IAction)">postHandle</a></span>(<a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">C</a>&nbsp;node,
-          <a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacp.api.action">IAction</a>&lt;<a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">A</a>,<a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">M</a>&gt;&nbsp;action)</code>
+<td class="colLast"><code><span class="strong"><a href="../../../../org/jacp/api/component/IComponentView.html#postHandle(C, org.jacpfx.apiaction.IAction)">postHandle</a></span>(<a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">C</a>&nbsp;node,
+          <a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;<a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">A</a>,<a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">M</a>&gt;&nbsp;action)</code>
 <div class="block">To avoid toolkit specific threading issues the postHandle method always
  called after the handle method.</div>
 </td>
 </tr>
 </table>
 <ul class="blockList">
-<li class="blockList"><a name="methods_inherited_from_class_org.jacp.api.component.IComponentHandle">
+<li class="blockList"><a name="methods_inherited_from_class_org.jacpfx.apicomponent.IComponentHandle">
 <!--   -->
 </a>
-<h3>Methods inherited from interface&nbsp;org.jacp.api.component.<a href="../../../../org/jacp/api/component/IComponentHandle.html" title="interface in org.jacp.api.component">IComponentHandle</a></h3>
-<code><a href="../../../../org/jacp/api/component/IComponentHandle.html#handle(org.jacp.api.action.IAction)">handle</a></code></li>
+<h3>Methods inherited from interface&nbsp;org.jacpfx.api.component.<a href="../../../../org/jacp/api/component/IComponentHandle.html" title="interface in org.jacpfx.api.component">IComponentHandle</a></h3>
+<code><a href="../../../../org/jacp/api/component/IComponentHandle.html#handle(org.jacpfx.apiaction.IAction)">handle</a></code></li>
 </ul>
 </li>
 </ul>
@@ -157,16 +157,16 @@ extends <a href="../../../../org/jacp/api/component/IComponentHandle.html" title
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a name="postHandle(java.lang.Object,org.jacp.api.action.IAction)">
+<a name="postHandle(java.lang.Object,org.jacpfx.apiaction.IAction)">
 <!--   -->
-</a><a name="postHandle(C, org.jacp.api.action.IAction)">
+</a><a name="postHandle(C, org.jacpfx.apiaction.IAction)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>postHandle</h4>
 <pre><a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">C</a>&nbsp;postHandle(<a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">C</a>&nbsp;node,
-             <a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacp.api.action">IAction</a>&lt;<a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">A</a>,<a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">M</a>&gt;&nbsp;action)
+             <a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;<a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">A</a>,<a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">M</a>&gt;&nbsp;action)
       throws java.lang.Exception</pre>
 <div class="block">To avoid toolkit specific threading issues the postHandle method always
  called after the handle method. While the handle method is executed in a
@@ -212,8 +212,8 @@ extends <a href="../../../../org/jacp/api/component/IComponentHandle.html" title
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../../../../org/jacp/api/component/IComponentHandle.html" title="interface in org.jacp.api.component"><span class="strong">Prev Class</span></a></li>
-<li><a href="../../../../org/jacp/api/component/IDeclarative.html" title="interface in org.jacp.api.component"><span class="strong">Next Class</span></a></li>
+<li><a href="../../../../org/jacp/api/component/IComponentHandle.html" title="interface in org.jacpfx.api.component"><span class="strong">Prev Class</span></a></li>
+<li><a href="../../../../org/jacp/api/component/IDeclarative.html" title="interface in org.jacpfx.api.component"><span class="strong">Next Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../../index.html?org/jacp/api/component/IComponentView.html" target="_top">Frames</a></li>

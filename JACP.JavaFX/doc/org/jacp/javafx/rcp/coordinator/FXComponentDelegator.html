@@ -36,8 +36,8 @@
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXComponentCoordinator.html" title="class in org.jacp.javafx.rcp.coordinator"><span class="strong">Prev Class</span></a></li>
-<li><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXMessageDelegator.html" title="class in org.jacp.javafx.rcp.coordinator"><span class="strong">Next Class</span></a></li>
+<li><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXComponentCoordinator.html" title="class in org.jacpfx.rcp.coordinator"><span class="strong">Prev Class</span></a></li>
+<li><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXMessageDelegator.html" title="class in org.jacpfx.rcp.coordinator"><span class="strong">Next Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../../../index.html?org/jacp/javafx/rcp/coordinator/FXComponentDelegator.html" target="_top">Frames</a></li>
@@ -79,7 +79,7 @@
 <!-- ========= END OF TOP NAVBAR ========= -->
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<div class="subTitle">org.jacp.javafx.rcp.coordinator</div>
+<div class="subTitle">org.jacpfx.rcp.coordinator</div>
 <h2 title="Class FXComponentDelegator" class="title">Class FXComponentDelegator</h2>
 </div>
 <div class="contentContainer">
@@ -101,13 +101,13 @@
 <li class="blockList">
 <dl>
 <dt>All Implemented Interfaces:</dt>
-<dd>java.lang.Runnable, <a href="../../../../../org/jacp/api/coordinator/IComponentDelegator.html" title="interface in org.jacp.api.coordinator">IComponentDelegator</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;, <a href="../../../../../org/jacp/api/coordinator/IDelegator.html" title="interface in org.jacp.api.coordinator">IDelegator</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</dd>
+<dd>java.lang.Runnable, <a href="../../../../../org/jacp/api/coordinator/IComponentDelegator.html" title="interface in org.jacpfx.api.coordinator">IComponentDelegator</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;, <a href="../../../../../org/jacp/api/coordinator/IDelegator.html" title="interface in org.jacpfx.api.coordinator">IDelegator</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</dd>
 </dl>
 <hr>
 <br>
 <pre>public class <span class="strong">FXComponentDelegator</span>
 extends java.lang.Thread
-implements <a href="../../../../../org/jacp/api/coordinator/IComponentDelegator.html" title="interface in org.jacp.api.coordinator">IComponentDelegator</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</pre>
+implements <a href="../../../../../org/jacp/api/coordinator/IComponentDelegator.html" title="interface in org.jacpfx.api.coordinator">IComponentDelegator</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</pre>
 <div class="block">The component delegator handles a component target change, find the correct
  perspective an add component to correct perspective</div>
 <dl><dt><span class="strong">Author:</span></dt>
@@ -179,25 +179,25 @@ implements <a href="../../../../../org/jacp/api/coordinator/IComponentDelegator.
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXComponentDelegator.html#addPerspective(org.jacp.api.component.IPerspective)">addPerspective</a></strong>(<a href="../../../../../org/jacp/api/component/IPerspective.html" title="interface in org.jacp.api.component">IPerspective</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;perspective)</code>
+<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXComponentDelegator.html#addPerspective(org.jacpfx.apicomponent.IPerspective)">addPerspective</a></strong>(<a href="../../../../../org/jacp/api/component/IPerspective.html" title="interface in org.jacpfx.api.component">IPerspective</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;perspective)</code>
 <div class="block">Add the perspective to observe.</div>
 </td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXComponentDelegator.html#delegateComponent(org.jacp.api.component.ISubComponent)">delegateComponent</a></strong>(<a href="../../../../../org/jacp/api/component/ISubComponent.html" title="interface in org.jacp.api.component">ISubComponent</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;component)</code>
+<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXComponentDelegator.html#delegateComponent(org.jacpfx.apicomponent.ISubComponent)">delegateComponent</a></strong>(<a href="../../../../../org/jacp/api/component/ISubComponent.html" title="interface in org.jacpfx.api.component">ISubComponent</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;component)</code>
 <div class="block">Handles delegate of a component.</div>
 </td>
 </tr>
 <tr class="altColor">
-<td class="colFirst"><code>java.util.concurrent.BlockingQueue&lt;<a href="../../../../../org/jacp/api/component/ISubComponent.html" title="interface in org.jacp.api.component">ISubComponent</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt;</code></td>
+<td class="colFirst"><code>java.util.concurrent.BlockingQueue&lt;<a href="../../../../../org/jacp/api/component/ISubComponent.html" title="interface in org.jacpfx.api.component">ISubComponent</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt;</code></td>
 <td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXComponentDelegator.html#getComponentDelegateQueue()">getComponentDelegateQueue</a></strong>()</code>
 <div class="block">Get the delegate queue to add components to be delegated.</div>
 </td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXComponentDelegator.html#removePerspective(org.jacp.api.component.IPerspective)">removePerspective</a></strong>(<a href="../../../../../org/jacp/api/component/IPerspective.html" title="interface in org.jacp.api.component">IPerspective</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;perspective)</code>
+<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXComponentDelegator.html#removePerspective(org.jacpfx.apicomponent.IPerspective)">removePerspective</a></strong>(<a href="../../../../../org/jacp/api/component/IPerspective.html" title="interface in org.jacpfx.api.component">IPerspective</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;perspective)</code>
 <div class="block">Remove the perspective; e.g. when perspective is deactivated TODO merge
  with IPerspectiveCoordinator</div>
 </td>
@@ -207,8 +207,8 @@ implements <a href="../../../../../org/jacp/api/coordinator/IComponentDelegator.
 <td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXComponentDelegator.html#run()">run</a></strong>()</code>&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><code>&lt;P extends <a href="../../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacp.api.component">IComponent</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;<br>void</code></td>
-<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXComponentDelegator.html#setComponentHandler(org.jacp.api.handler.IComponentHandler)">setComponentHandler</a></strong>(<a href="../../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacp.api.handler">IComponentHandler</a>&lt;P,<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacp.api.action">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;handler)</code>
+<td class="colFirst"><code>&lt;P extends <a href="../../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;<br>void</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXComponentDelegator.html#setComponentHandler(org.jacpfx.api.handler.IComponentHandler)">setComponentHandler</a></strong>(<a href="../../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</a>&lt;P,<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;handler)</code>
 <div class="block">Set the associated component handler.</div>
 </td>
 </tr>
@@ -273,18 +273,18 @@ implements <a href="../../../../../org/jacp/api/coordinator/IComponentDelegator.
 </dl>
 </li>
 </ul>
-<a name="setComponentHandler(org.jacp.api.handler.IComponentHandler)">
+<a name="setComponentHandler(org.jacpfx.api.handler.IComponentHandler)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>setComponentHandler</h4>
-<pre>public&nbsp;&lt;P extends <a href="../../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacp.api.component">IComponent</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;void&nbsp;setComponentHandler(<a href="../../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacp.api.handler">IComponentHandler</a>&lt;P,<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacp.api.action">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;handler)</pre>
-<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/coordinator/IDelegator.html#setComponentHandler(org.jacp.api.handler.IComponentHandler)">IDelegator</a></code></strong></div>
+<pre>public&nbsp;&lt;P extends <a href="../../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;void&nbsp;setComponentHandler(<a href="../../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</a>&lt;P,<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;handler)</pre>
+<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/coordinator/IDelegator.html#setComponentHandler(org.jacpfx.api.handler.IComponentHandler)">IDelegator</a></code></strong></div>
 <div class="block">Set the associated component handler.</div>
 <dl>
 <dt><strong>Specified by:</strong></dt>
-<dd><code><a href="../../../../../org/jacp/api/coordinator/IDelegator.html#setComponentHandler(org.jacp.api.handler.IComponentHandler)">setComponentHandler</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/coordinator/IDelegator.html" title="interface in org.jacp.api.coordinator">IDelegator</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</code></dd>
+<dd><code><a href="../../../../../org/jacp/api/coordinator/IDelegator.html#setComponentHandler(org.jacpfx.api.handler.IComponentHandler)">setComponentHandler</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/coordinator/IDelegator.html" title="interface in org.jacpfx.api.coordinator">IDelegator</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</code></dd>
 </dl>
 </li>
 </ul>
@@ -294,58 +294,58 @@ implements <a href="../../../../../org/jacp/api/coordinator/IComponentDelegator.
 <ul class="blockList">
 <li class="blockList">
 <h4>getComponentDelegateQueue</h4>
-<pre>public&nbsp;java.util.concurrent.BlockingQueue&lt;<a href="../../../../../org/jacp/api/component/ISubComponent.html" title="interface in org.jacp.api.component">ISubComponent</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;getComponentDelegateQueue()</pre>
+<pre>public&nbsp;java.util.concurrent.BlockingQueue&lt;<a href="../../../../../org/jacp/api/component/ISubComponent.html" title="interface in org.jacpfx.api.component">ISubComponent</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;getComponentDelegateQueue()</pre>
 <div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/coordinator/IComponentDelegator.html#getComponentDelegateQueue()">IComponentDelegator</a></code></strong></div>
 <div class="block">Get the delegate queue to add components to be delegated.</div>
 <dl>
 <dt><strong>Specified by:</strong></dt>
-<dd><code><a href="../../../../../org/jacp/api/coordinator/IComponentDelegator.html#getComponentDelegateQueue()">getComponentDelegateQueue</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/coordinator/IComponentDelegator.html" title="interface in org.jacp.api.coordinator">IComponentDelegator</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</code></dd>
+<dd><code><a href="../../../../../org/jacp/api/coordinator/IComponentDelegator.html#getComponentDelegateQueue()">getComponentDelegateQueue</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/coordinator/IComponentDelegator.html" title="interface in org.jacpfx.api.coordinator">IComponentDelegator</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</code></dd>
 <dt><span class="strong">Returns:</span></dt><dd>delegateQueue</dd></dl>
 </li>
 </ul>
-<a name="delegateComponent(org.jacp.api.component.ISubComponent)">
+<a name="delegateComponent(org.jacpfx.apicomponent.ISubComponent)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>delegateComponent</h4>
-<pre>public&nbsp;void&nbsp;delegateComponent(<a href="../../../../../org/jacp/api/component/ISubComponent.html" title="interface in org.jacp.api.component">ISubComponent</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;component)</pre>
-<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/coordinator/IComponentDelegator.html#delegateComponent(org.jacp.api.component.ISubComponent)">IComponentDelegator</a></code></strong></div>
+<pre>public&nbsp;void&nbsp;delegateComponent(<a href="../../../../../org/jacp/api/component/ISubComponent.html" title="interface in org.jacpfx.api.component">ISubComponent</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;component)</pre>
+<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/coordinator/IComponentDelegator.html#delegateComponent(org.jacpfx.apicomponent.ISubComponent)">IComponentDelegator</a></code></strong></div>
 <div class="block">Handles delegate of a component.</div>
 <dl>
 <dt><strong>Specified by:</strong></dt>
-<dd><code><a href="../../../../../org/jacp/api/coordinator/IComponentDelegator.html#delegateComponent(org.jacp.api.component.ISubComponent)">delegateComponent</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/coordinator/IComponentDelegator.html" title="interface in org.jacp.api.coordinator">IComponentDelegator</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</code></dd>
+<dd><code><a href="../../../../../org/jacp/api/coordinator/IComponentDelegator.html#delegateComponent(org.jacpfx.apicomponent.ISubComponent)">delegateComponent</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/coordinator/IComponentDelegator.html" title="interface in org.jacpfx.api.coordinator">IComponentDelegator</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</code></dd>
 </dl>
 </li>
 </ul>
-<a name="addPerspective(org.jacp.api.component.IPerspective)">
+<a name="addPerspective(org.jacpfx.apicomponent.IPerspective)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>addPerspective</h4>
-<pre>public&nbsp;void&nbsp;addPerspective(<a href="../../../../../org/jacp/api/component/IPerspective.html" title="interface in org.jacp.api.component">IPerspective</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;perspective)</pre>
-<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/coordinator/IDelegator.html#addPerspective(org.jacp.api.component.IPerspective)">IDelegator</a></code></strong></div>
+<pre>public&nbsp;void&nbsp;addPerspective(<a href="../../../../../org/jacp/api/component/IPerspective.html" title="interface in org.jacpfx.api.component">IPerspective</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;perspective)</pre>
+<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/coordinator/IDelegator.html#addPerspective(org.jacpfx.apicomponent.IPerspective)">IDelegator</a></code></strong></div>
 <div class="block">Add the perspective to observe. TODO merge with IPerspectiveCoordinator</div>
 <dl>
 <dt><strong>Specified by:</strong></dt>
-<dd><code><a href="../../../../../org/jacp/api/coordinator/IDelegator.html#addPerspective(org.jacp.api.component.IPerspective)">addPerspective</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/coordinator/IDelegator.html" title="interface in org.jacp.api.coordinator">IDelegator</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</code></dd>
+<dd><code><a href="../../../../../org/jacp/api/coordinator/IDelegator.html#addPerspective(org.jacpfx.apicomponent.IPerspective)">addPerspective</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/coordinator/IDelegator.html" title="interface in org.jacpfx.api.coordinator">IDelegator</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</code></dd>
 </dl>
 </li>
 </ul>
-<a name="removePerspective(org.jacp.api.component.IPerspective)">
+<a name="removePerspective(org.jacpfx.apicomponent.IPerspective)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>removePerspective</h4>
-<pre>public&nbsp;void&nbsp;removePerspective(<a href="../../../../../org/jacp/api/component/IPerspective.html" title="interface in org.jacp.api.component">IPerspective</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;perspective)</pre>
-<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/coordinator/IDelegator.html#removePerspective(org.jacp.api.component.IPerspective)">IDelegator</a></code></strong></div>
+<pre>public&nbsp;void&nbsp;removePerspective(<a href="../../../../../org/jacp/api/component/IPerspective.html" title="interface in org.jacpfx.api.component">IPerspective</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;perspective)</pre>
+<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/coordinator/IDelegator.html#removePerspective(org.jacpfx.apicomponent.IPerspective)">IDelegator</a></code></strong></div>
 <div class="block">Remove the perspective; e.g. when perspective is deactivated TODO merge
  with IPerspectiveCoordinator</div>
 <dl>
 <dt><strong>Specified by:</strong></dt>
-<dd><code><a href="../../../../../org/jacp/api/coordinator/IDelegator.html#removePerspective(org.jacp.api.component.IPerspective)">removePerspective</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/coordinator/IDelegator.html" title="interface in org.jacp.api.coordinator">IDelegator</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</code></dd>
+<dd><code><a href="../../../../../org/jacp/api/coordinator/IDelegator.html#removePerspective(org.jacpfx.apicomponent.IPerspective)">removePerspective</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/coordinator/IDelegator.html" title="interface in org.jacpfx.api.coordinator">IDelegator</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</code></dd>
 </dl>
 </li>
 </ul>
@@ -375,8 +375,8 @@ implements <a href="../../../../../org/jacp/api/coordinator/IComponentDelegator.
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXComponentCoordinator.html" title="class in org.jacp.javafx.rcp.coordinator"><span class="strong">Prev Class</span></a></li>
-<li><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXMessageDelegator.html" title="class in org.jacp.javafx.rcp.coordinator"><span class="strong">Next Class</span></a></li>
+<li><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXComponentCoordinator.html" title="class in org.jacpfx.rcp.coordinator"><span class="strong">Prev Class</span></a></li>
+<li><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXMessageDelegator.html" title="class in org.jacpfx.rcp.coordinator"><span class="strong">Next Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../../../index.html?org/jacp/javafx/rcp/coordinator/FXComponentDelegator.html" target="_top">Frames</a></li>

@@ -97,14 +97,15 @@ java.lang.Object
       <IMG SRC="../../../../../resources/inherit.gif" ALT="extended by "><B>org.jacp.javafx2.rcp.coordinator.AFX2Coordinator</B>
 </PRE>
 <DL>
-<DT><B>All Implemented Interfaces:</B> <DD>java.lang.Runnable, org.jacp.api.coordinator.ICoordinator&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</DD>
+<DT><B>All Implemented Interfaces:</B> <DD>java.lang.Runnable, org.jacpfx.api.coordinator.ICoordinator&amp;lt;javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,javafx.event.Event,java.lang.Object&amp;gt;</DD>
 </DL>
 <DL>
 <DT><B>Direct Known Subclasses:</B> <DD><A HREF="../../../../../org/jacp/javafx2/rcp/coordinator/FX2ComponentCoordinator.html" title="class in org.jacp.javafx2.rcp.coordinator">FX2ComponentCoordinator</A>, <A HREF="../../../../../org/jacp/javafx2/rcp/coordinator/FX2PerspectiveCoordinator.html" title="class in org.jacp.javafx2.rcp.coordinator">FX2PerspectiveCoordinator</A></DD>
 </DL>
 <HR>
 <DL>
-<DT><PRE>public abstract class <B>AFX2Coordinator</B><DT>extends java.lang.Thread<DT>implements org.jacp.api.coordinator.ICoordinator&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</DL>
+<DT><PRE>public abstract class <B>AFX2Coordinator</B><DT>extends java.lang.Thread<DT>implements
+    org.jacpfx.api.coordinator.ICoordinator&amp;lt;javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,javafx.event.Event,java.lang.Object&amp;gt;</DL>
 </PRE>
 
 <P>
@@ -184,7 +185,7 @@ Observer handles messages and notifies correct components, the observer is
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&nbsp;java.util.concurrent.BlockingQueue&lt;org.jacp.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&gt;</CODE></FONT></TD>
+<CODE>&nbsp;java.util.concurrent.BlockingQueue&lt;org.jacpfx.apiaction.IAction&lt;javafx.event.Event,java.lang.Object&gt;&gt;</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/coordinator/AFX2Coordinator.html#getMessageQueue()">getMessageQueue</A></B>()</CODE>
 
 <BR>
@@ -217,10 +218,10 @@ Observer handles messages and notifies correct components, the observer is
 <TD><CODE>equals, getClass, hashCode, notify, notifyAll, wait, wait, wait</CODE></TD>
 </TR>
 </TABLE>
-&nbsp;<A NAME="methods_inherited_from_class_org.jacp.api.coordinator.ICoordinator"><!-- --></A>
+&nbsp;<A NAME="methods_inherited_from_class_org.jacpfx.apicoordinator.ICoordinator"><!-- --></A>
 <TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0" SUMMARY="">
 <TR BGCOLOR="#EEEEFF" CLASS="TableSubHeadingColor">
-<TH ALIGN="left"><B>Methods inherited from interface org.jacp.api.coordinator.ICoordinator</B></TH>
+<TH ALIGN="left"><B>Methods inherited from interface org.jacpfx.api.coordinator.ICoordinator</B></TH>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD><CODE>getComponentHandler, handleActive, handleInActive, handleMessage, setComponentHandler</CODE></TD>
@@ -273,10 +274,10 @@ public final void <B>run</B>()</PRE>
 <A NAME="getMessageQueue()"><!-- --></A><H3>
 getMessageQueue</H3>
 <PRE>
-public java.util.concurrent.BlockingQueue&lt;org.jacp.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&gt; <B>getMessageQueue</B>()</PRE>
+public java.util.concurrent.BlockingQueue&lt;org.jacpfx.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&gt; <B>getMessageQueue</B>()</PRE>
 <DL>
 <DD><DL>
-<DT><B>Specified by:</B><DD><CODE>getMessageQueue</CODE> in interface <CODE>org.jacp.api.coordinator.ICoordinator&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</CODE></DL>
+<DT><B>Specified by:</B><DD><CODE>getMessageQueue</CODE> in interface <CODE>org.jacpfx.api.coordinator.ICoordinator&amp;lt;javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,javafx.event.Event,java.lang.Object&amp;gt;</CODE></DL>
 </DD>
 <DD><DL>
 </DL>

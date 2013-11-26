@@ -42,8 +42,8 @@ var activeTableTab = "activeTableTab";
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="interface in org.jacp.api.coordinator"><span class="strong">Prev Class</span></a></li>
-<li><a href="../../../../org/jacp/api/coordinator/IMessageDelegator.html" title="interface in org.jacp.api.coordinator"><span class="strong">Next Class</span></a></li>
+<li><a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="interface in org.jacpfx.api.coordinator"><span class="strong">Prev Class</span></a></li>
+<li><a href="../../../../org/jacp/api/coordinator/IMessageDelegator.html" title="interface in org.jacpfx.api.coordinator"><span class="strong">Next Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../../index.html?org/jacp/api/coordinator/IDelegator.html" target="_top">Frames</a></li>
@@ -85,7 +85,7 @@ var activeTableTab = "activeTableTab";
 <!-- ========= END OF TOP NAVBAR ========= -->
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<div class="subTitle">org.jacp.api.coordinator</div>
+<div class="subTitle">org.jacpfx.api.coordinator</div>
 <h2 title="Interface IDelegator" class="title">Interface IDelegator&lt;L,A,M&gt;</h2>
 </div>
 <div class="contentContainer">
@@ -100,7 +100,7 @@ var activeTableTab = "activeTableTab";
 </dl>
 <dl>
 <dt>All Known Subinterfaces:</dt>
-<dd><a href="../../../../org/jacp/api/coordinator/IComponentDelegator.html" title="interface in org.jacp.api.coordinator">IComponentDelegator</a>&lt;L,A,M&gt;, <a href="../../../../org/jacp/api/coordinator/IMessageDelegator.html" title="interface in org.jacp.api.coordinator">IMessageDelegator</a>&lt;L,A,M&gt;</dd>
+<dd><a href="../../../../org/jacp/api/coordinator/IComponentDelegator.html" title="interface in org.jacpfx.api.coordinator">IComponentDelegator</a>&lt;L,A,M&gt;, <a href="../../../../org/jacp/api/coordinator/IMessageDelegator.html" title="interface in org.jacpfx.api.coordinator">IMessageDelegator</a>&lt;L,A,M&gt;</dd>
 </dl>
 <hr>
 <br>
@@ -126,20 +126,20 @@ var activeTableTab = "activeTableTab";
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="strong"><a href="../../../../org/jacp/api/coordinator/IDelegator.html#addPerspective(org.jacp.api.component.IPerspective)">addPerspective</a></span>(<a href="../../../../org/jacp/api/component/IPerspective.html" title="interface in org.jacp.api.component">IPerspective</a>&lt;<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">L</a>,<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">A</a>,<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">M</a>&gt;&nbsp;perspective)</code>
+<td class="colLast"><code><span class="strong"><a href="../../../../org/jacp/api/coordinator/IDelegator.html#addPerspective(org.jacpfx.apicomponent.IPerspective)">addPerspective</a></span>(<a href="../../../../org/jacp/api/component/IPerspective.html" title="interface in org.jacpfx.api.component">IPerspective</a>&lt;<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">L</a>,<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">A</a>,<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">M</a>&gt;&nbsp;perspective)</code>
 <div class="block">Add the perspective to observe.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="strong"><a href="../../../../org/jacp/api/coordinator/IDelegator.html#removePerspective(org.jacp.api.component.IPerspective)">removePerspective</a></span>(<a href="../../../../org/jacp/api/component/IPerspective.html" title="interface in org.jacp.api.component">IPerspective</a>&lt;<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">L</a>,<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">A</a>,<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">M</a>&gt;&nbsp;perspective)</code>
+<td class="colLast"><code><span class="strong"><a href="../../../../org/jacp/api/coordinator/IDelegator.html#removePerspective(org.jacpfx.apicomponent.IPerspective)">removePerspective</a></span>(<a href="../../../../org/jacp/api/component/IPerspective.html" title="interface in org.jacpfx.api.component">IPerspective</a>&lt;<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">L</a>,<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">A</a>,<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">M</a>&gt;&nbsp;perspective)</code>
 <div class="block">Remove the perspective; e.g. when perspective is deactivated TODO merge
  with IPerspectiveCoordinator</div>
 </td>
 </tr>
 <tr id="i2" class="altColor">
-<td class="colFirst"><code>&lt;P extends <a href="../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacp.api.component">IComponent</a>&lt;<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">L</a>,<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">A</a>,<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">M</a>&gt;&gt;<br>void</code></td>
-<td class="colLast"><code><span class="strong"><a href="../../../../org/jacp/api/coordinator/IDelegator.html#setComponentHandler(org.jacp.api.handler.IComponentHandler)">setComponentHandler</a></span>(<a href="../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacp.api.handler">IComponentHandler</a>&lt;P,<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacp.api.action">IAction</a>&lt;<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">A</a>,<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">M</a>&gt;&gt;&nbsp;handler)</code>
+<td class="colFirst"><code>&lt;P extends <a href="../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">L</a>,<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">A</a>,<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">M</a>&gt;&gt;<br>void</code></td>
+<td class="colLast"><code><span class="strong"><a href="../../../../org/jacp/api/coordinator/IDelegator.html#setComponentHandler(org.jacpfx.api.handler.IComponentHandler)">setComponentHandler</a></span>(<a href="../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</a>&lt;P,<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">A</a>,<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">M</a>&gt;&gt;&nbsp;handler)</code>
 <div class="block">Set the associated component handler.</div>
 </td>
 </tr>
@@ -158,13 +158,13 @@ var activeTableTab = "activeTableTab";
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a name="addPerspective(org.jacp.api.component.IPerspective)">
+<a name="addPerspective(org.jacpfx.apicomponent.IPerspective)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>addPerspective</h4>
-<pre>void&nbsp;addPerspective(<a href="../../../../org/jacp/api/component/IPerspective.html" title="interface in org.jacp.api.component">IPerspective</a>&lt;<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">L</a>,<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">A</a>,<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">M</a>&gt;&nbsp;perspective)</pre>
+<pre>void&nbsp;addPerspective(<a href="../../../../org/jacp/api/component/IPerspective.html" title="interface in org.jacpfx.api.component">IPerspective</a>&lt;<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">L</a>,<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">A</a>,<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">M</a>&gt;&nbsp;perspective)</pre>
 <div class="block">Add the perspective to observe. TODO merge with IPerspectiveCoordinator</div>
 <dl>
 <dt><span class="strong">Parameters:</span></dt>
@@ -172,13 +172,13 @@ var activeTableTab = "activeTableTab";
 </dl>
 </li>
 </ul>
-<a name="removePerspective(org.jacp.api.component.IPerspective)">
+<a name="removePerspective(org.jacpfx.apicomponent.IPerspective)">
 <!--   -->
 </a>
 <ul class="blockList">
 <li class="blockList">
 <h4>removePerspective</h4>
-<pre>void&nbsp;removePerspective(<a href="../../../../org/jacp/api/component/IPerspective.html" title="interface in org.jacp.api.component">IPerspective</a>&lt;<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">L</a>,<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">A</a>,<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">M</a>&gt;&nbsp;perspective)</pre>
+<pre>void&nbsp;removePerspective(<a href="../../../../org/jacp/api/component/IPerspective.html" title="interface in org.jacpfx.api.component">IPerspective</a>&lt;<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">L</a>,<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">A</a>,<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">M</a>&gt;&nbsp;perspective)</pre>
 <div class="block">Remove the perspective; e.g. when perspective is deactivated TODO merge
  with IPerspectiveCoordinator</div>
 <dl>
@@ -187,13 +187,13 @@ var activeTableTab = "activeTableTab";
 </dl>
 </li>
 </ul>
-<a name="setComponentHandler(org.jacp.api.handler.IComponentHandler)">
+<a name="setComponentHandler(org.jacpfx.api.handler.IComponentHandler)">
 <!--   -->
 </a>
 <ul class="blockListLast">
 <li class="blockList">
 <h4>setComponentHandler</h4>
-<pre>&lt;P extends <a href="../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacp.api.component">IComponent</a>&lt;<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">L</a>,<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">A</a>,<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">M</a>&gt;&gt;&nbsp;void&nbsp;setComponentHandler(<a href="../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacp.api.handler">IComponentHandler</a>&lt;P,<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacp.api.action">IAction</a>&lt;<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">A</a>,<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">M</a>&gt;&gt;&nbsp;handler)</pre>
+<pre>&lt;P extends <a href="../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">L</a>,<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">A</a>,<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">M</a>&gt;&gt;&nbsp;void&nbsp;setComponentHandler(<a href="../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</a>&lt;P,<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">A</a>,<a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">M</a>&gt;&gt;&nbsp;handler)</pre>
 <div class="block">Set the associated component handler.</div>
 <dl>
 <dt><span class="strong">Parameters:</span></dt>
@@ -226,8 +226,8 @@ var activeTableTab = "activeTableTab";
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="interface in org.jacp.api.coordinator"><span class="strong">Prev Class</span></a></li>
-<li><a href="../../../../org/jacp/api/coordinator/IMessageDelegator.html" title="interface in org.jacp.api.coordinator"><span class="strong">Next Class</span></a></li>
+<li><a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="interface in org.jacpfx.api.coordinator"><span class="strong">Prev Class</span></a></li>
+<li><a href="../../../../org/jacp/api/coordinator/IMessageDelegator.html" title="interface in org.jacpfx.api.coordinator"><span class="strong">Next Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../../index.html?org/jacp/api/coordinator/IDelegator.html" target="_top">Frames</a></li>

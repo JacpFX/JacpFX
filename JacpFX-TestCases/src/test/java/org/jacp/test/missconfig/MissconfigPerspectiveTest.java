@@ -3,11 +3,11 @@ package org.jacp.test.missconfig;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import org.jacp.api.annotations.perspective.Perspective;
-import org.jacp.api.component.IPerspective;
-import org.jacp.api.component.Injectable;
-import org.jacp.api.context.Context;
-import org.jacp.javafx.rcp.workbench.AFXWorkbench;
+import org.jacpfx.api.annotations.perspective.Perspective;
+import org.jacpfx.api.component.IPerspective;
+import org.jacpfx.api.component.Injectable;
+import org.jacpfx.api.context.Context;
+import org.jacpfx.rcp.workbench.AFXWorkbench;
 import org.jacp.test.AllTests;
 import org.jacp.test.main.ApplicationLauncherMissconfigComponents;
 import org.jacp.test.workbench.WorkbenchMissingComponents;
@@ -65,7 +65,7 @@ public class MissconfigPerspectiveTest {
     }
 
     private String[] getPerspectiveAnnotations() {
-        org.jacp.api.annotations.workbench.Workbench annotations = WorkbenchMissingComponents.class.getAnnotation(org.jacp.api.annotations.workbench.Workbench.class);
+        org.jacpfx.api.annotations.workbench.Workbench annotations = WorkbenchMissingComponents.class.getAnnotation(org.jacpfx.api.annotations.workbench.Workbench.class);
         return annotations.perspectives();
     }
 
