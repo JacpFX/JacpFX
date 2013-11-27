@@ -33,16 +33,16 @@ import javafx.event.EventHandler;
  */
 public class JACPOptionPaneBuilder {
 
-	/** The on ok action. */
+	/** The on ok message. */
 	private EventHandler<ActionEvent> onOkAction;
 
-	/** The on cancel action. */
+	/** The on cancel message. */
 	private EventHandler<ActionEvent> onCancelAction;
 
-	/** The on yes action. */
+	/** The on yes message. */
 	private EventHandler<ActionEvent> onYesAction;
 
-	/** The on no action. */
+	/** The on no message. */
 	private EventHandler<ActionEvent> onNoAction;
 
 	/** The default button. */
@@ -58,19 +58,19 @@ public class JACPOptionPaneBuilder {
 
 
 	/**
-	 * Gets the on ok action.
+	 * Gets the on ok message.
 	 * 
-	 * @return the on ok action
+	 * @return the on ok message
 	 */
 	private EventHandler<ActionEvent> getOnOkAction() {
 		return this.onOkAction;
 	}
 
 	/**
-	 * Sets the on ok action.
+	 * Sets the on ok message.
 	 * 
 	 * @param onOkAction
-	 *            the on ok action
+	 *            the on ok message
 	 * @return the jACP option pane builder
 	 */
 	public JACPOptionPaneBuilder setOnOkAction(
@@ -80,19 +80,19 @@ public class JACPOptionPaneBuilder {
 	}
 
 	/**
-	 * Gets the on cancel action.
+	 * Gets the on cancel message.
 	 * 
-	 * @return the on cancel action
+	 * @return the on cancel message
 	 */
 	private EventHandler<ActionEvent> getOnCancelAction() {
 		return this.onCancelAction;
 	}
 
 	/**
-	 * Sets the on cancel action.
+	 * Sets the on cancel message.
 	 * 
 	 * @param onCancelAction
-	 *            the on cancel action
+	 *            the on cancel message
 	 * @return the jACP option pane builder
 	 */
 	public JACPOptionPaneBuilder setOnCancelAction(
@@ -102,19 +102,19 @@ public class JACPOptionPaneBuilder {
 	}
 
 	/**
-	 * Gets the on yes action.
+	 * Gets the on yes message.
 	 * 
-	 * @return the on yes action
+	 * @return the on yes message
 	 */
 	private EventHandler<ActionEvent> getOnYesAction() {
 		return this.onYesAction;
 	}
 
 	/**
-	 * Sets the on yes action.
+	 * Sets the on yes message.
 	 * 
 	 * @param onYesAction
-	 *            the on yes action
+	 *            the on yes message
 	 * @return the jACP option pane builder
 	 */
 	public JACPOptionPaneBuilder setOnYesAction(
@@ -124,19 +124,19 @@ public class JACPOptionPaneBuilder {
 	}
 
 	/**
-	 * Gets the on no action.
+	 * Gets the on no message.
 	 * 
-	 * @return the on no action
+	 * @return the on no message
 	 */
 	private EventHandler<ActionEvent> getOnNoAction() {
 		return this.onNoAction;
 	}
 
 	/**
-	 * Sets the on no action.
+	 * Sets the on no message.
 	 * 
 	 * @param onNoAction
-	 *            the on no action
+	 *            the on no message
 	 * @return the jACP option pane builder
 	 */
 	public JACPOptionPaneBuilder setOnNoAction(

@@ -2,7 +2,7 @@
  * 
  * Copyright (C) 2010 - 2012
  *
- * [IActionListener.java]
+ * [ActionListener.java]
  * AHCP Project (http://jacp.googlecode.com)
  * All rights reserved.
  *
@@ -20,49 +20,25 @@
  *
  *
  ************************************************************************/
-package org.jacpfx.api.action;
+package org.jacpfx.api.message;
 
 /**
  * Handles implementation specific Listener to perform events. This Interface is
- * an abstraction to hide toolkit specific event/action details.
- * 
- * @param <L>
- *            defines the basic listener type
+ * an abstraction to hide toolkit specific event/message details.
+ *
  * @param <M>
  *            defines the type of message ActionEvent
  * @param <A>
  *            defines the type of ActionEvent
  * @author Andy Moncsek
  */
-public interface IActionListener<L, A, M> {
+public interface ActionListener<A, M> {
 
 	/**
-	 * Notify component when action fired.
+	 * Notify component when message fired.
 	 * 
-	 * @param action ;  the action fired by components
+	 * @param action ;  the message fired by components
 	 */
-	void notifyComponents(final IAction<A, M> action);
+	void notifyComponents(final Message<A, M> action);
 
-	/**
-	 * Returns the action.
-	 * 
-	 * @return an action instance
-	 */
-	IAction<A, M> getAction();
-
-	/**
-	 * Returns implementation specific ActionListener. All listeners should
-	 * extend java.util.EventListener.
-	 * @param <C> ; the specific listener type 
-	 * @return a new listener instance
-	 */
-	<C extends L> C getListener();
-
-	/**
-	 * Abstraction to handle actions/events uniform on different toolkits.
-	 * Method invokes toolkit specific handle method perform event call.
-	 * 
-	 * @param event ; proxy to common event handlers
-	 */
-	void performAction(A event);
 }

@@ -188,7 +188,7 @@ implements <a href="../../../../../org/jacp/api/coordinator/IPerspectiveCoordina
 </td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><code><a href="../../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</a>&lt;<a href="../../../../../org/jacp/api/component/IPerspective.html" title="interface in org.jacpfx.api.component">IPerspective</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;,<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;</code></td>
+<td class="colFirst"><code><a href="../../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</a>&lt;<a href="../../../../../org/jacp/api/component/IPerspective.html" title="interface in org.jacpfx.api.component">IPerspective</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;,<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;</code></td>
 <td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXPerspectiveCoordinator.html#getComponentHandler()">getComponentHandler</a></strong>()</code>
 <div class="block">Returns the associated componentHandler.</div>
 </td>
@@ -196,21 +196,21 @@ implements <a href="../../../../../org/jacp/api/coordinator/IPerspectiveCoordina
 <tr class="altColor">
 <td class="colFirst"><code>&lt;P extends <a href="../../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;<br>void</code></td>
 <td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXPerspectiveCoordinator.html#handleActive(P, org.jacpfx.apiaction.IAction)">handleActive</a></strong>(P&nbsp;component,
-            <a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</code>
+            <a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</code>
 <div class="block">Handle a message to an active component.</div>
 </td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>&lt;P extends <a href="../../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;<br>void</code></td>
 <td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXPerspectiveCoordinator.html#handleInActive(P, org.jacpfx.apiaction.IAction)">handleInActive</a></strong>(P&nbsp;component,
-              <a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</code>
+              <a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</code>
 <div class="block">Handle a message to an inactive component.</div>
 </td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXPerspectiveCoordinator.html#handleMessage(java.lang.String, org.jacpfx.apiaction.IAction)">handleMessage</a></strong>(java.lang.String&nbsp;target,
-             <a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</code>
+             <a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</code>
 <div class="block">Handles message to specific component addressed by the id.</div>
 </td>
 </tr>
@@ -222,7 +222,7 @@ implements <a href="../../../../../org/jacp/api/coordinator/IPerspectiveCoordina
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>&lt;P extends <a href="../../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;<br>void</code></td>
-<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXPerspectiveCoordinator.html#setComponentHandler(org.jacpfx.api.handler.IComponentHandler)">setComponentHandler</a></strong>(<a href="../../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</a>&lt;P,<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;handler)</code>
+<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXPerspectiveCoordinator.html#setComponentHandler(org.jacpfx.api.handler.IComponentHandler)">setComponentHandler</a></strong>(<a href="../../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</a>&lt;P,<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;handler)</code>
 <div class="block">set associated componentHandler</div>
 </td>
 </tr>
@@ -293,7 +293,7 @@ implements <a href="../../../../../org/jacp/api/coordinator/IPerspectiveCoordina
 <li class="blockList">
 <h4>handleMessage</h4>
 <pre>public&nbsp;void&nbsp;handleMessage(java.lang.String&nbsp;target,
-                 <a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</pre>
+                 <a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</pre>
 <div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/coordinator/ICoordinator.html#handleMessage(java.lang.String, org.jacpfx.apiaction.IAction)">ICoordinator</a></code></strong></div>
 <div class="block">Handles message to specific component addressed by the id.</div>
 <dl>
@@ -311,7 +311,7 @@ implements <a href="../../../../../org/jacp/api/coordinator/IPerspectiveCoordina
 <li class="blockList">
 <h4>handleActive</h4>
 <pre>public&nbsp;&lt;P extends <a href="../../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;void&nbsp;handleActive(P&nbsp;component,
-                                                                                                                          <a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</pre>
+                                                                                                                          <a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</pre>
 <div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/coordinator/ICoordinator.html#handleActive(P, org.jacpfx.apiaction.IAction)">ICoordinator</a></code></strong></div>
 <div class="block">Handle a message to an active component.</div>
 <dl>
@@ -329,7 +329,7 @@ implements <a href="../../../../../org/jacp/api/coordinator/IPerspectiveCoordina
 <li class="blockList">
 <h4>handleInActive</h4>
 <pre>public&nbsp;&lt;P extends <a href="../../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;void&nbsp;handleInActive(P&nbsp;component,
-                                                                                                                            <a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</pre>
+                                                                                                                            <a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</pre>
 <div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/coordinator/ICoordinator.html#handleInActive(P, org.jacpfx.apiaction.IAction)">ICoordinator</a></code></strong></div>
 <div class="block">Handle a message to an inactive component.</div>
 <dl>
@@ -374,7 +374,7 @@ implements <a href="../../../../../org/jacp/api/coordinator/IPerspectiveCoordina
 <ul class="blockList">
 <li class="blockList">
 <h4>getComponentHandler</h4>
-<pre>public&nbsp;<a href="../../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</a>&lt;<a href="../../../../../org/jacp/api/component/IPerspective.html" title="interface in org.jacpfx.api.component">IPerspective</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;,<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;getComponentHandler()</pre>
+<pre>public&nbsp;<a href="../../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</a>&lt;<a href="../../../../../org/jacp/api/component/IPerspective.html" title="interface in org.jacpfx.api.component">IPerspective</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;,<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;getComponentHandler()</pre>
 <div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/coordinator/ICoordinator.html#getComponentHandler()">ICoordinator</a></code></strong></div>
 <div class="block">Returns the associated componentHandler.</div>
 <dl>
@@ -389,7 +389,7 @@ implements <a href="../../../../../org/jacp/api/coordinator/IPerspectiveCoordina
 <ul class="blockListLast">
 <li class="blockList">
 <h4>setComponentHandler</h4>
-<pre>public&nbsp;&lt;P extends <a href="../../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;void&nbsp;setComponentHandler(<a href="../../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</a>&lt;P,<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;handler)</pre>
+<pre>public&nbsp;&lt;P extends <a href="../../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;void&nbsp;setComponentHandler(<a href="../../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</a>&lt;P,<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;handler)</pre>
 <div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/coordinator/ICoordinator.html#setComponentHandler(org.jacpfx.api.handler.IComponentHandler)">ICoordinator</a></code></strong></div>
 <div class="block">set associated componentHandler</div>
 <dl>

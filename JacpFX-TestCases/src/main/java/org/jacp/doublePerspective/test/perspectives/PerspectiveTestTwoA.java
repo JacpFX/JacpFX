@@ -9,7 +9,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.lifecycle.OnHide;
 import org.jacpfx.api.annotations.lifecycle.OnShow;
@@ -51,9 +51,9 @@ public class PerspectiveTestTwoA implements FXPerspective {
     JACPContext context;
 
     @Override
-    public void handlePerspective(final IAction<Event, Object> action,
+    public void handlePerspective(final Message<Event, Object> action,
                                   final PerspectiveLayout perspectiveLayout) {
-        if (action.isMessage(FXUtil.MessageUtil.INIT)) {
+        if (action.messageBodyEquals(FXUtil.MessageUtil.INIT)) {
 
             GridPane.setVgrow(perspectiveLayout.getRootComponent(),
                     Priority.ALWAYS);
@@ -100,14 +100,14 @@ public class PerspectiveTestTwoA implements FXPerspective {
         p1.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                context.getActionListener("id02", "show").performAction(event);
+                context.send("id02", "show");
             }
         });
         final Button p2 = new Button("Perspective B");
         p2.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                context.getActionListener("id03", "show").performAction(event);
+                context.send("id03", "show");
             }
         });
         p1.setVisible(false);

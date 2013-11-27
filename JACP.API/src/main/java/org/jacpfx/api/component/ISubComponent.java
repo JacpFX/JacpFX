@@ -22,7 +22,7 @@
  ************************************************************************/
 package org.jacpfx.api.component;
 
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 
 import java.util.concurrent.BlockingQueue;
 
@@ -34,9 +34,9 @@ import java.util.concurrent.BlockingQueue;
  * @author Andy Moncsek
  * 
  * @param <L>
- *            defines the action listener type
+ *            defines the message listener type
  * @param <A>
- *            defines the basic action type
+ *            defines the basic message type
  * @param <M>
  *            defines the basic message type
  */
@@ -54,14 +54,14 @@ public interface ISubComponent<L, A, M> extends IComponent<L, A, M> {
 	 * 
 	 * @param action
 	 */
-	void putIncomingMessage(final IAction<A, M> action);
+	void putIncomingMessage(final Message<A, M> action);
 
 	/**
 	 * Returns next message in pipe.
 	 * 
-	 * @return the next action to handle
+	 * @return the next message to handle
 	 */
-	IAction<A, M> getNextIncomingMessage() throws InterruptedException;
+	Message<A, M> getNextIncomingMessage() throws InterruptedException;
 
 	/**
 	 * Component is blocked when executed in thread.
@@ -93,7 +93,7 @@ public interface ISubComponent<L, A, M> extends IComponent<L, A, M> {
 	 * @param messageQueue
 	 */
 	void initEnv(final String parentId,
-			final BlockingQueue<IAction<A, M>> messageQueue);
+			final BlockingQueue<Message<A, M>> messageQueue);
 
 
     /**

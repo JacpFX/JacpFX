@@ -24,7 +24,7 @@ package org.jacpfx.rcp.component;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.component.IComponent;
 import org.jacpfx.rcp.context.JACPContextImpl;
 
@@ -45,7 +45,7 @@ public abstract class AComponent implements
     private String localeID = "";
     private String resourceBundleLocation = "";
     protected JACPContextImpl context;
-    protected volatile BlockingQueue<IAction<Event, Object>> globalMessageQueue;
+    protected volatile BlockingQueue<Message<Event, Object>> globalMessageQueue;
 
 
     /**

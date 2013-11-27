@@ -29,7 +29,7 @@ import javafx.event.Event;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.component.Component;
 import org.jacpfx.api.annotations.component.Stateless;
@@ -40,12 +40,10 @@ import org.jacpfx.rcp.component.CallbackComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.context.JACPContext;
 import org.jacpfx.rcp.util.FXUtil;
-import org.jacp.test.main.ApplicationLauncherAsyncCallbackComponentMessaginTest1;
 import org.jacp.test.main.ApplicationPredestroyPerspectiveTest;
 
 import java.util.ResourceBundle;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
 /**
@@ -79,9 +77,9 @@ public class PredestroyTestComponentFour implements CallbackComponent {
     /**
      * The handleAction method always runs outside the main application thread. You can create new nodes, execute long running tasks but you are not allowed to manipulate existing nodes here.
      */
-    public Object handle(final IAction<Event, Object> action) {
-        //System.err.println("Message id11 : "+action+"  :: "+this);
-        if (action.isMessage(FXUtil.MessageUtil.INIT)) {
+    public Object handle(final Message<Event, Object> action) {
+        //System.err.println("Message id11 : "+message+"  :: "+this);
+        if (action.messageBodyEquals(FXUtil.MessageUtil.INIT)) {
             ApplicationPredestroyPerspectiveTest.latch.countDown();
         } else {
             countdownlatch.countDown();
@@ -93,13 +91,13 @@ public class PredestroyTestComponentFour implements CallbackComponent {
     }
 
     public static void fireMessage() {
-        context.getActionListener("id15.id012", "message").performAction(null);
+        context.send("id15.id012", "message");
     }
 
     public static void fireBurst(final int count) {
         Thread t = new Thread(() -> {
             for (int i = 0; i < count; i++) {
-                getContext().getActionListener("id15.id012", "message").performAction(null);
+                getContext().send("id15.id012", "message");
             }
         });
         t.setDaemon(true);

@@ -25,13 +25,13 @@ package org.jacpfx.rcp.delegator;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.component.IComponent;
 import org.jacpfx.api.component.IPerspective;
 import org.jacpfx.api.component.ISubComponent;
 import org.jacpfx.api.delegator.IComponentDelegator;
 import org.jacpfx.api.handler.IComponentHandler;
-import org.jacpfx.rcp.action.FXAction;
+import org.jacpfx.rcp.message.FXMessage;
 import org.jacpfx.rcp.context.JACPContextImpl;
 import org.jacpfx.rcp.util.FXUtil;
 import org.jacpfx.rcp.util.ShutdownThreadsHandler;
@@ -54,7 +54,7 @@ public class FXComponentDelegator extends Thread implements
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue = new ArrayBlockingQueue<>(
 			100);
-	private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler;
+	private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
 	private final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = new CopyOnWriteArrayList<>();
 
 	public FXComponentDelegator() {
@@ -106,7 +106,7 @@ public class FXComponentDelegator extends Thread implements
         activateInactiveComponent(responsiblePerspective);
 		responsiblePerspective.registerComponent(component);
 		responsiblePerspective.getComponentHandler().initComponent(
-				new FXAction(component.getContext().getId(), component.getContext().getId(), FXUtil.MessageUtil.INIT, null),
+				new FXMessage(component.getContext().getId(), component.getContext().getId(), FXUtil.MessageUtil.INIT, null),
 				component);
 	}
 
@@ -116,13 +116,13 @@ public class FXComponentDelegator extends Thread implements
             // 1. init perspective (do not register component before perspective
             // is active, otherwise component will be handled once again)
             this.handleInActivePerspective(responsiblePerspective,
-                    new FXAction(responsiblePerspective.getContext().getId(),
+                    new FXMessage(responsiblePerspective.getContext().getId(),
                             responsiblePerspective.getContext().getId(), FXUtil.MessageUtil.INIT, null));
         } // End if
     }
 
 	private <P extends IComponent<EventHandler<Event>, Event, Object>> void handleInActivePerspective(
-			final P component, final IAction<Event, Object> action) {
+			final P component, final Message<Event, Object> action) {
 		component.getContext().setActive(true);
         // TODO remove runLater and ensure in workbench handler that correct thread is used... for perspecive handler this is not nessesary
         //noinspection unchecked
@@ -143,8 +143,8 @@ public class FXComponentDelegator extends Thread implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public <P extends IComponent<EventHandler<Event>, Event, Object>> void setComponentHandler(
-			final IComponentHandler<P, IAction<Event, Object>> handler) {
-		this.componentHandler = (IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>>) handler;
+			final IComponentHandler<P, Message<Event, Object>> handler) {
+		this.componentHandler = (IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, Message<Event, Object>>) handler;
 
 	}
 

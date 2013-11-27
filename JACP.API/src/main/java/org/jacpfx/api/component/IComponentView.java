@@ -22,7 +22,7 @@
  ************************************************************************/
 package org.jacpfx.api.component;
 
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 
 /**
  * Represents an UI component handled by a perspective. A IVComponent is an // *
@@ -32,7 +32,7 @@ import org.jacpfx.api.action.IAction;
  * @param <C>
  *            defines the base component where others extend from
  * @param <A>
- *            defines the basic action type
+ *            defines the basic message type
  * @param <M>
  *            defines the basic message type
  */
@@ -49,10 +49,10 @@ public interface IComponentView<C, A, M>  extends IComponentHandle<C, A, M> {
 	 * components.
 	 * 
 	 * @param node , the ui node
-	 * @param action ,  the trigger action
+	 * @param action ,  the trigger message
 	 * @return an ui component
 	 */
-	C postHandle(final C node, final IAction<A, M> action) throws Exception;
+	C postHandle(final C node, final Message<A, M> action) throws Exception;
 
 
 }

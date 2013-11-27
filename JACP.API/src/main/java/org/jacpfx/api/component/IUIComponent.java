@@ -30,9 +30,9 @@ package org.jacpfx.api.component;
  * @param <C>
  *            defines the base component where others extend from
  * @param <L>
- *            defines the action listener type
+ *            defines the message listener type
  * @param <A>
- *            defines the basic action type
+ *            defines the basic message type
  * @param <M>
  *            defines the basic message type
  */

@@ -32,7 +32,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.componentLayout.IWorkbenchLayout;
 import org.jacpfx.api.util.ToolbarPosition;
@@ -63,7 +63,7 @@ public class WorkbenchShutdownAndReopenComponentsTest implements FXWorkbench {
     static JACPContext context;
 
     @Override
-    public void handleInitialLayout(final IAction<Event, Object> action,
+    public void handleInitialLayout(final Message<Event, Object> action,
                                     final IWorkbenchLayout<Node> layout, final Stage stage) {
         layout.setWorkbenchXYSize(1024, 600);
         layout.setStyle(StageStyle.DECORATED);
@@ -141,7 +141,7 @@ public class WorkbenchShutdownAndReopenComponentsTest implements FXWorkbench {
             @Override
             public void handle(final ActionEvent arg0) {
                 // create a modal dialog
-                context.getActionListener("id19", "show").performAction(arg0);
+                context.send("id19", "show");
 
             }
         });
@@ -157,7 +157,7 @@ public class WorkbenchShutdownAndReopenComponentsTest implements FXWorkbench {
             @Override
             public void handle(final ActionEvent arg0) {
                 // create a modal dialog
-                context.getActionListener("id19", "stop").performAction(arg0);
+                context.send("id19", "stop");
 
             }
         });
@@ -168,7 +168,7 @@ public class WorkbenchShutdownAndReopenComponentsTest implements FXWorkbench {
     }
 
     public static void startPerspective() {
-        context.getActionListener("id19", FXUtil.MessageUtil.INIT).performAction(null);
+        context.send("id19", FXUtil.MessageUtil.INIT);
     }
 
 

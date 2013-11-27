@@ -32,7 +32,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.componentLayout.IWorkbenchLayout;
 import org.jacpfx.api.util.ToolbarPosition;
@@ -63,7 +63,7 @@ public class WorkbenchPredestroyPerspectiveTest implements FXWorkbench {
     static JACPContext context;
 
     @Override
-    public void handleInitialLayout(final IAction<Event, Object> action,
+    public void handleInitialLayout(final Message<Event, Object> action,
                                     final IWorkbenchLayout<Node> layout, final Stage stage) {
         layout.setWorkbenchXYSize(1024, 600);
         layout.setStyle(StageStyle.DECORATED);
@@ -141,7 +141,7 @@ public class WorkbenchPredestroyPerspectiveTest implements FXWorkbench {
             @Override
             public void handle(final ActionEvent arg0) {
                 // create a modal dialog
-                context.getActionListener("id17", "show").performAction(arg0);
+                context.send("id17", "show");
 
             }
         });
@@ -150,7 +150,7 @@ public class WorkbenchPredestroyPerspectiveTest implements FXWorkbench {
             @Override
             public void handle(final ActionEvent arg0) {
                 // create a modal dialog
-                context.getActionListener("id18", "show").performAction(arg0);
+                context.send("id18", "show");
 
             }
         });
@@ -168,7 +168,7 @@ public class WorkbenchPredestroyPerspectiveTest implements FXWorkbench {
             @Override
             public void handle(final ActionEvent arg0) {
                 // create a modal dialog
-                context.getActionListener("id17", "stop").performAction(arg0);
+                context.send("id17", "stop");
 
             }
         });
@@ -177,7 +177,7 @@ public class WorkbenchPredestroyPerspectiveTest implements FXWorkbench {
             @Override
             public void handle(final ActionEvent arg0) {
                 // create a modal dialog
-                context.getActionListener("id18", "stop").performAction(arg0);
+                context.send("id18", "stop");
 
             }
         });
@@ -189,14 +189,14 @@ public class WorkbenchPredestroyPerspectiveTest implements FXWorkbench {
     }
 
     public static void startPerspective() {
-        context.getActionListener("id17", FXUtil.MessageUtil.INIT).performAction(null);
+        context.send("id17", FXUtil.MessageUtil.INIT);
     }
 
     public static void showPerspective1() {
-        context.getActionListener("id17","SHOW").performAction(null);
+        context.send("id17","SHOW");
     }
 
     public static void showPerspective2() {
-        context.getActionListener("id18","SHOW").performAction(null);
+        context.send("id18","SHOW");
     }
 }

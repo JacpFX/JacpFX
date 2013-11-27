@@ -24,7 +24,7 @@ package org.jacpfx.rcp.scheduler;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.component.IComponentHandle;
 import org.jacpfx.api.component.IStatelessCallabackComponent;
 import org.jacpfx.api.component.ISubComponent;
@@ -54,7 +54,7 @@ public class StatelessCallbackScheduler implements
  * {@inheritDoc }
  */
     public final void incomingMessage(
-            final IAction<Event, Object> message,
+            final Message<Event, Object> message,
             final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent) {
         // TODO avoid locking of whole code block
         lock.writeLock().lock();
@@ -99,7 +99,7 @@ public class StatelessCallbackScheduler implements
     private void instanceRun(
             final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent,
             final ISubComponent<EventHandler<Event>, Event, Object> comp,
-            final IAction<Event, Object> message) {
+            final Message<Event, Object> message) {
         comp.putIncomingMessage(message);
         // TODO switch to embedded worker!!
         baseComponent.getExecutorService().submit(new StateLessComponentRunWorker(
@@ -114,7 +114,7 @@ public class StatelessCallbackScheduler implements
      */
     private void createInstanceAndRun(
             final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent,
-            final IAction<Event, Object> message) {
+            final Message<Event, Object> message) {
         IComponentHandle<?, Event, Object> handle = baseComponent.getComponent();
         final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> comp = this
                 .getCloneBean(baseComponent,
@@ -163,7 +163,7 @@ public class StatelessCallbackScheduler implements
      */
     private void seekAndPutMessage(
             final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent,
-            final IAction<Event, Object> message) {
+            final Message<Event, Object> message) {
         // if max count reached, seek through components and add
         // message to queue of oldest component
         final ISubComponent<EventHandler<Event>, Event, Object> comp = baseComponent

@@ -210,7 +210,7 @@ void</CODE></FONT></TD>
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/coordinator/FX2PerspectiveCoordinator.html#handleActive(P, org.jacpfx.apiaction.IAction)">handleActive</A></B>(P&nbsp;component,
-             org.jacpfx.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</CODE>
+             org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -228,7 +228,7 @@ void</CODE></FONT></TD>
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/coordinator/FX2PerspectiveCoordinator.html#handleInActive(P, org.jacpfx.apiaction.IAction)">handleInActive</A></B>(P&nbsp;component,
-               org.jacpfx.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</CODE>
+               org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -237,7 +237,7 @@ void</CODE></FONT></TD>
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/coordinator/FX2PerspectiveCoordinator.html#handleMessage(java.lang.String, org.jacpfx.apiaction.IAction)">handleMessage</A></B>(java.lang.String&nbsp;target,
-              org.jacpfx.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</CODE>
+              org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -262,7 +262,7 @@ void</CODE></FONT></TD>
 </TR>
 </TABLE>
 </CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/coordinator/FX2PerspectiveCoordinator.html#setComponentHandler(org.jacpfx.api.handler.IComponentHandler)">setComponentHandler</A></B>(org.jacpfx.api.handler.IComponentHandler&lt;P,org.jacpfx.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;handler)</CODE>
+<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/coordinator/FX2PerspectiveCoordinator.html#setComponentHandler(org.jacpfx.api.handler.IComponentHandler)">setComponentHandler</A></B>(org.jacpfx.api.handler.IComponentHandler&lt;P,org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;handler)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -338,7 +338,7 @@ public <B>FX2PerspectiveCoordinator</B>()</PRE>
 handleMessage</H3>
 <PRE>
 public void <B>handleMessage</B>(java.lang.String&nbsp;target,
-                          org.jacpfx.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</PRE>
+                          org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</PRE>
 <DL>
 <DD><DL>
 <DT><B>Specified by:</B><DD><CODE>handleMessage</CODE> in interface <CODE>org.jacpfx.api.coordinator.ICoordinator&amp;lt;javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,javafx.event.Event,java.lang.Object&amp;gt;</CODE></DL>
@@ -353,7 +353,7 @@ public void <B>handleMessage</B>(java.lang.String&nbsp;target,
 handleActive</H3>
 <PRE>
 public &lt;P extends org.jacpfx.api.component.IComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt; void <B>handleActive</B>(P&nbsp;component,
-                                                                                                                                                          org.jacpfx.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</PRE>
+                                                                                                                                                          org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</PRE>
 <DL>
 <DD><DL>
 <DT><B>Specified by:</B><DD><CODE>handleActive</CODE> in interface <CODE>org.jacpfx.api.coordinator.ICoordinator&amp;lt;javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,javafx.event.Event,java.lang.Object&amp;gt;</CODE></DL>
@@ -368,7 +368,7 @@ public &lt;P extends org.jacpfx.api.component.IComponent&lt;javafx.event.EventHa
 handleInActive</H3>
 <PRE>
 public &lt;P extends org.jacpfx.api.component.IComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt; void <B>handleInActive</B>(P&nbsp;component,
-                                                                                                                                                            org.jacpfx.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</PRE>
+                                                                                                                                                            org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</PRE>
 <DL>
 <DD><DL>
 <DT><B>Specified by:</B><DD><CODE>handleInActive</CODE> in interface <CODE>org.jacpfx.api.coordinator.ICoordinator&amp;lt;javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,javafx.event.Event,java.lang.Object&amp;gt;</CODE></DL>
@@ -410,7 +410,7 @@ public void <B>removePerspective</B>(org.jacpfx.apiperspective.IPerspective&lt;j
 <A NAME="getComponentHandler()"><!-- --></A><H3>
 getComponentHandler</H3>
 <PRE>
-public org.jacpfx.api.handler.IComponentHandler&lt;org.jacpfx.apiperspective.IPerspective&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;,org.jacpfx.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&gt; <B>getComponentHandler</B>()</PRE>
+public org.jacpfx.api.handler.IComponentHandler&lt;org.jacpfx.apiperspective.IPerspective&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;,org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&gt; <B>getComponentHandler</B>()</PRE>
 <DL>
 <DD><DL>
 <DT><B>Specified by:</B><DD><CODE>getComponentHandler</CODE> in interface <CODE>org.jacpfx.api.coordinator.ICoordinator&amp;lt;javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,javafx.event.Event,java.lang.Object&amp;gt;</CODE></DL>
@@ -424,7 +424,7 @@ public org.jacpfx.api.handler.IComponentHandler&lt;org.jacpfx.apiperspective.IPe
 <A NAME="setComponentHandler(org.jacpfx.api.handler.IComponentHandler)"><!-- --></A><H3>
 setComponentHandler</H3>
 <PRE>
-public &lt;P extends org.jacpfx.api.component.IComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt; void <B>setComponentHandler</B>(org.jacpfx.api.handler.IComponentHandler&lt;P,org.jacpfx.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;handler)</PRE>
+public &lt;P extends org.jacpfx.api.component.IComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt; void <B>setComponentHandler</B>(org.jacpfx.api.handler.IComponentHandler&lt;P,org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;handler)</PRE>
 <DL>
 <DD><DL>
 <DT><B>Specified by:</B><DD><CODE>setComponentHandler</CODE> in interface <CODE>org.jacpfx.api.coordinator.ICoordinator&amp;lt;javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,javafx.event.Event,java.lang.Object&amp;gt;</CODE></DL>

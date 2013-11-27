@@ -20,12 +20,12 @@
  *
  *
  ************************************************************************/
-package org.jacpfx.rcp.action;
+package org.jacpfx.rcp.message;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import org.jacpfx.api.action.IAction;
-import org.jacpfx.api.action.IActionListener;
+import org.jacpfx.api.message.ActionListener;
+import org.jacpfx.api.message.Message;
 
 import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
@@ -38,19 +38,19 @@ import java.util.concurrent.BlockingQueue;
  * @author Andy Moncsek
  */
 public class FXActionListener implements EventHandler<Event>,
-		IActionListener<EventHandler<Event>, Event, Object> {
-	private final IAction<Event, Object> action;
-	private final BlockingQueue<IAction<Event, Object>> globalMessageQueue;
+        ActionListener<Event, Object> {
+	private final Message<Event, Object> action;
+	private final BlockingQueue<Message<Event, Object>> globalMessageQueue;
 
-	public FXActionListener(final IAction<Event, Object> action,
-			final BlockingQueue<IAction<Event, Object>> globalMessageQueue) {
+	public FXActionListener(final Message<Event, Object> action,
+                            final BlockingQueue<Message<Event, Object>> globalMessageQueue) {
 		this.action = action;
 		this.globalMessageQueue = globalMessageQueue;
 	}
 
 	@Override
-	public void notifyComponents(final IAction<Event, Object> action) {
-        Objects.requireNonNull(action,"action cannot be null");
+	public void notifyComponents(final Message<Event, Object> action) {
+        Objects.requireNonNull(action,"message cannot be null");
         try {
             this.globalMessageQueue.put(action);
         } catch (InterruptedException e) {
@@ -59,25 +59,12 @@ public class FXActionListener implements EventHandler<Event>,
         }
     }
 
-	@Override
-	public IAction<Event, Object> getAction() {
-		return this.action;
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public EventHandler<Event> getListener() {
-		return this;
-	}
 
 	@Override
 	public void handle(final Event t) {
-		this.notifyComponents(new FXAction(action.getSourceId(), action.getTargetId(), action.getMessage(), t));
+		this.notifyComponents(new FXMessage(action.getSourceId(), action.getTargetId(), action.getMessageBody(), t));
 	}
 
-	@Override
-	public void performAction(final Event arg0) {
-		this.handle(arg0);
-	}
+
 
 }

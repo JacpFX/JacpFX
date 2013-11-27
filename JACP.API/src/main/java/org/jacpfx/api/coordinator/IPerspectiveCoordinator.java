@@ -28,9 +28,9 @@ import org.jacpfx.api.component.IPerspective;
  * Notifies perspectives and components included in workbench.
  * 
  * @param <L>
- *            defines the action listener type
+ *            defines the message listener type
  * @param <A>
- *            defines the basic action type
+ *            defines the basic message type
  * @param <M>
  *            defines the basic message type
  * @author Andy Moncsek

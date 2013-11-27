@@ -31,7 +31,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.lifecycle.OnHide;
 import org.jacpfx.api.annotations.lifecycle.OnShow;
@@ -43,7 +43,6 @@ import org.jacpfx.rcp.componentLayout.PerspectiveLayout;
 import org.jacpfx.rcp.context.JACPContext;
 import org.jacpfx.rcp.perspective.FXPerspective;
 import org.jacpfx.rcp.util.FXUtil.MessageUtil;
-import org.jacp.test.main.ApplicationLauncher;
 import org.jacp.test.main.ApplicationPredestroyPerspectiveTest;
 
 import java.util.ResourceBundle;
@@ -78,10 +77,10 @@ public class PerspectiveOnePredestroyPerspectiveTest implements FXPerspective {
     public static CountDownLatch hideLatch = new CountDownLatch(1);
 
     @Override
-    public void handlePerspective(final IAction<Event, Object> action,
+    public void handlePerspective(final Message<Event, Object> action,
                                   final PerspectiveLayout perspectiveLayout) {
-        System.out.println("Perspective 17: "+action.getMessage());
-        if (action.isMessage(MessageUtil.INIT)) {
+        System.out.println("Perspective 17: "+action.getMessageBody());
+        if (action.messageBodyEquals(MessageUtil.INIT)) {
 
             perspectiveLayout.registerRootComponent(createRoot());
             GridPane.setVgrow(perspectiveLayout.getRootComponent(),
@@ -98,11 +97,11 @@ public class PerspectiveOnePredestroyPerspectiveTest implements FXPerspective {
                     this.content3);
             ApplicationPredestroyPerspectiveTest.latch.countDown();
         }
-        else if (action.isMessage("stop")) {
+        else if (action.messageBodyEquals("stop")) {
             System.err.println("STOP MESSAGE P17");
             context.setActive(false);
         }
-        else if (action.isMessage("SHOW")) {
+        else if (action.messageBodyEquals("SHOW")) {
             System.err.println("SHOW MESSAGE P17");
 
         }
@@ -112,7 +111,7 @@ public class PerspectiveOnePredestroyPerspectiveTest implements FXPerspective {
     public static void fireBurst(final int count) {
         Thread t = new Thread(() -> {
             for (int i = 0; i < count; i++) {
-                getContext().getActionListener("id17.id016", "message").performAction(null);
+                getContext().send("id17.id016", "message");
             }
         });
         t.setDaemon(true);
@@ -120,7 +119,7 @@ public class PerspectiveOnePredestroyPerspectiveTest implements FXPerspective {
 
         Thread t2 = new Thread(() -> {
             for (int i = 0; i < count; i++) {
-                getContext().getActionListener("id17.id017", "message").performAction(null);
+                getContext().send("id17.id017", "message");
             }
         });
         t2.setDaemon(true);
@@ -128,7 +127,7 @@ public class PerspectiveOnePredestroyPerspectiveTest implements FXPerspective {
 
         Thread t3 = new Thread(() -> {
             for (int i = 0; i < count; i++) {
-                getContext().getActionListener("id17.id018", "message").performAction(null);
+                getContext().send("id17.id018", "message");
             }
         });
         t3.setDaemon(true);
@@ -136,7 +135,7 @@ public class PerspectiveOnePredestroyPerspectiveTest implements FXPerspective {
 
         Thread t4 = new Thread(() -> {
             for (int i = 0; i < count; i++) {
-                getContext().getActionListener("id17.id019", "message").performAction(null);
+                getContext().send("id17.id019", "message");
             }
         });
         t4.setDaemon(true);
@@ -148,7 +147,7 @@ public class PerspectiveOnePredestroyPerspectiveTest implements FXPerspective {
     }
 
     public static void stop() {
-        context.getActionListener("stop").performAction(null);
+        context.send("stop");
     }
     private Node createRoot() {
         BorderPane pane = new BorderPane();

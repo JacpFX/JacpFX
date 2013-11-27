@@ -133,7 +133,7 @@ extends <a href="../../../../org/jacp/api/component/IComponent.html" title="inte
 </td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><code><a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;<a href="../../../../org/jacp/api/component/ISubComponent.html" title="type parameter in ISubComponent">A</a>,<a href="../../../../org/jacp/api/component/ISubComponent.html" title="type parameter in ISubComponent">M</a>&gt;</code></td>
+<td class="colFirst"><code><a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/component/ISubComponent.html" title="type parameter in ISubComponent">A</a>,<a href="../../../../org/jacp/api/component/ISubComponent.html" title="type parameter in ISubComponent">M</a>&gt;</code></td>
 <td class="colLast"><code><strong><a href="../../../../org/jacp/api/component/ISubComponent.html#getNextIncomingMessage()">getNextIncomingMessage</a></strong>()</code>
 <div class="block">Returns next message in pipe.</div>
 </td>
@@ -153,7 +153,7 @@ extends <a href="../../../../org/jacp/api/component/IComponent.html" title="inte
 <tr class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><strong><a href="../../../../org/jacp/api/component/ISubComponent.html#initEnv(java.lang.String, java.util.concurrent.BlockingQueue)">initEnv</a></strong>(java.lang.String&nbsp;parentId,
-       java.util.concurrent.BlockingQueue&lt;<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;<a href="../../../../org/jacp/api/component/ISubComponent.html" title="type parameter in ISubComponent">A</a>,<a href="../../../../org/jacp/api/component/ISubComponent.html" title="type parameter in ISubComponent">M</a>&gt;&gt;&nbsp;messageQueue)</code>
+       java.util.concurrent.BlockingQueue&lt;<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/component/ISubComponent.html" title="type parameter in ISubComponent">A</a>,<a href="../../../../org/jacp/api/component/ISubComponent.html" title="type parameter in ISubComponent">M</a>&gt;&gt;&nbsp;messageQueue)</code>
 <div class="block">Set parentId and global message queue to component</div>
 </td>
 </tr>
@@ -171,7 +171,7 @@ extends <a href="../../../../org/jacp/api/component/IComponent.html" title="inte
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><strong><a href="../../../../org/jacp/api/component/ISubComponent.html#putIncomingMessage(org.jacpfx.apiaction.IAction)">putIncomingMessage</a></strong>(<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;<a href="../../../../org/jacp/api/component/ISubComponent.html" title="type parameter in ISubComponent">A</a>,<a href="../../../../org/jacp/api/component/ISubComponent.html" title="type parameter in ISubComponent">M</a>&gt;&nbsp;action)</code>
+<td class="colLast"><code><strong><a href="../../../../org/jacp/api/component/ISubComponent.html#putIncomingMessage(org.jacpfx.apiaction.IAction)">putIncomingMessage</a></strong>(<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/component/ISubComponent.html" title="type parameter in ISubComponent">A</a>,<a href="../../../../org/jacp/api/component/ISubComponent.html" title="type parameter in ISubComponent">M</a>&gt;&nbsp;action)</code>
 <div class="block">Add new message to component.</div>
 </td>
 </tr>
@@ -255,7 +255,7 @@ extends <a href="../../../../org/jacp/api/component/IComponent.html" title="inte
 <ul class="blockList">
 <li class="blockList">
 <h4>putIncomingMessage</h4>
-<pre>void&nbsp;putIncomingMessage(<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;<a href="../../../../org/jacp/api/component/ISubComponent.html" title="type parameter in ISubComponent">A</a>,<a href="../../../../org/jacp/api/component/ISubComponent.html" title="type parameter in ISubComponent">M</a>&gt;&nbsp;action)</pre>
+<pre>void&nbsp;putIncomingMessage(<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/component/ISubComponent.html" title="type parameter in ISubComponent">A</a>,<a href="../../../../org/jacp/api/component/ISubComponent.html" title="type parameter in ISubComponent">M</a>&gt;&nbsp;action)</pre>
 <div class="block">Add new message to component.</div>
 <dl><dt><span class="strong">Parameters:</span></dt><dd><code>action</code> - </dd></dl>
 </li>
@@ -266,7 +266,7 @@ extends <a href="../../../../org/jacp/api/component/IComponent.html" title="inte
 <ul class="blockList">
 <li class="blockList">
 <h4>getNextIncomingMessage</h4>
-<pre><a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;<a href="../../../../org/jacp/api/component/ISubComponent.html" title="type parameter in ISubComponent">A</a>,<a href="../../../../org/jacp/api/component/ISubComponent.html" title="type parameter in ISubComponent">M</a>&gt;&nbsp;getNextIncomingMessage()</pre>
+<pre><a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/component/ISubComponent.html" title="type parameter in ISubComponent">A</a>,<a href="../../../../org/jacp/api/component/ISubComponent.html" title="type parameter in ISubComponent">M</a>&gt;&nbsp;getNextIncomingMessage()</pre>
 <div class="block">Returns next message in pipe.</div>
 <dl><dt><span class="strong">Returns:</span></dt><dd>the next action to handle</dd></dl>
 </li>
@@ -320,7 +320,7 @@ extends <a href="../../../../org/jacp/api/component/IComponent.html" title="inte
 <li class="blockList">
 <h4>initEnv</h4>
 <pre>void&nbsp;initEnv(java.lang.String&nbsp;parentId,
-           java.util.concurrent.BlockingQueue&lt;<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;<a href="../../../../org/jacp/api/component/ISubComponent.html" title="type parameter in ISubComponent">A</a>,<a href="../../../../org/jacp/api/component/ISubComponent.html" title="type parameter in ISubComponent">M</a>&gt;&gt;&nbsp;messageQueue)</pre>
+           java.util.concurrent.BlockingQueue&lt;<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/component/ISubComponent.html" title="type parameter in ISubComponent">A</a>,<a href="../../../../org/jacp/api/component/ISubComponent.html" title="type parameter in ISubComponent">M</a>&gt;&gt;&nbsp;messageQueue)</pre>
 <div class="block">Set parentId and global message queue to component</div>
 <dl><dt><span class="strong">Parameters:</span></dt><dd><code>messageQueue</code> - </dd></dl>
 </li>

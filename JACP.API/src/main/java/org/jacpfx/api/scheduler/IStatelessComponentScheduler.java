@@ -22,7 +22,7 @@
  ************************************************************************/
 package org.jacpfx.api.scheduler;
 
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.component.IComponentHandle;
 import org.jacpfx.api.component.IStatelessCallabackComponent;
 
@@ -34,7 +34,7 @@ import org.jacpfx.api.component.IStatelessCallabackComponent;
  * @author Andy Moncsek
  * 
  * @param <L> The listener type.
- * @param <A> The action type.
+ * @param <A> The message type.
  * @param <M> The Message type.
  */
 public interface IStatelessComponentScheduler<L, A, M> {
@@ -43,7 +43,7 @@ public interface IStatelessComponentScheduler<L, A, M> {
 	 * 
 	 * @param message
 	 */
-	void incomingMessage(final IAction<A, M> message,
+	void incomingMessage(final Message<A, M> message,
 			IStatelessCallabackComponent<L, A, M> component);
 
 	/**

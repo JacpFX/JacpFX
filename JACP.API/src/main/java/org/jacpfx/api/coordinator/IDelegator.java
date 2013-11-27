@@ -22,7 +22,7 @@
  ************************************************************************/
 package org.jacpfx.api.coordinator;
 
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.component.IComponent;
 import org.jacpfx.api.component.IPerspective;
 import org.jacpfx.api.handler.IComponentHandler;
@@ -58,6 +58,6 @@ public interface IDelegator<L, A, M> {
 	 * @param handler
 	 */
 	<P extends IComponent<L, A, M>> void setComponentHandler(
-			IComponentHandler<P, IAction<A, M>> handler);
+			IComponentHandler<P, Message<A, M>> handler);
 
 }

@@ -32,7 +32,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.component.View;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
@@ -41,7 +41,6 @@ import org.jacpfx.rcp.component.FXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.context.JACPContext;
 import org.jacpfx.rcp.util.FXUtil;
-import org.jacp.test.main.ApplicationLauncher;
 import org.jacp.test.main.ApplicationPredestroyPerspectiveTest;
 
 import java.util.ResourceBundle;
@@ -75,7 +74,7 @@ public class PredestroyTestComponentOne implements FXComponent {
     /**
      * The handleAction method always runs outside the main application thread. You can create new nodes, execute long running tasks but you are not allowed to manipulate existing nodes here.
      */
-    public Node handle(final IAction<Event, Object> action) {
+    public Node handle(final Message<Event, Object> action) {
 
         return null;
     }
@@ -85,8 +84,8 @@ public class PredestroyTestComponentOne implements FXComponent {
      * The postHandleAction method runs always in the main application thread.
      */
     public Node postHandle(final Node arg0,
-                           final IAction<Event, Object> action) {
-        if (!action.isMessage(FXUtil.MessageUtil.INIT)) {
+                           final Message<Event, Object> action) {
+        if (!action.messageBodyEquals(FXUtil.MessageUtil.INIT)) {
             countdownlatch.countDown();
 
         } else {
@@ -97,7 +96,7 @@ public class PredestroyTestComponentOne implements FXComponent {
                 public void handle(MouseEvent event) {
 
                     System.out.println("context in c17: "+context);
-                    context.getActionListener("update").performAction(null);
+                    context.send("update");
                 }
             });
             button.setStyle("-fx-background-color: red");

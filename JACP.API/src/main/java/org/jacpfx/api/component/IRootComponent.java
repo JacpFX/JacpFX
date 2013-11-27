@@ -34,7 +34,7 @@ import org.jacpfx.api.handler.IComponentHandler;
  * @param <T>
  *            component type to register
  * @param <A>
- *            action type to use in registration process
+ *            message type to use in registration process
  */
 public interface IRootComponent<T, A> {
 

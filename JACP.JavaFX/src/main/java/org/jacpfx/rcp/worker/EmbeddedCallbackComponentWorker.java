@@ -24,7 +24,7 @@ package org.jacpfx.rcp.worker;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.component.IPerspective;
 import org.jacpfx.api.component.ISubComponent;
 import org.jacpfx.rcp.component.ASubComponent;
@@ -63,7 +63,7 @@ class EmbeddedCallbackComponentWorker
         try {
 
             while (!Thread.interrupted()) {
-                final IAction<Event, Object> myAction = this.component
+                final Message<Event, Object> myAction = this.component
                         .getNextIncomingMessage();
                 this.component.lock();
                 checkValidComponent(this.component);

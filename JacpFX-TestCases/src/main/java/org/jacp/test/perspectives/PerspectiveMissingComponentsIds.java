@@ -27,7 +27,7 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.annotations.lifecycle.OnShow;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
@@ -60,9 +60,9 @@ public class PerspectiveMissingComponentsIds implements FXPerspective {
     private HBox content3;
 
     @Override
-    public void handlePerspective(final IAction<Event, Object> action,
+    public void handlePerspective(final Message<Event, Object> action,
                                   final PerspectiveLayout perspectiveLayout) {
-        if (action.isMessage(MessageUtil.INIT)) {
+        if (action.messageBodyEquals(MessageUtil.INIT)) {
 
             GridPane.setVgrow(perspectiveLayout.getRootComponent(),
                     Priority.ALWAYS);

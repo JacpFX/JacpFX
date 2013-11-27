@@ -29,7 +29,7 @@ import javafx.event.Event;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.component.Component;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
@@ -73,8 +73,8 @@ public class CallbackComponentMessagingTest1Component1 implements CallbackCompon
     /**
      * The handleAction method always runs outside the main application thread. You can create new nodes, execute long running tasks but you are not allowed to manipulate existing nodes here.
      */
-    public Object handle(final IAction<Event, Object> action) {
-        if (action.isMessage(FXUtil.MessageUtil.INIT)) {
+    public Object handle(final Message<Event, Object> action) {
+        if (action.messageBodyEquals(FXUtil.MessageUtil.INIT)) {
             ApplicationLauncherCallbackComponentMessaginTest1.latch.countDown();
         } else {
             if (counter.get() > 1) {
@@ -92,13 +92,13 @@ public class CallbackComponentMessagingTest1Component1 implements CallbackCompon
     }
 
     public static void fireMessage() {
-        context.getActionListener("id14.id010", "message").performAction(null);
+        context.send("id14.id010", "message");
     }
 
     public static void fireBurst(final int count) {
         Thread t = new Thread(() -> {
             for (int i = 0; i < count; i++) {
-                getContext().getActionListener("id14.id010", "message").performAction(null);
+                getContext().send("id14.id010", "message");
             }
         });
         t.setDaemon(true);

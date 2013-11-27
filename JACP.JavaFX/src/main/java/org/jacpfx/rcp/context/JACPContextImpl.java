@@ -3,11 +3,11 @@ package org.jacpfx.rcp.context;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import org.jacpfx.api.action.IAction;
-import org.jacpfx.api.action.IActionListener;
+import org.jacpfx.api.message.ActionListener;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.util.CustomSecurityManager;
-import org.jacpfx.rcp.action.FXAction;
-import org.jacpfx.rcp.action.FXActionListener;
+import org.jacpfx.rcp.message.FXActionListener;
+import org.jacpfx.rcp.message.FXMessage;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.components.managedDialog.JACPManagedDialog;
 import org.jacpfx.rcp.components.managedDialog.ManagedDialogHandler;
@@ -26,7 +26,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class JACPContextImpl implements JACPContext {
 
-    private volatile BlockingQueue<IAction<Event, Object>> globalMessageQueue;
+    private final static CustomSecurityManager customSecurityManager =
+            new CustomSecurityManager();
+    private volatile BlockingQueue<Message<Event, Object>> globalMessageQueue;
     /**
      * will be set on init
      */
@@ -38,22 +40,19 @@ public class JACPContextImpl implements JACPContext {
     private String name;
     private volatile String returnTarget;
     private volatile String targetLayout;
-    private volatile String executionTarget="";
-    private final static CustomSecurityManager customSecurityManager =
-            new CustomSecurityManager();
+    private volatile String executionTarget = "";
     private volatile FXComponentLayout layout;
     private volatile ResourceBundle resourceBundle;
-
     private volatile AtomicBoolean active = new AtomicBoolean(false);
 
-    public JACPContextImpl(final String id, final String name, final BlockingQueue<IAction<Event, Object>> globalMessageQueue) {
+    public JACPContextImpl(final String id, final String name, final BlockingQueue<Message<Event, Object>> globalMessageQueue) {
         this.id = id;
         this.name = name;
         this.globalMessageQueue = globalMessageQueue;
 
     }
 
-    public JACPContextImpl(final BlockingQueue<IAction<Event, Object>> globalMessageQueue) {
+    public JACPContextImpl(final BlockingQueue<Message<Event, Object>> globalMessageQueue) {
         this.globalMessageQueue = globalMessageQueue;
 
     }
@@ -62,9 +61,9 @@ public class JACPContextImpl implements JACPContext {
      * {@inheritDoc}
      */
     @Override        // TODO check access, workbench is not allowed to use this method
-    public final IActionListener<EventHandler<Event>, Event, Object> getActionListener(
+    public final ActionListener<Event, Object> getActionListener(
             final Object message) {
-        return new FXActionListener(new FXAction(this.id, message),
+        return new FXActionListener(new FXMessage(this.id, message),
                 this.globalMessageQueue);
     }
 
@@ -72,11 +71,32 @@ public class JACPContextImpl implements JACPContext {
      * {@inheritDoc}
      */
     @Override
-    public final IActionListener<EventHandler<Event>, Event, Object> getActionListener(
+    public final ActionListener<Event, Object> getActionListener(
             final String targetId, final Object message) {
-        return new FXActionListener(new FXAction(this.id, targetId, message, null),
+        return new FXActionListener(new FXMessage(this.id, targetId, message, null),
                 this.globalMessageQueue);
     }
+
+
+    @Override
+    public final void send(final String targetId, final Object message) {
+        try {
+            this.globalMessageQueue.put(new FXMessage(this.id, targetId, message, null));
+        } catch (InterruptedException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+    }
+
+    @Override
+    // TODO check access, workbench is not allowed to use this method
+    public final void send(final Object message) {
+        try {
+            this.globalMessageQueue.put(new FXMessage(this.id, message));
+        } catch (InterruptedException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -84,6 +104,11 @@ public class JACPContextImpl implements JACPContext {
     public final String getId() {
         return this.id;
     }
+
+    public final void setId(final String id) {
+        this.id = id;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -93,11 +118,7 @@ public class JACPContextImpl implements JACPContext {
     }
 
     public final void setParentId(final String parentId) {
-          this.parentId = parentId;
-    }
-
-    public final void setId(final String id) {
-        this.id = id;
+        this.parentId = parentId;
     }
 
     /**
@@ -112,7 +133,6 @@ public class JACPContextImpl implements JACPContext {
         this.name = name;
     }
 
-
     /**
      * {@inheritDoc}
      */
@@ -120,6 +140,11 @@ public class JACPContextImpl implements JACPContext {
     public final ResourceBundle getResourceBundle() {
         return this.resourceBundle;
     }
+
+    public void setResourceBundle(ResourceBundle resourceBundle) {
+        this.resourceBundle = resourceBundle;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -127,16 +152,13 @@ public class JACPContextImpl implements JACPContext {
     public boolean isActive() {
         return this.active.get();
     }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void setActive(boolean active) {
         this.active.set(active);
-    }
-
-    public void setResourceBundle(ResourceBundle resourceBundle) {
-        this.resourceBundle = resourceBundle;
     }
 
     /**
@@ -164,6 +186,7 @@ public class JACPContextImpl implements JACPContext {
     public void hideModalDialog() {
         JACPModalDialog.getInstance().hideModalDialog();
     }
+
     /**
      * {@inheritDoc}
      */
@@ -173,7 +196,7 @@ public class JACPContextImpl implements JACPContext {
     }
 
     public void setFXComponentLayout(final FXComponentLayout layout) {
-          this.layout = layout;
+        this.layout = layout;
     }
 
     /**
@@ -189,6 +212,7 @@ public class JACPContextImpl implements JACPContext {
         this.returnTarget = null;
         return returnVal;
     }
+
     /**
      * {@inheritDoc}
      */
@@ -196,32 +220,34 @@ public class JACPContextImpl implements JACPContext {
     public final void setReturnTarget(final String returnTargetId) {
         this.returnTarget = returnTargetId;
     }
+
+    public String getExecutionTarget() {
+        return this.executionTarget;
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void setExecutionTarget(String id) {
-        if(id==null){
-            this.executionTarget ="";
+        if (id == null) {
+            this.executionTarget = "";
             return;
         }
         this.executionTarget = id;
     }
 
-    public String getExecutionTarget() {
-        return this.executionTarget;
+    public final String getTargetLayout() {
+        return this.targetLayout;
     }
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void setTargetLayout(String targetLayout) {
-        if(targetLayout==null) throw new IllegalArgumentException("targetLayout should not be null");
+        if (targetLayout == null) throw new IllegalArgumentException("targetLayout should not be null");
         this.targetLayout = targetLayout;
-    }
-
-    public final String getTargetLayout(){
-        return this.targetLayout;
     }
 
     @Override

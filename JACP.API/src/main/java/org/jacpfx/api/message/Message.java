@@ -2,7 +2,7 @@
  * 
  * Copyright (C) 2010 - 2012
  *
- * [IAction.java]
+ * [Message.java]
  * AHCP Project (http://jacp.googlecode.com)
  * All rights reserved.
  *
@@ -21,13 +21,13 @@
  *
  ************************************************************************/
 
-package org.jacpfx.api.action;
+package org.jacpfx.api.message;
 
 
 /**
- * Represents an action used by specific listener. An Action targets a component
- * and contains a message; every target get a specific instance of an action
- * (clone) containing only his specific message and action event.
+ * Represents an message used by specific listener. An message targets a component
+ * and contains a message body; every target get a specific instance of an message
+ * (clone) containing only his specific message body and message event.
  * 
  * @param <M>
  *            defines the type of message
@@ -35,29 +35,30 @@ package org.jacpfx.api.action;
  *            defines the type of ActionEvent
  * @author Andy Moncsek
  */
-public interface IAction<A, M> extends Cloneable {
+public interface Message<A, M> extends Cloneable {
 
 
     /**
      * Set message for target component.
-     * @param message ;  the message set to action
+     * @param message ;  the message set to message
      */
-	void setMessage(final M message);
+	void setMessageBody(final M message);
 
 	/**
 	 * Set message for a specified target component. the component.
 	 * 
 	 * @param targetId ; the actions target id
-	 * @param message ;  the message set to action
+	 * @param message ;  the message set to message
 	 */
+    @Deprecated
 	void addMessage(final String targetId, final M message);
 
 	/**
-	 * Get the action message.
+	 * Get the message message.
 	 * 
 	 * @return M
 	 */
-	M getMessage();
+	M getMessageBody();
 
 
 	/**
@@ -68,21 +69,21 @@ public interface IAction<A, M> extends Cloneable {
 	String getSourceId();
 
 	/**
-	 * Get source of this action event.
+	 * Get source of this message event.
 	 * 
 	 * @return the event
 	 */
 	A getSourceEvent();
 
 	/**
-	 * Clone action and containing event.
+	 * Clone message and containing event.
 	 * 
-	 * @return a clone of current action instance
+	 * @return a clone of current message instance
 	 */
-	IAction<A, M> clone();
+	Message<A, M> clone();
 
 	/**
-	 * Returns action target id.
+	 * Returns message target id.
 	 * 
 	 * @return the target id
 	 */
@@ -94,7 +95,7 @@ public interface IAction<A, M> extends Cloneable {
      * @param <T>
      * @return
      */
-    <T> boolean isMessageType(final Class<T> clazz);
+    <T> boolean isMessageBodyTypeOf(final Class<T> clazz);
 
     /**
      * Returns a typed message, if applicable.
@@ -102,13 +103,13 @@ public interface IAction<A, M> extends Cloneable {
      * @param <T>
      * @return
      */
-    <T> T getTypedMessage(final Class<T> clazz);
+    <T> T getTypedMessageBody(final Class<T> clazz);
 
     /**
      * Check if message equals given input.
      * @param object
      * @return
      */
-    boolean isMessage(final Object object);
+    boolean messageBodyEquals(final Object object);
 
 }

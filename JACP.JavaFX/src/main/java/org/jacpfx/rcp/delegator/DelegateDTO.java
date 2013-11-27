@@ -23,8 +23,8 @@
 package org.jacpfx.rcp.delegator;
 
 import javafx.event.Event;
-import org.jacpfx.api.action.IAction;
-import org.jacpfx.api.action.IDelegateDTO;
+import org.jacpfx.api.message.Message;
+import org.jacpfx.api.message.IDelegateDTO;
 
 /**
  * DTO interface to transfer components to desired target
@@ -34,9 +34,9 @@ import org.jacpfx.api.action.IDelegateDTO;
  */
 public class DelegateDTO implements IDelegateDTO<Event, Object> {
 	private final String target;
-	private final IAction<Event, Object> action;
+	private final Message<Event, Object> action;
 
-	public DelegateDTO(final String target, final IAction<Event, Object> action) {
+	public DelegateDTO(final String target, final Message<Event, Object> action) {
 		this.target = target;
 		this.action = action;
 	}
@@ -47,7 +47,7 @@ public class DelegateDTO implements IDelegateDTO<Event, Object> {
 	}
 
 	@Override
-	public IAction<Event, Object> getAction() {
+	public Message<Event, Object> getMessage() {
 		return this.action;
 	}
 }

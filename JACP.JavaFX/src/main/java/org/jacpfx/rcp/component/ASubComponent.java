@@ -24,7 +24,7 @@ package org.jacpfx.rcp.component;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.component.IComponentHandle;
 import org.jacpfx.api.component.ISubComponent;
 import org.jacpfx.api.context.Context;
@@ -50,7 +50,7 @@ public abstract class ASubComponent extends AComponent implements
 
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
-    private final BlockingQueue<IAction<Event, Object>> incomingMessage = new ArrayBlockingQueue<>(
+    private final BlockingQueue<Message<Event, Object>> incomingMessage = new ArrayBlockingQueue<>(
             100000);
 
 
@@ -65,7 +65,7 @@ public abstract class ASubComponent extends AComponent implements
      */
     @Override
     public final void initEnv(final String parentId,
-                              final BlockingQueue<IAction<Event, Object>> messageQueue) {
+                              final BlockingQueue<Message<Event, Object>> messageQueue) {
         this.parentId = parentId;
         this.globalMessageQueue = messageQueue;
         this.context = new JACPContextImpl(this.globalMessageQueue);
@@ -84,7 +84,7 @@ public abstract class ASubComponent extends AComponent implements
      * {@inheritDoc}
      */
     @Override
-    public final void putIncomingMessage(final IAction<Event, Object> action) {
+    public final void putIncomingMessage(final Message<Event, Object> action) {
         try {
             this.incomingMessage.put(action);
         } catch (final InterruptedException e) {
@@ -98,7 +98,7 @@ public abstract class ASubComponent extends AComponent implements
      * {@inheritDoc}
      */
     @Override
-    public final IAction<Event, Object> getNextIncomingMessage()throws InterruptedException{
+    public final Message<Event, Object> getNextIncomingMessage()throws InterruptedException{
         return this.incomingMessage.take();
     }
 
@@ -142,7 +142,7 @@ public abstract class ASubComponent extends AComponent implements
      * {@inheritDoc}
      */
     @Override
-    public final Context<EventHandler<Event>, Event, Object> getContext() {
+    public final Context<Event, Object> getContext() {
         return this.context;
     }
 

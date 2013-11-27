@@ -33,7 +33,7 @@ import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.annotations.workbench.Workbench;
 import org.jacpfx.api.component.IPerspective;
 import org.jacpfx.api.component.IRootComponent;
@@ -48,7 +48,7 @@ import org.jacpfx.api.launcher.Launcher;
 import org.jacpfx.api.util.OS;
 import org.jacpfx.api.util.ToolbarPosition;
 import org.jacpfx.api.workbench.IBase;
-import org.jacpfx.rcp.action.FXAction;
+import org.jacpfx.rcp.message.FXMessage;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.componentLayout.FXWorkbenchLayout;
 import org.jacpfx.rcp.components.managedDialog.JACPManagedDialog;
@@ -79,11 +79,11 @@ import java.util.logging.Logger;
 public abstract class AFXWorkbench
         implements
         IBase<EventHandler<Event>, Event, Object>,
-        IRootComponent<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> {
+        IRootComponent<IPerspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> {
 
     private List<IPerspective<EventHandler<Event>, Event, Object>> perspectives;
 
-    private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler;
+    private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
     private final IPerspectiveCoordinator<EventHandler<Event>, Event, Object> perspectiveCoordinator = new FXPerspectiveMessageCoordinator();
     private final IComponentDelegator<EventHandler<Event>, Event, Object> componentDelegator = new FXComponentDelegator();
     private final IMessageDelegator<EventHandler<Event>, Event, Object> messageDelegator = new FXMessageDelegator();
@@ -122,7 +122,7 @@ public abstract class AFXWorkbench
 
     private void initWorkbenchHandle(final Stage stage) {
         // init user defined workspace
-        getWorkbenchHandle().handleInitialLayout(new FXAction("TODO", "init"),
+        getWorkbenchHandle().handleInitialLayout(new FXMessage("TODO", "init"),
                 this.getWorkbenchLayout(), stage);
         this.setBasicLayout(stage);
 
@@ -172,7 +172,7 @@ public abstract class AFXWorkbench
     /**
      * {@inheritDoc}
      */
-    public final void initComponents(final IAction<Event, Object> action) {
+    public final void initComponents(final Message<Event, Object> action) {
         this.perspectives.forEach(this::initPerspective);
     }
 
@@ -184,7 +184,7 @@ public abstract class AFXWorkbench
         this.log("3.4.2: create perspective menu");
         if (perspective.getContext().isActive()) {
             final Runnable r = () -> AFXWorkbench.this.getComponentHandler().initComponent(
-                    new FXAction(perspective.getContext().getId(), perspective
+                    new FXMessage(perspective.getContext().getId(), perspective
                             .getContext().getId(), "init", null), perspective);
             if (Platform.isFxApplicationThread()) {
                 r.run();
@@ -266,7 +266,7 @@ public abstract class AFXWorkbench
     }
 
     @Override
-    public IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> getComponentHandler() {
+    public IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> getComponentHandler() {
         return this.componentHandler;
     }
 
@@ -447,7 +447,7 @@ public abstract class AFXWorkbench
     }
 
     @Override
-    public Context<EventHandler<Event>, Event, Object> getContext() {
+    public Context<Event, Object> getContext() {
         return context;
     }
 

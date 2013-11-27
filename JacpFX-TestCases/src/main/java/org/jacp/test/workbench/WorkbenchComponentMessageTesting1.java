@@ -32,7 +32,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.componentLayout.IWorkbenchLayout;
 import org.jacpfx.api.util.ToolbarPosition;
@@ -62,7 +62,7 @@ public class WorkbenchComponentMessageTesting1 implements FXWorkbench {
     JACPContext context;
 
     @Override
-    public void handleInitialLayout(final IAction<Event, Object> action,
+    public void handleInitialLayout(final Message<Event, Object> action,
                                     final IWorkbenchLayout<Node> layout, final Stage stage) {
         layout.setWorkbenchXYSize(1024, 600);
         layout.setStyle(StageStyle.DECORATED);
@@ -138,7 +138,7 @@ public class WorkbenchComponentMessageTesting1 implements FXWorkbench {
             @Override
             public void handle(final ActionEvent arg0) {
                 // create a modal dialog
-                context.getActionListener("id01", "show").performAction(arg0);
+                context.send("id01", "show");
 
             }
         });
@@ -147,7 +147,7 @@ public class WorkbenchComponentMessageTesting1 implements FXWorkbench {
             @Override
             public void handle(final ActionEvent arg0) {
                 // create a modal dialog
-                context.getActionListener("id02", "show").performAction(arg0);
+                context.send("id02", "show");
 
             }
         });

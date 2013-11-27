@@ -30,7 +30,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.component.View;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
@@ -74,7 +74,7 @@ public class ComponentToCallbackMessagingTest1Component1 implements FXComponent 
     /**
      * The handleAction method always runs outside the main application thread. You can create new nodes, execute long running tasks but you are not allowed to manipulate existing nodes here.
      */
-    public Node handle(final IAction<Event, Object> action) {
+    public Node handle(final Message<Event, Object> action) {
 
         return null;
     }
@@ -84,8 +84,8 @@ public class ComponentToCallbackMessagingTest1Component1 implements FXComponent 
      * The postHandleAction method runs always in the main application thread.
      */
     public Node postHandle(final Node arg0,
-                           final IAction<Event, Object> action) {
-        if (action.isMessage(FXUtil.MessageUtil.INIT)) {
+                           final Message<Event, Object> action) {
+        if (action.messageBodyEquals(FXUtil.MessageUtil.INIT)) {
 
             label.setText(" current Tagret: " + current);
             container.getChildren().addAll(label);
@@ -97,12 +97,12 @@ public class ComponentToCallbackMessagingTest1Component1 implements FXComponent 
                 } else {
                     counter.decrementAndGet();
                 }
-                context.getActionListener("id014", "message").performAction(null);
+                context.send("id014", "message");
             } else {
                 System.out.println("Component id013: FINISH");
                 if (wait.getCount() > 0) wait.countDown();
                 if (ComponentToCallbackMessagingTest1Component2.wait.getCount() > 0)
-                    context.getActionListener("id014", "message").performAction(null);
+                    context.send("id014", "message");
 
             }
 

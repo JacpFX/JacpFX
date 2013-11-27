@@ -31,7 +31,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.lifecycle.OnShow;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
@@ -42,7 +42,6 @@ import org.jacpfx.rcp.componentLayout.PerspectiveLayout;
 import org.jacpfx.rcp.context.JACPContext;
 import org.jacpfx.rcp.perspective.FXPerspective;
 import org.jacpfx.rcp.util.FXUtil.MessageUtil;
-import org.jacp.test.main.ApplicationLauncher;
 import org.jacp.test.main.ApplicationShutdownAndRestartComponentsTest;
 
 import java.util.ResourceBundle;
@@ -71,9 +70,9 @@ public class PerspectiveShutdownAndRestartComponents implements FXPerspective {
     private static JACPContext context;
 
     @Override
-    public void handlePerspective(final IAction<Event, Object> action,
+    public void handlePerspective(final Message<Event, Object> action,
                                   final PerspectiveLayout perspectiveLayout) {
-        if (action.isMessage(MessageUtil.INIT)) {
+        if (action.messageBodyEquals(MessageUtil.INIT)) {
 
             //perspectiveLayout.registerRootComponent(createRoot());
             GridPane.setVgrow(perspectiveLayout.getRootComponent(),
@@ -117,34 +116,34 @@ public class PerspectiveShutdownAndRestartComponents implements FXPerspective {
     }
 
     public static void stopFXComponent() {
-        context.getActionListener("id19.id0020","stop").performAction(null);
-        context.getActionListener("id19.id0021","stop").performAction(null);
-        context.getActionListener("id19.id0022","stop").performAction(null);
+        context.send("id19.id0020","stop");
+        context.send("id19.id0021","stop");
+        context.send("id19.id0022","stop");
     }
 
     public static void startComponent() {
-        context.getActionListener("id19.id0020","start").performAction(null);
-        context.getActionListener("id19.id0021","start").performAction(null);
-        context.getActionListener("id19.id0022","start").performAction(null);
+        context.send("id19.id0020","start");
+        context.send("id19.id0021","start");
+        context.send("id19.id0022","start");
     }
 
     public static void startStopComponent() {
-        context.getActionListener("id19.id0020","start").performAction(null);
-        context.getActionListener("id19.id0020","stop").performAction(null);
+        context.send("id19.id0020","start");
+        context.send("id19.id0020","stop");
 
     }
 
     public static void stopStartFXComponent() {
 
-        context.getActionListener("id19.id0020","stop").performAction(null);
-        context.getActionListener("id19.id0020","start").performAction(null);
+        context.send("id19.id0020","stop");
+        context.send("id19.id0020","start");
 
     }
 
     public static void stopStartComponent() {
 
-        context.getActionListener("id19.id0021","stop").performAction(null);
-        context.getActionListener("id19.id0021","start").performAction(null);
+        context.send("id19.id0021","stop");
+        context.send("id19.id0021","start");
 
     }
     @OnShow

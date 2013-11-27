@@ -25,7 +25,7 @@ package org.jacpfx.rcp.handler;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.component.IStatelessCallabackComponent;
 import org.jacpfx.api.component.ISubComponent;
 import org.jacpfx.api.componentLayout.IPerspectiveLayout;
@@ -54,7 +54,7 @@ import java.util.logging.Logger;
  */
 public class FXComponentHandler
 		implements
-		IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, IAction<Event, Object>> {
+		IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>> {
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	private final StatelessCallbackScheduler scheduler;
 	private final IPerspectiveLayout<Node, Node> perspectiveLayout;
@@ -77,14 +77,14 @@ public class FXComponentHandler
 	}
 
 	@Override
-	public final void initComponent(final IAction<Event, Object> action,
+	public final void initComponent(final Message<Event, Object> action,
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
             this.handleInit(action, component);
 	}
 
 	@Override
 	public final void handleAndReplaceComponent(
-			final IAction<Event, Object> action,
+			final Message<Event, Object> action,
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
         if (AStatelessCallbackComponent.class.isAssignableFrom(component.getClass())) {
             this.log("RUN STATELESS COMPONENTS:::" + component.getContext().getName());
@@ -99,24 +99,24 @@ public class FXComponentHandler
 
 
 	/**
-	 * Handle state less callback component. This Method is invoked when an action is triggered.
+	 * Handle state less callback component. This Method is invoked when an message is triggered.
 	 * 
 	 * @param component, the target component
-	 * @param action, the action
+	 * @param action, the message
 	 */
 	private void runStatelessCallbackComponent(
 			final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> component,
-			final IAction<Event, Object> action) {
+			final Message<Event, Object> action) {
 		this.scheduler.incomingMessage(action, component);
 	}
 	
 	/**
-	 * Execute subComponent initialization. This methods run's on "init" action while bootstrap.
+	 * Execute subComponent initialization. This methods run's on "init" message while bootstrap.
 	 * 
-	 * @param action, the initial action
+	 * @param action, the initial message
 	 * @param component, the component to init
 	 */
-	private void handleInit(final IAction<Event, Object> action,
+	private void handleInit(final Message<Event, Object> action,
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
         if (AFXComponent.class.isAssignableFrom(component.getClass())) {
 			this.log("COMPONENT EXECUTE INIT:::" + component.getContext().getName());
@@ -145,10 +145,10 @@ public class FXComponentHandler
 	/**
 	 * set component blocked and add message to queue
 	 * 
-	 * @param component, the component where the action will be placed in queue
-	 * @param action, the action
+	 * @param component, the component where the message will be placed in queue
+	 * @param action, the message
 	 */
-	private void putMessageToQueue(final IAction<Event, Object> action,
+	private void putMessageToQueue(final Message<Event, Object> action,
 			final ISubComponent<EventHandler<Event>, Event, Object> component
 			) {
 		component.putIncomingMessage(action);

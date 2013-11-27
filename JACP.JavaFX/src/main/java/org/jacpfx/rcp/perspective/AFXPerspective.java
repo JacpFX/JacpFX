@@ -28,8 +28,8 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import org.jacpfx.api.action.IAction;
-import org.jacpfx.api.action.IDelegateDTO;
+import org.jacpfx.api.message.Message;
+import org.jacpfx.api.message.IDelegateDTO;
 import org.jacpfx.api.annotations.perspective.Perspective;
 import org.jacpfx.api.component.IPerspectiveView;
 import org.jacpfx.api.component.ISubComponent;
@@ -40,7 +40,7 @@ import org.jacpfx.api.coordinator.ICoordinator;
 import org.jacpfx.api.handler.IComponentHandler;
 import org.jacpfx.api.launcher.Launcher;
 import org.jacpfx.api.util.UIType;
-import org.jacpfx.rcp.action.FXAction;
+import org.jacpfx.rcp.message.FXMessage;
 import org.jacpfx.rcp.component.AComponent;
 import org.jacpfx.rcp.componentLayout.PerspectiveLayout;
 import org.jacpfx.rcp.context.JACPContextImpl;
@@ -68,7 +68,7 @@ public abstract class AFXPerspective extends AComponent implements
         Initializable {
     private final Logger logger = Logger.getLogger(this.getClass().getName());
     private List<ISubComponent<EventHandler<Event>, Event, Object>> subcomponents;
-    private IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler;
+    private IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
     private BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
     private BlockingQueue<IDelegateDTO<Event, Object>> messageDelegateQueue;
     private ICoordinator<EventHandler<Event>, Event, Object> componentCoordinator;
@@ -88,7 +88,7 @@ public abstract class AFXPerspective extends AComponent implements
     public final void init(
             final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue,
             final BlockingQueue<IDelegateDTO<Event, Object>> messageDelegateQueue,
-            final BlockingQueue<IAction<Event, Object>> globalMessageQueue,final Launcher<?> launcher) {
+            final BlockingQueue<Message<Event, Object>> globalMessageQueue,final Launcher<?> launcher) {
         this.componentDelegateQueue = componentDelegateQueue;
         this.messageDelegateQueue = messageDelegateQueue;
         this.globalMessageQueue = globalMessageQueue;
@@ -102,7 +102,7 @@ public abstract class AFXPerspective extends AComponent implements
      */
     @Override
     public void postInit(
-            final IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler) {
+            final IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler) {
         // init component handler
         this.componentHandler = componentHandler;
         this.componentCoordinator = new FXComponentMessageCoordinator(this.messageDelegateQueue,this.getContext().getId(),this.launcher);
@@ -130,7 +130,7 @@ public abstract class AFXPerspective extends AComponent implements
      * {@inheritDoc}
      */
     @Override
-    public void handlePerspective(final IAction<Event, Object> action) {
+    public void handlePerspective(final Message<Event, Object> action) {
         getFXPerspectiveHandler().handlePerspective(action,
                 (PerspectiveLayout) this.getIPerspectiveLayout());
 
@@ -180,7 +180,7 @@ public abstract class AFXPerspective extends AComponent implements
     }
 
     @Override
-    public final void initComponents(final IAction<Event, Object> action) {
+    public final void initComponents(final Message<Event, Object> action) {
         final String targetId = FXUtil.getTargetComponentId(action
                 .getTargetId());
         this.log("3.4.4.1: subcomponent targetId: " + targetId);
@@ -190,15 +190,15 @@ public abstract class AFXPerspective extends AComponent implements
         components.parallelStream().forEach(component -> initComponent(component,action,targetId));
     }
 
-    private void initComponent(final ISubComponent<EventHandler<Event>, Event, Object> component,final IAction<Event, Object> action,final String targetId ) {
+    private void initComponent(final ISubComponent<EventHandler<Event>, Event, Object> component,final Message<Event, Object> action,final String targetId ) {
         if (component.getContext().getId().equals(targetId)) {
-            this.log("3.4.4.2: subcomponent init with custom action");
+            this.log("3.4.4.2: subcomponent init with custom message");
             this.getComponentHandler().initComponent(action, component);
         } // else END
         else if (component.getContext().isActive() && !component.isStarted()) {
-            this.log("3.4.4.2: subcomponent init with default action");
+            this.log("3.4.4.2: subcomponent init with default message");
             this.getComponentHandler().initComponent(
-                    new FXAction(component.getContext().getId(), component.getContext().getId(),
+                    new FXMessage(component.getContext().getId(), component.getContext().getId(),
                             "init", null), component);
         } // if END
     }
@@ -246,13 +246,13 @@ public abstract class AFXPerspective extends AComponent implements
     }
 
     @Override
-    public final BlockingQueue<IAction<Event, Object>> getComponentsMessageQueue() {
+    public final BlockingQueue<Message<Event, Object>> getComponentsMessageQueue() {
         return this.componentCoordinator.getMessageQueue();
 
     }
 
     @Override
-    public final IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, IAction<Event, Object>> getComponentHandler() {
+    public final IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>> getComponentHandler() {
         return this.componentHandler;
     }
 
@@ -324,7 +324,7 @@ public abstract class AFXPerspective extends AComponent implements
     }
 
     @Override
-    public Context<EventHandler<Event>, Event, Object> getContext() {
+    public Context<Event, Object> getContext() {
         return this.context;
     }
 }

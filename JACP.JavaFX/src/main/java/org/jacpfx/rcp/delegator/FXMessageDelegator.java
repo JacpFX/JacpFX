@@ -25,8 +25,8 @@ package org.jacpfx.rcp.delegator;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import org.jacpfx.api.action.IAction;
-import org.jacpfx.api.action.IDelegateDTO;
+import org.jacpfx.api.message.Message;
+import org.jacpfx.api.message.IDelegateDTO;
 import org.jacpfx.api.component.IComponent;
 import org.jacpfx.api.component.IPerspective;
 import org.jacpfx.api.delegator.IMessageDelegator;
@@ -47,7 +47,7 @@ import java.util.logging.Logger;
 public class FXMessageDelegator extends Thread implements
 		IMessageDelegator<EventHandler<Event>, Event, Object> {
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
-	private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler;
+	private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
 	private final BlockingQueue<IDelegateDTO<Event, Object>> messageDelegateQueue = new ArrayBlockingQueue<>(
 			10000);
 	private final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = new CopyOnWriteArrayList<>();
@@ -63,7 +63,7 @@ public class FXMessageDelegator extends Thread implements
 			try {
 				final IDelegateDTO<Event, Object> dto = this.messageDelegateQueue.take();
 				final String targetId = dto.getTarget();
-				final IAction<Event, Object> action = dto.getAction();
+				final Message<Event, Object> action = dto.getMessage();
 				this.delegateMessage(targetId, action);
 			} catch (final InterruptedException e) {
 				logger.info("queue in FXComponentDelegator interrupted");
@@ -77,7 +77,7 @@ public class FXMessageDelegator extends Thread implements
 	}
 
 	private void delegateMessage(final String target,
-			final IAction<Event, Object> action) throws ExecutionException, InterruptedException {
+			final Message<Event, Object> action) throws ExecutionException, InterruptedException {
 		// Find local Target; if target is perspective handle target or
 		// delegate
 		// message to responsible component observer
@@ -90,7 +90,7 @@ public class FXMessageDelegator extends Thread implements
 	}
 
 	void handleMessage(final String target,
-                       final IAction<Event, Object> action) throws ExecutionException, InterruptedException {
+                       final Message<Event, Object> action) throws ExecutionException, InterruptedException {
 		final IPerspective<EventHandler<Event>, Event, Object> perspective = FXUtil
 				.getObserveableById(FXUtil.getTargetPerspectiveId(target),
 						this.perspectives);
@@ -125,7 +125,7 @@ public class FXMessageDelegator extends Thread implements
 	 * @param action
 	 */
 	private void handleComponentHit(final String target,
-			final IAction<Event, Object> action,
+			final Message<Event, Object> action,
 			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
 		if (perspective.getContext().isActive()) {
 			this.handleMessageToActivePerspective(target, action, perspective);
@@ -147,7 +147,7 @@ public class FXMessageDelegator extends Thread implements
 	 * @param perspective
 	 */
 	private void handleMessageToActivePerspective(final String target,
-			final IAction<Event, Object> action,
+			final Message<Event, Object> action,
 			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
 		// if perspective already active handle perspective and replace
 		// with newly created layout component in workbench
@@ -164,7 +164,7 @@ public class FXMessageDelegator extends Thread implements
 	}
 
 	<P extends IComponent<EventHandler<Event>, Event, Object>> void handleInActivePerspective(
-            final P component, final IAction<Event, Object> action) {
+            final P component, final Message<Event, Object> action) {
 		component.getContext().setActive(true);
 		Platform.runLater(() -> FXMessageDelegator.this.componentHandler
                 .initComponent(
@@ -179,7 +179,7 @@ public class FXMessageDelegator extends Thread implements
 	 * @param action
 	 */
 	private <P extends IComponent<EventHandler<Event>, Event, Object>> void handleActive(
-			final P component, final IAction<Event, Object> action) {
+			final P component, final Message<Event, Object> action) {
 		FXMessageDelegator.this.componentHandler
                 .handleAndReplaceComponent(
                         action,
@@ -194,7 +194,7 @@ public class FXMessageDelegator extends Thread implements
 	 * @param action
 	 */
 	private void callComponentDelegate(final String target,
-			final IAction<Event, Object> action) {
+			final Message<Event, Object> action) {
 		final IPerspective<EventHandler<Event>, Event, Object> perspective = FXUtil
 				.getObserveableById(FXUtil.getTargetPerspectiveId(target),
 						this.perspectives);
@@ -247,8 +247,8 @@ public class FXMessageDelegator extends Thread implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public <P extends IComponent<EventHandler<Event>, Event, Object>> void setComponentHandler(
-			final IComponentHandler<P, IAction<Event, Object>> handler) {
-		this.componentHandler = (IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>>) handler;
+			final IComponentHandler<P, Message<Event, Object>> handler) {
+		this.componentHandler = (IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, Message<Event, Object>>) handler;
 
 	}
 

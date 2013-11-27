@@ -165,10 +165,10 @@ public class JACPOptionPane extends VBox implements EventHandler<ActionEvent> {
 	}
 
 	/**
-	 * Sets the on ok action.
+	 * Sets the on ok message.
 	 * 
 	 * @param onOK
-	 *            the new on ok action
+	 *            the new on ok message
 	 */
 	public void setOnOkAction(final EventHandler<ActionEvent> onOK) {
 		if (this.okButton == null) {
@@ -178,10 +178,10 @@ public class JACPOptionPane extends VBox implements EventHandler<ActionEvent> {
 	}
 
 	/**
-	 * Sets the on cancel action.
+	 * Sets the on cancel message.
 	 * 
 	 * @param onCancel
-	 *            the new on cancel action
+	 *            the new on cancel message
 	 */
 	public void setOnCancelAction(final EventHandler<ActionEvent> onCancel) {
 		if (this.cancelButton == null) {
@@ -191,10 +191,10 @@ public class JACPOptionPane extends VBox implements EventHandler<ActionEvent> {
 	}
 
 	/**
-	 * Sets the on yes action.
+	 * Sets the on yes message.
 	 * 
 	 * @param onYes
-	 *            the new on yes action
+	 *            the new on yes message
 	 */
 	public void setOnYesAction(final EventHandler<ActionEvent> onYes) {
 		if (this.yesButton == null) {
@@ -204,10 +204,10 @@ public class JACPOptionPane extends VBox implements EventHandler<ActionEvent> {
 	}
 
 	/**
-	 * Sets the on no action.
+	 * Sets the on no message.
 	 * 
 	 * @param onNo
-	 *            the new on no action
+	 *            the new on no message
 	 */
 	public void setOnNoAction(final EventHandler<ActionEvent> onNo) {
 		if (this.noButton == null) {
@@ -217,7 +217,7 @@ public class JACPOptionPane extends VBox implements EventHandler<ActionEvent> {
 	}
 
 	/**
-	 * Sets the action.
+	 * Sets the message.
 	 * 
 	 * @param button
 	 *            the button

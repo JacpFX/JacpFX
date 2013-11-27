@@ -30,7 +30,7 @@ package org.jacpfx.api.handler;
  * @param <T>
  *            component type to register
  * @param <A>
- *            action type to use in registration process
+ *            message type to use in registration process
  */
 public interface IComponentHandler<T, A> {
 	/**

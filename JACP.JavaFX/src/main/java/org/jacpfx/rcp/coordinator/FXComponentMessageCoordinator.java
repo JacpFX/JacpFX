@@ -24,8 +24,8 @@ package org.jacpfx.rcp.coordinator;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import org.jacpfx.api.action.IAction;
-import org.jacpfx.api.action.IDelegateDTO;
+import org.jacpfx.api.message.Message;
+import org.jacpfx.api.message.IDelegateDTO;
 import org.jacpfx.api.component.IComponent;
 import org.jacpfx.api.component.IPerspective;
 import org.jacpfx.api.component.ISubComponent;
@@ -47,7 +47,7 @@ import java.util.concurrent.BlockingQueue;
  */
 public class FXComponentMessageCoordinator extends AFXCoordinator implements
         ICoordinator<EventHandler<Event>, Event, Object> {
-    private IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler;
+    private IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
     private final BlockingQueue<IDelegateDTO<Event, Object>> delegateQueue;
     private final String parentId;
     private final Launcher<?> launcher;
@@ -63,7 +63,7 @@ public class FXComponentMessageCoordinator extends AFXCoordinator implements
 
     @Override
     public void handleMessage(final String targetId,
-                              final IAction<Event, Object> action) {
+                              final Message<Event, Object> action) {
         // check if local message
         final boolean local = FXUtil.isLocalMessage(targetId);
         if (!local) {
@@ -78,7 +78,7 @@ public class FXComponentMessageCoordinator extends AFXCoordinator implements
      * Handles local messages like id=componentId.
      */
     private void handleLocalMessage(final String targetId,
-                                     final IAction<Event, Object> action) {
+                                     final Message<Event, Object> action) {
         final ISubComponent<EventHandler<Event>, Event, Object> component = getTargetComponent(targetId, action);
         final String targetPerspectiveId = component.getParentId();
         if (this.parentId.equals(targetPerspectiveId)) {
@@ -95,7 +95,7 @@ public class FXComponentMessageCoordinator extends AFXCoordinator implements
      * Handles global messages like perspectiveId.componentId.
      */
     private void handleGlobalMessage(final String targetId,
-                                     final IAction<Event, Object> action) {
+                                     final Message<Event, Object> action) {
         final String targetPerspectiveId = FXUtil
                 .getTargetPerspectiveId(targetId);
         if (parentId.equals(targetPerspectiveId)) {
@@ -109,13 +109,13 @@ public class FXComponentMessageCoordinator extends AFXCoordinator implements
     }
 
     /**
-     * Returns the target component by targetId specified in action.
+     * Returns the target component by targetId specified in message.
      * @param targetId
      * @param action
      * @return
      */
     private ISubComponent<EventHandler<Event>, Event, Object> getTargetComponent(final String targetId,
-                                                                                 final IAction<Event, Object> action) {
+                                                                                 final Message<Event, Object> action) {
         ISubComponent<EventHandler<Event>, Event, Object> component = ComponentRegistry.findComponentById(targetId);
         if(component != null){
             // component is active
@@ -143,7 +143,7 @@ public class FXComponentMessageCoordinator extends AFXCoordinator implements
      * @param action
      */
     private void handleMessageInCurrentPerspective(final String targetId,
-                                                   final IAction<Event, Object> action) {
+                                                   final Message<Event, Object> action) {
         final ISubComponent<EventHandler<Event>, Event, Object> component = getTargetComponent(targetId, action);
         this.log(" //1.1// component message to: " + action.getTargetId());
         this.log(" //1.1.1// component HIT: " + action.getTargetId());
@@ -156,7 +156,7 @@ public class FXComponentMessageCoordinator extends AFXCoordinator implements
      * @param action
      * @param component
      */
-    private void handleComponentHit(final IAction<Event, Object> action,
+    private void handleComponentHit(final Message<Event, Object> action,
                                     final ISubComponent<EventHandler<Event>, Event, Object> component) {
         if (component.getContext().isActive() && component.isStarted()) {
             this.log(" //1.1.1.1// component HIT handle ACTIVE: "
@@ -173,7 +173,7 @@ public class FXComponentMessageCoordinator extends AFXCoordinator implements
 
     @Override
     public final <P extends IComponent<EventHandler<Event>, Event, Object>> void handleActive(
-            final P component, final IAction<Event, Object> action) {
+            final P component, final Message<Event, Object> action) {
         this.log(" //1.1.1.1.1// component " + action.getTargetId()
                 + " delegate to perspective: " + this.parentId);
         //noinspection unchecked
@@ -184,7 +184,7 @@ public class FXComponentMessageCoordinator extends AFXCoordinator implements
 
     @Override
     public final <P extends IComponent<EventHandler<Event>, Event, Object>> void handleInActive(
-            final P component, final IAction<Event, Object> action) {
+            final P component, final Message<Event, Object> action) {
         this.componentHandler.initComponent(action,
                 (ISubComponent<EventHandler<Event>, Event, Object>) component);
 
@@ -192,15 +192,15 @@ public class FXComponentMessageCoordinator extends AFXCoordinator implements
 
     @SuppressWarnings("unchecked")
     @Override
-    public IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, IAction<Event, Object>> getComponentHandler() {
+    public IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>> getComponentHandler() {
         return this.componentHandler;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <P extends IComponent<EventHandler<Event>, Event, Object>> void setComponentHandler(
-            final IComponentHandler<P, IAction<Event, Object>> handler) {
-        this.componentHandler = (IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, IAction<Event, Object>>) handler;
+            final IComponentHandler<P, Message<Event, Object>> handler) {
+        this.componentHandler = (IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>>) handler;
 
     }
 

@@ -201,13 +201,13 @@ implements <a href="../../../../../org/jacp/api/component/IComponentView.html" t
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>&lt;C&gt;&nbsp;C</code></td>
-<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/component/AFXComponent.html#handle(org.jacpfx.apiaction.IAction)">handle</a></strong>(<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</code>
+<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/component/AFXComponent.html#handle(org.jacpfx.apiaction.IAction)">handle</a></strong>(<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</code>
 <div class="block">Handles component when called.</div>
 </td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>abstract javafx.scene.Node</code></td>
-<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/component/AFXComponent.html#handleAction(org.jacpfx.apiaction.IAction)">handleAction</a></strong>(<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</code>&nbsp;</td>
+<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/component/AFXComponent.html#handleAction(org.jacpfx.apiaction.IAction)">handleAction</a></strong>(<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</code>&nbsp;</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>void</code></td>
@@ -217,7 +217,7 @@ implements <a href="../../../../../org/jacp/api/component/IComponentView.html" t
 <tr class="altColor">
 <td class="colFirst"><code>javafx.scene.Node</code></td>
 <td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/component/AFXComponent.html#postHandle(javafx.scene.Node, org.jacpfx.apiaction.IAction)">postHandle</a></strong>(javafx.scene.Node&nbsp;node,
-          <a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</code>
+          <a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</code>
 <div class="block">To avoid toolkit specific threading issues the postHandle method always
  called after the handle method.</div>
 </td>
@@ -225,7 +225,7 @@ implements <a href="../../../../../org/jacp/api/component/IComponentView.html" t
 <tr class="rowColor">
 <td class="colFirst"><code>abstract javafx.scene.Node</code></td>
 <td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/component/AFXComponent.html#postHandleAction(javafx.scene.Node, org.jacpfx.apiaction.IAction)">postHandleAction</a></strong>(javafx.scene.Node&nbsp;node,
-                <a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</code>&nbsp;</td>
+                <a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</code>&nbsp;</td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>void</code></td>
@@ -328,7 +328,7 @@ implements <a href="../../../../../org/jacp/api/component/IComponentView.html" t
 <ul class="blockList">
 <li class="blockList">
 <h4>handle</h4>
-<pre>public final&nbsp;&lt;C&gt;&nbsp;C&nbsp;handle(<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</pre>
+<pre>public final&nbsp;&lt;C&gt;&nbsp;C&nbsp;handle(<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</pre>
 <div class="block">Handles component when called. The handle method in subcomponents is
  always executed in a separate thread;</div>
 <dl>
@@ -345,7 +345,7 @@ implements <a href="../../../../../org/jacp/api/component/IComponentView.html" t
 <li class="blockList">
 <h4>postHandle</h4>
 <pre>public final&nbsp;javafx.scene.Node&nbsp;postHandle(javafx.scene.Node&nbsp;node,
-                           <a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</pre>
+                           <a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</pre>
 <div class="block">To avoid toolkit specific threading issues the postHandle method always
  called after the handle method. While the handle method is executed in a
  separate thread the postHandle method is guaranteed to run in application
@@ -367,7 +367,7 @@ implements <a href="../../../../../org/jacp/api/component/IComponentView.html" t
 <ul class="blockList">
 <li class="blockList">
 <h4>handleAction</h4>
-<pre>public abstract&nbsp;javafx.scene.Node&nbsp;handleAction(<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</pre>
+<pre>public abstract&nbsp;javafx.scene.Node&nbsp;handleAction(<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</pre>
 <dl><dt><span class="strong">Parameters:</span></dt><dd><code>action</code> - </dd>
 <dt><span class="strong">Returns:</span></dt><dd>a node</dd><dt><span class="strong">See Also:</span></dt><dd><a href="../../../../../org/jacp/api/component/IHandleable.html#handle(org.jacpfx.apiaction.IAction)"><code>{@inheritDoc}</code></a></dd></dl>
 </li>
@@ -379,7 +379,7 @@ implements <a href="../../../../../org/jacp/api/component/IComponentView.html" t
 <li class="blockList">
 <h4>postHandleAction</h4>
 <pre>public abstract&nbsp;javafx.scene.Node&nbsp;postHandleAction(javafx.scene.Node&nbsp;node,
-                                 <a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</pre>
+                                 <a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</pre>
 <dl><dt><span class="strong">Parameters:</span></dt><dd><code>node</code> - </dd><dd><code>action</code> - </dd>
 <dt><span class="strong">Returns:</span></dt><dd>a node</dd><dt><span class="strong">See Also:</span></dt><dd><code>{@inheritDoc}</code></dd></dl>
 </li>

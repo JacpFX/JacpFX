@@ -30,7 +30,7 @@ import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.annotations.lifecycle.OnHide;
 import org.jacpfx.api.annotations.lifecycle.OnShow;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
@@ -44,7 +44,7 @@ import org.jacpfx.api.componentLayout.IWorkbenchLayout;
 import org.jacpfx.api.handler.IComponentHandler;
 import org.jacpfx.api.launcher.Launcher;
 import org.jacpfx.api.util.UIType;
-import org.jacpfx.rcp.action.FXAction;
+import org.jacpfx.rcp.message.FXMessage;
 import org.jacpfx.rcp.component.AFXComponent;
 import org.jacpfx.rcp.component.ASubComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
@@ -69,7 +69,7 @@ import java.util.logging.Logger;
  * @author Andy Moncsek
  */
 public class FXPerspectiveHandler implements
-        IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> {
+        IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> {
     private final Logger logger = Logger.getLogger(this.getClass().getName());
     private final IWorkbenchLayout<Node> workbenchLayout;
     private final Launcher<?> launcher;
@@ -84,7 +84,7 @@ public class FXPerspectiveHandler implements
     }
 
     @Override
-    public final void handleAndReplaceComponent(final IAction<Event, Object> action,
+    public final void handleAndReplaceComponent(final Message<Event, Object> action,
                                                 final IPerspective<EventHandler<Event>, Event, Object> perspective) {
         Platform.runLater(() -> {
             final IPerspectiveLayout<? extends Node, Node> perspectiveLayout = ((AFXPerspective) perspective)
@@ -164,7 +164,7 @@ public class FXPerspectiveHandler implements
     }
 
     @Override
-    public final void initComponent(final IAction<Event, Object> action,
+    public final void initComponent(final Message<Event, Object> action,
                                     final IPerspective<EventHandler<Event>, Event, Object> perspective) {
 
         this.log("3.4.3: perspective handle init");
@@ -318,19 +318,19 @@ public class FXPerspectiveHandler implements
     }
 
 
-    private void handlePerspectiveInitMethod(final IAction<Event, Object> action,
+    private void handlePerspectiveInitMethod(final Message<Event, Object> action,
                                              final IPerspective<EventHandler<Event>, Event, Object> perspective) {
         handlePerspectiveView(perspective);
 
         // set perspective to active
         JACPContextImpl.class.cast(perspective.getContext()).setActive(true);
         if (FXUtil.getTargetPerspectiveId(action.getTargetId()).equals(perspective.getContext().getId())) {
-            this.log("3.4.3.1: perspective handle with custom action");
+            this.log("3.4.3.1: perspective handle with custom message");
             perspective.handlePerspective(action);
         } // End if
         else {
-            this.log("3.4.3.1: perspective handle with default >>init<< action");
-            perspective.handlePerspective(new FXAction(perspective.getContext().getId(), perspective.getContext().getId(), "init", null));
+            this.log("3.4.3.1: perspective handle with default >>init<< message");
+            perspective.handlePerspective(new FXMessage(perspective.getContext().getId(), perspective.getContext().getId(), "init", null));
         } // End else
     }
 

@@ -162,7 +162,7 @@ implements <a href="../../../../../org/jacp/api/component/ISubComponent.html" ti
 </td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><code><a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;</code></td>
+<td class="colFirst"><code><a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;</code></td>
 <td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/component/ASubComponent.html#getNextIncomingMessage()">getNextIncomingMessage</a></strong>()</code>
 <div class="block">Returns next message in pipe.</div>
 </td>
@@ -182,7 +182,7 @@ implements <a href="../../../../../org/jacp/api/component/ISubComponent.html" ti
 <tr class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/component/ASubComponent.html#initEnv(java.lang.String, java.util.concurrent.BlockingQueue)">initEnv</a></strong>(java.lang.String&nbsp;parentId,
-       java.util.concurrent.BlockingQueue&lt;<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;messageQueue)</code>
+       java.util.concurrent.BlockingQueue&lt;<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;messageQueue)</code>
 <div class="block">Set parentId and global message queue to component</div>
 </td>
 </tr>
@@ -200,7 +200,7 @@ implements <a href="../../../../../org/jacp/api/component/ISubComponent.html" ti
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/component/ASubComponent.html#putIncomingMessage(org.jacpfx.apiaction.IAction)">putIncomingMessage</a></strong>(<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</code>
+<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/component/ASubComponent.html#putIncomingMessage(org.jacpfx.apiaction.IAction)">putIncomingMessage</a></strong>(<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</code>
 <div class="block">Add new message to component.</div>
 </td>
 </tr>
@@ -283,7 +283,7 @@ implements <a href="../../../../../org/jacp/api/component/ISubComponent.html" ti
 <li class="blockList">
 <h4>initEnv</h4>
 <pre>public final&nbsp;void&nbsp;initEnv(java.lang.String&nbsp;parentId,
-           java.util.concurrent.BlockingQueue&lt;<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;messageQueue)</pre>
+           java.util.concurrent.BlockingQueue&lt;<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;messageQueue)</pre>
 <div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/component/ISubComponent.html#initEnv(java.lang.String, java.util.concurrent.BlockingQueue)">ISubComponent</a></code></strong></div>
 <div class="block">Set parentId and global message queue to component</div>
 <dl>
@@ -343,7 +343,7 @@ implements <a href="../../../../../org/jacp/api/component/ISubComponent.html" ti
 <ul class="blockList">
 <li class="blockList">
 <h4>putIncomingMessage</h4>
-<pre>public final&nbsp;void&nbsp;putIncomingMessage(<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</pre>
+<pre>public final&nbsp;void&nbsp;putIncomingMessage(<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</pre>
 <div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/component/ISubComponent.html#putIncomingMessage(org.jacpfx.apiaction.IAction)">ISubComponent</a></code></strong></div>
 <div class="block">Add new message to component.</div>
 <dl>
@@ -358,7 +358,7 @@ implements <a href="../../../../../org/jacp/api/component/ISubComponent.html" ti
 <ul class="blockList">
 <li class="blockList">
 <h4>getNextIncomingMessage</h4>
-<pre>public final&nbsp;<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;getNextIncomingMessage()</pre>
+<pre>public final&nbsp;<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;getNextIncomingMessage()</pre>
 <div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/component/ISubComponent.html#getNextIncomingMessage()">ISubComponent</a></code></strong></div>
 <div class="block">Returns next message in pipe.</div>
 <dl>

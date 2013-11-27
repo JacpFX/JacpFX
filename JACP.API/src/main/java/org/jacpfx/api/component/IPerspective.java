@@ -22,8 +22,8 @@
  ************************************************************************/
 package org.jacpfx.api.component;
 
-import org.jacpfx.api.action.IAction;
-import org.jacpfx.api.action.IDelegateDTO;
+import org.jacpfx.api.message.Message;
+import org.jacpfx.api.message.IDelegateDTO;
 import org.jacpfx.api.handler.IComponentHandler;
 import org.jacpfx.api.launcher.Launcher;
 
@@ -39,14 +39,14 @@ import java.util.concurrent.BlockingQueue;
  * @author Andy Moncsek
  * 
  * @param <L>
- *            defines the action listener type
+ *            defines the message listener type
  * @param <A>
- *            defines the basic action type
+ *            defines the basic message type
  * @param <M>
  *            defines the basic message type
  */
 public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
-		IRootComponent<ISubComponent<L, A, M>, IAction<A, M>>{
+		IRootComponent<ISubComponent<L, A, M>, Message<A, M>>{
 
 	/**
 	 * The initialization method.
@@ -59,7 +59,7 @@ public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
 	void init(
 			final BlockingQueue<ISubComponent<L, A, M>> componentDelegateQueue,
 			final BlockingQueue<IDelegateDTO<A, M>> messageDelegateQueue,
-			final BlockingQueue<IAction<A, M>> globalMessageQueue,final Launcher<?> launcher);
+			final BlockingQueue<Message<A, M>> globalMessageQueue,final Launcher<?> launcher);
 
 	/**
 	 * post init method to set correct component handler and to initialize
@@ -68,7 +68,7 @@ public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
 	 * @param componentHandler
 	 */
 	void postInit(
-			IComponentHandler<ISubComponent<L, A, M>, IAction<A, M>> componentHandler);
+			IComponentHandler<ISubComponent<L, A, M>, Message<A, M>> componentHandler);
 
 	/**
 	 * Returns all subcomponents in perspective.
@@ -84,7 +84,7 @@ public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
 	 * 
 	 * @param action
 	 */
-	void handlePerspective(final IAction<A, M> action);
+	void handlePerspective(final Message<A, M> action);
 
 	/**
 	 * Returns delegate queue to delegate components to correct target
@@ -105,7 +105,7 @@ public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
 	 * 
 	 * @return message queue
 	 */
-	BlockingQueue<IAction<A, M>> getComponentsMessageQueue();
+	BlockingQueue<Message<A, M>> getComponentsMessageQueue();
 
     /**
      * Returns the injected perspective representation. This Injectable is the implementation of a perspective which includes all handle methods.

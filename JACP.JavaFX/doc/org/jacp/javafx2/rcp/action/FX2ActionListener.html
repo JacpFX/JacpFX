@@ -96,13 +96,13 @@ java.lang.Object
   <IMG SRC="../../../../../resources/inherit.gif" ALT="extended by "><B>org.jacp.javafx2.rcp.action.FX2ActionListener</B>
 </PRE>
 <DL>
-<DT><B>All Implemented Interfaces:</B> <DD>java.util.EventListener, javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,
-    org.jacpfx.api.action.IActionListener&amp;lt;javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,javafx.event.Event,java.lang.Object&amp;gt;</DD>
+<DT><B>All Implemented Interfaces:</B> <DD>java.util.EventListener, javafx.event.EventHandler&amp;amp;lt;javafx.event.Event&amp;amp;gt;,
+    org.jacpfx.api.message.IActionListener&amp;amp;lt;javafx.event.EventHandler&amp;amp;lt;javafx.event.Event&amp;amp;gt;,javafx.event.Event,java.lang.Object&amp;amp;gt;</DD>
 </DL>
 <HR>
 <DL>
-<DT><PRE>public class <B>FX2ActionListener</B><DT>extends java.lang.Object<DT>implements javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,
-    org.jacpfx.api.action.IActionListener&amp;lt;javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,javafx.event.Event,java.lang.Object&amp;gt;</DL>
+<DT><PRE>public class <B>FX2ActionListener</B><DT>extends java.lang.Object<DT>implements javafx.event.EventHandler&amp;amp;lt;javafx.event.Event&amp;amp;gt;,
+    org.jacpfx.api.message.IActionListener&amp;amp;lt;javafx.event.EventHandler&amp;amp;lt;javafx.event.Event&amp;amp;gt;,javafx.event.Event,java.lang.Object&amp;amp;gt;</DL>
 </PRE>
 
 <P>
@@ -129,8 +129,8 @@ This class represents the JACP FX2 Event listener... this class can be
 <B>Constructor Summary</B></FONT></TH>
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
-<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/action/FX2ActionListener.html#FX2ActionListener(org.jacpfx.apiaction.IAction, java.util.concurrent.BlockingQueue)">FX2ActionListener</A></B>(org.jacpfx.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action,
-                  java.util.concurrent.BlockingQueue&lt;org.jacpfx.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;globalMessageQueue)</CODE>
+<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/action/FX2ActionListener.html#FX2ActionListener(org.jacpfx.apiaction.IAction, java.util.concurrent.BlockingQueue)">FX2ActionListener</A></B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action,
+                  java.util.concurrent.BlockingQueue&lt;org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;globalMessageQueue)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -147,7 +147,7 @@ This class represents the JACP FX2 Event listener... this class can be
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&amp;nbsp;org.jacpfx.api.action.IAction&amp;lt;javafx.event.Event,java.lang.Object&amp;gt;</CODE></FONT></TD>
+<CODE>&amp;amp;nbsp;org.jacpfx.api.message.IAction&amp;amp;lt;javafx.event.Event,java.lang.Object&amp;amp;gt;</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/action/FX2ActionListener.html#getAction()">getAction</A></B>()</CODE>
 
 <BR>
@@ -172,7 +172,7 @@ This class represents the JACP FX2 Event listener... this class can be
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/action/FX2ActionListener.html#notifyComponents(org.jacpfx.apiaction.IAction)">notifyComponents</A></B>(org.jacpfx.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</CODE>
+<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/action/FX2ActionListener.html#notifyComponents(org.jacpfx.apiaction.IAction)">notifyComponents</A></B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -188,7 +188,7 @@ This class represents the JACP FX2 Event listener... this class can be
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/action/FX2ActionListener.html#setAction(org.jacpfx.apiaction.IAction)">setAction</A></B>(org.jacpfx.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</CODE>
+<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/action/FX2ActionListener.html#setAction(org.jacpfx.apiaction.IAction)">setAction</A></B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -219,8 +219,8 @@ This class represents the JACP FX2 Event listener... this class can be
 <A NAME="FX2ActionListener(org.jacpfx.apiaction.IAction, java.util.concurrent.BlockingQueue)"><!-- --></A><H3>
 FX2ActionListener</H3>
 <PRE>
-public <B>FX2ActionListener</B>(org.jacpfx.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action,
-                         java.util.concurrent.BlockingQueue&lt;org.jacpfx.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;globalMessageQueue)</PRE>
+public <B>FX2ActionListener</B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action,
+                         java.util.concurrent.BlockingQueue&lt;org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;globalMessageQueue)</PRE>
 <DL>
 </DL>
 
@@ -237,10 +237,10 @@ public <B>FX2ActionListener</B>(org.jacpfx.api.action.IAction&lt;javafx.event.Ev
 <A NAME="notifyComponents(org.jacpfx.apiaction.IAction)"><!-- --></A><H3>
 notifyComponents</H3>
 <PRE>
-public void <B>notifyComponents</B>(org.jacpfx.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</PRE>
+public void <B>notifyComponents</B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</PRE>
 <DL>
 <DD><DL>
-<DT><B>Specified by:</B><DD><CODE>notifyComponents</CODE> in interface <CODE>org.jacpfx.api.action.IActionListener&amp;lt;javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,javafx.event.Event,java.lang.Object&amp;gt;</CODE></DL>
+<DT><B>Specified by:</B><DD><CODE>notifyComponents</CODE> in interface <CODE>org.jacpfx.api.message.IActionListener&amp;amp;lt;javafx.event.EventHandler&amp;amp;lt;javafx.event.Event&amp;amp;gt;,javafx.event.Event,java.lang.Object&amp;amp;gt;</CODE></DL>
 </DD>
 <DD><DL>
 </DL>
@@ -251,10 +251,10 @@ public void <B>notifyComponents</B>(org.jacpfx.api.action.IAction&lt;javafx.even
 <A NAME="setAction(org.jacpfx.apiaction.IAction)"><!-- --></A><H3>
 setAction</H3>
 <PRE>
-public void <B>setAction</B>(org.jacpfx.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</PRE>
+public void <B>setAction</B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</PRE>
 <DL>
 <DD><DL>
-<DT><B>Specified by:</B><DD><CODE>setAction</CODE> in interface <CODE>org.jacpfx.api.action.IActionListener&amp;lt;javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,javafx.event.Event,java.lang.Object&amp;gt;</CODE></DL>
+<DT><B>Specified by:</B><DD><CODE>setAction</CODE> in interface <CODE>org.jacpfx.api.message.IActionListener&amp;amp;lt;javafx.event.EventHandler&amp;amp;lt;javafx.event.Event&amp;amp;gt;,javafx.event.Event,java.lang.Object&amp;amp;gt;</CODE></DL>
 </DD>
 <DD><DL>
 </DL>
@@ -265,10 +265,10 @@ public void <B>setAction</B>(org.jacpfx.api.action.IAction&lt;javafx.event.Event
 <A NAME="getAction()"><!-- --></A><H3>
 getAction</H3>
 <PRE>
-public org.jacpfx.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt; <B>getAction</B>()</PRE>
+public org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt; <B>getAction</B>()</PRE>
 <DL>
 <DD><DL>
-<DT><B>Specified by:</B><DD><CODE>getAction</CODE> in interface <CODE>org.jacpfx.api.action.IActionListener&amp;lt;javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,javafx.event.Event,java.lang.Object&amp;gt;</CODE></DL>
+<DT><B>Specified by:</B><DD><CODE>getAction</CODE> in interface <CODE>org.jacpfx.api.message.IActionListener&amp;amp;lt;javafx.event.EventHandler&amp;amp;lt;javafx.event.Event&amp;amp;gt;,javafx.event.Event,java.lang.Object&amp;amp;gt;</CODE></DL>
 </DD>
 <DD><DL>
 </DL>
@@ -282,7 +282,7 @@ getListener</H3>
 public javafx.event.EventHandler&lt;javafx.event.Event&gt; <B>getListener</B>()</PRE>
 <DL>
 <DD><DL>
-<DT><B>Specified by:</B><DD><CODE>getListener</CODE> in interface <CODE>org.jacpfx.api.action.IActionListener&amp;lt;javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,javafx.event.Event,java.lang.Object&amp;gt;</CODE></DL>
+<DT><B>Specified by:</B><DD><CODE>getListener</CODE> in interface <CODE>org.jacpfx.api.message.IActionListener&amp;amp;lt;javafx.event.EventHandler&amp;amp;lt;javafx.event.Event&amp;amp;gt;,javafx.event.Event,java.lang.Object&amp;amp;gt;</CODE></DL>
 </DD>
 <DD><DL>
 </DL>
@@ -310,7 +310,7 @@ performAction</H3>
 public void <B>performAction</B>(javafx.event.Event&nbsp;arg0)</PRE>
 <DL>
 <DD><DL>
-<DT><B>Specified by:</B><DD><CODE>performAction</CODE> in interface <CODE>org.jacpfx.api.action.IActionListener&amp;lt;javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,javafx.event.Event,java.lang.Object&amp;gt;</CODE></DL>
+<DT><B>Specified by:</B><DD><CODE>performAction</CODE> in interface <CODE>org.jacpfx.api.message.IActionListener&amp;amp;lt;javafx.event.EventHandler&amp;amp;lt;javafx.event.Event&amp;amp;gt;,javafx.event.Event,java.lang.Object&amp;amp;gt;</CODE></DL>
 </DD>
 <DD><DL>
 </DL>

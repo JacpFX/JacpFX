@@ -27,7 +27,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.component.IPerspective;
 import org.jacpfx.api.component.ISubComponent;
 import org.jacpfx.rcp.component.AFXComponent;
@@ -74,7 +74,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
             this.component.lock();
             while (!Thread.interrupted()) {
 
-                final IAction<Event, Object> myAction = this.component
+                final Message<Event, Object> myAction = this.component
                         .getNextIncomingMessage();
                 this.log(" //1.1.1.1.1// handle replace component BEGIN: "
                         + this.component.getContext().getName());
@@ -116,7 +116,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
      * @throws InterruptedException
      */
     private void publish(final AFXComponent component,
-                         final IAction<Event, Object> action,
+                         final Message<Event, Object> action,
                          final Map<String, Node> targetComponents,
                          final Node handleReturnValue,
                          final Node previousContainer, final String currentTargetLayout, final String currentExecutionTarget)

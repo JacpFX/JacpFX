@@ -24,7 +24,7 @@ package org.jacpfx.rcp.worker;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.component.IPerspective;
 import org.jacpfx.api.component.ISubComponent;
 import org.jacpfx.rcp.component.ASubComponent;
@@ -45,11 +45,11 @@ public class CallbackComponentInitWorker
         AFXComponentWorker<ASubComponent> {
     private final ASubComponent component;
     private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue;
-    private final IAction<Event, Object> action;
+    private final Message<Event, Object> action;
 
     public CallbackComponentInitWorker(
             final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
-            final ASubComponent component, final IAction<Event, Object> action) {
+            final ASubComponent component, final Message<Event, Object> action) {
         this.component = component;
         this.delegateQueue = delegateQueue;
         this.action = action;
@@ -61,7 +61,7 @@ public class CallbackComponentInitWorker
             this.component.lock();
             checkValidComponent(this.component);
             runCallbackOnStartMethods(this.component);
-            final IAction<Event, Object> myAction = this.action;
+            final Message<Event, Object> myAction = this.action;
             final JACPContextImpl context = JACPContextImpl.class.cast(this.component.getContext());
             context.setReturnTarget(myAction.getSourceId());
             final String currentExecutionTarget = context.getExecutionTarget();

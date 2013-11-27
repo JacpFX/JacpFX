@@ -172,7 +172,7 @@ represents the basic JavaFX2 workbench instance; handles perspectives and
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/workbench/AFX2Workbench.html#handleInitialLayout(org.jacpfx.apiaction.IAction, org.jacpfx.apicomponentLayout.IWorkbenchLayout)">handleInitialLayout</A></B>(org.jacpfx.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action,
+<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/workbench/AFX2Workbench.html#handleInitialLayout(org.jacpfx.apiaction.IAction, org.jacpfx.apicomponentLayout.IWorkbenchLayout)">handleInitialLayout</A></B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action,
                     org.jacpfx.api.componentLayout.IWorkbenchLayout&lt;javafx.scene.Node&gt;&nbsp;layout)</CODE>
 
 <BR>
@@ -181,7 +181,7 @@ represents the basic JavaFX2 workbench instance; handles perspectives and
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>abstract &nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/workbench/AFX2Workbench.html#handleInitialLayout(org.jacpfx.apiaction.IAction, org.jacpfx.apicomponentLayout.IWorkbenchLayout, javafx.stage.Stage)">handleInitialLayout</A></B>(org.jacpfx.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action,
+<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/workbench/AFX2Workbench.html#handleInitialLayout(org.jacpfx.apiaction.IAction, org.jacpfx.apicomponentLayout.IWorkbenchLayout, javafx.stage.Stage)">handleInitialLayout</A></B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action,
                     org.jacpfx.api.componentLayout.IWorkbenchLayout&lt;javafx.scene.Node&gt;&nbsp;layout,
                     javafx.stage.Stage&nbsp;stage)</CODE>
 
@@ -199,7 +199,7 @@ represents the basic JavaFX2 workbench instance; handles perspectives and
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/workbench/AFX2Workbench.html#initComponents(org.jacpfx.apiaction.IAction)">initComponents</A></B>(org.jacpfx.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</CODE>
+<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/workbench/AFX2Workbench.html#initComponents(org.jacpfx.apiaction.IAction)">initComponents</A></B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -321,7 +321,7 @@ public void <B>init</B>(org.jacpfx.api.launcher.Launcher&lt;?&gt;&nbsp;launcher)
 <A NAME="initComponents(org.jacpfx.apiaction.IAction)"><!-- --></A><H3>
 initComponents</H3>
 <PRE>
-public final void <B>initComponents</B>(org.jacpfx.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</PRE>
+public final void <B>initComponents</B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</PRE>
 <DL>
 <DD><DL>
 <DT><B>Specified by:</B><DD><CODE>initComponents</CODE> in interface <CODE>org.jacpfx.apicomponent.IRootComponent&amp;lt;org.jacpfx.apiperspective.IPerspective&amp;lt;javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,javafx.event.Event,java.lang.Object&amp;gt;,org.jacpfx.api.action.IAction&amp;lt;javafx.event.Event,java.lang.Object&amp;gt;&amp;gt;</CODE></DL>
@@ -335,7 +335,7 @@ public final void <B>initComponents</B>(org.jacpfx.api.action.IAction&lt;javafx.
 <A NAME="handleInitialLayout(org.jacpfx.apiaction.IAction, org.jacpfx.apicomponentLayout.IWorkbenchLayout)"><!-- --></A><H3>
 handleInitialLayout</H3>
 <PRE>
-public void <B>handleInitialLayout</B>(org.jacpfx.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action,
+public void <B>handleInitialLayout</B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action,
                                 org.jacpfx.api.componentLayout.IWorkbenchLayout&lt;javafx.scene.Node&gt;&nbsp;layout)</PRE>
 <DL>
 <DD><DL>
@@ -350,7 +350,7 @@ public void <B>handleInitialLayout</B>(org.jacpfx.api.action.IAction&lt;javafx.e
 <A NAME="handleInitialLayout(org.jacpfx.apiaction.IAction, org.jacpfx.apicomponentLayout.IWorkbenchLayout, javafx.stage.Stage)"><!-- --></A><H3>
 handleInitialLayout</H3>
 <PRE>
-public abstract void <B>handleInitialLayout</B>(org.jacpfx.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action,
+public abstract void <B>handleInitialLayout</B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action,
                                          org.jacpfx.api.componentLayout.IWorkbenchLayout&lt;javafx.scene.Node&gt;&nbsp;layout,
                                          javafx.stage.Stage&nbsp;stage)</PRE>
 <DL>
@@ -427,7 +427,7 @@ public final <A HREF="../../../../../org/jacp/javafx2/rcp/componentLayout/FX2Wor
 <A NAME="getComponentHandler()"><!-- --></A><H3>
 getComponentHandler</H3>
 <PRE>
-public org.jacpfx.api.handler.IComponentHandler&lt;org.jacpfx.apiperspective.IPerspective&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;,org.jacpfx.api.action.IAction&lt;javafx.event.Event,java.lang.Object&gt;&gt; <B>getComponentHandler</B>()</PRE>
+public org.jacpfx.api.handler.IComponentHandler&lt;org.jacpfx.apiperspective.IPerspective&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;,org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&gt; <B>getComponentHandler</B>()</PRE>
 <DL>
 <DD><DL>
 <DT><B>Specified by:</B><DD><CODE>getComponentHandler</CODE> in interface <CODE>org.jacpfx.apicomponent.IRootComponent&amp;lt;org.jacpfx.apiperspective.IPerspective&amp;lt;javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,javafx.event.Event,java.lang.Object&amp;gt;,org.jacpfx.api.action.IAction&amp;lt;javafx.event.Event,java.lang.Object&amp;gt;&amp;gt;</CODE></DL>

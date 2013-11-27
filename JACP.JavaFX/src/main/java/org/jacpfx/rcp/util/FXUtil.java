@@ -28,7 +28,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.component.IComponent;
 import org.jacpfx.api.component.IPerspective;
@@ -165,7 +165,7 @@ public class FXUtil {
         }
     }
 
-    public static void performResourceInjection(final Injectable handler,Context<EventHandler<Event>, Event, Object> context) {
+    public static void performResourceInjection(final Injectable handler,Context<Event, Object> context) {
         final Field[] fields = handler.getClass().getDeclaredFields();
         final List<Field> fieldList = Arrays.asList(fields);
         fieldList.parallelStream().filter(f -> f.isAnnotationPresent(Resource.class)).forEach(f -> {
@@ -398,16 +398,16 @@ public class FXUtil {
     }
 
     /**
-     * returns cloned action with valid message TODO add to interface
+     * returns cloned message with valid message TODO add to interface
      *
      * @param action
      * @param message
      * @return
      */
-    public static IAction<Event, Object> getValidAction(
-            final IAction<Event, Object> action, final String target,
+    public static Message<Event, Object> getValidAction(
+            final Message<Event, Object> action, final String target,
             final Object message) {
-        final IAction<Event, Object> actionClone = action.clone();
+        final Message<Event, Object> actionClone = action.clone();
         actionClone.addMessage(target, message);
         return actionClone;
     }

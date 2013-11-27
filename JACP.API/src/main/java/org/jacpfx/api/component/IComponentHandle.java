@@ -1,6 +1,6 @@
 package org.jacpfx.api.component;
 
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,8 +14,8 @@ public interface IComponentHandle<C, A, M> extends Injectable{
      * Handles component when called. The handle method in sub components is
      * always executed in a separate thread;
      *
-     * @param action , the triggering action
+     * @param action , the triggering message
      * @return view component
      */
-    C handle(final IAction<A, M> action) throws Exception;
+    C handle(final Message<A, M> action) throws Exception;
 }

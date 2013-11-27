@@ -24,8 +24,8 @@ package org.jacpfx.rcp.coordinator;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import org.jacpfx.api.action.IAction;
-import org.jacpfx.api.action.IDelegateDTO;
+import org.jacpfx.api.message.Message;
+import org.jacpfx.api.message.IDelegateDTO;
 import org.jacpfx.api.coordinator.ICoordinator;
 import org.jacpfx.rcp.delegator.DelegateDTO;
 import org.jacpfx.rcp.util.ShutdownThreadsHandler;
@@ -44,7 +44,7 @@ public abstract class AFXCoordinator extends Thread implements
 		ICoordinator<EventHandler<Event>, Event, Object> {
 
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
-	private final BlockingQueue<IAction<Event, Object>> messages = new ArrayBlockingQueue<>(
+	private final BlockingQueue<Message<Event, Object>> messages = new ArrayBlockingQueue<>(
 			500000);
 
 	AFXCoordinator(String name) {
@@ -57,7 +57,7 @@ public abstract class AFXCoordinator extends Thread implements
 		while (!Thread.interrupted()) {
 			this.log(" observer thread size" + this.messages.size());
 
-			IAction<Event, Object> action;
+			Message<Event, Object> action;
 			try {
 				action = this.messages.take();
 			} catch (final InterruptedException e) {
@@ -83,7 +83,7 @@ public abstract class AFXCoordinator extends Thread implements
 	 * @param queue
 	 */
 	final void delegateMessageToCorrectPerspective(
-            final String target, final IAction<Event, Object> action,
+            final String target, final Message<Event, Object> action,
             final BlockingQueue<IDelegateDTO<Event, Object>> queue) {
         try {
             queue.put(new DelegateDTO(target, action));
@@ -94,7 +94,7 @@ public abstract class AFXCoordinator extends Thread implements
     }
 
 	@Override
-	public BlockingQueue<IAction<Event, Object>> getMessageQueue() {
+	public BlockingQueue<Message<Event, Object>> getMessageQueue() {
 		return this.messages;
 	}
 

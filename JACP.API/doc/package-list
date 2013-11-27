@@ -1,4 +1,4 @@
-org.jacpfx.api.action
+org.jacpfx.api.message
 org.jacpfx.api.annotations
 org.jacpfx.api.annotations.component
 org.jacpfx.api.annotations.dialog

@@ -3,7 +3,7 @@ package org.jacpfx.rcp.workbench;
 import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.stage.Stage;
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.component.Injectable;
 import org.jacpfx.api.componentLayout.IWorkbenchLayout;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
@@ -31,7 +31,7 @@ public interface FXWorkbench extends Injectable {
      * @param stage, the JavaFX stage
      */
     void handleInitialLayout(
-            final IAction<Event, Object> action,
+            final Message<Event, Object> action,
             final IWorkbenchLayout<Node> layout, final Stage stage);
 
 }

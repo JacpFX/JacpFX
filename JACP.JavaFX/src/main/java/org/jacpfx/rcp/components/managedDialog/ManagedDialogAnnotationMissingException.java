@@ -38,7 +38,7 @@ public class ManagedDialogAnnotationMissingException extends
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see java.lang.Throwable#getMessage()
+	 * @see java.lang.Throwable#getMessageBody()
 	 */
 	@Override
 	public String getMessage() {

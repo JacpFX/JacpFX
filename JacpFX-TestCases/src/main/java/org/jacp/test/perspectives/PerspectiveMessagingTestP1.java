@@ -31,7 +31,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.lifecycle.OnShow;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
@@ -72,9 +72,9 @@ public class PerspectiveMessagingTestP1 implements FXPerspective {
     public static CountDownLatch wait = new CountDownLatch(1);
 
     @Override
-    public void handlePerspective(final IAction<Event, Object> action,
+    public void handlePerspective(final Message<Event, Object> action,
                                   final PerspectiveLayout perspectiveLayout) {
-        if (action.isMessage(MessageUtil.INIT)) {
+        if (action.messageBodyEquals(MessageUtil.INIT)) {
 
             perspectiveLayout.registerRootComponent(createRoot());
             GridPane.setVgrow(perspectiveLayout.getRootComponent(),
@@ -93,12 +93,12 @@ public class PerspectiveMessagingTestP1 implements FXPerspective {
         } else {
             if (counter.get() > 1) {
                 counter.decrementAndGet();
-                context.getActionListener("id11", "message").performAction(null);
+                context.send("id11", "message");
             } else {
                 System.out.println("Perspective id10: FINISH");
                 if (wait.getCount() > 0) wait.countDown();
                 if (PerspectiveMessagingTestP2.wait.getCount() > 0)
-                    context.getActionListener("id10", "message").performAction(null);
+                    context.send("id10", "message");
 
             }
 
@@ -108,7 +108,7 @@ public class PerspectiveMessagingTestP1 implements FXPerspective {
 
 
     public static void fireMessage() {
-        context.getActionListener("id11", "message").performAction(null);
+        context.send("id11", "message");
     }
 
     private Node createRoot() {

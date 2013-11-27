@@ -1,6 +1,6 @@
 package org.jacpfx.api.context;
 
-import org.jacpfx.api.action.IActionListener;
+import org.jacpfx.api.message.ActionListener;
 
 import java.util.ResourceBundle;
 
@@ -11,31 +11,43 @@ import java.util.ResourceBundle;
  * Time: 21:12
  * The Context interface gives access to components basic meta data as well as listeners and other services.
  *
- * @param <L>
- *            defines the action listener type
  * @param <A>
- *            defines the basic action type
+ *            defines the event type
  * @param <M>
  *            defines the basic message type
  */
-public interface Context<L, A, M>  {
+public interface Context<A, M>  {
+
 
     /**
-     * Returns an action listener (for local use). Message will be send to
+     * Send a message to caller component itself.
+     * @param message
+     */
+    void send(final M message);
+
+    /**
+     * Send a message to defined targetId.
+     * @param targetId
+     * @param message
+     */
+    void send(final String targetId, final M message);
+
+    /**
+     * Returns an message listener (for local use). Message will be send to
      * caller component.
      * @param message ; the initial message to be send by invoking the listener
-     * @return the action listener instance
+     * @return the message listener instance
      */
-    IActionListener<L, A, M> getActionListener(final M message);
+    ActionListener<A, M> getActionListener(final M message);
 
     /**
-     * Returns an action listener (for global use). targetId defines the id or
+     * Returns an message listener (for global use). targetId defines the id or
      * your receiver component
      * @param message ; the message to send to target.
      * @param targetId ; the targets component id.
-     * @return the action listener instance
+     * @return the message listener instance
      */
-    IActionListener<L, A, M> getActionListener(final String targetId, final M message);
+    ActionListener<A, M> getActionListener(final String targetId, final M message);
 
     /**
      * Returns the id of the component.

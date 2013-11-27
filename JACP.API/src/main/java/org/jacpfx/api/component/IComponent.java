@@ -31,9 +31,9 @@ import org.jacpfx.api.context.Context;
  * @author Andy Moncsek
  * 
  * @param <L>
- *            defines the action listener type
+ *            defines the message listener type
  * @param <A>
- *            defines the basic action type
+ *            defines the basic message type
  * @param <M>
  *            defines the basic message type
  */
@@ -84,5 +84,5 @@ public interface IComponent<L, A, M> extends Comparable<IComponent<L, A, M>>{
      * Returns the components context object.
      * @return the context object.
      */
-    Context<L, A, M> getContext();
+    Context<A, M> getContext();
 }

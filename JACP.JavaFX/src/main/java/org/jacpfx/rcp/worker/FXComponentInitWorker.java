@@ -25,7 +25,7 @@ package org.jacpfx.rcp.worker;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.component.IComponentHandle;
 import org.jacpfx.api.component.IPerspective;
@@ -55,7 +55,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
 
     private final Map<String, Node> targetComponents;
     private final AFXComponent component;
-    private final IAction<Event, Object> action;
+    private final Message<Event, Object> action;
     private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
 
     /**
@@ -63,10 +63,10 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
      *
      * @param targetComponents ; a map with all targets provided by perspective
      * @param component        ; the UI component to init
-     * @param action           ; the init action
+     * @param action           ; the init message
      */
     public FXComponentInitWorker(final Map<String, Node> targetComponents,
-                                 final AFXComponent component, final IAction<Event, Object> action, final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue) {
+                                 final AFXComponent component, final Message<Event, Object> action, final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue) {
         this.targetComponents = targetComponents;
         this.component = component;
         this.action = action;
@@ -184,7 +184,7 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
      */
     private void executePostHandleAndAddComponent(
             final Node handleReturnValue, final AFXComponent myComponent,
-            final IAction<Event, Object> myAction, final Map<String, Node> targetComponents) throws Exception {
+            final Message<Event, Object> myAction, final Map<String, Node> targetComponents) throws Exception {
         final Thread t = Thread.currentThread();
         WorkerUtil.invokeOnFXThreadAndWait(() -> {
             try {

@@ -24,7 +24,7 @@ package org.jacpfx.rcp.worker;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.component.IPerspective;
 import org.jacpfx.api.component.IStatelessCallabackComponent;
 import org.jacpfx.api.component.ISubComponent;
@@ -63,7 +63,7 @@ public class StateLessComponentRunWorker
                 this.component.lock();
                 runCallbackOnStartMethods(this.component);
 				while (this.component.hasIncomingMessage()) {
-					final IAction<Event, Object> myAction = this.component
+					final Message<Event, Object> myAction = this.component
 							.getNextIncomingMessage();
                     final JACPContextImpl context = JACPContextImpl.class.cast(this.component.getContext());
                     context.setReturnTarget(myAction.getSourceId());

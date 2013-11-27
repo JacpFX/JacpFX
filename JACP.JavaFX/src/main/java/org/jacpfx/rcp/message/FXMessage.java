@@ -20,50 +20,50 @@
  *
  *
  ************************************************************************/
-package org.jacpfx.rcp.action;
+package org.jacpfx.rcp.message;
 
 import javafx.event.Event;
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 
 /**
- * represents an action which is fired by an component, has a target and a
+ * represents an message which is fired by an component, has a target and a
  * message targeting the component itself or an other component
  * 
  * @author Andy Moncsek
  */
-public final class FXAction implements IAction<Event, Object> {
+public final class FXMessage implements Message<Event, Object> {
 
 	private Object message;
 	private final String sourceId;
 	private final Event event;
 	private String target;
 
-	public FXAction(final String sourceId) {
+	public FXMessage(final String sourceId) {
 		this.sourceId = sourceId;
 		this.event = null;
 	}
 	
-	public FXAction(final String sourceId,final Event event) {
+	public FXMessage(final String sourceId, final Event event) {
 		this.sourceId = sourceId;
 		this.event = event;
 	}
 
-	public FXAction(final String sourceId, final Object message) {
+	public FXMessage(final String sourceId, final Object message) {
 		this.sourceId = sourceId;
-		this.setMessage(message);
+		this.setMessageBody(message);
 		this.event = null;
 	}
 
-	public FXAction(final String sourceId, final String targetId,
-			final Object message,final Event event) {
+	public FXMessage(final String sourceId, final String targetId,
+                     final Object message, final Event event) {
 		this.sourceId = sourceId;
 		this.target = targetId;
 		this.event = event;
-		this.setMessage(message);
+		this.setMessageBody(message);
 	}
 	
 	@Override
-	public void setMessage(final Object message) {
+	public void setMessageBody(final Object message) {
 		this.message = message;
 		this.target = this.target != null ? this.target : this.sourceId;
 	}
@@ -75,7 +75,7 @@ public final class FXAction implements IAction<Event, Object> {
 	}
 
 	@Override
-	public Object getMessage() {
+	public Object getMessageBody() {
 		return this.message;
 	}
 
@@ -90,8 +90,8 @@ public final class FXAction implements IAction<Event, Object> {
 	}
 
 	@Override
-	public IAction<Event, Object> clone() {
-		return new FXAction(this.sourceId,this.target, this.message, this.event);
+	public Message<Event, Object> clone() {
+		return new FXMessage(this.sourceId,this.target, this.message, this.event);
 	}
 
 	@Override
@@ -100,15 +100,15 @@ public final class FXAction implements IAction<Event, Object> {
 	}
 
     @Override
-    public <T> boolean isMessageType(final Class<T> clazz) {
+    public <T> boolean isMessageBodyTypeOf(final Class<T> clazz) {
         return clazz.isAssignableFrom(this.message.getClass());
     }
     @Override
-    public <T> T getTypedMessage(final Class<T> clazz) {
+    public <T> T getTypedMessageBody(final Class<T> clazz) {
         return clazz.cast(this.message);
     }
     @Override
-    public boolean isMessage(Object object) {
+    public boolean messageBodyEquals(Object object) {
         return object.equals(this.message);
     }
 

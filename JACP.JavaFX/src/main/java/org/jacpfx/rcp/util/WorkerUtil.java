@@ -5,12 +5,10 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import org.jacpfx.api.action.IAction;
-import org.jacpfx.api.action.IActionListener;
 import org.jacpfx.api.component.ISubComponent;
 import org.jacpfx.api.component.IUIComponent;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.util.UIType;
-import org.jacpfx.rcp.action.FXAction;
 import org.jacpfx.rcp.component.AFXComponent;
 
 import java.util.concurrent.BlockingQueue;
@@ -127,18 +125,15 @@ public class WorkerUtil {
      * @param comp,     the component
      * @param targetId, the message target id
      * @param value,    the message value
-     * @param action,   the action
+     * @param action,   the message
      */
     public static void delegateReturnValue(
             final ISubComponent<EventHandler<Event>, Event, Object> comp,
             final String targetId, final Object value,
-            final IAction<Event, Object> action) {
+            final Message<Event, Object> action) {
         if (value != null && targetId != null
-                && !action.isMessage("init")) {
-            final IActionListener<EventHandler<Event>, Event, Object> listener = comp.getContext()
-                    .getActionListener(null);
-            listener.notifyComponents(new FXAction(comp.getContext().getId(), targetId,
-                    value, null));
+                && !action.messageBodyEquals("init")) {
+            comp.getContext().send(targetId,value);
         }
     }
 
@@ -149,10 +144,10 @@ public class WorkerUtil {
      * component.
      *
      * @param component, a component
-     * @param action,    the current action
+     * @param action,    the current message
      */
     public static void executeComponentViewPostHandle(final Node handleReturnValue,
-                                                            final AFXComponent component, final IAction<Event, Object> action) throws Exception {
+                                                            final AFXComponent component, final Message<Event, Object> action) throws Exception {
 
         Node potsHandleReturnValue = component.getComponentViewHandle().postHandle(handleReturnValue,
                 action);
@@ -191,12 +186,12 @@ public class WorkerUtil {
      * Runs the handle method of a componentView.
      *
      * @param component, the component
-     * @param action,    the current action
+     * @param action,    the current message
      * @return a returned node from component execution
      */
     public static Node prepareAndRunHandleMethod(
             final IUIComponent<Node, EventHandler<Event>, Event, Object> component,
-            final IAction<Event, Object> action) throws Exception {
+            final Message<Event, Object> action) throws Exception {
         return component.getComponentViewHandle().handle(action);
 
     }

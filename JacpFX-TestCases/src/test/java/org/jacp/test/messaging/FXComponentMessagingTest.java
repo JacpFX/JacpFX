@@ -81,7 +81,7 @@ public class FXComponentMessagingTest {
     // after change windows: 53912ms with ui,   16962ms without ui
     // after change linux: 56105ms with ui ... 28301ms without ui
     // after change osx: 13961 with ui ... 10158 without ui
-    //macbook : 8100ms,7910ms with ui ...   6131,6061 without ui
+    //macbook : 8100ms,7891 with ui ...   6131,6061 without ui
     public void testComponentMessaging() throws InterruptedException {
         warmUp();
         withUI();

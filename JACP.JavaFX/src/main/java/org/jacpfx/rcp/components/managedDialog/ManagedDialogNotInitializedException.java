@@ -35,7 +35,7 @@ public class ManagedDialogNotInitializedException extends IllegalArgumentExcepti
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see java.lang.Throwable#getMessage()
+	 * @see java.lang.Throwable#getMessageBody()
 	 */
 	@Override
 	public String getMessage() {

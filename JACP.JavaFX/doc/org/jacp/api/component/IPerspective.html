@@ -89,7 +89,7 @@
 <dl><dt><span class="strong">Type Parameters:</span></dt><dd><code>L</code> - defines the action listener type</dd><dd><code>A</code> - defines the basic action type</dd><dd><code>M</code> - defines the basic message type</dd></dl>
 <dl>
 <dt>All Superinterfaces:</dt>
-<dd><a href="../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;L,A,M&gt;, <a href="../../../../org/jacp/api/component/IHandleable.html" title="interface in org.jacpfx.api.component">IHandleable</a>&lt;A,M&gt;, <a href="../../../../org/jacp/api/component/IRootComponent.html" title="interface in org.jacpfx.api.component">IRootComponent</a>&lt;<a href="../../../../org/jacp/api/component/ISubComponent.html" title="interface in org.jacpfx.api.component">ISubComponent</a>&lt;L,A,M&gt;,<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;A,M&gt;&gt;</dd>
+<dd><a href="../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;L,A,M&gt;, <a href="../../../../org/jacp/api/component/IHandleable.html" title="interface in org.jacpfx.api.component">IHandleable</a>&lt;A,M&gt;, <a href="../../../../org/jacp/api/component/IRootComponent.html" title="interface in org.jacpfx.api.component">IRootComponent</a>&lt;<a href="../../../../org/jacp/api/component/ISubComponent.html" title="interface in org.jacpfx.api.component">ISubComponent</a>&lt;L,A,M&gt;,<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;A,M&gt;&gt;</dd>
 </dl>
 <dl>
 <dt>All Known Subinterfaces:</dt>
@@ -102,7 +102,7 @@
 <hr>
 <br>
 <pre>public interface <span class="strong">IPerspective&lt;L,A,M&gt;</span>
-extends <a href="../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;L,A,M&gt;, <a href="../../../../org/jacp/api/component/IRootComponent.html" title="interface in org.jacpfx.api.component">IRootComponent</a>&lt;<a href="../../../../org/jacp/api/component/ISubComponent.html" title="interface in org.jacpfx.api.component">ISubComponent</a>&lt;L,A,M&gt;,<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;A,M&gt;&gt;, <a href="../../../../org/jacp/api/component/IHandleable.html" title="interface in org.jacpfx.api.component">IHandleable</a>&lt;A,M&gt;</pre>
+extends <a href="../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;L,A,M&gt;, <a href="../../../../org/jacp/api/component/IRootComponent.html" title="interface in org.jacpfx.api.component">IRootComponent</a>&lt;<a href="../../../../org/jacp/api/component/ISubComponent.html" title="interface in org.jacpfx.api.component">ISubComponent</a>&lt;L,A,M&gt;,<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;A,M&gt;&gt;, <a href="../../../../org/jacp/api/component/IHandleable.html" title="interface in org.jacpfx.api.component">IHandleable</a>&lt;A,M&gt;</pre>
 <div class="block">Defines a perspective, a perspective is a root component handled by an
  workbench and contains subcomponents such as visibla UI components or
  background components. A workbench can handle one or more perspectives (1-n)
@@ -134,13 +134,13 @@ extends <a href="../../../../org/jacp/api/component/IComponent.html" title="inte
 </td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><code>java.util.concurrent.BlockingQueue&lt;<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">A</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">M</a>&gt;&gt;</code></td>
+<td class="colFirst"><code>java.util.concurrent.BlockingQueue&lt;<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">A</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">M</a>&gt;&gt;</code></td>
 <td class="colLast"><code><strong><a href="../../../../org/jacp/api/component/IPerspective.html#getComponentsMessageQueue()">getComponentsMessageQueue</a></strong>()</code>
 <div class="block">returns the components coordinator message queue;</div>
 </td>
 </tr>
 <tr class="altColor">
-<td class="colFirst"><code>java.util.concurrent.BlockingQueue&lt;<a href="../../../../org/jacp/api/action/IDelegateDTO.html" title="interface in org.jacpfx.api.action">IDelegateDTO</a>&lt;<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">A</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">M</a>&gt;&gt;</code></td>
+<td class="colFirst"><code>java.util.concurrent.BlockingQueue&lt;<a href="../../../../org/jacp/api/action/IDelegateDTO.html" title="interface in org.jacpfx.api.message">IDelegateDTO</a>&lt;<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">A</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">M</a>&gt;&gt;</code></td>
 <td class="colLast"><code><strong><a href="../../../../org/jacp/api/component/IPerspective.html#getMessageDelegateQueue()">getMessageDelegateQueue</a></strong>()</code>
 <div class="block">Returns delegate queue to delegate actions to correct target</div>
 </td>
@@ -153,21 +153,21 @@ extends <a href="../../../../org/jacp/api/component/IComponent.html" title="inte
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><strong><a href="../../../../org/jacp/api/component/IPerspective.html#handlePerspective(org.jacpfx.apiaction.IAction)">handlePerspective</a></strong>(<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">A</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">M</a>&gt;&nbsp;action)</code>
+<td class="colLast"><code><strong><a href="../../../../org/jacp/api/component/IPerspective.html#handlePerspective(org.jacpfx.apiaction.IAction)">handlePerspective</a></strong>(<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">A</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">M</a>&gt;&nbsp;action)</code>
 <div class="block">Handle a message call on perspective instance.</div>
 </td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><strong><a href="../../../../org/jacp/api/component/IPerspective.html#init(java.util.concurrent.BlockingQueue, java.util.concurrent.BlockingQueue, java.util.concurrent.BlockingQueue)">init</a></strong>(java.util.concurrent.BlockingQueue&lt;<a href="../../../../org/jacp/api/component/ISubComponent.html" title="interface in org.jacpfx.api.component">ISubComponent</a>&lt;<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">L</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">A</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">M</a>&gt;&gt;&nbsp;componentDelegateQueue,
-    java.util.concurrent.BlockingQueue&lt;<a href="../../../../org/jacp/api/action/IDelegateDTO.html" title="interface in org.jacpfx.api.action">IDelegateDTO</a>&lt;<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">A</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">M</a>&gt;&gt;&nbsp;messageDelegateQueue,
-    java.util.concurrent.BlockingQueue&lt;<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">A</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">M</a>&gt;&gt;&nbsp;globalMessageQueue)</code>
+    java.util.concurrent.BlockingQueue&lt;<a href="../../../../org/jacp/api/action/IDelegateDTO.html" title="interface in org.jacpfx.api.message">IDelegateDTO</a>&lt;<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">A</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">M</a>&gt;&gt;&nbsp;messageDelegateQueue,
+    java.util.concurrent.BlockingQueue&lt;<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">A</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">M</a>&gt;&gt;&nbsp;globalMessageQueue)</code>
 <div class="block">The initialization method.</div>
 </td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><strong><a href="../../../../org/jacp/api/component/IPerspective.html#postInit(org.jacpfx.api.handler.IComponentHandler)">postInit</a></strong>(<a href="../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</a>&lt;<a href="../../../../org/jacp/api/component/ISubComponent.html" title="interface in org.jacpfx.api.component">ISubComponent</a>&lt;<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">L</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">A</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">M</a>&gt;,<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">A</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">M</a>&gt;&gt;&nbsp;componentHandler)</code>
+<td class="colLast"><code><strong><a href="../../../../org/jacp/api/component/IPerspective.html#postInit(org.jacpfx.api.handler.IComponentHandler)">postInit</a></strong>(<a href="../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</a>&lt;<a href="../../../../org/jacp/api/component/ISubComponent.html" title="interface in org.jacpfx.api.component">ISubComponent</a>&lt;<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">L</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">A</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">M</a>&gt;,<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">A</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">M</a>&gt;&gt;&nbsp;componentHandler)</code>
 <div class="block">post init method to set correct component handler and to initialize
  components depending on objects created in startUp sequence.</div>
 </td>
@@ -221,8 +221,8 @@ extends <a href="../../../../org/jacp/api/component/IComponent.html" title="inte
 <li class="blockList">
 <h4>init</h4>
 <pre>void&nbsp;init(java.util.concurrent.BlockingQueue&lt;<a href="../../../../org/jacp/api/component/ISubComponent.html" title="interface in org.jacpfx.api.component">ISubComponent</a>&lt;<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">L</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">A</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">M</a>&gt;&gt;&nbsp;componentDelegateQueue,
-        java.util.concurrent.BlockingQueue&lt;<a href="../../../../org/jacp/api/action/IDelegateDTO.html" title="interface in org.jacpfx.api.action">IDelegateDTO</a>&lt;<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">A</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">M</a>&gt;&gt;&nbsp;messageDelegateQueue,
-        java.util.concurrent.BlockingQueue&lt;<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">A</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">M</a>&gt;&gt;&nbsp;globalMessageQueue)</pre>
+        java.util.concurrent.BlockingQueue&lt;<a href="../../../../org/jacp/api/action/IDelegateDTO.html" title="interface in org.jacpfx.api.message">IDelegateDTO</a>&lt;<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">A</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">M</a>&gt;&gt;&nbsp;messageDelegateQueue,
+        java.util.concurrent.BlockingQueue&lt;<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">A</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">M</a>&gt;&gt;&nbsp;globalMessageQueue)</pre>
 <div class="block">The initialization method.</div>
 <dl><dt><span class="strong">Parameters:</span></dt><dd><code>componentDelegateQueue</code> - </dd><dd><code>messageDelegateQueue</code> - </dd></dl>
 </li>
@@ -233,7 +233,7 @@ extends <a href="../../../../org/jacp/api/component/IComponent.html" title="inte
 <ul class="blockList">
 <li class="blockList">
 <h4>postInit</h4>
-<pre>void&nbsp;postInit(<a href="../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</a>&lt;<a href="../../../../org/jacp/api/component/ISubComponent.html" title="interface in org.jacpfx.api.component">ISubComponent</a>&lt;<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">L</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">A</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">M</a>&gt;,<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">A</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">M</a>&gt;&gt;&nbsp;componentHandler)</pre>
+<pre>void&nbsp;postInit(<a href="../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</a>&lt;<a href="../../../../org/jacp/api/component/ISubComponent.html" title="interface in org.jacpfx.api.component">ISubComponent</a>&lt;<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">L</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">A</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">M</a>&gt;,<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">A</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">M</a>&gt;&gt;&nbsp;componentHandler)</pre>
 <div class="block">post init method to set correct component handler and to initialize
  components depending on objects created in startUp sequence.</div>
 <dl><dt><span class="strong">Parameters:</span></dt><dd><code>componentHandler</code> - </dd></dl>
@@ -267,7 +267,7 @@ extends <a href="../../../../org/jacp/api/component/IComponent.html" title="inte
 <ul class="blockList">
 <li class="blockList">
 <h4>handlePerspective</h4>
-<pre>void&nbsp;handlePerspective(<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">A</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">M</a>&gt;&nbsp;action)</pre>
+<pre>void&nbsp;handlePerspective(<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">A</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">M</a>&gt;&nbsp;action)</pre>
 <div class="block">Handle a message call on perspective instance. This method should be
  override to handle the layout of an perspective.</div>
 <dl><dt><span class="strong">Parameters:</span></dt><dd><code>action</code> - </dd></dl>
@@ -290,7 +290,7 @@ extends <a href="../../../../org/jacp/api/component/IComponent.html" title="inte
 <ul class="blockList">
 <li class="blockList">
 <h4>getMessageDelegateQueue</h4>
-<pre>java.util.concurrent.BlockingQueue&lt;<a href="../../../../org/jacp/api/action/IDelegateDTO.html" title="interface in org.jacpfx.api.action">IDelegateDTO</a>&lt;<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">A</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">M</a>&gt;&gt;&nbsp;getMessageDelegateQueue()</pre>
+<pre>java.util.concurrent.BlockingQueue&lt;<a href="../../../../org/jacp/api/action/IDelegateDTO.html" title="interface in org.jacpfx.api.message">IDelegateDTO</a>&lt;<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">A</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">M</a>&gt;&gt;&nbsp;getMessageDelegateQueue()</pre>
 <div class="block">Returns delegate queue to delegate actions to correct target</div>
 <dl><dt><span class="strong">Returns:</span></dt><dd>the delegate queue</dd></dl>
 </li>
@@ -301,7 +301,7 @@ extends <a href="../../../../org/jacp/api/component/IComponent.html" title="inte
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getComponentsMessageQueue</h4>
-<pre>java.util.concurrent.BlockingQueue&lt;<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</a>&lt;<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">A</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">M</a>&gt;&gt;&nbsp;getComponentsMessageQueue()</pre>
+<pre>java.util.concurrent.BlockingQueue&lt;<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">A</a>,<a href="../../../../org/jacp/api/component/IPerspective.html" title="type parameter in IPerspective">M</a>&gt;&gt;&nbsp;getComponentsMessageQueue()</pre>
 <div class="block">returns the components coordinator message queue;</div>
 <dl><dt><span class="strong">Returns:</span></dt><dd>message queue</dd></dl>
 </li>

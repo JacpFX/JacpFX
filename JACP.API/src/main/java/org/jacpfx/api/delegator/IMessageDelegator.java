@@ -22,7 +22,7 @@
  ************************************************************************/
 package org.jacpfx.api.delegator;
 
-import org.jacpfx.api.action.IDelegateDTO;
+import org.jacpfx.api.message.IDelegateDTO;
 import org.jacpfx.api.coordinator.IDelegator;
 
 import java.util.concurrent.BlockingQueue;

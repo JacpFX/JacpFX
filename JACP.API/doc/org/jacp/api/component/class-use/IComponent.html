@@ -183,7 +183,7 @@ Uses of <A HREF="../../../../../org/jacp/api/component/IComponent.html" title="i
 <TD NOWRAP><FONT SIZE="-1">
 <CODE>&lt;P extends <A HREF="../../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</A>&lt;<A HREF="../../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">L</A>,<A HREF="../../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</A>,<A HREF="../../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</A>&gt;&gt;
 <BR>
-<A HREF="../../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</A>&lt;P,<A HREF="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</A>&lt;<A HREF="../../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</A>,<A HREF="../../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</A>&gt;&gt;</CODE></FONT></TD>
+<A HREF="../../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</A>&lt;P,<A HREF="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</A>&lt;<A HREF="../../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</A>,<A HREF="../../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</A>&gt;&gt;</CODE></FONT></TD>
 </TR>
 </TABLE>
 </CODE></FONT></TD>
@@ -205,7 +205,7 @@ void</CODE></FONT></TD>
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>ICoordinator.</B><B><A HREF="../../../../../org/jacp/api/coordinator/ICoordinator.html#handleActive(P, org.jacpfx.apiaction.IAction)">handleActive</A></B>(P&nbsp;component,
-             <A HREF="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</A>&lt;<A HREF="../../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</A>,<A HREF="../../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</A>&gt;&nbsp;action)</CODE>
+             <A HREF="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</A>&lt;<A HREF="../../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</A>,<A HREF="../../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</A>&gt;&nbsp;action)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Handle a message to an active component.</TD>
@@ -223,7 +223,7 @@ void</CODE></FONT></TD>
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B>ICoordinator.</B><B><A HREF="../../../../../org/jacp/api/coordinator/ICoordinator.html#handleInActive(P, org.jacpfx.apiaction.IAction)">handleInActive</A></B>(P&nbsp;component,
-               <A HREF="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</A>&lt;<A HREF="../../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</A>,<A HREF="../../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</A>&gt;&nbsp;action)</CODE>
+               <A HREF="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</A>&lt;<A HREF="../../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</A>,<A HREF="../../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</A>&gt;&nbsp;action)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Handle a message to an inactive component.</TD>
@@ -240,7 +240,7 @@ void</CODE></FONT></TD>
 </TR>
 </TABLE>
 </CODE></FONT></TD>
-<TD><CODE><B>IDelegator.</B><B><A HREF="../../../../../org/jacp/api/coordinator/IDelegator.html#setComponentHandler(org.jacpfx.api.handler.IComponentHandler)">setComponentHandler</A></B>(<A HREF="../../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</A>&lt;P,<A HREF="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</A>&lt;<A HREF="../../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">A</A>,<A HREF="../../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">M</A>&gt;&gt;&nbsp;handler)</CODE>
+<TD><CODE><B>IDelegator.</B><B><A HREF="../../../../../org/jacp/api/coordinator/IDelegator.html#setComponentHandler(org.jacpfx.api.handler.IComponentHandler)">setComponentHandler</A></B>(<A HREF="../../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</A>&lt;P,<A HREF="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</A>&lt;<A HREF="../../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">A</A>,<A HREF="../../../../../org/jacp/api/coordinator/IDelegator.html" title="type parameter in IDelegator">M</A>&gt;&gt;&nbsp;handler)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Set the associated component handler.</TD>
@@ -257,7 +257,7 @@ void</CODE></FONT></TD>
 </TR>
 </TABLE>
 </CODE></FONT></TD>
-<TD><CODE><B>ICoordinator.</B><B><A HREF="../../../../../org/jacp/api/coordinator/ICoordinator.html#setComponentHandler(org.jacpfx.api.handler.IComponentHandler)">setComponentHandler</A></B>(<A HREF="../../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</A>&lt;P,<A HREF="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.action">IAction</A>&lt;<A HREF="../../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</A>,<A HREF="../../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</A>&gt;&gt;&nbsp;handler)</CODE>
+<TD><CODE><B>ICoordinator.</B><B><A HREF="../../../../../org/jacp/api/coordinator/ICoordinator.html#setComponentHandler(org.jacpfx.api.handler.IComponentHandler)">setComponentHandler</A></B>(<A HREF="../../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</A>&lt;P,<A HREF="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</A>&lt;<A HREF="../../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</A>,<A HREF="../../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</A>&gt;&gt;&nbsp;handler)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set associated componentHandler</TD>

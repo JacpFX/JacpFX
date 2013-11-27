@@ -22,7 +22,7 @@
  ************************************************************************/
 package org.jacpfx.api.coordinator;
 
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.component.IComponent;
 import org.jacpfx.api.handler.IComponentHandler;
 
@@ -34,9 +34,9 @@ import java.util.concurrent.BlockingQueue;
  * 
  * @author Andy Moncsek
  * @param <L>
- *            defines the action listener type
+ *            defines the message listener type
  * @param <A>
- *            defines the basic action type
+ *            defines the basic message type
  * @param <M>
  *            defines the basic message type
  */
@@ -48,7 +48,7 @@ public interface ICoordinator<L, A, M> {
 	 * @param id
 	 * @param action
 	 */
-	void handleMessage(final String id, final IAction<A, M> action);
+	void handleMessage(final String id, final Message<A, M> action);
 
 	/**
 	 * Handle a message to an active component.
@@ -57,7 +57,7 @@ public interface ICoordinator<L, A, M> {
 	 * @param action
 	 */
 	<P extends IComponent<L, A, M>> void handleActive(final P component,
-			final IAction<A, M> action);
+			final Message<A, M> action);
 
 	/**
 	 * Handle a message to an inactive component.
@@ -66,21 +66,21 @@ public interface ICoordinator<L, A, M> {
 	 * @param action
 	 */
 	<P extends IComponent<L, A, M>> void handleInActive(final P component,
-			final IAction<A, M> action);
+			final Message<A, M> action);
 
 	/**
 	 * Returns the message queue of coordinator.
 	 * 
 	 * @return the message queue
 	 */
-	BlockingQueue<IAction<A, M>> getMessageQueue();
+	BlockingQueue<Message<A, M>> getMessageQueue();
 
 	/**
 	 * Returns the associated componentHandler.
 	 * 
 	 * @return the component handler
 	 */
-	<P extends IComponent<L, A, M>> IComponentHandler<P, IAction<A, M>> getComponentHandler();
+	<P extends IComponent<L, A, M>> IComponentHandler<P, Message<A, M>> getComponentHandler();
 
 	/**
 	 * set associated componentHandler
@@ -88,6 +88,6 @@ public interface ICoordinator<L, A, M> {
 	 * @param handler
 	 */
 	<P extends IComponent<L, A, M>> void setComponentHandler(
-			final IComponentHandler<P, IAction<A, M>> handler);
+			final IComponentHandler<P, Message<A, M>> handler);
 
 }

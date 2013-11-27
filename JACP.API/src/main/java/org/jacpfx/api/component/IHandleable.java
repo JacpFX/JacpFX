@@ -22,14 +22,14 @@
  ************************************************************************/
 package org.jacpfx.api.component;
 
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 
 /**
  * This interface defines components which are able to handle a single message.
  * 
  * @author Andy Moncsek
  * @param <A>
- *            defines the basic action type
+ *            defines the basic message type
  * @param <M>
  *            defines the basic message type
  */
@@ -38,9 +38,9 @@ public interface IHandleable<A, M> {
 	 * Handles component when called. The handle method in subcomponents is
 	 * always executed in a separate thread;
 	 * 
-	 * @param action , the triggering action
+	 * @param action , the triggering message
 	 * @param <C> the node return type
 	 * @return view component
 	 */
-	<C> C handle(final IAction<A, M> action);
+	<C> C handle(final Message<A, M> action);
 }

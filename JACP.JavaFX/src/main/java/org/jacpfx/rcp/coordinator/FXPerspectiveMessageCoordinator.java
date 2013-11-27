@@ -25,7 +25,7 @@ package org.jacpfx.rcp.coordinator;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import org.jacpfx.api.action.IAction;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.component.IComponent;
 import org.jacpfx.api.component.IPerspective;
 import org.jacpfx.api.coordinator.IPerspectiveCoordinator;
@@ -44,7 +44,7 @@ public class FXPerspectiveMessageCoordinator extends AFXCoordinator implements
 		IPerspectiveCoordinator<EventHandler<Event>, Event, Object> {
 
 	private final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = new CopyOnWriteArrayList<>();
-	private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> componentHandler;
+	private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
 
 	public FXPerspectiveMessageCoordinator() {
 		super("FXPerspectiveCoordinator");
@@ -52,7 +52,7 @@ public class FXPerspectiveMessageCoordinator extends AFXCoordinator implements
 
 	@Override
 	public void handleMessage(final String target,
-			final IAction<Event, Object> action) {
+			final Message<Event, Object> action) {
 		final IPerspective<EventHandler<Event>, Event, Object> perspective = FXUtil
 				.getObserveableById(FXUtil.getTargetPerspectiveId(target),
 						this.perspectives);
@@ -74,7 +74,7 @@ public class FXPerspectiveMessageCoordinator extends AFXCoordinator implements
 	 * @param action
 	 */
 	private void handleComponentHit(final String target,
-			final IAction<Event, Object> action,
+			final Message<Event, Object> action,
 			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
 		if (perspective.getContext().isActive()) {
 			this.handleMessageToActivePerspective(target, action, perspective);
@@ -96,7 +96,7 @@ public class FXPerspectiveMessageCoordinator extends AFXCoordinator implements
 	 * @param perspective
 	 */
 	private void handleMessageToActivePerspective(final String targetId,
-			final IAction<Event, Object> action,
+			final Message<Event, Object> action,
 			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
 		// if perspective already active handle perspective and replace
 		// with newly created layout component in workbench
@@ -116,7 +116,7 @@ public class FXPerspectiveMessageCoordinator extends AFXCoordinator implements
 
 	@Override
 	public <P extends IComponent<EventHandler<Event>, Event, Object>> void handleActive(
-			final P component, final IAction<Event, Object> action) {
+			final P component, final Message<Event, Object> action) {
 		Platform.runLater(() -> FXPerspectiveMessageCoordinator.this.componentHandler
                 .handleAndReplaceComponent(
                         action,
@@ -126,7 +126,7 @@ public class FXPerspectiveMessageCoordinator extends AFXCoordinator implements
 
 	@Override
 	public <P extends IComponent<EventHandler<Event>, Event, Object>> void handleInActive(
-			final P component, final IAction<Event, Object> action) {
+			final P component, final Message<Event, Object> action) {
 		component.getContext().setActive(true);
 		Platform.runLater(() -> FXPerspectiveMessageCoordinator.this.componentHandler
                 .initComponent(
@@ -149,15 +149,15 @@ public class FXPerspectiveMessageCoordinator extends AFXCoordinator implements
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>> getComponentHandler() {
+	public IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> getComponentHandler() {
 		return this.componentHandler;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <P extends IComponent<EventHandler<Event>, Event, Object>> void setComponentHandler(
-			final IComponentHandler<P, IAction<Event, Object>> handler) {
-		this.componentHandler = (IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, IAction<Event, Object>>) handler;
+			final IComponentHandler<P, Message<Event, Object>> handler) {
+		this.componentHandler = (IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, Message<Event, Object>>) handler;
 
 	}
 

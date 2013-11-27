@@ -20,7 +20,7 @@
  *
  *
  ************************************************************************/
-package org.jacpfx.api.action;
+package org.jacpfx.api.message;
 
 /**
  * DTO interface to transfer messages to desired target in different perspective.
@@ -28,7 +28,7 @@ package org.jacpfx.api.action;
  * @author Andy Moncsek
  * 
  * @param <A>
- *            defines the basic action type
+ *            defines the basic message type
  * @param <M>
  *            defines the basic message type
  */
@@ -42,9 +42,9 @@ public interface IDelegateDTO<A, M> {
 	String getTarget();
 
 	/**
-	 * Returns the action.
+	 * Returns the message.
 	 * 
-	 * @return the action
+	 * @return the message
 	 */
-	IAction<A, M> getAction();
+	Message<A, M> getMessage();
 }
