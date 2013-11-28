@@ -108,7 +108,7 @@ public class BasicInitialisationTests {
         assertNotNull(launcher);
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
-        Context<EventHandler<Event>,Event, Object> context = workbench.getContext();
+        Context<EventHandler<Event>, Object> context = workbench.getContext();
         assertNotNull(context);
         assertNotNull(context.getName());
         assertNotNull(context.getId());
@@ -136,7 +136,7 @@ public class BasicInitialisationTests {
             assertNotNull(p.getContext());
             assertNotNull(p.getComponentsMessageQueue());
             assertNotNull(p.getMessageDelegateQueue());
-            Context< EventHandler<Event>,Event, Object> context = p.getContext();
+            Context< EventHandler<Event>,Object> context = p.getContext();
             assertNotNull(context.getParentId());
             assertNotNull(context.getId());
             assertNotNull(context.getName());
@@ -168,7 +168,7 @@ public class BasicInitialisationTests {
                 for (ISubComponent<EventHandler<Event>, Event, Object> c : subcomponents) {
                     assertNotNull(c.getParentId());
                     assertTrue(c.getParentId().equals(p.getContext().getId()));
-                    Context<EventHandler<Event>,Event, Object> context = c.getContext();
+                    Context<EventHandler<Event>,Object> context = c.getContext();
                     assertNotNull(context.getParentId());
                     assertNotNull(context.getId());
                     assertNotNull(context.getName());

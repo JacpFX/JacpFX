@@ -165,7 +165,7 @@ public class FXUtil {
         }
     }
 
-    public static void performResourceInjection(final Injectable handler,Context<EventHandler<Event>,Event, Object> context) {
+    public static void performResourceInjection(final Injectable handler,Context<EventHandler<Event>, Object> context) {
         final Field[] fields = handler.getClass().getDeclaredFields();
         final List<Field> fieldList = Arrays.asList(fields);
         fieldList.parallelStream().filter(f -> f.isAnnotationPresent(Resource.class)).forEach(f -> {

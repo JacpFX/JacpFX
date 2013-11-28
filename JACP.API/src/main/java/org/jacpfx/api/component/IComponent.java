@@ -84,5 +84,5 @@ public interface IComponent<L, A, M> extends Comparable<IComponent<L, A, M>>{
      * Returns the components context object.
      * @return the context object.
      */
-    Context<L,A, M> getContext();
+    Context<L,M> getContext();
 }

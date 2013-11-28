@@ -11,12 +11,12 @@ import java.util.ResourceBundle;
  * Time: 21:12
  * The Context interface gives access to components basic meta data as well as listeners and other services.
  *
- * @param <A>
- *            defines the event type
+ * @param <L>
+ *            defines the listener type
  * @param <M>
  *            defines the basic message type
  */
-public interface Context<L,A, M>  {
+public interface Context<L,M>  {
 
 
     /**

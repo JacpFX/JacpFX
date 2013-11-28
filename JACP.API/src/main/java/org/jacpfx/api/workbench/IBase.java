@@ -72,7 +72,7 @@ public interface IBase<L, A, M> {
      * Returns the components context object.
      * @return the context object.
      */
-    Context<L,A, M> getContext();
+    Context<L, M> getContext();
 
     /**
      * Returns the component handle class, this is the users implementation of the component.

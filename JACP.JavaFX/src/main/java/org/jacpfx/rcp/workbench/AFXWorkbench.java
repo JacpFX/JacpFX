@@ -447,7 +447,7 @@ public abstract class AFXWorkbench
     }
 
     @Override
-    public Context<EventHandler<Event>,Event, Object> getContext() {
+    public Context<EventHandler<Event>, Object> getContext() {
         return context;
     }
 

@@ -324,7 +324,7 @@ public abstract class AFXPerspective extends AComponent implements
     }
 
     @Override
-    public Context<EventHandler<Event>,Event, Object> getContext() {
+    public Context<EventHandler<Event>, Object> getContext() {
         return this.context;
     }
 }

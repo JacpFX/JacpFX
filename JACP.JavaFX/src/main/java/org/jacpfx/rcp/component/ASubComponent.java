@@ -142,7 +142,7 @@ public abstract class ASubComponent extends AComponent implements
      * {@inheritDoc}
      */
     @Override
-    public final Context<EventHandler<Event>,Event, Object> getContext() {
+    public final Context<EventHandler<Event>, Object> getContext() {
         return this.context;
     }
 
