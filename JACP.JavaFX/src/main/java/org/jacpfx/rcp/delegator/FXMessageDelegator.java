@@ -62,9 +62,7 @@ public class FXMessageDelegator extends Thread implements
 		while (!Thread.interrupted()) {
 			try {
 				final IDelegateDTO<Event, Object> dto = this.messageDelegateQueue.take();
-				final String targetId = dto.getTarget();
-				final Message<Event, Object> action = dto.getMessage();
-				this.delegateMessage(targetId, action);
+				this.delegateMessage(dto.getTarget(), dto.getMessage());
 			} catch (final InterruptedException e) {
 				logger.info("queue in FXComponentDelegator interrupted");
 				break;

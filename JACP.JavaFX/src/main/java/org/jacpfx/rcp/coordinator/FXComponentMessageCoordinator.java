@@ -65,8 +65,7 @@ public class FXComponentMessageCoordinator extends AFXCoordinator implements
     public void handleMessage(final String targetId,
                               final Message<Event, Object> action) {
         // check if local message
-        final boolean local = FXUtil.isLocalMessage(targetId);
-        if (!local) {
+        if (!FXUtil.isLocalMessage(targetId)) {
             handleGlobalMessage(targetId,action);
         } else {
             // local message
@@ -128,11 +127,11 @@ public class FXComponentMessageCoordinator extends AFXCoordinator implements
                 "invalid component id. Source: "
                         + action.getSourceId() + " target: "
                         + action.getTargetId());
-        findParentPerspectiveAndRegisterComponent(targetId,component);
+        findParentPerspectiveAndRegisterComponent(component);
         return component;
     }
 
-    private void findParentPerspectiveAndRegisterComponent(final String targetId,final ISubComponent<EventHandler<Event>, Event, Object> component) {
+    private void findParentPerspectiveAndRegisterComponent(final ISubComponent<EventHandler<Event>, Event, Object> component) {
         final IPerspective<EventHandler<Event>, Event, Object> currentPerspective = PerspectiveRegistry.findPerspectiveById(parentId);
         currentPerspective.registerComponent(component);
     }
