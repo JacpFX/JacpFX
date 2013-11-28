@@ -146,6 +146,13 @@ public class PerspectiveShutdownAndRestartComponents implements FXPerspective {
         context.send("id19.id0021","start");
 
     }
+
+    public static void stopStartSatelessComponent() {
+
+        context.send("id19.id0022","stop");
+        context.send("id19.id0022","start");
+
+    }
     @OnShow
     public void onShow(final FXComponentLayout layout) {
 

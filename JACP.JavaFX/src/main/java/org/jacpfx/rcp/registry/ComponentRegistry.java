@@ -24,6 +24,7 @@ package org.jacpfx.rcp.registry;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import org.jacpfx.api.component.IPerspective;
 import org.jacpfx.api.component.ISubComponent;
 import org.jacpfx.rcp.util.FXUtil;
 
@@ -32,6 +33,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.StampedLock;
 
 /**
  * Global registry with references to all components.
@@ -41,7 +43,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 public class ComponentRegistry {
     private static final List<ISubComponent<EventHandler<Event>, Event, Object>> components = new ArrayList<>();
-    private static final ReadWriteLock lock = new ReentrantReadWriteLock();
+    private static final StampedLock lock = new StampedLock();
     /**
      * Registers a component.
      *
@@ -49,12 +51,12 @@ public class ComponentRegistry {
      */
     public static void registerComponent(
             final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        lock.writeLock().lock();
+        final long stamp = lock.tryWriteLock();
         try{
             if (!components.contains(component))
                 components.add(component);
         }finally{
-            lock.writeLock().unlock();
+            lock.unlockWrite(stamp);
         }
 
     }
@@ -66,12 +68,12 @@ public class ComponentRegistry {
      */
     public static void removeComponent(
             final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        lock.writeLock().lock();
+        final long stamp = lock.tryWriteLock();
         try{
             if (components.contains(component))
                 components.remove(component);
         }finally{
-            lock.writeLock().unlock();
+            lock.unlockWrite(stamp);
         }
 
     }
@@ -84,12 +86,20 @@ public class ComponentRegistry {
      */
     public static ISubComponent<EventHandler<Event>, Event, Object> findComponentById(
             final String targetId) {
-        lock.readLock().lock();
-        try{
+        long stamp;
+        if ((stamp = lock.tryOptimisticRead()) != 0L) { // optimistic
+            List<ISubComponent<EventHandler<Event>, Event, Object>> tmp = components;
+            if (lock.validate(stamp)) {
+                return FXUtil.getObserveableById(FXUtil.getTargetComponentId(targetId),
+                        tmp);
+            }
+        }
+        stamp = lock.readLock(); // fall back to read lock
+        try {
             return FXUtil.getObserveableById(FXUtil.getTargetComponentId(targetId),
                     components);
-        }finally{
-            lock.readLock().unlock();
+        } finally {
+            lock.unlockRead(stamp);
         }
 
     }
@@ -99,15 +109,22 @@ public class ComponentRegistry {
      * @return
      */
     public static ISubComponent<EventHandler<Event>, Event, Object> findComponentByClass(final Class<?> clazz) {
-        lock.readLock().lock();
-        try{
+        long stamp;
+        if ((stamp = lock.tryOptimisticRead()) != 0L) { // optimistic
+            List<ISubComponent<EventHandler<Event>, Event, Object>> tmp = components;
+            if (lock.validate(stamp)) {
+                final Optional<ISubComponent<EventHandler<Event>, Event, Object>> returnVal = tmp.parallelStream().filter(c -> c.getComponent().getClass().isAssignableFrom(clazz)).findFirst();
+                if(returnVal.isPresent())return returnVal.get();
+            }
+        }
+        stamp = lock.readLock(); // fall back to read lock
+        try {
             final Optional<ISubComponent<EventHandler<Event>, Event, Object>> returnVal = components.parallelStream().filter(c -> c.getComponent().getClass().isAssignableFrom(clazz)).findFirst();
             if(returnVal.isPresent())return returnVal.get();
-
-            return null;
-        }finally{
-            lock.readLock().unlock();
+        } finally {
+            lock.unlockRead(stamp);
         }
+        return null;
     }
 
 }

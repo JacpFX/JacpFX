@@ -61,16 +61,15 @@ class EmbeddedCallbackComponentWorker
     public void run() {
         final Thread t = Thread.currentThread();
         try {
-
+            boolean wasExecuted =false;
             while (!Thread.interrupted()) {
                 final Message<Event, Object> myAction = this.component
                         .getNextIncomingMessage();
                 this.component.lock();
                 checkValidComponent(this.component);
+                wasExecuted = true;
                 final JACPContextImpl context = JACPContextImpl.class.cast(this.component.getContext());
-
-                String id = myAction.getSourceId();
-                context.setReturnTarget(id);
+                context.setReturnTarget(myAction.getSourceId());
                 final String currentExecutionTarget = context.getExecutionTarget();
                 final Object value = this.component.getComponent().handle(myAction);
                 final String targetId = context
@@ -82,7 +81,7 @@ class EmbeddedCallbackComponentWorker
                 this.component.release();
                 if (!component.getContext().isActive()) break;
             }
-            handleComponentShutdown(this.component);
+            if(wasExecuted)handleComponentShutdown(this.component);
         } catch (InterruptedException e) {
             //e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (final IllegalStateException e) {
@@ -100,7 +99,7 @@ class EmbeddedCallbackComponentWorker
     }
 
     private void handleComponentShutdown(final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        component.lock();
+        if (!component.isBlocked())component.lock();
         try {
             final String parentId = component.getParentId();
             final IPerspective<EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);

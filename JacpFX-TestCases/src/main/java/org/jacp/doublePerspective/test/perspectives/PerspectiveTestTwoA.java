@@ -97,19 +97,9 @@ public class PerspectiveTestTwoA implements FXPerspective {
         System.out.println("START" + layout);
         final JACPToolBar toolbar = layout.getRegisteredToolBar(ToolbarPosition.SOUTH);
         final Button p1 = new Button("Perspective A");
-        p1.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                context.send("id02", "show");
-            }
-        });
+        p1.setOnMouseClicked(context.getEventHandler("id02", "show"));
         final Button p2 = new Button("Perspective B");
-        p2.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                context.send("id03", "show");
-            }
-        });
+        p2.setOnMouseClicked(context.getEventHandler("id03", "show"));
         p1.setVisible(false);
         p2.setVisible(false);
         toolbar.addAllOnEnd("id02", p1, p2);

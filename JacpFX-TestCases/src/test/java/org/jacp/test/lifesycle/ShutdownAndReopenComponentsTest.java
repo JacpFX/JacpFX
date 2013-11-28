@@ -14,6 +14,7 @@ import org.jacp.test.main.ApplicationShutdownAndRestartComponentsTest;
 import org.jacp.test.perspectives.PerspectiveShutdownAndRestartComponents;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -275,5 +276,91 @@ public class ShutdownAndReopenComponentsTest {
             i++;
         }
     }
+
+    //@Test              // test sendinge messages, stop the component while new messages are send
+    public void test6() throws InterruptedException {
+        // Component is shut down
+        ApplicationShutdownAndRestartComponentsTest launcher = ApplicationShutdownAndRestartComponentsTest.instance[0];
+        AFXWorkbench workbench = launcher.getWorkbench();
+        assertNotNull(workbench);
+        List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        assertNotNull(perspectives);
+        assertFalse(perspectives.isEmpty());
+        for (IPerspective<EventHandler<Event>, Event, Object> p : perspectives) {
+
+            assertTrue(p.getContext().isActive());
+            List<ISubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
+
+            // Thread.sleep(1000);
+            assertTrue(components.isEmpty());
+
+        }
+        int i = 0;
+        while (i < 100) {
+            CountDownLatch exceptionLatch = new CountDownLatch(1);
+            Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+                public void uncaughtException(Thread t, Throwable e) {
+                    e.printStackTrace();
+                    exceptionLatch.countDown();
+                    ;
+                }
+            });
+            ComponentShutdownAndRestartComponentsTests1.startLatch = new CountDownLatch(1);
+            ComponentShutdownAndRestartComponentsTests1.stopLatch = new CountDownLatch(1);
+            int j=0;
+            while (j<10){
+
+                PerspectiveShutdownAndRestartComponents.startStopComponent();
+                j++;
+            }
+
+            ComponentShutdownAndRestartComponentsTests1.startLatch.await();
+            PerspectiveShutdownAndRestartComponents.stopFXComponent();
+            ComponentShutdownAndRestartComponentsTests1.stopLatch.await();
+            ComponentShutdownAndRestartComponentsTests1.startLatch = new CountDownLatch(1);
+            int p=0;
+            while (p<10){
+
+                PerspectiveShutdownAndRestartComponents.startStopComponent();
+                p++;
+            }
+            ComponentShutdownAndRestartComponentsTests1.startLatch.await();
+          //  exceptionLatch.await();
+            i++;
+        }
+    }
+
+    @Test
+    @Ignore
+    public void test7() throws InterruptedException {
+        // Component is shut down
+        ApplicationShutdownAndRestartComponentsTest launcher = ApplicationShutdownAndRestartComponentsTest.instance[0];
+        AFXWorkbench workbench = launcher.getWorkbench();
+        assertNotNull(workbench);
+        List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        assertNotNull(perspectives);
+        assertFalse(perspectives.isEmpty());
+        for (IPerspective<EventHandler<Event>, Event, Object> p : perspectives) {
+
+            assertTrue(p.getContext().isActive());
+            List<ISubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
+
+            // Thread.sleep(1000);
+            assertTrue(components.isEmpty());
+
+        }
+        int i = 0;
+        while (i < 100) {
+
+            ComponentShutdownAndRestartComponentsTests3.startLatch = new CountDownLatch(1);
+            ComponentShutdownAndRestartComponentsTests3.stopLatch = new CountDownLatch(1);
+            PerspectiveShutdownAndRestartComponents.stopStartSatelessComponent();
+            ComponentShutdownAndRestartComponentsTests3.startLatch.await();
+            ComponentShutdownAndRestartComponentsTests3.stopLatch.await();
+
+            i++;
+        }
+    }
+
 
 }

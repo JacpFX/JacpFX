@@ -16,7 +16,7 @@ import java.util.ResourceBundle;
  * @param <M>
  *            defines the basic message type
  */
-public interface Context<A, M>  {
+public interface Context<L,A, M>  {
 
 
     /**
@@ -33,21 +33,20 @@ public interface Context<A, M>  {
     void send(final String targetId, final M message);
 
     /**
-     * Returns an message listener (for local use). Message will be send to
-     * caller component.
-     * @param message ; the initial message to be send by invoking the listener
-     * @return the message listener instance
+     * Returns an event handler that handles messages to caller component
+     * @param message
+     * @return
      */
-    ActionListener<A, M> getActionListener(final M message);
+    L getEventHandler(final M message);
+
 
     /**
-     * Returns an message listener (for global use). targetId defines the id or
-     * your receiver component
+     * Returns an event handler that handles messages to target component
      * @param message ; the message to send to target.
      * @param targetId ; the targets component id.
-     * @return the message listener instance
+     * @return
      */
-    ActionListener<A, M> getActionListener(final String targetId, final M message);
+    L getEventHandler(final String targetId, final M message);
 
     /**
      * Returns the id of the component.

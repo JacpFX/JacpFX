@@ -88,15 +88,7 @@ public class TestTwoView implements FXComponent {
             label.setText(" current Perspective: " + current);
 
         } else {
-            button.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-                @Override
-                public void handle(MouseEvent event) {
-
-
-                    context.send("update");
-                }
-            });
+            button.setOnMouseClicked(context.getEventHandler("update"));
             button.setStyle("-fx-background-color: red");
             label.setText(" current Perspective: " + current);
             container.getChildren().addAll(button, label);

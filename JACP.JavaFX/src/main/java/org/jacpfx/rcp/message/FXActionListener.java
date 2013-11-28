@@ -37,7 +37,7 @@ import java.util.concurrent.BlockingQueue;
  * 
  * @author Andy Moncsek
  */
-public class FXActionListener implements EventHandler<Event>,
+public class FXActionListener<T extends Event> implements EventHandler<T>,
         ActionListener<Event, Object> {
 	private final Message<Event, Object> action;
 	private final BlockingQueue<Message<Event, Object>> globalMessageQueue;

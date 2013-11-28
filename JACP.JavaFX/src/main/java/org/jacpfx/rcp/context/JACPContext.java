@@ -14,7 +14,7 @@ import org.jacpfx.rcp.components.managedDialog.ManagedDialogHandler;
  * Time: 13:29
  * To change this template use File | Settings | File Templates.
  */
-public interface JACPContext extends Context<Event, Object> {
+public interface JACPContext extends Context<EventHandler<Event>,Event, Object> {
 
     /**
      * Returns a managed dialog, which contains part of an UI and can fully interact with CDI and it's parent component.

@@ -87,15 +87,7 @@ public class ComponentShutdownAndRestartComponentsTests1 implements FXComponent 
         if (action.messageBodyEquals("stop")) {
             context.setActive(false);
         } else if(action.messageBodyEquals(FXUtil.MessageUtil.INIT)) {
-            button.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-                @Override
-                public void handle(MouseEvent event) {
-
-
-                    context.send("stop");
-                }
-            });
+            button.setOnMouseClicked(context.getEventHandler("stop"));
             button.setStyle("-fx-background-color: red");
             label.setText(" current Tagret: " + current);
             container.getChildren().addAll(button, label);

@@ -87,15 +87,7 @@ public class TestOneView implements FXComponent {
             context.setTargetLayout(current);
             label.setText(" current Tagret: " + current);
         } else {
-            button.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-                @Override
-                public void handle(MouseEvent event) {
-
-
-                    context.send("update");
-                }
-            });
+            button.setOnMouseClicked(context.getEventHandler("update"));
             button.setStyle("-fx-background-color: red");
             label.setText(" current Tagret: " + current);
             container.getChildren().addAll(button, label);

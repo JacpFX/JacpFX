@@ -61,23 +61,23 @@ public class JACPContextImpl implements JACPContext {
      * {@inheritDoc}
      */
     @Override        // TODO check access, workbench is not allowed to use this method
-    public final ActionListener<Event, Object> getActionListener(
+    public final  EventHandler<Event>   getEventHandler(
             final Object message) {
         return new FXActionListener(new FXMessage(this.id, message),
                 this.globalMessageQueue);
     }
-
     /**
      * {@inheritDoc}
      */
     @Override
-    public final ActionListener<Event, Object> getActionListener(
+    public final EventHandler<Event>   getEventHandler(
             final String targetId, final Object message) {
         return new FXActionListener(new FXMessage(this.id, targetId, message, null),
                 this.globalMessageQueue);
     }
-
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final void send(final String targetId, final Object message) {
         try {
@@ -86,7 +86,9 @@ public class JACPContextImpl implements JACPContext {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     // TODO check access, workbench is not allowed to use this method
     public final void send(final Object message) {
