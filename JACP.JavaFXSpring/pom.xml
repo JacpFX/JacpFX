@@ -12,7 +12,7 @@
 	<artifactId>JACPFX.JavaFXSpring</artifactId>
 	<packaging>jar</packaging>
 
-	<name>JACP.JavaFXSpring</name>
+	<name>JACPFX.JavaFXSpring</name>
     <url>https://github.com/JacpFX/JacpFX</url>
 	<developers>
 		<developer>
