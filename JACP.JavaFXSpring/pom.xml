@@ -4,15 +4,15 @@
 
 	<parent>
 		<groupId>org.jacpfx</groupId>
-		<artifactId>JACPFX</artifactId>
+		<artifactId>jacpfx-parent</artifactId>
         <version>2.0-ALPHA-SNAPSHOT</version>
 		<relativePath>../JACP</relativePath>
 	</parent>
 
-	<artifactId>JACPFX.JavaFXSpring</artifactId>
+	<artifactId>jacpfx.JavaFXSpring</artifactId>
 	<packaging>jar</packaging>
 
-	<name>JACPFX.JavaFXSpring</name>
+	<name>jacpfx.JavaFXSpring</name>
     <url>https://github.com/JacpFX/JacpFX</url>
 	<developers>
 		<developer>
@@ -29,7 +29,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<javafx.version>2.2</javafx.version>
-		<spring.version>4.0.0.M2</spring.version>
+		<spring.version>4.0.0.RC1</spring.version>
 	</properties>
     <repositories>
         <repository>
@@ -59,13 +59,13 @@
 
 		<dependency>
 			<groupId>org.jacpfx</groupId>
-			<artifactId>JACPFX.API</artifactId>
+			<artifactId>jacpfx.api</artifactId>
 			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.jacpfx</groupId>
-			<artifactId>JACPFX.JavaFX</artifactId>
+			<artifactId>jacpfx.JavaFX</artifactId>
 			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>

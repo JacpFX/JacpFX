@@ -4,14 +4,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.jacpfx</groupId>
-		<artifactId>JACPFX</artifactId>
+		<artifactId>jacpfx-parent</artifactId>
         <version>2.0-ALPHA-SNAPSHOT</version>
 		<relativePath>../JACP</relativePath>
 	</parent>
-	<artifactId>JACPFX.JavaFX</artifactId>
+	<artifactId>jacpfx.JavaFX</artifactId>
 	<packaging>jar</packaging>
 
-	<name>JACPFX.JavaFX</name>
+	<name>jacpfx.JavaFX</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -49,7 +49,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.jacpfx</groupId>
-			<artifactId>JACPFX.API</artifactId>
+			<artifactId>jacpfx.api</artifactId>
 			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>

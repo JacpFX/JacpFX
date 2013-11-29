@@ -26,7 +26,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jacp.version>2.0-ALPHA-SNAPSHOT</jacp.version>
-        <spring.version>4.0.0.M2</spring.version>
+        <spring.version>4.0.0.RC1</spring.version>
     </properties>
     <build>
         <plugins>
@@ -68,25 +68,25 @@
     <dependencies>
         <dependency>
             <groupId>org.jacpfx</groupId>
-            <artifactId>JACPFX.API</artifactId>
+            <artifactId>jacpfx.api</artifactId>
             <version>${jacp.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.jacpfx</groupId>
-            <artifactId>JACPFX.JavaFX</artifactId>
+            <artifactId>jacpfx.JavaFX</artifactId>
             <version>${jacp.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.jacpfx</groupId>
-            <artifactId>JACPFX.JavaFXSpring</artifactId>
+            <artifactId>jacpfx.JavaFXSpring</artifactId>
             <version>${jacp.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.jacpfx</groupId>
-            <artifactId>JACPFX.JavaFXControls</artifactId>
+            <artifactId>jacpfx.JavaFXControls</artifactId>
             <version>${jacp.version}</version>
             <scope>compile</scope>
         </dependency>

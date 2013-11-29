@@ -2,10 +2,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jacpfx</groupId>
-	<artifactId>JACPFX</artifactId>
+	<artifactId>jacpfx-parent</artifactId>
 	<version>2.0-ALPHA-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>JACPFX Project</name>
+	<name>jacpfx Project</name>
 	<url>https://github.com/JacpFX/JacpFX</url>
 
 
