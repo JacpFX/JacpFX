@@ -332,7 +332,6 @@ public class ShutdownAndReopenComponentsTest {
 
 
     @Test
-    @Ignore
     public void test7() throws InterruptedException {
         // Component is shut down
         ApplicationShutdownAndRestartComponentsTest launcher = ApplicationShutdownAndRestartComponentsTest.instance[0];

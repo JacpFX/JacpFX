@@ -94,14 +94,14 @@ public class WorkerUtil {
      * enables component an add to container
      *
      * @param validContainer , a valid container where components root will be added
-     * @param IUIComponent   , the component
+     * @param componentViewNode   , the component
      */
-    private static void handleAdd(final Node validContainer, final Node IUIComponent) {
-        if (validContainer != null && IUIComponent != null) {
-            handleViewState(IUIComponent, true);
+    private static void handleAdd(final Node validContainer, final Node componentViewNode) {
+        if (validContainer != null && componentViewNode != null) {
+            handleViewState(componentViewNode, true);
             final ObservableList<Node> children = FXUtil
                     .getChildren(validContainer);
-            children.add(IUIComponent);
+            if(!children.contains(componentViewNode))children.add(componentViewNode);
         }
 
     }
@@ -109,14 +109,14 @@ public class WorkerUtil {
     /**
      * set visibility and enable/disable
      *
-     * @param IUIComponent, a Node where to set the state
+     * @param componentViewNode, a Node where to set the state
      * @param state,        the boolean value of the state
      */
-    public static void handleViewState(final Node IUIComponent,
+    public static void handleViewState(final Node componentViewNode,
                                        final boolean state) {
-        IUIComponent.setVisible(state);
-        IUIComponent.setDisable(!state);
-        IUIComponent.setManaged(state);
+        componentViewNode.setVisible(state);
+        componentViewNode.setDisable(!state);
+        componentViewNode.setManaged(state);
     }
 
     /**
