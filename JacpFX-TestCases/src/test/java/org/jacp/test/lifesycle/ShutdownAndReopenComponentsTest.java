@@ -277,7 +277,7 @@ public class ShutdownAndReopenComponentsTest {
         }
     }
 
-    //@Test              // test sendinge messages, stop the component while new messages are send
+    @Test              // test sendinge messages, stop the component while new messages are send
     public void test6() throws InterruptedException {
         // Component is shut down
         ApplicationShutdownAndRestartComponentsTest launcher = ApplicationShutdownAndRestartComponentsTest.instance[0];
@@ -317,18 +317,19 @@ public class ShutdownAndReopenComponentsTest {
             ComponentShutdownAndRestartComponentsTests1.startLatch.await();
             PerspectiveShutdownAndRestartComponents.stopFXComponent();
             ComponentShutdownAndRestartComponentsTests1.stopLatch.await();
-            ComponentShutdownAndRestartComponentsTests1.startLatch = new CountDownLatch(1);
+            ComponentShutdownAndRestartComponentsTests1.stopLatch = new CountDownLatch(1);
             int p=0;
             while (p<10){
 
                 PerspectiveShutdownAndRestartComponents.startStopComponent();
                 p++;
             }
-            ComponentShutdownAndRestartComponentsTests1.startLatch.await();
+            ComponentShutdownAndRestartComponentsTests1.stopLatch.await();
           //  exceptionLatch.await();
             i++;
         }
     }
+
 
     @Test
     @Ignore
@@ -360,6 +361,7 @@ public class ShutdownAndReopenComponentsTest {
 
             i++;
         }
+        Thread.sleep(2000);
     }
 
 

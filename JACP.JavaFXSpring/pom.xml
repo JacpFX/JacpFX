@@ -4,12 +4,12 @@
 
 	<parent>
 		<groupId>org.jacpfx</groupId>
-		<artifactId>JACP</artifactId>
+		<artifactId>JACPFX</artifactId>
         <version>2.0-ALPHA-SNAPSHOT</version>
 		<relativePath>../JACP</relativePath>
 	</parent>
 
-	<artifactId>JACP.JavaFXSpring</artifactId>
+	<artifactId>JACPFX.JavaFXSpring</artifactId>
 	<packaging>jar</packaging>
 
 	<name>JACP.JavaFXSpring</name>
@@ -59,13 +59,13 @@
 
 		<dependency>
 			<groupId>org.jacpfx</groupId>
-			<artifactId>JACP.API</artifactId>
+			<artifactId>JACPFX.API</artifactId>
 			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.jacpfx</groupId>
-			<artifactId>JACP.JavaFX</artifactId>
+			<artifactId>JACPFX.JavaFX</artifactId>
 			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
