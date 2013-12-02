@@ -63,7 +63,7 @@ public class FXPerspectiveMessageCoordinator extends AFXCoordinator implements
 			// TODO implement missing perspective handling!!
 			throw new UnsupportedOperationException(
 					"No responsible perspective found. Handling not implemented yet. target: "
-							+ target + " perspectives: " + this.perspectives);
+							+ target + " available perspectives: " + this.perspectives);
 		} // End else
 	}
 

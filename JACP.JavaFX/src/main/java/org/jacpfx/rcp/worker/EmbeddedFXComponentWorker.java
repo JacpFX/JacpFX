@@ -76,19 +76,13 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
 
                 final Message<Event, Object> myAction = this.component
                         .getNextIncomingMessage();
-                this.log(" //1.1.1.1.1// handle replace component BEGIN: "
-                        + this.component.getContext().getName());
-
                 final Node previousContainer = this.component.getRoot();
-                final String currentTargetLayout = JACPContextImpl.class.cast(this.component.getContext()).getTargetLayout();
-                final String currentExecutionTarget = JACPContextImpl.class.cast(this.component.getContext()).getExecutionTarget();
+                final JACPContextImpl contextImpl = JACPContextImpl.class.cast(this.component.getContext());
+                final String currentTargetLayout = contextImpl.getTargetLayout();
+                final String currentExecutionTarget = contextImpl.getExecutionTarget();
                 // run code
-                this.log(" //1.1.1.1.2// handle component: "
-                        + this.component.getContext().getName());
                 final Node handleReturnValue = WorkerUtil.prepareAndRunHandleMethod(
                         this.component, myAction);
-                this.log(" //1.1.1.1.3// publish component: "
-                        + this.component.getContext().getName());
                 this.publish(this.component, myAction, this.targetComponents,
                         handleReturnValue, previousContainer,
                         currentTargetLayout, currentExecutionTarget);

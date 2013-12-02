@@ -95,19 +95,19 @@ public interface Context<L,M>  {
      *
      * @param componentTargetId ; represents a component id to return the value to
      */
-    void setReturnTarget(final String componentTargetId);
+    void setReturnTarget(final String componentTargetId) throws IllegalStateException;;
 
     /**
      * Defines the perspective in which the component should executed in.
      * @param id, the id of the parent perspective where the component should be executed in.
      */
-    void setExecutionTarget(final String id);
+    void setExecutionTarget(final String id) throws IllegalStateException;
 
     /**
      * Defines the target layoutId, where the UI component should appear in,the layout is registered in perspective and is a placeholder for the component.
      * @param targetLayout, a target layout label.
      */
-    void setTargetLayout(final String targetLayout);
+    void setTargetLayout(final String targetLayout) throws IllegalStateException;
 
 
 }

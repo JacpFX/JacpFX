@@ -89,6 +89,8 @@ class EmbeddedCallbackComponentWorker
                 t.getUncaughtExceptionHandler().uncaughtException(t, new UnsupportedOperationException(
                         "Do not reuse Node components in handleAction method, use postHandleAction instead to verify that you change nodes in JavaFX main Thread:",
                         e));
+            } else {
+                t.getUncaughtExceptionHandler().uncaughtException(t, e);
             }
         } catch (Exception e) {
             t.getUncaughtExceptionHandler().uncaughtException(t, e);

@@ -133,14 +133,8 @@ public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
                 + name);
         final Node handleReturnValue = WorkerUtil.prepareAndRunHandleMethod(
                 this.component, this.action);
-        this.log("3.4.4.2.2: subcomponent handle init get valid container: "
-                + name);
-        this.log("3.4.4.2.3: subcomponent handle init add component by type: "
-                + name);
         this.executePostHandleAndAddComponent(handleReturnValue,
                 this.component, this.action, this.targetComponents);
-        this.log("3.4.4.2.4: subcomponent handle init END: "
-                + name);
         // check if component was shutdown
         if (!component.isStarted()) return this.component;
         this.component.initWorker(new EmbeddedFXComponentWorker(this.targetComponents, this.componentDelegateQueue, this.component));

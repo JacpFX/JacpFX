@@ -20,4 +20,5 @@ class CommonUtil {
     public static Stream<String> getStringStreamFromArray(String[] ids) {
         return Stream.of(ids);
     }
+
 }

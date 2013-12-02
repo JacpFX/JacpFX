@@ -3,15 +3,21 @@ package org.jacpfx.rcp.context;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import org.jacpfx.api.message.ActionListener;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.api.util.CustomSecurityManager;
-import org.jacpfx.rcp.message.FXActionListener;
-import org.jacpfx.rcp.message.FXMessage;
+import org.jacpfx.rcp.component.AStatelessCallbackComponent;
+import org.jacpfx.rcp.component.CallbackComponent;
+import org.jacpfx.rcp.component.FXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.components.managedDialog.JACPManagedDialog;
 import org.jacpfx.rcp.components.managedDialog.ManagedDialogHandler;
 import org.jacpfx.rcp.components.modalDialog.JACPModalDialog;
+import org.jacpfx.rcp.message.FXActionListener;
+import org.jacpfx.rcp.message.FXMessage;
+import org.jacpfx.rcp.util.AccessUtil;
+import org.jacpfx.rcp.util.PerspectiveUtil;
+import org.jacpfx.rcp.worker.AEmbeddedComponentWorker;
+import org.jacpfx.rcp.worker.AFXComponentWorker;
 
 import java.util.ResourceBundle;
 import java.util.concurrent.BlockingQueue;
@@ -61,20 +67,22 @@ public class JACPContextImpl implements JACPContext {
      * {@inheritDoc}
      */
     @Override        // TODO check access, workbench is not allowed to use this method
-    public final  EventHandler<Event>   getEventHandler(
+    public final EventHandler<Event> getEventHandler(
             final Object message) {
         return new FXActionListener(new FXMessage(this.id, message),
                 this.globalMessageQueue);
     }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public final EventHandler<Event>   getEventHandler(
+    public final EventHandler<Event> getEventHandler(
             final String targetId, final Object message) {
         return new FXActionListener(new FXMessage(this.id, targetId, message, null),
                 this.globalMessageQueue);
     }
+
     /**
      * {@inheritDoc}
      */
@@ -86,6 +94,7 @@ public class JACPContextImpl implements JACPContext {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }
+
     /**
      * {@inheritDoc}
      */
@@ -219,7 +228,10 @@ public class JACPContextImpl implements JACPContext {
      * {@inheritDoc}
      */
     @Override
-    public final void setReturnTarget(final String returnTargetId) {
+    public final void setReturnTarget(final String returnTargetId) throws IllegalStateException {
+        final String callerClassName = customSecurityManager.getCallerClassName();
+        if (!AccessUtil.hasAccess(callerClassName, CallbackComponent.class, AFXComponentWorker.class,AEmbeddedComponentWorker.class,AFXComponentWorker.class))
+            throw new IllegalStateException(" the return target can be set only in CallbackComponents");
         this.returnTarget = returnTargetId;
     }
 
@@ -231,7 +243,11 @@ public class JACPContextImpl implements JACPContext {
      * {@inheritDoc}
      */
     @Override
-    public void setExecutionTarget(String id) {
+    public void setExecutionTarget(final String id) throws IllegalStateException {
+        final String callerClassName = customSecurityManager.getCallerClassName();
+        if (!AccessUtil.hasAccess(callerClassName, FXComponent.class, AStatelessCallbackComponent.class,AEmbeddedComponentWorker.class))
+            throw new IllegalStateException(" the execution target can be set only in FXComponents");
+
         if (id == null) {
             this.executionTarget = "";
             return;
@@ -247,7 +263,10 @@ public class JACPContextImpl implements JACPContext {
      * {@inheritDoc}
      */
     @Override
-    public void setTargetLayout(String targetLayout) {
+    public void setTargetLayout(String targetLayout) throws IllegalStateException {
+        final String callerClassName = customSecurityManager.getCallerClassName();
+        if (!AccessUtil.hasAccess(callerClassName, FXComponent.class, PerspectiveUtil.class))
+            throw new IllegalStateException(" the target layout can be set only in FXComponents");
         if (targetLayout == null) throw new IllegalArgumentException("targetLayout should not be null");
         this.targetLayout = targetLayout;
     }
