@@ -37,20 +37,6 @@ import org.jacpfx.api.handler.IComponentHandler;
  * @param <M>
  */
 public interface IDelegator<L, A, M> {
-	/**
-	 * Add the perspective to observe. TODO merge with IPerspectiveCoordinator
-	 * 
-	 * @param perspective
-	 */
-	void addPerspective(final IPerspective<L, A, M> perspective);
-
-	/**
-	 * Remove the perspective; e.g. when perspective is deactivated TODO merge
-	 * with IPerspectiveCoordinator
-	 * 
-	 * @param perspective
-	 */
-	void removePerspective(final IPerspective<L, A, M> perspective);
 
 	/**
 	 * Set the associated component handler.

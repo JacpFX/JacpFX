@@ -49,6 +49,7 @@ public class ApplicationLauncherMoveComponentsBetweenComponents extends AFXSprin
     private static final String[] BINARY_FILES = {"/styles/style_light.bss", "/styles/style_dark.bss"};
     public static CountDownLatch latch = new CountDownLatch(5);
     public static volatile ApplicationLauncherMoveComponentsBetweenComponents[] instance = new ApplicationLauncherMoveComponentsBetweenComponents[1];
+    public static Thread.UncaughtExceptionHandler handler = null;
 
     public ApplicationLauncherMoveComponentsBetweenComponents() {
         super("main.xml");
@@ -93,7 +94,12 @@ public class ApplicationLauncherMoveComponentsBetweenComponents extends AFXSprin
         // add style sheet
         scene.getStylesheets().add(STYLES[0]);
         instance[0] = this;
+        Thread.currentThread().setUncaughtExceptionHandler(handler);
         ApplicationLauncherMoveComponentsBetweenComponents.latch.countDown();
+    }
+
+    public static void updateExceptionHandler() {
+        Thread.currentThread().setUncaughtExceptionHandler(handler);
     }
 
     private static void initStyles() {

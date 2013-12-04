@@ -132,6 +132,7 @@ public class FXComponentMessageCoordinator extends AFXCoordinator implements
     }
 
     private void findParentPerspectiveAndRegisterComponent(final ISubComponent<EventHandler<Event>, Event, Object> component) {
+        // TODO THIS is a BUG.... fin the perspective where the component was registered and do not automatically use the current perspective
         final IPerspective<EventHandler<Event>, Event, Object> currentPerspective = PerspectiveRegistry.findPerspectiveById(parentId);
         currentPerspective.registerComponent(component);
     }

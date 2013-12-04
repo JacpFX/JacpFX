@@ -33,6 +33,7 @@ import org.jacpfx.api.delegator.IComponentDelegator;
 import org.jacpfx.api.handler.IComponentHandler;
 import org.jacpfx.rcp.message.FXMessage;
 import org.jacpfx.rcp.context.JACPContextImpl;
+import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.FXUtil;
 import org.jacpfx.rcp.util.ShutdownThreadsHandler;
 
@@ -55,7 +56,6 @@ public class FXComponentDelegator extends Thread implements
 	private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue = new ArrayBlockingQueue<>(
 			100);
 	private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
-	private final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = new CopyOnWriteArrayList<>();
 
 	public FXComponentDelegator() {
 		super("FXComponentDelegator");
@@ -81,9 +81,7 @@ public class FXComponentDelegator extends Thread implements
 	private void delegateTargetChange(final String target,
 			final ISubComponent<EventHandler<Event>, Event, Object> component) {
 		// find responsible perspective
-		final IPerspective<EventHandler<Event>, Event, Object> responsiblePerspective = FXUtil
-				.getObserveableById(FXUtil.getTargetPerspectiveId(target),
-						this.perspectives);
+		final IPerspective<EventHandler<Event>, Event, Object> responsiblePerspective = PerspectiveRegistry.findPerspectiveById(target);
 		// find correct target in perspective
 		if (responsiblePerspective != null) {
 			this.handleTargetHit(responsiblePerspective, component);
@@ -164,19 +162,5 @@ public class FXComponentDelegator extends Thread implements
         }
 
     }
-
-	@Override
-	public void addPerspective(
-			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
-		this.perspectives.add(perspective);
-
-	}
-
-	@Override
-	public void removePerspective(
-			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
-		this.perspectives.remove(perspective);
-
-	}
 
 }

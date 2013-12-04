@@ -31,6 +31,7 @@ import org.jacpfx.api.component.IComponent;
 import org.jacpfx.api.component.IPerspective;
 import org.jacpfx.api.delegator.IMessageDelegator;
 import org.jacpfx.api.handler.IComponentHandler;
+import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.FXUtil;
 import org.jacpfx.rcp.util.ShutdownThreadsHandler;
 
@@ -50,7 +51,6 @@ public class FXMessageDelegator extends Thread implements
 	private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
 	private final BlockingQueue<IDelegateDTO<Event, Object>> messageDelegateQueue = new ArrayBlockingQueue<>(
 			10000);
-	private final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = new CopyOnWriteArrayList<>();
 
 	public FXMessageDelegator() {
 		super("FXMessageDelegator");
@@ -89,9 +89,7 @@ public class FXMessageDelegator extends Thread implements
 
 	void handleMessage(final String target,
                        final Message<Event, Object> action) throws ExecutionException, InterruptedException {
-		final IPerspective<EventHandler<Event>, Event, Object> perspective = FXUtil
-				.getObserveableById(FXUtil.getTargetPerspectiveId(target),
-						this.perspectives);
+		final IPerspective<EventHandler<Event>, Event, Object> perspective = PerspectiveRegistry.findPerspectiveById(target);
 		if (perspective != null) {
 			this.handleComponentHit(target, action, perspective);
 		} // End if
@@ -101,7 +99,7 @@ public class FXMessageDelegator extends Thread implements
             final CompletableFuture<IPerspective<EventHandler<Event>, Event, Object>> perspectiveFuture =
                     CompletableFuture.supplyAsync(()-> FXUtil.getTargetComponentId(target))
                             .thenApplyAsync(id -> FXUtil
-                                    .findRootByObserveableId(id, this.perspectives));
+                                    .findRootByObserveableId(id, PerspectiveRegistry.getAllPerspectives()));
 			final IPerspective<EventHandler<Event>, Event, Object> perspectiveTemp = perspectiveFuture.get();
 			if (perspectiveTemp != null) {
 				final String tempTargetId = perspectiveTemp.getContext().getId().concat(".")
@@ -111,7 +109,7 @@ public class FXMessageDelegator extends Thread implements
 				throw new UnsupportedOperationException(
 						"No responsible perspective found. Handling not implemented yet. target: "
 								+ target + " perspectives: "
-								+ this.perspectives);
+								+ PerspectiveRegistry.getAllPerspectives());
 			}
 		} // End else
 	}
@@ -193,9 +191,7 @@ public class FXMessageDelegator extends Thread implements
 	 */
 	private void callComponentDelegate(final String target,
 			final Message<Event, Object> action) {
-		final IPerspective<EventHandler<Event>, Event, Object> perspective = FXUtil
-				.getObserveableById(FXUtil.getTargetPerspectiveId(target),
-						this.perspectives);
+		final IPerspective<EventHandler<Event>, Event, Object> perspective = PerspectiveRegistry.findPerspectiveById(target);
 		if (perspective != null) {
 			if (!perspective.getContext().isActive()) {
 				this.handleInActivePerspective(perspective, action);
@@ -224,19 +220,6 @@ public class FXMessageDelegator extends Thread implements
 
     }
 
-	@Override
-	public void addPerspective(
-			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
-		this.perspectives.add(perspective);
-
-	}
-
-	@Override
-	public void removePerspective(
-			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
-		this.perspectives.remove(perspective);
-
-	}
 
 	void log(final String message) {
 		this.logger.fine(message);

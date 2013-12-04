@@ -30,6 +30,7 @@ import org.jacpfx.api.component.IComponent;
 import org.jacpfx.api.component.IPerspective;
 import org.jacpfx.api.coordinator.IPerspectiveCoordinator;
 import org.jacpfx.api.handler.IComponentHandler;
+import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.FXUtil;
 
 import java.util.List;
@@ -43,7 +44,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class FXPerspectiveMessageCoordinator extends AFXCoordinator implements
 		IPerspectiveCoordinator<EventHandler<Event>, Event, Object> {
 
-	private final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = new CopyOnWriteArrayList<>();
 	private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
 
 	public FXPerspectiveMessageCoordinator() {
@@ -53,9 +53,7 @@ public class FXPerspectiveMessageCoordinator extends AFXCoordinator implements
 	@Override
 	public void handleMessage(final String target,
 			final Message<Event, Object> action) {
-		final IPerspective<EventHandler<Event>, Event, Object> perspective = FXUtil
-				.getObserveableById(FXUtil.getTargetPerspectiveId(target),
-						this.perspectives);
+		final IPerspective<EventHandler<Event>, Event, Object> perspective = PerspectiveRegistry.findPerspectiveById(target);
 		if (perspective != null) {
 			this.handleComponentHit(target, action, perspective);
 		} // End if
@@ -63,7 +61,7 @@ public class FXPerspectiveMessageCoordinator extends AFXCoordinator implements
 			// TODO implement missing perspective handling!!
 			throw new UnsupportedOperationException(
 					"No responsible perspective found. Handling not implemented yet. target: "
-							+ target + " available perspectives: " + this.perspectives);
+							+ target + " available perspectives: " + PerspectiveRegistry.getAllPerspectives());
 		} // End else
 	}
 
@@ -132,19 +130,6 @@ public class FXPerspectiveMessageCoordinator extends AFXCoordinator implements
                 .initComponent(
                         action,
                         (IPerspective<EventHandler<Event>, Event, Object>) component));
-	}
-
-	@Override
-	public void addPerspective(
-			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
-
-		this.perspectives.add(perspective);
-	}
-
-	@Override
-	public void removePerspective(
-			final IPerspective<EventHandler<Event>, Event, Object> perspective) {
-		this.perspectives.remove(perspective);
 	}
 
 	@SuppressWarnings("unchecked")

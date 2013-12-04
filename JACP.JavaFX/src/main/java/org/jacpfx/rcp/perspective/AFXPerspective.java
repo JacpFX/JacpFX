@@ -110,7 +110,7 @@ public abstract class AFXPerspective extends AComponent implements
         ((FXComponentMessageCoordinator) this.componentCoordinator).start();
         if(this.subcomponents!=null)this.subcomponents.clear();
         this.subcomponents = createAllDeclaredSubcomponents();
-        if (this.getSubcomponents() != null) this.registerSubcomponents(this.subcomponents);
+        if (this.subcomponents != null) this.registerSubcomponents(this.subcomponents);
     }
 
     /**

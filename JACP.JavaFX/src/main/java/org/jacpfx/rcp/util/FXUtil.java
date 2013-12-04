@@ -319,8 +319,8 @@ public class FXUtil {
      * @return
      */
     public static String getTargetPerspectiveId(final String messageId) {
-        final String[] targetId = FXUtil.getTargetId(messageId);
         if (!FXUtil.isLocalMessage(messageId)) {
+            final String[] targetId = FXUtil.getTargetId(messageId);
             return targetId[0];
         }
         return messageId;
@@ -333,8 +333,8 @@ public class FXUtil {
      * @return
      */
     public static String getTargetComponentId(final String messageId) {
-        final String[] targetId = FXUtil.getTargetId(messageId);
         if (!FXUtil.isLocalMessage(messageId)) {
+            final String[] targetId = FXUtil.getTargetId(messageId);
             return targetId[1];
         }
         return messageId;

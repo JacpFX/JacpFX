@@ -2,12 +2,11 @@ package org.jacpfx.rcp.registry;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import org.jacpfx.api.annotations.perspective.Perspective;
 import org.jacpfx.api.component.IPerspective;
 import org.jacpfx.rcp.util.FXUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.StampedLock;
 import java.util.stream.Collector;
@@ -34,9 +33,17 @@ public class PerspectiveRegistry {
         return currentVisiblePerspectiveId.getAndSet(id);
     }
 
+    /**
+     * Returns a unmodifiable list of all available perspectives.
+     * @return a list of current registered perspectives
+     */
+    public static List<IPerspective<EventHandler<Event>, Event, Object>> getAllPerspectives() {
+        return Collections.unmodifiableList(perspectives);
+    }
+
 
     /**
-     * Registers a component.
+     * Registers a perspective.
      *
      * @param perspective, a perspective to register
      */
@@ -53,7 +60,7 @@ public class PerspectiveRegistry {
     }
 
     /**
-     * Removes component from registry.
+     * Removes perspective from registry.
      *
      * @param perspective, a perspective to remove
      */
@@ -113,7 +120,7 @@ public class PerspectiveRegistry {
 
 
     /**
-     * Returns a component by component id
+     * Returns a perspective by perspectiveId
      *
      * @param targetId , the target perspective id
      * @return a perspective
@@ -124,17 +131,35 @@ public class PerspectiveRegistry {
         if ((stamp = lock.tryOptimisticRead()) != 0L) { // optimistic
             final List<IPerspective<EventHandler<Event>, Event, Object>> p = perspectives;
             if (lock.validate(stamp))
-                return FXUtil.getObserveableById(FXUtil.getTargetComponentId(targetId),
+                return FXUtil.getObserveableById(FXUtil.getTargetPerspectiveId(targetId),
                         p);
         }
         stamp = lock.readLock(); // fall back to read lock
         try {
-            return FXUtil.getObserveableById(FXUtil.getTargetComponentId(targetId),
+            return FXUtil.getObserveableById(FXUtil.getTargetPerspectiveId(targetId),
                     perspectives);
         } finally {
             lock.unlockRead(stamp);
         }
 
+    }
+
+    /**
+     * Searches the given component id in metadata of all perspectives and returns the responsible perspective
+     * @return
+     */
+    public static  IPerspective<EventHandler<Event>, Event, Object> findParentPerspectiveById(final String componentId) {
+        perspectives.parallelStream()
+                .map(p->p.getClass())
+                .filter(c->c.isAnnotationPresent(Perspective.class))
+                .map(clazz->clazz.getAnnotation(Perspective.class)).filter(annotation->annotation!=null).findFirst();
+        return null;
+    }
+
+    private static boolean containsComponentInAnnotation(final Perspective annotation, final String componentId) {
+        String[] componentIds = annotation.components();
+        Arrays.parallelSort(componentIds);
+        return Arrays.binarySearch(componentIds,componentId)>=0?true:false;
     }
 
     /**

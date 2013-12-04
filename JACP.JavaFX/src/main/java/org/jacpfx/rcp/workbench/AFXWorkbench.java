@@ -230,9 +230,6 @@ public abstract class AFXWorkbench
                 this.messageDelegator.getMessageDelegateQueue(),
                 this.perspectiveCoordinator.getMessageQueue(), this.launcher);
         WorkbenchUtil.handleMetaAnnotation(perspective, this.getWorkbenchAnnotation().id());
-        this.perspectiveCoordinator.addPerspective(perspective);
-        this.componentDelegator.addPerspective(perspective);
-        this.messageDelegator.addPerspective(perspective);
         PerspectiveRegistry.registerPerspective(perspective);
     }
 
@@ -245,9 +242,6 @@ public abstract class AFXWorkbench
             final IPerspective<EventHandler<Event>, Event, Object> perspective) {
         FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,
                 FXUtil.APERSPECTIVE_MQUEUE, null);
-        this.perspectiveCoordinator.removePerspective(perspective);
-        this.componentDelegator.removePerspective(perspective);
-        this.messageDelegator.removePerspective(perspective);
         PerspectiveRegistry.removePerspective(perspective);
     }
 

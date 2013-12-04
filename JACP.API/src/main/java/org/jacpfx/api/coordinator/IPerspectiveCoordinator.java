@@ -37,18 +37,5 @@ import org.jacpfx.api.component.IPerspective;
  */
 public interface IPerspectiveCoordinator<L, A, M> extends ICoordinator<L, A, M> {
 
-	/**
-	 * Add the perspective to observe.
-	 * 
-	 * @param perspective
-	 */
-	void addPerspective(final IPerspective<L, A, M> perspective);
-
-	/**
-	 * Remove the perspective; e.g. when perspective is deactivated
-	 * 
-	 * @param perspective
-	 */
-	void removePerspective(final IPerspective<L, A, M> perspective);
 
 }
