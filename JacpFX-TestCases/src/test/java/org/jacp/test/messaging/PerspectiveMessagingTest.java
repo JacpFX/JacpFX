@@ -73,7 +73,7 @@ public class PerspectiveMessagingTest {
 
     @Test
     // default execution time was 54312 ms (linux) , macos 17826ms  // macos with 3 persp. and 300000 messages Execution time was 28494 ms.
-    // macbook wit 300000 messages 21068ms
+    // macbook with 300000 messages 21068ms
     public void testPerspectiveMessaging() throws InterruptedException {
         warmUp();
         long start = System.currentTimeMillis();

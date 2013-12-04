@@ -115,10 +115,17 @@ public class FXPerspectiveHandler implements
         // 1 only one Perspective which is deactivated:  remove...
         // 2 second active perspective available, current perspective is the one which is disabled: find the other perspective, handle OnShow, add not to workbench
         // 3 second perspective is available, other perspective is currently displayed: turn off the perspective
-        FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class, perspective.getPerspective(), perspectiveLayout, perspective.getContext().getResourceBundle());
+
+        FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class, perspective.getPerspective(), perspectiveLayout, JACPContextImpl.class.cast(perspective.getContext()).getComponentLayout(),perspective.getContext().getResourceBundle());
         removePerspectiveNodeFromWorkbench(perspectiveLayout, componentOld);
         displayNextPossiblePerspective(perspective);
         shutDownAndClearComponents(perspective);
+       // removePerspectiveFromRegistry(perspective);
+    }
+
+    private void removePerspectiveFromRegistry(final IPerspective<EventHandler<Event>, Event, Object> perspective) {
+        // TODO Perspective must be removed from workbench!!
+        PerspectiveRegistry.removePerspective(perspective);
     }
 
     private void shutDownAndClearComponents(final IPerspective<EventHandler<Event>, Event, Object> perspective) {
@@ -169,14 +176,15 @@ public class FXPerspectiveHandler implements
 
         this.log("3.4.3: perspective handle init");
         FXUtil.performResourceInjection(perspective.getPerspective(), perspective.getContext());
+
         this.handlePerspectiveInitMethod(action, perspective);
-        this.log("3.4.4: perspective init subcomponents");
-        perspective.initComponents(action);
+        this.log("3.4.5: perspective init bar entries");
         final IPerspectiveLayout<? extends Node, Node> perspectiveLayout = ((AFXPerspective) perspective)
                 .getIPerspectiveLayout();
-        this.log("3.4.5: perspective init bar entries");
         this.initPerspectiveUI(perspectiveLayout);
         PerspectiveRegistry.getAndSetCurrentVisiblePerspective(perspective.getContext().getId());
+        this.log("3.4.4: perspective init subcomponents");
+        perspective.initComponents(action);
 
     }
 
@@ -364,7 +372,9 @@ public class FXPerspectiveHandler implements
         // init default IPerspectiveLayout
         initLocalization(null, AFXPerspective.class.cast(perspective));
         AFXPerspective.class.cast(perspective).setIPerspectiveLayout(new FXPerspectiveLayout());
-        FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, perspective.getPerspective(), layout, perspective.getContext().getResourceBundle());
+        final IPerspectiveLayout<? extends Node, Node> perspectiveLayout = ((AFXPerspective) perspective)
+                .getIPerspectiveLayout();
+        FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, perspective.getPerspective(), perspectiveLayout,layout, perspective.getContext().getResourceBundle());
     }
 
     private void handleDeclarativePerspective(final IPerspective<EventHandler<Event>, Event, Object> perspective, final FXComponentLayout layout, final IPerspectiveView<Node, EventHandler<Event>, Event, Object> perspectiveView) {

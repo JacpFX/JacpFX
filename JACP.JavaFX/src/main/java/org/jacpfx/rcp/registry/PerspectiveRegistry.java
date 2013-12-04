@@ -22,6 +22,11 @@ public class PerspectiveRegistry {
     private static final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = new ArrayList<>();
     private static final StampedLock lock = new StampedLock();
     private static final AtomicReference<String> currentVisiblePerspectiveId = new AtomicReference<>();
+    private static final Collector<IPerspective<EventHandler<Event>, Event, Object>, ?, TreeSet<IPerspective<EventHandler<Event>, Event, Object>>> collector = Collector.of(TreeSet::new, TreeSet::add,
+            (left, right) -> {
+                left.addAll(right);
+                return left;
+            });
 
     /**
      * Set a new perspective id and returns the current id.
@@ -35,6 +40,7 @@ public class PerspectiveRegistry {
 
     /**
      * Returns a unmodifiable list of all available perspectives.
+     *
      * @return a list of current registered perspectives
      */
     public static List<IPerspective<EventHandler<Event>, Event, Object>> getAllPerspectives() {
@@ -99,19 +105,19 @@ public class PerspectiveRegistry {
 
     /**
      * Return an active perspective
-     * @param p, The List with all Perspectives
+     *
+     * @param p,       The List with all Perspectives
      * @param current, the current perspective
      * @return
      */
     private static IPerspective<EventHandler<Event>, Event, Object> getNextValidPerspective(final List<IPerspective<EventHandler<Event>, Event, Object>> p, final IPerspective<EventHandler<Event>, Event, Object> current) {
         final TreeSet<IPerspective<EventHandler<Event>, Event, Object>> allActive = p.stream()
-                .filter(active->active.getContext().isActive() || active.equals(current))
-                .collect(Collector.of(TreeSet::new, TreeSet::add,
-                (left, right) -> {
-                    left.addAll(right);
-                    return left;
-                }));
+                .filter(active -> active.getContext().isActive() || active.equals(current))
+                .collect(collector);
+        return selectCorrectPerspective(current, allActive);
+    }
 
+    private static IPerspective<EventHandler<Event>, Event, Object> selectCorrectPerspective(final IPerspective<EventHandler<Event>, Event, Object> current, final TreeSet<IPerspective<EventHandler<Event>, Event, Object>> allActive) {
         IPerspective<EventHandler<Event>, Event, Object> targetId = allActive.higher(current);
         if (targetId == null) targetId = allActive.lower(current);
         if (targetId == null) return null;
@@ -146,20 +152,43 @@ public class PerspectiveRegistry {
 
     /**
      * Searches the given component id in metadata of all perspectives and returns the responsible perspective
-     * @return
+     *
+     * @param componentId
+     * @return The parent perspective of given component id
      */
-    public static  IPerspective<EventHandler<Event>, Event, Object> findParentPerspectiveById(final String componentId) {
-        perspectives.parallelStream()
-                .map(p->p.getClass())
-                .filter(c->c.isAnnotationPresent(Perspective.class))
-                .map(clazz->clazz.getAnnotation(Perspective.class)).filter(annotation->annotation!=null).findFirst();
-        return null;
+    public static IPerspective<EventHandler<Event>, Event, Object> findParentPerspectiveByComponentId(final String componentId) {
+        long stamp;
+        if ((stamp = lock.tryOptimisticRead()) != 0L) { // optimistic
+            final List<IPerspective<EventHandler<Event>, Event, Object>> p = perspectives;
+            if (lock.validate(stamp)) {
+                return findByComponentId(p, componentId);
+            }
+        }
+        stamp = lock.readLock(); // fall back to read lock
+        try {
+            return findByComponentId(perspectives, componentId);
+        } finally {
+            lock.unlockRead(stamp);
+        }
+    }
+
+    private static IPerspective<EventHandler<Event>, Event, Object> findByComponentId(List<IPerspective<EventHandler<Event>, Event, Object>> perspectives, final String componentId) {
+        final Optional<IPerspective<EventHandler<Event>, Event, Object>> first = perspectives.parallelStream()
+                .filter(p -> {
+                    final Class perspectiveClass = p.getPerspective().getClass();
+                    if (!perspectiveClass.isAnnotationPresent(Perspective.class)) return false;
+                    final Perspective annotation = (Perspective) perspectiveClass.getAnnotation(Perspective.class);
+                    if (containsComponentInAnnotation(annotation, componentId)) return true;
+                    return false;
+                }).findFirst();
+
+        return first.isPresent() ? first.get() : null;
     }
 
     private static boolean containsComponentInAnnotation(final Perspective annotation, final String componentId) {
-        String[] componentIds = annotation.components();
+        final String[] componentIds = annotation.components();
         Arrays.parallelSort(componentIds);
-        return Arrays.binarySearch(componentIds,componentId)>=0?true:false;
+        return Arrays.binarySearch(componentIds, componentId) >= 0 ? true : false;
     }
 
     /**

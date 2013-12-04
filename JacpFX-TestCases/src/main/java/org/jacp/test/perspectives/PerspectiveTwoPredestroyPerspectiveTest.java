@@ -99,9 +99,22 @@ public class PerspectiveTwoPredestroyPerspectiveTest implements FXPerspective {
         } else if (action.messageBodyEquals("stop")) {
             System.err.println("STOP MESSAGE p18");
             context.setActive(false);
-        }  else if (action.messageBodyEquals("SHOW")) {
+        }  else if (action.messageBodyEquals("show")) {
             System.err.println("SHOW MESSAGE P18");
+            perspectiveLayout.registerRootComponent(createRoot());
+            GridPane.setVgrow(perspectiveLayout.getRootComponent(),
+                    Priority.ALWAYS);
+            GridPane.setHgrow(perspectiveLayout.getRootComponent(),
+                    Priority.ALWAYS);
 
+            // register left panel
+            perspectiveLayout.registerTargetLayoutComponent("content0",
+                    this.content1);
+            perspectiveLayout.registerTargetLayoutComponent("content1",
+                    this.content2);
+            perspectiveLayout.registerTargetLayoutComponent("content2",
+                    this.content3);
+            ApplicationPredestroyPerspectiveTest.latch.countDown();
         }
 
     }
@@ -145,7 +158,7 @@ public class PerspectiveTwoPredestroyPerspectiveTest implements FXPerspective {
      * @param layout
      * @param resourceBundle
      */
-    public void onStartPerspective(final FXComponentLayout layout,
+    public void onStartPerspective(final PerspectiveLayout perspectiveLayout,final FXComponentLayout layout,
                                    final ResourceBundle resourceBundle) {
         System.out.println("on postConstruct p 18");
     }
@@ -155,7 +168,7 @@ public class PerspectiveTwoPredestroyPerspectiveTest implements FXPerspective {
      * @OnTearDown annotated method will be executed when component is deactivated.
      * @param arg0
      */
-    public void onTearDownPerspective(final FXComponentLayout arg0) {
+    public void onTearDownPerspective(final PerspectiveLayout perspectiveLayout,final FXComponentLayout arg0) {
         // remove toolbars and menu entries when close perspective
         System.out.println("on predestroy p 18");
         latch.countDown();

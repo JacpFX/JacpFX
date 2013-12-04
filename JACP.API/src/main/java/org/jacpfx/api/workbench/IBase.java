@@ -47,14 +47,14 @@ public interface IBase<L, A, M> {
 
 	/**
 	 * Set perspectives to workbench.
-	 * 
+	 *
 	 * @param perspectives
 	 */
 	void setPerspectives(final List<IPerspective<L, A, M>> perspectives);
 
 	/**
 	 * Get perspectives in workbench.
-	 * 
+	 *
 	 * @return a list of all perspectives
 	 */
 	List<IPerspective<L, A, M>> getPerspectives();

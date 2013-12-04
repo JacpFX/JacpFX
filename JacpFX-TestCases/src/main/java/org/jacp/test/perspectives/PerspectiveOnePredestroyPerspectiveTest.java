@@ -82,28 +82,17 @@ public class PerspectiveOnePredestroyPerspectiveTest implements FXPerspective {
         System.out.println("Perspective 17: "+action.getMessageBody());
         if (action.messageBodyEquals(MessageUtil.INIT)) {
 
-            perspectiveLayout.registerRootComponent(createRoot());
-            GridPane.setVgrow(perspectiveLayout.getRootComponent(),
-                    Priority.ALWAYS);
-            GridPane.setHgrow(perspectiveLayout.getRootComponent(),
-                    Priority.ALWAYS);
 
-            // register left panel
-            perspectiveLayout.registerTargetLayoutComponent("content0",
-                    this.content1);
-            perspectiveLayout.registerTargetLayoutComponent("content1",
-                    this.content2);
-            perspectiveLayout.registerTargetLayoutComponent("content2",
-                    this.content3);
             ApplicationPredestroyPerspectiveTest.latch.countDown();
         }
         else if (action.messageBodyEquals("stop")) {
             System.err.println("STOP MESSAGE P17");
             context.setActive(false);
         }
-        else if (action.messageBodyEquals("SHOW")) {
+        else if (action.messageBodyEquals("show")) {
             System.err.println("SHOW MESSAGE P17");
 
+            ApplicationPredestroyPerspectiveTest.latch.countDown();
         }
 
     }
@@ -190,9 +179,22 @@ public class PerspectiveOnePredestroyPerspectiveTest implements FXPerspective {
      * @param layout
      * @param resourceBundle
      */
-    public void onStartPerspective(final FXComponentLayout layout,
+    public void onStartPerspective(final PerspectiveLayout perspectiveLayout,final FXComponentLayout layout,
                                    final ResourceBundle resourceBundle) {
-        System.out.println("on postconstruct p 17");
+        System.out.println("on postconstruct p 17"+perspectiveLayout);
+        perspectiveLayout.registerRootComponent(createRoot());
+        GridPane.setVgrow(perspectiveLayout.getRootComponent(),
+                Priority.ALWAYS);
+        GridPane.setHgrow(perspectiveLayout.getRootComponent(),
+                Priority.ALWAYS);
+
+        // register left panel
+        perspectiveLayout.registerTargetLayoutComponent("content0",
+                this.content1);
+        perspectiveLayout.registerTargetLayoutComponent("content1",
+                this.content2);
+        perspectiveLayout.registerTargetLayoutComponent("content2",
+                this.content3);
         startLatch.countDown();
     }
 
@@ -201,7 +203,7 @@ public class PerspectiveOnePredestroyPerspectiveTest implements FXPerspective {
      * @OnTearDown annotated method will be executed when component is deactivated.
      * @param arg0
      */
-    public void onTearDownPerspective(final FXComponentLayout arg0) {
+    public void onTearDownPerspective(final PerspectiveLayout perspectiveLayout,final FXComponentLayout arg0) {
         // remove toolbars and menu entries when close perspective
         System.out.println("on predestroy p 17");
         latch.countDown();

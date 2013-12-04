@@ -127,14 +127,14 @@ public class FXComponentMessageCoordinator extends AFXCoordinator implements
                 "invalid component id. Source: "
                         + action.getSourceId() + " target: "
                         + action.getTargetId());
-        findParentPerspectiveAndRegisterComponent(component);
+        findParentPerspectiveAndRegisterComponent(component,targetId);
         return component;
     }
 
-    private void findParentPerspectiveAndRegisterComponent(final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        // TODO THIS is a BUG.... fin the perspective where the component was registered and do not automatically use the current perspective
-        final IPerspective<EventHandler<Event>, Event, Object> currentPerspective = PerspectiveRegistry.findPerspectiveById(parentId);
-        currentPerspective.registerComponent(component);
+    private void findParentPerspectiveAndRegisterComponent(final ISubComponent<EventHandler<Event>, Event, Object> component,final String targetId) {
+        final IPerspective<EventHandler<Event>, Event, Object> parentPerspective = PerspectiveRegistry.findParentPerspectiveByComponentId(FXUtil.getTargetComponentId(targetId));
+        if(parentPerspective==null) throw new ComponentNotFoundException("no valid perspective for component "+targetId+" found");
+        parentPerspective.registerComponent(component);
     }
 
     /**

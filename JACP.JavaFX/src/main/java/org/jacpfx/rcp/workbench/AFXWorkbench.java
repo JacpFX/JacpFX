@@ -238,6 +238,7 @@ public abstract class AFXWorkbench
     /**
      * {@inheritDoc}
      */
+    // TODO remove this!!
     public final void unregisterComponent(
             final IPerspective<EventHandler<Event>, Event, Object> perspective) {
         FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,
