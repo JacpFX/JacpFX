@@ -77,7 +77,7 @@ public class ComponentRegistry {
     }
 
     /**
-     * Returns a component by component id
+     * Returns an active component by component id
      *
      * @param targetId
      * @return

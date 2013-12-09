@@ -185,6 +185,8 @@ public class FXComponentMessageCoordinator extends AFXCoordinator implements
     @Override
     public final <P extends IComponent<EventHandler<Event>, Event, Object>> void handleInActive(
             final P component, final Message<Event, Object> action) {
+        component.getContext().setActive(true);
+        component.setStarted(true);
         this.componentHandler.initComponent(action,
                 (ISubComponent<EventHandler<Event>, Event, Object>) component);
 

@@ -86,7 +86,9 @@ public class ComponentShutdownAndRestartComponentsTests1 implements FXComponent 
                            final Message<Event, Object> action) {
         if (action.messageBodyEquals("stop")) {
             context.setActive(false);
+            System.out.println("STOP");
         } else if(action.messageBodyEquals(FXUtil.MessageUtil.INIT)) {
+            System.out.println("START");
             button.setOnMouseClicked(context.getEventHandler("stop"));
             button.setStyle("-fx-background-color: red");
             label.setText(" current Tagret: " + current);

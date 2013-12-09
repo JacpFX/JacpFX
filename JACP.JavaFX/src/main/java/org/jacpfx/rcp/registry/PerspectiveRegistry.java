@@ -157,16 +157,17 @@ public class PerspectiveRegistry {
      * @return The parent perspective of given component id
      */
     public static IPerspective<EventHandler<Event>, Event, Object> findParentPerspectiveByComponentId(final String componentId) {
+        final String id = FXUtil.getTargetComponentId(componentId);
         long stamp;
         if ((stamp = lock.tryOptimisticRead()) != 0L) { // optimistic
             final List<IPerspective<EventHandler<Event>, Event, Object>> p = perspectives;
             if (lock.validate(stamp)) {
-                return findByComponentId(p, componentId);
+                return findByComponentId(p, id);
             }
         }
         stamp = lock.readLock(); // fall back to read lock
         try {
-            return findByComponentId(perspectives, componentId);
+            return findByComponentId(perspectives, id);
         } finally {
             lock.unlockRead(stamp);
         }

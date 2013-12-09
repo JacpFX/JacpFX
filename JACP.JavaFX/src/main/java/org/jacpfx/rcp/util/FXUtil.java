@@ -320,10 +320,19 @@ public class FXUtil {
      */
     public static String getTargetPerspectiveId(final String messageId) {
         if (!FXUtil.isLocalMessage(messageId)) {
-            final String[] targetId = FXUtil.getTargetId(messageId);
-            return targetId[0];
+            return getParentFromId(messageId);
         }
         return messageId;
+    }
+
+    /**
+     * Returns the parent part of id ... parent.child
+     * @param messageId
+     * @return
+     */
+    public static String getParentFromId(final String messageId) {
+        final String[] targetId = FXUtil.getTargetId(messageId);
+        return targetId[0];
     }
 
     /**
