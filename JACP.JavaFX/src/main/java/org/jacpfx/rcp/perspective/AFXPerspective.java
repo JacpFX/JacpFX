@@ -71,7 +71,7 @@ public abstract class AFXPerspective extends AComponent implements
     private IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
     private BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
     private BlockingQueue<IDelegateDTO<Event, Object>> messageDelegateQueue;
-    private ICoordinator<EventHandler<Event>, Event, Object> componentCoordinator;
+    private ICoordinator<EventHandler<Event>, Event, Object> messageCoordinator;
     private String viewLocation;
     private URL documentURL;
     private IPerspectiveLayout<Node, Node> perspectiveLayout;
@@ -105,9 +105,9 @@ public abstract class AFXPerspective extends AComponent implements
             final IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler) {
         // init component handler
         this.componentHandler = componentHandler;
-        this.componentCoordinator = new FXComponentMessageCoordinator(this.messageDelegateQueue,this.getContext().getId(),this.launcher);
-        this.componentCoordinator.setComponentHandler(this.componentHandler);
-        ((FXComponentMessageCoordinator) this.componentCoordinator).start();
+        this.messageCoordinator = new FXComponentMessageCoordinator(this.messageDelegateQueue,this.getContext().getId(),this.launcher);
+        this.messageCoordinator.setComponentHandler(this.componentHandler);
+        ((FXComponentMessageCoordinator) this.messageCoordinator).start();
         if(this.subcomponents!=null)this.subcomponents.clear();
         this.subcomponents = createAllDeclaredSubcomponents();
         if (this.subcomponents != null) this.registerSubcomponents(this.subcomponents);
@@ -141,7 +141,7 @@ public abstract class AFXPerspective extends AComponent implements
     public final void registerComponent(
             final ISubComponent<EventHandler<Event>, Event, Object> component) {
         component.initEnv(this.getContext().getId(),
-                this.componentCoordinator.getMessageQueue());
+                this.messageCoordinator.getMessageQueue());
         final JACPContextImpl context = JACPContextImpl.class.cast(component.getContext());
         context.setParentId(this.getContext().getId());
         context.setFXComponentLayout(JACPContextImpl.class.cast(this.getContext()).getComponentLayout());
@@ -246,8 +246,8 @@ public abstract class AFXPerspective extends AComponent implements
     }
 
     @Override
-    public final BlockingQueue<Message<Event, Object>> getComponentsMessageQueue() {
-        return this.componentCoordinator.getMessageQueue();
+    public final BlockingQueue<Message<Event, Object>> getMessageQueue() {
+        return this.messageCoordinator.getMessageQueue();
 
     }
 

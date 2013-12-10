@@ -35,11 +35,19 @@ import org.jacpfx.api.message.IDelegateDTO;
 public class DelegateDTO implements IDelegateDTO<Event, Object> {
 	private final String target;
 	private final Message<Event, Object> action;
+    private final boolean isPerspective;
 
 	public DelegateDTO(final String target, final Message<Event, Object> action) {
 		this.target = target;
 		this.action = action;
+        this.isPerspective = false;
 	}
+
+    public DelegateDTO(final String target,final boolean isPerspective, final Message<Event, Object> action) {
+        this.target = target;
+        this.action = action;
+        this.isPerspective = isPerspective;
+    }
 
 	@Override
 	public String getTarget() {
@@ -50,4 +58,7 @@ public class DelegateDTO implements IDelegateDTO<Event, Object> {
 	public Message<Event, Object> getMessage() {
 		return this.action;
 	}
+
+    @Override
+    public boolean isPerspective() {return isPerspective;}
 }

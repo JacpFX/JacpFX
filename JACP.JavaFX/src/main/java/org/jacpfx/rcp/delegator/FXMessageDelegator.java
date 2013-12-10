@@ -35,7 +35,6 @@ import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.FXUtil;
 import org.jacpfx.rcp.util.ShutdownThreadsHandler;
 
-import java.util.List;
 import java.util.concurrent.*;
 import java.util.logging.Logger;
 
@@ -155,7 +154,7 @@ public class FXMessageDelegator extends Thread implements
 		} // End if
 		else {
 			// delegate to addressed component
-			perspective.getComponentsMessageQueue().add(action);
+			perspective.getMessageQueue().add(action);
 		} // End else
 	}
 
@@ -198,7 +197,7 @@ public class FXMessageDelegator extends Thread implements
 			} // End inner if
 			else {
                 try {
-                    perspective.getComponentsMessageQueue().put(action);
+                    perspective.getMessageQueue().put(action);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                     //TODO handle exception global

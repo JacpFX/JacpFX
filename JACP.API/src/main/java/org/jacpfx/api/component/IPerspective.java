@@ -105,7 +105,7 @@ public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
 	 * 
 	 * @return message queue
 	 */
-	BlockingQueue<Message<A, M>> getComponentsMessageQueue();
+	BlockingQueue<Message<A, M>> getMessageQueue();
 
     /**
      * Returns the injected perspective representation. This Injectable is the implementation of a perspective which includes all handle methods.

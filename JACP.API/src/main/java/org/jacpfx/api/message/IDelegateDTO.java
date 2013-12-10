@@ -47,4 +47,10 @@ public interface IDelegateDTO<A, M> {
 	 * @return the message
 	 */
 	Message<A, M> getMessage();
+
+    /**
+     * returns true when message target is a perspective.
+     * @return
+     */
+    boolean isPerspective();
 }

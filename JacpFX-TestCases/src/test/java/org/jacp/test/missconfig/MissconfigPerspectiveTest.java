@@ -82,7 +82,7 @@ public class MissconfigPerspectiveTest {
         for (IPerspective<EventHandler<Event>, Event, Object> p : perspectives) {
             assertNotNull(p.getComponentHandler());
             assertNotNull(p.getContext());
-            assertNotNull(p.getComponentsMessageQueue());
+            assertNotNull(p.getMessageQueue());
             assertNotNull(p.getMessageDelegateQueue());
             Context<EventHandler<Event>, Object> context = p.getContext();
             assertNotNull(context.getParentId());
@@ -105,7 +105,7 @@ public class MissconfigPerspectiveTest {
         for (IPerspective<EventHandler<Event>, Event, Object> p : perspectives) {
             assertNotNull(p.getComponentHandler());
             assertNotNull(p.getContext());
-            assertNotNull(p.getComponentsMessageQueue());
+            assertNotNull(p.getMessageQueue());
             assertNotNull(p.getMessageDelegateQueue());
             Context<EventHandler<Event>, Object> context = p.getContext();
             assertNotNull(context.getParentId());
