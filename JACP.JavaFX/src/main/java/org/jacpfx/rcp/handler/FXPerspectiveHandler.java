@@ -120,13 +120,9 @@ public class FXPerspectiveHandler implements
         removePerspectiveNodeFromWorkbench(perspectiveLayout, componentOld);
         displayNextPossiblePerspective(perspective);
         shutDownAndClearComponents(perspective);
-       // removePerspectiveFromRegistry(perspective);
     }
 
-    private void removePerspectiveFromRegistry(final IPerspective<EventHandler<Event>, Event, Object> perspective) {
-        // TODO Perspective must be removed from workbench!!
-        PerspectiveRegistry.removePerspective(perspective);
-    }
+
 
     private void shutDownAndClearComponents(final IPerspective<EventHandler<Event>, Event, Object> perspective) {
         final List<ISubComponent<EventHandler<Event>, Event, Object>> componentsToShutdown = perspective.getSubcomponents();

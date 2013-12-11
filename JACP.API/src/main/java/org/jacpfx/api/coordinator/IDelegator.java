@@ -39,11 +39,11 @@ import org.jacpfx.api.handler.IComponentHandler;
 public interface IDelegator<L, A, M> {
 
 	/**
-	 * Set the associated component handler.
+	 * Set the associated perspective handler.
 	 * 
 	 * @param handler
 	 */
-	<P extends IComponent<L, A, M>> void setComponentHandler(
-			IComponentHandler<P, Message<A, M>> handler);
+	<P extends IComponent<L, A, M>> void setPerspectiveHandler(
+            IComponentHandler<P, Message<A, M>> handler);
 
 }

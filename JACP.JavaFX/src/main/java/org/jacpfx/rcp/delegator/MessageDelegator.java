@@ -72,18 +72,14 @@ public class MessageDelegator extends Thread implements
                 .getContext().getId(), "init", null),perspective));
     }
 
-    @Override
-    public void delegateMessage(IDelegateDTO<Event, Object> messageDTO) {
-
-    }
 
     @Override
     public BlockingQueue<IDelegateDTO<Event, Object>> getMessageDelegateQueue() {
-        return null;
+        return this.messageDelegateQueue;
     }
 
     @Override
-    public <P extends IComponent<EventHandler<Event>, Event, Object>> void setComponentHandler(IComponentHandler<P, Message<Event, Object>> handler) {
-
+    public <P extends IComponent<EventHandler<Event>, Event, Object>> void setPerspectiveHandler(IComponentHandler<P, Message<Event, Object>> handler) {
+              this.perspectiveHandler = (IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, Message<Event, Object>>) handler;
     }
 }

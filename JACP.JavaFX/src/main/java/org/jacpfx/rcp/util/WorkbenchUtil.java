@@ -108,6 +108,21 @@ public class WorkbenchUtil {
     }
 
     /**
+     * Returns the ID from annotation for a perspective
+     * @param perspective
+     * @return
+     */
+    public static String getPerspectiveIdFromAnnotation(final IPerspective<EventHandler<Event>, Event, Object> perspective) {
+        final Injectable handler = perspective.getPerspective();
+        final Perspective perspectiveAnnotation = handler.getClass()
+                .getAnnotation(Perspective.class);
+        if (perspectiveAnnotation == null) throw new IllegalArgumentException("no perspective annotation found");
+        final String id = perspectiveAnnotation.id();
+        if (id == null) throw new IllegalArgumentException("no perspective id set");
+        return id;
+    }
+
+    /**
      * Set all resource bundle attributes.
      * @param perspective, the perspective instance
      * @param perspectiveAnnotation, the @Perspective annotation

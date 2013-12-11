@@ -187,4 +187,9 @@ public class MessageCoordinator extends AFXCoordinator implements
         this.componentHandler = (IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>>) handler;
 
     }
+
+    @Override
+    public <P extends IComponent<EventHandler<Event>, Event, Object>> void setPerspectiveHandler(IComponentHandler<P, Message<Event, Object>> handler) {
+        this.perspectiveHandler = (IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, Message<Event, Object>>) handler;
+    }
 }

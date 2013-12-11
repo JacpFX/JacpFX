@@ -208,16 +208,6 @@ public class FXMessageDelegator extends Thread implements
 
 	}
 
-    @Override
-	public void delegateMessage(final IDelegateDTO<Event, Object> messageDTO) {
-        try {
-            this.messageDelegateQueue.put(messageDTO);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            //TODO handle exception global
-        }
-
-    }
 
 
 	void log(final String message) {
@@ -226,8 +216,8 @@ public class FXMessageDelegator extends Thread implements
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <P extends IComponent<EventHandler<Event>, Event, Object>> void setComponentHandler(
-			final IComponentHandler<P, Message<Event, Object>> handler) {
+	public <P extends IComponent<EventHandler<Event>, Event, Object>> void setPerspectiveHandler(
+            final IComponentHandler<P, Message<Event, Object>> handler) {
 		this.componentHandler = (IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, Message<Event, Object>>) handler;
 
 	}

@@ -38,12 +38,6 @@ import java.util.concurrent.BlockingQueue;
  */
 public interface IMessageDelegator<L, A, M> extends IDelegator<L, A, M> {
 
-	/**
-	 * Delegate message to correct perspective/component
-	 * 
-	 * @param messageDTO
-	 */
-	void delegateMessage(final IDelegateDTO<A, M> messageDTO);
 
 	/**
 	 * Returns the delegate queue.

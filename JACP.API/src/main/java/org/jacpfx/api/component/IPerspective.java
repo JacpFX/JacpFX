@@ -22,6 +22,7 @@
  ************************************************************************/
 package org.jacpfx.api.component;
 
+import org.jacpfx.api.coordinator.ICoordinator;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.api.message.IDelegateDTO;
 import org.jacpfx.api.handler.IComponentHandler;
@@ -53,13 +54,13 @@ public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
 	 * 
 	 * @param componentDelegateQueue, components that should be delegated to an other perspective
 	 * @param messageDelegateQueue, messages to components
-     * @param  globalMessageQueue
+     * @param  messageCoordinator
      * @param  launcher
 	 */
 	void init(
 			final BlockingQueue<ISubComponent<L, A, M>> componentDelegateQueue,
 			final BlockingQueue<IDelegateDTO<A, M>> messageDelegateQueue,
-			final BlockingQueue<Message<A, M>> globalMessageQueue,final Launcher<?> launcher);
+            final ICoordinator<L,A,M> messageCoordinator,final Launcher<?> launcher);
 
 	/**
 	 * post init method to set correct component handler and to initialize

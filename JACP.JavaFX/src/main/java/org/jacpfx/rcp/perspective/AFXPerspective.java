@@ -44,7 +44,6 @@ import org.jacpfx.rcp.message.FXMessage;
 import org.jacpfx.rcp.component.AComponent;
 import org.jacpfx.rcp.componentLayout.PerspectiveLayout;
 import org.jacpfx.rcp.context.JACPContextImpl;
-import org.jacpfx.rcp.coordinator.FXComponentMessageCoordinator;
 import org.jacpfx.rcp.registry.ComponentRegistry;
 import org.jacpfx.rcp.util.FXUtil;
 import org.jacpfx.rcp.util.PerspectiveUtil;
@@ -88,10 +87,12 @@ public abstract class AFXPerspective extends AComponent implements
     public final void init(
             final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue,
             final BlockingQueue<IDelegateDTO<Event, Object>> messageDelegateQueue,
-            final BlockingQueue<Message<Event, Object>> globalMessageQueue,final Launcher<?> launcher) {
+            final ICoordinator<EventHandler<Event>, Event, Object> messageCoordinator,final Launcher<?> launcher) {
+
+        this.messageCoordinator = messageCoordinator;
         this.componentDelegateQueue = componentDelegateQueue;
         this.messageDelegateQueue = messageDelegateQueue;
-        this.globalMessageQueue = globalMessageQueue;
+        this.globalMessageQueue = this.messageCoordinator.getMessageQueue();
         this.launcher = launcher;
         this.context = new JACPContextImpl(this.globalMessageQueue);
     }
@@ -105,9 +106,7 @@ public abstract class AFXPerspective extends AComponent implements
             final IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler) {
         // init component handler
         this.componentHandler = componentHandler;
-        this.messageCoordinator = new FXComponentMessageCoordinator(this.messageDelegateQueue,this.getContext().getId(),this.launcher);
         this.messageCoordinator.setComponentHandler(this.componentHandler);
-        ((FXComponentMessageCoordinator) this.messageCoordinator).start();
         if(this.subcomponents!=null)this.subcomponents.clear();
         this.subcomponents = createAllDeclaredSubcomponents();
         if (this.subcomponents != null) this.registerSubcomponents(this.subcomponents);

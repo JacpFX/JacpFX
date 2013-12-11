@@ -90,4 +90,12 @@ public interface ICoordinator<L, A, M> {
 	<P extends IComponent<L, A, M>> void setComponentHandler(
 			final IComponentHandler<P, Message<A, M>> handler);
 
+    /**
+     * set associated perspectiveHandler
+     *
+     * @param handler
+     */
+    <P extends IComponent<L, A, M>> void setPerspectiveHandler(
+            final IComponentHandler<P, Message<A, M>> handler);
+
 }
