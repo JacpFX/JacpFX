@@ -17,7 +17,7 @@ import org.jacpfx.rcp.message.FXMessage;
 import org.jacpfx.rcp.util.AccessUtil;
 import org.jacpfx.rcp.util.PerspectiveUtil;
 import org.jacpfx.rcp.worker.AEmbeddedComponentWorker;
-import org.jacpfx.rcp.worker.AFXComponentWorker;
+import org.jacpfx.rcp.worker.AComponentWorker;
 
 import java.util.ResourceBundle;
 import java.util.concurrent.BlockingQueue;
@@ -230,7 +230,7 @@ public class JACPContextImpl implements JACPContext {
     @Override
     public final void setReturnTarget(final String returnTargetId) throws IllegalStateException {
         final String callerClassName = customSecurityManager.getCallerClassName();
-        if (!AccessUtil.hasAccess(callerClassName, CallbackComponent.class, AFXComponentWorker.class,AEmbeddedComponentWorker.class,AFXComponentWorker.class))
+        if (!AccessUtil.hasAccess(callerClassName, CallbackComponent.class, AComponentWorker.class,AEmbeddedComponentWorker.class,AComponentWorker.class))
             throw new IllegalStateException(" the return target can be set only in CallbackComponents");
         this.returnTarget = returnTargetId;
     }

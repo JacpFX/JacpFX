@@ -52,7 +52,7 @@ import java.util.logging.Logger;
  * @author Andy Moncsek
  * 
  */
-public class FXComponentHandler
+public class ComponentHandler
 		implements
 		IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>> {
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
@@ -65,7 +65,7 @@ public class FXComponentHandler
             .newSingleThreadExecutor(new HandlerThreadFactory("callbackInitExecutor:"));
 
 
-    public FXComponentHandler(
+    public ComponentHandler(
             final Launcher<?> launcher,
             final IPerspectiveLayout<Node, Node> perspectiveLayout,
             final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue) {

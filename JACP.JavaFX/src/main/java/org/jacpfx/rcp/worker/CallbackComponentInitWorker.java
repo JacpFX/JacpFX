@@ -42,7 +42,7 @@ import java.util.concurrent.BlockingQueue;
  */
 public class CallbackComponentInitWorker
         extends
-        AFXComponentWorker<ASubComponent> {
+        AComponentWorker<ASubComponent> {
     private final ASubComponent component;
     private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue;
     private final Message<Event, Object> action;

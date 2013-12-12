@@ -95,7 +95,7 @@ public class FXComponentMessagingTest {
         ComponentMessagingTest1Component2.ui = true;
         while (i < 10) {
             executeMessaging();
-            Assert.assertTrue(true);
+            assertTrue(true);
             i++;
         }
 

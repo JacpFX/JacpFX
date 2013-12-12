@@ -68,7 +68,7 @@ import java.util.logging.Logger;
  *
  * @author Andy Moncsek
  */
-public class FXPerspectiveHandler implements
+public class PerspectiveHandler implements
         IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> {
     private final Logger logger = Logger.getLogger(this.getClass().getName());
     private final IWorkbenchLayout<Node> workbenchLayout;
@@ -76,8 +76,8 @@ public class FXPerspectiveHandler implements
     private final GridPane root;
 
 
-    public FXPerspectiveHandler(final Launcher<?> launcher, final IWorkbenchLayout<Node> workbenchLayout,
-                                final GridPane root) {
+    public PerspectiveHandler(final Launcher<?> launcher, final IWorkbenchLayout<Node> workbenchLayout,
+                              final GridPane root) {
         this.workbenchLayout = workbenchLayout;
         this.root = root;
         this.launcher = launcher;
@@ -347,7 +347,7 @@ public class FXPerspectiveHandler implements
 
             handleUIPerspective(perspective,perspectiveView,context);
 
-            perspective.postInit(new FXComponentHandler(this.launcher, perspectiveView.getIPerspectiveLayout(), perspective
+            perspective.postInit(new ComponentHandler(this.launcher, perspectiveView.getIPerspectiveLayout(), perspective
                     .getComponentDelegateQueue()));
         }
     }

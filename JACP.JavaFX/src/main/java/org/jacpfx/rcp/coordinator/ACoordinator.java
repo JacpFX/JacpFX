@@ -40,14 +40,14 @@ import java.util.logging.Logger;
  * 
  * @author Andy Moncsek
  */
-public abstract class AFXCoordinator extends Thread implements
+public abstract class ACoordinator extends Thread implements
 		ICoordinator<EventHandler<Event>, Event, Object> {
 
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	private final BlockingQueue<Message<Event, Object>> messages = new ArrayBlockingQueue<>(
 			500000);
 
-	AFXCoordinator(String name) {
+	ACoordinator(String name) {
 		super(name);
 		ShutdownThreadsHandler.registerThread(this);
 	}
@@ -61,14 +61,14 @@ public abstract class AFXCoordinator extends Thread implements
 			try {
 				action = this.messages.take();
 			} catch (final InterruptedException e) {
-				logger.info("queue in AFXCoordinator interrupted");
+				logger.info("queue in ACoordinator interrupted");
 				break;
 			}
 			this.log(" handle message to: " + action.getTargetId());
 			try {
 				this.handleMessage(action.getTargetId(), action);
 			} catch (UnsupportedOperationException e) {
-				logger.info("UnsupportedOperationException in AFXCoordinator");
+				logger.info("UnsupportedOperationException in ACoordinator");
 				e.printStackTrace();
 			}
 			this.log(" observer thread DONE");

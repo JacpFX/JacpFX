@@ -51,7 +51,7 @@ import java.util.concurrent.ExecutionException;
  *
  * @author Andy Moncsek
  */
-public class FXComponentInitWorker extends AFXComponentWorker<AFXComponent> {
+public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
 
     private final Map<String, Node> targetComponents;
     private final AFXComponent component;

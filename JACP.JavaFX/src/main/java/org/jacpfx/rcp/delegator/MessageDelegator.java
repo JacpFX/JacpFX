@@ -42,10 +42,10 @@ public class MessageDelegator extends Thread implements
                 final IDelegateDTO<Event, Object> dto = this.messageDelegateQueue.take();
                 this.handleCall(dto.getTarget(), dto.getMessage());
             } catch (final InterruptedException e) {
-                logger.info("queue in FXComponentDelegator interrupted");
+                logger.info("queue in ComponentDelegator interrupted");
                 break;
             } catch (final ExecutionException e) {
-                logger.info("queue in FXComponentDelegator interrupted");
+                logger.info("queue in ComponentDelegator interrupted");
                 e.printStackTrace();
             }
 

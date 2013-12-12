@@ -49,6 +49,7 @@ import org.jacpfx.api.util.OS;
 import org.jacpfx.api.util.ToolbarPosition;
 import org.jacpfx.api.workbench.IBase;
 import org.jacpfx.rcp.coordinator.MessageCoordinator;
+import org.jacpfx.rcp.delegator.ComponentDelegator;
 import org.jacpfx.rcp.delegator.MessageDelegator;
 import org.jacpfx.rcp.message.FXMessage;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
@@ -58,8 +59,7 @@ import org.jacpfx.rcp.components.modalDialog.JACPModalDialog;
 import org.jacpfx.rcp.components.toolBar.JACPToolBar;
 import org.jacpfx.rcp.context.JACPContext;
 import org.jacpfx.rcp.context.JACPContextImpl;
-import org.jacpfx.rcp.delegator.FXComponentDelegator;
-import org.jacpfx.rcp.handler.FXPerspectiveHandler;
+import org.jacpfx.rcp.handler.PerspectiveHandler;
 import org.jacpfx.rcp.perspective.AFXPerspective;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.*;
@@ -85,7 +85,7 @@ public abstract class AFXWorkbench
 
     private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
     private ICoordinator<EventHandler<Event>, Event, Object> messageCoordinator;
-    private final IComponentDelegator<EventHandler<Event>, Event, Object> componentDelegator = new FXComponentDelegator();
+    private final IComponentDelegator<EventHandler<Event>, Event, Object> componentDelegator = new ComponentDelegator();
     private final IMessageDelegator<EventHandler<Event>, Event, Object> messageDelegator = new MessageDelegator();
     private final IWorkbenchLayout<Node> workbenchLayout = new FXWorkbenchLayout();
     private final Logger logger = Logger.getLogger(this.getClass().getName());
@@ -141,7 +141,7 @@ public abstract class AFXWorkbench
     }
 
     private void initSubsystem() {
-        this.componentHandler = new FXPerspectiveHandler(this.launcher,
+        this.componentHandler = new PerspectiveHandler(this.launcher,
                 this.workbenchLayout, this.root);
         this.messageCoordinator.setPerspectiveHandler(this.getComponentHandler());
         this.componentDelegator.setPerspectiveHandler(this.getComponentHandler());
@@ -209,7 +209,7 @@ public abstract class AFXWorkbench
         // failure and restarts if needed!!
         ((MessageCoordinator) AFXWorkbench.this.messageCoordinator)
                 .start();
-        ((FXComponentDelegator) AFXWorkbench.this.componentDelegator)
+        ((ComponentDelegator) AFXWorkbench.this.componentDelegator)
                 .start();
         ((MessageDelegator) AFXWorkbench.this.messageDelegator)
                 .start();

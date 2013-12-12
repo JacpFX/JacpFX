@@ -24,7 +24,7 @@ import java.util.concurrent.BlockingQueue;
 /**
  * Created by Andy Moncsek on 09.12.13.
  */
-public class MessageCoordinator extends AFXCoordinator implements
+public class MessageCoordinator extends ACoordinator implements
         ICoordinator<EventHandler<Event>, Event, Object> {
     private IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
     private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> perspectiveHandler;
@@ -120,7 +120,7 @@ public class MessageCoordinator extends AFXCoordinator implements
 
     private void handleMessageToComponentInCurrentPerspective(final String targetId, final Message<Event, Object> message) {
         final ISubComponent<EventHandler<Event>, Event, Object> targetComponent = getTargetComponentInCurrentPerspective(targetId, message);
-        if (targetComponent.getContext().isActive()) {
+        if (targetComponent.getContext().isActive() && targetComponent.isStarted()) {
             // this is an active component
             handleActive(targetComponent, message);
         } else {
@@ -128,6 +128,12 @@ public class MessageCoordinator extends AFXCoordinator implements
             handleInActive(targetComponent, message);
         }
 
+    }
+
+    private void findParentPerspectiveAndRegisterComponent(final ISubComponent<EventHandler<Event>, Event, Object> component,final String targetId) {
+        final IPerspective<EventHandler<Event>, Event, Object> parentPerspective = PerspectiveRegistry.findParentPerspectiveByComponentId(FXUtil.getTargetComponentId(targetId));
+        if(parentPerspective==null) throw new ComponentNotFoundException("no valid perspective for component "+targetId+" found");
+        parentPerspective.registerComponent(component);
     }
 
     private void delegateMessageToCorrectPerspective(final DelegateDTO dto) {
@@ -160,6 +166,7 @@ public class MessageCoordinator extends AFXCoordinator implements
                 "invalid component id. Source: "
                         + action.getSourceId() + " target: "
                         + action.getTargetId());
+        findParentPerspectiveAndRegisterComponent(component,targetId);
         return component;
     }
 

@@ -45,7 +45,7 @@ import java.util.concurrent.ExecutionException;
  */
 public class StateLessComponentRunWorker
 		extends
-		AFXComponentWorker<ISubComponent<EventHandler<Event>, Event, Object>> {
+        AComponentWorker<ISubComponent<EventHandler<Event>, Event, Object>> {
 	private final ISubComponent<EventHandler<Event>, Event, Object> component;
 	private final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> parent;
 

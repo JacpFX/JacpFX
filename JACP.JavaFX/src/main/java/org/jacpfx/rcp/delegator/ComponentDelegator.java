@@ -37,10 +37,8 @@ import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.FXUtil;
 import org.jacpfx.rcp.util.ShutdownThreadsHandler;
 
-import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
 /**
@@ -50,15 +48,15 @@ import java.util.logging.Logger;
  * @author Andy Moncsek
  * 
  */
-public class FXComponentDelegator extends Thread implements
+public class ComponentDelegator extends Thread implements
 		IComponentDelegator<EventHandler<Event>, Event, Object> {
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue = new ArrayBlockingQueue<>(
 			100);
 	private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
 
-	public FXComponentDelegator() {
-		super("FXComponentDelegator");
+	public ComponentDelegator() {
+		super("ComponentDelegator");
 		ShutdownThreadsHandler.registerThread(this);
 	}
 	@Override
@@ -71,7 +69,7 @@ public class FXComponentDelegator extends Thread implements
 				this.delegateTargetChange(targetId, component);
 
 			} catch (final InterruptedException e) {
-				logger.info("queue in FXComponentDelegator interrupted");
+				logger.info("queue in ComponentDelegator interrupted");
 				break;
 			}
 
@@ -124,7 +122,7 @@ public class FXComponentDelegator extends Thread implements
 		component.getContext().setActive(true);
         // TODO remove runLater and ensure in workbench handler that correct thread is used... for perspecive handler this is not nessesary
         //noinspection unchecked
-        Platform.runLater(() -> FXComponentDelegator.this.componentHandler
+        Platform.runLater(() -> ComponentDelegator.this.componentHandler
                 .initComponent(
                         action,
                         (IPerspective<EventHandler<Event>, Event, Object>) component));

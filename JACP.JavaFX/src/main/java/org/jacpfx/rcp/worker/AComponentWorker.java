@@ -44,10 +44,10 @@ import java.util.logging.Logger;
  *
  * @author Andy Moncsek
  */
-public abstract class AFXComponentWorker<T> extends Task<T> {
+public abstract class AComponentWorker<T> extends Task<T> {
 
 
-    public AFXComponentWorker() {
+    public AComponentWorker() {
     }
 
     /**
@@ -112,9 +112,9 @@ public abstract class AFXComponentWorker<T> extends Task<T> {
 
 
     void log(final String message) {
-        if (Logger.getLogger(AFXComponentWorker.class.getName()).isLoggable(
+        if (Logger.getLogger(AComponentWorker.class.getName()).isLoggable(
                 Level.FINE)) {
-            Logger.getLogger(AFXComponentWorker.class.getName()).fine(
+            Logger.getLogger(AComponentWorker.class.getName()).fine(
                     ">> " + message);
         }
     }

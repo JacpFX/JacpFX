@@ -219,15 +219,7 @@ public class ShutdownAndReopenComponentsTest {
         }
 
         int i = 0;
-        while (i < 100) {
-            CountDownLatch exceptionLatch = new CountDownLatch(1);
-            Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-                public void uncaughtException(Thread t, Throwable e) {
-                    e.printStackTrace();
-                    exceptionLatch.countDown();
-                    ;
-                }
-            });
+        while (i < 500) {
             ComponentShutdownAndRestartComponentsTests1.startLatch = new CountDownLatch(1);
             ComponentShutdownAndRestartComponentsTests1.stopLatch = new CountDownLatch(1);
             PerspectiveShutdownAndRestartComponents.stopStartFXComponent();
@@ -259,7 +251,7 @@ public class ShutdownAndReopenComponentsTest {
 
         }
         int i = 0;
-        while (i < 100) {
+        while (i < 500) {
             CountDownLatch exceptionLatch = new CountDownLatch(1);
             Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
                 public void uncaughtException(Thread t, Throwable e) {
@@ -297,15 +289,8 @@ public class ShutdownAndReopenComponentsTest {
 
         }
         int i = 0;
-        while (i < 100) {
-            CountDownLatch exceptionLatch = new CountDownLatch(1);
-            Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-                public void uncaughtException(Thread t, Throwable e) {
-                    e.printStackTrace();
-                    exceptionLatch.countDown();
-                    ;
-                }
-            });
+        while (i < 500) {
+
             ComponentShutdownAndRestartComponentsTests1.startLatch = new CountDownLatch(1);
            // ComponentShutdownAndRestartComponentsTests1.stopLatch = new CountDownLatch(1);
             int j=0;

@@ -33,7 +33,7 @@ import org.jacpfx.rcp.component.AFXComponent;
 import org.jacpfx.rcp.component.ASubComponent;
 import org.jacpfx.rcp.component.CallbackComponent;
 import org.jacpfx.rcp.registry.ComponentRegistry;
-import org.jacpfx.rcp.worker.AFXComponentWorker;
+import org.jacpfx.rcp.worker.AComponentWorker;
 import org.jacpfx.rcp.worker.TearDownWorker;
 
 import java.util.*;
@@ -51,7 +51,7 @@ public class TearDownHandler {
 	private static IBase<EventHandler<Event>, Event, Object> rootWorkbench;
 	private static final ExecutorService executor = Executors
 			.newCachedThreadPool(new HandlerThreadFactory(
-					"FXPerspectiveHandler:"));
+					"PerspectiveHandler:"));
 
 	/**
 	 * Register the parent workbench, from here all perspectives and component
@@ -198,9 +198,9 @@ public class TearDownHandler {
     }
 
 	private static void log(final String message) {
-		if (Logger.getLogger(AFXComponentWorker.class.getName()).isLoggable(
+		if (Logger.getLogger(AComponentWorker.class.getName()).isLoggable(
 				Level.FINE)) {
-			Logger.getLogger(AFXComponentWorker.class.getName()).fine(
+			Logger.getLogger(AComponentWorker.class.getName()).fine(
 					">> " + message);
 		}
 	}
