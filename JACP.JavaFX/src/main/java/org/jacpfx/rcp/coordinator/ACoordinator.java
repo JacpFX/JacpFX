@@ -75,23 +75,6 @@ public abstract class ACoordinator extends Thread implements
 		}
 	}
 
-	/**
-	 * add message to delegate queue
-	 * 
-	 * @param target
-	 * @param action
-	 * @param queue
-	 */
-	final void delegateMessageToCorrectPerspective(
-            final String target, final Message<Event, Object> action,
-            final BlockingQueue<IDelegateDTO<Event, Object>> queue) {
-        try {
-            queue.put(new DelegateDTO(target, action));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            //TODO handle exception global
-        }
-    }
 
 	@Override
 	public BlockingQueue<Message<Event, Object>> getMessageQueue() {

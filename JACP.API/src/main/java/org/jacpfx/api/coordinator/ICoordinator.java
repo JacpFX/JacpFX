@@ -22,6 +22,7 @@
  ************************************************************************/
 package org.jacpfx.api.coordinator;
 
+import org.jacpfx.api.message.IDelegateDTO;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.api.component.IComponent;
 import org.jacpfx.api.handler.IComponentHandler;
@@ -51,36 +52,12 @@ public interface ICoordinator<L, A, M> {
 	void handleMessage(final String id, final Message<A, M> action);
 
 	/**
-	 * Handle a message to an active component.
-	 * 
-	 * @param component
-	 * @param action
-	 */
-	<P extends IComponent<L, A, M>> void handleActive(final P component,
-			final Message<A, M> action);
-
-	/**
-	 * Handle a message to an inactive component.
-	 * 
-	 * @param component
-	 * @param action
-	 */
-	<P extends IComponent<L, A, M>> void handleInActive(final P component,
-			final Message<A, M> action);
-
-	/**
 	 * Returns the message queue of coordinator.
 	 * 
 	 * @return the message queue
 	 */
 	BlockingQueue<Message<A, M>> getMessageQueue();
 
-	/**
-	 * Returns the associated componentHandler.
-	 * 
-	 * @return the component handler
-	 */
-	<P extends IComponent<L, A, M>> IComponentHandler<P, Message<A, M>> getComponentHandler();
 
 	/**
 	 * set associated componentHandler
@@ -97,5 +74,11 @@ public interface ICoordinator<L, A, M> {
      */
     <P extends IComponent<L, A, M>> void setPerspectiveHandler(
             final IComponentHandler<P, Message<A, M>> handler);
+
+    /**
+     * Set the delegate queue, which delegates messages to correct responsible perspective.
+     * @param delegateQueue
+     */
+    void setDelegateQueue(final BlockingQueue<IDelegateDTO<A, M>> delegateQueue);
 
 }

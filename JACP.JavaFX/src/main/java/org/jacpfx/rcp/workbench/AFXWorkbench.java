@@ -157,7 +157,8 @@ public abstract class AFXWorkbench
         this.launcher = launcher;
         JACPManagedDialog.initManagedDialog(launcher);
         final Workbench annotation = getWorkbenchAnnotation();
-        this.messageCoordinator = new MessageCoordinator(this.messageDelegator.getMessageDelegateQueue(),annotation.id(),this.launcher);
+        this.messageCoordinator = new MessageCoordinator(annotation.id(),this.launcher);
+        this.messageCoordinator.setDelegateQueue(this.messageDelegator.getMessageDelegateQueue());
         this.context = new JACPContextImpl(annotation.id(), annotation.name(), this.messageCoordinator.getMessageQueue());
         FXUtil.performResourceInjection(this.getWorkbenchHandle(), this.context);
         start(Stage.class.cast(root));
@@ -226,7 +227,8 @@ public abstract class AFXWorkbench
     public final void registerComponent(
             final IPerspective<EventHandler<Event>, Event, Object> perspective) {
         final String perspectiveId = WorkbenchUtil.getPerspectiveIdFromAnnotation(perspective);
-        final MessageCoordinator messageCoordinator = new MessageCoordinator(this.messageDelegator.getMessageDelegateQueue(),perspectiveId,this.launcher);
+        final MessageCoordinator messageCoordinator = new MessageCoordinator(perspectiveId,this.launcher);
+        messageCoordinator.setDelegateQueue(this.messageDelegator.getMessageDelegateQueue());
         messageCoordinator.setPerspectiveHandler(this.componentHandler);
         // use compleatableFuture
         perspective.init(this.componentDelegator.getComponentDelegateQueue(),
