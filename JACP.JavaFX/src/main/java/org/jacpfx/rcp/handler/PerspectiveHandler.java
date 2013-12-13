@@ -86,18 +86,16 @@ public class PerspectiveHandler implements
     @Override
     public final void handleAndReplaceComponent(final Message<Event, Object> action,
                                                 final IPerspective<EventHandler<Event>, Event, Object> perspective) {
-        Platform.runLater(() -> {
-            final IPerspectiveLayout<? extends Node, Node> perspectiveLayout = ((AFXPerspective) perspective)
-                    .getIPerspectiveLayout();
-            // backup old component
-            final Node componentOld = this.getLayoutComponentFromPerspectiveLayout(perspectiveLayout);
-            perspective.handlePerspective(action);
-            if (!perspective.getContext().isActive()) {
-                 handleInactivePerspective(perspective,perspectiveLayout,componentOld);
-                return;
-            }
+        final IPerspectiveLayout<? extends Node, Node> perspectiveLayout = ((AFXPerspective) perspective)
+                .getIPerspectiveLayout();
+        // backup old component
+        final Node componentOld = this.getLayoutComponentFromPerspectiveLayout(perspectiveLayout);
+        perspective.handlePerspective(action);
+        if (!perspective.getContext().isActive()) {
+            handleInactivePerspective(perspective,perspectiveLayout,componentOld);
+        } else {
             handleActivePerspective(perspective,perspectiveLayout,componentOld);
-        }); // End runlater
+        }
 
     }
 
