@@ -59,8 +59,8 @@ public class FXComponentMessagingTest {
         ComponentMessagingTest1Component1.wait = new CountDownLatch(1);
         ComponentMessagingTest1Component2.wait = new CountDownLatch(1);
 
-        ComponentMessagingTest1Component1.counter = new AtomicInteger(100000);
-        ComponentMessagingTest1Component2.counter = new AtomicInteger(100000);
+        ComponentMessagingTest1Component1.counter = new AtomicInteger(10000);
+        ComponentMessagingTest1Component2.counter = new AtomicInteger(10000);
 
         PerspectiveComponentMessagingTest1.fireMessage();
 

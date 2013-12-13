@@ -22,7 +22,7 @@ public class MessageCoordinatorExecutionResult {
         HANDLE_ACTIVE, HANDLE_INACTIVE, DELEGATE, HANDLE_CURRENT_PERSPECTIVE , ERROR
     }
 
-    public MessageCoordinatorExecutionResult(final ISubComponent<EventHandler<Event>, Event, Object> targetComponent,final DelegateDTO dto,final String targetId, final Message<Event, Object> message, State state) {
+    private MessageCoordinatorExecutionResult(final ISubComponent<EventHandler<Event>, Event, Object> targetComponent, final DelegateDTO dto, final String targetId, final Message<Event, Object> message, State state) {
         this.targetComponent = targetComponent;
         this.dto = dto;
         this.targetId = targetId;

@@ -25,7 +25,6 @@ package org.jacpfx.rcp.worker;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.api.component.IPerspective;
@@ -117,19 +116,24 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
             throws InterruptedException, ExecutionException {
         //final ThrowableWrapper throwableWrapper = new ThrowableWrapper();
         WorkerUtil.invokeOnFXThreadAndWait(() -> {
-            setCacheHints(true, CacheHint.SPEED, component);
+            // setCacheHints(true, CacheHint.SPEED, component);
             // check if component was set to inactive, if so remove
             try {
                 final FXComponentLayout layout = JACPContextImpl.class.cast(component.getContext()).getComponentLayout();
+                // check if was not deactivated in handle method
                 if (component.getContext().isActive()) {
                     WorkerUtil.executeComponentViewPostHandle(handleReturnValue, component,
                             action);
+                }
+                // check if was not deactivated in post handle method
+                if (component.getContext().isActive()) {
                     EmbeddedFXComponentWorker.this.publishComponentValue(
                             component, targetComponents, layout,
                             previousContainer, currentTargetLayout, currentExecutionTarget);
-                } else {
-                    shutDownComponent(component,layout,previousContainer);
+                    //setCacheHints(true, CacheHint.DEFAULT, component);
+                    return;
                 }
+                shutDownComponent(component,layout,previousContainer);
             } catch (Exception e) {
                 e.printStackTrace(); // TODO pass exception
             }
@@ -163,27 +167,19 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
                                        final Node previousContainer, final String currentTargetLayout, final String currentExecutionTarget) {
 
         if (previousContainer != null) {
-            // check again if component was set to inactive (in postHandle), if
-            // so remove
-            if (component.getContext().isActive()) {
-                final String newExecutionTarget = JACPContextImpl.class.cast(this.component.getContext()).getExecutionTarget();
-                if (!currentExecutionTarget.equalsIgnoreCase(newExecutionTarget)) {
-                    this.shutDownComponent(component,layout,previousContainer);
-                    // restore target execution
-                    this.component.getContext().setExecutionTarget(newExecutionTarget);
-                    this.handlePerspectiveChange(this.componentDelegateQueue,
-                            component);
-                } else {
-                    final String newTargetLayout = JACPContextImpl.class.cast(this.component.getContext()).getTargetLayout();
-                    this.removeOldComponentValue(component, previousContainer,
-                            currentTargetLayout, newTargetLayout);
-                    this.checkAndHandleLayoutTargetChange(component, previousContainer,
-                            currentTargetLayout, newTargetLayout, targetComponents);
-                }
-
+            final JACPContextImpl context = JACPContextImpl.class.cast(this.component.getContext());
+            final String newExecutionTarget = context.getExecutionTarget();
+            if (!currentExecutionTarget.equalsIgnoreCase(newExecutionTarget)) {
+                this.shutDownComponent(component,layout,previousContainer);
+                // restore target execution
+                component.getContext().setExecutionTarget(newExecutionTarget);
+                this.handlePerspectiveChange(this.componentDelegateQueue,
+                        component);
             } else {
-                shutDownComponent(component,layout,previousContainer);
-
+                final String newTargetLayout = context.getTargetLayout();
+                this.removeOldComponentValue(component, previousContainer,currentTargetLayout,newTargetLayout);
+                this.checkAndHandleLayoutTargetChange(component, previousContainer,
+                        currentTargetLayout,newTargetLayout, targetComponents);
             }
 
         }
@@ -202,11 +198,10 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
      * remove old component value from root node
      */
     private void removeOldComponentValue(final AFXComponent component,
-                                         final Node previousContainer, final String currentTargetLayout, final String newTargetLayout) {
+                                         final Node previousContainer,final String currentTargetLayout,String newTargetLayout) {
         final Node root = component.getRoot();
         // avoid remove/add when root component did not changed!
-        if (!currentTargetLayout.equals(newTargetLayout)
-                || root == null || root != previousContainer) {
+        if (!currentTargetLayout.equalsIgnoreCase(newTargetLayout) || root == null || root != previousContainer) {
             // remove old view
             this.removeComponentValue(previousContainer);
         }
@@ -216,7 +211,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
      * add new component value to root node
      */
     private void checkAndHandleLayoutTargetChange(final AFXComponent component,
-                                                  final Node previousContainer, final String currentTargetLayout, final String newTargetLayout, final Map<String, Node> targetComponents) {
+                                                  final Node previousContainer,final String currentTargetLayout, final String newTargetLayout, final Map<String, Node> targetComponents) {
 
         final Node root = component.getRoot();
         if (!currentTargetLayout.equals(newTargetLayout)) {
@@ -243,12 +238,8 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
         final Node validContainer = this.getValidContainerById(
                 targetComponents, newTargetLayout);
         if(validContainer==null && component.getRoot()!=null) throw new InvalidParameterException("no targetLayout for layoutID: "+newTargetLayout+" found");
-        if (validContainer != null) {
-            this.handleLayoutTargetChange(component,
-                    validContainer);
-        } else {
-            throw new IllegalArgumentException("no targetLayout " + newTargetLayout + " found");
-        }
+        this.handleLayoutTargetChange(component,
+                validContainer);
     }
 
     @Override

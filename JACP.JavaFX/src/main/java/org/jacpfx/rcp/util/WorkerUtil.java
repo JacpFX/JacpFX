@@ -86,8 +86,6 @@ public class WorkerUtil {
             final Node validContainer,
             final IUIComponent<Node, EventHandler<Event>, Event, Object> component) {
         handleAdd(validContainer, component.getRoot());
-        handleViewState(validContainer, true);
-
     }
 
     /**
@@ -97,7 +95,7 @@ public class WorkerUtil {
      * @param componentViewNode   , the component
      */
     private static void handleAdd(final Node validContainer, final Node componentViewNode) {
-        if (validContainer != null && componentViewNode != null) {
+        if (componentViewNode != null) {
             handleViewState(componentViewNode, true);
             final ObservableList<Node> children = FXUtil
                     .getChildren(validContainer);
@@ -159,7 +157,6 @@ public class WorkerUtil {
         }
         if (potsHandleReturnValue != null
                 && component.getType().equals(UIType.PROGRAMMATIC)) {
-            potsHandleReturnValue.setVisible(true);
             component.setRoot(potsHandleReturnValue);
         }
     }

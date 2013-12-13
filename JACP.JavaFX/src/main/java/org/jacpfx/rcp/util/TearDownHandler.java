@@ -125,8 +125,8 @@ public class TearDownHandler {
 	 * 
 	 * @param components, all components that should execute an async teardown
 	 */
-	public static void handleAsyncTearDown(
-			final List<ISubComponent<EventHandler<Event>, Event, Object>> components) {
+	private static void handleAsyncTearDown(
+            final List<ISubComponent<EventHandler<Event>, Event, Object>> components) {
 		try {
 			final Set<Future<Boolean>> set = new HashSet<>();
 			for (final ISubComponent<EventHandler<Event>, Event, Object> component : components) {

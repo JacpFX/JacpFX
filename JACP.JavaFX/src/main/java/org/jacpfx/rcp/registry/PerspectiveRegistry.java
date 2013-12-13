@@ -7,8 +7,8 @@ import org.jacpfx.api.component.IPerspective;
 import org.jacpfx.rcp.util.FXUtil;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.locks.StampedLock;
 import java.util.stream.Collector;
 
 /**
@@ -19,8 +19,7 @@ import java.util.stream.Collector;
  * Global registry with references to all perspectives
  */
 public class PerspectiveRegistry {
-    private static final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = new ArrayList<>();
-    private static final StampedLock lock = new StampedLock();
+    private static final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = new CopyOnWriteArrayList<>();
     private static final AtomicReference<String> currentVisiblePerspectiveId = new AtomicReference<>();
     private static final Collector<IPerspective<EventHandler<Event>, Event, Object>, ?, TreeSet<IPerspective<EventHandler<Event>, Event, Object>>> collector = Collector.of(TreeSet::new, TreeSet::add,
             (left, right) -> {
@@ -55,14 +54,8 @@ public class PerspectiveRegistry {
      */
     public static void registerPerspective(
             final IPerspective<EventHandler<Event>, Event, Object> perspective) {
-        final long stamp = lock.tryWriteLock();
-        try {
-            if (!perspectives.contains(perspective))
-                perspectives.add(perspective);
-        } finally {
-            lock.unlockWrite(stamp);
-        }
-
+        if (!perspectives.contains(perspective))
+            perspectives.add(perspective);
     }
 
     /**
@@ -72,14 +65,8 @@ public class PerspectiveRegistry {
      */
     public static void removePerspective(
             final IPerspective<EventHandler<Event>, Event, Object> perspective) {
-        final long stamp = lock.tryWriteLock();
-        try {
-            if (perspectives.contains(perspective))
-                perspectives.remove(perspective);
-        } finally {
-            lock.unlockWrite(stamp);
-        }
-
+        if (perspectives.contains(perspective))
+            perspectives.remove(perspective);
     }
 
     /**
@@ -88,19 +75,7 @@ public class PerspectiveRegistry {
      * @return
      */
     public static IPerspective<EventHandler<Event>, Event, Object> findNextActivePerspective(final IPerspective<EventHandler<Event>, Event, Object> current) {
-        long stamp;
-        if ((stamp = lock.tryOptimisticRead()) != 0L) { // optimistic
-            final List<IPerspective<EventHandler<Event>, Event, Object>> p = perspectives;
-            if (lock.validate(stamp)) {
-                return getNextValidPerspective(p, current);
-            }
-        }
-        stamp = lock.readLock(); // fall back to read lock
-        try {
-            return getNextValidPerspective(perspectives, current);
-        } finally {
-            lock.unlockRead(stamp);
-        }
+        return getNextValidPerspective(perspectives, current);
     }
 
     /**
@@ -133,21 +108,8 @@ public class PerspectiveRegistry {
      */
     public static IPerspective<EventHandler<Event>, Event, Object> findPerspectiveById(
             final String targetId) {
-        long stamp;
-        if ((stamp = lock.tryOptimisticRead()) != 0L) { // optimistic
-            final List<IPerspective<EventHandler<Event>, Event, Object>> p = perspectives;
-            if (lock.validate(stamp))
-                return FXUtil.getObserveableById(FXUtil.getTargetPerspectiveId(targetId),
-                        p);
-        }
-        stamp = lock.readLock(); // fall back to read lock
-        try {
-            return FXUtil.getObserveableById(FXUtil.getTargetPerspectiveId(targetId),
-                    perspectives);
-        } finally {
-            lock.unlockRead(stamp);
-        }
-
+        return FXUtil.getObserveableById(FXUtil.getTargetPerspectiveId(targetId),
+                perspectives);
     }
 
     /**
@@ -157,20 +119,7 @@ public class PerspectiveRegistry {
      * @return The parent perspective of given component id
      */
     public static IPerspective<EventHandler<Event>, Event, Object> findParentPerspectiveByComponentId(final String componentId) {
-        final String id = FXUtil.getTargetComponentId(componentId);
-        long stamp;
-        if ((stamp = lock.tryOptimisticRead()) != 0L) { // optimistic
-            final List<IPerspective<EventHandler<Event>, Event, Object>> p = perspectives;
-            if (lock.validate(stamp)) {
-                return findByComponentId(p, id);
-            }
-        }
-        stamp = lock.readLock(); // fall back to read lock
-        try {
-            return findByComponentId(perspectives, id);
-        } finally {
-            lock.unlockRead(stamp);
-        }
+        return findByComponentId(perspectives, componentId);
     }
 
     private static IPerspective<EventHandler<Event>, Event, Object> findByComponentId(List<IPerspective<EventHandler<Event>, Event, Object>> perspectives, final String componentId) {
@@ -179,8 +128,7 @@ public class PerspectiveRegistry {
                     final Class perspectiveClass = p.getPerspective().getClass();
                     if (!perspectiveClass.isAnnotationPresent(Perspective.class)) return false;
                     final Perspective annotation = (Perspective) perspectiveClass.getAnnotation(Perspective.class);
-                    if (containsComponentInAnnotation(annotation, componentId)) return true;
-                    return false;
+                    return containsComponentInAnnotation(annotation, componentId);
                 }).findFirst();
 
         return first.isPresent() ? first.get() : null;
@@ -189,7 +137,7 @@ public class PerspectiveRegistry {
     private static boolean containsComponentInAnnotation(final Perspective annotation, final String componentId) {
         final String[] componentIds = annotation.components();
         Arrays.parallelSort(componentIds);
-        return Arrays.binarySearch(componentIds, componentId) >= 0 ? true : false;
+        return Arrays.binarySearch(componentIds, componentId) >= 0;
     }
 
     /**
@@ -199,25 +147,10 @@ public class PerspectiveRegistry {
      * @return a perspective
      */
     public static IPerspective<EventHandler<Event>, Event, Object> findPerspectiveByClass(final Class<?> clazz) {
-        long stamp;
-        if ((stamp = lock.tryOptimisticRead()) != 0L) { // optimistic
-            final List<IPerspective<EventHandler<Event>, Event, Object>> p = perspectives;
-            if (lock.validate(stamp)) {
-                for (final IPerspective<EventHandler<Event>, Event, Object> comp : p) {
-                    if (comp.getClass().isAssignableFrom(clazz)) return comp;
-                }
-                return null;
-            }
+        for (final IPerspective<EventHandler<Event>, Event, Object> comp : perspectives) {
+            if (comp.getClass().isAssignableFrom(clazz)) return comp;
         }
-        stamp = lock.readLock(); // fall back to read lock
-        try {
-            for (final IPerspective<EventHandler<Event>, Event, Object> comp : perspectives) {
-                if (comp.getClass().isAssignableFrom(clazz)) return comp;
-            }
-            return null;
-        } finally {
-            lock.unlockRead(stamp);
-        }
+        return null;
     }
 
 }

@@ -113,8 +113,7 @@ public abstract class AComponent implements
         if (context != null ? !context.equals(that.context) : that.context != null) return false;
         if (globalMessageQueue != null ? !globalMessageQueue.equals(that.globalMessageQueue) : that.globalMessageQueue != null)
             return false;
-        if (localeID != null ? !localeID.equals(that.localeID) : that.localeID != null) return false;
-        return !(resourceBundleLocation != null ? !resourceBundleLocation.equals(that.resourceBundleLocation) : that.resourceBundleLocation != null);
+        return !(localeID != null ? !localeID.equals(that.localeID) : that.localeID != null) && !(resourceBundleLocation != null ? !resourceBundleLocation.equals(that.resourceBundleLocation) : that.resourceBundleLocation != null);
 
     }
 

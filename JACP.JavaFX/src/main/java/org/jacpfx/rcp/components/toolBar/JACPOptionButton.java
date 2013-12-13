@@ -123,12 +123,9 @@ public class JACPOptionButton extends Button {
     public void addOption(Button option) {
         option.setMaxWidth(Integer.MAX_VALUE);
         options.getChildren().add(option);
-        option.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                // hide option when button is pressed
-                hideOptions();
-            }
+        option.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            // hide option when button is pressed
+            hideOptions();
         });
         VBox.setMargin(option, new Insets(INSETS));
     }
@@ -183,14 +180,11 @@ public class JACPOptionButton extends Button {
                 this.verticalHoverMenu.getChildren().setAll(options, arrow);
 
                 // since the menu is on top we have to check the height, too!
-                this.verticalHoverMenu.heightProperty().addListener(new ChangeListener<Number>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Number> observableValue, Number number, Number number2) {
-                        // get location of the optionbutton - top left corner
-                        translate = localToScene(getBoundsInLocal().getMinX(), getBoundsInLocal().getMinY());
-                        // menu will be cut at the left
-                        buttonYLocation.set(translate.getY() - (verticalHoverMenu.getHeight()));
-                    }
+                this.verticalHoverMenu.heightProperty().addListener((observableValue, number, number2) -> {
+                    // get location of the optionbutton - top left corner
+                    translate = localToScene(getBoundsInLocal().getMinX(), getBoundsInLocal().getMinY());
+                    // menu will be cut at the left
+                    buttonYLocation.set(translate.getY() - (verticalHoverMenu.getHeight()));
                 });
 
                 break;
@@ -330,7 +324,7 @@ public class JACPOptionButton extends Button {
     }
 
     private void initAction(final Node node) {
-        this.setOnAction((EventHandler<ActionEvent>)(actionEvent)-> {
+        this.setOnAction((actionEvent)-> {
 
             node.setVisible(!node.isVisible());
             // if another option is shown, hide everything before switching to the current content

@@ -22,7 +22,6 @@
  ************************************************************************/
 package org.jacpfx.rcp.handler;
 
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;

@@ -25,9 +25,7 @@ package org.jacpfx.rcp.coordinator;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import org.jacpfx.api.message.Message;
-import org.jacpfx.api.message.IDelegateDTO;
 import org.jacpfx.api.coordinator.ICoordinator;
-import org.jacpfx.rcp.delegator.DelegateDTO;
 import org.jacpfx.rcp.util.ShutdownThreadsHandler;
 
 import java.util.concurrent.ArrayBlockingQueue;
