@@ -2,6 +2,7 @@ package org.jacpfx.rcp.coordinator;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import org.jacpfx.api.component.IPerspective;
 import org.jacpfx.api.component.ISubComponent;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.delegator.DelegateDTO;
@@ -17,13 +18,15 @@ public class MessageCoordinatorExecutionResult {
     private final String targetId;
     private final Message<Event, Object> message;
     private final State state;
+    private final IPerspective<EventHandler<Event>, Event, Object> parentPerspective;
 
     public enum State {
-        HANDLE_ACTIVE, HANDLE_INACTIVE, DELEGATE, HANDLE_CURRENT_PERSPECTIVE , ERROR
+        HANDLE_ACTIVE, HANDLE_INACTIVE, DELEGATE, HANDLE_CURRENT_PERSPECTIVE, ERROR
     }
 
-    private MessageCoordinatorExecutionResult(final ISubComponent<EventHandler<Event>, Event, Object> targetComponent, final DelegateDTO dto, final String targetId, final Message<Event, Object> message, State state) {
+    private MessageCoordinatorExecutionResult(final ISubComponent<EventHandler<Event>, Event, Object> targetComponent, final IPerspective<EventHandler<Event>, Event, Object> parentPerspective, final DelegateDTO dto, final String targetId, final Message<Event, Object> message, State state) {
         this.targetComponent = targetComponent;
+        this.parentPerspective = parentPerspective;
         this.dto = dto;
         this.targetId = targetId;
         this.message = message;
@@ -31,18 +34,23 @@ public class MessageCoordinatorExecutionResult {
     }
 
     public MessageCoordinatorExecutionResult(final ISubComponent<EventHandler<Event>, Event, Object> targetComponent, final Message<Event, Object> message, final State state) {
-        this(targetComponent, null, null, message, state);
+        this(targetComponent, null, null, null, message, state);
+    }
+
+    public MessageCoordinatorExecutionResult(final ISubComponent<EventHandler<Event>, Event, Object> targetComponent, final IPerspective<EventHandler<Event>, Event, Object> parentPerspective, final Message<Event, Object> message, final State state) {
+        this(targetComponent, parentPerspective, null, null, message, state);
     }
 
     public MessageCoordinatorExecutionResult(final DelegateDTO dto, State state) {
-        this(null,dto,null,null,state);
+        this(null, null, dto, null, null, state);
     }
 
     public MessageCoordinatorExecutionResult(final String targetId, final Message<Event, Object> message, final State state) {
-        this(null,null,targetId,message,state);
+        this(null, null, null, targetId, message, state);
     }
+
     public MessageCoordinatorExecutionResult(final State state) {
-        this(null,null,null,null,state);
+        this(null, null, null, null, null, state);
     }
 
     public ISubComponent<EventHandler<Event>, Event, Object> getTargetComponent() {
@@ -64,4 +72,6 @@ public class MessageCoordinatorExecutionResult {
     public State getState() {
         return state;
     }
+
+    public IPerspective<EventHandler<Event>, Event, Object> getParentPerspective() { return parentPerspective; }
 }

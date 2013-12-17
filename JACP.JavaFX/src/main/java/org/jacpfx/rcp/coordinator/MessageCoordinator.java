@@ -31,7 +31,7 @@ public class MessageCoordinator extends ACoordinator implements
     private BlockingQueue<IDelegateDTO<Event, Object>> delegateQueue;
     private final String parentId;
     private final Launcher<?> launcher;
-    private final String seperator=".";
+    private final String seperator = ".";
 
     public MessageCoordinator(final String parentId,
                               final Launcher<?> launcher) {
@@ -42,21 +42,22 @@ public class MessageCoordinator extends ACoordinator implements
 
     @Override
     public void handleMessage(final String targetId, final Message<Event, Object> message) {
-        final MessageCoordinatorExecutionResult result = executeMessageHandling(targetId,message);
-        switch (result.getState()){
+        final MessageCoordinatorExecutionResult result = executeMessageHandling(targetId, message);
+        switch (result.getState()) {
             case HANDLE_ACTIVE:
-                handleActive(result.getTargetComponent(),result.getMessage());
+                handleActive(result.getTargetComponent(), result.getMessage());
                 break;
             case HANDLE_INACTIVE:
-                handleInActive(result.getTargetComponent(), result.getMessage());
+                handleInActive(result.getTargetComponent(), result.getParentPerspective(), result.getMessage());
                 break;
             case HANDLE_CURRENT_PERSPECTIVE:
-                handleCurrentPerspective(result.getTargetId(),result.getMessage());
+                handleCurrentPerspective(result.getTargetId(), result.getMessage());
                 break;
             case DELEGATE:
                 delegateMessageToCorrectPerspective(result.getDto());
                 break;
-            default: throw new ComponentNotFoundException("no valid component found"); // TODO handle exception correctly
+            default:
+                throw new ComponentNotFoundException("no valid component found"); // TODO handle exception correctly
         }
     }
 
@@ -73,10 +74,10 @@ public class MessageCoordinator extends ACoordinator implements
                 (ISubComponent<EventHandler<Event>, Event, Object>) component);
     }
 
-    private <P extends IComponent<EventHandler<Event>, Event, Object>> void handleInActive(P component, Message<Event, Object> message) {
+    private <P extends IComponent<EventHandler<Event>, Event, Object>> void handleInActive(P component, final IPerspective<EventHandler<Event>, Event, Object> parentPerspective, Message<Event, Object> message) {
         component.getContext().setActive(true);
         component.setStarted(true);
-        findParentPerspectiveAndAddComponent((ISubComponent<EventHandler<Event>, Event, Object>) component, message.getTargetId());
+        parentPerspective.addComponent((ISubComponent<EventHandler<Event>, Event, Object>) component);
         this.componentHandler.initComponent(message,
                 (ISubComponent<EventHandler<Event>, Event, Object>) component);
     }
@@ -88,7 +89,8 @@ public class MessageCoordinator extends ACoordinator implements
             e.printStackTrace();
             //TODO handle exception global
         }
-    } 
+    }
+
     private MessageCoordinatorExecutionResult executeMessageHandling(final String targetId, final Message<Event, Object> message) {
         if (!FXUtil.isLocalMessage(targetId)) {
             // this must be a component message
@@ -148,63 +150,47 @@ public class MessageCoordinator extends ACoordinator implements
         final String parentMessageId = FXUtil.getParentFromId(targetId);
         if (parentId.equalsIgnoreCase(parentMessageId)) {
             // this is a message to local component in current perspective
-            return handleMessageToComponentInCurrentPerspective(targetId, message);
+            return getTargetComponentInCurrentPerspective(targetId, message);
         } else {
             // this must be a message in different perspective
             return new MessageCoordinatorExecutionResult(new DelegateDTO(targetId, message), MessageCoordinatorExecutionResult.State.DELEGATE);
         }
     }
 
-    private MessageCoordinatorExecutionResult handleMessageToComponentInCurrentPerspective(final String targetId, final Message<Event, Object> message) {
-        final ISubComponent<EventHandler<Event>, Event, Object> targetComponent = getTargetComponentInCurrentPerspective(targetId, message);
-        if (targetComponent.getContext().isActive() && targetComponent.isStarted()) {
-            // this is an active component
-            return new MessageCoordinatorExecutionResult(targetComponent, message, MessageCoordinatorExecutionResult.State.HANDLE_ACTIVE);
-        } else {
-            // this component must be activated
-            return new MessageCoordinatorExecutionResult(targetComponent, message, MessageCoordinatorExecutionResult.State.HANDLE_INACTIVE);
-        }
-
-    }
 
     /**
      * Returns the target component by targetId specified in message.
      *
      * @param targetId
-     * @param action
+     * @param message
      * @return
      */
-    private ISubComponent<EventHandler<Event>, Event, Object> getTargetComponentInCurrentPerspective(final String targetId,
-                                                                                                     final Message<Event, Object> action) {
+    private MessageCoordinatorExecutionResult getTargetComponentInCurrentPerspective(final String targetId,
+                                                                                     final Message<Event, Object> message) {
         ISubComponent<EventHandler<Event>, Event, Object> component = ComponentRegistry.findComponentById(targetId);
         if (component != null) {
             // component is active
-            return component;
+            return new MessageCoordinatorExecutionResult(component, message, MessageCoordinatorExecutionResult.State.HANDLE_ACTIVE);
         } else {
             // start inactive component
             component = PerspectiveUtil.getInstance(this.launcher).createSubcomponentById(targetId);
         }
         if (component == null) throw new ComponentNotFoundException(
                 "invalid component id. Source: "
-                        + action.getSourceId() + " target: "
-                        + action.getTargetId());
-        findParentPerspectiveAndRegisterComponent(component,targetId);
-        return component;
+                        + message.getSourceId() + " target: "
+                        + message.getTargetId());
+
+        return findParentPerspectiveAndRegisterComponent(component, message, targetId);
     }
 
-    private void findParentPerspectiveAndRegisterComponent(final ISubComponent<EventHandler<Event>, Event, Object> component, final String targetId) {
+    private MessageCoordinatorExecutionResult findParentPerspectiveAndRegisterComponent(final ISubComponent<EventHandler<Event>, Event, Object> component, final Message<Event, Object> message, final String targetId) {
         final IPerspective<EventHandler<Event>, Event, Object> parentPerspective = PerspectiveRegistry.findParentPerspectiveByComponentId(FXUtil.getTargetComponentId(targetId));
         if (parentPerspective == null)
             throw new ComponentNotFoundException("no valid perspective for component " + targetId + " found");
         parentPerspective.registerComponent(component);
+        return new MessageCoordinatorExecutionResult(component, parentPerspective, message, MessageCoordinatorExecutionResult.State.HANDLE_INACTIVE);
     }
 
-    private void findParentPerspectiveAndAddComponent(final ISubComponent<EventHandler<Event>, Event, Object> component, final String targetId) {
-        final IPerspective<EventHandler<Event>, Event, Object> parentPerspective = PerspectiveRegistry.findParentPerspectiveByComponentId(FXUtil.getTargetComponentId(targetId));
-        if (parentPerspective == null)
-            throw new ComponentNotFoundException("no valid perspective for component " + targetId + " found");
-        parentPerspective.addComponent(component);
-    }
 
     @Override
     public <P extends IComponent<EventHandler<Event>, Event, Object>> void setComponentHandler(IComponentHandler<P, Message<Event, Object>> handler) {
