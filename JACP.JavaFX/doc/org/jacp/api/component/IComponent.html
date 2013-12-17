@@ -86,7 +86,7 @@
 <div class="description">
 <ul class="blockList">
 <li class="blockList">
-<dl><dt><span class="strong">Type Parameters:</span></dt><dd><code>L</code> - defines the action listener type</dd><dd><code>A</code> - defines the basic action type</dd><dd><code>M</code> - defines the basic message type</dd></dl>
+<dl><dt><span class="strong">Type Parameters:</span></dt><dd><code>L</code> - defines the message listener type</dd><dd><code>A</code> - defines the basic message type</dd><dd><code>M</code> - defines the basic message type</dd></dl>
 <dl>
 <dt>All Known Subinterfaces:</dt>
 <dd><a href="../../../../org/jacp/api/component/ICallbackComponent.html" title="interface in org.jacpfx.api.component">ICallbackComponent</a>&lt;L,A,M&gt;, <a href="../../../../org/jacp/api/component/IComponentView.html" title="interface in org.jacpfx.api.component">IComponentView</a>&lt;C,L,A,M&gt;, <a href="../../../../org/jacp/api/component/IPerspective.html" title="interface in org.jacpfx.api.component">IPerspective</a>&lt;L,A,M&gt;, <a href="../../../../org/jacp/api/component/IPerspectiveView.html" title="interface in org.jacpfx.api.component">IPerspectiveView</a>&lt;C,L,A,M&gt;, <a href="../../../../org/jacp/api/component/IStatelessCallabackComponent.html" title="interface in org.jacpfx.api.component">IStatelessCallabackComponent</a>&lt;L,A,M&gt;, <a href="../../../../org/jacp/api/component/ISubComponent.html" title="interface in org.jacpfx.api.component">ISubComponent</a>&lt;L,A,M&gt;, <a href="../../../../org/jacp/api/component/UIComponent.html" title="interface in org.jacpfx.api.component">UIComponent</a>&lt;C,L,A,M&gt;</dd>
@@ -121,16 +121,16 @@
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colFirst"><code><a href="../../../../org/jacp/api/action/IActionListener.html" title="interface in org.jacpfx.api.message">IActionListener</a>&lt;<a href="../../../../org/jacp/api/component/IComponent.html" title="type parameter in IComponent">L</a>,<a href="../../../../org/jacp/api/component/IComponent.html" title="type parameter in IComponent">A</a>,<a href="../../../../org/jacp/api/component/IComponent.html" title="type parameter in IComponent">M</a>&gt;</code></td>
+<td class="colFirst"><code><a href="../../../../org/jacp/api/message/IActionListener.html" title="interface in org.jacpfx.api.message">IActionListener</a>&lt;<a href="../../../../org/jacp/api/component/IComponent.html" title="type parameter in IComponent">L</a>,<a href="../../../../org/jacp/api/component/IComponent.html" title="type parameter in IComponent">A</a>,<a href="../../../../org/jacp/api/component/IComponent.html" title="type parameter in IComponent">M</a>&gt;</code></td>
 <td class="colLast"><code><strong><a href="../../../../org/jacp/api/component/IComponent.html#getActionListener(M)">getActionListener</a></strong>(<a href="../../../../org/jacp/api/component/IComponent.html" title="type parameter in IComponent">M</a>&nbsp;message)</code>
-<div class="block">Returns an action listener (for local use).</div>
+<div class="block">Returns an message listener (for local use).</div>
 </td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><code><a href="../../../../org/jacp/api/action/IActionListener.html" title="interface in org.jacpfx.api.message">IActionListener</a>&lt;<a href="../../../../org/jacp/api/component/IComponent.html" title="type parameter in IComponent">L</a>,<a href="../../../../org/jacp/api/component/IComponent.html" title="type parameter in IComponent">A</a>,<a href="../../../../org/jacp/api/component/IComponent.html" title="type parameter in IComponent">M</a>&gt;</code></td>
+<td class="colFirst"><code><a href="../../../../org/jacp/api/message/IActionListener.html" title="interface in org.jacpfx.api.message">IActionListener</a>&lt;<a href="../../../../org/jacp/api/component/IComponent.html" title="type parameter in IComponent">L</a>,<a href="../../../../org/jacp/api/component/IComponent.html" title="type parameter in IComponent">A</a>,<a href="../../../../org/jacp/api/component/IComponent.html" title="type parameter in IComponent">M</a>&gt;</code></td>
 <td class="colLast"><code><strong><a href="../../../../org/jacp/api/component/IComponent.html#getActionListener(java.lang.String, M)">getActionListener</a></strong>(java.lang.String&nbsp;targetId,
                  <a href="../../../../org/jacp/api/component/IComponent.html" title="type parameter in IComponent">M</a>&nbsp;message)</code>
-<div class="block">Returns an action listener (for global use). targetId defines the id or
+<div class="block">Returns an message listener (for global use). targetId defines the id or
  your receiver component</div>
 </td>
 </tr>
@@ -200,11 +200,11 @@
 <ul class="blockList">
 <li class="blockList">
 <h4>getActionListener</h4>
-<pre><a href="../../../../org/jacp/api/action/IActionListener.html" title="interface in org.jacpfx.api.message">IActionListener</a>&lt;<a href="../../../../org/jacp/api/component/IComponent.html" title="type parameter in IComponent">L</a>,<a href="../../../../org/jacp/api/component/IComponent.html" title="type parameter in IComponent">A</a>,<a href="../../../../org/jacp/api/component/IComponent.html" title="type parameter in IComponent">M</a>&gt;&nbsp;getActionListener(<a href="../../../../org/jacp/api/component/IComponent.html" title="type parameter in IComponent">M</a>&nbsp;message)</pre>
-<div class="block">Returns an action listener (for local use). Message will be send to
+<pre><a href="../../../../org/jacp/api/message/IActionListener.html" title="interface in org.jacpfx.api.message">IActionListener</a>&lt;<a href="../../../../org/jacp/api/component/IComponent.html" title="type parameter in IComponent">L</a>,<a href="../../../../org/jacp/api/component/IComponent.html" title="type parameter in IComponent">A</a>,<a href="../../../../org/jacp/api/component/IComponent.html" title="type parameter in IComponent">M</a>&gt;&nbsp;getActionListener(<a href="../../../../org/jacp/api/component/IComponent.html" title="type parameter in IComponent">M</a>&nbsp;message)</pre>
+<div class="block">Returns an message listener (for local use). Message will be send to
  caller component.</div>
 <dl><dt><span class="strong">Parameters:</span></dt><dd><code>message</code> - ; the initial message to be send by invoking the listener</dd>
-<dt><span class="strong">Returns:</span></dt><dd>the action listener instance</dd></dl>
+<dt><span class="strong">Returns:</span></dt><dd>the message listener instance</dd></dl>
 </li>
 </ul>
 <a name="getActionListener(java.lang.String,java.lang.Object)">
@@ -215,12 +215,12 @@
 <ul class="blockList">
 <li class="blockList">
 <h4>getActionListener</h4>
-<pre><a href="../../../../org/jacp/api/action/IActionListener.html" title="interface in org.jacpfx.api.message">IActionListener</a>&lt;<a href="../../../../org/jacp/api/component/IComponent.html" title="type parameter in IComponent">L</a>,<a href="../../../../org/jacp/api/component/IComponent.html" title="type parameter in IComponent">A</a>,<a href="../../../../org/jacp/api/component/IComponent.html" title="type parameter in IComponent">M</a>&gt;&nbsp;getActionListener(java.lang.String&nbsp;targetId,
+<pre><a href="../../../../org/jacp/api/message/IActionListener.html" title="interface in org.jacpfx.api.message">IActionListener</a>&lt;<a href="../../../../org/jacp/api/component/IComponent.html" title="type parameter in IComponent">L</a>,<a href="../../../../org/jacp/api/component/IComponent.html" title="type parameter in IComponent">A</a>,<a href="../../../../org/jacp/api/component/IComponent.html" title="type parameter in IComponent">M</a>&gt;&nbsp;getActionListener(java.lang.String&nbsp;targetId,
                                        <a href="../../../../org/jacp/api/component/IComponent.html" title="type parameter in IComponent">M</a>&nbsp;message)</pre>
-<div class="block">Returns an action listener (for global use). targetId defines the id or
+<div class="block">Returns an message listener (for global use). targetId defines the id or
  your receiver component</div>
 <dl><dt><span class="strong">Parameters:</span></dt><dd><code>message</code> - ; the message to send to target.</dd><dd><code>targetId</code> - ; the targets component id.</dd>
-<dt><span class="strong">Returns:</span></dt><dd>the action listener instance</dd></dl>
+<dt><span class="strong">Returns:</span></dt><dd>the message listener instance</dd></dl>
 </li>
 </ul>
 <a name="getId()">

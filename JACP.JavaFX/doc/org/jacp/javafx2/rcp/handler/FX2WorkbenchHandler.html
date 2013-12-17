@@ -96,12 +96,12 @@ java.lang.Object
   <IMG SRC="../../../../../resources/inherit.gif" ALT="extended by "><B>org.jacp.javafx2.rcp.handler.FX2WorkbenchHandler</B>
 </PRE>
 <DL>
-<DT><B>All Implemented Interfaces:</B> <DD>org.jacpfx.api.handler.IComponentHandler&amp;amp;lt;org.jacpfx.apiperspective.IPerspective&amp;amp;lt;javafx.event.EventHandler&amp;amp;lt;javafx.event.Event&amp;amp;gt;,javafx.event.Event,java.lang.Object&amp;amp;gt;,org.jacpfx.api.action.IAction&amp;amp;lt;javafx.event.Event,java.lang.Object&amp;amp;gt;&amp;amp;gt;</DD>
+<DT><B>All Implemented Interfaces:</B> <DD>org.jacpfx.api.handler.IComponentHandler&amp;amp;lt;org.jacpfx.apiperspective.IPerspective&amp;amp;lt;javafx.event.EventHandler&amp;amp;lt;javafx.event.Event&amp;amp;gt;,javafx.event.Event,java.lang.Object&amp;amp;gt;,org.jacpfx.api.message.IAction&amp;amp;lt;javafx.event.Event,java.lang.Object&amp;amp;gt;&amp;amp;gt;</DD>
 </DL>
 <HR>
 <DL>
 <DT><PRE>public class <B>FX2WorkbenchHandler</B><DT>extends java.lang.Object<DT>implements
-    org.jacpfx.api.handler.IComponentHandler&amp;amp;lt;org.jacpfx.apiperspective.IPerspective&amp;amp;lt;javafx.event.EventHandler&amp;amp;lt;javafx.event.Event&amp;amp;gt;,javafx.event.Event,java.lang.Object&amp;amp;gt;,org.jacpfx.api.action.IAction&amp;amp;lt;javafx.event.Event,java.lang.Object&amp;amp;gt;&amp;amp;gt;</DL>
+    org.jacpfx.api.handler.IComponentHandler&amp;amp;lt;org.jacpfx.apiperspective.IPerspective&amp;amp;lt;javafx.event.EventHandler&amp;amp;lt;javafx.event.Event&amp;amp;gt;,javafx.event.Event,java.lang.Object&amp;amp;gt;,org.jacpfx.api.message.IAction&amp;amp;lt;javafx.event.Event,java.lang.Object&amp;amp;gt;&amp;amp;gt;</DL>
 </PRE>
 
 <P>
@@ -163,7 +163,7 @@ Handles initialization and re assignment of perspectives in workbench
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/handler/FX2WorkbenchHandler.html#handleAndReplaceComponent(org.jacpfx.apiaction.IAction, org.jacpfx.apiperspective.IPerspective)">handleAndReplaceComponent</A></B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action,
+<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/handler/FX2WorkbenchHandler.html#handleAndReplaceComponent(org.jacpfx.apiaction.IAction, org.jacpfx.apiperspective.IPerspective)">handleAndReplaceComponent</A></B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message,
                           org.jacpfx.apiperspective.IPerspective&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;perspective)</CODE>
 
 <BR>
@@ -172,7 +172,7 @@ Handles initialization and re assignment of perspectives in workbench
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/handler/FX2WorkbenchHandler.html#initComponent(org.jacpfx.apiaction.IAction, org.jacpfx.apiperspective.IPerspective)">initComponent</A></B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action,
+<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/handler/FX2WorkbenchHandler.html#initComponent(org.jacpfx.apiaction.IAction, org.jacpfx.apiperspective.IPerspective)">initComponent</A></B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message,
               org.jacpfx.apiperspective.IPerspective&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;perspective)</CODE>
 
 <BR>
@@ -224,11 +224,11 @@ public <B>FX2WorkbenchHandler</B>(org.jacpfx.api.launcher.Launcher&lt;?&gt;&nbsp
 <A NAME="handleAndReplaceComponent(org.jacpfx.apiaction.IAction, org.jacpfx.apiperspective.IPerspective)"><!-- --></A><H3>
 handleAndReplaceComponent</H3>
 <PRE>
-public final void <B>handleAndReplaceComponent</B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action,
+public final void <B>handleAndReplaceComponent</B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message,
                                             org.jacpfx.apiperspective.IPerspective&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;perspective)</PRE>
 <DL>
 <DD><DL>
-<DT><B>Specified by:</B><DD><CODE>handleAndReplaceComponent</CODE> in interface <CODE>org.jacpfx.api.handler.IComponentHandler&amp;amp;lt;org.jacpfx.apiperspective.IPerspective&amp;amp;lt;javafx.event.EventHandler&amp;amp;lt;javafx.event.Event&amp;amp;gt;,javafx.event.Event,java.lang.Object&amp;amp;gt;,org.jacpfx.api.action.IAction&amp;amp;lt;javafx.event.Event,java.lang.Object&amp;amp;gt;&amp;amp;gt;</CODE></DL>
+<DT><B>Specified by:</B><DD><CODE>handleAndReplaceComponent</CODE> in interface <CODE>org.jacpfx.api.handler.IComponentHandler&amp;amp;lt;org.jacpfx.apiperspective.IPerspective&amp;amp;lt;javafx.event.EventHandler&amp;amp;lt;javafx.event.Event&amp;amp;gt;,javafx.event.Event,java.lang.Object&amp;amp;gt;,org.jacpfx.api.message.IAction&amp;amp;lt;javafx.event.Event,java.lang.Object&amp;amp;gt;&amp;amp;gt;</CODE></DL>
 </DD>
 <DD><DL>
 </DL>
@@ -239,11 +239,11 @@ public final void <B>handleAndReplaceComponent</B>(org.jacpfx.api.message.Messag
 <A NAME="initComponent(org.jacpfx.apiaction.IAction, org.jacpfx.apiperspective.IPerspective)"><!-- --></A><H3>
 initComponent</H3>
 <PRE>
-public final void <B>initComponent</B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action,
+public final void <B>initComponent</B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message,
                                 org.jacpfx.apiperspective.IPerspective&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;perspective)</PRE>
 <DL>
 <DD><DL>
-<DT><B>Specified by:</B><DD><CODE>initComponent</CODE> in interface <CODE>org.jacpfx.api.handler.IComponentHandler&amp;amp;lt;org.jacpfx.apiperspective.IPerspective&amp;amp;lt;javafx.event.EventHandler&amp;amp;lt;javafx.event.Event&amp;amp;gt;,javafx.event.Event,java.lang.Object&amp;amp;gt;,org.jacpfx.api.action.IAction&amp;amp;lt;javafx.event.Event,java.lang.Object&amp;amp;gt;&amp;amp;gt;</CODE></DL>
+<DT><B>Specified by:</B><DD><CODE>initComponent</CODE> in interface <CODE>org.jacpfx.api.handler.IComponentHandler&amp;amp;lt;org.jacpfx.apiperspective.IPerspective&amp;amp;lt;javafx.event.EventHandler&amp;amp;lt;javafx.event.Event&amp;amp;gt;,javafx.event.Event,java.lang.Object&amp;amp;gt;,org.jacpfx.api.message.IAction&amp;amp;lt;javafx.event.Event,java.lang.Object&amp;amp;gt;&amp;amp;gt;</CODE></DL>
 </DD>
 <DD><DL>
 </DL>

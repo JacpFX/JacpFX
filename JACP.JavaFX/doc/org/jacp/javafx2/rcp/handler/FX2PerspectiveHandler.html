@@ -96,12 +96,12 @@ java.lang.Object
   <IMG SRC="../../../../../resources/inherit.gif" ALT="extended by "><B>org.jacp.javafx2.rcp.handler.FX2PerspectiveHandler</B>
 </PRE>
 <DL>
-<DT><B>All Implemented Interfaces:</B> <DD>org.jacpfx.api.handler.IComponentHandler&amp;amp;amporg.jacpfx.api.componentnent.ISubComponent&amp;amp;amp;lt;javafx.event.EventHandler&amp;amp;amp;lt;javafx.event.Event&amp;amp;amp;gt;,javafx.event.Event,java.lang.Object&amp;amp;amp;gt;,org.jacpfx.api.action.IAction&amp;amp;amp;lt;javafx.event.Event,java.lang.Object&amp;amp;amp;gt;&amp;amp;amp;gt;</DD>
+<DT><B>All Implemented Interfaces:</B> <DD>org.jacpfx.api.handler.IComponentHandler&amp;amp;amporg.jacpfx.api.componentnent.ISubComponent&amp;amp;amp;lt;javafx.event.EventHandler&amp;amp;amp;lt;javafx.event.Event&amp;amp;amp;gt;,javafx.event.Event,java.lang.Object&amp;amp;amp;gt;,org.jacpfx.api.message.IAction&amp;amp;amp;lt;javafx.event.Event,java.lang.Object&amp;amp;amp;gt;&amp;amp;amp;gt;</DD>
 </DL>
 <HR>
 <DL>
 <DT><PRE>public class <B>FX2PerspectiveHandler</B><DT>extends java.lang.Object<DT>implements
-    org.jacpfx.api.handler.IComponentHandler&amp;amp;amporg.jacpfx.api.componentnent.ISubComponent&amp;amp;amp;lt;javafx.event.EventHandler&amp;amp;amp;lt;javafx.event.Event&amp;amp;amp;gt;,javafx.event.Event,java.lang.Object&amp;amp;amp;gt;,org.jacpfx.api.action.IAction&amp;amp;amp;lt;javafx.event.Event,java.lang.Object&amp;amp;amp;gt;&amp;amp;amp;gt;</DL>
+    org.jacpfx.api.handler.IComponentHandler&amp;amp;amporg.jacpfx.api.componentnent.ISubComponent&amp;amp;amp;lt;javafx.event.EventHandler&amp;amp;amp;lt;javafx.event.Event&amp;amp;amp;gt;,javafx.event.Event,java.lang.Object&amp;amp;amp;gt;,org.jacpfx.api.message.IAction&amp;amp;amp;lt;javafx.event.Event,java.lang.Object&amp;amp;amp;gt;&amp;amp;amp;gt;</DL>
 </PRE>
 
 <P>
@@ -164,7 +164,7 @@ Handles initialization an reassignment of components in perspective
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/handler/FX2PerspectiveHandler.html#handleAndReplaceComponent(org.jacpfx.apiaction.IAction, org.jacpfx.apicomponent.ISubComponent)">handleAndReplaceComponent</A></B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action,
+<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/handler/FX2PerspectiveHandler.html#handleAndReplaceComponent(org.jacpfx.apiaction.IAction, org.jacpfx.apicomponent.ISubComponent)">handleAndReplaceComponent</A></B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message,
                           org.jacpfx.api.component.ISubComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;component)</CODE>
 
 <BR>
@@ -173,7 +173,7 @@ Handles initialization an reassignment of components in perspective
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/handler/FX2PerspectiveHandler.html#initComponent(org.jacpfx.apiaction.IAction, org.jacpfx.apicomponent.ISubComponent)">initComponent</A></B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action,
+<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/handler/FX2PerspectiveHandler.html#initComponent(org.jacpfx.apiaction.IAction, org.jacpfx.apicomponent.ISubComponent)">initComponent</A></B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message,
               org.jacpfx.api.component.ISubComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;component)</CODE>
 
 <BR>
@@ -244,11 +244,11 @@ public <B>FX2PerspectiveHandler</B>(org.jacpfx.api.launcher.Launcher&lt;?&gt;&nb
 <A NAME="initComponent(org.jacpfx.apiaction.IAction, org.jacpfx.apicomponent.ISubComponent)"><!-- --></A><H3>
 initComponent</H3>
 <PRE>
-public final void <B>initComponent</B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action,
+public final void <B>initComponent</B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message,
                                 org.jacpfx.api.component.ISubComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;component)</PRE>
 <DL>
 <DD><DL>
-<DT><B>Specified by:</B><DD><CODE>initComponent</CODE> in interface <CODE>org.jacpfx.api.handler.IComponentHandler&amp;amp;amporg.jacpfx.api.componentnent.ISubComponent&amp;amp;amp;lt;javafx.event.EventHandler&amp;amp;amp;lt;javafx.event.Event&amp;amp;amp;gt;,javafx.event.Event,java.lang.Object&amp;amp;amp;gt;,org.jacpfx.api.action.IAction&amp;amp;amp;lt;javafx.event.Event,java.lang.Object&amp;amp;amp;gt;&amp;amp;amp;gt;</CODE></DL>
+<DT><B>Specified by:</B><DD><CODE>initComponent</CODE> in interface <CODE>org.jacpfx.api.handler.IComponentHandler&amp;amp;amporg.jacpfx.api.componentnent.ISubComponent&amp;amp;amp;lt;javafx.event.EventHandler&amp;amp;amp;lt;javafx.event.Event&amp;amp;amp;gt;,javafx.event.Event,java.lang.Object&amp;amp;amp;gt;,org.jacpfx.api.message.IAction&amp;amp;amp;lt;javafx.event.Event,java.lang.Object&amp;amp;amp;gt;&amp;amp;amp;gt;</CODE></DL>
 </DD>
 <DD><DL>
 </DL>
@@ -259,11 +259,11 @@ public final void <B>initComponent</B>(org.jacpfx.api.message.Message&lt;javafx.
 <A NAME="handleAndReplaceComponent(org.jacpfx.apiaction.IAction, org.jacpfx.apicomponent.ISubComponent)"><!-- --></A><H3>
 handleAndReplaceComponent</H3>
 <PRE>
-public final void <B>handleAndReplaceComponent</B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action,
+public final void <B>handleAndReplaceComponent</B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message,
                                             org.jacpfx.api.component.ISubComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;component)</PRE>
 <DL>
 <DD><DL>
-<DT><B>Specified by:</B><DD><CODE>handleAndReplaceComponent</CODE> in interface <CODE>org.jacpfx.api.handler.IComponentHandler&amp;amp;amporg.jacpfx.api.componentnent.ISubComponent&amp;amp;amp;lt;javafx.event.EventHandler&amp;amp;amp;lt;javafx.event.Event&amp;amp;amp;gt;,javafx.event.Event,java.lang.Object&amp;amp;amp;gt;,org.jacpfx.api.action.IAction&amp;amp;amp;lt;javafx.event.Event,java.lang.Object&amp;amp;amp;gt;&amp;amp;amp;gt;</CODE></DL>
+<DT><B>Specified by:</B><DD><CODE>handleAndReplaceComponent</CODE> in interface <CODE>org.jacpfx.api.handler.IComponentHandler&amp;amp;amporg.jacpfx.api.componentnent.ISubComponent&amp;amp;amp;lt;javafx.event.EventHandler&amp;amp;amp;lt;javafx.event.Event&amp;amp;amp;gt;,javafx.event.Event,java.lang.Object&amp;amp;amp;gt;,org.jacpfx.api.message.IAction&amp;amp;amp;lt;javafx.event.Event,java.lang.Object&amp;amp;amp;gt;&amp;amp;amp;gt;</CODE></DL>
 </DD>
 <DD><DL>
 </DL>

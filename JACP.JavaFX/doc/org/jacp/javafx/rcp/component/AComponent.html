@@ -152,16 +152,16 @@ implements <a href="../../../../../org/jacp/api/component/IComponent.html" title
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colFirst"><code><a href="../../../../../org/jacp/api/action/IActionListener.html" title="interface in org.jacpfx.api.message">IActionListener</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</code></td>
+<td class="colFirst"><code><a href="../../../../../org/jacp/api/message/IActionListener.html" title="interface in org.jacpfx.api.message">IActionListener</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</code></td>
 <td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/component/AComponent.html#getActionListener(java.lang.Object)">getActionListener</a></strong>(java.lang.Object&nbsp;message)</code>
-<div class="block">Returns an action listener (for local use).</div>
+<div class="block">Returns an message listener (for local use).</div>
 </td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><code><a href="../../../../../org/jacp/api/action/IActionListener.html" title="interface in org.jacpfx.api.message">IActionListener</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</code></td>
+<td class="colFirst"><code><a href="../../../../../org/jacp/api/message/IActionListener.html" title="interface in org.jacpfx.api.message">IActionListener</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</code></td>
 <td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/component/AComponent.html#getActionListener(java.lang.String, java.lang.Object)">getActionListener</a></strong>(java.lang.String&nbsp;targetId,
                  java.lang.Object&nbsp;message)</code>
-<div class="block">Returns an action listener (for global use). targetId defines the id or
+<div class="block">Returns an message listener (for global use). targetId defines the id or
  your receiver component</div>
 </td>
 </tr>
@@ -253,15 +253,15 @@ implements <a href="../../../../../org/jacp/api/component/IComponent.html" title
 <ul class="blockList">
 <li class="blockList">
 <h4>getActionListener</h4>
-<pre>public final&nbsp;<a href="../../../../../org/jacp/api/action/IActionListener.html" title="interface in org.jacpfx.api.message">IActionListener</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;getActionListener(java.lang.Object&nbsp;message)</pre>
+<pre>public final&nbsp;<a href="../../../../../org/jacp/api/message/IActionListener.html" title="interface in org.jacpfx.api.message">IActionListener</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;getActionListener(java.lang.Object&nbsp;message)</pre>
 <div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/component/IComponent.html#getActionListener(M)">IComponent</a></code></strong></div>
-<div class="block">Returns an action listener (for local use). Message will be send to
+<div class="block">Returns an message listener (for local use). Message will be send to
  caller component.</div>
 <dl>
 <dt><strong>Specified by:</strong></dt>
 <dd><code><a href="../../../../../org/jacp/api/component/IComponent.html#getActionListener(M)">getActionListener</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</code></dd>
 <dt><span class="strong">Parameters:</span></dt><dd><code>message</code> - ; the initial message to be send by invoking the listener</dd>
-<dt><span class="strong">Returns:</span></dt><dd>the action listener instance</dd></dl>
+<dt><span class="strong">Returns:</span></dt><dd>the message listener instance</dd></dl>
 </li>
 </ul>
 <a name="getActionListener(java.lang.String, java.lang.Object)">
@@ -270,16 +270,16 @@ implements <a href="../../../../../org/jacp/api/component/IComponent.html" title
 <ul class="blockList">
 <li class="blockList">
 <h4>getActionListener</h4>
-<pre>public final&nbsp;<a href="../../../../../org/jacp/api/action/IActionListener.html" title="interface in org.jacpfx.api.message">IActionListener</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;getActionListener(java.lang.String&nbsp;targetId,
+<pre>public final&nbsp;<a href="../../../../../org/jacp/api/message/IActionListener.html" title="interface in org.jacpfx.api.message">IActionListener</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;getActionListener(java.lang.String&nbsp;targetId,
                                                                                                                    java.lang.Object&nbsp;message)</pre>
 <div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/component/IComponent.html#getActionListener(java.lang.String, M)">IComponent</a></code></strong></div>
-<div class="block">Returns an action listener (for global use). targetId defines the id or
+<div class="block">Returns an message listener (for global use). targetId defines the id or
  your receiver component</div>
 <dl>
 <dt><strong>Specified by:</strong></dt>
 <dd><code><a href="../../../../../org/jacp/api/component/IComponent.html#getActionListener(java.lang.String, M)">getActionListener</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</code></dd>
 <dt><span class="strong">Parameters:</span></dt><dd><code>targetId</code> - ; the targets component id.</dd><dd><code>message</code> - ; the message to send to target.</dd>
-<dt><span class="strong">Returns:</span></dt><dd>the action listener instance</dd></dl>
+<dt><span class="strong">Returns:</span></dt><dd>the message listener instance</dd></dl>
 </li>
 </ul>
 <a name="getId()">

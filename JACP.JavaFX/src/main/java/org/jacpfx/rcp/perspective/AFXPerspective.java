@@ -66,7 +66,7 @@ public abstract class AFXPerspective extends AComponent implements
         IPerspectiveView<Node, EventHandler<Event>, Event, Object>,
         Initializable {
     private final Logger logger = Logger.getLogger(this.getClass().getName());
-    private List<ISubComponent<EventHandler<Event>, Event, Object>> subcomponents;
+    private volatile List<ISubComponent<EventHandler<Event>, Event, Object>> subcomponents;
     private IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
     private BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
     private BlockingQueue<IDelegateDTO<Event, Object>> messageDelegateQueue;
@@ -146,15 +146,21 @@ public abstract class AFXPerspective extends AComponent implements
         context.setFXComponentLayout(JACPContextImpl.class.cast(this.getContext()).getComponentLayout());
         PerspectiveUtil.handleComponentMetaAnnotation(component);
         if (context.isActive()) {
-            synchronized (lock) {
-                this.log("register component: " + component.getContext().getId());
-                ComponentRegistry.registerComponent(component);
-                if (!this.getSubcomponents().contains(component)) {
-                    this.getSubcomponents().add(component);
-                }
-            }
+            addComponent(component);
         }
 
+    }
+
+    @Override
+    public final void addComponent(
+            final ISubComponent<EventHandler<Event>, Event, Object> component) {
+        synchronized (lock) {
+            this.log("register component: " + component.getContext().getId());
+            ComponentRegistry.registerComponent(component);
+            if (!this.getSubcomponents().contains(component)) {
+                this.getSubcomponents().add(component);
+            }
+        }
     }
 
 

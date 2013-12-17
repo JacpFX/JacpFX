@@ -14,8 +14,8 @@ public interface IComponentHandle<C, A, M> extends Injectable{
      * Handles component when called. The handle method in sub components is
      * always executed in a separate thread;
      *
-     * @param action , the triggering message
+     * @param message , the triggering message
      * @return view component
      */
-    C handle(final Message<A, M> action) throws Exception;
+    C handle(final Message<A, M> message) throws Exception;
 }

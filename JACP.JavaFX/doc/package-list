@@ -1,4 +1,3 @@
-org.jacpfx.rcp.action
 org.jacpfx.rcp.common
 org.jacpfx.rcp.component
 org.jacpfx.rcp.componentLayout
@@ -10,6 +9,7 @@ org.jacpfx.rcp.context
 org.jacpfx.rcp.coordinator
 org.jacpfx.rcp.delegator
 org.jacpfx.rcp.handler
+org.jacpfx.rcp.message
 org.jacpfx.rcp.perspective
 org.jacpfx.rcp.registry
 org.jacpfx.rcp.scheduler

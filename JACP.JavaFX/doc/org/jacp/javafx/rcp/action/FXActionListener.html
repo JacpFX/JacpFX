@@ -36,11 +36,11 @@
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../../../../../org/jacp/javafx/rcp/action/FXAction.html" title="class in org.jacpfx.rcp.message"><span class="strong">Prev Class</span></a></li>
+<li><a href="../../../../../org/jacp/javafx/rcp/message/FXAction.html" title="class in org.jacpfx.rcp.message"><span class="strong">Prev Class</span></a></li>
 <li>Next Class</li>
 </ul>
 <ul class="navList">
-<li><a href="../../../../../index.html?org/jacp/javafx/rcp/action/FXActionListener.html" target="_top">Frames</a></li>
+<li><a href="../../../../../index.html?org/jacp/javafx/rcp/message/FXActionListener.html" target="_top">Frames</a></li>
 <li><a href="FXActionListener.html" target="_top">No Frames</a></li>
 </ul>
 <ul class="navList" id="allclasses_navbar_top">
@@ -96,13 +96,13 @@
 <li class="blockList">
 <dl>
 <dt>All Implemented Interfaces:</dt>
-<dd>java.util.EventListener, javafx.event.EventHandler&lt;javafx.event.Event&gt;, <a href="../../../../../org/jacp/api/action/IActionListener.html" title="interface in org.jacpfx.api.message">IActionListener</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</dd>
+<dd>java.util.EventListener, javafx.event.EventHandler&lt;javafx.event.Event&gt;, <a href="../../../../../org/jacp/api/message/IActionListener.html" title="interface in org.jacpfx.api.message">IActionListener</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</dd>
 </dl>
 <hr>
 <br>
 <pre>public class <span class="strong">FXActionListener</span>
 extends java.lang.Object
-implements javafx.event.EventHandler&lt;javafx.event.Event&gt;, <a href="../../../../../org/jacp/api/action/IActionListener.html" title="interface in org.jacpfx.api.message">IActionListener</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</pre>
+implements javafx.event.EventHandler&lt;javafx.event.Event&gt;, <a href="../../../../../org/jacp/api/message/IActionListener.html" title="interface in org.jacpfx.api.message">IActionListener</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</pre>
 <div class="block">This class represents the JACP FX2 Event listener... this class can be
  assigned to components, it reacts on actions and notifies other components in
  JACP</div>
@@ -126,8 +126,8 @@ implements javafx.event.EventHandler&lt;javafx.event.Event&gt;, <a href="../../.
 <th class="colOne" scope="col">Constructor and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colOne"><code><strong><a href="../../../../../org/jacp/javafx/rcp/action/FXActionListener.html#FXActionListener(org.jacpfx.apiaction.IAction, java.util.concurrent.BlockingQueue)">FXActionListener</a></strong>(<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action,
-                java.util.concurrent.BlockingQueue&lt;<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;globalMessageQueue)</code>&nbsp;</td>
+<td class="colOne"><code><strong><a href="../../../../../org/jacp/javafx/rcp/message/FXActionListener.html#FXActionListener(org.jacpfx.apiaction.IAction, java.util.concurrent.BlockingQueue)">FXActionListener</a></strong>(<a href="../../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message,
+                java.util.concurrent.BlockingQueue&lt;<a href="../../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;globalMessageQueue)</code>&nbsp;</td>
 </tr>
 </table>
 </li>
@@ -145,30 +145,30 @@ implements javafx.event.EventHandler&lt;javafx.event.Event&gt;, <a href="../../.
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colFirst"><code><a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;</code></td>
-<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/action/FXActionListener.html#getAction()">getAction</a></strong>()</code>
-<div class="block">Returns the action.</div>
+<td class="colFirst"><code><a href="../../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/message/FXActionListener.html#getAction()">getAction</a></strong>()</code>
+<div class="block">Returns the message.</div>
 </td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>javafx.event.EventHandler&lt;javafx.event.Event&gt;</code></td>
-<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/action/FXActionListener.html#getListener()">getListener</a></strong>()</code>
+<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/message/FXActionListener.html#getListener()">getListener</a></strong>()</code>
 <div class="block">Returns implementation specific ActionListener.</div>
 </td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/action/FXActionListener.html#handle(javafx.event.Event)">handle</a></strong>(javafx.event.Event&nbsp;t)</code>&nbsp;</td>
+<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/message/FXActionListener.html#handle(javafx.event.Event)">handle</a></strong>(javafx.event.Event&nbsp;t)</code>&nbsp;</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/action/FXActionListener.html#notifyComponents(org.jacpfx.apiaction.IAction)">notifyComponents</a></strong>(<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</code>
-<div class="block">Notify component when action fired.</div>
+<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/message/FXActionListener.html#notifyComponents(org.jacpfx.apiaction.IAction)">notifyComponents</a></strong>(<a href="../../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message)</code>
+<div class="block">Notify component when message fired.</div>
 </td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/action/FXActionListener.html#performAction(javafx.event.Event)">performAction</a></strong>(javafx.event.Event&nbsp;arg0)</code>
+<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/message/FXActionListener.html#performAction(javafx.event.Event)">performAction</a></strong>(javafx.event.Event&nbsp;arg0)</code>
 <div class="block">Abstraction to handle actions/events uniform on different toolkits.</div>
 </td>
 </tr>
@@ -200,8 +200,8 @@ implements javafx.event.EventHandler&lt;javafx.event.Event&gt;, <a href="../../.
 <ul class="blockListLast">
 <li class="blockList">
 <h4>FXActionListener</h4>
-<pre>public&nbsp;FXActionListener(<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action,
-                java.util.concurrent.BlockingQueue&lt;<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;globalMessageQueue)</pre>
+<pre>public&nbsp;FXActionListener(<a href="../../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message,
+                java.util.concurrent.BlockingQueue&lt;<a href="../../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;globalMessageQueue)</pre>
 </li>
 </ul>
 </li>
@@ -218,13 +218,13 @@ implements javafx.event.EventHandler&lt;javafx.event.Event&gt;, <a href="../../.
 <ul class="blockList">
 <li class="blockList">
 <h4>notifyComponents</h4>
-<pre>public&nbsp;void&nbsp;notifyComponents(<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</pre>
-<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/action/IActionListener.html#notifyComponents(org.jacpfx.apiaction.IAction)">IActionListener</a></code></strong></div>
-<div class="block">Notify component when action fired.</div>
+<pre>public&nbsp;void&nbsp;notifyComponents(<a href="../../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message)</pre>
+<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/message/IActionListener.html#notifyComponents(org.jacpfx.apiaction.IAction)">IActionListener</a></code></strong></div>
+<div class="block">Notify component when message fired.</div>
 <dl>
 <dt><strong>Specified by:</strong></dt>
-<dd><code><a href="../../../../../org/jacp/api/action/IActionListener.html#notifyComponents(org.jacpfx.apiaction.IAction)">notifyComponents</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/action/IActionListener.html" title="interface in org.jacpfx.api.message">IActionListener</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</code></dd>
-<dt><span class="strong">Parameters:</span></dt><dd><code>action</code> - ;  the action fired by components</dd></dl>
+<dd><code><a href="../../../../../org/jacp/api/message/IActionListener.html#notifyComponents(org.jacpfx.apiaction.IAction)">notifyComponents</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/message/IActionListener.html" title="interface in org.jacpfx.api.message">IActionListener</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</code></dd>
+<dt><span class="strong">Parameters:</span></dt><dd><code>message</code> - ;  the message fired by components</dd></dl>
 </li>
 </ul>
 <a name="getAction()">
@@ -233,13 +233,13 @@ implements javafx.event.EventHandler&lt;javafx.event.Event&gt;, <a href="../../.
 <ul class="blockList">
 <li class="blockList">
 <h4>getAction</h4>
-<pre>public&nbsp;<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;getAction()</pre>
-<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/action/IActionListener.html#getAction()">IActionListener</a></code></strong></div>
-<div class="block">Returns the action.</div>
+<pre>public&nbsp;<a href="../../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;getAction()</pre>
+<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/message/IActionListener.html#getAction()">IActionListener</a></code></strong></div>
+<div class="block">Returns the message.</div>
 <dl>
 <dt><strong>Specified by:</strong></dt>
-<dd><code><a href="../../../../../org/jacp/api/action/IActionListener.html#getAction()">getAction</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/action/IActionListener.html" title="interface in org.jacpfx.api.message">IActionListener</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</code></dd>
-<dt><span class="strong">Returns:</span></dt><dd>an action instance</dd></dl>
+<dd><code><a href="../../../../../org/jacp/api/message/IActionListener.html#getAction()">getAction</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/message/IActionListener.html" title="interface in org.jacpfx.api.message">IActionListener</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</code></dd>
+<dt><span class="strong">Returns:</span></dt><dd>an message instance</dd></dl>
 </li>
 </ul>
 <a name="getListener()">
@@ -249,12 +249,12 @@ implements javafx.event.EventHandler&lt;javafx.event.Event&gt;, <a href="../../.
 <li class="blockList">
 <h4>getListener</h4>
 <pre>public&nbsp;javafx.event.EventHandler&lt;javafx.event.Event&gt;&nbsp;getListener()</pre>
-<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/action/IActionListener.html#getListener()">IActionListener</a></code></strong></div>
+<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/message/IActionListener.html#getListener()">IActionListener</a></code></strong></div>
 <div class="block">Returns implementation specific ActionListener. All listeners should
  extend java.util.EventListener.</div>
 <dl>
 <dt><strong>Specified by:</strong></dt>
-<dd><code><a href="../../../../../org/jacp/api/action/IActionListener.html#getListener()">getListener</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/action/IActionListener.html" title="interface in org.jacpfx.api.message">IActionListener</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</code></dd>
+<dd><code><a href="../../../../../org/jacp/api/message/IActionListener.html#getListener()">getListener</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/message/IActionListener.html" title="interface in org.jacpfx.api.message">IActionListener</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</code></dd>
 <dt><span class="strong">Returns:</span></dt><dd>a new listener instance</dd></dl>
 </li>
 </ul>
@@ -278,12 +278,12 @@ implements javafx.event.EventHandler&lt;javafx.event.Event&gt;, <a href="../../.
 <li class="blockList">
 <h4>performAction</h4>
 <pre>public&nbsp;void&nbsp;performAction(javafx.event.Event&nbsp;arg0)</pre>
-<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/action/IActionListener.html#performAction(A)">IActionListener</a></code></strong></div>
+<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/message/IActionListener.html#performAction(A)">IActionListener</a></code></strong></div>
 <div class="block">Abstraction to handle actions/events uniform on different toolkits.
  Method invokes toolkit specific handle method perform event call.</div>
 <dl>
 <dt><strong>Specified by:</strong></dt>
-<dd><code><a href="../../../../../org/jacp/api/action/IActionListener.html#performAction(A)">performAction</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/action/IActionListener.html" title="interface in org.jacpfx.api.message">IActionListener</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</code></dd>
+<dd><code><a href="../../../../../org/jacp/api/message/IActionListener.html#performAction(A)">performAction</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/message/IActionListener.html" title="interface in org.jacpfx.api.message">IActionListener</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;</code></dd>
 <dt><span class="strong">Parameters:</span></dt><dd><code>arg0</code> - ; proxy to common event handlers</dd></dl>
 </li>
 </ul>
@@ -313,11 +313,11 @@ implements javafx.event.EventHandler&lt;javafx.event.Event&gt;, <a href="../../.
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../../../../../org/jacp/javafx/rcp/action/FXAction.html" title="class in org.jacpfx.rcp.message"><span class="strong">Prev Class</span></a></li>
+<li><a href="../../../../../org/jacp/javafx/rcp/message/FXAction.html" title="class in org.jacpfx.rcp.message"><span class="strong">Prev Class</span></a></li>
 <li>Next Class</li>
 </ul>
 <ul class="navList">
-<li><a href="../../../../../index.html?org/jacp/javafx/rcp/action/FXActionListener.html" target="_top">Frames</a></li>
+<li><a href="../../../../../index.html?org/jacp/javafx/rcp/message/FXActionListener.html" target="_top">Frames</a></li>
 <li><a href="FXActionListener.html" target="_top">No Frames</a></li>
 </ul>
 <ul class="navList" id="allclasses_navbar_bottom">

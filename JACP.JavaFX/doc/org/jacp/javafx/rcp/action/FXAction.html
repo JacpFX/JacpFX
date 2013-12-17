@@ -37,10 +37,10 @@
 <div class="subNav">
 <ul class="navList">
 <li>Prev Class</li>
-<li><a href="../../../../../org/jacp/javafx/rcp/action/FXActionListener.html" title="class in org.jacpfx.rcp.message"><span class="strong">Next Class</span></a></li>
+<li><a href="../../../../../org/jacp/javafx/rcp/message/FXActionListener.html" title="class in org.jacpfx.rcp.message"><span class="strong">Next Class</span></a></li>
 </ul>
 <ul class="navList">
-<li><a href="../../../../../index.html?org/jacp/javafx/rcp/action/FXAction.html" target="_top">Frames</a></li>
+<li><a href="../../../../../index.html?org/jacp/javafx/rcp/message/FXAction.html" target="_top">Frames</a></li>
 <li><a href="FXAction.html" target="_top">No Frames</a></li>
 </ul>
 <ul class="navList" id="allclasses_navbar_top">
@@ -96,14 +96,14 @@
 <li class="blockList">
 <dl>
 <dt>All Implemented Interfaces:</dt>
-<dd>java.lang.Cloneable, <a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;</dd>
+<dd>java.lang.Cloneable, <a href="../../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;</dd>
 </dl>
 <hr>
 <br>
 <pre>public final class <span class="strong">FXAction</span>
 extends java.lang.Object
-implements <a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;</pre>
-<div class="block">represents an action which is fired by an component, has a target and a
+implements <a href="../../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;</pre>
+<div class="block">represents an message which is fired by an component, has a target and a
  message targeting the component itself or an other component</div>
 <dl><dt><span class="strong">Author:</span></dt>
   <dd>Andy Moncsek</dd></dl>
@@ -125,18 +125,18 @@ implements <a href="../../../../../org/jacp/api/action/IAction.html" title="inte
 <th class="colOne" scope="col">Constructor and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colOne"><code><strong><a href="../../../../../org/jacp/javafx/rcp/action/FXAction.html#FXAction(java.lang.String)">FXAction</a></strong>(java.lang.String&nbsp;sourceId)</code>&nbsp;</td>
+<td class="colOne"><code><strong><a href="../../../../../org/jacp/javafx/rcp/message/FXAction.html#FXAction(java.lang.String)">FXAction</a></strong>(java.lang.String&nbsp;sourceId)</code>&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<td class="colOne"><code><strong><a href="../../../../../org/jacp/javafx/rcp/action/FXAction.html#FXAction(java.lang.String, javafx.event.Event)">FXAction</a></strong>(java.lang.String&nbsp;sourceId,
+<td class="colOne"><code><strong><a href="../../../../../org/jacp/javafx/rcp/message/FXAction.html#FXAction(java.lang.String, javafx.event.Event)">FXAction</a></strong>(java.lang.String&nbsp;sourceId,
         javafx.event.Event&nbsp;event)</code>&nbsp;</td>
 </tr>
 <tr class="altColor">
-<td class="colOne"><code><strong><a href="../../../../../org/jacp/javafx/rcp/action/FXAction.html#FXAction(java.lang.String, java.lang.Object)">FXAction</a></strong>(java.lang.String&nbsp;sourceId,
+<td class="colOne"><code><strong><a href="../../../../../org/jacp/javafx/rcp/message/FXAction.html#FXAction(java.lang.String, java.lang.Object)">FXAction</a></strong>(java.lang.String&nbsp;sourceId,
         java.lang.Object&nbsp;message)</code>&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<td class="colOne"><code><strong><a href="../../../../../org/jacp/javafx/rcp/action/FXAction.html#FXAction(java.lang.String, java.lang.String, java.lang.Object, javafx.event.Event)">FXAction</a></strong>(java.lang.String&nbsp;sourceId,
+<td class="colOne"><code><strong><a href="../../../../../org/jacp/javafx/rcp/message/FXAction.html#FXAction(java.lang.String, java.lang.String, java.lang.Object, javafx.event.Event)">FXAction</a></strong>(java.lang.String&nbsp;sourceId,
         java.lang.String&nbsp;targetId,
         java.lang.Object&nbsp;message,
         javafx.event.Event&nbsp;event)</code>&nbsp;</td>
@@ -158,44 +158,44 @@ implements <a href="../../../../../org/jacp/api/action/IAction.html" title="inte
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/action/FXAction.html#addMessage(java.lang.String, java.lang.Object)">addMessage</a></strong>(java.lang.String&nbsp;targetId,
+<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/message/FXAction.html#addMessage(java.lang.String, java.lang.Object)">addMessage</a></strong>(java.lang.String&nbsp;targetId,
           java.lang.Object&nbsp;message)</code>
 <div class="block">Set message for a specified target component. the component.</div>
 </td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><code><a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;</code></td>
-<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/action/FXAction.html#clone()">clone</a></strong>()</code>
-<div class="block">Clone action and containing event.</div>
+<td class="colFirst"><code><a href="../../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;</code></td>
+<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/message/FXAction.html#clone()">clone</a></strong>()</code>
+<div class="block">Clone message and containing event.</div>
 </td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>javafx.event.Event</code></td>
-<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/action/FXAction.html#getActionEvent()">getActionEvent</a></strong>()</code>
-<div class="block">Get implementation specific action event.</div>
+<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/message/FXAction.html#getActionEvent()">getActionEvent</a></strong>()</code>
+<div class="block">Get implementation specific message event.</div>
 </td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>java.lang.Object</code></td>
-<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/action/FXAction.html#getLastMessage()">getLastMessage</a></strong>()</code>
-<div class="block">Get the action message.</div>
+<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/message/FXAction.html#getLastMessage()">getLastMessage</a></strong>()</code>
+<div class="block">Get the message message.</div>
 </td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/action/FXAction.html#getSourceId()">getSourceId</a></strong>()</code>
+<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/message/FXAction.html#getSourceId()">getSourceId</a></strong>()</code>
 <div class="block">Get the caller id.</div>
 </td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/action/FXAction.html#getTargetId()">getTargetId</a></strong>()</code>
-<div class="block">Returns action target id.</div>
+<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/message/FXAction.html#getTargetId()">getTargetId</a></strong>()</code>
+<div class="block">Returns message target id.</div>
 </td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/action/FXAction.html#setMessage(java.lang.Object)">setMessage</a></strong>(java.lang.Object&nbsp;message)</code>
+<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/message/FXAction.html#setMessage(java.lang.Object)">setMessage</a></strong>(java.lang.Object&nbsp;message)</code>
 <div class="block">Set message for target component.</div>
 </td>
 </tr>
@@ -277,12 +277,12 @@ implements <a href="../../../../../org/jacp/api/action/IAction.html" title="inte
 <li class="blockList">
 <h4>setMessage</h4>
 <pre>public&nbsp;void&nbsp;setMessage(java.lang.Object&nbsp;message)</pre>
-<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/action/IAction.html#setMessage(M)">IAction</a></code></strong></div>
+<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/message/IAction.html#setMessage(M)">IAction</a></code></strong></div>
 <div class="block">Set message for target component.</div>
 <dl>
 <dt><strong>Specified by:</strong></dt>
-<dd><code><a href="../../../../../org/jacp/api/action/IAction.html#setMessage(M)">setMessage</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;</code></dd>
-<dt><span class="strong">Parameters:</span></dt><dd><code>message</code> - ;  the message set to action</dd></dl>
+<dd><code><a href="../../../../../org/jacp/api/message/IAction.html#setMessage(M)">setMessage</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;</code></dd>
+<dt><span class="strong">Parameters:</span></dt><dd><code>message</code> - ;  the message set to message</dd></dl>
 </li>
 </ul>
 <a name="addMessage(java.lang.String, java.lang.Object)">
@@ -293,12 +293,12 @@ implements <a href="../../../../../org/jacp/api/action/IAction.html" title="inte
 <h4>addMessage</h4>
 <pre>public&nbsp;void&nbsp;addMessage(java.lang.String&nbsp;targetId,
               java.lang.Object&nbsp;message)</pre>
-<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/action/IAction.html#addMessage(java.lang.String, M)">IAction</a></code></strong></div>
+<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/message/IAction.html#addMessage(java.lang.String, M)">IAction</a></code></strong></div>
 <div class="block">Set message for a specified target component. the component.</div>
 <dl>
 <dt><strong>Specified by:</strong></dt>
-<dd><code><a href="../../../../../org/jacp/api/action/IAction.html#addMessage(java.lang.String, M)">addMessage</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;</code></dd>
-<dt><span class="strong">Parameters:</span></dt><dd><code>targetId</code> - ; the actions target id</dd><dd><code>message</code> - ;  the message set to action</dd></dl>
+<dd><code><a href="../../../../../org/jacp/api/message/IAction.html#addMessage(java.lang.String, M)">addMessage</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;</code></dd>
+<dt><span class="strong">Parameters:</span></dt><dd><code>targetId</code> - ; the actions target id</dd><dd><code>message</code> - ;  the message set to message</dd></dl>
 </li>
 </ul>
 <a name="getLastMessage()">
@@ -308,11 +308,11 @@ implements <a href="../../../../../org/jacp/api/action/IAction.html" title="inte
 <li class="blockList">
 <h4>getLastMessage</h4>
 <pre>public&nbsp;java.lang.Object&nbsp;getLastMessage()</pre>
-<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/action/IAction.html#getLastMessage()">IAction</a></code></strong></div>
-<div class="block">Get the action message.</div>
+<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/message/IAction.html#getLastMessage()">IAction</a></code></strong></div>
+<div class="block">Get the message message.</div>
 <dl>
 <dt><strong>Specified by:</strong></dt>
-<dd><code><a href="../../../../../org/jacp/api/action/IAction.html#getLastMessage()">getLastMessage</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;</code></dd>
+<dd><code><a href="../../../../../org/jacp/api/message/IAction.html#getLastMessage()">getLastMessage</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;</code></dd>
 <dt><span class="strong">Returns:</span></dt><dd>M</dd></dl>
 </li>
 </ul>
@@ -323,11 +323,11 @@ implements <a href="../../../../../org/jacp/api/action/IAction.html" title="inte
 <li class="blockList">
 <h4>getSourceId</h4>
 <pre>public&nbsp;java.lang.String&nbsp;getSourceId()</pre>
-<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/action/IAction.html#getSourceId()">IAction</a></code></strong></div>
+<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/message/IAction.html#getSourceId()">IAction</a></code></strong></div>
 <div class="block">Get the caller id.</div>
 <dl>
 <dt><strong>Specified by:</strong></dt>
-<dd><code><a href="../../../../../org/jacp/api/action/IAction.html#getSourceId()">getSourceId</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;</code></dd>
+<dd><code><a href="../../../../../org/jacp/api/message/IAction.html#getSourceId()">getSourceId</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;</code></dd>
 <dt><span class="strong">Returns:</span></dt><dd>the sorce id</dd></dl>
 </li>
 </ul>
@@ -338,11 +338,11 @@ implements <a href="../../../../../org/jacp/api/action/IAction.html" title="inte
 <li class="blockList">
 <h4>getActionEvent</h4>
 <pre>public&nbsp;javafx.event.Event&nbsp;getActionEvent()</pre>
-<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/action/IAction.html#getActionEvent()">IAction</a></code></strong></div>
-<div class="block">Get implementation specific action event.</div>
+<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/message/IAction.html#getActionEvent()">IAction</a></code></strong></div>
+<div class="block">Get implementation specific message event.</div>
 <dl>
 <dt><strong>Specified by:</strong></dt>
-<dd><code><a href="../../../../../org/jacp/api/action/IAction.html#getActionEvent()">getActionEvent</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;</code></dd>
+<dd><code><a href="../../../../../org/jacp/api/message/IAction.html#getActionEvent()">getActionEvent</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;</code></dd>
 <dt><span class="strong">Returns:</span></dt><dd>the event</dd></dl>
 </li>
 </ul>
@@ -352,15 +352,15 @@ implements <a href="../../../../../org/jacp/api/action/IAction.html" title="inte
 <ul class="blockList">
 <li class="blockList">
 <h4>clone</h4>
-<pre>public&nbsp;<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;clone()</pre>
-<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/action/IAction.html#clone()">IAction</a></code></strong></div>
-<div class="block">Clone action and containing event.</div>
+<pre>public&nbsp;<a href="../../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;clone()</pre>
+<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/message/IAction.html#clone()">IAction</a></code></strong></div>
+<div class="block">Clone message and containing event.</div>
 <dl>
 <dt><strong>Specified by:</strong></dt>
-<dd><code><a href="../../../../../org/jacp/api/action/IAction.html#clone()">clone</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;</code></dd>
+<dd><code><a href="../../../../../org/jacp/api/message/IAction.html#clone()">clone</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;</code></dd>
 <dt><strong>Overrides:</strong></dt>
 <dd><code>clone</code>&nbsp;in class&nbsp;<code>java.lang.Object</code></dd>
-<dt><span class="strong">Returns:</span></dt><dd>a clone of current action instance</dd></dl>
+<dt><span class="strong">Returns:</span></dt><dd>a clone of current message instance</dd></dl>
 </li>
 </ul>
 <a name="getTargetId()">
@@ -370,11 +370,11 @@ implements <a href="../../../../../org/jacp/api/action/IAction.html" title="inte
 <li class="blockList">
 <h4>getTargetId</h4>
 <pre>public&nbsp;java.lang.String&nbsp;getTargetId()</pre>
-<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/action/IAction.html#getTargetId()">IAction</a></code></strong></div>
-<div class="block">Returns action target id.</div>
+<div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/message/IAction.html#getTargetId()">IAction</a></code></strong></div>
+<div class="block">Returns message target id.</div>
 <dl>
 <dt><strong>Specified by:</strong></dt>
-<dd><code><a href="../../../../../org/jacp/api/action/IAction.html#getTargetId()">getTargetId</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;</code></dd>
+<dd><code><a href="../../../../../org/jacp/api/message/IAction.html#getTargetId()">getTargetId</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;</code></dd>
 <dt><span class="strong">Returns:</span></dt><dd>the target id</dd></dl>
 </li>
 </ul>
@@ -405,10 +405,10 @@ implements <a href="../../../../../org/jacp/api/action/IAction.html" title="inte
 <div class="subNav">
 <ul class="navList">
 <li>Prev Class</li>
-<li><a href="../../../../../org/jacp/javafx/rcp/action/FXActionListener.html" title="class in org.jacpfx.rcp.message"><span class="strong">Next Class</span></a></li>
+<li><a href="../../../../../org/jacp/javafx/rcp/message/FXActionListener.html" title="class in org.jacpfx.rcp.message"><span class="strong">Next Class</span></a></li>
 </ul>
 <ul class="navList">
-<li><a href="../../../../../index.html?org/jacp/javafx/rcp/action/FXAction.html" target="_top">Frames</a></li>
+<li><a href="../../../../../index.html?org/jacp/javafx/rcp/message/FXAction.html" target="_top">Frames</a></li>
 <li><a href="FXAction.html" target="_top">No Frames</a></li>
 </ul>
 <ul class="navList" id="allclasses_navbar_bottom">

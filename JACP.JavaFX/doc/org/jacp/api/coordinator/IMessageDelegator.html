@@ -122,12 +122,12 @@ extends <a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="in
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><strong><a href="../../../../org/jacp/api/coordinator/IMessageDelegator.html#delegateMessage(org.jacpfx.apiaction.IDelegateDTO)">delegateMessage</a></strong>(<a href="../../../../org/jacp/api/action/IDelegateDTO.html" title="interface in org.jacpfx.api.message">IDelegateDTO</a>&lt;<a href="../../../../org/jacp/api/coordinator/IMessageDelegator.html" title="type parameter in IMessageDelegator">A</a>,<a href="../../../../org/jacp/api/coordinator/IMessageDelegator.html" title="type parameter in IMessageDelegator">M</a>&gt;&nbsp;messageDTO)</code>
+<td class="colLast"><code><strong><a href="../../../../org/jacp/api/coordinator/IMessageDelegator.html#delegateMessage(org.jacpfx.apiaction.IDelegateDTO)">delegateMessage</a></strong>(<a href="../../../../org/jacp/api/message/IDelegateDTO.html" title="interface in org.jacpfx.api.message">IDelegateDTO</a>&lt;<a href="../../../../org/jacp/api/coordinator/IMessageDelegator.html" title="type parameter in IMessageDelegator">A</a>,<a href="../../../../org/jacp/api/coordinator/IMessageDelegator.html" title="type parameter in IMessageDelegator">M</a>&gt;&nbsp;messageDTO)</code>
 <div class="block">Delegate message to correct perspective/component</div>
 </td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><code>java.util.concurrent.BlockingQueue&lt;<a href="../../../../org/jacp/api/action/IDelegateDTO.html" title="interface in org.jacpfx.api.message">IDelegateDTO</a>&lt;<a href="../../../../org/jacp/api/coordinator/IMessageDelegator.html" title="type parameter in IMessageDelegator">A</a>,<a href="../../../../org/jacp/api/coordinator/IMessageDelegator.html" title="type parameter in IMessageDelegator">M</a>&gt;&gt;</code></td>
+<td class="colFirst"><code>java.util.concurrent.BlockingQueue&lt;<a href="../../../../org/jacp/api/message/IDelegateDTO.html" title="interface in org.jacpfx.api.message">IDelegateDTO</a>&lt;<a href="../../../../org/jacp/api/coordinator/IMessageDelegator.html" title="type parameter in IMessageDelegator">A</a>,<a href="../../../../org/jacp/api/coordinator/IMessageDelegator.html" title="type parameter in IMessageDelegator">M</a>&gt;&gt;</code></td>
 <td class="colLast"><code><strong><a href="../../../../org/jacp/api/coordinator/IMessageDelegator.html#getMessageDelegateQueue()">getMessageDelegateQueue</a></strong>()</code>
 <div class="block">Returns the delegate queue.</div>
 </td>
@@ -160,7 +160,7 @@ extends <a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="in
 <ul class="blockList">
 <li class="blockList">
 <h4>delegateMessage</h4>
-<pre>void&nbsp;delegateMessage(<a href="../../../../org/jacp/api/action/IDelegateDTO.html" title="interface in org.jacpfx.api.message">IDelegateDTO</a>&lt;<a href="../../../../org/jacp/api/coordinator/IMessageDelegator.html" title="type parameter in IMessageDelegator">A</a>,<a href="../../../../org/jacp/api/coordinator/IMessageDelegator.html" title="type parameter in IMessageDelegator">M</a>&gt;&nbsp;messageDTO)</pre>
+<pre>void&nbsp;delegateMessage(<a href="../../../../org/jacp/api/message/IDelegateDTO.html" title="interface in org.jacpfx.api.message">IDelegateDTO</a>&lt;<a href="../../../../org/jacp/api/coordinator/IMessageDelegator.html" title="type parameter in IMessageDelegator">A</a>,<a href="../../../../org/jacp/api/coordinator/IMessageDelegator.html" title="type parameter in IMessageDelegator">M</a>&gt;&nbsp;messageDTO)</pre>
 <div class="block">Delegate message to correct perspective/component</div>
 <dl><dt><span class="strong">Parameters:</span></dt><dd><code>messageDTO</code> - </dd></dl>
 </li>
@@ -171,7 +171,7 @@ extends <a href="../../../../org/jacp/api/coordinator/IDelegator.html" title="in
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getMessageDelegateQueue</h4>
-<pre>java.util.concurrent.BlockingQueue&lt;<a href="../../../../org/jacp/api/action/IDelegateDTO.html" title="interface in org.jacpfx.api.message">IDelegateDTO</a>&lt;<a href="../../../../org/jacp/api/coordinator/IMessageDelegator.html" title="type parameter in IMessageDelegator">A</a>,<a href="../../../../org/jacp/api/coordinator/IMessageDelegator.html" title="type parameter in IMessageDelegator">M</a>&gt;&gt;&nbsp;getMessageDelegateQueue()</pre>
+<pre>java.util.concurrent.BlockingQueue&lt;<a href="../../../../org/jacp/api/message/IDelegateDTO.html" title="interface in org.jacpfx.api.message">IDelegateDTO</a>&lt;<a href="../../../../org/jacp/api/coordinator/IMessageDelegator.html" title="type parameter in IMessageDelegator">A</a>,<a href="../../../../org/jacp/api/coordinator/IMessageDelegator.html" title="type parameter in IMessageDelegator">M</a>&gt;&gt;&nbsp;getMessageDelegateQueue()</pre>
 <div class="block">Returns the delegate queue.</div>
 <dl><dt><span class="strong">Returns:</span></dt><dd>the delegate queue</dd></dl>
 </li>

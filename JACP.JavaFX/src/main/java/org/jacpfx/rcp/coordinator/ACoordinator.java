@@ -55,16 +55,16 @@ public abstract class ACoordinator extends Thread implements
 		while (!Thread.interrupted()) {
 			this.log(" observer thread size" + this.messages.size());
 
-			Message<Event, Object> action;
+			Message<Event, Object> message;
 			try {
-				action = this.messages.take();
+				message = this.messages.take();
 			} catch (final InterruptedException e) {
 				logger.info("queue in ACoordinator interrupted");
 				break;
 			}
-			this.log(" handle message to: " + action.getTargetId());
+			this.log(" handle message to: " + message.getTargetId());
 			try {
-				this.handleMessage(action.getTargetId(), action);
+				this.handleMessage(message.getTargetId(), message);
 			} catch (UnsupportedOperationException e) {
 				logger.info("UnsupportedOperationException in ACoordinator");
 				e.printStackTrace();

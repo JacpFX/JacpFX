@@ -95,7 +95,7 @@ var activeTableTab = "activeTableTab";
 <dl>
 <dt><span class="strong">Type Parameters:</span></dt>
 <dd><code>T</code> - component type to register</dd>
-<dd><code>A</code> - action type to use in registration process</dd>
+<dd><code>A</code> - message type to use in registration process</dd>
 </dl>
 <hr>
 <br>
@@ -121,14 +121,14 @@ var activeTableTab = "activeTableTab";
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="strong"><a href="../../../../org/jacp/api/handler/IComponentHandler.html#handleAndReplaceComponent(A, T)">handleAndReplaceComponent</a></span>(<a href="../../../../org/jacp/api/handler/IComponentHandler.html" title="type parameter in IComponentHandler">A</a>&nbsp;action,
+<td class="colLast"><code><span class="strong"><a href="../../../../org/jacp/api/handler/IComponentHandler.html#handleAndReplaceComponent(A, T)">handleAndReplaceComponent</a></span>(<a href="../../../../org/jacp/api/handler/IComponentHandler.html" title="type parameter in IComponentHandler">A</a>&nbsp;message,
                          <a href="../../../../org/jacp/api/handler/IComponentHandler.html" title="type parameter in IComponentHandler">T</a>&nbsp;component)</code>
 <div class="block">Runs 'handle' method and replace of subcomponent in perspective.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><span class="strong"><a href="../../../../org/jacp/api/handler/IComponentHandler.html#initComponent(A, T)">initComponent</a></span>(<a href="../../../../org/jacp/api/handler/IComponentHandler.html" title="type parameter in IComponentHandler">A</a>&nbsp;action,
+<td class="colLast"><code><span class="strong"><a href="../../../../org/jacp/api/handler/IComponentHandler.html#initComponent(A, T)">initComponent</a></span>(<a href="../../../../org/jacp/api/handler/IComponentHandler.html" title="type parameter in IComponentHandler">A</a>&nbsp;message,
              <a href="../../../../org/jacp/api/handler/IComponentHandler.html" title="type parameter in IComponentHandler">T</a>&nbsp;component)</code>
 <div class="block">Handles initialization of a single component.</div>
 </td>
@@ -156,12 +156,12 @@ var activeTableTab = "activeTableTab";
 <ul class="blockList">
 <li class="blockList">
 <h4>initComponent</h4>
-<pre>void&nbsp;initComponent(<a href="../../../../org/jacp/api/handler/IComponentHandler.html" title="type parameter in IComponentHandler">A</a>&nbsp;action,
+<pre>void&nbsp;initComponent(<a href="../../../../org/jacp/api/handler/IComponentHandler.html" title="type parameter in IComponentHandler">A</a>&nbsp;message,
                    <a href="../../../../org/jacp/api/handler/IComponentHandler.html" title="type parameter in IComponentHandler">T</a>&nbsp;component)</pre>
 <div class="block">Handles initialization of a single component.</div>
 <dl>
 <dt><span class="strong">Parameters:</span></dt>
-<dd><code>action</code> - </dd>
+<dd><code>message</code> - </dd>
 <dd><code>component</code> - </dd>
 </dl>
 </li>
@@ -174,13 +174,13 @@ var activeTableTab = "activeTableTab";
 <ul class="blockListLast">
 <li class="blockList">
 <h4>handleAndReplaceComponent</h4>
-<pre>void&nbsp;handleAndReplaceComponent(<a href="../../../../org/jacp/api/handler/IComponentHandler.html" title="type parameter in IComponentHandler">A</a>&nbsp;action,
+<pre>void&nbsp;handleAndReplaceComponent(<a href="../../../../org/jacp/api/handler/IComponentHandler.html" title="type parameter in IComponentHandler">A</a>&nbsp;message,
                                <a href="../../../../org/jacp/api/handler/IComponentHandler.html" title="type parameter in IComponentHandler">T</a>&nbsp;component)</pre>
 <div class="block">Runs 'handle' method and replace of subcomponent in perspective.</div>
 <dl>
 <dt><span class="strong">Parameters:</span></dt>
 <dd><code>component</code> - </dd>
-<dd><code>action</code> - </dd>
+<dd><code>message</code> - </dd>
 </dl>
 </li>
 </ul>

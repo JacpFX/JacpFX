@@ -56,7 +56,7 @@ public interface Message<A, M> extends Cloneable {
 	/**
 	 * Get the message message.
 	 * 
-	 * @return M
+	 * @return M returns the message object
 	 */
 	M getMessageBody();
 
@@ -64,7 +64,7 @@ public interface Message<A, M> extends Cloneable {
 	/**
 	 * Get the caller id.
 	 * 
-	 * @return the sorce id
+	 * @return the source id
 	 */
 	String getSourceId();
 
@@ -93,7 +93,7 @@ public interface Message<A, M> extends Cloneable {
      * Checks if message is type of a given class.
      * @param clazz
      * @param <T>
-     * @return
+     * @return  true if message body type equals clazz
      */
     <T> boolean isMessageBodyTypeOf(final Class<T> clazz);
 
@@ -101,14 +101,14 @@ public interface Message<A, M> extends Cloneable {
      * Returns a typed message, if applicable.
      * @param clazz
      * @param <T>
-     * @return
+     * @return  returns the typed message body
      */
     <T> T getTypedMessageBody(final Class<T> clazz);
 
     /**
      * Check if message equals given input.
      * @param object
-     * @return
+     * @return returns true if object equals the message body
      */
     boolean messageBodyEquals(final Object object);
 

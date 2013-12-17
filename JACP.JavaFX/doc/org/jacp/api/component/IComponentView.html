@@ -86,7 +86,7 @@
 <div class="description">
 <ul class="blockList">
 <li class="blockList">
-<dl><dt><span class="strong">Type Parameters:</span></dt><dd><code>C</code> - defines the base component where others extend from</dd><dd><code>L</code> - defines the action listener type</dd><dd><code>A</code> - defines the basic action type</dd><dd><code>M</code> - defines the basic message type</dd></dl>
+<dl><dt><span class="strong">Type Parameters:</span></dt><dd><code>C</code> - defines the base component where others extend from</dd><dd><code>L</code> - defines the message listener type</dd><dd><code>A</code> - defines the basic message type</dd><dd><code>M</code> - defines the basic message type</dd></dl>
 <dl>
 <dt>All Superinterfaces:</dt>
 <dd><a href="../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;L,A,M&gt;, <a href="../../../../org/jacp/api/component/IHandleable.html" title="interface in org.jacpfx.api.component">IHandleable</a>&lt;A,M&gt;, <a href="../../../../org/jacp/api/component/ISubComponent.html" title="interface in org.jacpfx.api.component">ISubComponent</a>&lt;L,A,M&gt;, <a href="../../../../org/jacp/api/component/UIComponent.html" title="interface in org.jacpfx.api.component">UIComponent</a>&lt;C,L,A,M&gt;</dd>
@@ -124,7 +124,7 @@ extends <a href="../../../../org/jacp/api/component/UIComponent.html" title="int
 <tr class="altColor">
 <td class="colFirst"><code><a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">C</a></code></td>
 <td class="colLast"><code><strong><a href="../../../../org/jacp/api/component/IComponentView.html#postHandle(C, org.jacpfx.apiaction.IAction)">postHandle</a></strong>(<a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">C</a>&nbsp;node,
-          <a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">A</a>,<a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">M</a>&gt;&nbsp;action)</code>
+          <a href="../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">A</a>,<a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">M</a>&gt;&nbsp;message)</code>
 <div class="block">To avoid toolkit specific threading issues the postHandle method always
  called after the handle method.</div>
 </td>
@@ -181,7 +181,7 @@ extends <a href="../../../../org/jacp/api/component/UIComponent.html" title="int
 <li class="blockList">
 <h4>postHandle</h4>
 <pre><a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">C</a>&nbsp;postHandle(<a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">C</a>&nbsp;node,
-           <a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">A</a>,<a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">M</a>&gt;&nbsp;action)</pre>
+           <a href="../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">A</a>,<a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">M</a>&gt;&nbsp;message)</pre>
 <div class="block">To avoid toolkit specific threading issues the postHandle method always
  called after the handle method. While the handle method is executed in a
  separate thread the postHandle method is guaranteed to run in application
@@ -190,7 +190,7 @@ extends <a href="../../../../org/jacp/api/component/UIComponent.html" title="int
  you should use the postHandle method. In the postHandle method you should
  avoid long running tasks. Use it only to create or update your ui
  components.</div>
-<dl><dt><span class="strong">Parameters:</span></dt><dd><code>node</code> - , the ui node</dd><dd><code>action</code> - ,  the trigger action</dd>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>node</code> - , the ui node</dd><dd><code>message</code> - ,  the trigger message</dd>
 <dt><span class="strong">Returns:</span></dt><dd>an ui component</dd></dl>
 </li>
 </ul>

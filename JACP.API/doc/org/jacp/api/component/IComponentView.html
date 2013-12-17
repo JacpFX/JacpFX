@@ -95,8 +95,8 @@ var activeTableTab = "activeTableTab";
 <dl>
 <dt><span class="strong">Type Parameters:</span></dt>
 <dd><code>C</code> - defines the base component where others extend from</dd>
-<dd><code>L</code> - defines the action listener type</dd>
-<dd><code>A</code> - defines the basic action type</dd>
+<dd><code>L</code> - defines the message listener type</dd>
+<dd><code>A</code> - defines the basic message type</dd>
 <dd><code>M</code> - defines the basic message type</dd>
 </dl>
 <dl>
@@ -130,7 +130,7 @@ extends <a href="../../../../org/jacp/api/component/IComponentHandle.html" title
 <tr id="i0" class="altColor">
 <td class="colFirst"><code><a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">C</a></code></td>
 <td class="colLast"><code><span class="strong"><a href="../../../../org/jacp/api/component/IComponentView.html#postHandle(C, org.jacpfx.apiaction.IAction)">postHandle</a></span>(<a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">C</a>&nbsp;node,
-          <a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">A</a>,<a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">M</a>&gt;&nbsp;action)</code>
+          <a href="../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">A</a>,<a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">M</a>&gt;&nbsp;message)</code>
 <div class="block">To avoid toolkit specific threading issues the postHandle method always
  called after the handle method.</div>
 </td>
@@ -166,7 +166,7 @@ extends <a href="../../../../org/jacp/api/component/IComponentHandle.html" title
 <li class="blockList">
 <h4>postHandle</h4>
 <pre><a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">C</a>&nbsp;postHandle(<a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">C</a>&nbsp;node,
-             <a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">A</a>,<a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">M</a>&gt;&nbsp;action)
+             <a href="../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">A</a>,<a href="../../../../org/jacp/api/component/IComponentView.html" title="type parameter in IComponentView">M</a>&gt;&nbsp;message)
       throws java.lang.Exception</pre>
 <div class="block">To avoid toolkit specific threading issues the postHandle method always
  called after the handle method. While the handle method is executed in a
@@ -179,7 +179,7 @@ extends <a href="../../../../org/jacp/api/component/IComponentHandle.html" title
 <dl>
 <dt><span class="strong">Parameters:</span></dt>
 <dd><code>node</code> - , the ui node</dd>
-<dd><code>action</code> - ,  the trigger action</dd>
+<dd><code>message</code> - ,  the trigger message</dd>
 <dt><span class="strong">Returns:</span></dt>
 <dd>an ui component</dd>
 <dt><span class="strong">Throws:</span></dt>

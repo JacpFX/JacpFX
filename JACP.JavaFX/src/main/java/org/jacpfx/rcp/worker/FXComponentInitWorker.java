@@ -55,7 +55,7 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
 
     private final Map<String, Node> targetComponents;
     private final AFXComponent component;
-    private final Message<Event, Object> action;
+    private final Message<Event, Object> message;
     private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
 
     /**
@@ -63,13 +63,13 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
      *
      * @param targetComponents ; a map with all targets provided by perspective
      * @param component        ; the UI component to init
-     * @param action           ; the init message
+     * @param message           ; the init message
      */
     public FXComponentInitWorker(final Map<String, Node> targetComponents,
-                                 final AFXComponent component, final Message<Event, Object> action, final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue) {
+                                 final AFXComponent component, final Message<Event, Object> message, final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue) {
         this.targetComponents = targetComponents;
         this.component = component;
-        this.action = action;
+        this.message = message;
         this.componentDelegateQueue = componentDelegateQueue;
     }
 
@@ -78,7 +78,7 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
      * run. Programmatic components runs PostConstruct; declarative components init
      * the FXML and set the value to root node.
      *
-     * @throws InterruptedException
+     * @throws InterruptedException , exception when thread was interrupted
      */
     private void runPreInitMethods() throws InterruptedException, ExecutionException {
         WorkerUtil.invokeOnFXThreadAndWait(() -> {
@@ -132,9 +132,9 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
         this.log("3.4.4.2.1: subcomponent handle init START: "
                 + name);
         final Node handleReturnValue = WorkerUtil.prepareAndRunHandleMethod(
-                this.component, this.action);
+                this.component, this.message);
         this.executePostHandleAndAddComponent(handleReturnValue,
-                this.component, this.action, this.targetComponents);
+                this.component, this.message, this.targetComponents);
         // check if component was shutdown
         if (!component.isStarted()) return this.component;
         this.component.initWorker(new EmbeddedFXComponentWorker(this.targetComponents, this.componentDelegateQueue, this.component));

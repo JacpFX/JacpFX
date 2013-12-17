@@ -31,6 +31,7 @@ public class MessageCoordinator extends ACoordinator implements
     private BlockingQueue<IDelegateDTO<Event, Object>> delegateQueue;
     private final String parentId;
     private final Launcher<?> launcher;
+    private final String seperator=".";
 
     public MessageCoordinator(final String parentId,
                               final Launcher<?> launcher) {
@@ -75,6 +76,7 @@ public class MessageCoordinator extends ACoordinator implements
     private <P extends IComponent<EventHandler<Event>, Event, Object>> void handleInActive(P component, Message<Event, Object> message) {
         component.getContext().setActive(true);
         component.setStarted(true);
+        findParentPerspectiveAndAddComponent((ISubComponent<EventHandler<Event>, Event, Object>) component, message.getTargetId());
         this.componentHandler.initComponent(message,
                 (ISubComponent<EventHandler<Event>, Event, Object>) component);
     }
@@ -114,7 +116,7 @@ public class MessageCoordinator extends ACoordinator implements
                 return new MessageCoordinatorExecutionResult(targetComponent, message, MessageCoordinatorExecutionResult.State.HANDLE_ACTIVE);
             } else {
                 // convert to global message and delegate to correct perspective
-                final String globalTarget = targetComponent.getParentId().concat(targetId);
+                final String globalTarget = targetComponent.getParentId().concat(seperator).concat(targetId);
                 return new MessageCoordinatorExecutionResult(new DelegateDTO(globalTarget, new FXMessage(message.getSourceId(), globalTarget, message.getMessageBody(), message.getSourceEvent())), MessageCoordinatorExecutionResult.State.DELEGATE);
             }
 
@@ -135,7 +137,7 @@ public class MessageCoordinator extends ACoordinator implements
         if (parentPerspectiveByComponentId != null) {
             // invoke perspective init with default message and wait
             // create global id
-            final String globalTarget = parentPerspectiveByComponentId.getContext().getId().concat(targetId);
+            final String globalTarget = parentPerspectiveByComponentId.getContext().getId().concat(seperator).concat(targetId);
             return new MessageCoordinatorExecutionResult(new DelegateDTO(globalTarget, new FXMessage(message.getSourceId(), globalTarget, message.getMessageBody(), message.getSourceEvent())), MessageCoordinatorExecutionResult.State.DELEGATE);
 
         }
@@ -186,7 +188,7 @@ public class MessageCoordinator extends ACoordinator implements
                 "invalid component id. Source: "
                         + action.getSourceId() + " target: "
                         + action.getTargetId());
-        findParentPerspectiveAndRegisterComponent(component, targetId);
+        findParentPerspectiveAndRegisterComponent(component,targetId);
         return component;
     }
 
@@ -195,6 +197,13 @@ public class MessageCoordinator extends ACoordinator implements
         if (parentPerspective == null)
             throw new ComponentNotFoundException("no valid perspective for component " + targetId + " found");
         parentPerspective.registerComponent(component);
+    }
+
+    private void findParentPerspectiveAndAddComponent(final ISubComponent<EventHandler<Event>, Event, Object> component, final String targetId) {
+        final IPerspective<EventHandler<Event>, Event, Object> parentPerspective = PerspectiveRegistry.findParentPerspectiveByComponentId(FXUtil.getTargetComponentId(targetId));
+        if (parentPerspective == null)
+            throw new ComponentNotFoundException("no valid perspective for component " + targetId + " found");
+        parentPerspective.addComponent(component);
     }
 
     @Override

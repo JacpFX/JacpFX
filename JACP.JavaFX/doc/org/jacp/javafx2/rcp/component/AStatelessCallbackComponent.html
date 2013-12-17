@@ -164,7 +164,7 @@ represents a abstract stateless background component
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&amp;nbsp;org.jacpfx.api.action.IActionListener&amp;lt;javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,javafx.event.Event,java.lang.Object&amp;gt;</CODE></FONT></TD>
+<CODE>&amp;nbsp;org.jacpfx.api.message.IActionListener&amp;lt;javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,javafx.event.Event,java.lang.Object&amp;gt;</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/component/AStatelessCallbackComponent.html#getActionListener()">getActionListener</A></B>()</CODE>
 
 <BR>
@@ -220,7 +220,7 @@ represents a abstract stateless background component
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&amp;nbsp;org.jacpfx.api.action.IAction&amp;lt;javafx.event.Event,java.lang.Object&amp;gt;</CODE></FONT></TD>
+<CODE>&amp;nbsp;org.jacpfx.api.message.IAction&amp;lt;javafx.event.Event,java.lang.Object&amp;gt;</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/component/AStatelessCallbackComponent.html#getNextIncomingMessage()">getNextIncomingMessage</A></B>()</CODE>
 
 <BR>
@@ -252,7 +252,7 @@ represents a abstract stateless background component
 </TR>
 </TABLE>
 </CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/component/AStatelessCallbackComponent.html#handle(org.jacpfx.apiaction.IAction)">handle</A></B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</CODE>
+<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/component/AStatelessCallbackComponent.html#handle(org.jacpfx.apiaction.IAction)">handle</A></B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -260,7 +260,7 @@ represents a abstract stateless background component
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>abstract &nbsp;java.lang.Object</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/component/AStatelessCallbackComponent.html#handleAction(org.jacpfx.apiaction.IAction)">handleAction</A></B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</CODE>
+<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/component/AStatelessCallbackComponent.html#handleAction(org.jacpfx.apiaction.IAction)">handleAction</A></B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -308,7 +308,7 @@ represents a abstract stateless background component
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/component/AStatelessCallbackComponent.html#putIncomingMessage(org.jacpfx.apiaction.IAction)">putIncomingMessage</A></B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</CODE>
+<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/component/AStatelessCallbackComponent.html#putIncomingMessage(org.jacpfx.apiaction.IAction)">putIncomingMessage</A></B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -517,7 +517,7 @@ public boolean <B>hasIncomingMessage</B>()</PRE>
 <A NAME="putIncomingMessage(org.jacpfx.apiaction.IAction)"><!-- --></A><H3>
 putIncomingMessage</H3>
 <PRE>
-public void <B>putIncomingMessage</B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</PRE>
+public void <B>putIncomingMessage</B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message)</PRE>
 <DL>
 <DD><DL>
 <DT><B>Specified by:</B><DD><CODE>putIncomingMessage</CODE> in interface <CODE>org.jacpfx.api.component.ISubComponent&amp;lt;javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,javafx.event.Event,java.lang.Object&amp;gt;</CODE></DL>
@@ -743,7 +743,7 @@ public final void <B>setMessageQueue</B>(java.util.concurrent.BlockingQueue&lt;o
 <A NAME="handle(org.jacpfx.apiaction.IAction)"><!-- --></A><H3>
 handle</H3>
 <PRE>
-public final &lt;C&gt; C <B>handle</B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</PRE>
+public final &lt;C&gt; C <B>handle</B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message)</PRE>
 <DL>
 <DD><DL>
 <DT><B>Specified by:</B><DD><CODE>handle</CODE> in interface <CODE>org.jacpfx.api.component.IHandleable&amp;lt;javafx.event.Event,java.lang.Object&amp;gt;</CODE></DL>
@@ -757,7 +757,7 @@ public final &lt;C&gt; C <B>handle</B>(org.jacpfx.api.message.Message&lt;javafx.
 <A NAME="handleAction(org.jacpfx.apiaction.IAction)"><!-- --></A><H3>
 handleAction</H3>
 <PRE>
-public abstract java.lang.Object <B>handleAction</B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</PRE>
+public abstract java.lang.Object <B>handleAction</B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message)</PRE>
 <DL>
 <DD><DL>
 </DL>

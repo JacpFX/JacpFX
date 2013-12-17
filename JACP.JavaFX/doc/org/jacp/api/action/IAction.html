@@ -37,10 +37,10 @@
 <div class="subNav">
 <ul class="navList">
 <li>Prev Class</li>
-<li><a href="../../../../org/jacp/api/action/IActionListener.html" title="interface in org.jacpfx.api.message"><span class="strong">Next Class</span></a></li>
+<li><a href="../../../../org/jacp/api/message/IActionListener.html" title="interface in org.jacpfx.api.message"><span class="strong">Next Class</span></a></li>
 </ul>
 <ul class="navList">
-<li><a href="../../../../index.html?org/jacp/api/action/IAction.html" target="_top">Frames</a></li>
+<li><a href="../../../../index.html?org/jacp/api/message/IAction.html" target="_top">Frames</a></li>
 <li><a href="IAction.html" target="_top">No Frames</a></li>
 </ul>
 <ul class="navList" id="allclasses_navbar_top">
@@ -93,15 +93,15 @@
 </dl>
 <dl>
 <dt>All Known Implementing Classes:</dt>
-<dd><a href="../../../../org/jacp/javafx/rcp/action/FXAction.html" title="class in org.jacpfx.rcp.message">FXAction</a></dd>
+<dd><a href="../../../../org/jacp/javafx/rcp/message/FXAction.html" title="class in org.jacpfx.rcp.message">FXAction</a></dd>
 </dl>
 <hr>
 <br>
 <pre>public interface <span class="strong">IAction&lt;A,M&gt;</span>
 extends java.lang.Cloneable</pre>
-<div class="block">Represents an action used by specific listener. An Action targets a component
- and contains a message; every target get a specific instance of an action
- (clone) containing only his specific message and action event.</div>
+<div class="block">Represents an message used by specific listener. An Action targets a component
+ and contains a message; every target get a specific instance of an message
+ (clone) containing only his specific message and message event.</div>
 <dl><dt><span class="strong">Author:</span></dt>
   <dd>Andy Moncsek</dd></dl>
 </li>
@@ -124,44 +124,44 @@ extends java.lang.Cloneable</pre>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><strong><a href="../../../../org/jacp/api/action/IAction.html#addMessage(java.lang.String, M)">addMessage</a></strong>(java.lang.String&nbsp;targetId,
-          <a href="../../../../org/jacp/api/action/IAction.html" title="type parameter in IAction">M</a>&nbsp;message)</code>
+<td class="colLast"><code><strong><a href="../../../../org/jacp/api/message/IAction.html#addMessage(java.lang.String, M)">addMessage</a></strong>(java.lang.String&nbsp;targetId,
+          <a href="../../../../org/jacp/api/message/IAction.html" title="type parameter in IAction">M</a>&nbsp;message)</code>
 <div class="block">Set message for a specified target component. the component.</div>
 </td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><code><a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/action/IAction.html" title="type parameter in IAction">A</a>,<a href="../../../../org/jacp/api/action/IAction.html" title="type parameter in IAction">M</a>&gt;</code></td>
-<td class="colLast"><code><strong><a href="../../../../org/jacp/api/action/IAction.html#clone()">clone</a></strong>()</code>
-<div class="block">Clone action and containing event.</div>
+<td class="colFirst"><code><a href="../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/message/IAction.html" title="type parameter in IAction">A</a>,<a href="../../../../org/jacp/api/message/IAction.html" title="type parameter in IAction">M</a>&gt;</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/jacp/api/message/IAction.html#clone()">clone</a></strong>()</code>
+<div class="block">Clone message and containing event.</div>
 </td>
 </tr>
 <tr class="altColor">
-<td class="colFirst"><code><a href="../../../../org/jacp/api/action/IAction.html" title="type parameter in IAction">A</a></code></td>
-<td class="colLast"><code><strong><a href="../../../../org/jacp/api/action/IAction.html#getActionEvent()">getActionEvent</a></strong>()</code>
-<div class="block">Get implementation specific action event.</div>
+<td class="colFirst"><code><a href="../../../../org/jacp/api/message/IAction.html" title="type parameter in IAction">A</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/jacp/api/message/IAction.html#getActionEvent()">getActionEvent</a></strong>()</code>
+<div class="block">Get implementation specific message event.</div>
 </td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><code><a href="../../../../org/jacp/api/action/IAction.html" title="type parameter in IAction">M</a></code></td>
-<td class="colLast"><code><strong><a href="../../../../org/jacp/api/action/IAction.html#getLastMessage()">getLastMessage</a></strong>()</code>
-<div class="block">Get the action message.</div>
+<td class="colFirst"><code><a href="../../../../org/jacp/api/message/IAction.html" title="type parameter in IAction">M</a></code></td>
+<td class="colLast"><code><strong><a href="../../../../org/jacp/api/message/IAction.html#getLastMessage()">getLastMessage</a></strong>()</code>
+<div class="block">Get the message message.</div>
 </td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<td class="colLast"><code><strong><a href="../../../../org/jacp/api/action/IAction.html#getSourceId()">getSourceId</a></strong>()</code>
+<td class="colLast"><code><strong><a href="../../../../org/jacp/api/message/IAction.html#getSourceId()">getSourceId</a></strong>()</code>
 <div class="block">Get the caller id.</div>
 </td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>java.lang.String</code></td>
-<td class="colLast"><code><strong><a href="../../../../org/jacp/api/action/IAction.html#getTargetId()">getTargetId</a></strong>()</code>
-<div class="block">Returns action target id.</div>
+<td class="colLast"><code><strong><a href="../../../../org/jacp/api/message/IAction.html#getTargetId()">getTargetId</a></strong>()</code>
+<div class="block">Returns message target id.</div>
 </td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><strong><a href="../../../../org/jacp/api/action/IAction.html#setMessage(M)">setMessage</a></strong>(<a href="../../../../org/jacp/api/action/IAction.html" title="type parameter in IAction">M</a>&nbsp;message)</code>
+<td class="colLast"><code><strong><a href="../../../../org/jacp/api/message/IAction.html#setMessage(M)">setMessage</a></strong>(<a href="../../../../org/jacp/api/message/IAction.html" title="type parameter in IAction">M</a>&nbsp;message)</code>
 <div class="block">Set message for target component.</div>
 </td>
 </tr>
@@ -188,9 +188,9 @@ extends java.lang.Cloneable</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>setMessage</h4>
-<pre>void&nbsp;setMessage(<a href="../../../../org/jacp/api/action/IAction.html" title="type parameter in IAction">M</a>&nbsp;message)</pre>
+<pre>void&nbsp;setMessage(<a href="../../../../org/jacp/api/message/IAction.html" title="type parameter in IAction">M</a>&nbsp;message)</pre>
 <div class="block">Set message for target component.</div>
-<dl><dt><span class="strong">Parameters:</span></dt><dd><code>message</code> - ;  the message set to action</dd></dl>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>message</code> - ;  the message set to message</dd></dl>
 </li>
 </ul>
 <a name="addMessage(java.lang.String,java.lang.Object)">
@@ -202,9 +202,9 @@ extends java.lang.Cloneable</pre>
 <li class="blockList">
 <h4>addMessage</h4>
 <pre>void&nbsp;addMessage(java.lang.String&nbsp;targetId,
-              <a href="../../../../org/jacp/api/action/IAction.html" title="type parameter in IAction">M</a>&nbsp;message)</pre>
+              <a href="../../../../org/jacp/api/message/IAction.html" title="type parameter in IAction">M</a>&nbsp;message)</pre>
 <div class="block">Set message for a specified target component. the component.</div>
-<dl><dt><span class="strong">Parameters:</span></dt><dd><code>targetId</code> - ; the actions target id</dd><dd><code>message</code> - ;  the message set to action</dd></dl>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>targetId</code> - ; the actions target id</dd><dd><code>message</code> - ;  the message set to message</dd></dl>
 </li>
 </ul>
 <a name="getLastMessage()">
@@ -213,8 +213,8 @@ extends java.lang.Cloneable</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getLastMessage</h4>
-<pre><a href="../../../../org/jacp/api/action/IAction.html" title="type parameter in IAction">M</a>&nbsp;getLastMessage()</pre>
-<div class="block">Get the action message.</div>
+<pre><a href="../../../../org/jacp/api/message/IAction.html" title="type parameter in IAction">M</a>&nbsp;getLastMessage()</pre>
+<div class="block">Get the message message.</div>
 <dl><dt><span class="strong">Returns:</span></dt><dd>M</dd></dl>
 </li>
 </ul>
@@ -235,8 +235,8 @@ extends java.lang.Cloneable</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>getActionEvent</h4>
-<pre><a href="../../../../org/jacp/api/action/IAction.html" title="type parameter in IAction">A</a>&nbsp;getActionEvent()</pre>
-<div class="block">Get implementation specific action event.</div>
+<pre><a href="../../../../org/jacp/api/message/IAction.html" title="type parameter in IAction">A</a>&nbsp;getActionEvent()</pre>
+<div class="block">Get implementation specific message event.</div>
 <dl><dt><span class="strong">Returns:</span></dt><dd>the event</dd></dl>
 </li>
 </ul>
@@ -246,9 +246,9 @@ extends java.lang.Cloneable</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>clone</h4>
-<pre><a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/action/IAction.html" title="type parameter in IAction">A</a>,<a href="../../../../org/jacp/api/action/IAction.html" title="type parameter in IAction">M</a>&gt;&nbsp;clone()</pre>
-<div class="block">Clone action and containing event.</div>
-<dl><dt><span class="strong">Returns:</span></dt><dd>a clone of current action instance</dd></dl>
+<pre><a href="../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/message/IAction.html" title="type parameter in IAction">A</a>,<a href="../../../../org/jacp/api/message/IAction.html" title="type parameter in IAction">M</a>&gt;&nbsp;clone()</pre>
+<div class="block">Clone message and containing event.</div>
+<dl><dt><span class="strong">Returns:</span></dt><dd>a clone of current message instance</dd></dl>
 </li>
 </ul>
 <a name="getTargetId()">
@@ -258,7 +258,7 @@ extends java.lang.Cloneable</pre>
 <li class="blockList">
 <h4>getTargetId</h4>
 <pre>java.lang.String&nbsp;getTargetId()</pre>
-<div class="block">Returns action target id.</div>
+<div class="block">Returns message target id.</div>
 <dl><dt><span class="strong">Returns:</span></dt><dd>the target id</dd></dl>
 </li>
 </ul>
@@ -289,10 +289,10 @@ extends java.lang.Cloneable</pre>
 <div class="subNav">
 <ul class="navList">
 <li>Prev Class</li>
-<li><a href="../../../../org/jacp/api/action/IActionListener.html" title="interface in org.jacpfx.api.message"><span class="strong">Next Class</span></a></li>
+<li><a href="../../../../org/jacp/api/message/IActionListener.html" title="interface in org.jacpfx.api.message"><span class="strong">Next Class</span></a></li>
 </ul>
 <ul class="navList">
-<li><a href="../../../../index.html?org/jacp/api/action/IAction.html" target="_top">Frames</a></li>
+<li><a href="../../../../index.html?org/jacp/api/message/IAction.html" target="_top">Frames</a></li>
 <li><a href="IAction.html" target="_top">No Frames</a></li>
 </ul>
 <ul class="navList" id="allclasses_navbar_bottom">

@@ -57,7 +57,7 @@ public class ComponentHandler
 		IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>> {
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	private final StatelessCallbackScheduler scheduler;
-	private final IPerspectiveLayout<Node, Node> perspectiveLayout;
+	private volatile IPerspectiveLayout<Node, Node> perspectiveLayout;
 	private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
 	private final ExecutorService fxInitExecutor = Executors
 			.newSingleThreadExecutor(new HandlerThreadFactory("fxInitExecutor:"));

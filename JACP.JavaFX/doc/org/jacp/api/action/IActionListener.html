@@ -36,11 +36,11 @@
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message"><span class="strong">Prev Class</span></a></li>
-<li><a href="../../../../org/jacp/api/action/IDelegateDTO.html" title="interface in org.jacpfx.api.message"><span class="strong">Next Class</span></a></li>
+<li><a href="../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message"><span class="strong">Prev Class</span></a></li>
+<li><a href="../../../../org/jacp/api/message/IDelegateDTO.html" title="interface in org.jacpfx.api.message"><span class="strong">Next Class</span></a></li>
 </ul>
 <ul class="navList">
-<li><a href="../../../../index.html?org/jacp/api/action/IActionListener.html" target="_top">Frames</a></li>
+<li><a href="../../../../index.html?org/jacp/api/message/IActionListener.html" target="_top">Frames</a></li>
 <li><a href="IActionListener.html" target="_top">No Frames</a></li>
 </ul>
 <ul class="navList" id="allclasses_navbar_top">
@@ -89,13 +89,13 @@
 <dl><dt><span class="strong">Type Parameters:</span></dt><dd><code>L</code> - defines the basic listener type</dd><dd><code>M</code> - defines the type of message ActionEvent</dd><dd><code>A</code> - defines the type of ActionEvent</dd></dl>
 <dl>
 <dt>All Known Implementing Classes:</dt>
-<dd><a href="../../../../org/jacp/javafx/rcp/action/FXActionListener.html" title="class in org.jacpfx.rcp.message">FXActionListener</a></dd>
+<dd><a href="../../../../org/jacp/javafx/rcp/message/FXActionListener.html" title="class in org.jacpfx.rcp.message">FXActionListener</a></dd>
 </dl>
 <hr>
 <br>
 <pre>public interface <span class="strong">IActionListener&lt;L,A,M&gt;</span></pre>
 <div class="block">Handles implementation specific Listener to perform events. This Interface is
- an abstraction to hide toolkit specific event/action details.</div>
+ an abstraction to hide toolkit specific event/message details.</div>
 <dl><dt><span class="strong">Author:</span></dt>
   <dd>Andy Moncsek</dd></dl>
 </li>
@@ -117,26 +117,26 @@
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr class="altColor">
-<td class="colFirst"><code><a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/action/IActionListener.html" title="type parameter in IActionListener">A</a>,<a href="../../../../org/jacp/api/action/IActionListener.html" title="type parameter in IActionListener">M</a>&gt;</code></td>
-<td class="colLast"><code><strong><a href="../../../../org/jacp/api/action/IActionListener.html#getAction()">getAction</a></strong>()</code>
-<div class="block">Returns the action.</div>
+<td class="colFirst"><code><a href="../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/message/IActionListener.html" title="type parameter in IActionListener">A</a>,<a href="../../../../org/jacp/api/message/IActionListener.html" title="type parameter in IActionListener">M</a>&gt;</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/jacp/api/message/IActionListener.html#getAction()">getAction</a></strong>()</code>
+<div class="block">Returns the message.</div>
 </td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><code>&lt;C extends <a href="../../../../org/jacp/api/action/IActionListener.html" title="type parameter in IActionListener">L</a>&gt;&nbsp;<br>C</code></td>
-<td class="colLast"><code><strong><a href="../../../../org/jacp/api/action/IActionListener.html#getListener()">getListener</a></strong>()</code>
+<td class="colFirst"><code>&lt;C extends <a href="../../../../org/jacp/api/message/IActionListener.html" title="type parameter in IActionListener">L</a>&gt;&nbsp;<br>C</code></td>
+<td class="colLast"><code><strong><a href="../../../../org/jacp/api/message/IActionListener.html#getListener()">getListener</a></strong>()</code>
 <div class="block">Returns implementation specific ActionListener.</div>
 </td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><strong><a href="../../../../org/jacp/api/action/IActionListener.html#notifyComponents(org.jacpfx.apiaction.IAction)">notifyComponents</a></strong>(<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/action/IActionListener.html" title="type parameter in IActionListener">A</a>,<a href="../../../../org/jacp/api/action/IActionListener.html" title="type parameter in IActionListener">M</a>&gt;&nbsp;action)</code>
-<div class="block">Notify component when action fired.</div>
+<td class="colLast"><code><strong><a href="../../../../org/jacp/api/message/IActionListener.html#notifyComponents(org.jacpfx.apiaction.IAction)">notifyComponents</a></strong>(<a href="../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/message/IActionListener.html" title="type parameter in IActionListener">A</a>,<a href="../../../../org/jacp/api/message/IActionListener.html" title="type parameter in IActionListener">M</a>&gt;&nbsp;message)</code>
+<div class="block">Notify component when message fired.</div>
 </td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><strong><a href="../../../../org/jacp/api/action/IActionListener.html#performAction(A)">performAction</a></strong>(<a href="../../../../org/jacp/api/action/IActionListener.html" title="type parameter in IActionListener">A</a>&nbsp;event)</code>
+<td class="colLast"><code><strong><a href="../../../../org/jacp/api/message/IActionListener.html#performAction(A)">performAction</a></strong>(<a href="../../../../org/jacp/api/message/IActionListener.html" title="type parameter in IActionListener">A</a>&nbsp;event)</code>
 <div class="block">Abstraction to handle actions/events uniform on different toolkits.</div>
 </td>
 </tr>
@@ -161,9 +161,9 @@
 <ul class="blockList">
 <li class="blockList">
 <h4>notifyComponents</h4>
-<pre>void&nbsp;notifyComponents(<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/action/IActionListener.html" title="type parameter in IActionListener">A</a>,<a href="../../../../org/jacp/api/action/IActionListener.html" title="type parameter in IActionListener">M</a>&gt;&nbsp;action)</pre>
-<div class="block">Notify component when action fired.</div>
-<dl><dt><span class="strong">Parameters:</span></dt><dd><code>action</code> - ;  the action fired by components</dd></dl>
+<pre>void&nbsp;notifyComponents(<a href="../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/message/IActionListener.html" title="type parameter in IActionListener">A</a>,<a href="../../../../org/jacp/api/message/IActionListener.html" title="type parameter in IActionListener">M</a>&gt;&nbsp;message)</pre>
+<div class="block">Notify component when message fired.</div>
+<dl><dt><span class="strong">Parameters:</span></dt><dd><code>message</code> - ;  the message fired by components</dd></dl>
 </li>
 </ul>
 <a name="getAction()">
@@ -172,9 +172,9 @@
 <ul class="blockList">
 <li class="blockList">
 <h4>getAction</h4>
-<pre><a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/action/IActionListener.html" title="type parameter in IActionListener">A</a>,<a href="../../../../org/jacp/api/action/IActionListener.html" title="type parameter in IActionListener">M</a>&gt;&nbsp;getAction()</pre>
-<div class="block">Returns the action.</div>
-<dl><dt><span class="strong">Returns:</span></dt><dd>an action instance</dd></dl>
+<pre><a href="../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/message/IActionListener.html" title="type parameter in IActionListener">A</a>,<a href="../../../../org/jacp/api/message/IActionListener.html" title="type parameter in IActionListener">M</a>&gt;&nbsp;getAction()</pre>
+<div class="block">Returns the message.</div>
+<dl><dt><span class="strong">Returns:</span></dt><dd>an message instance</dd></dl>
 </li>
 </ul>
 <a name="getListener()">
@@ -183,7 +183,7 @@
 <ul class="blockList">
 <li class="blockList">
 <h4>getListener</h4>
-<pre>&lt;C extends <a href="../../../../org/jacp/api/action/IActionListener.html" title="type parameter in IActionListener">L</a>&gt;&nbsp;C&nbsp;getListener()</pre>
+<pre>&lt;C extends <a href="../../../../org/jacp/api/message/IActionListener.html" title="type parameter in IActionListener">L</a>&gt;&nbsp;C&nbsp;getListener()</pre>
 <div class="block">Returns implementation specific ActionListener. All listeners should
  extend java.util.EventListener.</div>
 <dl><dt><span class="strong">Type Parameters:</span></dt><dd><code>C</code> - ; the specific listener type</dd>
@@ -198,7 +198,7 @@
 <ul class="blockListLast">
 <li class="blockList">
 <h4>performAction</h4>
-<pre>void&nbsp;performAction(<a href="../../../../org/jacp/api/action/IActionListener.html" title="type parameter in IActionListener">A</a>&nbsp;event)</pre>
+<pre>void&nbsp;performAction(<a href="../../../../org/jacp/api/message/IActionListener.html" title="type parameter in IActionListener">A</a>&nbsp;event)</pre>
 <div class="block">Abstraction to handle actions/events uniform on different toolkits.
  Method invokes toolkit specific handle method perform event call.</div>
 <dl><dt><span class="strong">Parameters:</span></dt><dd><code>event</code> - ; proxy to common event handlers</dd></dl>
@@ -230,11 +230,11 @@
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message"><span class="strong">Prev Class</span></a></li>
-<li><a href="../../../../org/jacp/api/action/IDelegateDTO.html" title="interface in org.jacpfx.api.message"><span class="strong">Next Class</span></a></li>
+<li><a href="../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message"><span class="strong">Prev Class</span></a></li>
+<li><a href="../../../../org/jacp/api/message/IDelegateDTO.html" title="interface in org.jacpfx.api.message"><span class="strong">Next Class</span></a></li>
 </ul>
 <ul class="navList">
-<li><a href="../../../../index.html?org/jacp/api/action/IActionListener.html" target="_top">Frames</a></li>
+<li><a href="../../../../index.html?org/jacp/api/message/IActionListener.html" target="_top">Frames</a></li>
 <li><a href="IActionListener.html" target="_top">No Frames</a></li>
 </ul>
 <ul class="navList" id="allclasses_navbar_bottom">

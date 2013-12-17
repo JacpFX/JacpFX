@@ -184,16 +184,16 @@ implements <a href="../../../../../org/jacp/api/coordinator/IMessageDelegator.ht
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXMessageDelegator.html#delegateMessage(org.jacpfx.apiaction.IDelegateDTO)">delegateMessage</a></strong>(<a href="../../../../../org/jacp/api/action/IDelegateDTO.html" title="interface in org.jacpfx.api.message">IDelegateDTO</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;messageDTO)</code>
+<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXMessageDelegator.html#delegateMessage(org.jacpfx.apiaction.IDelegateDTO)">delegateMessage</a></strong>(<a href="../../../../../org/jacp/api/message/IDelegateDTO.html" title="interface in org.jacpfx.api.message">IDelegateDTO</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;messageDTO)</code>
 <div class="block">Delegate message to correct perspective/component</div>
 </td>
 </tr>
 <tr class="altColor">
-<td class="colFirst"><code>java.util.concurrent.BlockingQueue&lt;<a href="../../../../../org/jacp/api/action/IDelegateDTO.html" title="interface in org.jacpfx.api.message">IDelegateDTO</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;</code></td>
+<td class="colFirst"><code>java.util.concurrent.BlockingQueue&lt;<a href="../../../../../org/jacp/api/message/IDelegateDTO.html" title="interface in org.jacpfx.api.message">IDelegateDTO</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;</code></td>
 <td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXMessageDelegator.html#getComponentDelegateQueue()">getComponentDelegateQueue</a></strong>()</code>&nbsp;</td>
 </tr>
 <tr class="rowColor">
-<td class="colFirst"><code>java.util.concurrent.BlockingQueue&lt;<a href="../../../../../org/jacp/api/action/IDelegateDTO.html" title="interface in org.jacpfx.api.message">IDelegateDTO</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;</code></td>
+<td class="colFirst"><code>java.util.concurrent.BlockingQueue&lt;<a href="../../../../../org/jacp/api/message/IDelegateDTO.html" title="interface in org.jacpfx.api.message">IDelegateDTO</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;</code></td>
 <td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXMessageDelegator.html#getMessageDelegateQueue()">getMessageDelegateQueue</a></strong>()</code>
 <div class="block">Returns the delegate queue.</div>
 </td>
@@ -201,12 +201,12 @@ implements <a href="../../../../../org/jacp/api/coordinator/IMessageDelegator.ht
 <tr class="altColor">
 <td class="colFirst"><code>&lt;P extends <a href="../../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;<br>void</code></td>
 <td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXMessageDelegator.html#handleInActivePerspective(P, org.jacpfx.apiaction.IAction)">handleInActivePerspective</a></strong>(P&nbsp;component,
-                         <a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</code>&nbsp;</td>
+                         <a href="../../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message)</code>&nbsp;</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXMessageDelegator.html#handleMessage(java.lang.String, org.jacpfx.apiaction.IAction)">handleMessage</a></strong>(java.lang.String&nbsp;target,
-             <a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</code>&nbsp;</td>
+             <a href="../../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message)</code>&nbsp;</td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>void</code></td>
@@ -221,11 +221,11 @@ implements <a href="../../../../../org/jacp/api/coordinator/IMessageDelegator.ht
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>void</code></td>
-<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXMessageDelegator.html#setComponentDelegateQueue(java.util.concurrent.BlockingQueue)">setComponentDelegateQueue</a></strong>(java.util.concurrent.BlockingQueue&lt;<a href="../../../../../org/jacp/api/action/IDelegateDTO.html" title="interface in org.jacpfx.api.message">IDelegateDTO</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;componentDelegateQueue)</code>&nbsp;</td>
+<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXMessageDelegator.html#setComponentDelegateQueue(java.util.concurrent.BlockingQueue)">setComponentDelegateQueue</a></strong>(java.util.concurrent.BlockingQueue&lt;<a href="../../../../../org/jacp/api/message/IDelegateDTO.html" title="interface in org.jacpfx.api.message">IDelegateDTO</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;componentDelegateQueue)</code>&nbsp;</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>&lt;P extends <a href="../../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;<br>void</code></td>
-<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXMessageDelegator.html#setComponentHandler(org.jacpfx.api.handler.IComponentHandler)">setComponentHandler</a></strong>(<a href="../../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</a>&lt;P,<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;handler)</code>
+<td class="colLast"><code><strong><a href="../../../../../org/jacp/javafx/rcp/coordinator/FXMessageDelegator.html#setComponentHandler(org.jacpfx.api.handler.IComponentHandler)">setComponentHandler</a></strong>(<a href="../../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</a>&lt;P,<a href="../../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;handler)</code>
 <div class="block">Set the associated component handler.</div>
 </td>
 </tr>
@@ -297,7 +297,7 @@ implements <a href="../../../../../org/jacp/api/coordinator/IMessageDelegator.ht
 <li class="blockList">
 <h4>handleMessage</h4>
 <pre>public&nbsp;void&nbsp;handleMessage(java.lang.String&nbsp;target,
-                 <a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</pre>
+                 <a href="../../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message)</pre>
 </li>
 </ul>
 <a name="handleInActivePerspective(org.jacpfx.apicomponent.IComponent,org.jacpfx.apiaction.IAction)">
@@ -309,7 +309,7 @@ implements <a href="../../../../../org/jacp/api/coordinator/IMessageDelegator.ht
 <li class="blockList">
 <h4>handleInActivePerspective</h4>
 <pre>public&nbsp;&lt;P extends <a href="../../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;void&nbsp;handleInActivePerspective(P&nbsp;component,
-                                                                                                                                       <a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</pre>
+                                                                                                                                       <a href="../../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message)</pre>
 </li>
 </ul>
 <a name="getComponentDelegateQueue()">
@@ -318,7 +318,7 @@ implements <a href="../../../../../org/jacp/api/coordinator/IMessageDelegator.ht
 <ul class="blockList">
 <li class="blockList">
 <h4>getComponentDelegateQueue</h4>
-<pre>public&nbsp;java.util.concurrent.BlockingQueue&lt;<a href="../../../../../org/jacp/api/action/IDelegateDTO.html" title="interface in org.jacpfx.api.message">IDelegateDTO</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;getComponentDelegateQueue()</pre>
+<pre>public&nbsp;java.util.concurrent.BlockingQueue&lt;<a href="../../../../../org/jacp/api/message/IDelegateDTO.html" title="interface in org.jacpfx.api.message">IDelegateDTO</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;getComponentDelegateQueue()</pre>
 </li>
 </ul>
 <a name="setComponentDelegateQueue(java.util.concurrent.BlockingQueue)">
@@ -327,7 +327,7 @@ implements <a href="../../../../../org/jacp/api/coordinator/IMessageDelegator.ht
 <ul class="blockList">
 <li class="blockList">
 <h4>setComponentDelegateQueue</h4>
-<pre>public&nbsp;void&nbsp;setComponentDelegateQueue(java.util.concurrent.BlockingQueue&lt;<a href="../../../../../org/jacp/api/action/IDelegateDTO.html" title="interface in org.jacpfx.api.message">IDelegateDTO</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;componentDelegateQueue)</pre>
+<pre>public&nbsp;void&nbsp;setComponentDelegateQueue(java.util.concurrent.BlockingQueue&lt;<a href="../../../../../org/jacp/api/message/IDelegateDTO.html" title="interface in org.jacpfx.api.message">IDelegateDTO</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;componentDelegateQueue)</pre>
 </li>
 </ul>
 <a name="delegateMessage(org.jacpfx.apiaction.IDelegateDTO)">
@@ -336,7 +336,7 @@ implements <a href="../../../../../org/jacp/api/coordinator/IMessageDelegator.ht
 <ul class="blockList">
 <li class="blockList">
 <h4>delegateMessage</h4>
-<pre>public&nbsp;void&nbsp;delegateMessage(<a href="../../../../../org/jacp/api/action/IDelegateDTO.html" title="interface in org.jacpfx.api.message">IDelegateDTO</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;messageDTO)</pre>
+<pre>public&nbsp;void&nbsp;delegateMessage(<a href="../../../../../org/jacp/api/message/IDelegateDTO.html" title="interface in org.jacpfx.api.message">IDelegateDTO</a>&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;messageDTO)</pre>
 <div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/coordinator/IMessageDelegator.html#delegateMessage(org.jacpfx.apiaction.IDelegateDTO)">IMessageDelegator</a></code></strong></div>
 <div class="block">Delegate message to correct perspective/component</div>
 <dl>
@@ -382,7 +382,7 @@ implements <a href="../../../../../org/jacp/api/coordinator/IMessageDelegator.ht
 <ul class="blockList">
 <li class="blockList">
 <h4>setComponentHandler</h4>
-<pre>public&nbsp;&lt;P extends <a href="../../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;void&nbsp;setComponentHandler(<a href="../../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</a>&lt;P,<a href="../../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;handler)</pre>
+<pre>public&nbsp;&lt;P extends <a href="../../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;void&nbsp;setComponentHandler(<a href="../../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</a>&lt;P,<a href="../../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;handler)</pre>
 <div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/coordinator/IDelegator.html#setComponentHandler(org.jacpfx.api.handler.IComponentHandler)">IDelegator</a></code></strong></div>
 <div class="block">Set the associated component handler.</div>
 <dl>
@@ -397,7 +397,7 @@ implements <a href="../../../../../org/jacp/api/coordinator/IMessageDelegator.ht
 <ul class="blockListLast">
 <li class="blockList">
 <h4>getMessageDelegateQueue</h4>
-<pre>public&nbsp;java.util.concurrent.BlockingQueue&lt;<a href="../../../../../org/jacp/api/action/IDelegateDTO.html" title="interface in org.jacpfx.api.message">IDelegateDTO</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;getMessageDelegateQueue()</pre>
+<pre>public&nbsp;java.util.concurrent.BlockingQueue&lt;<a href="../../../../../org/jacp/api/message/IDelegateDTO.html" title="interface in org.jacpfx.api.message">IDelegateDTO</a>&lt;javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;getMessageDelegateQueue()</pre>
 <div class="block"><strong>Description copied from interface:&nbsp;<code><a href="../../../../../org/jacp/api/coordinator/IMessageDelegator.html#getMessageDelegateQueue()">IMessageDelegator</a></code></strong></div>
 <div class="block">Returns the delegate queue.</div>
 <dl>

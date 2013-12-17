@@ -94,8 +94,8 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <dl>
 <dt><span class="strong">Type Parameters:</span></dt>
-<dd><code>L</code> - defines the action listener type</dd>
-<dd><code>A</code> - defines the basic action type</dd>
+<dd><code>L</code> - defines the message listener type</dd>
+<dd><code>A</code> - defines the basic message type</dd>
 <dd><code>M</code> - defines the basic message type</dd>
 </dl>
 <dl>
@@ -126,13 +126,13 @@ var activeTableTab = "activeTableTab";
 <th class="colLast" scope="col">Method and Description</th>
 </tr>
 <tr id="i0" class="altColor">
-<td class="colFirst"><code>&lt;P extends <a href="../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">L</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&gt;<br><a href="../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</a>&lt;P,<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&gt;</code></td>
+<td class="colFirst"><code>&lt;P extends <a href="../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">L</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&gt;<br><a href="../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</a>&lt;P,<a href="../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&gt;</code></td>
 <td class="colLast"><code><span class="strong"><a href="../../../../org/jacp/api/coordinator/ICoordinator.html#getComponentHandler()">getComponentHandler</a></span>()</code>
 <div class="block">Returns the associated componentHandler.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
-<td class="colFirst"><code>java.util.concurrent.BlockingQueue&lt;<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&gt;</code></td>
+<td class="colFirst"><code>java.util.concurrent.BlockingQueue&lt;<a href="../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&gt;</code></td>
 <td class="colLast"><code><span class="strong"><a href="../../../../org/jacp/api/coordinator/ICoordinator.html#getMessageQueue()">getMessageQueue</a></span>()</code>
 <div class="block">Returns the message queue of coordinator.</div>
 </td>
@@ -140,27 +140,27 @@ var activeTableTab = "activeTableTab";
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>&lt;P extends <a href="../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">L</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&gt;<br>void</code></td>
 <td class="colLast"><code><span class="strong"><a href="../../../../org/jacp/api/coordinator/ICoordinator.html#handleActive(P, org.jacpfx.apiaction.IAction)">handleActive</a></span>(P&nbsp;component,
-            <a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&nbsp;action)</code>
+            <a href="../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&nbsp;message)</code>
 <div class="block">Handle a message to an active component.</div>
 </td>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>&lt;P extends <a href="../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">L</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&gt;<br>void</code></td>
 <td class="colLast"><code><span class="strong"><a href="../../../../org/jacp/api/coordinator/ICoordinator.html#handleInActive(P, org.jacpfx.apiaction.IAction)">handleInActive</a></span>(P&nbsp;component,
-              <a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&nbsp;action)</code>
+              <a href="../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&nbsp;message)</code>
 <div class="block">Handle a message to an inactive component.</div>
 </td>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>void</code></td>
 <td class="colLast"><code><span class="strong"><a href="../../../../org/jacp/api/coordinator/ICoordinator.html#handleMessage(java.lang.String, org.jacpfx.apiaction.IAction)">handleMessage</a></span>(java.lang.String&nbsp;id,
-             <a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&nbsp;action)</code>
+             <a href="../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&nbsp;message)</code>
 <div class="block">Handles message to specific component addressed by the id.</div>
 </td>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>&lt;P extends <a href="../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">L</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&gt;<br>void</code></td>
-<td class="colLast"><code><span class="strong"><a href="../../../../org/jacp/api/coordinator/ICoordinator.html#setComponentHandler(org.jacpfx.api.handler.IComponentHandler)">setComponentHandler</a></span>(<a href="../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</a>&lt;P,<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&gt;&nbsp;handler)</code>
+<td class="colLast"><code><span class="strong"><a href="../../../../org/jacp/api/coordinator/ICoordinator.html#setComponentHandler(org.jacpfx.api.handler.IComponentHandler)">setComponentHandler</a></span>(<a href="../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</a>&lt;P,<a href="../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&gt;&nbsp;handler)</code>
 <div class="block">set associated componentHandler</div>
 </td>
 </tr>
@@ -186,12 +186,12 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <h4>handleMessage</h4>
 <pre>void&nbsp;handleMessage(java.lang.String&nbsp;id,
-                   <a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&nbsp;action)</pre>
+                   <a href="../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&nbsp;message)</pre>
 <div class="block">Handles message to specific component addressed by the id.</div>
 <dl>
 <dt><span class="strong">Parameters:</span></dt>
 <dd><code>id</code> - </dd>
-<dd><code>action</code> - </dd>
+<dd><code>message</code> - </dd>
 </dl>
 </li>
 </ul>
@@ -204,12 +204,12 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <h4>handleActive</h4>
 <pre>&lt;P extends <a href="../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">L</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&gt;&nbsp;void&nbsp;handleActive(P&nbsp;component,
-                                                <a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&nbsp;action)</pre>
+                                                <a href="../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&nbsp;message)</pre>
 <div class="block">Handle a message to an active component.</div>
 <dl>
 <dt><span class="strong">Parameters:</span></dt>
 <dd><code>component</code> - </dd>
-<dd><code>action</code> - </dd>
+<dd><code>message</code> - </dd>
 </dl>
 </li>
 </ul>
@@ -222,12 +222,12 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <h4>handleInActive</h4>
 <pre>&lt;P extends <a href="../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">L</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&gt;&nbsp;void&nbsp;handleInActive(P&nbsp;component,
-                                                  <a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&nbsp;action)</pre>
+                                                  <a href="../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&nbsp;message)</pre>
 <div class="block">Handle a message to an inactive component.</div>
 <dl>
 <dt><span class="strong">Parameters:</span></dt>
 <dd><code>component</code> - </dd>
-<dd><code>action</code> - </dd>
+<dd><code>message</code> - </dd>
 </dl>
 </li>
 </ul>
@@ -237,7 +237,7 @@ var activeTableTab = "activeTableTab";
 <ul class="blockList">
 <li class="blockList">
 <h4>getMessageQueue</h4>
-<pre>java.util.concurrent.BlockingQueue&lt;<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&gt;&nbsp;getMessageQueue()</pre>
+<pre>java.util.concurrent.BlockingQueue&lt;<a href="../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&gt;&nbsp;getMessageQueue()</pre>
 <div class="block">Returns the message queue of coordinator.</div>
 <dl>
 <dt><span class="strong">Returns:</span></dt>
@@ -251,7 +251,7 @@ var activeTableTab = "activeTableTab";
 <ul class="blockList">
 <li class="blockList">
 <h4>getComponentHandler</h4>
-<pre>&lt;P extends <a href="../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">L</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&gt;&nbsp;<a href="../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</a>&lt;P,<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&gt;&nbsp;getComponentHandler()</pre>
+<pre>&lt;P extends <a href="../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">L</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&gt;&nbsp;<a href="../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</a>&lt;P,<a href="../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&gt;&nbsp;getComponentHandler()</pre>
 <div class="block">Returns the associated componentHandler.</div>
 <dl>
 <dt><span class="strong">Returns:</span></dt>
@@ -265,7 +265,7 @@ var activeTableTab = "activeTableTab";
 <ul class="blockListLast">
 <li class="blockList">
 <h4>setComponentHandler</h4>
-<pre>&lt;P extends <a href="../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">L</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&gt;&nbsp;void&nbsp;setComponentHandler(<a href="../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</a>&lt;P,<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&gt;&nbsp;handler)</pre>
+<pre>&lt;P extends <a href="../../../../org/jacp/api/component/IComponent.html" title="interface in org.jacpfx.api.component">IComponent</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">L</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&gt;&nbsp;void&nbsp;setComponentHandler(<a href="../../../../org/jacp/api/handler/IComponentHandler.html" title="interface in org.jacpfx.api.handler">IComponentHandler</a>&lt;P,<a href="../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">A</a>,<a href="../../../../org/jacp/api/coordinator/ICoordinator.html" title="type parameter in ICoordinator">M</a>&gt;&gt;&nbsp;handler)</pre>
 <div class="block">set associated componentHandler</div>
 <dl>
 <dt><span class="strong">Parameters:</span></dt>

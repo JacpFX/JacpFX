@@ -148,7 +148,7 @@ represents a basic FX2 component to extend from, uses this abstract class to
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&amp;nbsp;org.jacpfx.api.action.IActionListener&amp;lt;javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,javafx.event.Event,java.lang.Object&amp;gt;</CODE></FONT></TD>
+<CODE>&amp;nbsp;org.jacpfx.api.message.IActionListener&amp;lt;javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,javafx.event.Event,java.lang.Object&amp;gt;</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/component/AFX2Component.html#getActionListener()">getActionListener</A></B>()</CODE>
 
 <BR>
@@ -180,7 +180,7 @@ represents a basic FX2 component to extend from, uses this abstract class to
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&amp;nbsp;org.jacpfx.api.action.IAction&amp;lt;javafx.event.Event,java.lang.Object&amp;gt;</CODE></FONT></TD>
+<CODE>&amp;nbsp;org.jacpfx.api.message.IAction&amp;lt;javafx.event.Event,java.lang.Object&amp;gt;</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/component/AFX2Component.html#getNextIncomingMessage()">getNextIncomingMessage</A></B>()</CODE>
 
 <BR>
@@ -212,7 +212,7 @@ represents a basic FX2 component to extend from, uses this abstract class to
 </TR>
 </TABLE>
 </CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/component/AFX2Component.html#handle(org.jacpfx.apiaction.IAction)">handle</A></B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</CODE>
+<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/component/AFX2Component.html#handle(org.jacpfx.apiaction.IAction)">handle</A></B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -220,7 +220,7 @@ represents a basic FX2 component to extend from, uses this abstract class to
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>abstract &nbsp;javafx.scene.Node</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/component/AFX2Component.html#handleAction(org.jacpfx.apiaction.IAction)">handleAction</A></B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</CODE>
+<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/component/AFX2Component.html#handleAction(org.jacpfx.apiaction.IAction)">handleAction</A></B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -293,7 +293,7 @@ represents a basic FX2 component to extend from, uses this abstract class to
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;javafx.scene.Node</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/component/AFX2Component.html#postHandle(javafx.scene.Node, org.jacpfx.apiaction.IAction)">postHandle</A></B>(javafx.scene.Node&nbsp;node,
-           org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</CODE>
+           org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -302,7 +302,7 @@ represents a basic FX2 component to extend from, uses this abstract class to
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>abstract &nbsp;javafx.scene.Node</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/component/AFX2Component.html#postHandleAction(javafx.scene.Node, org.jacpfx.apiaction.IAction)">postHandleAction</A></B>(javafx.scene.Node&nbsp;node,
-                 org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</CODE>
+                 org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -310,7 +310,7 @@ represents a basic FX2 component to extend from, uses this abstract class to
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
-<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/component/AFX2Component.html#putIncomingMessage(org.jacpfx.apiaction.IAction)">putIncomingMessage</A></B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</CODE>
+<TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/component/AFX2Component.html#putIncomingMessage(org.jacpfx.apiaction.IAction)">putIncomingMessage</A></B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -510,7 +510,7 @@ public final boolean <B>hasIncomingMessage</B>()</PRE>
 <A NAME="putIncomingMessage(org.jacpfx.apiaction.IAction)"><!-- --></A><H3>
 putIncomingMessage</H3>
 <PRE>
-public final void <B>putIncomingMessage</B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</PRE>
+public final void <B>putIncomingMessage</B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message)</PRE>
 <DL>
 <DD>
 <P>
@@ -762,7 +762,7 @@ public final void <B>setMessageQueue</B>(java.util.concurrent.BlockingQueue&lt;o
 <A NAME="handle(org.jacpfx.apiaction.IAction)"><!-- --></A><H3>
 handle</H3>
 <PRE>
-public final &lt;C&gt; C <B>handle</B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</PRE>
+public final &lt;C&gt; C <B>handle</B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message)</PRE>
 <DL>
 <DD><DL>
 <DT><B>Specified by:</B><DD><CODE>handle</CODE> in interface <CODE>org.jacpfx.api.component.IHandleable&amp;lt;javafx.event.Event,java.lang.Object&amp;gt;</CODE></DL>
@@ -777,7 +777,7 @@ public final &lt;C&gt; C <B>handle</B>(org.jacpfx.api.message.Message&lt;javafx.
 postHandle</H3>
 <PRE>
 public final javafx.scene.Node <B>postHandle</B>(javafx.scene.Node&nbsp;node,
-                                          org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</PRE>
+                                          org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message)</PRE>
 <DL>
 <DD>
 <P>
@@ -793,13 +793,13 @@ public final javafx.scene.Node <B>postHandle</B>(javafx.scene.Node&nbsp;node,
 <A NAME="handleAction(org.jacpfx.apiaction.IAction)"><!-- --></A><H3>
 handleAction</H3>
 <PRE>
-public abstract javafx.scene.Node <B>handleAction</B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</PRE>
+public abstract javafx.scene.Node <B>handleAction</B>(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message)</PRE>
 <DL>
 <DD><DL>
 </DL>
 </DD>
 <DD><DL>
-<DT><B>Parameters:</B><DD><CODE>action</CODE> - 
+<DT><B>Parameters:</B><DD><CODE>message</CODE> -
 <DT><B>Returns:</B><DD>a node<DT><B>See Also:</B><DD><CODE>IHandleable.handle(IAction)</CODE></DL>
 </DD>
 </DL>
@@ -809,13 +809,13 @@ public abstract javafx.scene.Node <B>handleAction</B>(org.jacpfx.api.message.Mes
 postHandleAction</H3>
 <PRE>
 public abstract javafx.scene.Node <B>postHandleAction</B>(javafx.scene.Node&nbsp;node,
-                                                   org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</PRE>
+                                                   org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message)</PRE>
 <DL>
 <DD><DL>
 </DL>
 </DD>
 <DD><DL>
-<DT><B>Parameters:</B><DD><CODE>node</CODE> - <DD><CODE>action</CODE> - 
+<DT><B>Parameters:</B><DD><CODE>node</CODE> - <DD><CODE>message</CODE> -
 <DT><B>Returns:</B><DD>a node<DT><B>See Also:</B><DD><CODE>{@inheritDoc}</CODE></DL>
 </DD>
 </DL>

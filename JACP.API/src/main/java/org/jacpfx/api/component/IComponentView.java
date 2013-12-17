@@ -49,10 +49,10 @@ public interface IComponentView<C, A, M>  extends IComponentHandle<C, A, M> {
 	 * components.
 	 * 
 	 * @param node , the ui node
-	 * @param action ,  the trigger message
+	 * @param message ,  the trigger message
 	 * @return an ui component
 	 */
-	C postHandle(final C node, final Message<A, M> action) throws Exception;
+	C postHandle(final C node, final Message<A, M> message) throws Exception;
 
 
 }

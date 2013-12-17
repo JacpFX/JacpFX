@@ -120,7 +120,6 @@ public class ComponentDelegator extends Thread implements
 	private <P extends IComponent<EventHandler<Event>, Event, Object>> void handleInActivePerspective(
 			final P component, final Message<Event, Object> action) {
 		component.getContext().setActive(true);
-        // TODO remove runLater and ensure in workbench handler that correct thread is used... for perspecive handler this is not nessesary
         //noinspection unchecked
         Platform.runLater(() -> ComponentDelegator.this.componentHandler
                 .initComponent(

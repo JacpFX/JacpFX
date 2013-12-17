@@ -86,7 +86,7 @@
 <div class="description">
 <ul class="blockList">
 <li class="blockList">
-<dl><dt><span class="strong">Type Parameters:</span></dt><dd><code>A</code> - defines the basic action type</dd><dd><code>M</code> - defines the basic message type</dd></dl>
+<dl><dt><span class="strong">Type Parameters:</span></dt><dd><code>A</code> - defines the basic message type</dd><dd><code>M</code> - defines the basic message type</dd></dl>
 <dl>
 <dt>All Known Subinterfaces:</dt>
 <dd><a href="../../../../org/jacp/api/component/ICallbackComponent.html" title="interface in org.jacpfx.api.component">ICallbackComponent</a>&lt;L,A,M&gt;, <a href="../../../../org/jacp/api/component/IComponentView.html" title="interface in org.jacpfx.api.component">IComponentView</a>&lt;C,L,A,M&gt;, <a href="../../../../org/jacp/api/component/IPerspective.html" title="interface in org.jacpfx.api.component">IPerspective</a>&lt;L,A,M&gt;, <a href="../../../../org/jacp/api/component/IPerspectiveView.html" title="interface in org.jacpfx.api.component">IPerspectiveView</a>&lt;C,L,A,M&gt;, <a href="../../../../org/jacp/api/component/IStatelessCallabackComponent.html" title="interface in org.jacpfx.api.component">IStatelessCallabackComponent</a>&lt;L,A,M&gt;, <a href="../../../../org/jacp/api/component/ISubComponent.html" title="interface in org.jacpfx.api.component">ISubComponent</a>&lt;L,A,M&gt;, <a href="../../../../org/jacp/api/component/UIComponent.html" title="interface in org.jacpfx.api.component">UIComponent</a>&lt;C,L,A,M&gt;</dd>
@@ -121,7 +121,7 @@
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>&lt;C&gt;&nbsp;C</code></td>
-<td class="colLast"><code><strong><a href="../../../../org/jacp/api/component/IHandleable.html#handle(org.jacpfx.apiaction.IAction)">handle</a></strong>(<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/component/IHandleable.html" title="type parameter in IHandleable">A</a>,<a href="../../../../org/jacp/api/component/IHandleable.html" title="type parameter in IHandleable">M</a>&gt;&nbsp;action)</code>
+<td class="colLast"><code><strong><a href="../../../../org/jacp/api/component/IHandleable.html#handle(org.jacpfx.apiaction.IAction)">handle</a></strong>(<a href="../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/component/IHandleable.html" title="type parameter in IHandleable">A</a>,<a href="../../../../org/jacp/api/component/IHandleable.html" title="type parameter in IHandleable">M</a>&gt;&nbsp;message)</code>
 <div class="block">Handles component when called.</div>
 </td>
 </tr>
@@ -146,10 +146,10 @@
 <ul class="blockListLast">
 <li class="blockList">
 <h4>handle</h4>
-<pre>&lt;C&gt;&nbsp;C&nbsp;handle(<a href="../../../../org/jacp/api/action/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/component/IHandleable.html" title="type parameter in IHandleable">A</a>,<a href="../../../../org/jacp/api/component/IHandleable.html" title="type parameter in IHandleable">M</a>&gt;&nbsp;action)</pre>
+<pre>&lt;C&gt;&nbsp;C&nbsp;handle(<a href="../../../../org/jacp/api/message/IAction.html" title="interface in org.jacpfx.api.message">IAction</a>&lt;<a href="../../../../org/jacp/api/component/IHandleable.html" title="type parameter in IHandleable">A</a>,<a href="../../../../org/jacp/api/component/IHandleable.html" title="type parameter in IHandleable">M</a>&gt;&nbsp;message)</pre>
 <div class="block">Handles component when called. The handle method in subcomponents is
  always executed in a separate thread;</div>
-<dl><dt><span class="strong">Type Parameters:</span></dt><dd><code>C</code> - the node return type</dd><dt><span class="strong">Parameters:</span></dt><dd><code>action</code> - , the triggering action</dd>
+<dl><dt><span class="strong">Type Parameters:</span></dt><dd><code>C</code> - the node return type</dd><dt><span class="strong">Parameters:</span></dt><dd><code>message</code> - , the triggering message</dd>
 <dt><span class="strong">Returns:</span></dt><dd>view component</dd></dl>
 </li>
 </ul>

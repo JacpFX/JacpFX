@@ -236,9 +236,14 @@ public abstract class AFXWorkbench
                 messageCoordinator, this.launcher);
         messageCoordinator.start();
         WorkbenchUtil.handleMetaAnnotation(perspective, this.getWorkbenchAnnotation().id());
-        PerspectiveRegistry.registerPerspective(perspective);
+        addComponent(perspective);
     }
 
+    @Override
+    public final void addComponent(
+            final IPerspective<EventHandler<Event>, Event, Object> perspective) {
+        PerspectiveRegistry.registerPerspective(perspective);
+    }
 
     @Override
     /**

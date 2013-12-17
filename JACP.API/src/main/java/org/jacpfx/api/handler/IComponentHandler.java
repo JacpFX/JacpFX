@@ -36,16 +36,16 @@ public interface IComponentHandler<T, A> {
 	/**
 	 * Handles initialization of a single component.
 	 * 
-	 * @param action
-	 * @param component
+	 * @param message , the initial message
+	 * @param component, the component which should be initiated
 	 */
-	void initComponent(final A action, final T component);
+	void initComponent(final A message, final T component);
 
 	/**
 	 * Runs 'handle' method and replace of subcomponent in perspective.
 	 * 
-	 * @param component
-	 * @param action
+	 * @param component, the component which should be handled
+	 * @param message, the message which triggers the execution
 	 */
-	void handleAndReplaceComponent(final A action, final T component);
+	void handleAndReplaceComponent(final A message, final T component);
 }

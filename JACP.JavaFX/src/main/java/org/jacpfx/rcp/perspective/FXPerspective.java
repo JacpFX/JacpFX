@@ -17,9 +17,9 @@ public interface FXPerspective extends Injectable {
     /**
      * Handle perspective method to initialize the perspective and the layout.
      *
-     * @param action            ; the message triggering the method
+     * @param message            ; the message triggering the method
      * @param perspectiveLayout ,  the layout handler defining the perspective
      */
-    void handlePerspective(Message<Event, Object> action,
+    void handlePerspective(Message<Event, Object> message,
                                               final PerspectiveLayout perspectiveLayout);
 }

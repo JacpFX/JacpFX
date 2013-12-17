@@ -45,6 +45,13 @@ public interface IRootComponent<T, A> {
 	 */
 	void registerComponent(final T component);
 
+    /**
+     * Add a component, this does not fully register the component.
+     * If you want to add a newly created component use registerComponent instead.
+     * @param component
+     */
+    void addComponent(final T component);
+
 	/**
 	 * Unregister component from current perspective.
 	 * 

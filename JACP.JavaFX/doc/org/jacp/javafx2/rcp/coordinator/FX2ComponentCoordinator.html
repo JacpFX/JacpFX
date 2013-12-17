@@ -191,7 +191,7 @@ observe component actions and delegates to correct component
 </TR>
 <TR BGCOLOR="white" CLASS="TableRowColor">
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
-<CODE>&amp;amp;aorg.jacpfx.api.handler.handler.IComponentHandlerorg.jacpfx.api.componentomponent.ISubComponent&amp;amp;amp;lt;javafx.event.EventHandler&amp;amp;amp;lt;javafx.event.Event&amp;amp;amp;gt;,javafx.event.Event,java.lang.Object&amp;amp;amp;gt;,org.jacpfx.api.action.IAction&amp;amp;amp;lt;javafx.event.Event,java.lang.Object&amp;amp;amp;gt;&amp;amp;amp;gt;</CODE></FONT></TD>
+<CODE>&amp;amp;aorg.jacpfx.api.handler.handler.IComponentHandlerorg.jacpfx.api.componentomponent.ISubComponent&amp;amp;amp;lt;javafx.event.EventHandler&amp;amp;amp;lt;javafx.event.Event&amp;amp;amp;gt;,javafx.event.Event,java.lang.Object&amp;amp;amp;gt;,org.jacpfx.api.message.IAction&amp;amp;amp;lt;javafx.event.Event,java.lang.Object&amp;amp;amp;gt;&amp;amp;amp;gt;</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/coordinator/FX2ComponentCoordinator.html#getComponentHandler()">getComponentHandler</A></B>()</CODE>
 
 <BR>
@@ -210,7 +210,7 @@ void</CODE></FONT></TD>
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/coordinator/FX2ComponentCoordinator.html#handleActive(P, org.jacpfx.apiaction.IAction)">handleActive</A></B>(P&nbsp;component,
-             org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</CODE>
+             org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -228,7 +228,7 @@ void</CODE></FONT></TD>
 </TABLE>
 </CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/coordinator/FX2ComponentCoordinator.html#handleInActive(P, org.jacpfx.apiaction.IAction)">handleInActive</A></B>(P&nbsp;component,
-               org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</CODE>
+               org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -237,7 +237,7 @@ void</CODE></FONT></TD>
 <TD ALIGN="right" VALIGN="top" WIDTH="1%"><FONT SIZE="-1">
 <CODE>&nbsp;void</CODE></FONT></TD>
 <TD><CODE><B><A HREF="../../../../../org/jacp/javafx2/rcp/coordinator/FX2ComponentCoordinator.html#handleMessage(java.lang.String, org.jacpfx.apiaction.IAction)">handleMessage</A></B>(java.lang.String&nbsp;targetId,
-              org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</CODE>
+              org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message)</CODE>
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</TD>
@@ -382,7 +382,7 @@ public void <B>removeComponent</B>(org.jacpfx.api.component.ISubComponent&lt;jav
 handleMessage</H3>
 <PRE>
 public void <B>handleMessage</B>(java.lang.String&nbsp;targetId,
-                          org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</PRE>
+                          org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message)</PRE>
 <DL>
 <DD><DL>
 <DT><B>Specified by:</B><DD><CODE>handleMessage</CODE> in interface <CODE>org.jacpfx.api.coordinator.ICoordinator&amp;lt;javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,javafx.event.Event,java.lang.Object&amp;gt;</CODE></DL>
@@ -397,7 +397,7 @@ public void <B>handleMessage</B>(java.lang.String&nbsp;targetId,
 handleActive</H3>
 <PRE>
 public final &lt;P extends org.jacpfx.api.component.IComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt; void <B>handleActive</B>(P&nbsp;component,
-                                                                                                                                                                org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</PRE>
+                                                                                                                                                                org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message)</PRE>
 <DL>
 <DD><DL>
 <DT><B>Specified by:</B><DD><CODE>handleActive</CODE> in interface <CODE>org.jacpfx.api.coordinator.ICoordinator&amp;lt;javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,javafx.event.Event,java.lang.Object&amp;gt;</CODE></DL>
@@ -412,7 +412,7 @@ public final &lt;P extends org.jacpfx.api.component.IComponent&lt;javafx.event.E
 handleInActive</H3>
 <PRE>
 public final &lt;P extends org.jacpfx.api.component.IComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt; void <B>handleInActive</B>(P&nbsp;component,
-                                                                                                                                                                  org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action)</PRE>
+                                                                                                                                                                  org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;message)</PRE>
 <DL>
 <DD><DL>
 <DT><B>Specified by:</B><DD><CODE>handleInActive</CODE> in interface <CODE>org.jacpfx.api.coordinator.ICoordinator&amp;lt;javafx.event.EventHandler&amp;lt;javafx.event.Event&amp;gt;,javafx.event.Event,java.lang.Object&amp;gt;</CODE></DL>
