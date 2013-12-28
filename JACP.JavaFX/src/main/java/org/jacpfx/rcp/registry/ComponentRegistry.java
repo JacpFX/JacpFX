@@ -27,6 +27,7 @@ import javafx.event.EventHandler;
 import org.jacpfx.api.component.ISubComponent;
 import org.jacpfx.rcp.util.FXUtil;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -72,7 +73,7 @@ public class ComponentRegistry {
     public static ISubComponent<EventHandler<Event>, Event, Object> findComponentById(
             final String targetId) {
         return FXUtil.getObserveableById(FXUtil.getTargetComponentId(targetId),
-                components);
+                Collections.unmodifiableList(components));
 
     }
     /**
@@ -81,7 +82,7 @@ public class ComponentRegistry {
      * @return
      */
     public static ISubComponent<EventHandler<Event>, Event, Object> findComponentByClass(final Class<?> clazz) {
-        final Optional<ISubComponent<EventHandler<Event>, Event, Object>> returnVal = components.parallelStream().filter(c -> c.getComponent().getClass().isAssignableFrom(clazz)).findFirst();
+        final Optional<ISubComponent<EventHandler<Event>, Event, Object>> returnVal = Collections.unmodifiableList(components).parallelStream().filter(c -> c.getComponent().getClass().isAssignableFrom(clazz)).findFirst();
         if(returnVal.isPresent())return returnVal.get();
 
         return null;

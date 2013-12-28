@@ -28,6 +28,7 @@ import javafx.scene.Node;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.dialog.Dialog;
 import org.jacpfx.api.component.IComponentHandle;
+import org.jacpfx.api.component.IPerspective;
 import org.jacpfx.api.component.ISubComponent;
 import org.jacpfx.api.context.Context;
 import org.jacpfx.api.dialog.Scope;
@@ -35,6 +36,7 @@ import org.jacpfx.api.launcher.Launcher;
 import org.jacpfx.api.util.CustomSecurityManager;
 import org.jacpfx.rcp.component.ASubComponent;
 import org.jacpfx.rcp.registry.ComponentRegistry;
+import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.FXUtil;
 
 import java.lang.reflect.Field;
@@ -44,6 +46,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Stream;
 
 /**
  * The JACPManagedDialog handles creation of managed dialog components. A
@@ -104,7 +107,7 @@ public class JACPManagedDialog {
      * @param type
      * @return a managed dialog handler see {@link ManagedDialogHandler}
      */
-    public <T> ManagedDialogHandler<T> getManagedDialog(Class<? extends T> type,final String callerClassName) {
+    public <T> ManagedDialogHandler<T> getManagedDialog(Class<? extends T> type, final String callerClassName) {
         final Dialog dialogAnnotation = type.getAnnotation(Dialog.class);
         if (dialogAnnotation == null)
             throw new ManagedDialogAnnotationMissingException();
@@ -128,6 +131,7 @@ public class JACPManagedDialog {
 
         return putDialogToCache(id, scope, createFXMLDialog(dialogAnnotation, id, bean, bundle));
     }
+
     /**
      * Creates a managed dialog.
      *
@@ -136,7 +140,7 @@ public class JACPManagedDialog {
      */
     public <T> ManagedDialogHandler<T> getManagedDialog(Class<? extends T> type) {
         final String callerClassName = customSecurityManager.getCallerClassName();
-          return getManagedDialog(type,callerClassName);
+        return getManagedDialog(type, callerClassName);
 
     }
 
@@ -160,7 +164,6 @@ public class JACPManagedDialog {
 
     /**
      * create the root node from FXML
-     *
      *
      * @param dialogAnnotation
      * @param id
@@ -194,8 +197,7 @@ public class JACPManagedDialog {
                                             final ResourceBundle bundle, final String callerClassName)
             throws IllegalArgumentException {
         final Field[] fields = bean.getClass().getDeclaredFields();
-        final List<Field> fieldList = Arrays.asList(fields);
-        fieldList.parallelStream().forEach(field -> {
+        Stream.of(fields).parallel().forEach(field -> {
             final Resource resource = field.getAnnotation(Resource.class);
             if (resource != null) {
                 try {
@@ -222,7 +224,7 @@ public class JACPManagedDialog {
                                                      final Field field, final Resource resource,
                                                      final String callerClassName) throws ClassNotFoundException,
             IllegalArgumentException, IllegalAccessException {
-        final ISubComponent<EventHandler<Event>, Event, Object> comp = findSubcomponent(resource,callerClassName);
+        final ISubComponent<EventHandler<Event>, Event, Object> comp = findSubcomponent(resource, callerClassName);
         if (comp == null)
             throw new IllegalArgumentException("component could not be found");
         field.setAccessible(true);
@@ -233,25 +235,38 @@ public class JACPManagedDialog {
                                                             final Field field, final Resource resource,
                                                             final String callerClassName) throws ClassNotFoundException,
             IllegalArgumentException, IllegalAccessException {
-
-        final ISubComponent<EventHandler<Event>, Event, Object> comp = findSubcomponent(resource,callerClassName);
-        if (comp == null)
-            throw new IllegalArgumentException("component could not be found");
         field.setAccessible(true);
-        field.set(bean, comp.getContext());
+        final ISubComponent<EventHandler<Event>, Event, Object> comp = findSubcomponent(resource, callerClassName);
+        if (comp != null) {
+            field.set(bean, comp.getContext());
+            return;
+        }
+        final IPerspective<EventHandler<Event>, Event, Object> persp = findPerspective(resource, callerClassName);
+        if (persp == null) throw new IllegalArgumentException("component could not be found");
+        field.set(bean, persp.getContext());
+
+
     }
 
-    private ISubComponent<EventHandler<Event>, Event, Object> findSubcomponent(final Resource resource,final String callerClassName) throws ClassNotFoundException {
+    private ISubComponent<EventHandler<Event>, Event, Object> findSubcomponent(final Resource resource, final String callerClassName) throws ClassNotFoundException {
         final String parentId = resource.parentId();
-        ISubComponent<EventHandler<Event>, Event, Object> comp;
         if (parentId.isEmpty()) {
-            comp = ComponentRegistry.findComponentByClass(Class
+            return ComponentRegistry.findComponentByClass(Class
                     .forName(callerClassName));
         } else {
-            comp = ComponentRegistry.findComponentById(parentId);
+            return ComponentRegistry.findComponentById(parentId);
         }
 
-        return comp;
+    }
+
+    private IPerspective<EventHandler<Event>, Event, Object> findPerspective(final Resource resource, final String callerClassName) throws ClassNotFoundException {
+        final String parentId = resource.parentId();
+        if (parentId.isEmpty()) {
+            return PerspectiveRegistry.findPerspectiveByClass(Class
+                    .forName(callerClassName));
+        } else {
+            return PerspectiveRegistry.findPerspectiveById(parentId);
+        }
     }
 
 }

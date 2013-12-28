@@ -42,7 +42,7 @@ public class PerspectiveRegistry {
      *
      * @return a list of current registered perspectives
      */
-    public static List<IPerspective<EventHandler<Event>, Event, Object>> getAllPerspectives() {
+    private static List<IPerspective<EventHandler<Event>, Event, Object>> getAllPerspectives() {
         return Collections.unmodifiableList(perspectives);
     }
 
@@ -75,7 +75,7 @@ public class PerspectiveRegistry {
      * @return
      */
     public static IPerspective<EventHandler<Event>, Event, Object> findNextActivePerspective(final IPerspective<EventHandler<Event>, Event, Object> current) {
-        return getNextValidPerspective(perspectives, current);
+        return getNextValidPerspective(getAllPerspectives(), current);
     }
 
     /**
@@ -109,7 +109,7 @@ public class PerspectiveRegistry {
     public static IPerspective<EventHandler<Event>, Event, Object> findPerspectiveById(
             final String targetId) {
         return FXUtil.getObserveableById(FXUtil.getTargetPerspectiveId(targetId),
-                perspectives);
+                getAllPerspectives());
     }
 
     /**
@@ -119,7 +119,7 @@ public class PerspectiveRegistry {
      * @return The parent perspective of given component id
      */
     public static IPerspective<EventHandler<Event>, Event, Object> findParentPerspectiveByComponentId(final String componentId) {
-        return findByComponentId(perspectives, componentId);
+        return findByComponentId(getAllPerspectives(), componentId);
     }
 
     private static IPerspective<EventHandler<Event>, Event, Object> findByComponentId(List<IPerspective<EventHandler<Event>, Event, Object>> perspectives, final String componentId) {
@@ -147,10 +147,8 @@ public class PerspectiveRegistry {
      * @return a perspective
      */
     public static IPerspective<EventHandler<Event>, Event, Object> findPerspectiveByClass(final Class<?> clazz) {
-        for (final IPerspective<EventHandler<Event>, Event, Object> comp : perspectives) {
-            if (comp.getClass().isAssignableFrom(clazz)) return comp;
-        }
-        return null;
+        final Optional<IPerspective<EventHandler<Event>, Event, Object>> first = getAllPerspectives().parallelStream().filter(p -> p.getPerspective().getClass().isAssignableFrom(clazz)).findFirst();
+        return first.isPresent() ? first.get() : null;
     }
 
 }
