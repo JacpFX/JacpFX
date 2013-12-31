@@ -68,7 +68,7 @@
     <dependencies>
         <dependency>
             <groupId>org.jacpfx</groupId>
-            <artifactId>jacpfx.api</artifactId>
+            <artifactId>jacpfx.API</artifactId>
             <version>${jacp.version}</version>
             <scope>compile</scope>
         </dependency>

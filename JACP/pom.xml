@@ -14,6 +14,13 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
 	</properties>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 	<profiles>
 		<profile>
 			<id>all</id>
@@ -79,12 +86,12 @@
 	</build>
 	<distributionManagement>
 		<repository>
-			<id>jacp</id>
-			<url>http://developer.ahcp.de/nexus/content/repositories/jacp</url>
+			<id>sonatype-nexus-staging</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
 		</repository>
         <snapshotRepository>
-            <id>jacp-snapshots</id>
-            <url>http://developer.ahcp.de/nexus/content/repositories/jacp-snapshots</url>
+            <id>sonatype-nexus-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
 	</distributionManagement>
 
