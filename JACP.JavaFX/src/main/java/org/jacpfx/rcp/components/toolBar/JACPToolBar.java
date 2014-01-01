@@ -29,16 +29,17 @@ import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import org.jacpfx.api.util.CustomSecurityManager;
 import org.jacpfx.rcp.util.CSSUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static javafx.geometry.Orientation.HORIZONTAL;
 import static javafx.geometry.Orientation.VERTICAL;
@@ -48,47 +49,41 @@ import static org.jacpfx.rcp.util.CSSUtil.CSSConstants.CLASS_JACP_TOOL_BAR;
  * The Class JACPToolBar.
  *
  * @author Patrick Symmangk
- *
  */
 public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>, ListChangeListener<Node> {
 
+    private final static CustomSecurityManager customSecurityManager = new CustomSecurityManager();
+
     private final Map<String, List<Node>> nodeMap = new HashMap<>();
 
-    /** The left buttons. */
-    private HBox leftButtons;
+    private static final int FIRST_PLACE = 0;
 
-    /** The center buttons. */
-    private HBox centerButtons;
-
-    /** The right buttons. */
-    private HBox rightButtons;
-
-    /** The horizontal tool bar. */
+    /**
+     * The horizontal tool bar.
+     */
     private HBox horizontalToolBar;
 
-    /** The top buttons. */
-    private VBox topButtons;
-
-    /** The middle buttons. */
-    private VBox middleButtons;
-
-    /** The bottom buttons. */
-    private VBox bottomButtons;
-
-    /** The vertical tool bar. */
+    /**
+     * The vertical tool bar.
+     */
     private VBox verticalToolBar;
 
-    private final double toolbarPadding = 20;
+    /**
+     * stores the current toolbar containers
+     */
+    private ConcurrentHashMap<JACPToolBarPosition, Pane> toolBarContainer;
+
 
     /**
      * Instantiates a new jACP tool bar.
      */
     public JACPToolBar() {
         super();
-        this.getStyleClass().add(CLASS_JACP_TOOL_BAR);
 
+        this.getStyleClass().add(CLASS_JACP_TOOL_BAR);
         this.orientationProperty().addListener(this);
         this.getItems().addListener(this);
+
         if (this.getOrientation() == VERTICAL) {
             this.initVerticalToolBar();
         } else {
@@ -96,173 +91,145 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
         }
     }
 
+
+    public void add(final Node node) {
+        this.add(customSecurityManager.getCallerClassName(), node);
+    }
+
     /**
      * Adds the.
      *
-     * @param node
-     *            the node
+     * @param node the node
      */
     public void add(String id, final Node node) {
-
-        if (this.getOrientation() == HORIZONTAL) {
-            HBox.setMargin(node, new Insets(0, 2, 0, 2));
-            this.leftButtons.getChildren().add(node);
-        } else {
-            VBox.setMargin(node, new Insets(2, 0, 2, 0));
-            this.topButtons.getChildren().add(node);
-        }
-        getNodes(id).add(node);
-
+        this.addNode(id, node, JACPToolBarPosition.START, false);
     }
 
 
-    public void removeForId(String id){
-        for(Node node : getNodes(id)){
-            remove(node);
+    public void removeForId(String id) {
+        for (Node node : this.getNodes(id)) {
+            this.remove(node);
         }
     }
+
+    /**
+     * Add multiple nodes to the toolbar.
+     * Those nodes are added by id and will appear in the first place of the toolbar
+     * <p/>
+     * The id is the name of the calling component by default.
+     * For self-managed ids see {@link #addAll(String id, Node... nodes)}
+     *
+     * @param nodes the nodes to add
+     */
+    public void addAll(final Node... nodes) {
+        this.addAll(this.getDefaultId(), nodes);
+    }
+
+
+    /**
+     * Add multiple nodes to the toolbar.
+     * Those nodes are added by id and will appear in the first place of the toolbar
+     *
+     * @param id    - the id the nodes will refer to
+     * @param nodes the nodes to add
+     */
+    public void addAll(String id, Node... nodes) {
+        for (final Node node : nodes) {
+            this.add(id, node);
+        }
+    }
+
+    /**
+     * Add multiple nodes to the toolbar.
+     * Those nodes are added by id and will appear on the end of the toolbar
+     * Means right hand side for {@link org.jacpfx.api.util.ToolbarPosition#NORTH} and {@link org.jacpfx.api.util.ToolbarPosition#SOUTH}
+     * and on the bottom for {@link org.jacpfx.api.util.ToolbarPosition#EAST} and {@link org.jacpfx.api.util.ToolbarPosition#WEST}
+     * <p/>
+     * The id is the name of the calling component by default.
+     * For self-managed ids see {@link #addAllOnEnd(String id, Node... nodes)}
+     *
+     * @param nodes the nodes to add
+     */
+    public void addAllOnEnd(final Node... nodes) {
+        this.addAllOnEnd(this.getDefaultId(), nodes);
+    }
+
+
+    /**
+     * Add multiple nodes to the toolbar.
+     * Those nodes are added by id and will appear on the end of the toolbar
+     * Means right hand side for {@link org.jacpfx.api.util.ToolbarPosition#NORTH} and {@link org.jacpfx.api.util.ToolbarPosition#SOUTH}
+     * and on the bottom for {@link org.jacpfx.api.util.ToolbarPosition#EAST} and {@link org.jacpfx.api.util.ToolbarPosition#WEST}
+     *
+     * @param id    self managed id for the given nodes
+     * @param nodes the nodes to add
+     */
+    public void addAllOnEnd(final String id, final Node... nodes) {
+        for (final Node node : nodes) {
+            this.addOnEnd(id, node);
+        }
+    }
+
+
+    /**
+     * Add multiple nodes to the toolbar.
+     * Those nodes are added by id and will appear in the middle of the toolbar
+     * <p/>
+     * The id is the name of the calling component by default.
+     * For self-managed ids see {@link #addAllOnEnd(String id, Node... nodes)}
+     *
+     * @param nodes the nodes to add
+     */
+    public void addAllToCenter(final Node... nodes) {
+        this.addAllToCenter(this.getDefaultId(), nodes);
+    }
+
+    /**
+     * Add multiple nodes to the toolbar.
+     * Those nodes are added by id and will appear in the middle of the toolbar
+     *
+     * @param id    self managed id for the given nodes
+     * @param nodes the nodes to add
+     */
+    public void addAllToCenter(final String id, final Node... nodes) {
+        for (final Node node : nodes) {
+            this.addToCenter(id, node);
+        }
+    }
+
+    /**
+     * Adds the on end.
+     *
+     * @param node the node
+     */
+    public void addToCenter(String id, final Node node) {
+        this.addNode(id, node, JACPToolBarPosition.MIDDLE);
+    }
+
+    /**
+     * Adds the on end.
+     *
+     * @param node the node
+     */
+    public void addOnEnd(String id, final Node node) {
+        this.addNode(id, node, JACPToolBarPosition.END);
+    }
+
 
     /**
      * Removes the.
      *
      * @param node the node
      */
-    void remove(final Node node) {
-        if (this.getOrientation() == HORIZONTAL) {
-            this.leftButtons.getChildren().remove(node);
-            this.centerButtons.getChildren().remove(node);
-            this.rightButtons.getChildren().remove(node);
-        } else {
-            this.topButtons.getChildren().remove(node);
-            this.middleButtons.getChildren().remove(node);
-            this.bottomButtons.getChildren().remove(node);
+    public void remove(final Node node) {
+        for (final Pane toolBarItem : this.toolBarContainer.values()) {
+            toolBarItem.getChildren().remove(node);
         }
-    }
-
-
-    public void addAll(String id, Node... nodes){
-        for(final Node node : nodes){
-            add(id, node);
-        }
-    }
-
-
-    public void addAllOnEnd(String id, Node... nodes){
-        for(final Node node : nodes){
-            addOnEnd(id, node);
-        }
-    }
-
-    public void addAllToCenter(String id, Node... nodes){
-        for(final Node node : nodes){
-            addToCenter(id, node);
-        }
-    }
-
-    /**
-     * Adds the on end.
-     *
-     * @param node
-     *            the node
-     */
-    public void addToCenter(String id, final Node node) {
-        if (this.getOrientation() == HORIZONTAL) {
-            HBox.setMargin(node, new Insets(0, 2, 0, 2));
-            this.centerButtons.getChildren().add(node);
-        } else {
-            VBox.setMargin(node, new Insets(2, 0, 2, 0));
-            this.middleButtons.getChildren().add(node);
-        }
-
-        getNodes(id).add(node);
-
-        this.bind();
-    }
-/**
-     * Adds the on end.
-     *
-     * @param node
-     *            the node
-     */
-    public void addOnEnd(String id, final Node node) {
-        if (this.getOrientation() == HORIZONTAL) {
-            HBox.setMargin(node, new Insets(0, 2, 0, 2));
-            this.rightButtons.getChildren().add(node);
-        } else {
-            VBox.setMargin(node, new Insets(2, 0, 2, 0));
-            this.bottomButtons.getChildren().add(node);
-        }
-
-        getNodes(id).add(node);
-
-        this.bind();
-    }
-
-    /**
-     * Inits the horizontal tool bar.
-     */
-    private void initHorizontalToolBar() {
-        /*
-         * ----------------------------------------------------------------------
-         * |left hand side buttons| | centered buttons| |right hand side buttons|
-         * ----------------------------------------------------------------------
-         */
-        this.clear();
-        // the main box for the toolbar
-        // holds the left hand side and the right hand side buttons!
-        // the buttons are separated by a spacer box, that fills the remaining
-        // width
-        this.horizontalToolBar = new HBox();
-        // the place for the buttons on the left hand side
-        this.leftButtons = new HBox();
-        this.leftButtons.setAlignment(Pos.CENTER_LEFT);
-        // the spacer that fills the remaining width between the buttons
-        this.centerButtons = new HBox();
-        this.centerButtons.setAlignment(Pos.CENTER);
-        HBox.setHgrow(this.centerButtons, Priority.ALWAYS);
-
-
-        this.rightButtons = new HBox();
-        this.rightButtons.setAlignment(Pos.CENTER_RIGHT);
-
-        CSSUtil.addCSSClass(CSSUtil.CSSConstants.CLASS_JACP_BUTTON_BAR, this,leftButtons, this.centerButtons, this.rightButtons);
-        this.horizontalToolBar.getChildren().addAll(this.leftButtons, this.centerButtons, this.rightButtons);
-        this.getItems().add(0, this.horizontalToolBar);
-    }
-
-    /**
-     * Inits the vertical tool bar.
-     */
-    private void initVerticalToolBar() {
-        /*
-         * --------------------------------------------------------------- |
-         * |left hand side buttons| |spacer| |right hand side buttons| |
-         * ---------------------------------------------------------------
-         */
-        this.clear();
-        // the main box for the toolbar
-        // holds the lefthand side and the right hand side buttons!
-        // the buttons are separated by a spacer box, that fills the remaining
-        // width
-        this.verticalToolBar = new VBox();
-
-        // the place for the buttons on the left hand side
-        this.topButtons = new VBox();
-        this.topButtons.setAlignment(Pos.CENTER_LEFT);
-        // the spacer that fills the remaining width between the buttons
-        this.middleButtons = new VBox();
-        VBox.setVgrow(this.middleButtons, Priority.ALWAYS);
-
-        this.bottomButtons = new VBox();
-        this.bottomButtons.setAlignment(Pos.CENTER_RIGHT);
-
-        this.verticalToolBar.getChildren().addAll(this.topButtons, this.middleButtons, this.bottomButtons);
-        this.getItems().add(0, this.verticalToolBar);
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * javafx.beans.value.ChangeListener#changed(javafx.beans.value.ObservableValue
      * , java.lang.Object, java.lang.Object)
@@ -281,7 +248,7 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see javafx.collections.ListChangeListener#onChanged(javafx.collections.
      * ListChangeListener.Change)
      */
@@ -294,23 +261,82 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
     }
 
     /**
-     * Bind.
+     * returns all the nodes for the given id.
+     *
+     * @param id - the custom id, which was provided on add .
+     * @return A list of nodes, if any or an empty list.
+     */
+    public List<Node> getNodes(String id) {
+        return Collections.unmodifiableList(this.getInternalNodes(id));
+    }
+
+    /*
+        adds a node for a given Id on the given Positon and updates all bindings
+     */
+    private void addNode(final String id, final Node node, final JACPToolBarPosition position) {
+        this.addNode(id, node, position, true);
+    }
+
+    /*
+        adds a node for a given Id on the given Positon and updates all bindings, as needed.
+     */
+    private void addNode(final String id, final Node node, final JACPToolBarPosition position, boolean bind) {
+        this.setInsets(node);
+        this.toolBarContainer.get(position).getChildren().add(node);
+        this.getInternalNodes(id).add(node);
+        if (bind) {
+            this.bind();
+        }
+    }
+
+    /*
+        get the Internal Nodes to add some more Nodes.
+     */
+    private List<Node> getInternalNodes(String id) {
+        if (this.nodeMap.containsKey(id)) {
+            return this.nodeMap.get(id);
+        }
+        List<Node> currentList = new ArrayList<>();
+        this.nodeMap.put(id, currentList);
+
+        return currentList;
+    }
+
+    /*
+     * Bind the needed Properties to fit the width or the height
      */
     private void bind() {
+
+        double toolbarPadding = 20;
+
         if (this.getOrientation() == HORIZONTAL) {
             if (this.horizontalToolBar != null) {
-                this.horizontalToolBar.maxWidthProperty().bind(this.widthProperty().subtract(this.toolbarPadding));
-                this.horizontalToolBar.minWidthProperty().bind(this.widthProperty().subtract(this.toolbarPadding));
+                this.horizontalToolBar.maxWidthProperty().bind(this.widthProperty().subtract(toolbarPadding));
+                this.horizontalToolBar.minWidthProperty().bind(this.widthProperty().subtract(toolbarPadding));
             }
         } else {
             if (this.verticalToolBar != null) {
-                this.verticalToolBar.maxHeightProperty().bind(this.heightProperty().subtract(this.toolbarPadding));
-                this.verticalToolBar.minHeightProperty().bind(this.heightProperty().subtract(this.toolbarPadding));
+                this.verticalToolBar.maxHeightProperty().bind(this.heightProperty().subtract(toolbarPadding));
+                this.verticalToolBar.minHeightProperty().bind(this.heightProperty().subtract(toolbarPadding));
             }
         }
     }
 
+
+    /*
+        add Insets to the buttons as needed
+     */
+    private void setInsets(final Node node) {
+        if (this.getOrientation() == HORIZONTAL) {
+            HBox.setMargin(node, new Insets(0, 2, 0, 2));
+        } else {
+            VBox.setMargin(node, new Insets(2, 0, 2, 0));
+        }
+    }
+
+
     /**
+     * /**
      * Unbind.
      */
     private void unbind() {
@@ -332,23 +358,92 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
      */
     private void clear() {
         if (!this.getItems().isEmpty()) {
-            final Node node = this.getItems().get(0);
+            final Node node = this.getItems().get(FIRST_PLACE);
             if (node instanceof HBox || node instanceof VBox) {
                 this.getItems().remove(node);
             }
         }
+        // reset "cache"
+        this.toolBarContainer = new ConcurrentHashMap<>();
     }
 
-    public List<Node> getNodes(String id){
-        if(nodeMap.containsKey(id)){
-            return nodeMap.get(id);
-        }
-        List<Node> currentList = new ArrayList<>();
-        nodeMap.put(id, currentList);
 
-        return currentList;
+    private String getDefaultId() {
+        return customSecurityManager.getCallerClassName();
     }
 
+    /**
+     * Inits the horizontal tool bar.
+     */
+    private void initHorizontalToolBar() {
+        /*
+         * ----------------------------------------------------------------------
+         * |left hand side buttons| | centered buttons| |right hand side buttons|
+         * ----------------------------------------------------------------------
+         */
+        this.clear();
+        // the main box for the toolbar
+        // holds the left hand side and the right hand side buttons!
+        // the buttons are separated by a spacer box, that fills the remaining
+        // width
+        this.horizontalToolBar = new HBox();
+        // the place for the buttons on the left hand side
+        HBox leftButtons = new HBox();
+        leftButtons.setAlignment(Pos.CENTER_LEFT);
+        this.toolBarContainer.put(JACPToolBarPosition.START, leftButtons);
+        // the spacer that fills the remaining width between the buttons
+        HBox centerButtons = new HBox();
+        centerButtons.setAlignment(Pos.CENTER);
+        this.toolBarContainer.put(JACPToolBarPosition.MIDDLE, centerButtons);
+
+        HBox rightButtons = new HBox();
+        rightButtons.setAlignment(Pos.CENTER_RIGHT);
+        this.toolBarContainer.put(JACPToolBarPosition.END, rightButtons);
+
+        HBox.setHgrow(centerButtons, Priority.ALWAYS);
+        CSSUtil.addCSSClass(CSSUtil.CSSConstants.CLASS_JACP_BUTTON_BAR, this, leftButtons, centerButtons, rightButtons);
+        this.horizontalToolBar.getChildren().addAll(leftButtons, centerButtons, rightButtons);
+        this.getItems().add(FIRST_PLACE, this.horizontalToolBar);
+    }
+
+
+    /**
+     * Inits the vertical tool bar.
+     */
+    private void initVerticalToolBar() {
+        /*
+         * --------------------------------------------------------------- |
+         * |left hand side buttons| |spacer| |right hand side buttons| |
+         * ---------------------------------------------------------------
+         */
+        this.clear();
+        // the main box for the toolbar
+        // holds the left hand side and the right hand side buttons!
+        // the buttons are separated by a spacer box, that fills the remaining
+        // width
+        this.verticalToolBar = new VBox();
+
+        // the place for the buttons on the left hand side
+        VBox topButtons = new VBox();
+        topButtons.setAlignment(Pos.CENTER_LEFT);
+        this.toolBarContainer.put(JACPToolBarPosition.START, topButtons);
+        // the spacer that fills the remaining width between the buttons
+
+        VBox middleButtons = new VBox();
+        this.toolBarContainer.put(JACPToolBarPosition.MIDDLE, middleButtons);
+
+        VBox bottomButtons = new VBox();
+        bottomButtons.setAlignment(Pos.CENTER_RIGHT);
+        this.toolBarContainer.put(JACPToolBarPosition.END, bottomButtons);
+
+        VBox.setVgrow(middleButtons, Priority.ALWAYS);
+        this.verticalToolBar.getChildren().addAll(topButtons, middleButtons, bottomButtons);
+        this.getItems().add(FIRST_PLACE, this.verticalToolBar);
+    }
+
+    private enum JACPToolBarPosition {
+        START, MIDDLE, END;
+    }
 
 
 }
