@@ -35,15 +35,8 @@
 	</developers>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<javafx.version>2.2</javafx.version>
-		<spring.version>4.0.0.RC1</spring.version>
+		<spring.version>4.0.0.RELEASE</spring.version>
 	</properties>
-    <repositories>
-        <repository>
-            <id>spring-milestone</id>
-            <url>http://repo.springsource.org/milestone</url>
-        </repository>
-    </repositories>
 	<build>
 		<plugins>
             <plugin>

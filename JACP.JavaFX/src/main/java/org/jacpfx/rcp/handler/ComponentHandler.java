@@ -1,6 +1,6 @@
 /************************************************************************
  * 
- * Copyright (C) 2010 - 2012
+ * Copyright (C) 2010 - 2014
  *
  * [FX2PerspectiveHandler.java]
  * AHCP Project (http://jacp.googlecode.com)
