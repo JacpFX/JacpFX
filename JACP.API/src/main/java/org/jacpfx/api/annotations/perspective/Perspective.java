@@ -1,9 +1,9 @@
 /************************************************************************
  * 
- * Copyright (C) 2010 - 2012
+ * Copyright (C) 2010 - 2014
  *
- * [Component.java]
- * AHCP Project (http://jacp.googlecode.com/)
+ * [Perspective.java]
+ * JACPFX Project (https://github.com/JacpFX/JacpFX/)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
