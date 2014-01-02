@@ -32,12 +32,10 @@ import org.jacpfx.api.context.Context;
  * 
  * @param <L>
  *            defines the message listener type
- * @param <A>
- *            defines the basic message type
  * @param <M>
  *            defines the basic message type
  */
-public interface IComponent<L, A, M> extends Comparable<IComponent<L, A, M>>{
+public interface IComponent<L, M> extends Comparable<IComponent<L, M>>{
 
 
 

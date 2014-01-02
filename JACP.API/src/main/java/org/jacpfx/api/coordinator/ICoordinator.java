@@ -64,7 +64,7 @@ public interface ICoordinator<L, A, M> {
 	 *
 	 * @param handler
 	 */
-	<P extends IComponent<L, A, M>> void setComponentHandler(
+	<P extends IComponent<L, M>> void setComponentHandler(
 			final IComponentHandler<P, Message<A, M>> handler);
 
     /**
@@ -72,7 +72,7 @@ public interface ICoordinator<L, A, M> {
      *
      * @param handler
      */
-    <P extends IComponent<L, A, M>> void setPerspectiveHandler(
+    <P extends IComponent<L, M>> void setPerspectiveHandler(
             final IComponentHandler<P, Message<A, M>> handler);
 
     /**

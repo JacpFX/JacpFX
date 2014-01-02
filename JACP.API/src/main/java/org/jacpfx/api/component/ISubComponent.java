@@ -40,7 +40,7 @@ import java.util.concurrent.BlockingQueue;
  * @param <M>
  *            defines the basic message type
  */
-public interface ISubComponent<L, A, M> extends IComponent<L, A, M> {
+public interface ISubComponent<L, A, M> extends IComponent<L, M> {
 
 	/**
 	 * Returns true if component has message in pipe.

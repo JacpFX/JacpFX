@@ -46,7 +46,7 @@ import java.util.concurrent.BlockingQueue;
  * @param <M>
  *            defines the basic message type
  */
-public interface IPerspective<L, A, M> extends IComponent<L, A, M>,
+public interface IPerspective<L, A, M> extends IComponent<L, M>,
 		IRootComponent<ISubComponent<L, A, M>, Message<A, M>>{
 
 	/**

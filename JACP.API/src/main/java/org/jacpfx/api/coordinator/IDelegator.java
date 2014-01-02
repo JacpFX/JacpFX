@@ -43,7 +43,7 @@ public interface IDelegator<L, A, M> {
 	 * 
 	 * @param handler
 	 */
-	<P extends IComponent<L, A, M>> void setPerspectiveHandler(
+	<P extends IComponent<L, M>> void setPerspectiveHandler(
             IComponentHandler<P, Message<A, M>> handler);
 
 }
