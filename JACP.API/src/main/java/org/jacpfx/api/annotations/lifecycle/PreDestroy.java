@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2014
  *
  * [PreDestroy.java]
@@ -30,9 +30,8 @@ import java.lang.annotation.Target;
 /**
  * Marks the tear down method in ui components;Usage use @PreDestroy on method
  * level and provide access to IBaseLayout parameter.
- * 
+ *
  * @author Andy Moncsek
- * 
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

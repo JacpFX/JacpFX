@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2014
  *
  * [IWorkbench.java]
@@ -28,11 +28,9 @@ package org.jacpfx.api.workbench;
  * component. You can have 1 workbench including (1-n) perspectives which can
  * include (1-n) components.
  *
- * 
  * @author Andy Moncsek
  */
 public interface IWorkbench {
-
 
 
 }

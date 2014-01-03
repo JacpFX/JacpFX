@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2014
  *
  * [IStatelessComponentScheduler.java]
@@ -22,42 +22,41 @@
  ************************************************************************/
 package org.jacpfx.api.scheduler;
 
-import org.jacpfx.api.message.Message;
 import org.jacpfx.api.component.IComponentHandle;
 import org.jacpfx.api.component.IStatelessCallabackComponent;
+import org.jacpfx.api.message.Message;
 
 /**
  * Handles instances of a state less component; delegates message to a non
  * blocked component instance or if all components are blocked message is
  * delegated to queue in one of existing instances
- * 
- * @author Andy Moncsek
- * 
+ *
  * @param <L> The listener type.
  * @param <A> The message type.
  * @param <M> The Message type.
+ * @author Andy Moncsek
  */
 public interface IStatelessComponentScheduler<L, A, M> {
-	/**
-	 * Handles incoming message to managed state less component.
-	 * 
-	 * @param message, the message
+    /**
+     * Handles incoming message to managed state less component.
+     *
+     * @param message,   the message
      * @param component, the component instance
-	 */
-	void incomingMessage(final Message<A, M> message,
-			final IStatelessCallabackComponent<L, A, M> component);
+     */
+    void incomingMessage(final Message<A, M> message,
+                         final IStatelessCallabackComponent<L, A, M> component);
 
-	/**
-	 * Returns a new instance of managed state less component.
-	 * 
-	 * @param <T> , the component to clone
-     * @param <H>, H is an IComponentHandle
+    /**
+     * Returns a new instance of managed state less component.
+     *
+     * @param <T>        , the component to clone
+     * @param <H>,       H is an IComponentHandle
      * @param component, the component that should be cloned
-	 * @param clazz, the class of the component.
-	 * @return an cloned instance of a state less component.
-	 */
-	<T extends IStatelessCallabackComponent<L, A, M>, H extends IComponentHandle> IStatelessCallabackComponent<L, A, M> getCloneBean(
-			final T component,
-			final Class<H> clazz);
+     * @param clazz,     the class of the component.
+     * @return an cloned instance of a state less component.
+     */
+    <T extends IStatelessCallabackComponent<L, A, M>, H extends IComponentHandle> IStatelessCallabackComponent<L, A, M> getCloneBean(
+            final T component,
+            final Class<H> clazz);
 
 }

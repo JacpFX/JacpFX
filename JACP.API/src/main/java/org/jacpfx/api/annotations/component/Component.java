@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2014
  *
  * [Component.java]
@@ -29,37 +29,36 @@ import java.lang.annotation.Target;
 
 /**
  * This annotation defines the meta definition of an JACP component.
- * 
+ *
  * @author Andy Moncsek
- * 
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Component {
     /**
      * The components name.
-     * 
+     *
      * @return The component name
      */
     String name();
 
     /**
      * The component id.
-     * 
+     *
      * @return The component Id
      */
     String id();
 
     /**
      * The active state at start time.
-     * 
+     *
      * @return True
      */
     boolean active() default true;
 
     /**
      * Represents the location of your resource bundle file.
-     * 
+     *
      * @return The default resource bundle location (like bundle.messages)
      */
     String resourceBundleLocation() default "";
@@ -67,7 +66,7 @@ public @interface Component {
     /**
      * Represents the Locale ID. see:
      * http://www.oracle.com/technetwork/java/javase/locales-137662.html
-     * 
+     *
      * @return The default locale Id
      */
     String localeID() default "";

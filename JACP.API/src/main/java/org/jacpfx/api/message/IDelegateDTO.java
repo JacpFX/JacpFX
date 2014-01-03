@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2014
  *
  * [IDelegateDTO.java]
@@ -24,32 +24,30 @@ package org.jacpfx.api.message;
 
 /**
  * DTO interface to transfer messages to desired target in different perspective.
- * 
+ *
+ * @param <A> defines the basic message type
+ * @param <M> defines the basic message type
  * @author Andy Moncsek
- * 
- * @param <A>
- *            defines the basic message type
- * @param <M>
- *            defines the basic message type
  */
 public interface IDelegateDTO<A, M> {
 
-	/**
-	 * Get the target id to transfer to.
-	 * 
-	 * @return targetId
-	 */
-	String getTarget();
+    /**
+     * Get the target id to transfer to.
+     *
+     * @return targetId
+     */
+    String getTarget();
 
-	/**
-	 * Returns the message.
-	 * 
-	 * @return the message
-	 */
-	Message<A, M> getMessage();
+    /**
+     * Returns the message.
+     *
+     * @return the message
+     */
+    Message<A, M> getMessage();
 
     /**
      * returns true when message target is a perspective.
+     *
      * @return true when target is perspective.
      */
     boolean isPerspective();

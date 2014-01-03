@@ -1,19 +1,20 @@
 package org.jacpfx.api.dialog;
+
 /**
  * Defines the scope of a dialog
- * @author Andy Moncsek
  *
+ * @author Andy Moncsek
  */
 public enum Scope {
-	SINGLETON("singleton"),PROTOTYPE("prototype");
-	
-	private final String type;
-	
-	private Scope(String type) {
-		this.type = type;
-	}
+    SINGLETON("singleton"), PROTOTYPE("prototype");
 
-	public String getType() {
-		return type;
-	}
+    private final String type;
+
+    private Scope(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
+    }
 }

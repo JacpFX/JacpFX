@@ -17,8 +17,8 @@ public class AnnotationMissconfigurationException extends RuntimeException {
         super(message);
     }
 
-    public AnnotationMissconfigurationException(String message,Throwable e) {
-        super(message,e);
+    public AnnotationMissconfigurationException(String message, Throwable e) {
+        super(message, e);
     }
 
     public AnnotationMissconfigurationException(Throwable e) {

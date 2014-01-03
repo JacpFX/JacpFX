@@ -8,7 +8,8 @@ package org.jacpfx.api.util;
  * A custom security manager that exposes the getClassContext() information
  */
 public class CustomSecurityManager extends SecurityManager {
-    private final static int CALL_STACK_DEPTH=2;
+    private final static int CALL_STACK_DEPTH = 2;
+
     public String getCallerClassName() {
         return getClassContext()[CALL_STACK_DEPTH].getName();
     }

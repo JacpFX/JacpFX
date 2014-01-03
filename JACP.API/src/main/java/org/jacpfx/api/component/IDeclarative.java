@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2014
  *
  * [IDeclarative.java]
@@ -28,40 +28,42 @@ import java.net.URL;
 
 /**
  * Declarative Components always have a document URL and should have an resourceBundle.
- * 
+ *
  * @author Andy Moncsek
  */
 public interface IDeclarative {
-	/**
-	 * Contains the document url describing the UI.
-	 * 
-	 * @return the document url
-	 */
-	String getViewLocation();
+    /**
+     * Contains the document url describing the UI.
+     *
+     * @return the document url
+     */
+    String getViewLocation();
 
-	/**
-	 * Set the viewLocation location on component start.
-	 * 
-	 * @param documentURL , the url of the FXML document
-	 */
-	void setViewLocation(final String documentURL);
+    /**
+     * Set the viewLocation location on component start.
+     *
+     * @param documentURL , the url of the FXML document
+     */
+    void setViewLocation(final String documentURL);
 
-	/**
-	 * The document URL describing the UI.
-	 * 
-	 * @return the document url
-	 */
-	URL getDocumentURL();
+    /**
+     * The document URL describing the UI.
+     *
+     * @return the document url
+     */
+    URL getDocumentURL();
 
 
-	/**
-	 * Distinguish component types.
-	 * @return the type of the component.
-	 */
-	UIType getType();
+    /**
+     * Distinguish component types.
+     *
+     * @return the type of the component.
+     */
+    UIType getType();
 
     /**
      * Set the UI type to distinguish component types
+     *
      * @param type, PROGRAMMATIC / DECLARATIVE type
      */
     void setUIType(final UIType type);

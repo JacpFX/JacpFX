@@ -64,7 +64,8 @@ public @interface View {
     /**
      * Defines the target layout id where the component should be displayed in.
      * This id is defined in the parent perspective and can be changed at runtime (context.setLayoutTargetId).
-     * @return  A valid targetLayout id from perspective.
+     *
+     * @return A valid targetLayout id from perspective.
      */
     String initialTargetLayoutId();
 

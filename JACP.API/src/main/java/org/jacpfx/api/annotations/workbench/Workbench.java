@@ -49,12 +49,14 @@ public @interface Workbench {
 
     /**
      * The workbench id
-     * @return  the workbench id.
+     *
+     * @return the workbench id.
      */
     String id();
 
     /**
      * Define all perspective id's which belongs to workbench..
+     *
      * @return all related component ids
      */
     String[] perspectives();

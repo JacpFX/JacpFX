@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2014
  *
  * [IBaseLayout.java]
@@ -26,34 +26,32 @@ import org.jacpfx.api.util.ToolbarPosition;
 
 /**
  * Defines a bean containing the defined tool bars and the main menu
- * 
+ *
+ * @param <C> defines the base component where others extend from
  * @author Andy Moncsek
- * @param <C>
- *            defines the base component where others extend from
  */
 public interface IBaseLayout<C> {
 
-	/**
-	 * Gets the registered tool bar.
-	 * 
-	 * @param position
-	 *            the position
-	 * @return the registered tool bar
-	 */
-	C getRegisteredToolBar(ToolbarPosition position);
+    /**
+     * Gets the registered tool bar.
+     *
+     * @param position the position
+     * @return the registered tool bar
+     */
+    C getRegisteredToolBar(ToolbarPosition position);
 
-	/**
-	 * Returns the application menu instance.
-	 * 
-	 * @return the menu instance
-	 */
-	C getMenu();
+    /**
+     * Returns the application menu instance.
+     *
+     * @return the menu instance
+     */
+    C getMenu();
 
-	/**
-	 * Gets the glass pane.
-	 * 
-	 * @return the glass pane
-	 */
-	C getGlassPane();
+    /**
+     * Gets the glass pane.
+     *
+     * @return the glass pane
+     */
+    C getGlassPane();
 
 }

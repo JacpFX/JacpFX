@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2014
  *
  * [PostConstruct.java]
@@ -30,9 +30,8 @@ import java.lang.annotation.Target;
 /**
  * Marks on start methods in UI components; Usage use @PostConstruct on method level
  * and provide access to IBaseLayout parameter.
- * 
+ *
  * @author Andy Moncsek
- * 
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

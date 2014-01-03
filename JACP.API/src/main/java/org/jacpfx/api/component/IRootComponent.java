@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2014
  *
  * [IRootComponent.java]
@@ -28,36 +28,34 @@ import org.jacpfx.api.handler.IComponentHandler;
  * All root components have containing sub components (workspace -
  * perspectives; perspective - editors) and listeners; all sub components have
  * to be initialized, registered and handled
- * 
+ *
+ * @param <T> component type to register
+ * @param <A> message type to use in registration process
  * @author Andy Moncsek
- * 
- * @param <T>
- *            component type to register
- * @param <A>
- *            message type to use in registration process
  */
 public interface IRootComponent<T, A> {
 
-	/**
-	 * Register the component at the listener.
-	 * 
-	 * @param component, the component to register.
-	 */
-	void registerComponent(final T component);
+    /**
+     * Register the component at the listener.
+     *
+     * @param component, the component to register.
+     */
+    void registerComponent(final T component);
 
     /**
      * Add a component, this does not fully register the component.
      * If you want to add a newly created component use registerComponent instead.
+     *
      * @param component, the component to add.
      */
     void addComponent(final T component);
 
-	/**
-	 * Unregister component from current perspective.
-	 * 
-	 * @param component, the component to unregister.
-	 */
-	void unregisterComponent(final T component);
+    /**
+     * Unregister component from current perspective.
+     *
+     * @param component, the component to unregister.
+     */
+    void unregisterComponent(final T component);
 
 
     /**
@@ -65,19 +63,19 @@ public interface IRootComponent<T, A> {
      */
     void removeAllCompnents();
 
-	/**
-	 * Handles initialization of subcomponents.
-	 * 
-	 * @param message, the initial message
-	 */
-	void initComponents(final A message);
+    /**
+     * Handles initialization of subcomponents.
+     *
+     * @param message, the initial message
+     */
+    void initComponents(final A message);
 
-	/**
-	 * Returns component handler to handle initialization and reassignment of
-	 * subcomponents.
-	 * 
-	 * @return the component handler
-	 */
-	IComponentHandler<T, A> getComponentHandler();
+    /**
+     * Returns component handler to handle initialization and reassignment of
+     * subcomponents.
+     *
+     * @return the component handler
+     */
+    IComponentHandler<T, A> getComponentHandler();
 
 }

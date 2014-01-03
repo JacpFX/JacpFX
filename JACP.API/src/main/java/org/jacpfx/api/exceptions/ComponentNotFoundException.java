@@ -14,11 +14,11 @@ public class ComponentNotFoundException extends RuntimeException {
     }
 
     public ComponentNotFoundException(String message) {
-            super(message);
+        super(message);
     }
 
-    public ComponentNotFoundException(String message,Throwable e) {
-        super(message,e);
+    public ComponentNotFoundException(String message, Throwable e) {
+        super(message, e);
     }
 
     public ComponentNotFoundException(Throwable e) {

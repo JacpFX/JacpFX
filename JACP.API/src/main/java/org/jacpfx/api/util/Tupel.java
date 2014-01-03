@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2014
  *
  * [Tupel.java]
@@ -24,28 +24,28 @@ package org.jacpfx.api.util;
 
 /**
  * helper class... TODO remove!!!
- * 
+ *
  * @author Andy Moncsek
  */
 public class Tupel<X, Y> {
 
-	private X x;
-	private Y y;
+    private X x;
+    private Y y;
 
-	public void setX(final X x) {
-		this.x = x;
-	}
+    public void setX(final X x) {
+        this.x = x;
+    }
 
-	public void setY(final Y y) {
-		this.y = y;
-	}
+    public void setY(final Y y) {
+        this.y = y;
+    }
 
-	public X getX() {
-		return this.x;
-	}
+    public X getX() {
+        return this.x;
+    }
 
-	public Y getY() {
-		return this.y;
-	}
+    public Y getY() {
+        return this.y;
+    }
 
 }

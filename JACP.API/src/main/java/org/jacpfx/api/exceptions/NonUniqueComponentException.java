@@ -14,11 +14,11 @@ public class NonUniqueComponentException extends RuntimeException {
     }
 
     public NonUniqueComponentException(String message) {
-            super(message);
+        super(message);
     }
 
     public NonUniqueComponentException(String message, Throwable e) {
-        super(message,e);
+        super(message, e);
     }
 
     public NonUniqueComponentException(Throwable e) {

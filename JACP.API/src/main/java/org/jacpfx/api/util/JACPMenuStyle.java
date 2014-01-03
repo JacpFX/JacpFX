@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2014
  *
  * [JACPMenuStyle.java]
@@ -24,25 +24,25 @@ package org.jacpfx.api.util;
 
 public enum JACPMenuStyle {
 
-	DECORATED(1, "decorated"), UNDECORATED(2, "undecorated"), CUSTOM(3,
-			"custom");
+    DECORATED(1, "decorated"), UNDECORATED(2, "undecorated"), CUSTOM(3,
+            "custom");
 
-	private final int id;
+    private final int id;
 
-	private final String description;
+    private final String description;
 
-	private JACPMenuStyle(final int id, final String description) {
+    private JACPMenuStyle(final int id, final String description) {
 
-		this.id = id;
-		this.description = description;
-	}
+        this.id = id;
+        this.description = description;
+    }
 
-	public int getId() {
-		return this.id;
-	}
+    public int getId() {
+        return this.id;
+    }
 
-	public String getDescription() {
-		return this.description;
-	}
+    public String getDescription() {
+        return this.description;
+    }
 
 }

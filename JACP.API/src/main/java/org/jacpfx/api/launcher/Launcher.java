@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2013
  *
  * [Launcher.java]
@@ -26,36 +26,35 @@ import org.jacpfx.api.dialog.Scope;
 
 /**
  * Defines an interface for launchers witch is an abstraction used DI containers
- * 
- * @author Andy Moncsek
- * 
+ *
  * @param <E>, the type of DI Context object
+ * @author Andy Moncsek
  */
 public interface Launcher<E> {
-	/**
-	 * Returns the DI container context.
-	 * 
-	 * @return the DI contect object
-	 */
-	E getContext();
+    /**
+     * Returns the DI container context.
+     *
+     * @return the DI contect object
+     */
+    E getContext();
 
-	/**
-	 * Returns a bean by class name.
-	 * 
-	 * @param clazz, the class of requested bean
-     * @param <P>, P is the type of requested bean
-	 * @return the bean
-	 */
-	<P> P getBean(final Class<P> clazz);
+    /**
+     * Returns a bean by class name.
+     *
+     * @param clazz, the class of requested bean
+     * @param <P>,   P is the type of requested bean
+     * @return the bean
+     */
+    <P> P getBean(final Class<P> clazz);
 
-	/**
-	 * Registers a Class in context and returns a managed bean.
-	 * 
-	 * @param type, the class of requested bean
-     * @param id, the id of requested bean
+    /**
+     * Registers a Class in context and returns a managed bean.
+     *
+     * @param type,  the class of requested bean
+     * @param id,    the id of requested bean
      * @param scope, The requested bean scope
-     * @param <P>, P is the type of requested bean
-	 * @return  the bean instance
-	 */
-	<P> P registerAndGetBean(final Class<? extends P> type, final String id, final Scope scope);
+     * @param <P>,   P is the type of requested bean
+     * @return the bean instance
+     */
+    <P> P registerAndGetBean(final Class<? extends P> type, final String id, final Scope scope);
 }

@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2014
  *
  * [Message.java]
@@ -28,11 +28,9 @@ package org.jacpfx.api.message;
  * Represents an message used by specific listener. An message targets a component
  * and contains a message body; every target get a specific instance of an message
  * (clone) containing only his specific message body and message event.
- * 
- * @param <M>
- *            defines the type of message
- * @param <A>
- *            defines the type of ActionEvent
+ *
+ * @param <M> defines the type of message
+ * @param <A> defines the type of ActionEvent
  * @author Andy Moncsek
  */
 public interface Message<A, M> extends Cloneable {
@@ -40,73 +38,77 @@ public interface Message<A, M> extends Cloneable {
 
     /**
      * Set message for target component.
+     *
      * @param message ;  the message set to message
      */
-	void setMessageBody(final M message);
+    void setMessageBody(final M message);
 
-	/**
-	 * Set message for a specified target component. the component.
-	 * 
-	 * @param targetId ; the actions target id
-	 * @param message ;  the message set to message
-	 */
+    /**
+     * Set message for a specified target component. the component.
+     *
+     * @param targetId ; the actions target id
+     * @param message  ;  the message set to message
+     */
     @Deprecated
-	void addMessage(final String targetId, final M message);
+    void addMessage(final String targetId, final M message);
 
-	/**
-	 * Get the message message.
-	 * 
-	 * @return M returns the message object
-	 */
-	M getMessageBody();
+    /**
+     * Get the message message.
+     *
+     * @return M returns the message object
+     */
+    M getMessageBody();
 
 
-	/**
-	 * Get the caller id.
-	 * 
-	 * @return the source id
-	 */
-	String getSourceId();
+    /**
+     * Get the caller id.
+     *
+     * @return the source id
+     */
+    String getSourceId();
 
-	/**
-	 * Get source of this message event.
-	 * 
-	 * @return the event
-	 */
-	A getSourceEvent();
+    /**
+     * Get source of this message event.
+     *
+     * @return the event
+     */
+    A getSourceEvent();
 
-	/**
-	 * Clone message and containing event.
-	 * 
-	 * @return a clone of current message instance
-	 */
-	Message<A, M> clone();
+    /**
+     * Clone message and containing event.
+     *
+     * @return a clone of current message instance
+     */
+    Message<A, M> clone();
 
-	/**
-	 * Returns message target id.
-	 * 
-	 * @return the target id
-	 */
-	String getTargetId();
+    /**
+     * Returns message target id.
+     *
+     * @return the target id
+     */
+    String getTargetId();
 
     /**
      * Checks if message is type of a given class.
+     *
      * @param clazz, class to check if message is equal to
-     * @param <T>, the generic type
-     * @return  true if message body type equals clazz
+     * @param <T>,   the generic type
+     * @return true if message body type equals clazz
      */
     <T> boolean isMessageBodyTypeOf(final Class<T> clazz);
 
     /**
      * Returns a typed message, if applicable.
+     *
      * @param clazz, the class to cast the message
-     * @param <T> , the generic type
-     * @return  returns the typed message body
+     * @param <T>    , the generic type
+     * @return returns the typed message body
      */
     <T> T getTypedMessageBody(final Class<T> clazz);
 
     /**
      * Check if message equals given input.
+     *
      * @param object, an object to check for equal
      * @return returns true if object equals the message body
      */

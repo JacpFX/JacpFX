@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2014
  *
  * [IComponent.java]
@@ -27,60 +27,61 @@ import org.jacpfx.api.context.Context;
 /**
  * This Interface represents a very basic component that can exists in JACP
  * environment.
- * 
+ *
+ * @param <L> defines the message listener type
+ * @param <M> defines the basic message type
  * @author Andy Moncsek
- * 
- * @param <L>
- *            defines the message listener type
- * @param <M>
- *            defines the basic message type
  */
-public interface IComponent<L, M> extends Comparable<IComponent<L, M>>{
+public interface IComponent<L, M> extends Comparable<IComponent<L, M>> {
 
 
-
-
-	/**
-	 * Get if component was activated, can occur if message was send before
-	 * "init" message arrived.
-	 * 
-	 * @return the active status
-	 */
-	boolean isStarted();
+    /**
+     * Get if component was activated, can occur if message was send before
+     * "init" message arrived.
+     *
+     * @return the active status
+     */
+    boolean isStarted();
 
     /**
      * Set once when component was first started
+     *
      * @param started, set to true if the component was initialized correctly.
      */
     void setStarted(final boolean started);
 
     /**
      * Represents the Locale ID, see: http://www.oracle.com/technetwork/java/javase/locales-137662.html.
+     *
      * @return the locale id
      */
     String getLocaleID();
 
-   /**
-     *  Set the Locale ID, see: http://www.oracle.com/technetwork/java/javase/locales-137662.html.
+    /**
+     * Set the Locale ID, see: http://www.oracle.com/technetwork/java/javase/locales-137662.html.
+     *
      * @param localeId, The locale id.
      */
     void setLocaleID(final String localeId);
 
     /**
      * Represents the location of your resource bundle file.
+     *
      * @return the url of resource bundle
      */
     String getResourceBundleLocation();
 
     /**
      * Set the location of your resource bundle file.
+     *
      * @param location . The location of the resource bundle.
      */
-    void  setResourceBundleLocation(final String location);
+    void setResourceBundleLocation(final String location);
 
     /**
      * Returns the components context object.
+     *
      * @return the context object.
      */
-    Context<L,M> getContext();
+    Context<L, M> getContext();
 }

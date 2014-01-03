@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2014
  *
  * [IStateLessCallabackComponent.java]
@@ -35,38 +35,34 @@ import java.util.concurrent.atomic.AtomicInteger;
  * same instance twice. This component type is good for scaling tasks like
  * performing operations on many folders or tables in database. The return value
  * will be send to message caller or to specified handleTargetId.
- * 
+ *
+ * @param <L> defines the message listener type
+ * @param <A> defines the basic event type
+ * @param <M> defines the basic message type
  * @author Andy Moncsek
- * 
- * @param <L>
- *            defines the message listener type
- * @param <A>
- *            defines the basic event type
- * @param <M>
- *            defines the basic message type
  */
 public interface IStatelessCallabackComponent<L, A, M> extends
         ISubComponent<L, A, M> {
 
-	/**
-	 * return instances of current state less component
-	 * 
-	 * @return an new callback instance
-	 */
-	List<ISubComponent<L, A, M>> getInstances();
+    /**
+     * return instances of current state less component
+     *
+     * @return an new callback instance
+     */
+    List<ISubComponent<L, A, M>> getInstances();
 
-	/**
-	 * returns thread counter to coordinate amount of existing instances of
-	 * sateless callback component
-	 * 
-	 * @return the counter
-	 */
-	AtomicInteger getThreadCounter();
+    /**
+     * returns thread counter to coordinate amount of existing instances of
+     * sateless callback component
+     *
+     * @return the counter
+     */
+    AtomicInteger getThreadCounter();
 
-	/**
-	 * returns associated executor service
-	 * 
-	 * @return the execution service
-	 */
-	ExecutorService getExecutorService();
+    /**
+     * returns associated executor service
+     *
+     * @return the execution service
+     */
+    ExecutorService getExecutorService();
 }

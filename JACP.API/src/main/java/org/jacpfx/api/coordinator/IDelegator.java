@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2014
  *
  * [IDelegator.java]
@@ -29,22 +29,21 @@ import org.jacpfx.api.message.Message;
 
 /**
  * Basic delegate interface
- * 
- * @author Andy Moncsek
- * 
+ *
  * @param <L>, the listener type
  * @param <A>, the event type
  * @param <M>, the message type
+ * @author Andy Moncsek
  */
 public interface IDelegator<L, A, M> {
 
-	/**
-	 * Set the associated perspective handler.
-	 * 
-	 * @param handler, the perspective handler.
-     * @param  <P> P should extend an IComponent
-	 */
-	<P extends IComponent<L, M>> void setPerspectiveHandler(
+    /**
+     * Set the associated perspective handler.
+     *
+     * @param handler, the perspective handler.
+     * @param <P>      P should extend an IComponent
+     */
+    <P extends IComponent<L, M>> void setPerspectiveHandler(
             IComponentHandler<P, Message<A, M>> handler);
 
 }

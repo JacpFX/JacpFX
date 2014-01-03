@@ -33,14 +33,12 @@ import org.jacpfx.api.message.Message;
  * Date: 25.06.13
  * Time: 16:13
  * This Interface declares a minimal component interface. This interface should be implemented or extended to declare a JacpFX component.
- * @param <C>
- *            defines the base component where others extend from
- * @param <A>
- *            defines the basic event type
- * @param <M>
- *            defines the basic message type
+ *
+ * @param <C> defines the base component where others extend from
+ * @param <A> defines the basic event type
+ * @param <M> defines the basic message type
  */
-public interface IComponentHandle<C, A, M> extends Injectable{
+public interface IComponentHandle<C, A, M> extends Injectable {
     /**
      * Handles component when called. The handle method in sub components is
      * always executed in a separate thread;

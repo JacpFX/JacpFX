@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2013
  *
  * [Component.java]
@@ -33,46 +33,45 @@ import java.lang.annotation.Target;
  * Defines a managed dialog component, A dialog has a parent component
  * accessible by @Ressource annotation, the Dialog should either extend a Node
  * or define a viewLocation pointing to fxml.
- * 
+ *
  * @author Andy Moncsek
- * 
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Dialog {
-	/**
-	 * The component id.
-	 * 
-	 * @return The component Id
-	 */
-	String id();
+    /**
+     * The component id.
+     *
+     * @return The component Id
+     */
+    String id();
 
-	/**
-	 * Defines the Scope of the Dialog, default is Singleton.
-	 * 
-	 * @return The dialog {@link Scope}
-	 */
-	Scope scope() default Scope.SINGLETON;
+    /**
+     * Defines the Scope of the Dialog, default is Singleton.
+     *
+     * @return The dialog {@link Scope}
+     */
+    Scope scope() default Scope.SINGLETON;
 
-	/**
-	 * Represents the location (URI) of the declarative UI.
-	 * 
-	 * @return The view location (like bundle.messages)
-	 */
-	String viewLocation() default "";
+    /**
+     * Represents the location (URI) of the declarative UI.
+     *
+     * @return The view location (like bundle.messages)
+     */
+    String viewLocation() default "";
 
-	/**
-	 * Represents the location of your resource bundle file.
-	 * 
-	 * @return The default resource bundle location (like bundle.messages)
-	 */
-	String resourceBundleLocation() default "";
-	
+    /**
+     * Represents the location of your resource bundle file.
+     *
+     * @return The default resource bundle location (like bundle.messages)
+     */
+    String resourceBundleLocation() default "";
+
 
     /**
      * Represents the Locale ID. see:
      * http://www.oracle.com/technetwork/java/javase/locales-137662.html
-     * 
+     *
      * @return The default locale Id
      */
     String localeID() default "";

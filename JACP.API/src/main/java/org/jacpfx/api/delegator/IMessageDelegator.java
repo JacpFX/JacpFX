@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2014
  *
  * [IMessageDelegator.java]
@@ -22,28 +22,27 @@
  ************************************************************************/
 package org.jacpfx.api.delegator;
 
-import org.jacpfx.api.message.IDelegateDTO;
 import org.jacpfx.api.coordinator.IDelegator;
+import org.jacpfx.api.message.IDelegateDTO;
 
 import java.util.concurrent.BlockingQueue;
 
 /**
  * Defines an interface for a message delegator.
- * 
- * @author Andy Moncsek
  *
  * @param <L> the basic listener type
  * @param <A> the basic event type
  * @param <M> the basic message type
+ * @author Andy Moncsek
  */
 public interface IMessageDelegator<L, A, M> extends IDelegator<L, A, M> {
 
 
-	/**
-	 * Returns the delegate queue.
-	 * 
-	 * @return the delegate queue
-	 */
-	BlockingQueue<IDelegateDTO<A, M>> getMessageDelegateQueue();
+    /**
+     * Returns the delegate queue.
+     *
+     * @return the delegate queue
+     */
+    BlockingQueue<IDelegateDTO<A, M>> getMessageDelegateQueue();
 
 }

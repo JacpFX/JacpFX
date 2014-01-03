@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2014
  *
  * [IComponentDelegator.java]
@@ -29,27 +29,26 @@ import java.util.concurrent.BlockingQueue;
 
 /**
  * A component delegate handles delegate actions.
- * 
- * @author Andy Moncsek
- * 
+ *
  * @param <L> the basic listener type
  * @param <A> the basic event type
  * @param <M> the basic message type
+ * @author Andy Moncsek
  */
 public interface IComponentDelegator<L, A, M> extends IDelegator<L, A, M> {
 
-	/**
-	 * Handles delegate of a component. Puts the component to delegate queue.
-	 * 
-	 * @param component, The component to delegate.
-	 */
-	void delegateComponent(final ISubComponent<L, A, M> component);
+    /**
+     * Handles delegate of a component. Puts the component to delegate queue.
+     *
+     * @param component, The component to delegate.
+     */
+    void delegateComponent(final ISubComponent<L, A, M> component);
 
-	/**
-	 * Get the delegate queue to add components to be delegated.
-	 * 
-	 * @return delegateQueue, The delegate queue.
-	 */
-	BlockingQueue<ISubComponent<L, A, M>> getComponentDelegateQueue();
+    /**
+     * Get the delegate queue to add components to be delegated.
+     *
+     * @return delegateQueue, The delegate queue.
+     */
+    BlockingQueue<ISubComponent<L, A, M>> getComponentDelegateQueue();
 
 }

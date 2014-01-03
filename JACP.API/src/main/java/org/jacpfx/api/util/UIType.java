@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2014
  *
  * [Tupel.java]
@@ -25,10 +25,9 @@ package org.jacpfx.api.util;
 /**
  * To avoid definition of several interface/abstract class types of UI components this ENUM can
  * be used to distinguish components.
- * 
+ *
  * @author Andy Moncsek
- * 
  */
 public enum UIType {
-	PROGRAMMATIC, DECLARATIVE
+    PROGRAMMATIC, DECLARATIVE
 }

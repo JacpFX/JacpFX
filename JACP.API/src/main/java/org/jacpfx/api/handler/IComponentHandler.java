@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2014
  *
  * [IComponentHandler.java]
@@ -24,28 +24,25 @@ package org.jacpfx.api.handler;
 
 /**
  * A component handler handles initialization and reassignment of components
- * 
+ *
+ * @param <T> component type to register
+ * @param <A> message type to use in registration process
  * @author Andy Moncsek
- * 
- * @param <T>
- *            component type to register
- * @param <A>
- *            message type to use in registration process
  */
 public interface IComponentHandler<T, A> {
-	/**
-	 * Handles initialization of a single component.
-	 * 
-	 * @param message , the initial message
-	 * @param component, the component which should be initiated
-	 */
-	void initComponent(final A message, final T component);
+    /**
+     * Handles initialization of a single component.
+     *
+     * @param message    , the initial message
+     * @param component, the component which should be initiated
+     */
+    void initComponent(final A message, final T component);
 
-	/**
-	 * Runs 'handle' method and replace of subcomponent in perspective.
-	 * 
-	 * @param component, the component which should be handled
-	 * @param message, the message which triggers the execution
-	 */
-	void handleAndReplaceComponent(final A message, final T component);
+    /**
+     * Runs 'handle' method and replace of subcomponent in perspective.
+     *
+     * @param component, the component which should be handled
+     * @param message,   the message which triggers the execution
+     */
+    void handleAndReplaceComponent(final A message, final T component);
 }

@@ -18,7 +18,7 @@ public class InvalidComponentMatch extends RuntimeException {
     }
 
     public InvalidComponentMatch(String message, Throwable e) {
-        super(message,e);
+        super(message, e);
     }
 
     public InvalidComponentMatch(Throwable e) {

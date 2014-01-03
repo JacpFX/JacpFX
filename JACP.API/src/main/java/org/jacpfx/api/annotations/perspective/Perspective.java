@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2014
  *
  * [Perspective.java]
@@ -29,54 +29,57 @@ import java.lang.annotation.Target;
 
 /**
  * Defines the meta attributes for a perspective.
- * 
+ *
  * @author Andy Moncsek
- * 
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Perspective {
-	/**
-	 * The perspective name.
-	 * 
-	 * @return The perspective name.
-	 */
-	String name();
+    /**
+     * The perspective name.
+     *
+     * @return The perspective name.
+     */
+    String name();
 
-	/**
-	 * The perspective id.
-	 * 
-	 * @return The perspective Id
-	 */
-	String id();
+    /**
+     * The perspective id.
+     *
+     * @return The perspective Id
+     */
+    String id();
 
-	/**
-	 * The active state at start time.
-	 * 
-	 * @return boolean
-	 */
-	boolean active() default true;
+    /**
+     * The active state at start time.
+     *
+     * @return boolean
+     */
+    boolean active() default true;
 
-	/**
-	 * Represents the location (URI) of the declarative UI.
-	 * 
-	 * @return The view location (like bundle.messages)
-	 */
-	String viewLocation() default "";
-	
-	/**
-	 * Represents the location of your resource bundle file.
-	 * @return The default resource bundle location (like bundle.messages)
-	 */
-	String resourceBundleLocation() default "";
-	/**
-	 * Represents the Locale ID. see: http://www.oracle.com/technetwork/java/javase/locales-137662.html
-	 * @return The default locale Id
-	 */
-	String localeID() default "";
+    /**
+     * Represents the location (URI) of the declarative UI.
+     *
+     * @return The view location (like bundle.messages)
+     */
+    String viewLocation() default "";
+
+    /**
+     * Represents the location of your resource bundle file.
+     *
+     * @return The default resource bundle location (like bundle.messages)
+     */
+    String resourceBundleLocation() default "";
+
+    /**
+     * Represents the Locale ID. see: http://www.oracle.com/technetwork/java/javase/locales-137662.html
+     *
+     * @return The default locale Id
+     */
+    String localeID() default "";
 
     /**
      * Define all component id's which belongs to perspective.
+     *
      * @return all related component ids
      */
     String[] components();

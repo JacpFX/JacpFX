@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2014
  *
  * [IComponentView.java]
@@ -27,33 +27,30 @@ import org.jacpfx.api.message.Message;
 /**
  * Represents an UI component handled by a perspective. A IVComponent is an // *
  * visible UI component displayed in a defined area of perspective.
- * 
+ *
+ * @param <C> defines the base component where others extend from
+ * @param <A> defines the basic event type
+ * @param <M> defines the basic message type
  * @author Andy Moncsek
- * @param <C>
- *            defines the base component where others extend from
- * @param <A>
- *            defines the basic event type
- * @param <M>
- *            defines the basic message type
  */
-public interface IComponentView<C, A, M>  extends IComponentHandle<C, A, M> {
+public interface IComponentView<C, A, M> extends IComponentHandle<C, A, M> {
 
-	/**
-	 * To avoid toolkit specific threading issues the postHandle method always
-	 * called after the handle method. While the handle method is executed in a
-	 * separate thread the postHandle method is guaranteed to run in application
-	 * main thread. It is mostly save to create new components outside the main
-	 * thread in the handle method but when you like to recycle your components
-	 * you should use the postHandle method. In the postHandle method you should
-	 * avoid long running tasks. Use it only to create or update your ui
-	 * components.
-	 * 
-	 * @param node , the ui node
-	 * @param message ,  the trigger message
-	 * @return an ui component
+    /**
+     * To avoid toolkit specific threading issues the postHandle method always
+     * called after the handle method. While the handle method is executed in a
+     * separate thread the postHandle method is guaranteed to run in application
+     * main thread. It is mostly save to create new components outside the main
+     * thread in the handle method but when you like to recycle your components
+     * you should use the postHandle method. In the postHandle method you should
+     * avoid long running tasks. Use it only to create or update your ui
+     * components.
+     *
+     * @param node    , the ui node
+     * @param message ,  the trigger message
+     * @return an ui component
      * @throws java.lang.Exception , this method can throw any Exception because it will be implemented in any component.
-	 */
-	C postHandle(final C node, final Message<A, M> message) throws Exception;
+     */
+    C postHandle(final C node, final Message<A, M> message) throws Exception;
 
 
 }

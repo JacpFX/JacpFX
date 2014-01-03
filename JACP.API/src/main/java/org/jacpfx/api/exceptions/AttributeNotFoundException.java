@@ -17,8 +17,8 @@ public class AttributeNotFoundException extends RuntimeException {
         super(message);
     }
 
-    public AttributeNotFoundException(String message,Throwable e) {
-        super(message,e);
+    public AttributeNotFoundException(String message, Throwable e) {
+        super(message, e);
     }
 
     public AttributeNotFoundException(Throwable e) {

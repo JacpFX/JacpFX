@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2014
  *
  * [IWorkbenchLayout.java]
@@ -27,81 +27,76 @@ import org.jacpfx.api.util.Tupel;
 
 /**
  * Defines the base layout of a workbench and the application.
- * 
- * @param <C>
- *            defines the base component where others extend from
+ *
+ * @param <C> defines the base component where others extend from
  * @author Andy Moncsek
  */
 public interface IWorkbenchLayout<C> extends IBaseLayout<C> {
 
-	/**
-	 * Check if menus are enabled.
-	 * 
-	 * @return if menu is enable/disable
-	 */
-	boolean isMenuEnabled();
+    /**
+     * Check if menus are enabled.
+     *
+     * @return if menu is enable/disable
+     */
+    boolean isMenuEnabled();
 
-	/**
-	 * Set menus to enabled state.
-	 * 
-	 * @param enabled, true if menu is enabled
-	 */
-	void setMenuEnabled(boolean enabled);
+    /**
+     * Set menus to enabled state.
+     *
+     * @param enabled, true if menu is enabled
+     */
+    void setMenuEnabled(boolean enabled);
 
-	/**
-	 * Set the size of the workbench.
-	 * 
-	 * @param x, the initial X size of workbench
-	 * @param y, the initial Y size of the workbench
-	 */
-	void setWorkbenchXYSize(int x, int y);
+    /**
+     * Set the size of the workbench.
+     *
+     * @param x, the initial X size of workbench
+     * @param y, the initial Y size of the workbench
+     */
+    void setWorkbenchXYSize(int x, int y);
 
-	/**
-	 * Returns a tuple defining the workbench size.
-	 * 
-	 * @return the tuple containing the workbench size
-	 */
-	Tupel<Integer, Integer> getWorkbenchSize();
+    /**
+     * Returns a tuple defining the workbench size.
+     *
+     * @return the tuple containing the workbench size
+     */
+    Tupel<Integer, Integer> getWorkbenchSize();
 
     /**
      * Register multiple toolbars for the workbench
-     *
+     * <p>
      * All toolbars are added with the same priority, thus the priority is given
      * by the order of registration.
      *
-     * @param positions
-     *            - NORTH, WEST, EAST, SOUTH
-     *
+     * @param positions - NORTH, WEST, EAST, SOUTH
      */
     void registerToolBars(ToolbarPosition... positions);
 
-	/**
-	 * Register a toolbar for the workbench
-	 * 
-	 * All toolbars are added with the same priority, thus the priority is given
-	 * by the order of registration.
-	 * 
-	 * @param position
-	 *            - NORTH, WEST, EAST, SOUTH
-	 * 
-	 */
-	void registerToolBar(final ToolbarPosition position);
+    /**
+     * Register a toolbar for the workbench
+     * <p>
+     * All toolbars are added with the same priority, thus the priority is given
+     * by the order of registration.
+     *
+     * @param position - NORTH, WEST, EAST, SOUTH
+     */
+    void registerToolBar(final ToolbarPosition position);
 
-	/**
-	 * Set the workbench style.
-	 * 
-	 * @param style
-	 *            , the style of workbench
-     * @param <S>, the style is type of Enum
-	 */
-	@SuppressWarnings("rawtypes")
-	<S extends Enum> void setStyle(S style);
+    /**
+     * Set the workbench style.
+     *
+     * @param style , the style of workbench
+     * @param <S>,  the style is type of Enum
+     */
+    @SuppressWarnings("rawtypes")
+    <S extends Enum> void setStyle(S style);
 
-	/**
-	 * Returns the workbench style.
+    /**
+     * Returns the workbench style.
+     *
      * @param <S>, the style is type of Enum
-	 * @return style
-	 */
-	@SuppressWarnings("rawtypes")
-	<S extends Enum> S getStyle();
+     * @return style
+     */
+    @SuppressWarnings("rawtypes")
+    <S extends Enum> S getStyle();
 }

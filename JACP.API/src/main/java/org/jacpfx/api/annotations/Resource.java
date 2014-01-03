@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2013
  *
  * [Resource.java]
@@ -30,17 +30,16 @@ import java.lang.annotation.Target;
 /**
  * The Resource annotation allows to inject different resources in dialogs an
  * components like a parent component, resource bundles and session context.
- * 
+ *
  * @author Andy Moncsek
- * 
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Resource {
-	/**
-	 * Id of desired parent component id.
-	 * 
-	 * @return The component Id
-	 */
-	String parentId() default "";
+    /**
+     * Id of desired parent component id.
+     *
+     * @return The component Id
+     */
+    String parentId() default "";
 }

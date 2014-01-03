@@ -17,8 +17,8 @@ public class AnnotationNotFoundException extends RuntimeException {
         super(message);
     }
 
-    public AnnotationNotFoundException(String message,Throwable e) {
-        super(message,e);
+    public AnnotationNotFoundException(String message, Throwable e) {
+        super(message, e);
     }
 
     public AnnotationNotFoundException(Throwable e) {

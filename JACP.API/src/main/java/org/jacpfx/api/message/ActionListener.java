@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2014
  *
  * [ActionListener.java]
@@ -26,19 +26,17 @@ package org.jacpfx.api.message;
  * Handles implementation specific Listener to perform events. This Interface is
  * an abstraction to hide toolkit specific event/message details.
  *
- * @param <M>
- *            defines the type of message ActionEvent
- * @param <A>
- *            defines the type of ActionEvent
+ * @param <M> defines the type of message ActionEvent
+ * @param <A> defines the type of ActionEvent
  * @author Andy Moncsek
  */
 public interface ActionListener<A, M> {
 
-	/**
-	 * Notify component when message fired.
-	 * 
-	 * @param action ;  the message fired by components
-	 */
-	void notifyComponents(final Message<A, M> action);
+    /**
+     * Notify component when message fired.
+     *
+     * @param action ;  the message fired by components
+     */
+    void notifyComponents(final Message<A, M> action);
 
 }
