@@ -32,7 +32,7 @@ package org.jacpfx.api.component;
  * @param <L>
  *            defines the message listener type
  * @param <A>
- *            defines the basic message type
+ *            defines the basic event type
  * @param <M>
  *            defines the basic message type
  */
@@ -54,6 +54,7 @@ public interface IUIComponent<C, L, A, M> extends ISubComponent<L, A, M> {
 
     /**
      * Returns the component handle class, this is the users implementation of the component.
+     * @param <X>, X extends an IComponentView
      * @return IComponentHandle, the component handle.
      */
     public default <X extends IComponentView<C, A, M>> X  getComponentViewHandle(){

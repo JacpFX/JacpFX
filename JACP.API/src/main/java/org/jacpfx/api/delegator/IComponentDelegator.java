@@ -32,9 +32,9 @@ import java.util.concurrent.BlockingQueue;
  * 
  * @author Andy Moncsek
  * 
- * @param <L>
- * @param <A>
- * @param <M>
+ * @param <L> the basic listener type
+ * @param <A> the basic event type
+ * @param <M> the basic message type
  */
 public interface IComponentDelegator<L, A, M> extends IDelegator<L, A, M> {
 

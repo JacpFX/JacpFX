@@ -36,7 +36,7 @@ import java.util.concurrent.BlockingQueue;
  * @param <L>
  *            defines the message listener type
  * @param <A>
- *            defines the basic message type
+ *            defines the basic event type
  * @param <M>
  *            defines the basic message type
  */
@@ -60,6 +60,7 @@ public interface ISubComponent<L, A, M> extends IComponent<L, M> {
 	 * Returns next message in pipe.
 	 * 
 	 * @return the next message to handle
+     * @throws java.lang.InterruptedException , the Exception will be thrown when main thread is interrupted and not delegated to the developer
 	 */
 	Message<A, M> getNextIncomingMessage() throws InterruptedException;
 
@@ -89,7 +90,8 @@ public interface ISubComponent<L, A, M> extends IComponent<L, M> {
 
 	/**
 	 * Set parentId and global message queue to component
-	 * 
+	 *
+     * @param parentId, the parent id of the current component (the perspective id)
 	 * @param messageQueue, the message queue
 	 */
 	void initEnv(final String parentId,
@@ -98,6 +100,7 @@ public interface ISubComponent<L, A, M> extends IComponent<L, M> {
 
     /**
      * Returns the component handle class, this is the users implementation of the component.
+     * @param <X>, the type
      * @return IComponentHandle, the component handle.
      */
     <X extends IComponentHandle<?,  A, M>> X getComponent();

@@ -47,6 +47,7 @@ public interface IComponentHandle<C, A, M> extends Injectable{
      *
      * @param message , the triggering message
      * @return view component
+     * @throws java.lang.Exception , the method will be implemented by JacpFX developer an can throw any exception
      */
     C handle(final Message<A, M> message) throws Exception;
 }

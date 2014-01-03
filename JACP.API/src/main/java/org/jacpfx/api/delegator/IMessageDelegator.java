@@ -31,10 +31,10 @@ import java.util.concurrent.BlockingQueue;
  * Defines an interface for a message delegator.
  * 
  * @author Andy Moncsek
- * 
- * @param <L>
- * @param <A>
- * @param <M>
+ *
+ * @param <L> the basic listener type
+ * @param <A> the basic event type
+ * @param <M> the basic message type
  */
 public interface IMessageDelegator<L, A, M> extends IDelegator<L, A, M> {
 

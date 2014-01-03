@@ -51,6 +51,7 @@ public interface IComponentView<C, A, M>  extends IComponentHandle<C, A, M> {
 	 * @param node , the ui node
 	 * @param message ,  the trigger message
 	 * @return an ui component
+     * @throws java.lang.Exception , this method can throw any Exception because it will be implemented in any component.
 	 */
 	C postHandle(final C node, final Message<A, M> message) throws Exception;
 

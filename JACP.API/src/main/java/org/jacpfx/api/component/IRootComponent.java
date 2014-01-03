@@ -25,7 +25,7 @@ package org.jacpfx.api.component;
 import org.jacpfx.api.handler.IComponentHandler;
 
 /**
- * All root components have containing sub components (workspace ->
+ * All root components have containing sub components (workspace -
  * perspectives; perspective - editors) and listeners; all sub components have
  * to be initialized, registered and handled
  * 

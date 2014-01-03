@@ -51,6 +51,8 @@ public interface IStatelessComponentScheduler<L, A, M> {
 	 * Returns a new instance of managed state less component.
 	 * 
 	 * @param <T> , the component to clone
+     * @param <H>, H is an IComponentHandle
+     * @param component, the component that should be cloned
 	 * @param clazz, the class of the component.
 	 * @return an cloned instance of a state less component.
 	 */

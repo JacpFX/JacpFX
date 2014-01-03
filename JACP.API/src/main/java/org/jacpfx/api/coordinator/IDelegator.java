@@ -42,6 +42,7 @@ public interface IDelegator<L, A, M> {
 	 * Set the associated perspective handler.
 	 * 
 	 * @param handler, the perspective handler.
+     * @param  <P> P should extend an IComponent
 	 */
 	<P extends IComponent<L, M>> void setPerspectiveHandler(
             IComponentHandler<P, Message<A, M>> handler);

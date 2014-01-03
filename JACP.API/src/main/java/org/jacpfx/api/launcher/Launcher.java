@@ -29,7 +29,7 @@ import org.jacpfx.api.dialog.Scope;
  * 
  * @author Andy Moncsek
  * 
- * @param <E>
+ * @param <E>, the type of DI Context object
  */
 public interface Launcher<E> {
 	/**
@@ -43,6 +43,7 @@ public interface Launcher<E> {
 	 * Returns a bean by class name.
 	 * 
 	 * @param clazz, the class of requested bean
+     * @param <P>, P is the type of requested bean
 	 * @return the bean
 	 */
 	<P> P getBean(final Class<P> clazz);
@@ -53,7 +54,8 @@ public interface Launcher<E> {
 	 * @param type, the class of requested bean
      * @param id, the id of requested bean
      * @param scope, The requested bean scope
+     * @param <P>, P is the type of requested bean
 	 * @return  the bean instance
 	 */
-	<T> T registerAndGetBean(final Class<? extends T> type, final String id, final Scope scope);
+	<P> P registerAndGetBean(final Class<? extends P> type, final String id, final Scope scope);
 }

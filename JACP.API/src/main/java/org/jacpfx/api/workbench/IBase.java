@@ -69,6 +69,7 @@ public interface IBase<L, A, M> {
 
     /**
      * Returns the component handle class, this is the users implementation of the component.
+     * @param <X>, the component mus be type of Injectable.
      * @return IComponentHandle, the component handle.
      */
     <X extends Injectable> X  getComponentHandle();

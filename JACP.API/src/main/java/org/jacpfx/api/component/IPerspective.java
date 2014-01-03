@@ -42,7 +42,7 @@ import java.util.concurrent.BlockingQueue;
  * @param <L>
  *            defines the message listener type
  * @param <A>
- *            defines the basic message type
+ *            defines the basic event type
  * @param <M>
  *            defines the basic message type
  */

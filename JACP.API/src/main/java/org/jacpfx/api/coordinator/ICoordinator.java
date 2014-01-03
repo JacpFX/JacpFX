@@ -37,7 +37,7 @@ import java.util.concurrent.BlockingQueue;
  * @param <L>
  *            defines the message listener type
  * @param <A>
- *            defines the basic message type
+ *            defines the basic event type
  * @param <M>
  *            defines the basic message type
  */
@@ -62,6 +62,7 @@ public interface ICoordinator<L, A, M> {
 	/**
 	 * set associated componentHandler
 	 *
+     * @param <P>, is type of IComponent
 	 * @param handler, the component handler that handles component execution.
 	 */
 	<P extends IComponent<L, M>> void setComponentHandler(
@@ -69,7 +70,7 @@ public interface ICoordinator<L, A, M> {
 
     /**
      * set associated perspectiveHandler
-     *
+     * @param <P>, is type of IComponent
      * @param handler, the perspective handler that handles perspective execution.
      */
     <P extends IComponent<L, M>> void setPerspectiveHandler(
