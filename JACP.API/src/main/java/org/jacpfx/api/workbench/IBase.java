@@ -3,7 +3,7 @@
  * Copyright (C) 2010 - 2014
  *
  * [IBase.java]
- * AHCP Project (http://jacp.googlecode.com)
+ * JACPFX Project (https://github.com/JacpFX/JacpFX/)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,7 +31,7 @@ import java.util.List;
 
 /**
  * 
- * This Interface defines the basic root construct of an AHCP application, it
+ * This Interface defines the basic root construct of an JACPFX application, it
  * has no dependencies to any UI
  * 
  * @param <L>
@@ -44,13 +44,6 @@ import java.util.List;
  * 
  */
 public interface IBase<L, A, M> {
-
-	/**
-	 * Set perspectives to workbench.
-	 *
-	 * @param perspectives
-	 */
-	void setPerspectives(final List<IPerspective<L, A, M>> perspectives);
 
 	/**
 	 * Get perspectives in workbench.
@@ -82,8 +75,8 @@ public interface IBase<L, A, M> {
 
     /**
      * Set the component handle class. This is the users implementation of the component.
-     * @param handle
-     * @param <X>
+     * @param handle, the handle object is the user defined, annotated component.
+     * @param <X>, the component mus be type of Injectable.
      */
     <X extends Injectable>  void setComponentHandle(final X  handle);
 

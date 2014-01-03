@@ -69,12 +69,12 @@ public class MessageCoordinator extends ACoordinator implements
         ); // End runlater
     }
 
-    private <P extends IComponent<EventHandler<Event>, Event, Object>> void handleActive(P component, Message<Event, Object> message) {
+    private <P extends IComponent<EventHandler<Event>, Object>> void handleActive(P component, Message<Event, Object> message) {
         this.componentHandler.handleAndReplaceComponent(message,
                 (ISubComponent<EventHandler<Event>, Event, Object>) component);
     }
 
-    private <P extends IComponent<EventHandler<Event>, Event, Object>> void handleInActive(P component, final IPerspective<EventHandler<Event>, Event, Object> parentPerspective, Message<Event, Object> message) {
+    private <P extends IComponent<EventHandler<Event>,Object>> void handleInActive(P component, final IPerspective<EventHandler<Event>, Event, Object> parentPerspective, Message<Event, Object> message) {
         component.getContext().setActive(true);
         component.setStarted(true);
         parentPerspective.addComponent((ISubComponent<EventHandler<Event>, Event, Object>) component);
@@ -193,13 +193,13 @@ public class MessageCoordinator extends ACoordinator implements
 
 
     @Override
-    public <P extends IComponent<EventHandler<Event>, Event, Object>> void setComponentHandler(IComponentHandler<P, Message<Event, Object>> handler) {
+    public <P extends IComponent<EventHandler<Event>,Object>> void setComponentHandler(IComponentHandler<P, Message<Event, Object>> handler) {
         this.componentHandler = (IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>>) handler;
 
     }
 
     @Override
-    public <P extends IComponent<EventHandler<Event>, Event, Object>> void setPerspectiveHandler(IComponentHandler<P, Message<Event, Object>> handler) {
+    public <P extends IComponent<EventHandler<Event>,Object>> void setPerspectiveHandler(IComponentHandler<P, Message<Event, Object>> handler) {
         this.perspectiveHandler = (IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, Message<Event, Object>>) handler;
     }
 

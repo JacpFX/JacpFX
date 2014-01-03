@@ -3,7 +3,7 @@
  * Copyright (C) 2010 - 2014
  *
  * [FX2ComponentDelegator.java]
- * AHCP Project (http://jacp.googlecode.com)
+ * JACPFX Project (https://github.com/JacpFX/JacpFX/)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -117,7 +117,7 @@ public class ComponentDelegator extends Thread implements
         } // End if
     }
 
-	private <P extends IComponent<EventHandler<Event>, Event, Object>> void handleInActivePerspective(
+	private <P extends IComponent<EventHandler<Event>,  Object>> void handleInActivePerspective(
 			final P component, final Message<Event, Object> action) {
 		component.getContext().setActive(true);
         //noinspection unchecked
@@ -137,7 +137,7 @@ public class ComponentDelegator extends Thread implements
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <P extends IComponent<EventHandler<Event>, Event, Object>> void setPerspectiveHandler(
+	public <P extends IComponent<EventHandler<Event>,  Object>> void setPerspectiveHandler(
             final IComponentHandler<P, Message<Event, Object>> handler) {
 		this.componentHandler = (IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, Message<Event, Object>>) handler;
 

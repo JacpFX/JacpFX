@@ -1,4 +1,3 @@
-org.jacpfx.api.message
 org.jacpfx.api.annotations
 org.jacpfx.api.annotations.component
 org.jacpfx.api.annotations.dialog
@@ -14,6 +13,7 @@ org.jacpfx.api.dialog
 org.jacpfx.api.exceptions
 org.jacpfx.api.handler
 org.jacpfx.api.launcher
+org.jacpfx.api.message
 org.jacpfx.api.scheduler
 org.jacpfx.api.util
 org.jacpfx.api.workbench

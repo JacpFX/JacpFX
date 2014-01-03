@@ -3,7 +3,7 @@
  * Copyright (C) 2010 - 2014
  *
  * [StatelessCallbackScheduler.java]
- * AHCP Project (http://jacp.googlecode.com)
+ * JACPFX Project (https://github.com/JacpFX/JacpFX/)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -129,7 +129,7 @@ public class StatelessCallbackScheduler implements
      * {@inheritDoc }
      */
     public final <T extends IStatelessCallabackComponent<EventHandler<Event>, Event, Object>, H extends IComponentHandle> IStatelessCallabackComponent<EventHandler<Event>, Event, Object> getCloneBean(
-            final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent,
+            final T baseComponent,
             final Class<H> clazz) {
         return ((AStatelessCallbackComponent) baseComponent).init(this.launcher
                 .getBean(clazz));

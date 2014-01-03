@@ -3,7 +3,7 @@
  * Copyright (C) 2010 - 2014
  *
  * [IComponent.java]
- * AHCP Project (http://jacp.googlecode.com)
+ * JACPFX Project (https://github.com/JacpFX/JacpFX/)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -50,7 +50,7 @@ public interface IComponent<L, M> extends Comparable<IComponent<L, M>>{
 
     /**
      * Set once when component was first started
-     * @param started
+     * @param started, set to true if the component was initialized correctly.
      */
     void setStarted(final boolean started);
 
@@ -62,7 +62,7 @@ public interface IComponent<L, M> extends Comparable<IComponent<L, M>>{
 
    /**
      *  Set the Locale ID, see: http://www.oracle.com/technetwork/java/javase/locales-137662.html.
-     * @param localeId
+     * @param localeId, The locale id.
      */
     void setLocaleID(final String localeId);
 
@@ -74,7 +74,7 @@ public interface IComponent<L, M> extends Comparable<IComponent<L, M>>{
 
     /**
      * Set the location of your resource bundle file.
-     * @param location
+     * @param location . The location of the resource bundle.
      */
     void  setResourceBundleLocation(final String location);
 

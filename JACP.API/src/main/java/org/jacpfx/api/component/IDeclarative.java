@@ -2,8 +2,8 @@
  * 
  * Copyright (C) 2010 - 2014
  *
- * [IVComponent.java]
- * AHCP Project (http://jacp.googlecode.com)
+ * [IDeclarative.java]
+ * JACPFX Project (https://github.com/JacpFX/JacpFX/)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,7 +44,7 @@ public interface IDeclarative {
 	 * 
 	 * @param documentURL , the url of the FXML document
 	 */
-	void setViewLocation(String documentURL);
+	void setViewLocation(final String documentURL);
 
 	/**
 	 * The document URL describing the UI.
@@ -62,8 +62,8 @@ public interface IDeclarative {
 
     /**
      * Set the UI type to distinguish component types
-     * @param type
+     * @param type, PROGRAMMATIC / DECLARATIVE type
      */
-    void setUIType(UIType type);
+    void setUIType(final UIType type);
 
 }

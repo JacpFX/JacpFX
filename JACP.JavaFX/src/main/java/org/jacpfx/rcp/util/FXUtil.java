@@ -3,7 +3,7 @@
  * Copyright (C) 2010 - 2014
  *
  * [FX2Util.java]
- * AHCP Project (http://jacp.googlecode.com)
+ * JACPFX Project (https://github.com/JacpFX/JacpFX/)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -377,7 +377,7 @@ public class FXUtil {
      * @param <P>
      * @return
      */
-    public static <P extends IComponent<EventHandler<Event>, Event, Object>> P getObserveableById(
+    public static <P extends IComponent<EventHandler<Event>, Object>> P getObserveableById(
             final String id, final List<P> components) {
         final Optional<P> filter = components.parallelStream().filter(c -> c.getContext().getId().equals(id)).findFirst();
         if (filter.isPresent()) return filter.get();

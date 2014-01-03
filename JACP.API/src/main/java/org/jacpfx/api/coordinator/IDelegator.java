@@ -3,7 +3,7 @@
  * Copyright (C) 2010 - 2014
  *
  * [IDelegator.java]
- * AHCP Project (http://jacp.googlecode.com)
+ * JACPFX Project (https://github.com/JacpFX/JacpFX/)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,26 +22,26 @@
  ************************************************************************/
 package org.jacpfx.api.coordinator;
 
-import org.jacpfx.api.message.Message;
+
 import org.jacpfx.api.component.IComponent;
-import org.jacpfx.api.component.IPerspective;
 import org.jacpfx.api.handler.IComponentHandler;
+import org.jacpfx.api.message.Message;
 
 /**
  * Basic delegate interface
  * 
  * @author Andy Moncsek
  * 
- * @param <L>
- * @param <A>
- * @param <M>
+ * @param <L>, the listener type
+ * @param <A>, the event type
+ * @param <M>, the message type
  */
 public interface IDelegator<L, A, M> {
 
 	/**
 	 * Set the associated perspective handler.
 	 * 
-	 * @param handler
+	 * @param handler, the perspective handler.
 	 */
 	<P extends IComponent<L, M>> void setPerspectiveHandler(
             IComponentHandler<P, Message<A, M>> handler);

@@ -3,7 +3,7 @@
  * Copyright (C) 2010 - 2014
  *
  * [JACPMenuStyle.java]
- * AHCP Project (http://jacp.googlecode.com)
+ * JACPFX Project (https://github.com/JacpFX/JacpFX/)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,9 +27,9 @@ public enum JACPMenuStyle {
 	DECORATED(1, "decorated"), UNDECORATED(2, "undecorated"), CUSTOM(3,
 			"custom");
 
-	private int id;
+	private final int id;
 
-	private String description;
+	private final String description;
 
 	private JACPMenuStyle(final int id, final String description) {
 

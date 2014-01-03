@@ -39,7 +39,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 
 public abstract class AComponent implements
-        IComponent<EventHandler<Event>, Event, Object> {
+        IComponent<EventHandler<Event>, Object> {
 
     private volatile AtomicBoolean started =  new AtomicBoolean(false);
     private String localeID = "";

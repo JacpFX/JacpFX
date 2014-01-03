@@ -10,7 +10,7 @@ import org.jacpfx.api.component.IComponentView;
  * User: Andy Moncsek
  * Date: 25.06.13
  * Time: 11:07
- * Interface o implement a UI CallbackComponent in Jacp.
+ * Interface o implement a UI Component in Jacp.
  */
 public interface FXComponent extends IComponentView<Node, Event, Object> {
 

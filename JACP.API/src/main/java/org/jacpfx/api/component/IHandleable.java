@@ -3,7 +3,7 @@
  * Copyright (C) 2010 - 2014
  *
  * [IHandleable.java]
- * AHCP Project (http://jacp.googlecode.com)
+ * JACPFX Project (https://github.com/JacpFX/JacpFX/)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,9 +38,9 @@ public interface IHandleable<A, M> {
 	 * Handles component when called. The handle method in subcomponents is
 	 * always executed in a separate thread;
 	 * 
-	 * @param action , the triggering message
+	 * @param message , the triggering message
 	 * @param <C> the node return type
 	 * @return view component
 	 */
-	<C> C handle(final Message<A, M> action);
+	<C> C handle(final Message<A, M> message);
 }

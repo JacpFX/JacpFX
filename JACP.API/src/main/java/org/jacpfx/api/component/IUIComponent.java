@@ -3,7 +3,7 @@
  * Copyright (C) 2010 - 2014
  *
  * [IVComponent.java]
- * AHCP Project (http://jacp.googlecode.com)
+ * JACPFX Project (https://github.com/JacpFX/JacpFX/)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,7 +48,7 @@ public interface IUIComponent<C, L, A, M> extends ISubComponent<L, A, M> {
 
     /**
      * Set the 'root' ui component created by the handle method.
-     * @param root
+     * @param root, the UI root
      */
     void setRoot(C root);
 
@@ -57,6 +57,7 @@ public interface IUIComponent<C, L, A, M> extends ISubComponent<L, A, M> {
      * @return IComponentHandle, the component handle.
      */
     public default <X extends IComponentView<C, A, M>> X  getComponentViewHandle(){
+        //noinspection unchecked
         return (X) this.getComponent();
     }
 

@@ -3,7 +3,7 @@
  * Copyright (C) 2010 - 2014
  *
  * [Message.java]
- * AHCP Project (http://jacp.googlecode.com)
+ * JACPFX Project (https://github.com/JacpFX/JacpFX/)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -91,23 +91,23 @@ public interface Message<A, M> extends Cloneable {
 
     /**
      * Checks if message is type of a given class.
-     * @param clazz
-     * @param <T>
+     * @param clazz, class to check if message is equal to
+     * @param <T>, the generic type
      * @return  true if message body type equals clazz
      */
     <T> boolean isMessageBodyTypeOf(final Class<T> clazz);
 
     /**
      * Returns a typed message, if applicable.
-     * @param clazz
-     * @param <T>
+     * @param clazz, the class to cast the message
+     * @param <T> , the generic type
      * @return  returns the typed message body
      */
     <T> T getTypedMessageBody(final Class<T> clazz);
 
     /**
      * Check if message equals given input.
-     * @param object
+     * @param object, an object to check for equal
      * @return returns true if object equals the message body
      */
     boolean messageBodyEquals(final Object object);

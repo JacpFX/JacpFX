@@ -3,7 +3,7 @@
  * Copyright (C) 2010 - 2014
  *
  * [ILayoutAbleComponent.java]
- * AHCP Project (http://jacp.googlecode.com)
+ * JACPFX Project (https://github.com/JacpFX/JacpFX/)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import org.jacpfx.api.componentLayout.IPerspectiveLayout;
  * @param <L>
  *            defines the message listener type
  * @param <A>
- *            defines the basic message type
+ *            defines the basic event type
  * @param <M>
  *            defines the basic message type
  */

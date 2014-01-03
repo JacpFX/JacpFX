@@ -36,25 +36,25 @@ public enum OS {
 
 	private static boolean isWindows() {
 		// windows
-		return (os.indexOf("win") >= 0);
+		return (os.contains("win"));
 
 	}
 
 	private static boolean isMac() {
 		// Mac
-		return (os.indexOf("mac") >= 0);
+		return (os.contains("mac"));
 
 	}
 
 	private static boolean isUnix() {
 		// linux or unix
-		return (os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0);
+		return (os.contains("nix") || os.contains("nux"));
 
 	}
 
 	private static boolean isSolaris() {
 		// Solaris
-		return (os.indexOf("sunos") >= 0);
+		return (os.contains("sunos"));
 
 	}
 }

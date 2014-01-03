@@ -2,8 +2,8 @@
  * 
  * Copyright (C) 2010 - 2014
  *
- * [IVComponent.java]
- * AHCP Project (http://jacp.googlecode.com)
+ * [IComponentView.java]
+ * JACPFX Project (https://github.com/JacpFX/JacpFX/)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,7 +32,7 @@ import org.jacpfx.api.message.Message;
  * @param <C>
  *            defines the base component where others extend from
  * @param <A>
- *            defines the basic message type
+ *            defines the basic event type
  * @param <M>
  *            defines the basic message type
  */

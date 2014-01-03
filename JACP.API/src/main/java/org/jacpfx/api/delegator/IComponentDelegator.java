@@ -3,7 +3,7 @@
  * Copyright (C) 2010 - 2014
  *
  * [IComponentDelegator.java]
- * AHCP Project (http://jacp.googlecode.com)
+ * JACPFX Project (https://github.com/JacpFX/JacpFX/)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,16 +39,16 @@ import java.util.concurrent.BlockingQueue;
 public interface IComponentDelegator<L, A, M> extends IDelegator<L, A, M> {
 
 	/**
-	 * Handles delegate of a component.
+	 * Handles delegate of a component. Puts the component to delegate queue.
 	 * 
-	 * @param component
+	 * @param component, The component to delegate.
 	 */
-	void delegateComponent(ISubComponent<L, A, M> component);
+	void delegateComponent(final ISubComponent<L, A, M> component);
 
 	/**
 	 * Get the delegate queue to add components to be delegated.
 	 * 
-	 * @return delegateQueue
+	 * @return delegateQueue, The delegate queue.
 	 */
 	BlockingQueue<ISubComponent<L, A, M>> getComponentDelegateQueue();
 

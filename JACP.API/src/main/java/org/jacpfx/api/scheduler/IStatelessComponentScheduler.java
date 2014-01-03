@@ -3,7 +3,7 @@
  * Copyright (C) 2010 - 2014
  *
  * [IStatelessComponentScheduler.java]
- * AHCP Project (http://jacp.googlecode.com)
+ * JACPFX Project (https://github.com/JacpFX/JacpFX/)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,20 +41,21 @@ public interface IStatelessComponentScheduler<L, A, M> {
 	/**
 	 * Handles incoming message to managed state less component.
 	 * 
-	 * @param message
+	 * @param message, the message
+     * @param component, the component instance
 	 */
 	void incomingMessage(final Message<A, M> message,
-			IStatelessCallabackComponent<L, A, M> component);
+			final IStatelessCallabackComponent<L, A, M> component);
 
 	/**
 	 * Returns a new instance of managed state less component.
 	 * 
-	 * @param <T>
-	 * @param clazz
+	 * @param <T> , the component to clone
+	 * @param clazz, the class of the component.
 	 * @return an cloned instance of a state less component.
 	 */
 	<T extends IStatelessCallabackComponent<L, A, M>, H extends IComponentHandle> IStatelessCallabackComponent<L, A, M> getCloneBean(
-			IStatelessCallabackComponent<L, A, M> component,
+			final T component,
 			final Class<H> clazz);
 
 }

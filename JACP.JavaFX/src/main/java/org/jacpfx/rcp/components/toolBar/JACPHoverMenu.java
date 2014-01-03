@@ -3,7 +3,7 @@
  * Copyright (C) 2010 - 2012
  *
  * [JACPToolBar.java]
- * AHCP Project (http://jacp.googlecode.com)
+ * JACPFX Project (https://github.com/JacpFX/JacpFX/)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

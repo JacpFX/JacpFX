@@ -3,7 +3,7 @@
  * Copyright (C) 2010 - 2014
  *
  * [AFX2Workbench.java]
- * AHCP Project (http://jacp.googlecode.com)
+ * JACPFX Project (https://github.com/JacpFX/JacpFX/)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -276,15 +276,6 @@ public abstract class AFXWorkbench
         return this.componentHandler;
     }
 
-    @Override
-    /**
-     * {@inheritDoc}
-     */
-    public final void setPerspectives(
-            final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives) {
-        this.perspectives = perspectives;
-
-    }
 
     @Override
     /**

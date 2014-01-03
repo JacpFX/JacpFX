@@ -3,7 +3,7 @@
  * Copyright (C) 2010 - 2014
  *
  * [ISubComponent.java]
- * AHCP Project (http://jacp.googlecode.com)
+ * JACPFX Project (https://github.com/JacpFX/JacpFX/)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -52,9 +52,9 @@ public interface ISubComponent<L, A, M> extends IComponent<L, M> {
 	/**
 	 * Add new message to component.
 	 * 
-	 * @param action
+	 * @param message, the message.
 	 */
-	void putIncomingMessage(final Message<A, M> action);
+	void putIncomingMessage(final Message<A, M> message);
 
 	/**
 	 * Returns next message in pipe.
@@ -90,7 +90,7 @@ public interface ISubComponent<L, A, M> extends IComponent<L, M> {
 	/**
 	 * Set parentId and global message queue to component
 	 * 
-	 * @param messageQueue
+	 * @param messageQueue, the message queue
 	 */
 	void initEnv(final String parentId,
 			final BlockingQueue<Message<A, M>> messageQueue);
@@ -104,8 +104,8 @@ public interface ISubComponent<L, A, M> extends IComponent<L, M> {
 
     /**
      * Set the component handle class. This is the users implementation of the component.
-     * @param handle
-     * @param <X>
+     * @param handle, the component
+     * @param <X>, the type
      */
     <X extends IComponentHandle<?, A, M>>  void setComponent(final X handle);
 

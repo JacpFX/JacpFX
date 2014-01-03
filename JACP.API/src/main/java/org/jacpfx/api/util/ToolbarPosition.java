@@ -3,7 +3,7 @@
  * Copyright (C) 2010 - 2014
  *
  * [ToolbarPosition.java]
- * AHCP Project (http://jacp.googlecode.com)
+ * JACPFX Project (https://github.com/JacpFX/JacpFX/)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,8 +26,8 @@ public enum ToolbarPosition {
 
 	NORTH(1, "north"), WEST(2, "west"), SOUTH(3, "south"), EAST(4, "east");
 
-	private int id;
-	private String name;
+	private final int id;
+	private final String name;
 
 	private ToolbarPosition(final int id, final String name) {
 		this.id = id;

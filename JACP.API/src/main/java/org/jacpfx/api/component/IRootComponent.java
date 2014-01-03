@@ -3,7 +3,7 @@
  * Copyright (C) 2010 - 2014
  *
  * [IRootComponent.java]
- * AHCP Project (http://jacp.googlecode.com)
+ * JACPFX Project (https://github.com/JacpFX/JacpFX/)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,21 +41,21 @@ public interface IRootComponent<T, A> {
 	/**
 	 * Register the component at the listener.
 	 * 
-	 * @param component
+	 * @param component, the component to register.
 	 */
 	void registerComponent(final T component);
 
     /**
      * Add a component, this does not fully register the component.
      * If you want to add a newly created component use registerComponent instead.
-     * @param component
+     * @param component, the component to add.
      */
     void addComponent(final T component);
 
 	/**
 	 * Unregister component from current perspective.
 	 * 
-	 * @param component
+	 * @param component, the component to unregister.
 	 */
 	void unregisterComponent(final T component);
 
@@ -68,9 +68,9 @@ public interface IRootComponent<T, A> {
 	/**
 	 * Handles initialization of subcomponents.
 	 * 
-	 * @param action
+	 * @param message, the initial message
 	 */
-	void initComponents(final A action);
+	void initComponents(final A message);
 
 	/**
 	 * Returns component handler to handle initialization and reassignment of

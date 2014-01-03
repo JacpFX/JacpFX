@@ -1,7 +1,5 @@
 package org.jacpfx.api.context;
 
-import org.jacpfx.api.message.ActionListener;
-
 import java.util.ResourceBundle;
 
 /**
@@ -21,21 +19,21 @@ public interface Context<L,M>  {
 
     /**
      * Send a message to caller component itself.
-     * @param message
+     * @param message, The message object.
      */
     void send(final M message);
 
     /**
      * Send a message to defined targetId.
-     * @param targetId
-     * @param message
+     * @param targetId, The target id for the message.
+     * @param message, The message object.
      */
     void send(final String targetId, final M message);
 
     /**
      * Returns an event handler that handles messages to caller component
-     * @param message
-     * @return
+     * @param message, The message object.
+     * @return an JavaFX event handler.
      */
     L getEventHandler(final M message);
 
@@ -44,7 +42,7 @@ public interface Context<L,M>  {
      * Returns an event handler that handles messages to target component
      * @param message ; the message to send to target.
      * @param targetId ; the targets component id.
-     * @return
+     * @return an JavaFX event handler.
      */
     L getEventHandler(final String targetId, final M message);
 
@@ -95,7 +93,7 @@ public interface Context<L,M>  {
      *
      * @param componentTargetId ; represents a component id to return the value to
      */
-    void setReturnTarget(final String componentTargetId) throws IllegalStateException;;
+    void setReturnTarget(final String componentTargetId) throws IllegalStateException;
 
     /**
      * Defines the perspective in which the component should executed in.

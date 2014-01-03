@@ -3,7 +3,7 @@
  * Copyright (C) 2010 - 2014
  *
  * [IPerspective.java]
- * AHCP Project (http://jacp.googlecode.com)
+ * JACPFX Project (https://github.com/JacpFX/JacpFX/)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,7 +33,7 @@ import java.util.concurrent.BlockingQueue;
 
 /**
  * Defines a perspective, a perspective is a root component handled by an
- * workbench and contains subcomponents such as visibla UI components or
+ * workbench and contains sub-components such as visible UI components or
  * background components. A workbench can handle one or more perspectives (1-n)
  * and every perspective can handle one ore more components (1-n).
  * 
@@ -54,8 +54,8 @@ public interface IPerspective<L, A, M> extends IComponent<L, M>,
 	 * 
 	 * @param componentDelegateQueue, components that should be delegated to an other perspective
 	 * @param messageDelegateQueue, messages to components
-     * @param  messageCoordinator
-     * @param  launcher
+     * @param  messageCoordinator, coordinates messages to components
+     * @param  launcher, the component launcher
 	 */
 	void init(
 			final BlockingQueue<ISubComponent<L, A, M>> componentDelegateQueue,
@@ -66,7 +66,7 @@ public interface IPerspective<L, A, M> extends IComponent<L, M>,
 	 * post init method to set correct component handler and to initialize
 	 * components depending on objects created in startUp sequence.
 	 * 
-	 * @param componentHandler
+	 * @param componentHandler, the component handler
 	 */
 	void postInit(
 			IComponentHandler<ISubComponent<L, A, M>, Message<A, M>> componentHandler);
@@ -83,9 +83,9 @@ public interface IPerspective<L, A, M> extends IComponent<L, M>,
 	 * Handle a message call on perspective instance. This method should be
 	 * override to handle the layout of an perspective.
 	 * 
-	 * @param action
+	 * @param message, the message to perspective.
 	 */
-	void handlePerspective(final Message<A, M> action);
+	void handlePerspective(final Message<A, M> message);
 
 	/**
 	 * Returns delegate queue to delegate components to correct target
@@ -110,7 +110,7 @@ public interface IPerspective<L, A, M> extends IComponent<L, M>,
 
     /**
      * Returns the injected perspective representation. This Injectable is the implementation of a perspective which includes all handle methods.
-     * @return
+     * @return the perspective implementation.
      */
     Injectable getPerspective();
 

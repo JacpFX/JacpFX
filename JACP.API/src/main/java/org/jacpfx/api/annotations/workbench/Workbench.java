@@ -35,7 +35,7 @@ import java.lang.annotation.Target;
  * User: Andy Moncsek
  * Date: 16.08.13
  * Time: 14:18
- * Defines a workbench class.
+ * Marks the component as a workbench.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

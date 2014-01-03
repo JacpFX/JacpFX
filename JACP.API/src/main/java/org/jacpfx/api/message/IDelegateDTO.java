@@ -3,7 +3,7 @@
  * Copyright (C) 2010 - 2014
  *
  * [IDelegateDTO.java]
- * AHCP Project (http://jacp.googlecode.com)
+ * JACPFX Project (https://github.com/JacpFX/JacpFX/)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -50,7 +50,7 @@ public interface IDelegateDTO<A, M> {
 
     /**
      * returns true when message target is a perspective.
-     * @return
+     * @return true when target is perspective.
      */
     boolean isPerspective();
 }

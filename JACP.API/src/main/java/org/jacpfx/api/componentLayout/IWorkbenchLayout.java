@@ -3,7 +3,7 @@
  * Copyright (C) 2010 - 2014
  *
  * [IWorkbenchLayout.java]
- * AHCP Project (http://jacp.googlecode.com)
+ * JACPFX Project (https://github.com/JacpFX/JacpFX/)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,15 +44,15 @@ public interface IWorkbenchLayout<C> extends IBaseLayout<C> {
 	/**
 	 * Set menus to enabled state.
 	 * 
-	 * @param enabled
+	 * @param enabled, true if menu is enabled
 	 */
 	void setMenuEnabled(boolean enabled);
 
 	/**
 	 * Set the size of the workbench.
 	 * 
-	 * @param x
-	 * @param y
+	 * @param x, the initial X size of workbench
+	 * @param y, the initial Y size of the workbench
 	 */
 	void setWorkbenchXYSize(int x, int y);
 

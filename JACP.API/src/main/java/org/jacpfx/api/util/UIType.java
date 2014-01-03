@@ -3,7 +3,7 @@
  * Copyright (C) 2010 - 2014
  *
  * [Tupel.java]
- * AHCP Project (http://jacp.googlecode.com)
+ * JACPFX Project (https://github.com/JacpFX/JacpFX/)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,5 +30,5 @@ package org.jacpfx.api.util;
  * 
  */
 public enum UIType {
-	PROGRAMMATIC, DECLARATIVE;
+	PROGRAMMATIC, DECLARATIVE
 }

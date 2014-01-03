@@ -3,7 +3,7 @@
  * Copyright (C) 2010 - 2014
  *
  * [ICoordinator.java]
- * AHCP Project (http://jacp.googlecode.com)
+ * JACPFX Project (https://github.com/JacpFX/JacpFX/)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,10 +46,10 @@ public interface ICoordinator<L, A, M> {
 	/**
 	 * Handles message to specific component addressed by the id.
 	 * 
-	 * @param id
-	 * @param action
+	 * @param id, the target id.
+	 * @param message, the message
 	 */
-	void handleMessage(final String id, final Message<A, M> action);
+	void handleMessage(final String id, final Message<A, M> message);
 
 	/**
 	 * Returns the message queue of coordinator.
@@ -62,7 +62,7 @@ public interface ICoordinator<L, A, M> {
 	/**
 	 * set associated componentHandler
 	 *
-	 * @param handler
+	 * @param handler, the component handler that handles component execution.
 	 */
 	<P extends IComponent<L, M>> void setComponentHandler(
 			final IComponentHandler<P, Message<A, M>> handler);
@@ -70,14 +70,14 @@ public interface ICoordinator<L, A, M> {
     /**
      * set associated perspectiveHandler
      *
-     * @param handler
+     * @param handler, the perspective handler that handles perspective execution.
      */
     <P extends IComponent<L, M>> void setPerspectiveHandler(
             final IComponentHandler<P, Message<A, M>> handler);
 
     /**
      * Set the delegate queue, which delegates messages to correct responsible perspective.
-     * @param delegateQueue
+     * @param delegateQueue, The delegate queue.
      */
     void setDelegateQueue(final BlockingQueue<IDelegateDTO<A, M>> delegateQueue);
 
