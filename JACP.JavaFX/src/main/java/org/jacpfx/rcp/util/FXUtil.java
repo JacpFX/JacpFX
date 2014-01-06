@@ -381,7 +381,10 @@ public class FXUtil {
      */
     public static <P extends IComponent<EventHandler<Event>, Object>> P getObserveableById(
             final String id, final List<P> components) {
-        final Optional<P> filter = components.parallelStream().filter(c -> c.getContext().getId().equals(id)).findFirst();
+        final Optional<P> filter = components.parallelStream().
+                filter(comp->comp.getContext().getId()!=null).
+                filter(c -> c.getContext().getId().equals(id)).
+                findFirst();
         if (filter.isPresent()) return filter.get();
         return null;
     }
