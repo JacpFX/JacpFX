@@ -384,7 +384,7 @@ public class FXUtil {
         final Optional<P> filter = components.parallelStream().
                 filter(comp -> comp.getContext().getId() != null).
                 filter(c -> c.getContext().getId().equals(id)).
-                findFirs    
+                findFirst();
         if (filter.isPresent()) return filter.get();
         return null;
     }
