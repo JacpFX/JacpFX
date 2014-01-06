@@ -382,7 +382,7 @@ public class PerspectiveHandler implements
 
     private void initLocalization(final URL url, final AFXPerspective perspective) {
         final String bundleLocation = perspective.getResourceBundleLocation();
-        if (bundleLocation.equals("")) return;
+        if (bundleLocation.isEmpty()) return;
         final String localeID = perspective.getLocaleID();
         perspective.initialize(url, ResourceBundle.getBundle(bundleLocation, FXUtil.getCorrectLocale(localeID)));
 

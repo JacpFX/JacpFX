@@ -64,6 +64,7 @@ import org.jacpfx.rcp.perspective.AFXPerspective;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.*;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -143,9 +144,9 @@ public abstract class AFXWorkbench
     private void initSubsystem() {
         this.componentHandler = new PerspectiveHandler(this.launcher,
                 this.workbenchLayout, this.root);
-        this.messageCoordinator.setPerspectiveHandler(this.getComponentHandler());
-        this.componentDelegator.setPerspectiveHandler(this.getComponentHandler());
-        this.messageDelegator.setPerspectiveHandler(this.getComponentHandler());
+        this.messageCoordinator.setPerspectiveHandler(this.componentHandler);
+        this.componentDelegator.setPerspectiveHandler(this.componentHandler);
+        this.messageDelegator.setPerspectiveHandler(this.componentHandler);
     }
 
 
@@ -185,7 +186,7 @@ public abstract class AFXWorkbench
         // again?
         this.log("3.4.2: create perspective menu");
         if (perspective.getContext().isActive()) {
-            final Runnable r = () -> AFXWorkbench.this.getComponentHandler().initComponent(
+            final Runnable r = () -> AFXWorkbench.this.componentHandler.initComponent(
                     new FXMessage(perspective.getContext().getId(), perspective
                             .getContext().getId(), "init", null), perspective);
             if (Platform.isFxApplicationThread()) {
@@ -259,8 +260,8 @@ public abstract class AFXWorkbench
 
     @Override
     public final void removeAllCompnents() {
-        this.getPerspectives().forEach(this::unregisterComponent);
-        this.getPerspectives().clear();
+        this.perspectives.forEach(this::unregisterComponent);
+        this.perspectives.clear();
     }
 
 
@@ -352,8 +353,9 @@ public abstract class AFXWorkbench
             final Map<ToolbarPosition, JACPToolBar> registeredToolbars = this
                     .getWorkbenchLayout().getRegisteredToolbars();
 
-            for (Entry<ToolbarPosition, JACPToolBar> entry : registeredToolbars
-                    .entrySet()) {
+            for (Iterator<Entry<ToolbarPosition, JACPToolBar>> iterator = registeredToolbars
+                    .entrySet().iterator(); iterator.hasNext(); ) {
+                Entry<ToolbarPosition, JACPToolBar> entry = iterator.next();
                 final ToolbarPosition position = entry.getKey();
                 final JACPToolBar toolBar = entry.getValue();
                 this.assignCorrectToolBarLayout(position, toolBar, toolbarPane);
@@ -449,7 +451,7 @@ public abstract class AFXWorkbench
     }
 
     private FXWorkbench getWorkbenchHandle() {
-        return getComponentHandle();
+        return handle;
     }
 
     @SuppressWarnings("unchecked")

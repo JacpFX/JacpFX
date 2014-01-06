@@ -107,7 +107,8 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
 
 
     public void removeForId(String id) {
-        for (Node node : this.getNodes(id)) {
+        for (Iterator<Node> iterator = this.getNodes(id).iterator(); iterator.hasNext(); ) {
+            Node node = iterator.next();
             this.remove(node);
         }
     }
@@ -222,7 +223,8 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
      * @param node the node
      */
     public void remove(final Node node) {
-        for (final Pane toolBarItem : this.toolBarContainer.values()) {
+        for (Iterator<Pane> iterator = this.toolBarContainer.values().iterator(); iterator.hasNext(); ) {
+            Pane toolBarItem = iterator.next();
             toolBarItem.getChildren().remove(node);
         }
     }

@@ -119,7 +119,7 @@ public abstract class AFXPerspective extends AComponent implements
      * @return all declared subcomponents
      */
     private List<ISubComponent<EventHandler<Event>, Event, Object>> createAllDeclaredSubcomponents() {
-        final Injectable handler = this.getPerspective();
+        final Injectable handler = this.perspective;
         if (handler == null) throw new IllegalArgumentException("No perspective annotatation found");
         final Perspective perspectiveAnnotation = handler.getClass()
                 .getAnnotation(Perspective.class);
@@ -133,7 +133,7 @@ public abstract class AFXPerspective extends AComponent implements
     @Override
     public void handlePerspective(final Message<Event, Object> action) {
         getFXPerspectiveHandler().handlePerspective(action,
-                (PerspectiveLayout) this.getIPerspectiveLayout());
+                (PerspectiveLayout) this.perspectiveLayout);
 
     }
 
@@ -159,8 +159,8 @@ public abstract class AFXPerspective extends AComponent implements
         synchronized (lock) {
             this.log("register component: " + component.getContext().getId());
             ComponentRegistry.registerComponent(component);
-            if (!this.getSubcomponents().contains(component)) {
-                this.getSubcomponents().add(component);
+            if (!this.subcomponents.contains(component)) {
+                this.subcomponents.add(component);
             }
         }
     }
@@ -173,8 +173,8 @@ public abstract class AFXPerspective extends AComponent implements
             this.log("unregister component: " + component.getContext().getId());
             ComponentRegistry.removeComponent(component);
             component.initEnv(null, null);
-            if (this.getSubcomponents().contains(component)) {
-                this.getSubcomponents().remove(component);
+            if (this.subcomponents.contains(component)) {
+                this.subcomponents.remove(component);
             }
         }
     }
@@ -182,7 +182,7 @@ public abstract class AFXPerspective extends AComponent implements
     @Override
     public final void removeAllCompnents() {
         synchronized (lock) {
-            this.getSubcomponents().clear();
+            this.subcomponents.clear();
         }
     }
 
@@ -191,8 +191,7 @@ public abstract class AFXPerspective extends AComponent implements
         final String targetId = FXUtil.getTargetComponentId(action
                 .getTargetId());
         this.log("3.4.4.1: subcomponent targetId: " + targetId);
-        final List<ISubComponent<EventHandler<Event>, Event, Object>> components = this
-                .getSubcomponents();
+        final List<ISubComponent<EventHandler<Event>, Event, Object>> components = this.subcomponents;
         if (components == null) return;
         components.parallelStream().forEach(component -> initComponent(component, action, targetId));
     }
@@ -200,11 +199,11 @@ public abstract class AFXPerspective extends AComponent implements
     private void initComponent(final ISubComponent<EventHandler<Event>, Event, Object> component, final Message<Event, Object> action, final String targetId) {
         if (component.getContext().getId().equals(targetId)) {
             this.log("3.4.4.2: subcomponent init with custom message");
-            this.getComponentHandler().initComponent(action, component);
+            this.componentHandler.initComponent(action, component);
         } // else END
         else if (component.getContext().isActive() && !component.isStarted()) {
             this.log("3.4.4.2: subcomponent init with default message");
-            this.getComponentHandler().initComponent(
+            this.componentHandler.initComponent(
                     new FXMessage(component.getContext().getId(), component.getContext().getId(),
                             "init", null), component);
         } // if END
@@ -323,7 +322,7 @@ public abstract class AFXPerspective extends AComponent implements
 
 
     FXPerspective getFXPerspectiveHandler() {
-        return FXPerspective.class.cast(getPerspective());
+        return FXPerspective.class.cast(perspective);
     }
 
     @Override

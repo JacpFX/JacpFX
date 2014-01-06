@@ -68,6 +68,8 @@ public class FXUtil {
     public static final String IDECLARATIVECOMPONENT_BUNDLE_LOCATION = "resourceBundleLocation";
     public static final String AFXPERSPECTIVE_PERSPECTIVE_LAYOUT = "perspectiveLayout";
     private final static String PATTERN_LOCALE ="_";
+    private final static String PATTERN_SPLIT="\\.";
+    private final static String PATTERN_GLOBAL=".";
 
 
     /**
@@ -356,7 +358,7 @@ public class FXUtil {
      * @return
      */
     public static boolean isLocalMessage(final String messageId) {
-        return !messageId.contains(".");
+        return !messageId.contains(PATTERN_GLOBAL);
     }
 
     /**
@@ -366,7 +368,7 @@ public class FXUtil {
      * @return
      */
     private static String[] getTargetId(final String messageId) {
-        return messageId.split("\\.");
+        return messageId.split(PATTERN_SPLIT);
     }
 
     /**

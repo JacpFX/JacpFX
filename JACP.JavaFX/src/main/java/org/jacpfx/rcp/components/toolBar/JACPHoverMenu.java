@@ -311,7 +311,7 @@ public class JACPHoverMenu extends Button {
     }
 
     private void initAction(final Node node) {
-        this.setOnAction((EventHandler<ActionEvent>)(actionEvent)-> {
+        this.setOnAction((actionEvent)-> {
 
             node.setVisible(!node.isVisible());
             // if another option is shown, hide everything before switching to the current content

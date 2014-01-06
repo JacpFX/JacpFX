@@ -149,7 +149,7 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
      */
     private void initLocalization(final URL url, final AFXComponent component) {
         final String bundleLocation = component.getResourceBundleLocation();
-        if (bundleLocation.equals(""))
+        if (bundleLocation.isEmpty())
             return;
         final String localeID = component.getLocaleID();
         component.initialize(url, ResourceBundle.getBundle(bundleLocation,

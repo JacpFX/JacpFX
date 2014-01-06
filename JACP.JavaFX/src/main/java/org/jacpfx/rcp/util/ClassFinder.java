@@ -38,7 +38,7 @@ public class ClassFinder {
     private static final String FILE_SEPERATOR;
 
     static{
-        FILE_SEPERATOR=isWindows()?File.separator+""+File.separator:File.separator;
+        FILE_SEPERATOR=isWindows()? File.separator + File.separator :File.separator;
     }
 
     private static boolean isWindows() {
