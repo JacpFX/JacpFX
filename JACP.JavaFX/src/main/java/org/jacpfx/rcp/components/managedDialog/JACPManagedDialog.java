@@ -28,6 +28,7 @@ import javafx.scene.Node;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.dialog.Dialog;
 import org.jacpfx.api.component.IComponentHandle;
+import org.jacpfx.api.component.IComponentView;
 import org.jacpfx.api.component.IPerspective;
 import org.jacpfx.api.component.ISubComponent;
 import org.jacpfx.api.context.Context;
@@ -35,6 +36,8 @@ import org.jacpfx.api.dialog.Scope;
 import org.jacpfx.api.launcher.Launcher;
 import org.jacpfx.api.util.CustomSecurityManager;
 import org.jacpfx.rcp.component.ASubComponent;
+import org.jacpfx.rcp.component.FXComponent;
+import org.jacpfx.rcp.perspective.FXPerspective;
 import org.jacpfx.rcp.registry.ComponentRegistry;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.FXUtil;
@@ -204,10 +207,11 @@ public class JACPManagedDialog {
                     if (bundle != null && field.getType().isAssignableFrom(bundle.getClass())) {
                         field.setAccessible(true);
                         field.set(bean, bundle);
-
-                    } else if (ASubComponent.class.isAssignableFrom(field.getType())
-                            || IComponentHandle.class.isAssignableFrom(field.getType())) {
+                    } else if (FXComponent.class.isAssignableFrom(field.getType())) {
                         handleParentComponentAnnotation(bean, field, resource,
+                                callerClassName);
+                    } else if (FXPerspective.class.isAssignableFrom(field.getType())) {
+                        handleParentPerspectiveAnnotation(bean, field, resource,
                                 callerClassName);
                     } else if (Context.class.isAssignableFrom(field.getType())) {
                         handleParentComponentContextAnnotation(bean, field, resource,
@@ -229,6 +233,17 @@ public class JACPManagedDialog {
             throw new IllegalArgumentException("component could not be found");
         field.setAccessible(true);
         field.set(bean, comp.getComponent());
+    }
+
+    private <T> void handleParentPerspectiveAnnotation(final T bean,
+                                                     final Field field, final Resource resource,
+                                                     final String callerClassName) throws ClassNotFoundException,
+            IllegalArgumentException, IllegalAccessException {
+        final IPerspective<EventHandler<Event>, Event, Object> persp = findPerspective(resource, callerClassName);
+        if (persp == null)
+            throw new IllegalArgumentException("component could not be found");
+        field.setAccessible(true);
+        field.set(bean, persp.getPerspective());
     }
 
     private <T> void handleParentComponentContextAnnotation(final T bean,

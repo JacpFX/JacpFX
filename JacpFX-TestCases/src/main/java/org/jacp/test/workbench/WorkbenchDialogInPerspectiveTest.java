@@ -1,25 +1,27 @@
-/************************************************************************
+/*
+ * **********************************************************************
  *
- * Copyright (C) 2010 - 2014
+ *  Copyright (C) 2010 - 2014
  *
- * [Workbench.java]
- * JACPFX Project (https://github.com/JacpFX/JacpFX/)
- * All rights reserved.
+ *  [Component.java]
+ *  JACPFX Project (https://github.com/JacpFX/JacpFX/)
+ *  All rights reserved.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at 
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0 
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an "AS IS"
- * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either 
- * express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an "AS IS"
+ *  BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *  express or implied. See the License for the specific language
+ *  governing permissions and limitations under the License.
  *
  *
- ************************************************************************/
+ * *********************************************************************
+ */
 package org.jacp.test.workbench;
 
 import javafx.event.ActionEvent;
@@ -32,19 +34,20 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.jacpfx.api.message.Message;
+import org.jacp.test.main.ApplicationLauncher;
+import org.jacp.test.perspectives.PerspectiveIds;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.componentLayout.IWorkbenchLayout;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.util.ToolbarPosition;
+import org.jacpfx.controls.optionPane.JACPDialogButton;
+import org.jacpfx.controls.optionPane.JACPDialogUtil;
+import org.jacpfx.controls.optionPane.JACPOptionPane;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.components.menuBar.JACPMenuBar;
 import org.jacpfx.rcp.components.modalDialog.JACPModalDialog;
 import org.jacpfx.rcp.context.JACPContext;
-import org.jacpfx.controls.optionPane.JACPDialogButton;
-import org.jacpfx.controls.optionPane.JACPDialogUtil;
-import org.jacpfx.controls.optionPane.JACPOptionPane;
 import org.jacpfx.rcp.workbench.FXWorkbench;
-import org.jacp.test.main.ApplicationLauncher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,8 +58,8 @@ import java.util.List;
  *
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
-@org.jacpfx.api.annotations.workbench.Workbench(id = WorkbenchIds.Workbench, name = "workbench", perspectives = {"id03", "id02", "id01"})
-public class Workbench implements FXWorkbench {
+@org.jacpfx.api.annotations.workbench.Workbench(id = WorkbenchIds.WorkbenchDialogInPerspectiveTest, name = "workbench", perspectives = {PerspectiveIds.PerspectiveDialogInPerspectiveTest})
+public class WorkbenchDialogInPerspectiveTest implements FXWorkbench {
     private Stage stage;
     @Resource
     JACPContext context;
@@ -97,7 +100,7 @@ public class Workbench implements FXWorkbench {
         itemHelp.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(final ActionEvent arg0) {
-                final Scene scene = Workbench.this.stage.getScene();
+                final Scene scene = WorkbenchDialogInPerspectiveTest.this.stage.getScene();
                 // index 0 is always the default JACP style
                 scene.getStylesheets().remove(1);
                 scene.getStylesheets().add(ApplicationLauncher.STYLES[count]);

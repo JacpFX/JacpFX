@@ -35,7 +35,7 @@ import java.util.ResourceBundle;
  * Time: 16:01
  * To change this template use File | Settings | File Templates.
  */
-@Perspective(id = "id02", name = "contactPerspective",
+@Perspective(id = PerspectiveIds.PerspectiveTestTwoA, name = "contactPerspective",
         components = {"id003"},
         viewLocation = "/fxml/perspectiveOne.fxml",
         resourceBundleLocation = "bundles.languageBundle",
