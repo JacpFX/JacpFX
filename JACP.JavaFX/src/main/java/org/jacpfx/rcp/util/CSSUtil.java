@@ -47,6 +47,7 @@ public class CSSUtil {
         static final String ID_WINDOW_CLOSE                 = "window-close";
         static final String ID_ROOT                         = "root";
         static final String ID_ROOT_PANE                    = "root-pane";
+        static final String ID_ERROR_DIMMER                 = "error-dimmer";
     }
 
 

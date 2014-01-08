@@ -397,11 +397,6 @@ public abstract class AFXWorkbench
         JACPModalDialog.initDialog(this.baseLayoutPane);
         this.dimmer = JACPModalDialog.getInstance();
         this.dimmer.setVisible(false);
-
-        // add some FX
-        final GaussianBlur blur = new GaussianBlur();
-        blur.setRadius(0);
-        this.baseLayoutPane.setEffect(blur);
     }
 
     private void initGlassPane() {

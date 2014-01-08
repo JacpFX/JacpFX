@@ -32,6 +32,9 @@ import javafx.scene.control.Button;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+import org.jacpfx.rcp.util.CSSUtil;
+
+import static org.jacpfx.rcp.util.CSSUtil.CSSConstants.ID_ERROR_DIMMER;
 
 /**
  * The Class JACPModalDialog.
@@ -76,12 +79,10 @@ public class JACPModalDialog extends StackPane implements IModalMessageNode {
         if (JACPModalDialog.instance == null) {
             JACPModalDialog.root = rootNode;
             JACPModalDialog.instance = new JACPModalDialog();
-            JACPModalDialog.instance.setId("error-dimmer");
-            final Button test = new Button("close");
-            test.setOnAction(arg-> {
-                    final GaussianBlur blur = (GaussianBlur) rootNode.getEffect();
-                    blur.setRadius(0.0);
-                    JACPModalDialog.instance.setVisible(false);
+            JACPModalDialog.instance.setId(ID_ERROR_DIMMER);
+            final Button close = new Button("close");
+            close.setOnAction(arg -> {
+                JACPModalDialog.instance.setVisible(false);
             });
         }
 
@@ -102,7 +103,7 @@ public class JACPModalDialog extends StackPane implements IModalMessageNode {
         this.setOpacity(0);
         this.setVisible(true);
         this.setCache(true);
-        ((GaussianBlur) JACPModalDialog.root.getEffect()).setRadius(this.MAX_BLUR);
+        JACPModalDialog.root.setEffect(new GaussianBlur(this.MAX_BLUR));
 
         getShowTimeline().play();
     }
@@ -114,7 +115,8 @@ public class JACPModalDialog extends StackPane implements IModalMessageNode {
     public synchronized void hideModalDialog() {
         this.setCache(true);
         getHideTimeline().play();
-        ((GaussianBlur) JACPModalDialog.root.getEffect()).setRadius(0.0);
+        // "remove" effect.
+        JACPModalDialog.root.setEffect(null);
     }
 
     /**
@@ -137,7 +139,9 @@ public class JACPModalDialog extends StackPane implements IModalMessageNode {
      */
     private Timeline getShowTimeline() {
         if(showTimeline==null) {
-            showTimeline = new Timeline(new KeyFrame(Duration.millis(250), (t)-> JACPModalDialog.this.setCache(false), new KeyValue(this.opacityProperty(), 1, Interpolator.EASE_BOTH)));
+            showTimeline = new Timeline(new KeyFrame(Duration.millis(250), (t)->
+                    JACPModalDialog.this.setCache(false),
+                    new KeyValue(this.opacityProperty(), 1, Interpolator.EASE_BOTH)));
         }
         return showTimeline;
     }
