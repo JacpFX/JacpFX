@@ -7,15 +7,14 @@ import org.jacpfx.api.annotations.component.DeclarativeView;
 import org.jacpfx.api.annotations.component.Stateless;
 import org.jacpfx.api.annotations.component.View;
 import org.jacpfx.api.annotations.perspective.Perspective;
-import org.jacpfx.api.component.IComponentHandle;
-import org.jacpfx.api.component.IComponentView;
-import org.jacpfx.api.component.ISubComponent;
-import org.jacpfx.api.component.Injectable;
+import org.jacpfx.api.component.*;
 import org.jacpfx.api.dialog.Scope;
 import org.jacpfx.api.exceptions.AnnotationNotFoundException;
 import org.jacpfx.api.launcher.Launcher;
 import org.jacpfx.rcp.component.*;
+import org.jacpfx.rcp.componentLayout.PerspectiveLayout;
 import org.jacpfx.rcp.context.JACPContextImpl;
+import org.jacpfx.rcp.perspective.EmbeddedFXPerspective;
 import org.jacpfx.rcp.registry.ClassRegistry;
 
 import java.security.InvalidParameterException;
@@ -260,6 +259,16 @@ public class PerspectiveUtil {
         final String targetLayout = JACPContextImpl.class.cast(component.getContext()).getTargetLayout();
         if (targetLayout==null)
             component.getContext().setTargetLayout(value);
+    }
+
+    /**
+     * Returns the PerspectiveLayout instance from perspective interface
+     * @param parentPerspective
+     * @return
+     */
+    public static PerspectiveLayout getPerspectiveLayoutFromPerspective(final IPerspective<EventHandler<Event>, Event, Object> parentPerspective) {
+        final EmbeddedFXPerspective embeddedPerspective = EmbeddedFXPerspective.class.cast(parentPerspective);
+        return PerspectiveLayout.class.cast(embeddedPerspective.getIPerspectiveLayout());
     }
 
     private static void log(final String message) {
