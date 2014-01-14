@@ -22,6 +22,8 @@
  ************************************************************************/
 package org.jacpfx.rcp.util;
 
+import org.jacpfx.rcp.handler.ExceptionHandler;
+
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 /**
@@ -38,7 +40,9 @@ public class HandlerThreadFactory implements ThreadFactory {
 	}
 	@Override
     public Thread newThread(Runnable r) {
-		return new Thread(r,PREFIX.concat(name.concat(Integer.toString(counter.incrementAndGet()))));
+        final Thread t = new Thread(r,PREFIX.concat(name.concat(Integer.toString(counter.incrementAndGet()))));
+		t.setUncaughtExceptionHandler(ExceptionHandler.getInstance());
+        return t;
 	}
 
 }

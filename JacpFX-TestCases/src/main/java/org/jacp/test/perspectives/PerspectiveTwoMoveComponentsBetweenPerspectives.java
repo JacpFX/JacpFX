@@ -54,7 +54,7 @@ import java.util.ResourceBundle;
 @Perspective(id = "id21", name = "contactPerspective",
         components = {
                 ""},
-        viewLocation = "/fxml/perspectiveOne.fxml",
+        viewLocation = "/fxml/perspectiveTwo.fxml",
         resourceBundleLocation = "bundles.languageBundle",
         localeID = "en_US")
 public class PerspectiveTwoMoveComponentsBetweenPerspectives implements FXPerspective {

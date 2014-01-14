@@ -23,9 +23,14 @@
 package org.jacp.test.main;
 
 import javafx.application.Application;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import org.jacp.test.dialogs.CustomErrorDialogHandler;
+import org.jacpfx.api.handler.ErrorDialogHandler;
+import org.jacpfx.rcp.handler.AErrorDialogHandler;
+import org.jacpfx.rcp.handler.DefaultErrorDialogHandler;
 import org.jacpfx.rcp.workbench.FXWorkbench;
 import org.jacpfx.spring.launcher.AFXSpringLauncher;
 import org.jacp.test.workbench.WorkbenchMissingComponentInitialTargetId;
@@ -49,7 +54,7 @@ public class ApplicationLauncherMissingComponentInitialTargetId extends AFXSprin
     public static CountDownLatch latch = new CountDownLatch(2);
     public static Thread.UncaughtExceptionHandler handler = null;
     public static volatile ApplicationLauncherMissingComponentInitialTargetId[] instance = new ApplicationLauncherMissingComponentInitialTargetId[1];
-
+     public static AErrorDialogHandler exceptionhandler;
     public ApplicationLauncherMissingComponentInitialTargetId() {
         super("main.xml");
     }
@@ -93,7 +98,7 @@ public class ApplicationLauncherMissingComponentInitialTargetId extends AFXSprin
         // add style sheet
         scene.getStylesheets().add(STYLES[0]);
         instance[0] = this;
-        Thread.currentThread().setUncaughtExceptionHandler(handler);
+     //   Thread.currentThread().setUncaughtExceptionHandler(handler);
         ApplicationLauncherMissingComponentInitialTargetId.latch.countDown();
 
     }
@@ -107,6 +112,16 @@ public class ApplicationLauncherMissingComponentInitialTargetId extends AFXSprin
             log.info("found: " + STYLES[i] + " stylesheet");
         }
 
+    }
+
+    /**
+     * Returns an ErrorDialog handler to display exceptions and errors in workspace. Overwrite this method if you need a customized handler.
+     *
+     * @return
+     */
+    @Override
+    protected ErrorDialogHandler<Node> getErrorHandler() {
+        return exceptionhandler;
     }
 
 

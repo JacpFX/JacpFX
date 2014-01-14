@@ -59,7 +59,7 @@ public class ComponentDialogInPerspective implements FXComponent {
             .getName());
 
     String current = "content0";
-    Button button = new Button("move to next target");
+    Button button = new Button("NULLPOINTER");
     VBox container = new VBox();
     Label label = new Label();
 
@@ -81,24 +81,21 @@ public class ComponentDialogInPerspective implements FXComponent {
      */
     public Node postHandle(final Node arg0,
                            final Message<Event, Object> action) {
-        if (!action.messageBodyEquals(FXUtil.MessageUtil.INIT)) {
-            String number = current.replace("content", "");
-            String value = current.replace(number, "").concat(String.valueOf((Integer.valueOf(number) + 1) % 3));
-            current = value;
-            context.setTargetLayout(current);
-            label.setText(" current Tagret: " + current);
-        } else {
+        if (action.messageBodyEquals(FXUtil.MessageUtil.INIT)) {
+
             button.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
                 @Override
                 public void handle(MouseEvent event) {
+                    // force nullpointer
+                    String test=null;
+                    int l = test.length();
 
 
-                    context.send("update");
                 }
             });
-            button.setStyle("-fx-background-color: red");
-            label.setText(" current Tagret: " + current);
+            //button.setStyle("-fx-background-color: red");
+            label.setText(" NULLPOINTER TEST");
             container.getChildren().addAll(button, label);
             ApplicationLauncherDialogInPerspectiveTest.latch.countDown();
         }

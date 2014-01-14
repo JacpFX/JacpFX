@@ -112,11 +112,6 @@ public class CallbackComponentInitWorker
         try {
             this.get();
         } catch (final Exception e) {
-            this.log("Exception in CallbackComponent INIT Worker, Thread interrupted: "
-                    + e.getMessage());
-            // TODO add to error queue and restart thread if
-            // messages in
-            // queue
             t.getUncaughtExceptionHandler().uncaughtException(t, e);
         } finally {
             this.component.release();

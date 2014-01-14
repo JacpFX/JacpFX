@@ -11,6 +11,12 @@
     -fx-font-size: 1.4em;
     -fx-font-weight: bold;
 }
+
+.jacp-option-pane .jacp-error-pane-title{
+    -fx-font-size: 1.4em;
+    -fx-font-weight: bold;
+    -fx-text-fill: red;
+}
 /*********************
 *
 * HOVER-MENU

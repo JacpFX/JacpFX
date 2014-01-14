@@ -93,19 +93,27 @@ public class ComponentMoveComponentsBetweenPerspectives2 implements FXComponent 
                 currentId="id20";
             }
             context.setExecutionTarget(currentId);
+         //   System.out.println("::::"+"3");
+            return null;
         } else if(action.messageBodyEquals(FXUtil.MessageUtil.INIT)) {
             button.setOnMouseClicked(context.getEventHandler("switch"));
             button.setStyle("-fx-background-color: red");
             label.setText(" current Tagret: " + currentId);
             container.getChildren().addAll(button, label);
             ApplicationLauncherMoveComponentsBetweenComponents.latch.countDown();
+       //     System.out.println("::::"+"2");
+            return container;
         }
+        return null;
 
-        return container;
     }
 
     public static void switchTarget() {
             context.send("switch");
+    }
+
+    public static void showPerspective(String id) {
+        context.send(id,"show");
     }
 
 
@@ -122,6 +130,7 @@ public class ComponentMoveComponentsBetweenPerspectives2 implements FXComponent 
         container = new VBox();
         label = new Label();
         startLatch.countDown();
+      //  System.out.println("::::"+"1");
 
     }
 
@@ -133,6 +142,7 @@ public class ComponentMoveComponentsBetweenPerspectives2 implements FXComponent 
     public void onTearDownComponent(final FXComponentLayout arg0) {
         this.log.info("run on tear down of id0024 "+this);
         stopLatch.countDown();
+     //   System.out.println("::::"+"4");
     }
 
 

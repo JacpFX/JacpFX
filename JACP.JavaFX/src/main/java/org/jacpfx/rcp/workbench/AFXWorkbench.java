@@ -108,6 +108,7 @@ public abstract class AFXWorkbench
      */
     private void start(final Stage stage) {
         this.stage = stage;
+        DimensionUtil.init(stage);
         this.registerTeardownActions();
         this.log("1: init workbench");
 

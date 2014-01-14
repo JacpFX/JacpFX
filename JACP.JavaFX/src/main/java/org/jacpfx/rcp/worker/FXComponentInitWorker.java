@@ -185,7 +185,6 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
                 WorkerUtil.executeComponentViewPostHandle(
                         handleReturnValue, myComponent, myAction);
             } catch (Exception e) {
-                // TODO add exceptions to error queue
                 t.getUncaughtExceptionHandler().uncaughtException(t, e);
             }
             if (component.getContext().isActive()) {
@@ -219,11 +218,6 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
         try {
             this.get();
         } catch (final Exception e) {
-            this.log("Exception in CallbackComponent INIT Worker, Thread interrupted: "
-                    + e.getMessage());
-            // TODO add to error queue and restart thread if
-            // messages in
-            // queue
             t.getUncaughtExceptionHandler().uncaughtException(t, e);
         } finally {
             this.component.release();

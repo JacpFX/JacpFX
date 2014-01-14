@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.*?>
+<!--
+  ~ ***********************************************************************
+  ~
+  ~  Copyright (C) 2010 - 2014
+  ~
+  ~  [Component.java]
+  ~  JACPFX Project (https://github.com/JacpFX/JacpFX/)
+  ~  All rights reserved.
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing,
+  ~  software distributed under the License is distributed on an "AS IS"
+  ~  BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+  ~  express or implied. See the License for the specific language
+  ~  governing permissions and limitations under the License.
+  ~
+  ~
+  ~ ***********************************************************************/
+  -->
+
+<BorderPane id="BorderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+            xmlns:fx="http://javafx.com/fxml">
+    <center>
+        <SplitPane id="splitPaneHorizontal1" cache="true" cacheHint="SPEED" dividerPositions="0.2506265664160401"
+                   maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="100.0"
+                   minWidth="200.0" prefHeight="600.0" prefWidth="800.0" >
+            <items>
+                <HBox fx:id="content1" cache="true" maxHeight="1.7976931348623157E308"
+                      maxWidth="1.7976931348623157E308"/>
+                <HBox fx:id="paneRight">
+                    <children>
+                        <SplitPane dividerPositions="0.5" focusTraversable="true" maxHeight="1.7976931348623157E308"
+                                   maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity"
+                                   orientation="VERTICAL" prefHeight="-1.0" prefWidth="-1.0" HBox.hgrow="ALWAYS"
+                                   styleClass="vsplitpane">
+                            <items>
+                                <HBox fx:id="content2" cache="true" maxHeight="1.7976931348623157E308"
+                                      maxWidth="1.7976931348623157E308"/>
+                                <HBox fx:id="content3" cache="true" maxHeight="1.7976931348623157E308"
+                                      maxWidth="1.7976931348623157E308"/>
+
+                            </items>
+                        </SplitPane>
+                    </children>
+                </HBox>
+            </items>
+        </SplitPane>
+    </center>
+</BorderPane>

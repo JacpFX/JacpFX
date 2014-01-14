@@ -115,7 +115,9 @@ public class MoveComponentBetweenPerspective {
             ComponentMoveComponentsBetweenPerspectives2.startLatch.await();
             IPerspective<EventHandler<Event>, Event, Object> p1 = getPerspectiveById(perspectives, ComponentMoveComponentsBetweenPerspectives2.currentId);
             assertNotNull(p1);
+            ComponentMoveComponentsBetweenPerspectives2.showPerspective(ComponentMoveComponentsBetweenPerspectives2.currentId);
             assertNotNull(getComponentById(p1.getSubcomponents(), "id0024"));
+            Thread.sleep(10);
             i++;
         }
 

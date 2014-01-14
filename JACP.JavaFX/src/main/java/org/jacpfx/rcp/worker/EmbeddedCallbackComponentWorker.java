@@ -24,9 +24,9 @@ package org.jacpfx.rcp.worker;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import org.jacpfx.api.message.Message;
 import org.jacpfx.api.component.IPerspective;
 import org.jacpfx.api.component.ISubComponent;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.ASubComponent;
 import org.jacpfx.rcp.context.JACPContextImpl;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
@@ -61,39 +61,40 @@ class EmbeddedCallbackComponentWorker
     public void run() {
         final Thread t = Thread.currentThread();
         try {
-            boolean wasExecuted =false;
+            boolean wasExecuted = false;
             while (!Thread.interrupted()) {
-                final Message<Event, Object> myAction = this.component
-                        .getNextIncomingMessage();
-                this.component.lock();
-                checkValidComponent(this.component);
-                wasExecuted = true;
-                final JACPContextImpl context = JACPContextImpl.class.cast(this.component.getContext());
-                context.setReturnTarget(myAction.getSourceId());
-                final String currentExecutionTarget = context.getExecutionTarget();
-                final Object value = this.component.getComponent().handle(myAction);
-                final String targetId = context
-                        .getReturnTargetAndClear();
-                WorkerUtil.delegateReturnValue(this.component, targetId, value,
-                        myAction);
-                this.checkAndHandleTargetChange(this.component,
-                        currentExecutionTarget);
-                this.component.release();
-                if (!component.getContext().isActive()) break;
+                try {
+                    final Message<Event, Object> myAction = this.component
+                            .getNextIncomingMessage();
+                    this.component.lock();
+                    checkValidComponent(this.component);
+                    wasExecuted = true;
+                    final JACPContextImpl context = JACPContextImpl.class.cast(this.component.getContext());
+                    context.setReturnTarget(myAction.getSourceId());
+                    final String currentExecutionTarget = context.getExecutionTarget();
+                    final Object value = this.component.getComponent().handle(myAction);
+                    final String targetId = context
+                            .getReturnTargetAndClear();
+                    WorkerUtil.delegateReturnValue(this.component, targetId, value,
+                            myAction);
+                    this.checkAndHandleTargetChange(this.component,
+                            currentExecutionTarget);
+                    this.component.release();
+                    if (!component.getContext().isActive()) break;
+                } catch (InterruptedException e) {
+                } catch (final IllegalStateException e) {
+                    if (e.getMessage().contains("Not on FX application thread")) {
+                        t.getUncaughtExceptionHandler().uncaughtException(t, new UnsupportedOperationException(
+                                "Do not reuse Node components in handleAction method, use postHandleAction instead to verify that you change nodes in JavaFX main Thread:",
+                                e));
+                    } else {
+                        t.getUncaughtExceptionHandler().uncaughtException(t, e);
+                    }
+                } catch (Exception e) {
+                    t.getUncaughtExceptionHandler().uncaughtException(t, e);
+                }
             }
-            if(wasExecuted)handleComponentShutdown(this.component);
-        } catch (InterruptedException e) {
-            //e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (final IllegalStateException e) {
-            if (e.getMessage().contains("Not on FX application thread")) {
-                t.getUncaughtExceptionHandler().uncaughtException(t, new UnsupportedOperationException(
-                        "Do not reuse Node components in handleAction method, use postHandleAction instead to verify that you change nodes in JavaFX main Thread:",
-                        e));
-            } else {
-                t.getUncaughtExceptionHandler().uncaughtException(t, e);
-            }
-        } catch (Exception e) {
-            t.getUncaughtExceptionHandler().uncaughtException(t, e);
+            if (wasExecuted) handleComponentShutdown(this.component);
         } finally {
             if (this.component.isBlocked()) this.component.release();
         }
@@ -101,7 +102,7 @@ class EmbeddedCallbackComponentWorker
     }
 
     private void handleComponentShutdown(final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        if (!component.isBlocked())component.lock();
+        if (!component.isBlocked()) component.lock();
         try {
             final String parentId = component.getParentId();
             final IPerspective<EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);

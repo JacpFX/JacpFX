@@ -22,6 +22,8 @@
  ************************************************************************/
 package org.jacpfx.rcp.util;
 
+import org.jacpfx.rcp.handler.ExceptionHandler;
+
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -45,6 +47,7 @@ public final class ShutdownThreadsHandler{
 	 * @param t
 	 */
 	public static <T extends Thread> void registerThread(T t) {
+        t.setUncaughtExceptionHandler(ExceptionHandler.getInstance());
 		registeredThreads.add(t);
 	}
 

@@ -75,12 +75,7 @@ public class ApplicationLauncher extends AFXSpringLauncher {
         return new String[]{"org.jacp.doublePerspective.test"};
     }
 
-    /**
-     * only for testing
-     */
-    public void startComponentScaning() {
-        this.scanPackegesAndInitRegestry();
-    }
+
 
     @Override
     public void postInit(final Stage stage) {

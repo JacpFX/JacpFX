@@ -3,8 +3,11 @@ package org.jacp.test.lifesycle;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
+import junit.framework.TestCase;
 import org.jacpfx.api.component.IPerspective;
 import org.jacpfx.api.component.ISubComponent;
+import org.jacpfx.rcp.handler.AErrorDialogHandler;
 import org.jacpfx.rcp.workbench.AFXWorkbench;
 import org.jacp.test.AllTests;
 import org.jacp.test.components.ComponentShutdownAndRestartComponentsTests1;
@@ -43,7 +46,7 @@ public class ShutdownAndReopenComponentsTest {
 
     @BeforeClass
     public static void initWorkbench() {
-
+        ApplicationShutdownAndRestartComponentsTest.exceptionhandler = new CustomErrorDialogHandler();
 
         t = new Thread("JavaFX Init Thread") {
             public void run() {
@@ -234,8 +237,10 @@ public class ShutdownAndReopenComponentsTest {
 
     @Test
     public void test5() throws InterruptedException {
+
         // Component is shut down
         ApplicationShutdownAndRestartComponentsTest launcher = ApplicationShutdownAndRestartComponentsTest.instance[0];
+
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
         List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
@@ -252,23 +257,19 @@ public class ShutdownAndReopenComponentsTest {
         }
         int i = 0;
         while (i < 500) {
-            CountDownLatch exceptionLatch = new CountDownLatch(1);
-            Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-                public void uncaughtException(Thread t, Throwable e) {
-                    e.printStackTrace();
-                    exceptionLatch.countDown();
-                    ;
-                }
-            });
+            CustomErrorDialogHandler.exceptionLatch = new CountDownLatch(1);
+
             ComponentShutdownAndRestartComponentsTests2.startLatch = new CountDownLatch(1);
             ComponentShutdownAndRestartComponentsTests2.stopLatch = new CountDownLatch(1);
             PerspectiveShutdownAndRestartComponents.stopStartComponent();
             ComponentShutdownAndRestartComponentsTests2.startLatch.await();
             ComponentShutdownAndRestartComponentsTests2.stopLatch.await();
-            exceptionLatch.await();
+            CustomErrorDialogHandler.exceptionLatch.await();
             i++;
         }
     }
+
+
 
     @Test              // test sending messages, stop the component while new messages are send
     public void test6() throws InterruptedException {
