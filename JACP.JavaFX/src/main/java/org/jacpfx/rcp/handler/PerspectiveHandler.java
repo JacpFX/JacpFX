@@ -228,17 +228,17 @@ public class PerspectiveHandler implements
         final ObservableList<Node> children = FXUtil.getChildren(validContainer);
         final Node root = component.getRoot();
         if (children == null || root == null) return;
-        if (!children.contains(root)) {
+        int index = children.indexOf(root);
+        if (index<0) {
             addNewRoot(children, root);
         } else {
-            bringRootToFront(children, root);
+            bringRootToFront(index,children, root);
         }
-
     }
 
-    private void bringRootToFront(final ObservableList<Node> children, final Node root) {
-        int index = children.indexOf(root);
+    private void bringRootToFront(int index,final ObservableList<Node> children, final Node root) {
         if (index != 0) {
+            children.remove(index);
             GridPane.setHgrow(root, Priority.ALWAYS);
             GridPane.setVgrow(root, Priority.ALWAYS);
             children.set(0, root);
