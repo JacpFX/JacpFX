@@ -24,7 +24,7 @@ package org.jacpfx.rcp.componentLayout;
 
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
-import org.jacpfx.api.componentLayout.IBaseLayout;
+import org.jacpfx.api.componentLayout.BaseLayout;
 import org.jacpfx.api.util.ToolbarPosition;
 import org.jacpfx.rcp.components.menuBar.JACPMenuBar;
 import org.jacpfx.rcp.components.toolBar.JACPToolBar;
@@ -39,7 +39,7 @@ import java.util.Map;
  * @author Andy Moncsek
  * 
  */
-public class FXComponentLayout implements IBaseLayout<Node> {
+public class FXComponentLayout implements BaseLayout<Node> {
 	private final Map<ToolbarPosition, JACPToolBar> registeredToolBars;
 	private final JACPMenuBar menu;
 	private final Pane glassPane;

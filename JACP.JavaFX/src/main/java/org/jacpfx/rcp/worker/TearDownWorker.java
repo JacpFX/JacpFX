@@ -24,7 +24,7 @@ package org.jacpfx.rcp.worker;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import org.jacpfx.api.component.ISubComponent;
+import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.rcp.util.TearDownHandler;
 
 import java.util.concurrent.Callable;
@@ -35,8 +35,8 @@ import java.util.concurrent.Callable;
  *
  */
 public class TearDownWorker implements Callable<Boolean>{
-	private final ISubComponent<EventHandler<Event>, Event, Object> component;
-	public TearDownWorker(final ISubComponent<EventHandler<Event>, Event, Object> component) {
+	private final SubComponent<EventHandler<Event>, Event, Object> component;
+	public TearDownWorker(final SubComponent<EventHandler<Event>, Event, Object> component) {
 		this.component = component;
 	}
 	@Override

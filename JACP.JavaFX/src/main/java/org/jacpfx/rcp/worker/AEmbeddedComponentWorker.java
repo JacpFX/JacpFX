@@ -27,9 +27,9 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
-import org.jacpfx.api.component.IComponentHandle;
-import org.jacpfx.api.component.ISubComponent;
-import org.jacpfx.api.component.IUIComponent;
+import org.jacpfx.api.component.ComponentHandle;
+import org.jacpfx.api.component.SubComponent;
+import org.jacpfx.api.component.UIComponent;
 import org.jacpfx.api.exceptions.InvalidComponentMatch;
 import org.jacpfx.rcp.component.AFXComponent;
 import org.jacpfx.rcp.util.FXUtil;
@@ -91,7 +91,7 @@ public abstract class AEmbeddedComponentWorker extends Thread {
      * @param validContainer, a valid JavaFX Node
      */
     void handleLayoutTargetChange(
-            final IUIComponent<Node, EventHandler<Event>, Event, Object> component,
+            final UIComponent<Node, EventHandler<Event>, Event, Object> component,
             final Node validContainer) {
         WorkerUtil.addComponentByType(validContainer, component);
     }
@@ -105,8 +105,8 @@ public abstract class AEmbeddedComponentWorker extends Thread {
      * @param component,     a component
      */
     void handlePerspectiveChange(
-            final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
-            final IUIComponent<Node, EventHandler<Event>, Event, Object> component) {
+            final BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
+            final UIComponent<Node, EventHandler<Event>, Event, Object> component) {
         // handle target outside current perspective
         WorkerUtil.changeComponentTarget(delegateQueue, component);
     }
@@ -141,8 +141,8 @@ public abstract class AEmbeddedComponentWorker extends Thread {
      * Checks if component is in correct state.
      * @param component
      */
-    void checkValidComponent(final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        final IComponentHandle<?, Event, Object> handle = component.getComponent();
+    void checkValidComponent(final SubComponent<EventHandler<Event>, Event, Object> component) {
+        final ComponentHandle<?, Event, Object> handle = component.getComponent();
         if (handle == null) throw new InvalidComponentMatch("Component is not initialized correctly");
         if (component == null || component.getContext() == null || component.getContext().getId() == null)
             throw new InvalidComponentMatch("Component is in invalid state while initialisation:" + handle.getClass()+" this can happen when component is in shutdown process");

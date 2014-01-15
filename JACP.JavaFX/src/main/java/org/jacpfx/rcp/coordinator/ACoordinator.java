@@ -24,8 +24,8 @@ package org.jacpfx.rcp.coordinator;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import org.jacpfx.api.coordinator.Coordinator;
 import org.jacpfx.api.message.Message;
-import org.jacpfx.api.coordinator.ICoordinator;
 import org.jacpfx.rcp.util.ShutdownThreadsHandler;
 
 import java.util.concurrent.ArrayBlockingQueue;
@@ -39,7 +39,7 @@ import java.util.logging.Logger;
  * @author Andy Moncsek
  */
 public abstract class ACoordinator extends Thread implements
-		ICoordinator<EventHandler<Event>, Event, Object> {
+        Coordinator<EventHandler<Event>, Event, Object> {
 
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	private final BlockingQueue<Message<Event, Object>> messages = new ArrayBlockingQueue<>(

@@ -22,7 +22,7 @@
  ************************************************************************/
 package org.jacpfx.spring.launcher;
 
-import org.jacpfx.api.dialog.Scope;
+import org.jacpfx.api.fragment.Scope;
 import org.jacpfx.api.launcher.Launcher;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;

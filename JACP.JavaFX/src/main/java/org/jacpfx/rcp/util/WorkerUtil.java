@@ -5,8 +5,8 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import org.jacpfx.api.component.ISubComponent;
-import org.jacpfx.api.component.IUIComponent;
+import org.jacpfx.api.component.SubComponent;
+import org.jacpfx.api.component.UIComponent;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.api.util.UIType;
 import org.jacpfx.rcp.component.AFXComponent;
@@ -84,7 +84,7 @@ public class WorkerUtil {
      */
     public static void addComponentByType(
             final Node validContainer,
-            final IUIComponent<Node, EventHandler<Event>, Event, Object> component) {
+            final UIComponent<Node, EventHandler<Event>, Event, Object> component) {
         handleAdd(validContainer, component.getRoot());
     }
 
@@ -126,7 +126,7 @@ public class WorkerUtil {
      * @param action,   the message
      */
     public static void delegateReturnValue(
-            final ISubComponent<EventHandler<Event>, Event, Object> comp,
+            final SubComponent<EventHandler<Event>, Event, Object> comp,
             final String targetId, final Object value,
             final Message<Event, Object> action) {
         if (value != null && targetId != null
@@ -168,8 +168,8 @@ public class WorkerUtil {
      * @param component,     the component
      */
     public static void changeComponentTarget(
-            final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
-            final ISubComponent<EventHandler<Event>, Event, Object> component) {
+            final BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
+            final SubComponent<EventHandler<Event>, Event, Object> component) {
         // delegate to perspective observer
         try {
             delegateQueue.put(component);
@@ -187,7 +187,7 @@ public class WorkerUtil {
      * @return a returned node from component execution
      */
     public static Node prepareAndRunHandleMethod(
-            final IUIComponent<Node, EventHandler<Event>, Event, Object> component,
+            final UIComponent<Node, EventHandler<Event>, Event, Object> component,
             final Message<Event, Object> action) throws Exception {
         return component.getComponentViewHandle().handle(action);
 

@@ -29,21 +29,21 @@ import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import org.jacpfx.api.annotations.perspective.Perspective;
-import org.jacpfx.api.component.IPerspectiveView;
-import org.jacpfx.api.component.ISubComponent;
+import org.jacpfx.api.component.PerspectiveView;
+import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.component.Injectable;
-import org.jacpfx.api.componentLayout.IPerspectiveLayout;
-import org.jacpfx.api.context.Context;
-import org.jacpfx.api.coordinator.ICoordinator;
-import org.jacpfx.api.handler.IComponentHandler;
+import org.jacpfx.api.componentLayout.PerspectiveLayoutInterface;
+import org.jacpfx.api.context.JacpContext;
+import org.jacpfx.api.coordinator.Coordinator;
+import org.jacpfx.api.handler.ComponentHandler;
 import org.jacpfx.api.launcher.Launcher;
-import org.jacpfx.api.message.IDelegateDTO;
+import org.jacpfx.api.message.DelegateDTO;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.api.util.UIType;
 import org.jacpfx.rcp.component.AComponent;
 import org.jacpfx.rcp.componentLayout.PerspectiveLayout;
-import org.jacpfx.rcp.context.JACPContextImpl;
-import org.jacpfx.rcp.message.FXMessage;
+import org.jacpfx.rcp.context.ContextImpl;
+import org.jacpfx.rcp.message.MessageImpl;
 import org.jacpfx.rcp.registry.ComponentRegistry;
 import org.jacpfx.rcp.util.FXUtil;
 import org.jacpfx.rcp.util.PerspectiveUtil;
@@ -63,17 +63,17 @@ import java.util.logging.Logger;
  * @author Andy Moncsek
  */
 public abstract class AFXPerspective extends AComponent implements
-        IPerspectiveView<Node, EventHandler<Event>, Event, Object>,
+        PerspectiveView<Node, EventHandler<Event>, Event, Object>,
         Initializable {
     private final Logger logger = Logger.getLogger(this.getClass().getName());
-    private volatile List<ISubComponent<EventHandler<Event>, Event, Object>> subcomponents;
-    private IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
-    private BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
-    private BlockingQueue<IDelegateDTO<Event, Object>> messageDelegateQueue;
-    private ICoordinator<EventHandler<Event>, Event, Object> messageCoordinator;
+    private volatile List<SubComponent<EventHandler<Event>, Event, Object>> subcomponents;
+    private ComponentHandler<SubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
+    private BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
+    private BlockingQueue<DelegateDTO<Event, Object>> messageDelegateQueue;
+    private Coordinator<EventHandler<Event>, Event, Object> messageCoordinator;
     private String viewLocation;
     private URL documentURL;
-    private IPerspectiveLayout<Node, Node> perspectiveLayout;
+    private PerspectiveLayoutInterface<Node, Node> perspectiveLayout;
     private UIType type = UIType.PROGRAMMATIC;
     private String localeID = "";
     private final Object lock = new Object();
@@ -86,16 +86,16 @@ public abstract class AFXPerspective extends AComponent implements
      */
     @Override
     public final void init(
-            final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue,
-            final BlockingQueue<IDelegateDTO<Event, Object>> messageDelegateQueue,
-            final ICoordinator<EventHandler<Event>, Event, Object> messageCoordinator, final Launcher<?> launcher) {
+            final BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue,
+            final BlockingQueue<DelegateDTO<Event, Object>> messageDelegateQueue,
+            final Coordinator<EventHandler<Event>, Event, Object> messageCoordinator, final Launcher<?> launcher) {
 
         this.messageCoordinator = messageCoordinator;
         this.componentDelegateQueue = componentDelegateQueue;
         this.messageDelegateQueue = messageDelegateQueue;
         this.globalMessageQueue = this.messageCoordinator.getMessageQueue();
         this.launcher = launcher;
-        this.context = new JACPContextImpl(this.globalMessageQueue);
+        this.context = new ContextImpl(this.globalMessageQueue);
     }
 
 
@@ -104,7 +104,7 @@ public abstract class AFXPerspective extends AComponent implements
      */
     @Override
     public void postInit(
-            final IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler) {
+            final ComponentHandler<SubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler) {
         // init component handler
         this.componentHandler = componentHandler;
         this.messageCoordinator.setComponentHandler(this.componentHandler);
@@ -118,7 +118,7 @@ public abstract class AFXPerspective extends AComponent implements
      *
      * @return all declared subcomponents
      */
-    private List<ISubComponent<EventHandler<Event>, Event, Object>> createAllDeclaredSubcomponents() {
+    private List<SubComponent<EventHandler<Event>, Event, Object>> createAllDeclaredSubcomponents() {
         final Injectable handler = this.perspective;
         if (handler == null) throw new IllegalArgumentException("No perspective annotatation found");
         final Perspective perspectiveAnnotation = handler.getClass()
@@ -140,12 +140,12 @@ public abstract class AFXPerspective extends AComponent implements
     //TODO extract metadata initialisation to perform this on parallel stream!!!
     @Override
     public final void registerComponent(
-            final ISubComponent<EventHandler<Event>, Event, Object> component) {
+            final SubComponent<EventHandler<Event>, Event, Object> component) {
         component.initEnv(this.getContext().getId(),
                 this.messageCoordinator.getMessageQueue());
-        final JACPContextImpl context = JACPContextImpl.class.cast(component.getContext());
+        final ContextImpl context = ContextImpl.class.cast(component.getContext());
         context.setParentId(this.getContext().getId());
-        context.setFXComponentLayout(JACPContextImpl.class.cast(this.getContext()).getComponentLayout());
+        context.setFXComponentLayout(ContextImpl.class.cast(this.getContext()).getComponentLayout());
         PerspectiveUtil.handleComponentMetaAnnotation(component);
         if (context.isActive()) {
             addComponent(component);
@@ -155,7 +155,7 @@ public abstract class AFXPerspective extends AComponent implements
 
     @Override
     public final void addComponent(
-            final ISubComponent<EventHandler<Event>, Event, Object> component) {
+            final SubComponent<EventHandler<Event>, Event, Object> component) {
         synchronized (lock) {
             this.log("register component: " + component.getContext().getId());
             ComponentRegistry.registerComponent(component);
@@ -168,7 +168,7 @@ public abstract class AFXPerspective extends AComponent implements
 
     @Override
     public final void unregisterComponent(
-            final ISubComponent<EventHandler<Event>, Event, Object> component) {
+            final SubComponent<EventHandler<Event>, Event, Object> component) {
         synchronized (lock) {
             this.log("unregister component: " + component.getContext().getId());
             ComponentRegistry.removeComponent(component);
@@ -191,12 +191,12 @@ public abstract class AFXPerspective extends AComponent implements
         final String targetId = FXUtil.getTargetComponentId(action
                 .getTargetId());
         this.log("3.4.4.1: subcomponent targetId: " + targetId);
-        final List<ISubComponent<EventHandler<Event>, Event, Object>> components = this.subcomponents;
+        final List<SubComponent<EventHandler<Event>, Event, Object>> components = this.subcomponents;
         if (components == null) return;
         components.parallelStream().forEach(component -> initComponent(component, action, targetId));
     }
 
-    private void initComponent(final ISubComponent<EventHandler<Event>, Event, Object> component, final Message<Event, Object> action, final String targetId) {
+    private void initComponent(final SubComponent<EventHandler<Event>, Event, Object> component, final Message<Event, Object> action, final String targetId) {
         if (component.getContext().getId().equals(targetId)) {
             this.log("3.4.4.2: subcomponent init with custom message");
             this.componentHandler.initComponent(action, component);
@@ -204,7 +204,7 @@ public abstract class AFXPerspective extends AComponent implements
         else if (component.getContext().isActive() && !component.isStarted()) {
             this.log("3.4.4.2: subcomponent init with default message");
             this.componentHandler.initComponent(
-                    new FXMessage(component.getContext().getId(), component.getContext().getId(),
+                    new MessageImpl(component.getContext().getId(), component.getContext().getId(),
                             "init", null), component);
         } // if END
     }
@@ -221,33 +221,33 @@ public abstract class AFXPerspective extends AComponent implements
      * @param <M>         , a list of components extending ISubComponents
      * @param components, a list of registered components
      */
-    private <M extends ISubComponent<EventHandler<Event>, Event, Object>> void registerSubcomponents(
+    private <M extends SubComponent<EventHandler<Event>, Event, Object>> void registerSubcomponents(
             final List<M> components) {
         components.forEach(this::registerComponent);
     }
 
     @Override
-    public List<ISubComponent<EventHandler<Event>, Event, Object>> getSubcomponents() {
+    public List<SubComponent<EventHandler<Event>, Event, Object>> getSubcomponents() {
         return this.subcomponents;
     }
 
     @Override
-    public final IPerspectiveLayout<Node, Node> getIPerspectiveLayout() {
+    public final PerspectiveLayoutInterface<Node, Node> getIPerspectiveLayout() {
         return this.perspectiveLayout;
     }
 
     @Override
-    public final void setIPerspectiveLayout(final IPerspectiveLayout<Node, Node> layout) {
+    public final void setIPerspectiveLayout(final PerspectiveLayoutInterface<Node, Node> layout) {
         this.perspectiveLayout = layout;
     }
 
     @Override
-    public final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> getComponentDelegateQueue() {
+    public final BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> getComponentDelegateQueue() {
         return this.componentDelegateQueue;
     }
 
     @Override
-    public final BlockingQueue<IDelegateDTO<Event, Object>> getMessageDelegateQueue() {
+    public final BlockingQueue<DelegateDTO<Event, Object>> getMessageDelegateQueue() {
         return this.messageDelegateQueue;
     }
 
@@ -258,7 +258,7 @@ public abstract class AFXPerspective extends AComponent implements
     }
 
     @Override
-    public final IComponentHandler<ISubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>> getComponentHandler() {
+    public final ComponentHandler<SubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>> getComponentHandler() {
         return this.componentHandler;
     }
 
@@ -278,7 +278,7 @@ public abstract class AFXPerspective extends AComponent implements
     @Override
     public final void initialize(URL url, ResourceBundle resourceBundle) {
         this.documentURL = url;
-        JACPContextImpl.class.cast(context).setResourceBundle(resourceBundle);
+        ContextImpl.class.cast(context).setResourceBundle(resourceBundle);
     }
 
     /**
@@ -331,7 +331,7 @@ public abstract class AFXPerspective extends AComponent implements
     }
 
     @Override
-    public Context<EventHandler<Event>, Object> getContext() {
+    public JacpContext getContext() {
         return this.context;
     }
 }

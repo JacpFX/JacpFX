@@ -1,6 +1,6 @@
 package org.jacpfx.rcp.component;
 
-import org.jacpfx.api.component.IComponentView;
+import org.jacpfx.api.component.ComponentView;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,7 +11,7 @@ import org.jacpfx.api.component.IComponentView;
  */
 public class EmbeddedFXComponent extends AFXComponent{
 
-    public EmbeddedFXComponent(IComponentView handle) {
+    public EmbeddedFXComponent(ComponentView handle) {
         this.setComponent(handle);
     }
 

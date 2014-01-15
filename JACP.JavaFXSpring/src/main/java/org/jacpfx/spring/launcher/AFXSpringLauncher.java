@@ -4,7 +4,7 @@ import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 import org.jacpfx.api.annotations.workbench.Workbench;
-import org.jacpfx.api.dialog.Scope;
+import org.jacpfx.api.fragment.Scope;
 import org.jacpfx.api.exceptions.AnnotationNotFoundException;
 import org.jacpfx.api.exceptions.AttributeNotFoundException;
 import org.jacpfx.api.exceptions.ComponentNotFoundException;

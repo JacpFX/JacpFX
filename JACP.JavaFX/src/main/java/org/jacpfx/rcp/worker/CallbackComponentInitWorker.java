@@ -24,11 +24,11 @@ package org.jacpfx.rcp.worker;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import org.jacpfx.api.component.Perspective;
+import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.message.Message;
-import org.jacpfx.api.component.IPerspective;
-import org.jacpfx.api.component.ISubComponent;
 import org.jacpfx.rcp.component.ASubComponent;
-import org.jacpfx.rcp.context.JACPContextImpl;
+import org.jacpfx.rcp.context.ContextImpl;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.TearDownHandler;
 import org.jacpfx.rcp.util.WorkerUtil;
@@ -44,11 +44,11 @@ public class CallbackComponentInitWorker
         extends
         AComponentWorker<ASubComponent> {
     private final ASubComponent component;
-    private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue;
+    private final BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> delegateQueue;
     private final Message<Event, Object> action;
 
     public CallbackComponentInitWorker(
-            final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
+            final BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
             final ASubComponent component, final Message<Event, Object> action) {
         this.component = component;
         this.delegateQueue = delegateQueue;
@@ -62,7 +62,7 @@ public class CallbackComponentInitWorker
             checkValidComponent(this.component);
             runCallbackOnStartMethods(this.component);
             final Message<Event, Object> myAction = this.action;
-            final JACPContextImpl context = JACPContextImpl.class.cast(this.component.getContext());
+            final ContextImpl context = ContextImpl.class.cast(this.component.getContext());
             context.setReturnTarget(myAction.getSourceId());
             final String currentExecutionTarget = context.getExecutionTarget();
             final Object value = this.component.getComponent().handle(myAction);
@@ -77,11 +77,11 @@ public class CallbackComponentInitWorker
         return this.component;
     }
 
-    private void handleComponentShutdown(final ISubComponent<EventHandler<Event>, Event, Object> component) {
+    private void handleComponentShutdown(final SubComponent<EventHandler<Event>, Event, Object> component) {
         if (!component.getContext().isActive()) {
             component.setStarted(false);
             final String parentId = component.getParentId();
-            final IPerspective<EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
+            final Perspective<EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
             if(parentPerspctive!=null)parentPerspctive.unregisterComponent(component);
             TearDownHandler.shutDownAsyncComponent(ASubComponent.class.cast(component));
         }
@@ -95,9 +95,9 @@ public class CallbackComponentInitWorker
      * @param currentExecutionTarget, the current execution target... which was valid before execution
      */
     private void checkAndHandleTargetChange(
-            final ISubComponent<EventHandler<Event>, Event, Object> comp,
+            final SubComponent<EventHandler<Event>, Event, Object> comp,
             final String currentExecutionTarget) {
-        final String targetNew = JACPContextImpl.class.cast(comp.getContext()).getExecutionTarget();
+        final String targetNew = ContextImpl.class.cast(comp.getContext()).getExecutionTarget();
         if (!targetNew.equals(currentExecutionTarget)) {
             if (!component.getContext().isActive())
                 throw new UnsupportedOperationException(

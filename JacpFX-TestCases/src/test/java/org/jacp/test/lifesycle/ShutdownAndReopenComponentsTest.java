@@ -3,11 +3,8 @@ package org.jacp.test.lifesycle;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
-import junit.framework.TestCase;
-import org.jacpfx.api.component.IPerspective;
-import org.jacpfx.api.component.ISubComponent;
-import org.jacpfx.rcp.handler.AErrorDialogHandler;
+import org.jacpfx.api.component.Perspective;
+import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.rcp.workbench.AFXWorkbench;
 import org.jacp.test.AllTests;
 import org.jacp.test.components.ComponentShutdownAndRestartComponentsTests1;
@@ -74,14 +71,14 @@ public class ShutdownAndReopenComponentsTest {
         ApplicationShutdownAndRestartComponentsTest launcher = ApplicationShutdownAndRestartComponentsTest.instance[0];
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
-        List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        List<Perspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
 
-        for (IPerspective<EventHandler<Event>, Event, Object> p : perspectives) {
+        for (Perspective<EventHandler<Event>, Event, Object> p : perspectives) {
 
             assertTrue(p.getContext().isActive());
-            List<ISubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
+            List<SubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
             assertFalse(components.isEmpty());
             components.forEach(c -> assertTrue(c.getContext().isActive()));
         }
@@ -96,13 +93,13 @@ public class ShutdownAndReopenComponentsTest {
         ApplicationShutdownAndRestartComponentsTest launcher = ApplicationShutdownAndRestartComponentsTest.instance[0];
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
-        List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        List<Perspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
-        for (IPerspective<EventHandler<Event>, Event, Object> p : perspectives) {
+        for (Perspective<EventHandler<Event>, Event, Object> p : perspectives) {
 
             assertTrue(p.getContext().isActive());
-            List<ISubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
+            List<SubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
             assertFalse(components.isEmpty());
 
             components.forEach(c -> assertTrue(c.getContext().isActive()));
@@ -117,7 +114,7 @@ public class ShutdownAndReopenComponentsTest {
         ApplicationShutdownAndRestartComponentsTest launcher = ApplicationShutdownAndRestartComponentsTest.instance[0];
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
-        List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        List<Perspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
         ComponentShutdownAndRestartComponentsTests1.stopLatch = new CountDownLatch(1);
@@ -132,10 +129,10 @@ public class ShutdownAndReopenComponentsTest {
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
 
-        for (IPerspective<EventHandler<Event>, Event, Object> p : perspectives) {
+        for (Perspective<EventHandler<Event>, Event, Object> p : perspectives) {
 
             assertTrue(p.getContext().isActive());
-            List<ISubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
+            List<SubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
 
             //Thread.sleep(1000);
             assertTrue(components.isEmpty());
@@ -152,13 +149,13 @@ public class ShutdownAndReopenComponentsTest {
         ApplicationShutdownAndRestartComponentsTest launcher = ApplicationShutdownAndRestartComponentsTest.instance[0];
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
-        List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        List<Perspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
-        for (IPerspective<EventHandler<Event>, Event, Object> p : perspectives) {
+        for (Perspective<EventHandler<Event>, Event, Object> p : perspectives) {
 
             assertTrue(p.getContext().isActive());
-            List<ISubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
+            List<SubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
 
             // Thread.sleep(1000);
             assertTrue(components.isEmpty());
@@ -177,7 +174,7 @@ public class ShutdownAndReopenComponentsTest {
         ApplicationShutdownAndRestartComponentsTest launcher = ApplicationShutdownAndRestartComponentsTest.instance[0];
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
-        List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        List<Perspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
         ComponentShutdownAndRestartComponentsTests1.startLatch = new CountDownLatch(1);
@@ -189,10 +186,10 @@ public class ShutdownAndReopenComponentsTest {
         ComponentShutdownAndRestartComponentsTests2.startLatch.await();
         ComponentShutdownAndRestartComponentsTests3.startLatch.await();
         //Thread.sleep(100);
-        for (IPerspective<EventHandler<Event>, Event, Object> p : perspectives) {
+        for (Perspective<EventHandler<Event>, Event, Object> p : perspectives) {
 
             assertTrue(p.getContext().isActive());
-            List<ISubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
+            List<SubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
             assertFalse(components.isEmpty());
 
             components.forEach(c -> assertTrue(c.getContext().isActive()));
@@ -208,13 +205,13 @@ public class ShutdownAndReopenComponentsTest {
         ApplicationShutdownAndRestartComponentsTest launcher = ApplicationShutdownAndRestartComponentsTest.instance[0];
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
-        List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        List<Perspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
-        for (IPerspective<EventHandler<Event>, Event, Object> p : perspectives) {
+        for (Perspective<EventHandler<Event>, Event, Object> p : perspectives) {
 
             assertTrue(p.getContext().isActive());
-            List<ISubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
+            List<SubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
 
             Thread.sleep(100);
             assertTrue(components.isEmpty());
@@ -243,13 +240,13 @@ public class ShutdownAndReopenComponentsTest {
 
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
-        List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        List<Perspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
-        for (IPerspective<EventHandler<Event>, Event, Object> p : perspectives) {
+        for (Perspective<EventHandler<Event>, Event, Object> p : perspectives) {
 
             assertTrue(p.getContext().isActive());
-            List<ISubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
+            List<SubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
 
             // Thread.sleep(1000);
             assertTrue(components.isEmpty());
@@ -277,13 +274,13 @@ public class ShutdownAndReopenComponentsTest {
         ApplicationShutdownAndRestartComponentsTest launcher = ApplicationShutdownAndRestartComponentsTest.instance[0];
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
-        List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        List<Perspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
-        for (IPerspective<EventHandler<Event>, Event, Object> p : perspectives) {
+        for (Perspective<EventHandler<Event>, Event, Object> p : perspectives) {
 
             assertTrue(p.getContext().isActive());
-            List<ISubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
+            List<SubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
 
             // Thread.sleep(1000);
             assertTrue(components.isEmpty());
@@ -327,7 +324,7 @@ public class ShutdownAndReopenComponentsTest {
         ApplicationShutdownAndRestartComponentsTest launcher = ApplicationShutdownAndRestartComponentsTest.instance[0];
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
-        List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        List<Perspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
 
         int i = 0;

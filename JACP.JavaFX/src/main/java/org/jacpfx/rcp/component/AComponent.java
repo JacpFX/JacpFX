@@ -24,9 +24,9 @@ package org.jacpfx.rcp.component;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import org.jacpfx.api.component.Component;
 import org.jacpfx.api.message.Message;
-import org.jacpfx.api.component.IComponent;
-import org.jacpfx.rcp.context.JACPContextImpl;
+import org.jacpfx.rcp.context.ContextImpl;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -39,12 +39,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 
 public abstract class AComponent implements
-        IComponent<EventHandler<Event>, Object> {
+        Component<EventHandler<Event>, Object> {
 
     private volatile AtomicBoolean started =  new AtomicBoolean(false);
     private String localeID = "";
     private String resourceBundleLocation = "";
-    protected JACPContextImpl context;
+    protected ContextImpl context;
     protected volatile BlockingQueue<Message<Event, Object>> globalMessageQueue;
 
 
@@ -98,7 +98,7 @@ public abstract class AComponent implements
     /**
      * {@inheritDoc}
      */
-    public int compareTo(IComponent o) {
+    public int compareTo(Component o) {
         return this.getContext().getId().compareTo(o.getContext().getId());
     }
 

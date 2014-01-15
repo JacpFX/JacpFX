@@ -24,11 +24,11 @@ package org.jacpfx.rcp.component;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import org.jacpfx.api.component.ComponentHandle;
+import org.jacpfx.api.component.SubComponent;
+import org.jacpfx.api.context.JacpContext;
 import org.jacpfx.api.message.Message;
-import org.jacpfx.api.component.IComponentHandle;
-import org.jacpfx.api.component.ISubComponent;
-import org.jacpfx.api.context.Context;
-import org.jacpfx.rcp.context.JACPContextImpl;
+import org.jacpfx.rcp.context.ContextImpl;
 import org.jacpfx.rcp.worker.AEmbeddedComponentWorker;
 
 import java.util.concurrent.ArrayBlockingQueue;
@@ -42,7 +42,7 @@ import java.util.logging.Logger;
  * @author Andy Moncsek
  */
 public abstract class ASubComponent extends AComponent implements
-        ISubComponent<EventHandler<Event>, Event, Object> {
+        SubComponent<EventHandler<Event>, Event, Object> {
 
     private volatile String parentId;
 
@@ -54,7 +54,7 @@ public abstract class ASubComponent extends AComponent implements
             100000);
 
 
-    private volatile IComponentHandle<?, Event, Object> component;
+    private volatile ComponentHandle<?, Event, Object> component;
 
 
     private volatile AEmbeddedComponentWorker worker;
@@ -68,7 +68,7 @@ public abstract class ASubComponent extends AComponent implements
                               final BlockingQueue<Message<Event, Object>> messageQueue) {
         this.parentId = parentId;
         this.globalMessageQueue = messageQueue;
-        this.context = new JACPContextImpl(this.globalMessageQueue);
+        this.context = new ContextImpl(this.globalMessageQueue);
     }
 
 
@@ -142,7 +142,7 @@ public abstract class ASubComponent extends AComponent implements
      * {@inheritDoc}
      */
     @Override
-    public final Context<EventHandler<Event>, Object> getContext() {
+    public final JacpContext getContext() {
         return this.context;
     }
 
@@ -151,7 +151,7 @@ public abstract class ASubComponent extends AComponent implements
      */
     @SuppressWarnings("unchecked")
     @Override
-    public final IComponentHandle<?, Event, Object> getComponent() {
+    public final ComponentHandle<?, Event, Object> getComponent() {
         return component;
     }
 
@@ -159,7 +159,7 @@ public abstract class ASubComponent extends AComponent implements
      * {@inheritDoc}
      */
     @Override
-    public <X extends IComponentHandle<?, Event, Object>> void setComponent(final X handle) {
+    public <X extends ComponentHandle<?, Event, Object>> void setComponent(final X handle) {
         this.component = handle;
     }
 

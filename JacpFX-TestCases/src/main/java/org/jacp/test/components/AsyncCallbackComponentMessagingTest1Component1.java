@@ -37,7 +37,7 @@ import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
 import org.jacpfx.rcp.component.CallbackComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
-import org.jacpfx.rcp.context.JACPContext;
+import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.util.FXUtil;
 import org.jacp.test.main.ApplicationLauncherAsyncCallbackComponentMessaginTest1;
 
@@ -66,7 +66,7 @@ public class AsyncCallbackComponentMessagingTest1Component1 implements CallbackC
     public static boolean ui = false;
 
     @Resource
-    private static JACPContext context;
+    private static Context context;
 
     public static AtomicInteger counter = new AtomicInteger(10000);
     public static CountDownLatch wait = new CountDownLatch(1);
@@ -108,7 +108,7 @@ public class AsyncCallbackComponentMessagingTest1Component1 implements CallbackC
         t.start();
     }
 
-    public static synchronized JACPContext getContext() {
+    public static synchronized Context getContext() {
         return context;
     }
 

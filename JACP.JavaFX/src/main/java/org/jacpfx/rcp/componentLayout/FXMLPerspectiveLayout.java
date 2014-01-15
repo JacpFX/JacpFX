@@ -35,7 +35,7 @@ import javafx.scene.Node;
  * 
  * @author Andy Moncsek
  */
-public class FXMLPerspectiveLayout extends PerspectiveLayout{
+public class FXMLPerspectiveLayout extends PerspectiveLayout {
 
 	public FXMLPerspectiveLayout(final Node rootComponent) {
 		super(rootComponent);

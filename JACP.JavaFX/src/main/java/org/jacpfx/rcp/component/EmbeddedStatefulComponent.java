@@ -1,6 +1,6 @@
 package org.jacpfx.rcp.component;
 
-import org.jacpfx.api.component.IComponentHandle;
+import org.jacpfx.api.component.ComponentHandle;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,7 +11,7 @@ import org.jacpfx.api.component.IComponentHandle;
  */
 public class EmbeddedStatefulComponent extends ASubComponent{
 
-    public EmbeddedStatefulComponent(IComponentHandle handle) {
+    public EmbeddedStatefulComponent(ComponentHandle handle) {
         this.setComponent(handle);
     }
 

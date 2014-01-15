@@ -27,14 +27,13 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import org.jacpfx.api.component.IPerspective;
-import org.jacpfx.api.component.ISubComponent;
+import org.jacpfx.api.component.Perspective;
+import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.AFXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.componentLayout.PerspectiveLayout;
-import org.jacpfx.rcp.context.JACPContextImpl;
-import org.jacpfx.rcp.perspective.EmbeddedFXPerspective;
+import org.jacpfx.rcp.context.ContextImpl;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.*;
 
@@ -55,11 +54,11 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
 
     private final Map<String, Node> targetComponents;
     private final AFXComponent component;
-    private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
+    private final BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
 
     public EmbeddedFXComponentWorker(
             final Map<String, Node> targetComponents,
-            final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue,
+            final BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue,
             final AFXComponent component) {
         super(component.getContext().getName());
         this.targetComponents = targetComponents;
@@ -78,7 +77,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
                     final Message<Event, Object> myAction = this.component
                             .getNextIncomingMessage();
                     final Node previousContainer = this.component.getRoot();
-                    final JACPContextImpl contextImpl = JACPContextImpl.class.cast(this.component.getContext());
+                    final ContextImpl contextImpl = ContextImpl.class.cast(this.component.getContext());
                     final String currentTargetLayout = contextImpl.getTargetLayout();
                     final String currentExecutionTarget = contextImpl.getExecutionTarget();
                     // run code
@@ -120,7 +119,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
         WorkerUtil.invokeOnFXThreadAndWait(() -> {
             // check if component was set to inactive, if so remove
             try {
-                final FXComponentLayout layout = JACPContextImpl.class.cast(component.getContext()).getComponentLayout();
+                final FXComponentLayout layout = ContextImpl.class.cast(component.getContext()).getComponentLayout();
                 // check if was not deactivated in handle method
                 if (component.getContext().isActive()) {
                     WorkerUtil.executeComponentViewPostHandle(handleReturnValue, component,
@@ -169,7 +168,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
                                        final Node previousContainer, final String currentTargetLayout, final String currentExecutionTarget) {
 
         if (previousContainer != null) {
-            final JACPContextImpl context = JACPContextImpl.class.cast(this.component.getContext());
+            final ContextImpl context = ContextImpl.class.cast(this.component.getContext());
             final String newExecutionTarget = context.getExecutionTarget();
             if (!currentExecutionTarget.equalsIgnoreCase(newExecutionTarget)) {
                 this.shutDownComponent(component, layout, previousContainer, currentTargetLayout);
@@ -190,7 +189,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
     private void shutDownComponent(final AFXComponent component, final FXComponentLayout layout, final Node previousContainer, final String currentTargetLayout) {
 
         final String parentId = component.getParentId();
-        final IPerspective<EventHandler<Event>, Event, Object> parentPerspective = PerspectiveRegistry.findPerspectiveById(parentId);
+        final Perspective<EventHandler<Event>, Event, Object> parentPerspective = PerspectiveRegistry.findPerspectiveById(parentId);
         if (parentPerspective != null) {
             // unregister component
             if(!this.removeComponentValue(previousContainer)) {
@@ -201,7 +200,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
         TearDownHandler.shutDownFXComponent(component, layout);
     }
 
-    private void clearTargetLayoutInPerspective(final IPerspective<EventHandler<Event>, Event, Object> parentPerspective,final String currentTargetLayout) {
+    private void clearTargetLayoutInPerspective(final Perspective<EventHandler<Event>, Event, Object> parentPerspective,final String currentTargetLayout) {
         final PerspectiveLayout playout = PerspectiveUtil.getPerspectiveLayoutFromPerspective(parentPerspective);
         if (playout != null && currentTargetLayout != null) {
             final Node container = playout.getTargetLayoutComponents().get(currentTargetLayout);

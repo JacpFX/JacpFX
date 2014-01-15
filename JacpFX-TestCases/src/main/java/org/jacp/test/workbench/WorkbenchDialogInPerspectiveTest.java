@@ -37,7 +37,7 @@ import javafx.stage.StageStyle;
 import org.jacp.test.main.ApplicationLauncher;
 import org.jacp.test.perspectives.PerspectiveIds;
 import org.jacpfx.api.annotations.Resource;
-import org.jacpfx.api.componentLayout.IWorkbenchLayout;
+import org.jacpfx.api.componentLayout.WorkbenchLayout;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.api.util.ToolbarPosition;
 import org.jacpfx.controls.optionPane.JACPDialogButton;
@@ -46,7 +46,7 @@ import org.jacpfx.controls.optionPane.JACPOptionPane;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.components.menuBar.JACPMenuBar;
 import org.jacpfx.rcp.components.modalDialog.JACPModalDialog;
-import org.jacpfx.rcp.context.JACPContext;
+import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.workbench.FXWorkbench;
 
 import java.util.ArrayList;
@@ -62,11 +62,11 @@ import java.util.List;
 public class WorkbenchDialogInPerspectiveTest implements FXWorkbench {
     private Stage stage;
     @Resource
-    JACPContext context;
+    Context context;
 
     @Override
     public void handleInitialLayout(final Message<Event, Object> action,
-                                    final IWorkbenchLayout<Node> layout, final Stage stage) {
+                                    final WorkbenchLayout<Node> layout, final Stage stage) {
         layout.setWorkbenchXYSize(1024, 600);
         layout.setStyle(StageStyle.DECORATED);
         layout.setMenuEnabled(true);

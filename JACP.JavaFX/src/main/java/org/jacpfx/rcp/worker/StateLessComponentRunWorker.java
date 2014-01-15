@@ -24,12 +24,12 @@ package org.jacpfx.rcp.worker;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import org.jacpfx.api.component.StatelessCallabackComponent;
+import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.message.Message;
-import org.jacpfx.api.component.IPerspective;
-import org.jacpfx.api.component.IStatelessCallabackComponent;
-import org.jacpfx.api.component.ISubComponent;
+import org.jacpfx.api.component.Perspective;
 import org.jacpfx.rcp.component.ASubComponent;
-import org.jacpfx.rcp.context.JACPContextImpl;
+import org.jacpfx.rcp.context.ContextImpl;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.TearDownHandler;
 import org.jacpfx.rcp.util.WorkerUtil;
@@ -45,19 +45,19 @@ import java.util.concurrent.ExecutionException;
  */
 public class StateLessComponentRunWorker
 		extends
-        AComponentWorker<ISubComponent<EventHandler<Event>, Event, Object>> {
-	private final ISubComponent<EventHandler<Event>, Event, Object> component;
-	private final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> parent;
+        AComponentWorker<SubComponent<EventHandler<Event>, Event, Object>> {
+	private final SubComponent<EventHandler<Event>, Event, Object> component;
+	private final StatelessCallabackComponent<EventHandler<Event>, Event, Object> parent;
 
 	public StateLessComponentRunWorker(
-			final ISubComponent<EventHandler<Event>, Event, Object> component,
-			final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> parent) {
+			final SubComponent<EventHandler<Event>, Event, Object> component,
+			final StatelessCallabackComponent<EventHandler<Event>, Event, Object> parent) {
 		this.component = component;
 		this.parent = parent;
 	}
 
 	@Override
-	protected ISubComponent<EventHandler<Event>, Event, Object> call()
+	protected SubComponent<EventHandler<Event>, Event, Object> call()
 			throws Exception {
 			try {
                 this.component.lock();
@@ -65,7 +65,7 @@ public class StateLessComponentRunWorker
 				while (this.component.hasIncomingMessage()) {
 					final Message<Event, Object> myAction = this.component
 							.getNextIncomingMessage();
-                    final JACPContextImpl context = JACPContextImpl.class.cast(this.component.getContext());
+                    final ContextImpl context = ContextImpl.class.cast(this.component.getContext());
                     context.setReturnTarget(myAction.getSourceId());
                     final Object value = this.component.getComponent().handle(myAction);
                     final String targetId = context
@@ -84,7 +84,7 @@ public class StateLessComponentRunWorker
 	@Override
 	protected void done() {
 		try {
-			final ISubComponent<EventHandler<Event>, Event, Object> component = this.get();
+			final SubComponent<EventHandler<Event>, Event, Object> component = this.get();
 			// check if component was deactivated and is still in instance list
 			if (!component.getContext().isActive()) {
                 try{
@@ -110,10 +110,10 @@ public class StateLessComponentRunWorker
 	 * @param parent, the parent component
 	 */
 	private void forceShutdown(
-			final ISubComponent<EventHandler<Event>, Event, Object> component,
-			final IStatelessCallabackComponent<EventHandler<Event>, Event, Object> parent) {
+			final SubComponent<EventHandler<Event>, Event, Object> component,
+			final StatelessCallabackComponent<EventHandler<Event>, Event, Object> parent) {
         final String parentId = parent.getParentId();
-        final IPerspective<EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
+        final Perspective<EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
         if(parentPerspctive!=null)parentPerspctive.unregisterComponent(parent);
         TearDownHandler.shutDownAsyncComponent(ASubComponent.class.cast(parent));
 	}

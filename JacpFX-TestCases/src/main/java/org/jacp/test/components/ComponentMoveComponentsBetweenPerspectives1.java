@@ -26,21 +26,16 @@
 package org.jacp.test.components;
 
 import javafx.event.Event;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import org.jacp.test.main.ApplicationLauncherMoveComponentsBetweenComponents;
-import org.jacp.test.main.ApplicationShutdownAndRestartComponentsTest;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.component.Component;
-import org.jacpfx.api.annotations.component.Stateless;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.AStatelessCallbackComponent;
 import org.jacpfx.rcp.component.CallbackComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
-import org.jacpfx.rcp.context.JACPContext;
+import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.util.FXUtil;
 
 import java.util.ResourceBundle;
@@ -63,7 +58,7 @@ public class ComponentMoveComponentsBetweenPerspectives1 implements CallbackComp
     public static boolean ui = false;
 
     @Resource
-    private static JACPContext context;
+    private static Context context;
 
     public static CountDownLatch wait = new CountDownLatch(1);
     public static CountDownLatch latch = new CountDownLatch(AStatelessCallbackComponent.MAX_INCTANCE_COUNT);
@@ -104,7 +99,7 @@ public class ComponentMoveComponentsBetweenPerspectives1 implements CallbackComp
     }
 
 
-    public static synchronized JACPContext getContext() {
+    public static synchronized Context getContext() {
         return context;
     }
 

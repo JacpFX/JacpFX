@@ -25,14 +25,13 @@ package org.jacpfx.rcp.delegator;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import org.jacpfx.api.component.Component;
+import org.jacpfx.api.component.Perspective;
+import org.jacpfx.api.component.SubComponent;
+import org.jacpfx.api.handler.ComponentHandler;
 import org.jacpfx.api.message.Message;
-import org.jacpfx.api.component.IComponent;
-import org.jacpfx.api.component.IPerspective;
-import org.jacpfx.api.component.ISubComponent;
-import org.jacpfx.api.delegator.IComponentDelegator;
-import org.jacpfx.api.handler.IComponentHandler;
-import org.jacpfx.rcp.message.FXMessage;
-import org.jacpfx.rcp.context.JACPContextImpl;
+import org.jacpfx.rcp.context.ContextImpl;
+import org.jacpfx.rcp.message.MessageImpl;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.FXUtil;
 import org.jacpfx.rcp.util.ShutdownThreadsHandler;
@@ -49,11 +48,11 @@ import java.util.logging.Logger;
  * 
  */
 public class ComponentDelegator extends Thread implements
-		IComponentDelegator<EventHandler<Event>, Event, Object> {
+        org.jacpfx.api.delegator.ComponentDelegator<EventHandler<Event>, Event, Object> {
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
-	private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue = new ArrayBlockingQueue<>(
+	private final BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue = new ArrayBlockingQueue<>(
 			100);
-	private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
+	private ComponentHandler<Perspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
 
 	public ComponentDelegator() {
 		super("ComponentDelegator");
@@ -63,9 +62,9 @@ public class ComponentDelegator extends Thread implements
 	public final void run() {
 		while (!Thread.interrupted()) {
 			try {
-				final ISubComponent<EventHandler<Event>, Event, Object> component = this.componentDelegateQueue
+				final SubComponent<EventHandler<Event>, Event, Object> component = this.componentDelegateQueue
 						.take();
-                final String targetId = JACPContextImpl.class.cast(component.getContext()).getExecutionTarget();
+                final String targetId = ContextImpl.class.cast(component.getContext()).getExecutionTarget();
 				this.delegateTargetChange(targetId, component);
 
 			} catch (final InterruptedException e) {
@@ -77,9 +76,9 @@ public class ComponentDelegator extends Thread implements
 	}
 
 	private void delegateTargetChange(final String target,
-			final ISubComponent<EventHandler<Event>, Event, Object> component) {
+			final SubComponent<EventHandler<Event>, Event, Object> component) {
 		// find responsible perspective
-		final IPerspective<EventHandler<Event>, Event, Object> responsiblePerspective = PerspectiveRegistry.findPerspectiveById(target);
+		final Perspective<EventHandler<Event>, Event, Object> responsiblePerspective = PerspectiveRegistry.findPerspectiveById(target);
 		// find correct target in perspective
 		if (responsiblePerspective != null) {
 			this.handleTargetHit(responsiblePerspective, component);
@@ -97,34 +96,34 @@ public class ComponentDelegator extends Thread implements
 	 * @param component
 	 */
 	private void handleTargetHit(
-			final IPerspective<EventHandler<Event>, Event, Object> responsiblePerspective,
-			final ISubComponent<EventHandler<Event>, Event, Object> component) {
+			final Perspective<EventHandler<Event>, Event, Object> responsiblePerspective,
+			final SubComponent<EventHandler<Event>, Event, Object> component) {
         activateInactiveComponent(responsiblePerspective);
 		responsiblePerspective.registerComponent(component);
 		responsiblePerspective.getComponentHandler().initComponent(
-				new FXMessage(component.getContext().getId(), component.getContext().getId(), FXUtil.MessageUtil.INIT, null),
+				new MessageImpl(component.getContext().getId(), component.getContext().getId(), FXUtil.MessageUtil.INIT, null),
 				component);
 	}
 
     private void activateInactiveComponent(
-            final IPerspective<EventHandler<Event>, Event, Object> responsiblePerspective) {
+            final Perspective<EventHandler<Event>, Event, Object> responsiblePerspective) {
         if (!responsiblePerspective.getContext().isActive()) {
             // 1. init perspective (do not register component before perspective
             // is active, otherwise component will be handled once again)
             this.handleInActivePerspective(responsiblePerspective,
-                    new FXMessage(responsiblePerspective.getContext().getId(),
+                    new MessageImpl(responsiblePerspective.getContext().getId(),
                             responsiblePerspective.getContext().getId(), FXUtil.MessageUtil.INIT, null));
         } // End if
     }
 
-	private <P extends IComponent<EventHandler<Event>,  Object>> void handleInActivePerspective(
+	private <P extends Component<EventHandler<Event>,  Object>> void handleInActivePerspective(
 			final P component, final Message<Event, Object> action) {
 		component.getContext().setActive(true);
         //noinspection unchecked
         Platform.runLater(() -> ComponentDelegator.this.componentHandler
                 .initComponent(
                         action,
-                        (IPerspective<EventHandler<Event>, Event, Object>) component));
+                        (Perspective<EventHandler<Event>, Event, Object>) component));
 	}
 
 	/**
@@ -137,20 +136,20 @@ public class ComponentDelegator extends Thread implements
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <P extends IComponent<EventHandler<Event>,  Object>> void setPerspectiveHandler(
-            final IComponentHandler<P, Message<Event, Object>> handler) {
-		this.componentHandler = (IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, Message<Event, Object>>) handler;
+	public <P extends Component<EventHandler<Event>,  Object>> void setPerspectiveHandler(
+            final ComponentHandler<P, Message<Event, Object>> handler) {
+		this.componentHandler = (ComponentHandler<Perspective<EventHandler<Event>, Event, Object>, Message<Event, Object>>) handler;
 
 	}
 
 	@Override
-	public BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> getComponentDelegateQueue() {
+	public BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> getComponentDelegateQueue() {
 		return this.componentDelegateQueue;
 	}
 
 	@Override
 	public void delegateComponent(
-			final ISubComponent<EventHandler<Event>, Event, Object> component) {
+			final SubComponent<EventHandler<Event>, Event, Object> component) {
         try {
             this.componentDelegateQueue.put(component);
         } catch (InterruptedException e) {

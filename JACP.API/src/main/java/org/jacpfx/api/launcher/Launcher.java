@@ -22,12 +22,12 @@
  ************************************************************************/
 package org.jacpfx.api.launcher;
 
-import org.jacpfx.api.dialog.Scope;
+import org.jacpfx.api.fragment.Scope;
 
 /**
  * Defines an interface for launchers witch is an abstraction used DI containers
  *
- * @param <E>, the type of DI Context object
+ * @param <E>, the type of DI JacpContext object
  * @author Andy Moncsek
  */
 public interface Launcher<E> {

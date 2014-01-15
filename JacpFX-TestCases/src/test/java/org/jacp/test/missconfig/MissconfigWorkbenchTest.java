@@ -3,7 +3,7 @@ package org.jacp.test.missconfig;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import org.jacpfx.api.component.IPerspective;
+import org.jacpfx.api.component.Perspective;
 import org.jacpfx.rcp.workbench.AFXWorkbench;
 import org.jacp.test.AllTests;
 import org.jacp.test.main.ApplicationLauncherMissingPerspectives;
@@ -65,7 +65,7 @@ public class MissconfigWorkbenchTest {
         assertNotNull(launcher);
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
-        List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        List<Perspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertTrue(perspectives.isEmpty());
 

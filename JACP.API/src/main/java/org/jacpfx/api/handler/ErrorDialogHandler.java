@@ -27,7 +27,7 @@ package org.jacpfx.api.handler;
 
 /**
  * Created by Andy Moncsek on 08.01.14.
- * This interface allows to define an Error Dialog which is called when a exception is thrown.
+ * This interface allows to define an Error Fragment which is called when a exception is thrown.
  * @param <N>, an UI root node which represents a dialog
  */
 public interface ErrorDialogHandler<N> {
@@ -35,15 +35,14 @@ public interface ErrorDialogHandler<N> {
 
     /**
      * handle an thrown exception and return an error dialog.
-     * @param e
-     * @return an error dialog
+     * @param e, The throwable
      */
     void handleExceptionInDialog(Throwable e);
 
     /**
      * Create an exception dialog
-     * @param e, The Exception
-     * @return The Dialog
+     * @param e, The throwable
+     * @return The Fragment
      */
     N createExceptionDialog(Throwable e);
 }

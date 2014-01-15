@@ -27,11 +27,11 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
-import org.jacpfx.api.component.IComponentHandle;
-import org.jacpfx.api.component.ISubComponent;
+import org.jacpfx.api.component.ComponentHandle;
+import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.exceptions.InvalidComponentMatch;
 import org.jacpfx.rcp.component.ASubComponent;
-import org.jacpfx.rcp.context.JACPContextImpl;
+import org.jacpfx.rcp.context.ContextImpl;
 import org.jacpfx.rcp.util.FXUtil;
 
 import java.util.Map;
@@ -68,7 +68,7 @@ public abstract class AComponentWorker<T> extends Task<T> {
      * @param component, the component
      */
     void runCallbackOnStartMethods(
-            final ISubComponent<EventHandler<Event>, Event, Object> component) {
+            final SubComponent<EventHandler<Event>, Event, Object> component) {
             component.setStarted(true);
             component.getContext().setActive(true);
             initLocalization(component);
@@ -82,7 +82,7 @@ public abstract class AComponentWorker<T> extends Task<T> {
      * @param component
      */
     void checkValidComponent(final ASubComponent component) {
-        final IComponentHandle<?, Event, Object> handle = component.getComponent();
+        final ComponentHandle<?, Event, Object> handle = component.getComponent();
         if (handle == null) throw new InvalidComponentMatch("Component is not initialized correctly");
         if (component == null || component.getContext() == null || component.getContext().getId() == null)
             throw new InvalidComponentMatch("Component is in invalid state while initialisation:" + handle.getClass());
@@ -93,18 +93,18 @@ public abstract class AComponentWorker<T> extends Task<T> {
      *
      * @param component, the component
      */
-    private void initLocalization(final ISubComponent<EventHandler<Event>, Event, Object> component) {
+    private void initLocalization(final SubComponent<EventHandler<Event>, Event, Object> component) {
         final String bundleLocation = component.getResourceBundleLocation();
         if (bundleLocation.isEmpty())
             return;
         final String localeID = component.getLocaleID();
-        JACPContextImpl.class.cast(component.getContext()).setResourceBundle(ResourceBundle.getBundle(bundleLocation,
+        ContextImpl.class.cast(component.getContext()).setResourceBundle(ResourceBundle.getBundle(bundleLocation,
                 FXUtil.getCorrectLocale(localeID)));
 
     }
 
-    private void handleContextInjection(final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        final IComponentHandle<?, Event, Object> handler = component.getComponent();
+    private void handleContextInjection(final SubComponent<EventHandler<Event>, Event, Object> component) {
+        final ComponentHandle<?, Event, Object> handler = component.getComponent();
         FXUtil.performResourceInjection(handler, component.getContext());
     }
 

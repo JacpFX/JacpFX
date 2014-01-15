@@ -37,9 +37,9 @@ import org.jacpfx.api.annotations.lifecycle.OnShow;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
 import org.jacpfx.api.annotations.perspective.Perspective;
-import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.componentLayout.PerspectiveLayout;
-import org.jacpfx.rcp.context.JACPContext;
+import org.jacpfx.rcp.componentLayout.FXComponentLayout;
+import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.perspective.FXPerspective;
 import org.jacpfx.rcp.util.FXUtil.MessageUtil;
 import org.jacp.test.main.ApplicationShutdownAndRestartComponentsTest;
@@ -67,7 +67,7 @@ public class PerspectiveShutdownAndRestartComponents implements FXPerspective {
     private HBox content3;
 
     @Resource
-    private static JACPContext context;
+    private static Context context;
 
     @Override
     public void handlePerspective(final Message<Event, Object> action,

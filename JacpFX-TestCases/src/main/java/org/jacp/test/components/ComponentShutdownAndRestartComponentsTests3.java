@@ -38,7 +38,7 @@ import org.jacpfx.api.annotations.lifecycle.PreDestroy;
 import org.jacpfx.rcp.component.AStatelessCallbackComponent;
 import org.jacpfx.rcp.component.CallbackComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
-import org.jacpfx.rcp.context.JACPContext;
+import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.util.FXUtil;
 import org.jacp.test.main.ApplicationShutdownAndRestartComponentsTest;
 
@@ -66,7 +66,7 @@ public class ComponentShutdownAndRestartComponentsTests3 implements CallbackComp
     public static boolean ui = false;
 
     @Resource
-    private static JACPContext context;
+    private static Context context;
 
     public static CountDownLatch wait = new CountDownLatch(1);
     public static CountDownLatch latch = new CountDownLatch(AStatelessCallbackComponent.MAX_INCTANCE_COUNT);
@@ -108,7 +108,7 @@ public class ComponentShutdownAndRestartComponentsTests3 implements CallbackComp
         t.start();
     }
 
-    public static synchronized JACPContext getContext() {
+    public static synchronized Context getContext() {
         return context;
     }
 

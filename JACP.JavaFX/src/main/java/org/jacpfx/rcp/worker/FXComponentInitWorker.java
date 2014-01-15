@@ -25,15 +25,15 @@ package org.jacpfx.rcp.worker;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import org.jacpfx.api.component.ComponentHandle;
+import org.jacpfx.api.component.Perspective;
+import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
-import org.jacpfx.api.component.IComponentHandle;
-import org.jacpfx.api.component.IPerspective;
-import org.jacpfx.api.component.ISubComponent;
 import org.jacpfx.api.exceptions.AnnotationMissconfigurationException;
 import org.jacpfx.rcp.component.AFXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
-import org.jacpfx.rcp.context.JACPContextImpl;
+import org.jacpfx.rcp.context.ContextImpl;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.FXUtil;
 import org.jacpfx.rcp.util.TearDownHandler;
@@ -56,7 +56,7 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
     private final Map<String, Node> targetComponents;
     private final AFXComponent component;
     private final Message<Event, Object> message;
-    private final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
+    private final BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
 
     /**
      * The workers constructor.
@@ -66,7 +66,7 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
      * @param message           ; the init message
      */
     public FXComponentInitWorker(final Map<String, Node> targetComponents,
-                                 final AFXComponent component, final Message<Event, Object> message, final BlockingQueue<ISubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue) {
+                                 final AFXComponent component, final Message<Event, Object> message, final BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue) {
         this.targetComponents = targetComponents;
         this.component = component;
         this.message = message;
@@ -83,7 +83,7 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
     private void runPreInitMethods() throws InterruptedException, ExecutionException {
         WorkerUtil.invokeOnFXThreadAndWait(() -> {
             setComponentToActiveAndStarted(component);
-            final FXComponentLayout layout = JACPContextImpl.class.cast(component.getContext()).getComponentLayout();
+            final FXComponentLayout layout = ContextImpl.class.cast(component.getContext()).getComponentLayout();
             switch (component.getType()) {
                 case DECLARATIVE:
                     runPreInitOnDeclarativeComponent(component, layout);
@@ -114,12 +114,12 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
     }
 
     /**
-     * Inject Context object.
+     * Inject ContextImpl object.
      *
      * @param component, the component where to inject the context
      */
     private void performContextInjection(final AFXComponent component) {
-        IComponentHandle<?, Event, Object> handler = component.getComponent();
+        ComponentHandle<?, Event, Object> handler = component.getComponent();
         FXUtil.performResourceInjection(handler, component.getContext());
     }
 
@@ -188,7 +188,7 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
                 t.getUncaughtExceptionHandler().uncaughtException(t, e);
             }
             if (component.getContext().isActive()) {
-                final String targetLayout = JACPContextImpl.class.cast(this.component.getContext()).getTargetLayout();
+                final String targetLayout = ContextImpl.class.cast(this.component.getContext()).getTargetLayout();
                 final Node validContainer = this.getValidContainerById(targetComponents, targetLayout);
                 if (validContainer == null && myComponent.getRoot() != null)
                     throw new AnnotationMissconfigurationException("no targetLayout for layoutID: " + targetLayout + " found");
@@ -206,7 +206,7 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
     private void shutDownComponent(final AFXComponent component) {
         // unregister component
         final String parentId = component.getParentId();
-        final IPerspective<EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
+        final Perspective<EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
         if (parentPerspctive != null) parentPerspctive.unregisterComponent(component);
         TearDownHandler.shutDownFXComponent(component);
         component.setStarted(false);

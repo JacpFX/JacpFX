@@ -3,13 +3,12 @@ package org.jacp.test.workbench;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import org.jacpfx.api.component.Perspective;
+import org.jacpfx.api.component.SubComponent;
+import org.jacpfx.api.context.JacpContext;
 import org.jacpfx.api.message.Message;
-import org.jacpfx.api.annotations.perspective.Perspective;
-import org.jacpfx.api.component.IPerspective;
-import org.jacpfx.api.component.ISubComponent;
 import org.jacpfx.api.component.Injectable;
-import org.jacpfx.api.context.Context;
-import org.jacpfx.api.handler.IComponentHandler;
+import org.jacpfx.api.handler.ComponentHandler;
 import org.jacpfx.rcp.registry.ClassRegistry;
 import org.jacpfx.rcp.workbench.AFXWorkbench;
 import org.jacpfx.rcp.workbench.FXWorkbench;
@@ -85,7 +84,7 @@ public class BasicInitialisationTests {
         assertNotNull(launcher);
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
-        IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> handler = workbench.getComponentHandler();
+        ComponentHandler<Perspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> handler = workbench.getComponentHandler();
         assertNotNull(handler);
     }
 
@@ -108,7 +107,7 @@ public class BasicInitialisationTests {
         assertNotNull(launcher);
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
-        Context<EventHandler<Event>, Object> context = workbench.getContext();
+        JacpContext<EventHandler<Event>, Object> context = workbench.getContext();
         assertNotNull(context);
         assertNotNull(context.getName());
         assertNotNull(context.getId());
@@ -127,16 +126,16 @@ public class BasicInitialisationTests {
         assertNotNull(launcher);
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
-        List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        List<Perspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
         assertTrue(getPerspectiveAnnotations().length == perspectives.size());
-        for (IPerspective<EventHandler<Event>, Event, Object> p : perspectives) {
+        for (Perspective<EventHandler<Event>, Event, Object> p : perspectives) {
             assertNotNull(p.getComponentHandler());
             assertNotNull(p.getContext());
             assertNotNull(p.getMessageQueue());
             assertNotNull(p.getMessageDelegateQueue());
-            Context< EventHandler<Event>,Object> context = p.getContext();
+            JacpContext< EventHandler<Event>,Object> context = p.getContext();
             assertNotNull(context.getParentId());
             assertNotNull(context.getId());
             assertNotNull(context.getName());
@@ -150,13 +149,13 @@ public class BasicInitialisationTests {
         assertNotNull(launcher);
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
-        List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        List<Perspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
         assertTrue(getPerspectiveAnnotations().length == perspectives.size());
-        for (IPerspective<EventHandler<Event>, Event, Object> p : perspectives) {
+        for (Perspective<EventHandler<Event>, Event, Object> p : perspectives) {
             Injectable handler = p.getPerspective();
-            Perspective annotation = handler.getClass().getAnnotation(Perspective.class);
+            org.jacpfx.api.annotations.perspective.Perspective annotation = handler.getClass().getAnnotation(org.jacpfx.api.annotations.perspective.Perspective.class);
             String[] components = annotation.components();
             if (components.length == 0) {
                 assertTrue(p.getSubcomponents().isEmpty());
@@ -164,11 +163,11 @@ public class BasicInitialisationTests {
                 assertNotNull(p.getSubcomponents());
                 assertFalse(p.getSubcomponents().isEmpty());
                 assertTrue(components.length == p.getSubcomponents().size());
-                List<ISubComponent<EventHandler<Event>, Event, Object>> subcomponents = p.getSubcomponents();
-                for (ISubComponent<EventHandler<Event>, Event, Object> c : subcomponents) {
+                List<SubComponent<EventHandler<Event>, Event, Object>> subcomponents = p.getSubcomponents();
+                for (SubComponent<EventHandler<Event>, Event, Object> c : subcomponents) {
                     assertNotNull(c.getParentId());
                     assertTrue(c.getParentId().equals(p.getContext().getId()));
-                    Context<EventHandler<Event>,Object> context = c.getContext();
+                    JacpContext<EventHandler<Event>,Object> context = c.getContext();
                     assertNotNull(context.getParentId());
                     assertNotNull(context.getId());
                     assertNotNull(context.getName());

@@ -29,37 +29,35 @@ import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ToolBar;
-import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.jacpfx.api.coordinator.ICoordinator;
+import org.jacpfx.api.component.Perspective;
+import org.jacpfx.api.component.RootComponent;
+import org.jacpfx.api.componentLayout.WorkbenchLayout;
+import org.jacpfx.api.context.JacpContext;
+import org.jacpfx.api.coordinator.Coordinator;
+import org.jacpfx.api.handler.ComponentHandler;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.api.annotations.workbench.Workbench;
-import org.jacpfx.api.component.IPerspective;
-import org.jacpfx.api.component.IRootComponent;
 import org.jacpfx.api.component.Injectable;
-import org.jacpfx.api.componentLayout.IWorkbenchLayout;
-import org.jacpfx.api.context.Context;
-import org.jacpfx.api.delegator.IComponentDelegator;
-import org.jacpfx.api.delegator.IMessageDelegator;
-import org.jacpfx.api.handler.IComponentHandler;
+import org.jacpfx.api.delegator.ComponentDelegator;
+import org.jacpfx.api.delegator.MessageDelegator;
 import org.jacpfx.api.launcher.Launcher;
 import org.jacpfx.api.util.OS;
 import org.jacpfx.api.util.ToolbarPosition;
-import org.jacpfx.api.workbench.IBase;
+import org.jacpfx.api.workbench.Base;
+import org.jacpfx.rcp.components.managedFragment.ManagedFragment;
+import org.jacpfx.rcp.context.Context;
+import org.jacpfx.rcp.context.ContextImpl;
 import org.jacpfx.rcp.coordinator.MessageCoordinator;
-import org.jacpfx.rcp.delegator.ComponentDelegator;
-import org.jacpfx.rcp.delegator.MessageDelegator;
-import org.jacpfx.rcp.message.FXMessage;
+import org.jacpfx.rcp.delegator.MessageDelegatorImpl;
+import org.jacpfx.rcp.handler.PerspectiveHandlerImpl;
+import org.jacpfx.rcp.message.MessageImpl;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.componentLayout.FXWorkbenchLayout;
-import org.jacpfx.rcp.components.managedDialog.JACPManagedDialog;
 import org.jacpfx.rcp.components.modalDialog.JACPModalDialog;
 import org.jacpfx.rcp.components.toolBar.JACPToolBar;
-import org.jacpfx.rcp.context.JACPContext;
-import org.jacpfx.rcp.context.JACPContextImpl;
-import org.jacpfx.rcp.handler.PerspectiveHandler;
 import org.jacpfx.rcp.perspective.AFXPerspective;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.*;
@@ -79,16 +77,16 @@ import java.util.logging.Logger;
  */
 public abstract class AFXWorkbench
         implements
-        IBase<EventHandler<Event>, Event, Object>,
-        IRootComponent<IPerspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> {
+        Base<EventHandler<Event>, Event, Object>,
+        RootComponent<Perspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> {
 
-    private List<IPerspective<EventHandler<Event>, Event, Object>> perspectives;
+    private List<Perspective<EventHandler<Event>, Event, Object>> perspectives;
 
-    private IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
-    private ICoordinator<EventHandler<Event>, Event, Object> messageCoordinator;
-    private final IComponentDelegator<EventHandler<Event>, Event, Object> componentDelegator = new ComponentDelegator();
-    private final IMessageDelegator<EventHandler<Event>, Event, Object> messageDelegator = new MessageDelegator();
-    private final IWorkbenchLayout<Node> workbenchLayout = new FXWorkbenchLayout();
+    private ComponentHandler<Perspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
+    private Coordinator<EventHandler<Event>, Event, Object> messageCoordinator;
+    private final ComponentDelegator<EventHandler<Event>, Event, Object> componentDelegator = new org.jacpfx.rcp.delegator.ComponentDelegator();
+    private final MessageDelegator<EventHandler<Event>, Event, Object> messageDelegator = new MessageDelegatorImpl();
+    private final WorkbenchLayout<Node> workbenchLayout = new FXWorkbenchLayout();
     private final Logger logger = Logger.getLogger(this.getClass().getName());
     private Launcher<?> launcher;
     private Stage stage;
@@ -98,7 +96,7 @@ public abstract class AFXWorkbench
     private GridPane base;
     private Pane glassPane;
     private JACPModalDialog dimmer;
-    private JACPContext context;
+    private Context context;
     private FXWorkbench handle;
 
     /**
@@ -124,7 +122,7 @@ public abstract class AFXWorkbench
 
     private void initWorkbenchHandle(final Stage stage) {
         // init user defined workspace
-        getWorkbenchHandle().handleInitialLayout(new FXMessage("TODO", "init"),
+        getWorkbenchHandle().handleInitialLayout(new MessageImpl("TODO", "init"),
                 this.getWorkbenchLayout(), stage);
         this.setBasicLayout(stage);
 
@@ -143,7 +141,7 @@ public abstract class AFXWorkbench
     }
 
     private void initSubsystem() {
-        this.componentHandler = new PerspectiveHandler(this.launcher,
+        this.componentHandler = new PerspectiveHandlerImpl(this.launcher,
                 this.workbenchLayout, this.root);
         this.messageCoordinator.setPerspectiveHandler(this.componentHandler);
         this.componentDelegator.setPerspectiveHandler(this.componentHandler);
@@ -157,11 +155,11 @@ public abstract class AFXWorkbench
      */
     public void init(final Launcher<?> launcher, Object root) {
         this.launcher = launcher;
-        JACPManagedDialog.initManagedDialog(launcher);
+        ManagedFragment.initManagedFragment(launcher);
         final Workbench annotation = getWorkbenchAnnotation();
         this.messageCoordinator = new MessageCoordinator(annotation.id(),this.launcher);
         this.messageCoordinator.setDelegateQueue(this.messageDelegator.getMessageDelegateQueue());
-        this.context = new JACPContextImpl(annotation.id(), annotation.name(), this.messageCoordinator.getMessageQueue());
+        this.context = new ContextImpl(annotation.id(), annotation.name(), this.messageCoordinator.getMessageQueue());
         FXUtil.performResourceInjection(this.getWorkbenchHandle(), this.context);
         start(Stage.class.cast(root));
     }
@@ -180,7 +178,7 @@ public abstract class AFXWorkbench
         this.perspectives.forEach(this::initPerspective);
     }
 
-    private void initPerspective(IPerspective<EventHandler<Event>, Event, Object> perspective) {
+    private void initPerspective(Perspective<EventHandler<Event>, Event, Object> perspective) {
         this.registerComponent(perspective);
         this.log("3.4.1: register component: " + perspective.getContext().getName());
         // TODO what if component removed an initialized later
@@ -188,7 +186,7 @@ public abstract class AFXWorkbench
         this.log("3.4.2: create perspective menu");
         if (perspective.getContext().isActive()) {
             final Runnable r = () -> AFXWorkbench.this.componentHandler.initComponent(
-                    new FXMessage(perspective.getContext().getId(), perspective
+                    new MessageImpl(perspective.getContext().getId(), perspective
                             .getContext().getId(), "init", null), perspective);
             if (Platform.isFxApplicationThread()) {
                 r.run();
@@ -212,9 +210,9 @@ public abstract class AFXWorkbench
         // failure and restarts if needed!!
         ((MessageCoordinator) AFXWorkbench.this.messageCoordinator)
                 .start();
-        ((ComponentDelegator) AFXWorkbench.this.componentDelegator)
+        ((org.jacpfx.rcp.delegator.ComponentDelegator) AFXWorkbench.this.componentDelegator)
                 .start();
-        ((MessageDelegator) AFXWorkbench.this.messageDelegator)
+        ((MessageDelegatorImpl) AFXWorkbench.this.messageDelegator)
                 .start();
         // handle perspectives
         AFXWorkbench.this.log("3.3: workbench init perspectives");
@@ -227,7 +225,7 @@ public abstract class AFXWorkbench
      * {@inheritDoc}
      */
     public final void registerComponent(
-            final IPerspective<EventHandler<Event>, Event, Object> perspective) {
+            final Perspective<EventHandler<Event>, Event, Object> perspective) {
         final String perspectiveId = WorkbenchUtil.getPerspectiveIdFromAnnotation(perspective);
         final MessageCoordinator messageCoordinator = new MessageCoordinator(perspectiveId,this.launcher);
         messageCoordinator.setDelegateQueue(this.messageDelegator.getMessageDelegateQueue());
@@ -243,7 +241,7 @@ public abstract class AFXWorkbench
 
     @Override
     public final void addComponent(
-            final IPerspective<EventHandler<Event>, Event, Object> perspective) {
+            final Perspective<EventHandler<Event>, Event, Object> perspective) {
         PerspectiveRegistry.registerPerspective(perspective);
     }
 
@@ -253,7 +251,7 @@ public abstract class AFXWorkbench
      */
     // TODO remove this!!
     public final void unregisterComponent(
-            final IPerspective<EventHandler<Event>, Event, Object> perspective) {
+            final Perspective<EventHandler<Event>, Event, Object> perspective) {
         FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,
                 FXUtil.APERSPECTIVE_MQUEUE, null);
         PerspectiveRegistry.removePerspective(perspective);
@@ -274,7 +272,7 @@ public abstract class AFXWorkbench
     }
 
     @Override
-    public IComponentHandler<IPerspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> getComponentHandler() {
+    public ComponentHandler<Perspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> getComponentHandler() {
         return this.componentHandler;
     }
 
@@ -283,7 +281,7 @@ public abstract class AFXWorkbench
     /**
      * {@inheritDoc}
      */
-    public final List<IPerspective<EventHandler<Event>, Event, Object>> getPerspectives() {
+    public final List<Perspective<EventHandler<Event>, Event, Object>> getPerspectives() {
         return this.perspectives;
     }
 
@@ -442,7 +440,7 @@ public abstract class AFXWorkbench
     }
 
     @Override
-    public Context<EventHandler<Event>, Object> getContext() {
+    public JacpContext getContext() {
         return context;
     }
 

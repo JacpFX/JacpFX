@@ -23,7 +23,7 @@
 package org.jacpfx.rcp.componentLayout;
 
 import javafx.scene.Node;
-import org.jacpfx.api.componentLayout.IPerspectiveLayout;
+import org.jacpfx.api.componentLayout.PerspectiveLayoutInterface;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -32,7 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 
  * @author Andy Moncsek
  */
-public abstract class PerspectiveLayout implements IPerspectiveLayout<Node, Node> {
+public abstract class PerspectiveLayout implements PerspectiveLayoutInterface<Node, Node> {
 	Node rootComponent;
 	private final Map<String, Node> targetComponents = new ConcurrentHashMap<>();
 	

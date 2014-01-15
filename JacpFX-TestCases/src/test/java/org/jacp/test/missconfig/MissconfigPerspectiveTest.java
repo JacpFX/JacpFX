@@ -3,10 +3,9 @@ package org.jacp.test.missconfig;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import org.jacpfx.api.annotations.perspective.Perspective;
-import org.jacpfx.api.component.IPerspective;
+import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.Injectable;
-import org.jacpfx.api.context.Context;
+import org.jacpfx.api.context.JacpContext;
 import org.jacpfx.rcp.workbench.AFXWorkbench;
 import org.jacp.test.AllTests;
 import org.jacp.test.main.ApplicationLauncherMissconfigComponents;
@@ -75,16 +74,16 @@ public class MissconfigPerspectiveTest {
         assertNotNull(launcher);
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
-        List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        List<Perspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
         assertTrue(getPerspectiveAnnotations().length == perspectives.size());
-        for (IPerspective<EventHandler<Event>, Event, Object> p : perspectives) {
+        for (Perspective<EventHandler<Event>, Event, Object> p : perspectives) {
             assertNotNull(p.getComponentHandler());
             assertNotNull(p.getContext());
             assertNotNull(p.getMessageQueue());
             assertNotNull(p.getMessageDelegateQueue());
-            Context<EventHandler<Event>, Object> context = p.getContext();
+            JacpContext<EventHandler<Event>, Object> context = p.getContext();
             assertNotNull(context.getParentId());
             assertNotNull(context.getId());
             assertNotNull(context.getName());
@@ -98,22 +97,22 @@ public class MissconfigPerspectiveTest {
         assertNotNull(launcher);
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
-        List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        List<Perspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
         assertTrue(getPerspectiveAnnotations().length == perspectives.size());
-        for (IPerspective<EventHandler<Event>, Event, Object> p : perspectives) {
+        for (Perspective<EventHandler<Event>, Event, Object> p : perspectives) {
             assertNotNull(p.getComponentHandler());
             assertNotNull(p.getContext());
             assertNotNull(p.getMessageQueue());
             assertNotNull(p.getMessageDelegateQueue());
-            Context<EventHandler<Event>, Object> context = p.getContext();
+            JacpContext<EventHandler<Event>, Object> context = p.getContext();
             assertNotNull(context.getParentId());
             assertNotNull(context.getId());
             assertNotNull(context.getName());
             assertNotNull(context.getResourceBundle());
             Injectable handler = p.getPerspective();
-            Perspective annotation = handler.getClass().getAnnotation(Perspective.class);
+            org.jacpfx.api.annotations.perspective.Perspective annotation = handler.getClass().getAnnotation(org.jacpfx.api.annotations.perspective.Perspective.class);
             String[] components = annotation.components();
             assertTrue(components.length == 0);
 

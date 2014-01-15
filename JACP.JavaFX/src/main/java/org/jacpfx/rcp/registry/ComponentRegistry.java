@@ -24,7 +24,7 @@ package org.jacpfx.rcp.registry;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import org.jacpfx.api.component.ISubComponent;
+import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.rcp.util.FXUtil;
 
 import java.util.Collections;
@@ -39,14 +39,14 @@ import java.util.concurrent.CopyOnWriteArrayList;
  *
  */
 public class ComponentRegistry {
-    private static final List<ISubComponent<EventHandler<Event>, Event, Object>> components = new CopyOnWriteArrayList<>();
+    private static final List<SubComponent<EventHandler<Event>, Event, Object>> components = new CopyOnWriteArrayList<>();
     /**
      * Registers a component.
      *
      * @param component
      */
     public static void registerComponent(
-            final ISubComponent<EventHandler<Event>, Event, Object> component) {
+            final SubComponent<EventHandler<Event>, Event, Object> component) {
         if (!components.contains(component))
             components.add(component);
 
@@ -58,7 +58,7 @@ public class ComponentRegistry {
      * @param component
      */
     public static void removeComponent(
-            final ISubComponent<EventHandler<Event>, Event, Object> component) {
+            final SubComponent<EventHandler<Event>, Event, Object> component) {
         if (components.contains(component))
             components.remove(component);
 
@@ -70,7 +70,7 @@ public class ComponentRegistry {
      * @param targetId
      * @return
      */
-    public static ISubComponent<EventHandler<Event>, Event, Object> findComponentById(
+    public static SubComponent<EventHandler<Event>, Event, Object> findComponentById(
             final String targetId) {
         return FXUtil.getObserveableById(FXUtil.getTargetComponentId(targetId),
                 Collections.unmodifiableList(components));
@@ -81,8 +81,8 @@ public class ComponentRegistry {
      * @param clazz
      * @return
      */
-    public static ISubComponent<EventHandler<Event>, Event, Object> findComponentByClass(final Class<?> clazz) {
-        final Optional<ISubComponent<EventHandler<Event>, Event, Object>> returnVal = Collections.unmodifiableList(components).parallelStream().filter(c -> c.getComponent().getClass().isAssignableFrom(clazz)).findFirst();
+    public static SubComponent<EventHandler<Event>, Event, Object> findComponentByClass(final Class<?> clazz) {
+        final Optional<SubComponent<EventHandler<Event>, Event, Object>> returnVal = Collections.unmodifiableList(components).parallelStream().filter(c -> c.getComponent().getClass().isAssignableFrom(clazz)).findFirst();
         if(returnVal.isPresent())return returnVal.get();
 
         return null;

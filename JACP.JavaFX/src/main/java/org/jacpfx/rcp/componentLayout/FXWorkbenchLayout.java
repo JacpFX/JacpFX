@@ -24,7 +24,7 @@ package org.jacpfx.rcp.componentLayout;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.stage.StageStyle;
-import org.jacpfx.api.componentLayout.IWorkbenchLayout;
+import org.jacpfx.api.componentLayout.WorkbenchLayout;
 import org.jacpfx.api.util.ToolbarPosition;
 import org.jacpfx.api.util.Tupel;
 import org.jacpfx.rcp.components.menuBar.JACPMenuBar;
@@ -39,7 +39,7 @@ import java.util.TreeMap;
  * 
  * @author Andy Moncsek
  */
-public class FXWorkbenchLayout implements IWorkbenchLayout<Node> {
+public class FXWorkbenchLayout implements WorkbenchLayout<Node> {
 
 	private boolean menueEnabled;
 	private final Tupel<Integer, Integer> size = new Tupel<>();

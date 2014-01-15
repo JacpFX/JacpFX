@@ -41,8 +41,8 @@ import org.jacpfx.api.annotations.perspective.Perspective;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.componentLayout.PerspectiveLayout;
-import org.jacpfx.rcp.components.managedDialog.ManagedDialogHandler;
-import org.jacpfx.rcp.context.JACPContext;
+import org.jacpfx.rcp.components.managedFragment.ManagedFragmentHandler;
+import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.perspective.FXPerspective;
 import org.jacpfx.rcp.util.FXUtil.MessageUtil;
 
@@ -69,7 +69,7 @@ public class PerspectiveDialogInPerspectiveTest implements FXPerspective {
     private HBox content3;
 
     @Resource
-    private static JACPContext context;
+    private static Context context;
 
     @Override
     public void handlePerspective(final Message<Event, Object> action,
@@ -93,7 +93,7 @@ public class PerspectiveDialogInPerspectiveTest implements FXPerspective {
 
             ApplicationLauncherDialogInPerspectiveTest.latch.countDown();
         } else if (action.messageBodyEquals("dialog1")) {
-            ManagedDialogHandler<DialogDialogInPerspectiveTest> handler = context.getManagedDialogHandler(DialogDialogInPerspectiveTest.class);
+            ManagedFragmentHandler<DialogDialogInPerspectiveTest> handler = context.getManagedFragmentHandler(DialogDialogInPerspectiveTest.class);
             if (handler.getController() != null) {
                 DialogDialogInPerspectiveTest.latch.countDown();
             }
@@ -103,7 +103,7 @@ public class PerspectiveDialogInPerspectiveTest implements FXPerspective {
             handler.getController().init();
             this.content3.getChildren().addAll(handler.getDialogNode());
         } else if (action.messageBodyEquals("dialog2")) {
-            ManagedDialogHandler<DialogXMLDialogInPerspectiveTest> handler = context.getManagedDialogHandler(DialogXMLDialogInPerspectiveTest.class);
+            ManagedFragmentHandler<DialogXMLDialogInPerspectiveTest> handler = context.getManagedFragmentHandler(DialogXMLDialogInPerspectiveTest.class);
             if (handler.getController() != null) {
                 DialogXMLDialogInPerspectiveTest.latch.countDown();
             }

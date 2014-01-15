@@ -3,14 +3,12 @@ package org.jacp.test.lifesycle;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import junit.framework.TestCase;
 import org.jacp.test.AllTests;
 import org.jacp.test.components.ComponentMoveComponentsBetweenPerspectives1;
 import org.jacp.test.components.ComponentMoveComponentsBetweenPerspectives2;
-import org.jacp.test.main.ApplicationLauncherMissingComponentInitialTargetId;
 import org.jacp.test.main.ApplicationLauncherMoveComponentsBetweenComponents;
-import org.jacpfx.api.component.IPerspective;
-import org.jacpfx.api.component.ISubComponent;
+import org.jacpfx.api.component.Perspective;
+import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.rcp.workbench.AFXWorkbench;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -62,8 +60,8 @@ public class MoveComponentBetweenPerspective {
         }
     }
 
-    private IPerspective<EventHandler<Event>, Event, Object> getPerspectiveById(List<IPerspective<EventHandler<Event>, Event, Object>> perspectives, String id) {
-        for (IPerspective<EventHandler<Event>, Event, Object> p : perspectives) {
+    private Perspective<EventHandler<Event>, Event, Object> getPerspectiveById(List<Perspective<EventHandler<Event>, Event, Object>> perspectives, String id) {
+        for (Perspective<EventHandler<Event>, Event, Object> p : perspectives) {
 
             if (p.getContext().getId().equals(id)) {
                 return p;
@@ -74,9 +72,9 @@ public class MoveComponentBetweenPerspective {
         return null;
     }
 
-    private ISubComponent<EventHandler<Event>, Event, Object> getComponentById(List<ISubComponent<EventHandler<Event>, Event, Object>> components, String id) {
+    private SubComponent<EventHandler<Event>, Event, Object> getComponentById(List<SubComponent<EventHandler<Event>, Event, Object>> components, String id) {
 
-        for (ISubComponent<EventHandler<Event>, Event, Object> c : components) {
+        for (SubComponent<EventHandler<Event>, Event, Object> c : components) {
             if (c.getContext().getId().equals(id)) return c;
         }
 
@@ -88,14 +86,14 @@ public class MoveComponentBetweenPerspective {
         ApplicationLauncherMoveComponentsBetweenComponents launcher = ApplicationLauncherMoveComponentsBetweenComponents.instance[0];
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
-        List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        List<Perspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
-        for (IPerspective<EventHandler<Event>, Event, Object> p : perspectives) {
+        for (Perspective<EventHandler<Event>, Event, Object> p : perspectives) {
 
             assertTrue(p.getContext().isActive());
             if (p.getContext().getId().equals("id20")) {
-                List<ISubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
+                List<SubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
                 assertFalse(components.isEmpty());
 
                 components.forEach(c -> assertTrue(c.getContext().isActive()));
@@ -105,7 +103,7 @@ public class MoveComponentBetweenPerspective {
 
         int i = 0;
         while (i < 1000) {
-            IPerspective<EventHandler<Event>, Event, Object> p = getPerspectiveById(perspectives, ComponentMoveComponentsBetweenPerspectives2.currentId);
+            Perspective<EventHandler<Event>, Event, Object> p = getPerspectiveById(perspectives, ComponentMoveComponentsBetweenPerspectives2.currentId);
             assertNotNull(p);
             assertNotNull(getComponentById(p.getSubcomponents(), "id0024"));
             ComponentMoveComponentsBetweenPerspectives2.stopLatch = new CountDownLatch(1);
@@ -113,7 +111,7 @@ public class MoveComponentBetweenPerspective {
             ComponentMoveComponentsBetweenPerspectives2.switchTarget();
             ComponentMoveComponentsBetweenPerspectives2.stopLatch.await();
             ComponentMoveComponentsBetweenPerspectives2.startLatch.await();
-            IPerspective<EventHandler<Event>, Event, Object> p1 = getPerspectiveById(perspectives, ComponentMoveComponentsBetweenPerspectives2.currentId);
+            Perspective<EventHandler<Event>, Event, Object> p1 = getPerspectiveById(perspectives, ComponentMoveComponentsBetweenPerspectives2.currentId);
             assertNotNull(p1);
             ComponentMoveComponentsBetweenPerspectives2.showPerspective(ComponentMoveComponentsBetweenPerspectives2.currentId);
             assertNotNull(getComponentById(p1.getSubcomponents(), "id0024"));
@@ -129,7 +127,7 @@ public class MoveComponentBetweenPerspective {
         ApplicationLauncherMoveComponentsBetweenComponents launcher = ApplicationLauncherMoveComponentsBetweenComponents.instance[0];
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
-        List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        List<Perspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
         ApplicationLauncherMoveComponentsBetweenComponents.latch= new CountDownLatch(1);
@@ -149,7 +147,7 @@ public class MoveComponentBetweenPerspective {
         }
         ApplicationLauncherMoveComponentsBetweenComponents.updateExceptionHandler();
 
-        IPerspective<EventHandler<Event>, Event, Object> p = getPerspectiveById(perspectives, ComponentMoveComponentsBetweenPerspectives1.currentId);
+        Perspective<EventHandler<Event>, Event, Object> p = getPerspectiveById(perspectives, ComponentMoveComponentsBetweenPerspectives1.currentId);
         assertNotNull(p);
         assertNotNull(getComponentById(p.getSubcomponents(), "id0023"));
         ComponentMoveComponentsBetweenPerspectives1.switchTarget();

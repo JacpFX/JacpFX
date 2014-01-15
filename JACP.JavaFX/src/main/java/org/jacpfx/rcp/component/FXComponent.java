@@ -2,7 +2,7 @@ package org.jacpfx.rcp.component;
 
 import javafx.event.Event;
 import javafx.scene.Node;
-import org.jacpfx.api.component.IComponentView;
+import org.jacpfx.api.component.ComponentView;
 
 
 /**
@@ -12,7 +12,7 @@ import org.jacpfx.api.component.IComponentView;
  * Time: 11:07
  * Interface o implement a UI Component in Jacp.
  */
-public interface FXComponent extends IComponentView<Node, Event, Object> {
+public interface FXComponent extends ComponentView<Node, Event, Object> {
 
 
 }

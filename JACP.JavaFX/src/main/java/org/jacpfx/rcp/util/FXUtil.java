@@ -28,12 +28,12 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import org.jacpfx.api.component.Component;
+import org.jacpfx.api.component.Perspective;
+import org.jacpfx.api.context.JacpContext;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.api.annotations.Resource;
-import org.jacpfx.api.component.IComponent;
-import org.jacpfx.api.component.IPerspective;
 import org.jacpfx.api.component.Injectable;
-import org.jacpfx.api.context.Context;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -156,7 +156,7 @@ public class FXUtil {
 
                 } catch (final IllegalArgumentException e) {
                     throw new UnsupportedOperationException(
-                            "use @PostConstruct and @PreDestroy either with paramter extending IBaseLayout<Node> layout (like FXComponentLayout) or with no arguments  ",
+                            "use @PostConstruct and @PreDestroy either with paramter extending BaseLayout<Node> layout (like FXComponentLayout) or with no arguments  ",
                             e.getCause());
                 } catch (final IllegalAccessException | InvocationTargetException e) {
                     Logger.getLogger(FXUtil.class.getName()).log(Level.SEVERE,
@@ -167,7 +167,7 @@ public class FXUtil {
         }
     }
 
-    public static void performResourceInjection(final Injectable handler,Context<EventHandler<Event>, Object> context) {
+    public static void performResourceInjection(final Injectable handler,JacpContext<EventHandler<Event>, Object> context) {
         final Field[] fields = handler.getClass().getDeclaredFields();
         final List<Field> fieldList = Arrays.asList(fields);
         fieldList.parallelStream().filter(f -> f.isAnnotationPresent(Resource.class)).forEach(f -> {
@@ -181,7 +181,7 @@ public class FXUtil {
         });
     }
 
-    private static void injectContext(final Injectable handler,final Field f, final Context context) {
+    private static void injectContext(final Injectable handler,final Field f, final JacpContext context) {
         f.setAccessible(true);
         try {
             f.set(handler, context);
@@ -379,7 +379,7 @@ public class FXUtil {
      * @param <P>
      * @return
      */
-    public static <P extends IComponent<EventHandler<Event>, Object>> P getObserveableById(
+    public static <P extends Component<EventHandler<Event>, Object>> P getObserveableById(
             final String id, final List<P> components) {
         final Optional<P> filter = components.parallelStream().
                 filter(comp -> comp.getContext().getId() != null).
@@ -398,10 +398,10 @@ public class FXUtil {
      * @param perspectives
      * @return
      */
-    public static IPerspective<EventHandler<Event>, Event, Object> findRootByObserveableId(
+    public static Perspective<EventHandler<Event>, Event, Object> findRootByObserveableId(
             final String id,
-            final List<IPerspective<EventHandler<Event>, Event, Object>> perspectives) {
-        final Optional<IPerspective<EventHandler<Event>, Event, Object>> result = perspectives.
+            final List<Perspective<EventHandler<Event>, Event, Object>> perspectives) {
+        final Optional<Perspective<EventHandler<Event>, Event, Object>> result = perspectives.
                 parallelStream().
                 filter(perspective ->
                         perspective.getSubcomponents().

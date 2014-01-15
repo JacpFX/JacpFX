@@ -39,7 +39,7 @@ import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
 import org.jacpfx.rcp.component.FXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
-import org.jacpfx.rcp.context.JACPContext;
+import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.util.FXUtil;
 import org.jacp.test.main.ApplicationLauncher;
 
@@ -63,7 +63,7 @@ public class TestTwoView implements FXComponent {
     Label label = new Label();
 
     @Resource
-    private JACPContext context;
+    private Context context;
 
     @Override
     /**

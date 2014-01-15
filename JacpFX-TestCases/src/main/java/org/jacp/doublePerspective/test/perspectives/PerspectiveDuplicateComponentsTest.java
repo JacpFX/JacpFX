@@ -20,7 +20,7 @@ import org.jacpfx.api.util.ToolbarPosition;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.componentLayout.PerspectiveLayout;
 import org.jacpfx.rcp.components.toolBar.JACPToolBar;
-import org.jacpfx.rcp.context.JACPContext;
+import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.perspective.FXPerspective;
 import org.jacpfx.rcp.util.FXUtil;
 import org.jacp.test.main.ApplicationLauncher;
@@ -48,7 +48,7 @@ public class PerspectiveDuplicateComponentsTest implements FXPerspective {
     @FXML
     private HBox content3;
     @Resource
-    JACPContext context;
+    Context context;
 
     @Override
     public void handlePerspective(final Message<Event, Object> action,

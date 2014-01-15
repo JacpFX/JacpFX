@@ -1,6 +1,6 @@
 package org.jacpfx.rcp.component;
 
-import org.jacpfx.api.component.IComponentHandle;
+import org.jacpfx.api.component.ComponentHandle;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,7 +11,7 @@ import org.jacpfx.api.component.IComponentHandle;
  */
 public class EmbeddedStatelessCallbackComponent extends AStatelessCallbackComponent{
 
-    public EmbeddedStatelessCallbackComponent(IComponentHandle handle) {
+    public EmbeddedStatelessCallbackComponent(ComponentHandle handle) {
         super();
         this.setComponent(handle);
     }

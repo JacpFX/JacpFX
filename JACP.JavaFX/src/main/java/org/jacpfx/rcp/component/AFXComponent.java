@@ -26,10 +26,10 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import org.jacpfx.api.component.IDeclarative;
-import org.jacpfx.api.component.IUIComponent;
+import org.jacpfx.api.component.Declarative;
+import org.jacpfx.api.component.UIComponent;
 import org.jacpfx.api.util.UIType;
-import org.jacpfx.rcp.context.JACPContextImpl;
+import org.jacpfx.rcp.context.ContextImpl;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -41,7 +41,7 @@ import java.util.ResourceBundle;
  * @author Andy Moncsek
  */
 public abstract class AFXComponent extends ASubComponent implements
-		IUIComponent<Node, EventHandler<Event>, Event, Object>, IDeclarative,
+        UIComponent<Node, EventHandler<Event>, Event, Object>, Declarative,
 		Initializable  {
 
 	private volatile Node root;
@@ -99,7 +99,7 @@ public abstract class AFXComponent extends ASubComponent implements
 	@Override
 	public final void initialize(URL url, ResourceBundle resourceBundle) {
 		this.documentURL = url;
-        JACPContextImpl.class.cast(this.getContext()).setResourceBundle(resourceBundle);
+        ContextImpl.class.cast(this.getContext()).setResourceBundle(resourceBundle);
 	}
 
 

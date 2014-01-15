@@ -5,7 +5,7 @@ import javafx.scene.Node;
 import javafx.stage.Stage;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.api.component.Injectable;
-import org.jacpfx.api.componentLayout.IWorkbenchLayout;
+import org.jacpfx.api.componentLayout.WorkbenchLayout;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 
 /**
@@ -32,6 +32,6 @@ public interface FXWorkbench extends Injectable {
      */
     void handleInitialLayout(
             final Message<Event, Object> action,
-            final IWorkbenchLayout<Node> layout, final Stage stage);
+            final WorkbenchLayout<Node> layout, final Stage stage);
 
 }

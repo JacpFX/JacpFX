@@ -6,14 +6,13 @@ import org.jacpfx.api.annotations.component.Component;
 import org.jacpfx.api.annotations.component.DeclarativeView;
 import org.jacpfx.api.annotations.component.Stateless;
 import org.jacpfx.api.annotations.component.View;
-import org.jacpfx.api.annotations.perspective.Perspective;
 import org.jacpfx.api.component.*;
-import org.jacpfx.api.dialog.Scope;
+import org.jacpfx.api.fragment.Scope;
 import org.jacpfx.api.exceptions.AnnotationNotFoundException;
 import org.jacpfx.api.launcher.Launcher;
 import org.jacpfx.rcp.component.*;
 import org.jacpfx.rcp.componentLayout.PerspectiveLayout;
-import org.jacpfx.rcp.context.JACPContextImpl;
+import org.jacpfx.rcp.context.ContextImpl;
 import org.jacpfx.rcp.perspective.EmbeddedFXPerspective;
 import org.jacpfx.rcp.registry.ClassRegistry;
 
@@ -55,7 +54,7 @@ public class PerspectiveUtil {
      * @param perspectiveAnnotation
      * @return  a list of al declared subcomponent instances.
      */
-    public List<ISubComponent<EventHandler<Event>, Event, Object>> createSubcomponents(final Perspective perspectiveAnnotation) {
+    public List<SubComponent<EventHandler<Event>, Event, Object>> createSubcomponents(final org.jacpfx.api.annotations.perspective.Perspective perspectiveAnnotation) {
         final Stream<? extends Injectable> handlers = getInjectAbles(perspectiveAnnotation);
         return handlers.map(this::mapToSubcomponent).collect(Collectors.toList());
     }
@@ -65,7 +64,7 @@ public class PerspectiveUtil {
      * @param componentId
      * @return
      */
-    public ISubComponent<EventHandler<Event>, Event, Object> createSubcomponentById(final String componentId) {
+    public SubComponent<EventHandler<Event>, Event, Object> createSubcomponentById(final String componentId) {
         return mapToSubcomponent(mapToInjectAbleComponent(FXUtil.getTargetComponentId(componentId)));
     }
 
@@ -74,7 +73,7 @@ public class PerspectiveUtil {
      * @param perspectiveAnnotation
      * @return
      */
-    private Stream<Injectable> getInjectAbles(final Perspective perspectiveAnnotation) {
+    private Stream<Injectable> getInjectAbles(final org.jacpfx.api.annotations.perspective.Perspective perspectiveAnnotation) {
         final Stream<String> idStream = CommonUtil.getStringStreamFromArray(getComponentIds(perspectiveAnnotation));
         return idStream.parallel().filter(id->!id.isEmpty()).map(this::mapToInjectAbleComponent);
     }
@@ -111,7 +110,7 @@ public class PerspectiveUtil {
      * @param perspectiveAnnotation
      * @return all declared component id's from perspective annotation.
      */
-    private String[] getComponentIds(final Perspective perspectiveAnnotation) {
+    private String[] getComponentIds(final org.jacpfx.api.annotations.perspective.Perspective perspectiveAnnotation) {
         if (perspectiveAnnotation != null) {
             return perspectiveAnnotation.components();
         } else {
@@ -120,18 +119,18 @@ public class PerspectiveUtil {
     }
 
     /**
-     * Maps an Injectable interface to it's corresponding ISubComponent,
+     * Maps an Injectable interface to it's corresponding SubComponent,
      * This means that the Injectable will be wrapped to it's component type. This can be either a FXComponents, a Stateful- or a StatelessComponent.
      * @param handler
      * @return a subcomponent
      */
-    private ISubComponent<EventHandler<Event>, Event, Object> mapToSubcomponent(final Injectable handler) {
-        if (IComponentView.class.isAssignableFrom(handler.getClass())) {
-            return new EmbeddedFXComponent(IComponentView.class.cast(handler));
-        } else if (IComponentHandle.class.isAssignableFrom(handler.getClass())) {
+    private SubComponent<EventHandler<Event>, Event, Object> mapToSubcomponent(final Injectable handler) {
+        if (ComponentView.class.isAssignableFrom(handler.getClass())) {
+            return new EmbeddedFXComponent(ComponentView.class.cast(handler));
+        } else if (ComponentHandle.class.isAssignableFrom(handler.getClass())) {
             return handler.getClass().isAnnotationPresent(Stateless.class) ?
-                    new EmbeddedStatelessCallbackComponent(IComponentHandle.class.cast(handler)) :
-                    new EmbeddedStatefulComponent(IComponentHandle.class.cast(handler));
+                    new EmbeddedStatelessCallbackComponent(ComponentHandle.class.cast(handler)) :
+                    new EmbeddedStatefulComponent(ComponentHandle.class.cast(handler));
         } else {
             throw new InvalidParameterException("No useable component interface found");
         }
@@ -144,8 +143,8 @@ public class PerspectiveUtil {
      *
      * @param component ; the component containing metadata.
      */
-    public static void  handleComponentMetaAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component) {
-        final IComponentHandle<?,Event,Object> handler = component.getComponent();
+    public static void  handleComponentMetaAnnotation(final SubComponent<EventHandler<Event>, Event, Object> component) {
+        final ComponentHandle<?,Event,Object> handler = component.getComponent();
         if(handler==null)return;
         final DeclarativeView declarativeComponent = handler.getClass()
                 .getAnnotation(DeclarativeView.class);
@@ -180,7 +179,7 @@ public class PerspectiveUtil {
      * @param component, The target component.
      * @param declarativeComponent, The @Declarative component annotation.
      */
-    private static void handleDeclarativeComponentAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component, final DeclarativeView declarativeComponent) {
+    private static void handleDeclarativeComponentAnnotation(final SubComponent<EventHandler<Event>, Event, Object> component, final DeclarativeView declarativeComponent) {
         setInitialLayoutTarget(component, declarativeComponent.initialTargetLayoutId());
         setLocale(component, declarativeComponent.localeID());
         setResourceBundleLocation(component, declarativeComponent.resourceBundleLocation());
@@ -194,7 +193,7 @@ public class PerspectiveUtil {
      * @param component, The target component.
      * @param callbackAnnotation, The callback annotation.
      */
-    private static void handleCallbackAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component, final Component callbackAnnotation) {
+    private static void handleCallbackAnnotation(final SubComponent<EventHandler<Event>, Event, Object> component, final Component callbackAnnotation) {
         handleBaseAttributes(component, callbackAnnotation.id(), callbackAnnotation.active(),
                 callbackAnnotation.name());
     }
@@ -204,7 +203,7 @@ public class PerspectiveUtil {
      * @param component, The target component.
      * @param viewComponent, The @View annotation.
      */
-    private static void handleViewComponentAnnotation(final ISubComponent<EventHandler<Event>, Event, Object> component,final View viewComponent) {
+    private static void handleViewComponentAnnotation(final SubComponent<EventHandler<Event>, Event, Object> component,final View viewComponent) {
         handleBaseAttributes(component, viewComponent.id(), viewComponent.active(),
                 viewComponent.name());
         setInitialLayoutTarget(component, viewComponent.initialTargetLayoutId());
@@ -221,11 +220,11 @@ public class PerspectiveUtil {
      * @param active, is component active
      * @param name , the components name
      */
-    private static void handleBaseAttributes(final ISubComponent<EventHandler<Event>, Event, Object> component, final String id, final boolean active,
+    private static void handleBaseAttributes(final SubComponent<EventHandler<Event>, Event, Object> component, final String id, final boolean active,
                                       final String name) {
-        if (id != null) JACPContextImpl.class.cast(component.getContext()).setId(id);
+        if (id != null) ContextImpl.class.cast(component.getContext()).setId(id);
         component.getContext().setActive(active);
-        if (name != null) JACPContextImpl.class.cast(component.getContext()).setName(name);
+        if (name != null) ContextImpl.class.cast(component.getContext()).setName(name);
     }
 
 
@@ -234,7 +233,7 @@ public class PerspectiveUtil {
      * @param component, The target component.
      * @param bundleLocation, The bundle location.
      */
-    private static void setResourceBundleLocation(final ISubComponent<EventHandler<Event>, Event, Object> component, String bundleLocation) {
+    private static void setResourceBundleLocation(final SubComponent<EventHandler<Event>, Event, Object> component, String bundleLocation) {
         if (component.getResourceBundleLocation() != null)
             component.setResourceBundleLocation(bundleLocation);
     }
@@ -244,7 +243,7 @@ public class PerspectiveUtil {
      * @param component, The target component.
      * @param locale , The target value.
      */
-    private static void setLocale(final ISubComponent<EventHandler<Event>, Event, Object> component, String locale) {
+    private static void setLocale(final SubComponent<EventHandler<Event>, Event, Object> component, String locale) {
         if (component.getLocaleID() != null)
             component.setLocaleID(locale);
     }
@@ -255,8 +254,8 @@ public class PerspectiveUtil {
      * @param component The target components.
      * @param value The target value.
      */
-    private static void setInitialLayoutTarget(final ISubComponent<EventHandler<Event>, Event, Object> component, String value) {
-        final String targetLayout = JACPContextImpl.class.cast(component.getContext()).getTargetLayout();
+    private static void setInitialLayoutTarget(final SubComponent<EventHandler<Event>, Event, Object> component, String value) {
+        final String targetLayout = ContextImpl.class.cast(component.getContext()).getTargetLayout();
         if (targetLayout==null)
             component.getContext().setTargetLayout(value);
     }
@@ -266,7 +265,7 @@ public class PerspectiveUtil {
      * @param parentPerspective
      * @return
      */
-    public static PerspectiveLayout getPerspectiveLayoutFromPerspective(final IPerspective<EventHandler<Event>, Event, Object> parentPerspective) {
+    public static PerspectiveLayout getPerspectiveLayoutFromPerspective(final Perspective<EventHandler<Event>, Event, Object> parentPerspective) {
         final EmbeddedFXPerspective embeddedPerspective = EmbeddedFXPerspective.class.cast(parentPerspective);
         return PerspectiveLayout.class.cast(embeddedPerspective.getIPerspectiveLayout());
     }

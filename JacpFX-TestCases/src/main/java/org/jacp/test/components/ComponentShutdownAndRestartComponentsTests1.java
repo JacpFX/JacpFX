@@ -26,11 +26,9 @@
 package org.jacp.test.components;
 
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.api.annotations.Resource;
@@ -39,7 +37,7 @@ import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
 import org.jacpfx.rcp.component.FXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
-import org.jacpfx.rcp.context.JACPContext;
+import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.util.FXUtil;
 import org.jacp.test.main.ApplicationShutdownAndRestartComponentsTest;
 
@@ -67,7 +65,7 @@ public class ComponentShutdownAndRestartComponentsTests1 implements FXComponent 
     public static CountDownLatch startLatch = new CountDownLatch(1);
 
     @Resource
-    private JACPContext context;
+    private Context context;
 
     @Override
     /**

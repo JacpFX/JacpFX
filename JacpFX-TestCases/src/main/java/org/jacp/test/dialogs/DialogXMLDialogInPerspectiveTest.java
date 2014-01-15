@@ -31,9 +31,9 @@ import javafx.scene.layout.GridPane;
 import org.jacp.test.perspectives.PerspectiveDialogInPerspectiveTest;
 import org.jacp.test.perspectives.PerspectiveIds;
 import org.jacpfx.api.annotations.Resource;
-import org.jacpfx.api.annotations.dialog.Dialog;
-import org.jacpfx.api.dialog.Scope;
-import org.jacpfx.rcp.context.JACPContext;
+import org.jacpfx.api.annotations.fragment.Fragment;
+import org.jacpfx.api.fragment.Scope;
+import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.perspective.FXPerspective;
 
 import java.util.ResourceBundle;
@@ -42,14 +42,14 @@ import java.util.concurrent.CountDownLatch;
 /**
  * Created by amo on 06.01.14.
  */
-@Dialog(id = "id1002", viewLocation = "/fxml/DialogXMLDialogInPerspectiveTest.fxml", resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", scope = Scope.SINGLETON)
+@Fragment(id = "id1002", viewLocation = "/fxml/DialogXMLDialogInPerspectiveTest.fxml", resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", scope = Scope.SINGLETON)
 public class DialogXMLDialogInPerspectiveTest {
     @FXML
     private GridPane root;
     public static CountDownLatch latch = new CountDownLatch(7);
 
     @Resource
-    private static JACPContext context;
+    private static Context context;
     @Resource
     private static FXPerspective parent;
 

@@ -3,8 +3,8 @@ package org.jacp.test.lifesycle;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import org.jacpfx.api.component.IPerspective;
-import org.jacpfx.api.component.ISubComponent;
+import org.jacpfx.api.component.Perspective;
+import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.component.Injectable;
 import org.jacpfx.rcp.component.AStatelessCallbackComponent;
 import org.jacpfx.rcp.workbench.AFXWorkbench;
@@ -88,15 +88,15 @@ public class PreDestroyPostCreateRestartPerspectiveTest {
         ApplicationPredestroyPerspectiveTest launcher = ApplicationPredestroyPerspectiveTest.instance[0];
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
-        List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        List<Perspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
 
-        for(IPerspective<EventHandler<Event>, Event, Object> p:perspectives) {
+        for(Perspective<EventHandler<Event>, Event, Object> p:perspectives) {
             Injectable handler = p.getPerspective();
             if(handler.getClass().isAssignableFrom(PerspectiveOnePredestroyPerspectiveTest.class)) {
                 assertTrue(p.getContext().isActive());
-                List<ISubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
+                List<SubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
                 assertFalse(components.isEmpty());
             }else {
                 assertTrue(p.getContext().isActive());
@@ -109,7 +109,7 @@ public class PreDestroyPostCreateRestartPerspectiveTest {
         ApplicationPredestroyPerspectiveTest launcher = ApplicationPredestroyPerspectiveTest.instance[0];
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
-        List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        List<Perspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         PerspectiveOnePredestroyPerspectiveTest.latch = new CountDownLatch(1);
         PredestroyTestComponentOne.latch = new CountDownLatch(1);
         PredestroyTestComponentTwo.latch = new CountDownLatch(1);
@@ -127,12 +127,12 @@ public class PreDestroyPostCreateRestartPerspectiveTest {
 
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
-        for(IPerspective<EventHandler<Event>, Event, Object> p:perspectives) {
+        for(Perspective<EventHandler<Event>, Event, Object> p:perspectives) {
             Injectable handler = p.getPerspective();
             if(handler.getClass().isAssignableFrom(PerspectiveOnePredestroyPerspectiveTest.class)) {
                 assertFalse(p.getContext().isActive());
                 Thread.sleep(100);
-                List<ISubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
+                List<SubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
                 assertTrue(components.isEmpty());
             }else {
                 assertTrue(p.getContext().isActive());
@@ -144,7 +144,7 @@ public class PreDestroyPostCreateRestartPerspectiveTest {
         ApplicationPredestroyPerspectiveTest launcher = ApplicationPredestroyPerspectiveTest.instance[0];
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
-        List<IPerspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        List<Perspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
 
@@ -165,11 +165,11 @@ public class PreDestroyPostCreateRestartPerspectiveTest {
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
 
-        for(IPerspective<EventHandler<Event>, Event, Object> p:perspectives) {
+        for(Perspective<EventHandler<Event>, Event, Object> p:perspectives) {
             Injectable handler = p.getPerspective();
             if(handler.getClass().isAssignableFrom(PerspectiveOnePredestroyPerspectiveTest.class)) {
                 assertTrue(p.getContext().isActive());
-                List<ISubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
+                List<SubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
                 assertFalse(components.isEmpty());
             }else {
                 assertTrue(p.getContext().isActive());
@@ -177,15 +177,15 @@ public class PreDestroyPostCreateRestartPerspectiveTest {
         }
     }
 
-    private static int getActiveAsyncCount(List<IPerspective<EventHandler<Event>, Event, Object>> perspectives) {
-        for(IPerspective<EventHandler<Event>, Event, Object> p:perspectives) {
+    private static int getActiveAsyncCount(List<Perspective<EventHandler<Event>, Event, Object>> perspectives) {
+        for(Perspective<EventHandler<Event>, Event, Object> p:perspectives) {
             Injectable handler = p.getPerspective();
             if(handler.getClass().isAssignableFrom(PerspectiveOnePredestroyPerspectiveTest.class)) {
 
-                List<ISubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
-                for(ISubComponent<EventHandler<Event>, Event, Object> c: components) {
+                List<SubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
+                for(SubComponent<EventHandler<Event>, Event, Object> c: components) {
                        if(c instanceof AStatelessCallbackComponent) {
-                           List<ISubComponent<EventHandler<Event>, Event, Object>> instances = AStatelessCallbackComponent.class.cast(c).getInstances();
+                           List<SubComponent<EventHandler<Event>, Event, Object>> instances = AStatelessCallbackComponent.class.cast(c).getInstances();
                            return Long.valueOf(instances.stream().filter(i->i.isStarted()).count()).intValue();
                        }
                 }
