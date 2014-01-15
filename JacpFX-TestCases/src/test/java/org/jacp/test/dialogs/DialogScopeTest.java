@@ -23,27 +23,10 @@
  * *********************************************************************
  */
 
-package org.jacpfx.rcp.handler;
-
-import javafx.scene.Node;
-import org.jacpfx.rcp.components.errorDialog.DefaultErrorDialog;
-
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+package org.jacp.test.dialogs;
 
 /**
- * Created by amo on 09.01.14.
+ * Created by amo on 15.01.14.
  */
-public class DefaultErrorDialogHandler extends AErrorDialogHandler {
-    private final Logger logger = Logger.getLogger(this.getClass().getName());
-    @Override
-    public Node createExceptionDialog(Throwable e) {
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        e.printStackTrace(pw);
-        logger.log(Level.INFO,sw.toString());
-        return new DefaultErrorDialog("Error Pane",sw.toString());
-    }
+public class DialogScopeTest {
 }

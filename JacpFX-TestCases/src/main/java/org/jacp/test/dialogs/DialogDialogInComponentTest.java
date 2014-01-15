@@ -25,14 +25,16 @@
 
 package org.jacp.test.dialogs;
 
-import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import org.jacp.test.components.ComponentDialogInPerspective;
+import org.jacp.test.components.ComponentIds;
 import org.jacp.test.perspectives.PerspectiveDialogInPerspectiveTest;
 import org.jacp.test.perspectives.PerspectiveIds;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.fragment.Fragment;
 import org.jacpfx.api.fragment.Scope;
+import org.jacpfx.rcp.component.FXComponent;
 import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.perspective.FXPerspective;
 
@@ -42,27 +44,25 @@ import java.util.concurrent.CountDownLatch;
 /**
  * Created by amo on 06.01.14.
  */
-@Fragment(id = "id1003", viewLocation = "/fxml/DialogXMLDialogInPerspectiveTest.fxml", resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", scope = Scope.SINGLETON)
-public class DialogXMLDialogInPerspectiveTest {
-    @FXML
-    private GridPane root;
+@Fragment(id = "id1002", resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", scope = Scope.SINGLETON)
+public class DialogDialogInComponentTest extends GridPane {
     public static CountDownLatch latch = new CountDownLatch(7);
 
     @Resource
     private static Context context;
     @Resource
-    private static FXPerspective parent;
+    private static FXComponent parent;
 
     @Resource
-    private static PerspectiveDialogInPerspectiveTest parentImpl;
+    private static ComponentDialogInPerspective parentImpl;
 
     @Resource
     private static ResourceBundle bundle;
 
     public void init() {
-        root.getChildren().addAll(new Label("TEST 2"));
+        this.getChildren().addAll(new Label("TEST"));
         latch.countDown();
-        if (context != null && context.getId().equals(PerspectiveIds.PerspectiveDialogInPerspectiveTest)) {
+        if (context != null && context.getId().equals(ComponentIds.ComponentDialogInPerspective)) {
             latch.countDown();
         }
         if (bundle != null) {

@@ -97,21 +97,21 @@ public class PerspectiveDialogInPerspectiveTest implements FXPerspective {
             if (handler.getController() != null) {
                 DialogDialogInPerspectiveTest.latch.countDown();
             }
-            if (handler.getDialogNode() != null) {
+            if (handler.getFragmentNode() != null) {
                 DialogDialogInPerspectiveTest.latch.countDown();
             }
             handler.getController().init();
-            this.content3.getChildren().addAll(handler.getDialogNode());
+            this.content3.getChildren().addAll(handler.getFragmentNode());
         } else if (action.messageBodyEquals("dialog2")) {
             ManagedFragmentHandler<DialogXMLDialogInPerspectiveTest> handler = context.getManagedFragmentHandler(DialogXMLDialogInPerspectiveTest.class);
             if (handler.getController() != null) {
                 DialogXMLDialogInPerspectiveTest.latch.countDown();
             }
-            if (handler.getDialogNode() != null) {
+            if (handler.getFragmentNode() != null) {
                 DialogXMLDialogInPerspectiveTest.latch.countDown();
             }
             handler.getController().init();
-            this.content2.getChildren().addAll(handler.getDialogNode());
+            this.content2.getChildren().addAll(handler.getFragmentNode());
         }
 
 

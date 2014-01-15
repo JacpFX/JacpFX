@@ -125,7 +125,7 @@ public class ManagedFragment {
         try {
             checkMemberAnnotations(bean, bundle, callerClassName);
         } catch (IllegalArgumentException e) {
-            e.printStackTrace();
+            Thread.currentThread().getUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
         }
         if (bean instanceof Node)
             return new ManagedFragmentHandler<>(bean, (Node) bean, id);
@@ -239,7 +239,7 @@ public class ManagedFragment {
             IllegalArgumentException, IllegalAccessException {
         final Perspective<EventHandler<Event>, Event, Object> persp = findPerspective(resource, callerClassName);
         if (persp == null)
-            throw new IllegalArgumentException("component could not be found");
+            throw new IllegalArgumentException("component could not be found for class name: "+callerClassName);
         field.setAccessible(true);
         field.set(bean, persp.getPerspective());
     }

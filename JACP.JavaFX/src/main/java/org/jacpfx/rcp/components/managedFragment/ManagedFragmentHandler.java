@@ -58,7 +58,7 @@ public class ManagedFragmentHandler<T> {
 	 * Returns the JavaFX Node
 	 * @return
 	 */
-	public Node getDialogNode() {
+	public Node getFragmentNode() {
 		return this.dialogNode;
 	}
 	/**

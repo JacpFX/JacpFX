@@ -31,6 +31,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import org.jacp.test.dialogs.DialogDialogInComponentTest;
+import org.jacp.test.dialogs.DialogDialogInPerspectiveTest;
 import org.jacp.test.main.ApplicationLauncherDialogInPerspectiveTest;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.component.View;
@@ -39,6 +41,7 @@ import org.jacpfx.api.annotations.lifecycle.PreDestroy;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.FXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
+import org.jacpfx.rcp.components.managedFragment.ManagedFragmentHandler;
 import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.util.FXUtil;
 
@@ -63,7 +66,7 @@ public class ComponentDialogInPerspective implements FXComponent {
     Label label = new Label();
 
     @Resource
-    private Context context;
+    private static Context context;
 
     @Override
     /**
@@ -97,11 +100,24 @@ public class ComponentDialogInPerspective implements FXComponent {
             label.setText(" NULLPOINTER TEST");
             container.getChildren().addAll(button, label);
             ApplicationLauncherDialogInPerspectiveTest.latch.countDown();
+        }  else if (action.messageBodyEquals("dialog1")) {
+            ManagedFragmentHandler<DialogDialogInComponentTest> handler = context.getManagedFragmentHandler(DialogDialogInComponentTest.class);
+            if (handler.getController() != null) {
+                DialogDialogInComponentTest.latch.countDown();
+            }
+            if (handler.getFragmentNode() != null) {
+                DialogDialogInComponentTest.latch.countDown();
+            }
+            handler.getController().init();
+            return handler.getFragmentNode();
         }
 
         return container;
     }
 
+    public static void initDialog1() {
+        context.send("dialog1");
+    }
 
     @PostConstruct
     /**

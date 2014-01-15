@@ -27,11 +27,14 @@ package org.jacp.test.dialogs;
 
 import javafx.application.Platform;
 import org.jacp.test.AllTests;
+import org.jacp.test.components.ComponentDialogInPerspective;
 import org.jacp.test.main.ApplicationLauncherDialogInPerspectiveTest;
 import org.jacp.test.perspectives.PerspectiveDialogInPerspectiveTest;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import java.util.concurrent.CountDownLatch;
 
 import static org.junit.Assert.assertTrue;
 
@@ -79,6 +82,14 @@ public class DialogInComponentTest {
     public void testSimpleFXMLDialogInit() throws InterruptedException {
         PerspectiveDialogInPerspectiveTest.initDialog2();
         DialogXMLDialogInPerspectiveTest.latch.await();
+        assertTrue(true);
+    }
+
+
+    @Test
+    public void testSimpleDialogInComponentInit() throws InterruptedException {
+        ComponentDialogInPerspective.initDialog1();
+        DialogDialogInComponentTest.latch.await();
         assertTrue(true);
     }
 }
