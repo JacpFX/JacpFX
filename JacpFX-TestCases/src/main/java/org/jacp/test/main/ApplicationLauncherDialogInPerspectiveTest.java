@@ -25,11 +25,14 @@
 package org.jacp.test.main;
 
 import javafx.application.Application;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.jacp.test.workbench.Workbench;
 import org.jacp.test.workbench.WorkbenchDialogInPerspectiveTest;
+import org.jacpfx.api.handler.ErrorDialogHandler;
+import org.jacpfx.rcp.handler.DefaultErrorDialogHandler;
 import org.jacpfx.rcp.workbench.FXWorkbench;
 import org.jacpfx.spring.launcher.AFXSpringLauncher;
 

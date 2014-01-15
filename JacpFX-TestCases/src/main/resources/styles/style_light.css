@@ -229,10 +229,3 @@
     -fx-background-color: rgba(0, 0, 0, 0.5);
 }
 
-.jacp-option-pane {
-    -fx-background-image: url("../images/texture_light.png");
-    -fx-background-insets: 0, 1, 2;
-    -fx-blend-mode: src-atop;
-    -fx-padding: 15;
-    -fx-effect: dropshadow(three-pass-box, black, 20, 0, 0, 0);
-}
