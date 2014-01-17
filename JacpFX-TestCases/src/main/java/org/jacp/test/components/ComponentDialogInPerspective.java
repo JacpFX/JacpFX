@@ -33,6 +33,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import org.jacp.test.dialogs.DialogDialogInComponentTest;
 import org.jacp.test.dialogs.DialogDialogInPerspectiveTest;
+import org.jacp.test.dialogs.DialogScopePrototypeComponentTest;
+import org.jacp.test.dialogs.DialogScopeSingletonComponentTest;
 import org.jacp.test.main.ApplicationLauncherDialogInPerspectiveTest;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.component.View;
@@ -111,12 +113,50 @@ public class ComponentDialogInPerspective implements FXComponent {
             handler.getController().init();
             return handler.getFragmentNode();
         }
+        else if (action.messageBodyEquals("dialog2")) {
+            ManagedFragmentHandler<DialogScopeSingletonComponentTest> handler = context.getManagedFragmentHandler(DialogScopeSingletonComponentTest.class);
+            if (handler.getController() != null) {
+                DialogScopeSingletonComponentTest.latch.countDown();
+            }
+            if (handler.getFragmentNode() != null) {
+                DialogScopeSingletonComponentTest.latch.countDown();
+            }
+            handler.getController().init();
+            ManagedFragmentHandler<DialogScopeSingletonComponentTest> handler2 = context.getManagedFragmentHandler(DialogScopeSingletonComponentTest.class);
+             if(handler.getController().equals(handler2.getController())) {
+                 DialogScopeSingletonComponentTest.latch.countDown();
+             }
+
+            return handler.getFragmentNode();
+        }
+        else if (action.messageBodyEquals("dialog3")) {
+            ManagedFragmentHandler<DialogScopePrototypeComponentTest> handler = context.getManagedFragmentHandler(DialogScopePrototypeComponentTest.class);
+            if (handler.getController() != null) {
+                DialogScopePrototypeComponentTest.latch.countDown();
+            }
+            if (handler.getFragmentNode() != null) {
+                DialogScopePrototypeComponentTest.latch.countDown();
+            }
+            handler.getController().init();
+
+            ManagedFragmentHandler<DialogScopePrototypeComponentTest> handler3 = context.getManagedFragmentHandler(DialogScopePrototypeComponentTest.class);
+             if(!handler.getController().equals(handler3.getController())) {
+                 DialogScopePrototypeComponentTest.latch.countDown();
+             }
+            return handler.getFragmentNode();
+        }
 
         return container;
     }
 
     public static void initDialog1() {
         context.send("dialog1");
+    }
+    public static void initDialog2() {
+        context.send("dialog2");
+    }
+    public static void initDialog3() {
+        context.send("dialog3");
     }
 
     @PostConstruct

@@ -25,8 +25,69 @@
 
 package org.jacp.test.dialogs;
 
+import javafx.application.Platform;
+import org.jacp.test.AllTests;
+import org.jacp.test.components.ComponentDialogInPerspective;
+import org.jacp.test.main.ApplicationLauncherDialogInPerspectiveTest;
+import org.jacp.test.perspectives.PerspectiveDialogInPerspectiveTest;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import static org.junit.Assert.assertTrue;
+
 /**
  * Created by amo on 15.01.14.
  */
 public class DialogScopeTest {
+    static Thread t;
+
+        @AfterClass
+        public static void exitWorkBench() {
+            Platform.exit();
+            AllTests.resetApplication();
+        }
+
+        @BeforeClass
+        public static void initWorkbench() {
+
+
+            t = new Thread("JavaFX Init Thread") {
+                public void run() {
+
+                    ApplicationLauncherDialogInPerspectiveTest.main(new String[0]);
+
+                }
+            };
+            t.setDaemon(true);
+            t.start();
+            // Pause briefly to give FX a chance to start
+            try {
+                ApplicationLauncherDialogInPerspectiveTest.latch.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Test
+        public void testSimpleDialogInit() throws InterruptedException {
+            PerspectiveDialogInPerspectiveTest.initDialog1();
+            DialogDialogInPerspectiveTest.latch.await();
+            assertTrue(true);
+        }
+
+        @Test
+        public void testSimpleFXMLDialogInit() throws InterruptedException {
+            PerspectiveDialogInPerspectiveTest.initDialog2();
+            DialogXMLDialogInPerspectiveTest.latch.await();
+            assertTrue(true);
+        }
+
+
+        @Test
+        public void testSimpleDialogInComponentInit() throws InterruptedException {
+            ComponentDialogInPerspective.initDialog1();
+            DialogDialogInComponentTest.latch.await();
+            assertTrue(true);
+        }
 }

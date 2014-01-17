@@ -92,4 +92,18 @@ public class DialogInComponentTest {
         DialogDialogInComponentTest.latch.await();
         assertTrue(true);
     }
+
+    @Test
+    public void testSimpleDialogSingletonInComponentInit() throws InterruptedException {
+        ComponentDialogInPerspective.initDialog2();
+        DialogScopeSingletonComponentTest.latch.await();
+        assertTrue(true);
+    }
+
+    @Test
+    public void testSimpleDialogPrototypeInComponentInit() throws InterruptedException {
+        ComponentDialogInPerspective.initDialog3();
+        DialogScopePrototypeComponentTest.latch.await();
+        assertTrue(true);
+    }
 }
