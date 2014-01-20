@@ -49,7 +49,7 @@ import org.jacpfx.api.util.ToolbarPosition;
 import org.jacpfx.api.workbench.Base;
 import org.jacpfx.rcp.components.managedFragment.ManagedFragment;
 import org.jacpfx.rcp.context.Context;
-import org.jacpfx.rcp.context.ContextImpl;
+import org.jacpfx.rcp.context.JacpContextImpl;
 import org.jacpfx.rcp.coordinator.MessageCoordinator;
 import org.jacpfx.rcp.delegator.MessageDelegatorImpl;
 import org.jacpfx.rcp.handler.PerspectiveHandlerImpl;
@@ -159,7 +159,7 @@ public abstract class AFXWorkbench
         final Workbench annotation = getWorkbenchAnnotation();
         this.messageCoordinator = new MessageCoordinator(annotation.id(),this.launcher);
         this.messageCoordinator.setDelegateQueue(this.messageDelegator.getMessageDelegateQueue());
-        this.context = new ContextImpl(annotation.id(), annotation.name(), this.messageCoordinator.getMessageQueue());
+        this.context = new JacpContextImpl(annotation.id(), annotation.name(), this.messageCoordinator.getMessageQueue());
         FXUtil.performResourceInjection(this.getWorkbenchHandle(), this.context);
         start(Stage.class.cast(root));
     }

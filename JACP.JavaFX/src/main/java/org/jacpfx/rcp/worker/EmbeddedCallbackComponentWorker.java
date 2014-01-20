@@ -28,7 +28,7 @@ import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.ASubComponent;
-import org.jacpfx.rcp.context.ContextImpl;
+import org.jacpfx.rcp.context.JacpContextImpl;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.ShutdownThreadsHandler;
 import org.jacpfx.rcp.util.TearDownHandler;
@@ -69,7 +69,7 @@ class EmbeddedCallbackComponentWorker
                     this.component.lock();
                     checkValidComponent(this.component);
                     wasExecuted = true;
-                    final ContextImpl context = ContextImpl.class.cast(this.component.getContext());
+                    final JacpContextImpl context = JacpContextImpl.class.cast(this.component.getContext());
                     context.setReturnTarget(myAction.getSourceId());
                     final String currentExecutionTarget = context.getExecutionTarget();
                     final Object value = this.component.getComponent().handle(myAction);
@@ -122,7 +122,7 @@ class EmbeddedCallbackComponentWorker
     private void checkAndHandleTargetChange(
             final SubComponent<EventHandler<Event>, Event, Object> comp,
             final String currentExecutionTarget) {
-        final String targetNew = ContextImpl.class.cast(comp.getContext()).getExecutionTarget();
+        final String targetNew = JacpContextImpl.class.cast(comp.getContext()).getExecutionTarget();
         if (!targetNew.equals(currentExecutionTarget)) {
             if (!component.getContext().isActive())
                 throw new UnsupportedOperationException(

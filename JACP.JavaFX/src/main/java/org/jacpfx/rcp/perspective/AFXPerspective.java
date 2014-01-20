@@ -42,7 +42,7 @@ import org.jacpfx.api.message.Message;
 import org.jacpfx.api.util.UIType;
 import org.jacpfx.rcp.component.AComponent;
 import org.jacpfx.rcp.componentLayout.PerspectiveLayout;
-import org.jacpfx.rcp.context.ContextImpl;
+import org.jacpfx.rcp.context.JacpContextImpl;
 import org.jacpfx.rcp.message.MessageImpl;
 import org.jacpfx.rcp.registry.ComponentRegistry;
 import org.jacpfx.rcp.util.FXUtil;
@@ -95,7 +95,7 @@ public abstract class AFXPerspective extends AComponent implements
         this.messageDelegateQueue = messageDelegateQueue;
         this.globalMessageQueue = this.messageCoordinator.getMessageQueue();
         this.launcher = launcher;
-        this.context = new ContextImpl(this.globalMessageQueue);
+        this.context = new JacpContextImpl(this.globalMessageQueue);
     }
 
 
@@ -143,9 +143,9 @@ public abstract class AFXPerspective extends AComponent implements
             final SubComponent<EventHandler<Event>, Event, Object> component) {
         component.initEnv(this.getContext().getId(),
                 this.messageCoordinator.getMessageQueue());
-        final ContextImpl context = ContextImpl.class.cast(component.getContext());
+        final JacpContextImpl context = JacpContextImpl.class.cast(component.getContext());
         context.setParentId(this.getContext().getId());
-        context.setFXComponentLayout(ContextImpl.class.cast(this.getContext()).getComponentLayout());
+        context.setFXComponentLayout(JacpContextImpl.class.cast(this.getContext()).getComponentLayout());
         PerspectiveUtil.handleComponentMetaAnnotation(component);
         if (context.isActive()) {
             addComponent(component);
@@ -278,7 +278,7 @@ public abstract class AFXPerspective extends AComponent implements
     @Override
     public final void initialize(URL url, ResourceBundle resourceBundle) {
         this.documentURL = url;
-        ContextImpl.class.cast(context).setResourceBundle(resourceBundle);
+        JacpContextImpl.class.cast(context).setResourceBundle(resourceBundle);
     }
 
     /**

@@ -93,7 +93,6 @@ public class FXComponentCallBackMessagingTest {
         CallbackComponentMessagingTest1Component2.MESSAGE = null;
         CallbackComponentMessagingTest1Component1.fireBurst(200000);
 
-        //CallbackComponentMessagingTest1Component1.wait.await();
         CallbackComponentMessagingTest1Component2.wait.await();
         long end = System.currentTimeMillis();
 

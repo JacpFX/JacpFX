@@ -33,7 +33,7 @@ import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.AFXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.componentLayout.PerspectiveLayout;
-import org.jacpfx.rcp.context.ContextImpl;
+import org.jacpfx.rcp.context.JacpContextImpl;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.*;
 
@@ -77,7 +77,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
                     final Message<Event, Object> myAction = this.component
                             .getNextIncomingMessage();
                     final Node previousContainer = this.component.getRoot();
-                    final ContextImpl contextImpl = ContextImpl.class.cast(this.component.getContext());
+                    final JacpContextImpl contextImpl = JacpContextImpl.class.cast(this.component.getContext());
                     final String currentTargetLayout = contextImpl.getTargetLayout();
                     final String currentExecutionTarget = contextImpl.getExecutionTarget();
                     // run code
@@ -119,7 +119,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
         WorkerUtil.invokeOnFXThreadAndWait(() -> {
             // check if component was set to inactive, if so remove
             try {
-                final FXComponentLayout layout = ContextImpl.class.cast(component.getContext()).getComponentLayout();
+                final FXComponentLayout layout = JacpContextImpl.class.cast(component.getContext()).getComponentLayout();
                 // check if was not deactivated in handle method
                 if (component.getContext().isActive()) {
                     WorkerUtil.executeComponentViewPostHandle(handleReturnValue, component,
@@ -168,7 +168,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
                                        final Node previousContainer, final String currentTargetLayout, final String currentExecutionTarget) {
 
         if (previousContainer != null) {
-            final ContextImpl context = ContextImpl.class.cast(this.component.getContext());
+            final JacpContextImpl context = JacpContextImpl.class.cast(this.component.getContext());
             final String newExecutionTarget = context.getExecutionTarget();
             if (!currentExecutionTarget.equalsIgnoreCase(newExecutionTarget)) {
                 this.shutDownComponent(component, layout, previousContainer, currentTargetLayout);

@@ -14,10 +14,12 @@ import org.jacpfx.rcp.components.managedFragment.ManagedFragmentHandler;
 import org.jacpfx.rcp.components.modalDialog.JACPModalDialog;
 import org.jacpfx.rcp.message.ActionListenerImpl;
 import org.jacpfx.rcp.message.MessageImpl;
+import org.jacpfx.rcp.perspective.FXPerspective;
 import org.jacpfx.rcp.util.AccessUtil;
 import org.jacpfx.rcp.util.PerspectiveUtil;
-import org.jacpfx.rcp.worker.AEmbeddedComponentWorker;
+import org.jacpfx.rcp.workbench.FXWorkbench;
 import org.jacpfx.rcp.worker.AComponentWorker;
+import org.jacpfx.rcp.worker.AEmbeddedComponentWorker;
 
 import java.util.ResourceBundle;
 import java.util.concurrent.BlockingQueue;
@@ -30,7 +32,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Time: 21:36
  * JACP context object provides functionality to components context and basic features.
  */
-public class ContextImpl implements Context {
+public class JacpContextImpl implements Context {
 
     private final static CustomSecurityManager customSecurityManager =
             new CustomSecurityManager();
@@ -51,14 +53,14 @@ public class ContextImpl implements Context {
     private volatile ResourceBundle resourceBundle;
     private volatile AtomicBoolean active = new AtomicBoolean(false);
 
-    public ContextImpl(final String id, final String name, final BlockingQueue<Message<Event, Object>> globalMessageQueue) {
+    public JacpContextImpl(final String id, final String name, final BlockingQueue<Message<Event, Object>> globalMessageQueue) {
         this.id = id;
         this.name = name;
         this.globalMessageQueue = globalMessageQueue;
 
     }
 
-    public ContextImpl(final BlockingQueue<Message<Event, Object>> globalMessageQueue) {
+    public JacpContextImpl(final BlockingQueue<Message<Event, Object>> globalMessageQueue) {
         this.globalMessageQueue = globalMessageQueue;
 
     }
@@ -99,8 +101,10 @@ public class ContextImpl implements Context {
      * {@inheritDoc}
      */
     @Override
-    // TODO check access, workbench is not allowed to use this method
     public final void send(final Object message) {
+        final String callerClassName = customSecurityManager.getCallerClassName();
+        if (AccessUtil.hasAccess(callerClassName, FXWorkbench.class))
+            throw new IllegalStateException(" a FXWorkbench is no valid message target");
         try {
             this.globalMessageQueue.put(new MessageImpl(this.id, message));
         } catch (InterruptedException e) {
@@ -177,8 +181,9 @@ public class ContextImpl implements Context {
      */
     @Override
     public <T> ManagedFragmentHandler<T> getManagedFragmentHandler(final Class<T> clazz) {
-        // TODO check if call is from UI component, otherwise throw exception
         final String callerClassName = customSecurityManager.getCallerClassName();
+        if (!AccessUtil.hasAccess(callerClassName, FXPerspective.class, FXComponent.class))
+            throw new IllegalStateException(" managed fragments are accessible from FXPerspective and FXComponent");
         return ManagedFragment.getInstance().getManagedFragment(clazz, callerClassName);
     }
 
@@ -211,15 +216,17 @@ public class ContextImpl implements Context {
     }
 
     /**
-     * Returns component id which is targeted by bg component return value; the
+     * Returns component id which is targeted by callback component return value; the
      * return value will be handled like an average message and will be
      * delivered to targeted component.
      *
      * @return the target id
      */
-    // TODO check that only callables can call this
     public final String getReturnTargetAndClear() {
-        String returnVal = String.valueOf(this.returnTarget);
+        final String callerClassName = customSecurityManager.getCallerClassName();
+        if (!AccessUtil.hasAccess(callerClassName, CallbackComponent.class, AComponentWorker.class, AEmbeddedComponentWorker.class))
+            throw new IllegalStateException(" getReturnTargetAndClear can only be called from a CallbackComponent");
+        final String returnVal = String.valueOf(this.returnTarget);
         this.returnTarget = null;
         return returnVal;
     }
@@ -230,7 +237,7 @@ public class ContextImpl implements Context {
     @Override
     public final void setReturnTarget(final String returnTargetId) throws IllegalStateException {
         final String callerClassName = customSecurityManager.getCallerClassName();
-        if (!AccessUtil.hasAccess(callerClassName, CallbackComponent.class, AComponentWorker.class,AEmbeddedComponentWorker.class,AComponentWorker.class))
+        if (!AccessUtil.hasAccess(callerClassName, CallbackComponent.class, AComponentWorker.class, AEmbeddedComponentWorker.class))
             throw new IllegalStateException(" the return target can be set only in CallbackComponents");
         this.returnTarget = returnTargetId;
     }
@@ -245,7 +252,7 @@ public class ContextImpl implements Context {
     @Override
     public void setExecutionTarget(final String id) throws IllegalStateException {
         final String callerClassName = customSecurityManager.getCallerClassName();
-        if (!AccessUtil.hasAccess(callerClassName, FXComponent.class, AStatelessCallbackComponent.class,AEmbeddedComponentWorker.class))
+        if (!AccessUtil.hasAccess(callerClassName, FXComponent.class, AStatelessCallbackComponent.class, AEmbeddedComponentWorker.class))
             throw new IllegalStateException(" the execution target can be set only in FXComponents");
 
         if (id == null) {
@@ -276,7 +283,7 @@ public class ContextImpl implements Context {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ContextImpl that = (ContextImpl) o;
+        JacpContextImpl that = (JacpContextImpl) o;
 
         if (active.get() != that.active.get()) return false;
         if (executionTarget != null ? !executionTarget.equals(that.executionTarget) : that.executionTarget != null)

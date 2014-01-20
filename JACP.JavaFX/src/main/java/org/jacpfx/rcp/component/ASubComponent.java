@@ -28,7 +28,7 @@ import org.jacpfx.api.component.ComponentHandle;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.context.JacpContext;
 import org.jacpfx.api.message.Message;
-import org.jacpfx.rcp.context.ContextImpl;
+import org.jacpfx.rcp.context.JacpContextImpl;
 import org.jacpfx.rcp.worker.AEmbeddedComponentWorker;
 
 import java.util.concurrent.ArrayBlockingQueue;
@@ -68,7 +68,7 @@ public abstract class ASubComponent extends AComponent implements
                               final BlockingQueue<Message<Event, Object>> messageQueue) {
         this.parentId = parentId;
         this.globalMessageQueue = messageQueue;
-        this.context = new ContextImpl(this.globalMessageQueue);
+        this.context = new JacpContextImpl(this.globalMessageQueue);
     }
 
 

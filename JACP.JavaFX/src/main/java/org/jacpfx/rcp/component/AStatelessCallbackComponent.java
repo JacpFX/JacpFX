@@ -27,7 +27,7 @@ import javafx.event.EventHandler;
 import org.jacpfx.api.component.ComponentHandle;
 import org.jacpfx.api.component.StatelessCallabackComponent;
 import org.jacpfx.api.component.SubComponent;
-import org.jacpfx.rcp.context.ContextImpl;
+import org.jacpfx.rcp.context.JacpContextImpl;
 import org.jacpfx.rcp.util.HandlerThreadFactory;
 import org.jacpfx.rcp.util.ShutdownThreadsHandler;
 
@@ -88,11 +88,11 @@ public abstract class AStatelessCallbackComponent extends ASubComponent
 	}
 
     private void initContextObject(final StatelessCallabackComponent<EventHandler<Event>, Event, Object> comp) {
-        ContextImpl context = ContextImpl.class.cast(comp.getContext());
+        JacpContextImpl context = JacpContextImpl.class.cast(comp.getContext());
         context.setId(this.getContext().getId());
         context.setActive(this.getContext().isActive());
         context.setName(this.getContext().getName());
-        context.setExecutionTarget(ContextImpl.class.cast(context).getExecutionTarget());
+        context.setExecutionTarget(JacpContextImpl.class.cast(context).getExecutionTarget());
     }
 
 	@Override

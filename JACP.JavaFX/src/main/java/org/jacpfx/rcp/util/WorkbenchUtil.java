@@ -10,7 +10,7 @@ import org.jacpfx.api.context.JacpContext;
 import org.jacpfx.api.fragment.Scope;
 import org.jacpfx.api.launcher.Launcher;
 import org.jacpfx.api.util.UIType;
-import org.jacpfx.rcp.context.ContextImpl;
+import org.jacpfx.rcp.context.JacpContextImpl;
 import org.jacpfx.rcp.perspective.EmbeddedFXPerspective;
 import org.jacpfx.rcp.registry.ClassRegistry;
 
@@ -167,7 +167,7 @@ public class WorkbenchUtil {
      * @param name, the component name
      */
     private static void initContext(final JacpContext contextInterface, final String parentId, final String id, final boolean active, final String name) {
-        final ContextImpl context = ContextImpl.class.cast(contextInterface);
+        final JacpContextImpl context = JacpContextImpl.class.cast(contextInterface);
         context.setParentId(parentId);
         context.setId(id);
         context.setActive(active);

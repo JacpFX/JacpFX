@@ -48,7 +48,7 @@ import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.componentLayout.FXMLPerspectiveLayout;
 import org.jacpfx.rcp.componentLayout.FXPerspectiveLayout;
 import org.jacpfx.rcp.componentLayout.FXWorkbenchLayout;
-import org.jacpfx.rcp.context.ContextImpl;
+import org.jacpfx.rcp.context.JacpContextImpl;
 import org.jacpfx.rcp.message.MessageImpl;
 import org.jacpfx.rcp.perspective.AFXPerspective;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
@@ -112,7 +112,7 @@ public class PerspectiveHandlerImpl implements
         // 2 second active perspective available, current perspective is the one which is disabled: find the other perspective, handle OnShow, add not to workbench
         // 3 second perspective is available, other perspective is currently displayed: turn off the perspective
 
-        FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class, perspective.getPerspective(), perspectiveLayout, ContextImpl.class.cast(perspective.getContext()).getComponentLayout(), perspective.getContext().getResourceBundle());
+        FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class, perspective.getPerspective(), perspectiveLayout, JacpContextImpl.class.cast(perspective.getContext()).getComponentLayout(), perspective.getContext().getResourceBundle());
         removePerspectiveNodeFromWorkbench(perspectiveLayout, componentOld);
         displayNextPossiblePerspective(perspective);
         shutDownAndClearComponents(perspective);
@@ -222,7 +222,7 @@ public class PerspectiveHandlerImpl implements
      */
     private void addComponentByType(final UIComponent<Node, EventHandler<Event>, Event, Object> component,
                                     final PerspectiveLayoutInterface<? extends Node, Node> layout) {
-        final String targetLayout = ContextImpl.class.cast(component.getContext()).getTargetLayout();
+        final String targetLayout = JacpContextImpl.class.cast(component.getContext()).getTargetLayout();
         final Node validContainer = layout.getTargetLayoutComponents().get(targetLayout);
         final ObservableList<Node> children = FXUtil.getChildren(validContainer);
         final Node root = component.getRoot();
@@ -322,7 +322,7 @@ public class PerspectiveHandlerImpl implements
         handlePerspectiveView(perspective);
 
         // set perspective to active
-        ContextImpl.class.cast(perspective.getContext()).setActive(true);
+        JacpContextImpl.class.cast(perspective.getContext()).setActive(true);
         if (FXUtil.getTargetPerspectiveId(action.getTargetId()).equals(perspective.getContext().getId())) {
             this.log("3.4.3.1: perspective handle with custom message");
             perspective.handlePerspective(action);
@@ -335,7 +335,7 @@ public class PerspectiveHandlerImpl implements
 
     private void handlePerspectiveView(final Perspective<EventHandler<Event>, Event, Object> perspective) {
         if (perspective instanceof PerspectiveView) {
-            final ContextImpl context = ContextImpl.class.cast(perspective.getContext());
+            final JacpContextImpl context = JacpContextImpl.class.cast(perspective.getContext());
             initFXComponentLayout(context);
 
             final PerspectiveView<Node, EventHandler<Event>, Event, Object> perspectiveView = ((PerspectiveView<Node, EventHandler<Event>, Event, Object>) perspective);
@@ -349,7 +349,7 @@ public class PerspectiveHandlerImpl implements
 
     private void handleUIPerspective(final Perspective<EventHandler<Event>, Event, Object> perspective,
                                      final PerspectiveView<Node, EventHandler<Event>, Event, Object> perspectiveView,
-                                     final ContextImpl context) {
+                                     final JacpContextImpl context) {
         final AFXPerspective perspectiveImpl = AFXPerspective.class.cast(perspective);
         if (perspectiveView.getType().equals(UIType.DECLARATIVE)) {
             handleDeclarativePerspective(perspectiveImpl, perspectiveView);
@@ -360,7 +360,7 @@ public class PerspectiveHandlerImpl implements
                 perspective.getPerspective(), perspectiveImpl.getIPerspectiveLayout(), context.getComponentLayout(), perspective.getContext().getResourceBundle());
     }
 
-    private void initFXComponentLayout(final ContextImpl context) {
+    private void initFXComponentLayout(final JacpContextImpl context) {
         context.setFXComponentLayout(new FXComponentLayout(this.getWorkbenchLayout()));
     }
 

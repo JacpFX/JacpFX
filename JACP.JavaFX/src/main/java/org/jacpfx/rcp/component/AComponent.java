@@ -26,7 +26,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import org.jacpfx.api.component.Component;
 import org.jacpfx.api.message.Message;
-import org.jacpfx.rcp.context.ContextImpl;
+import org.jacpfx.rcp.context.JacpContextImpl;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -44,7 +44,7 @@ public abstract class AComponent implements
     private volatile AtomicBoolean started =  new AtomicBoolean(false);
     private String localeID = "";
     private String resourceBundleLocation = "";
-    protected ContextImpl context;
+    protected JacpContextImpl context;
     protected volatile BlockingQueue<Message<Event, Object>> globalMessageQueue;
 
 
