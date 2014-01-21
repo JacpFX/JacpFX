@@ -34,7 +34,7 @@ import javafx.scene.Node;
  * 
  * @author Andy Moncsek
  * 
- * @param <T>
+ * @param <T> The type of the managed fragment
  */
 public class ManagedFragmentHandler<T> {
 
@@ -49,21 +49,21 @@ public class ManagedFragmentHandler<T> {
 	}
 	/**
 	 * Returns the controller instance.
-	 * @return
+	 * @return the controller instance of your managed fragment
 	 */
 	public T getController() {
 		return this.controller;
 	}
 	/**
 	 * Returns the JavaFX Node
-	 * @return
+	 * @return the UI node of your managed fragment
 	 */
 	public Node getFragmentNode() {
 		return this.dialogNode;
 	}
 	/**
 	 * Returns the Id.
-	 * @return
+	 * @return the id of your managed fragment
 	 */
 	public String getId() {
 		return id;

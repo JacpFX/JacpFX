@@ -44,7 +44,8 @@ public final class ShutdownThreadsHandler{
 	public static final Long WAIT = 1500L;
 	/**
 	 * Register a Thread.
-	 * @param t
+	 * @param t the Thread to register
+     * @param <T> the type of the object extending the thread
 	 */
 	public static <T extends Thread> void registerThread(T t) {
         t.setUncaughtExceptionHandler(ExceptionHandler.getInstance());
@@ -53,7 +54,8 @@ public final class ShutdownThreadsHandler{
 
     /**
      * unregister a Thread.
-     * @param t
+     * @param t the Thread to unregister
+     * @param <T> the type of the object extending the thread
      */
     public static <T extends Thread> void unRegisterThread(T t) {
         if(registeredThreads.contains(t)){
@@ -62,9 +64,10 @@ public final class ShutdownThreadsHandler{
     }
 	/**
 	 * Register an Executor service.
-	 * @param t
+	 * @param t the ExecutorService to register
+     * @param <E> the concrete type of the ExecutorService
 	 */
-	public static <E extends ExecutorService> void registerexecutor(E t) {
+	public static <E extends ExecutorService> void registerExecutor(E t) {
 		registeredExecutors.add(t);
 	}
 	/**

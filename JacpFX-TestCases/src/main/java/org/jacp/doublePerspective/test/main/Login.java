@@ -26,7 +26,7 @@
 package org.jacp.doublePerspective.test.main;
 
 /**
- * Created by amo on 08.01.14.
+ * Created by Andy Moncsek on 08.01.14.
  */
 import javafx.application.Application;
 import javafx.event.ActionEvent;

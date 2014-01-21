@@ -30,10 +30,10 @@ import org.jacpfx.api.annotations.fragment.Fragment;
 import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.context.JacpContext;
-import org.jacpfx.api.fragment.Scope;
 import org.jacpfx.api.exceptions.ManagedFragmentAnnotationFXMLMissingException;
 import org.jacpfx.api.exceptions.ManagedFragmentAnnotationMissingException;
 import org.jacpfx.api.exceptions.ManagedFragmentNotInitializedException;
+import org.jacpfx.api.fragment.Scope;
 import org.jacpfx.api.launcher.Launcher;
 import org.jacpfx.api.util.CustomSecurityManager;
 import org.jacpfx.rcp.component.FXComponent;
@@ -82,7 +82,7 @@ public class ManagedFragment {
     /**
      * initialize the JACPManaged dialog.
      *
-     * @param launcher
+     * @param launcher The launcher object to recive new managed objects
      */
     public static void initManagedFragment(Launcher<?> launcher) {
         if (ManagedFragment.instance == null) {
@@ -105,7 +105,9 @@ public class ManagedFragment {
     /**
      * Creates a managed dialog.
      *
-     * @param type
+     * @param type the class of the requested managed fragment
+     * @param callerClassName the caller class of this method
+     * @param <T> the type of the requested managed fragment
      * @return a managed dialog handler see {@link ManagedFragmentHandler}
      */
     public <T> ManagedFragmentHandler<T> getManagedFragment(Class<? extends T> type, final String callerClassName) {
@@ -136,7 +138,8 @@ public class ManagedFragment {
     /**
      * Creates a managed dialog.
      *
-     * @param type
+     * @param type the class of the requested managed fragment
+     * @param <T> the type of the requested managed fragment
      * @return a managed dialog handler see {@link ManagedFragmentHandler}
      */
     public <T> ManagedFragmentHandler<T> getManagedDialog(Class<? extends T> type) {

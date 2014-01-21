@@ -24,15 +24,15 @@ public class ClassRegistry {
 
     /**
      * Add classes that were found while package scanning at application start up.
-     * @param classes
+     * @param classes , the list of classes to add
      */
-    public static void addClasses(List<Class> classes) {
+    public static void addClasses(final List<Class> classes) {
         allClasses.addAll(classes);
     }
 
     /**
      * Returns an un-modifiable  list of all classes.
-     * @return
+     * @return an un-modifyable list of all registered classes
      */
     public static List<Class> getAllClasses() {
         return Collections.unmodifiableList(allClasses);
@@ -41,7 +41,7 @@ public class ClassRegistry {
 
     /**
      * Returns a component class by ID
-     * @param id
+     * @param id , the component id
      * @return The component class for requested id
      */
     public static Class getComponentClassById(final String id) {
@@ -56,7 +56,7 @@ public class ClassRegistry {
 
     /**
      * Returns a perspective class by ID.
-     * @param id
+     * @param id the perspective id
      * @return The perspective class for requested id
      */
     public static Class getPerspectiveClassById(final String id) {

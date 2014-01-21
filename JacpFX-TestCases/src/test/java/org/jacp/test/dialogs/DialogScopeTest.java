@@ -37,7 +37,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by amo on 15.01.14.
+ * Created by Andy Moncsek on 15.01.14.
  */
 public class DialogScopeTest {
     static Thread t;

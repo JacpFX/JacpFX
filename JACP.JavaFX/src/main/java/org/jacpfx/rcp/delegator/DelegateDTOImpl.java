@@ -23,8 +23,8 @@
 package org.jacpfx.rcp.delegator;
 
 import javafx.event.Event;
-import org.jacpfx.api.message.Message;
 import org.jacpfx.api.message.DelegateDTO;
+import org.jacpfx.api.message.Message;
 
 /**
  * DTO interface to transfer components to desired target

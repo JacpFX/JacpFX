@@ -24,10 +24,10 @@ package org.jacpfx.rcp.worker;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.StatelessCallabackComponent;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.message.Message;
-import org.jacpfx.api.component.Perspective;
 import org.jacpfx.rcp.component.ASubComponent;
 import org.jacpfx.rcp.context.JacpContextImpl;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;

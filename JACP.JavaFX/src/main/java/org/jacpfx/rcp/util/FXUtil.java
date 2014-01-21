@@ -28,12 +28,11 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.component.Component;
+import org.jacpfx.api.component.Injectable;
 import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.context.JacpContext;
-import org.jacpfx.api.message.Message;
-import org.jacpfx.api.annotations.Resource;
-import org.jacpfx.api.component.Injectable;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -84,8 +83,8 @@ public class FXUtil {
     /**
      * returns children of current node
      *
-     * @param node
-     * @return
+     * @param node , the node where you want to get the child list
+     * @return all children of that node
      */
     @SuppressWarnings("unchecked")
     public static ObservableList<Node> getChildren(final Node node) {
@@ -113,6 +112,13 @@ public class FXUtil {
 
     }
 
+    /**
+     * Set a value to a private member on specified object
+     * @param superClass , the class
+     * @param object , the Object with the private member to be set
+     * @param member , the name of the member
+     * @param value  , the vakue of the member
+     */
     public static void setPrivateMemberValue(final Class<?> superClass,
                                              final Object object, final String member, final Object value) {
         try {
@@ -129,9 +135,9 @@ public class FXUtil {
     @SuppressWarnings({"unchecked", "rawtypes"})
     /**
      * find annotated method in component and pass value
-     * @param annotation
-     * @param component
-     * @param value
+     * @param annotation , the annotation to find
+     * @param component , the component with the annotated method
+     * @param value , the values to pass to the annotated method
      */
     public static void invokeHandleMethodsByAnnotation(
             final Class annotation, final Object component,
@@ -167,6 +173,11 @@ public class FXUtil {
         }
     }
 
+    /**
+     * Injects all Resource memberc like Context
+     * @param handler , the component where injection should be performed
+     * @param context , the context object
+     */
     public static void performResourceInjection(final Injectable handler,JacpContext<EventHandler<Event>, Object> context) {
         final Field[] fields = handler.getClass().getDeclaredFields();
         final List<Field> fieldList = Arrays.asList(fields);
@@ -181,6 +192,12 @@ public class FXUtil {
         });
     }
 
+    /**
+     *
+     * @param handler the component where injection should be performed
+     * @param f the field which should be injected
+     * @param context, the context object
+     */
     private static void injectContext(final Injectable handler,final Field f, final JacpContext context) {
         f.setAccessible(true);
         try {
@@ -190,6 +207,12 @@ public class FXUtil {
         }
     }
 
+    /**
+     * Injects the resource bundle to component
+     * @param handler the component where injection should be performed
+     * @param f  the field which should be injected
+     * @param bundle  the bundle that sould be injected
+     */
     private static void injectResourceBundle(final Injectable handler,final Field f, final ResourceBundle bundle) {
         f.setAccessible(true);
         try {
@@ -230,7 +253,7 @@ public class FXUtil {
 
     /**
      * Returns the correct locale by String
-     * @param localeID
+     * @param localeID the locale id
      * @return  The locale object
      */
     public static Locale getCorrectLocale(final String localeID) {
@@ -250,9 +273,9 @@ public class FXUtil {
     /**
      * Returns the resourceBundle
      *
-     * @param resourceBundleLocation
-     * @param localeID
-     * @return
+     * @param resourceBundleLocation thge location of your resource bundle
+     * @param localeID  the locale id
+     * @return The resouceBundle instance
      */
     public static ResourceBundle getBundle(String resourceBundleLocation,
                                            final String localeID) {
@@ -269,6 +292,7 @@ public class FXUtil {
      * @param bean   the controller
      * @param bundle the ressource bundle
      * @param url    the fxml url
+     * @param <T> the type of the bean
      * @return The components root Node.
      */
     public static <T> Node loadFXMLandSetController(final T bean,
@@ -288,37 +312,15 @@ public class FXUtil {
         }
     }
 
-    /**
-     * returns the message (parent) target id
-     *
-     * @param messageId
-     * @return
-     */
-    public static String getTargetParentId(final String messageId) {
-        final String[] parentId = FXUtil.getTargetId(messageId);
-        if (FXUtil.isFullValidId(parentId)) {
-            return parentId[0];
-        }
-        return messageId;
-    }
 
-    /**
-     * a target id is valid, when it does contain a perspective and a component
-     * id (perspectiveId.componentId)
-     *
-     * @param targetId
-     * @return
-     */
-    private static boolean isFullValidId(final String[] targetId) {
-        return targetId != null && targetId.length == 2;
 
-    }
+
 
     /**
      * returns the message target perspective id
      *
-     * @param messageId
-     * @return
+     * @param messageId the message id to analyze
+     * @return returns the perspective id
      */
     public static String getTargetPerspectiveId(final String messageId) {
         if (!FXUtil.isLocalMessage(messageId)) {
@@ -329,8 +331,8 @@ public class FXUtil {
 
     /**
      * Returns the parent part of id ... parent.child
-     * @param messageId
-     * @return
+     * @param messageId the message id to analyze
+     * @return returns the first part of message id "parent.child"
      */
     public static String getParentFromId(final String messageId) {
         final String[] targetId = FXUtil.getTargetId(messageId);
@@ -340,8 +342,8 @@ public class FXUtil {
     /**
      * returns the message target component id
      *
-     * @param messageId
-     * @return
+     * @param messageId the message id to analyze
+     * @return  returns the component id
      */
     public static String getTargetComponentId(final String messageId) {
         if (!FXUtil.isLocalMessage(messageId)) {
@@ -354,8 +356,8 @@ public class FXUtil {
     /**
      * when id has no separator it is a local message
      *
-     * @param messageId
-     * @return
+     * @param messageId the message id to analyze
+     * @return true when message is not seperated by a dot
      */
     public static boolean isLocalMessage(final String messageId) {
         return !messageId.contains(PATTERN_GLOBAL);
@@ -364,8 +366,8 @@ public class FXUtil {
     /**
      * returns target message with perspective and component name as array
      *
-     * @param messageId
-     * @return
+     * @param messageId the message id to analyze
+     * @return  returns a string array of the message id
      */
     private static String[] getTargetId(final String messageId) {
         return messageId.split(PATTERN_SPLIT);
@@ -374,10 +376,10 @@ public class FXUtil {
     /**
      * Returns a component by id from a provided component list
      *
-     * @param id
-     * @param components
-     * @param <P>
-     * @return
+     * @param id the component id to look for
+     * @param components the component list
+     * @param <P>  the concrete type of components
+     * @return  the component by id
      */
     public static <P extends Component<EventHandler<Event>, Object>> P getObserveableById(
             final String id, final List<P> components) {
@@ -394,9 +396,9 @@ public class FXUtil {
      * find the parent perspective to id; should be only used when no
      * responsible component was found ,
      *
-     * @param id
-     * @param perspectives
-     * @return
+     * @param id the id of the child component
+     * @param perspectives  the perspective list
+     * @return  the parent perspective for the component with the id in param list
      */
     public static Perspective<EventHandler<Event>, Event, Object> findRootByObserveableId(
             final String id,
@@ -411,20 +413,7 @@ public class FXUtil {
         return null;
     }
 
-    /**
-     * returns cloned message with valid message TODO add to interface
-     *
-     * @param action
-     * @param message
-     * @return
-     */
-    public static Message<Event, Object> getValidAction(
-            final Message<Event, Object> action, final String target,
-            final Object message) {
-        final Message<Event, Object> actionClone = action.clone();
-        actionClone.addMessage(target, message);
-        return actionClone;
-    }
+
 
 
 

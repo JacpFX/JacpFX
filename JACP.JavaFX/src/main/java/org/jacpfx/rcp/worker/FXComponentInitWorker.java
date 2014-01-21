@@ -25,12 +25,12 @@ package org.jacpfx.rcp.worker;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.component.ComponentHandle;
 import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.SubComponent;
-import org.jacpfx.api.message.Message;
-import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.exceptions.AnnotationMissconfigurationException;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.AFXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.context.JacpContextImpl;
@@ -64,9 +64,12 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
      * @param targetComponents ; a map with all targets provided by perspective
      * @param component        ; the UI component to init
      * @param message           ; the init message
+     * @param componentDelegateQueue ; the delegate queue for components that should be moved to an other perspective
      */
     public FXComponentInitWorker(final Map<String, Node> targetComponents,
-                                 final AFXComponent component, final Message<Event, Object> message, final BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue) {
+                                 final AFXComponent component,
+                                 final Message<Event, Object> message,
+                                 final BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue) {
         this.targetComponents = targetComponents;
         this.component = component;
         this.message = message;

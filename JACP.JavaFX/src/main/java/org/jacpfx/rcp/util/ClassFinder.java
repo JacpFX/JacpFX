@@ -73,7 +73,7 @@ public class ClassFinder {
      *
      * @param packageName name of the package as 'ch.sahits.civ'
      * @return Array of found classes
-     * @throws ClassNotFoundException
+     * @throws ClassNotFoundException no class was found in classpath
      */
     public Class[] getAll(final String packageName) throws ClassNotFoundException {
 

@@ -17,12 +17,14 @@ import org.jacpfx.rcp.message.MessageImpl;
 import org.jacpfx.rcp.perspective.FXPerspective;
 import org.jacpfx.rcp.util.AccessUtil;
 import org.jacpfx.rcp.util.PerspectiveUtil;
+import org.jacpfx.rcp.util.WorkerUtil;
 import org.jacpfx.rcp.workbench.FXWorkbench;
 import org.jacpfx.rcp.worker.AComponentWorker;
 import org.jacpfx.rcp.worker.AEmbeddedComponentWorker;
 
 import java.util.ResourceBundle;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -68,9 +70,12 @@ public class JacpContextImpl implements Context {
     /**
      * {@inheritDoc}
      */
-    @Override        // TODO check access, workbench is not allowed to use this method
+    @Override
     public final EventHandler<Event> getEventHandler(
             final Object message) {
+        final String callerClassName = customSecurityManager.getCallerClassName();
+        if (AccessUtil.hasAccess(callerClassName, FXWorkbench.class))
+            throw new IllegalStateException(" a FXWorkbench is no valid message target");
         return new ActionListenerImpl(new MessageImpl(this.id, message),
                 this.globalMessageQueue);
     }
@@ -260,6 +265,21 @@ public class JacpContextImpl implements Context {
             return;
         }
         this.executionTarget = id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void invokeFXAndWait(final Runnable r) {
+        final Thread t = Thread.currentThread();
+        try {
+            WorkerUtil.invokeOnFXThreadAndWait(r);
+        } catch (InterruptedException e) {
+           t.getUncaughtExceptionHandler().uncaughtException(t,e);
+        } catch (ExecutionException e) {
+            t.getUncaughtExceptionHandler().uncaughtException(t,e);
+        }
     }
 
     public final String getTargetLayout() {

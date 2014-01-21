@@ -33,7 +33,7 @@ import org.jacpfx.rcp.handler.AErrorDialogHandler;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * Created by amo on 10.01.14.
+ * Created by Andy Moncsek on 10.01.14.
  */
 public class CustomErrorDialogHandler extends AErrorDialogHandler {
     public static CountDownLatch latch = new CountDownLatch(1);

@@ -70,8 +70,8 @@ public class PerspectiveRegistry {
 
     /**
      * Returns the next active perspective. This can happen when a perspective was set to inactive. In this case the next underlying perspective should be displayed.
-     *
-     * @return
+     * @param current the current active perspective
+     * @return the next active perspective
      */
     public static Perspective<EventHandler<Event>, Event, Object> findNextActivePerspective(final Perspective<EventHandler<Event>, Event, Object> current) {
         return getNextValidPerspective(getAllPerspectives(), current);
@@ -82,7 +82,7 @@ public class PerspectiveRegistry {
      *
      * @param p,       The List with all Perspectives
      * @param current, the current perspective
-     * @return
+     * @return the next valid perspective
      */
     private static Perspective<EventHandler<Event>, Event, Object> getNextValidPerspective(final List<Perspective<EventHandler<Event>, Event, Object>> p, final Perspective<EventHandler<Event>, Event, Object> current) {
         final TreeSet<Perspective<EventHandler<Event>, Event, Object>> allActive = p.stream()
@@ -114,7 +114,7 @@ public class PerspectiveRegistry {
     /**
      * Searches the given component id in metadata of all perspectives and returns the responsible perspective
      *
-     * @param componentId
+     * @param componentId  the component id
      * @return The parent perspective of given component id
      */
     public static Perspective<EventHandler<Event>, Event, Object> findParentPerspectiveByComponentId(final String componentId) {

@@ -30,7 +30,8 @@ import org.jacpfx.api.handler.ErrorDialogHandler;
 import org.jacpfx.rcp.components.modalDialog.JACPModalDialog;
 
 /**
- * Created by amo on 08.01.14.
+ * Created by Andy Moncsek on 08.01.14.
+ * the abstract ErrorDialog, handles the Node creation in concrete ErrorDialogs
  */
 public abstract class AErrorDialogHandler implements ErrorDialogHandler<Node> {
     @Override

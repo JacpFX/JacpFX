@@ -7,8 +7,8 @@ import org.jacpfx.api.annotations.component.DeclarativeView;
 import org.jacpfx.api.annotations.component.Stateless;
 import org.jacpfx.api.annotations.component.View;
 import org.jacpfx.api.component.*;
-import org.jacpfx.api.fragment.Scope;
 import org.jacpfx.api.exceptions.AnnotationNotFoundException;
+import org.jacpfx.api.fragment.Scope;
 import org.jacpfx.api.launcher.Launcher;
 import org.jacpfx.rcp.component.*;
 import org.jacpfx.rcp.componentLayout.PerspectiveLayout;
@@ -42,7 +42,7 @@ public class PerspectiveUtil {
 
     /**
      * Returns an PerspectiveUtil instance.
-     * @param launcher
+     * @param launcher the launcher object
      * @return The PerspectiveUtil instance.
      */
     public static PerspectiveUtil getInstance(final Launcher<?> launcher) {
@@ -51,7 +51,7 @@ public class PerspectiveUtil {
 
     /**
      * Returns all declared subcomponents for an Perspective annotation.
-     * @param perspectiveAnnotation
+     * @param perspectiveAnnotation the perspective annotation
      * @return  a list of al declared subcomponent instances.
      */
     public List<SubComponent<EventHandler<Event>, Event, Object>> createSubcomponents(final org.jacpfx.api.annotations.perspective.Perspective perspectiveAnnotation) {
@@ -61,8 +61,8 @@ public class PerspectiveUtil {
 
     /**
      * Returns a single SunComponent by id
-     * @param componentId
-     * @return
+     * @param componentId the component id
+     * @return the component instance
      */
     public SubComponent<EventHandler<Event>, Event, Object> createSubcomponentById(final String componentId) {
         return mapToSubcomponent(mapToInjectAbleComponent(FXUtil.getTargetComponentId(componentId)));
@@ -70,7 +70,7 @@ public class PerspectiveUtil {
 
     /**
      * Returns a list of all declared Injectables.
-     * @param perspectiveAnnotation
+     * @param perspectiveAnnotation the perspective annotation
      * @return
      */
     private Stream<Injectable> getInjectAbles(final org.jacpfx.api.annotations.perspective.Perspective perspectiveAnnotation) {
@@ -80,7 +80,7 @@ public class PerspectiveUtil {
 
     /**
      * Returns an Injectable Class from Classpath by ID.
-     * @param id
+     * @param id the component id
      * @return
      */
     private Injectable mapToInjectAbleComponent(final String id) {
@@ -95,8 +95,23 @@ public class PerspectiveUtil {
     }
 
     /**
+     * Returns the ID from annotation for a perspective
+     * @param perspective the perspective instance
+     * @return the perspective id from annotation
+     */
+    public static String getPerspectiveIdFromAnnotation(final Perspective<EventHandler<Event>, Event, Object> perspective) {
+        final Injectable handler = perspective.getPerspective();
+        final org.jacpfx.api.annotations.perspective.Perspective perspectiveAnnotation = handler.getClass()
+                .getAnnotation(org.jacpfx.api.annotations.perspective.Perspective.class);
+        if (perspectiveAnnotation == null) throw new IllegalArgumentException("no perspective annotation found");
+        final String id = perspectiveAnnotation.id();
+        if (id == null) throw new IllegalArgumentException("no perspective id set");
+        return id;
+    }
+
+    /**
      * Returns the correct scope.
-     * @param componentClass
+     * @param componentClass the bean class
      * @return The Scope of a component.
      */
     private Scope getCorrectScopeOfComponent(final Class componentClass) {
@@ -107,7 +122,7 @@ public class PerspectiveUtil {
 
     /**
      * Returns all component  id's from Perspective annotation
-     * @param perspectiveAnnotation
+     * @param perspectiveAnnotation  the perspective annotation
      * @return all declared component id's from perspective annotation.
      */
     private String[] getComponentIds(final org.jacpfx.api.annotations.perspective.Perspective perspectiveAnnotation) {
@@ -121,7 +136,7 @@ public class PerspectiveUtil {
     /**
      * Maps an Injectable interface to it's corresponding SubComponent,
      * This means that the Injectable will be wrapped to it's component type. This can be either a FXComponents, a Stateful- or a StatelessComponent.
-     * @param handler
+     * @param handler , the component
      * @return a subcomponent
      */
     private SubComponent<EventHandler<Event>, Event, Object> mapToSubcomponent(final Injectable handler) {
@@ -262,8 +277,8 @@ public class PerspectiveUtil {
 
     /**
      * Returns the PerspectiveLayout instance from perspective interface
-     * @param parentPerspective
-     * @return
+     * @param parentPerspective the parent perspective
+     * @return the perspectiveLayout of this perspective
      */
     public static PerspectiveLayout getPerspectiveLayoutFromPerspective(final Perspective<EventHandler<Event>, Event, Object> parentPerspective) {
         final EmbeddedFXPerspective embeddedPerspective = EmbeddedFXPerspective.class.cast(parentPerspective);

@@ -32,7 +32,7 @@ import static org.jacpfx.rcp.components.toolBar.JACPOptionButtonOrientation.BOTT
 
 /**
  * The Class JACPOptionButton.
- * <p/>
+ *
  * A simple button, with some more options. The button holds no message, except displaying the child options.
  *
  * @author Patrick Symmangk

@@ -37,7 +37,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by amo on 06.01.14.
+ * Created by Andy Moncsek on 06.01.14.
  */
 public class DialogsInPerspectiveTest {
 

@@ -18,15 +18,15 @@ public interface Context extends JacpContext<EventHandler<Event>, Object> {
 
     /**
      * Returns a managed fragment handler, which contains part of an UI and can fully interact with CDI and it's parent component.
-     * @param clazz
-     * @param <T>
-     * @return
+     * @param clazz the class of the requested managed fragment
+     * @param <T> the type of the managed fragment
+     * @return a managedFragmentHandler which gives access to the fragments controller and UI node
      */
     <T> ManagedFragmentHandler<T> getManagedFragmentHandler(final Class<T> clazz);
 
     /**
      * shows the passed Node as modal dialog
-     * @param node
+     * @param node the Node to show in dialog
      */
     void showModalDialog(final Node node);
 
@@ -40,4 +40,10 @@ public interface Context extends JacpContext<EventHandler<Event>, Object> {
      * @return The ComponentLayout handler
      */
     FXComponentLayout getComponentLayout();
+
+    /**
+     * Invoke a Runnable on FXApplication Thread and wait until it is finished (Platform.runLater won't wait)
+     * @param r, The Runnable
+     */
+    void invokeFXAndWait(final Runnable r);
 }

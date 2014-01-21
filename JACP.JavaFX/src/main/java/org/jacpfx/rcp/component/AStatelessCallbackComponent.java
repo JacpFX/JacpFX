@@ -64,7 +64,7 @@ public abstract class AStatelessCallbackComponent extends ASubComponent
 	}
 	
 	public AStatelessCallbackComponent() {
-		ShutdownThreadsHandler.registerexecutor(executor);
+		ShutdownThreadsHandler.registerExecutor(executor);
 	}
 
 

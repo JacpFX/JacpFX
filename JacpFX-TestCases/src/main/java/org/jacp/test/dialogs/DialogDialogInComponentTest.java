@@ -42,7 +42,7 @@ import java.util.ResourceBundle;
 import java.util.concurrent.CountDownLatch;
 
 /**
- * Created by amo on 06.01.14.
+ * Created by Andy Moncsek on 06.01.14.
  */
 @Fragment(id = "id1002", resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", scope = Scope.SINGLETON)
 public class DialogDialogInComponentTest extends GridPane {

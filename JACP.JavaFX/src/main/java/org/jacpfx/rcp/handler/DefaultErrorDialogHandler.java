@@ -34,7 +34,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Created by amo on 09.01.14.
+ * Created by Andy Moncsek on 09.01.14.
+ * Creates the default error dialog view.
  */
 public class DefaultErrorDialogHandler extends AErrorDialogHandler {
     private final Logger logger = Logger.getLogger(this.getClass().getName());

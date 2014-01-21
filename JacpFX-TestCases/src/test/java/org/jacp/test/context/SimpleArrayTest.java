@@ -5,7 +5,7 @@ import org.junit.Test;
 import java.util.Arrays;
 
 /**
- * Created by amo on 04.12.13.
+ * Created by Andy Moncsek on 04.12.13.
  */
 public class SimpleArrayTest {
 

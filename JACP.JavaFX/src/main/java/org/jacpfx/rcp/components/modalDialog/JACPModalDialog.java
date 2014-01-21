@@ -32,7 +32,6 @@ import javafx.scene.control.Button;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
-import org.jacpfx.rcp.util.CSSUtil;
 
 import static org.jacpfx.rcp.util.CSSUtil.CSSConstants.ID_ERROR_DIMMER;
 

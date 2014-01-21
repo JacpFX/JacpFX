@@ -1,8 +1,8 @@
 package org.jacpfx.rcp.perspective;
 
 import javafx.event.Event;
-import org.jacpfx.api.message.Message;
 import org.jacpfx.api.component.Injectable;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.componentLayout.PerspectiveLayout;
 
 /**

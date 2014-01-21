@@ -29,23 +29,15 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.text.Text;
 import org.jacpfx.rcp.components.modalDialog.JACPModalDialog;
 import org.jacpfx.rcp.util.DimensionUtil;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Andy Moncsek on 13.01.14.

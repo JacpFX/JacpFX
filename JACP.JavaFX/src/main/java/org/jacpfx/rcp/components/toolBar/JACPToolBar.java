@@ -29,7 +29,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -99,6 +98,7 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
     /**
      * Adds the.
      *
+     * @param id the parent id
      * @param node the node
      */
     public void add(String id, final Node node) {
@@ -116,7 +116,7 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
     /**
      * Add multiple nodes to the toolbar.
      * Those nodes are added by id and will appear in the first place of the toolbar
-     * <p/>
+     *
      * The id is the name of the calling component by default.
      * For self-managed ids see {@link #addAll(String id, Node... nodes)}
      *
@@ -145,7 +145,7 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
      * Those nodes are added by id and will appear on the end of the toolbar
      * Means right hand side for {@link org.jacpfx.api.util.ToolbarPosition#NORTH} and {@link org.jacpfx.api.util.ToolbarPosition#SOUTH}
      * and on the bottom for {@link org.jacpfx.api.util.ToolbarPosition#EAST} and {@link org.jacpfx.api.util.ToolbarPosition#WEST}
-     * <p/>
+     *
      * The id is the name of the calling component by default.
      * For self-managed ids see {@link #addAllOnEnd(String id, Node... nodes)}
      *
@@ -175,7 +175,7 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
     /**
      * Add multiple nodes to the toolbar.
      * Those nodes are added by id and will appear in the middle of the toolbar
-     * <p/>
+     *
      * The id is the name of the calling component by default.
      * For self-managed ids see {@link #addAllOnEnd(String id, Node... nodes)}
      *
@@ -201,6 +201,7 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
     /**
      * Adds the on end.
      *
+     * @param id the parent id
      * @param node the node
      */
     public void addToCenter(String id, final Node node) {
@@ -210,6 +211,7 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
     /**
      * Adds the on end.
      *
+     * @param id the parent id
      * @param node the node
      */
     public void addOnEnd(String id, final Node node) {

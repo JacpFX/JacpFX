@@ -28,8 +28,8 @@ import javafx.scene.Node;
 import org.jacpfx.api.component.StatelessCallabackComponent;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.componentLayout.PerspectiveLayoutInterface;
-import org.jacpfx.api.message.Message;
 import org.jacpfx.api.launcher.Launcher;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.AFXComponent;
 import org.jacpfx.rcp.component.AStatelessCallbackComponent;
 import org.jacpfx.rcp.component.ASubComponent;
@@ -71,8 +71,8 @@ public class ComponentHandlerImpl
 		this.perspectiveLayout = perspectiveLayout;
 		this.componentDelegateQueue = componentDelegateQueue;
 		this.scheduler = new StatelessComponentSchedulerImpl(launcher);
-		ShutdownThreadsHandler.registerexecutor(fxInitExecutor);
-		ShutdownThreadsHandler.registerexecutor(callbackInitExecutor);
+		ShutdownThreadsHandler.registerExecutor(fxInitExecutor);
+		ShutdownThreadsHandler.registerExecutor(callbackInitExecutor);
 	}
 
 	@Override

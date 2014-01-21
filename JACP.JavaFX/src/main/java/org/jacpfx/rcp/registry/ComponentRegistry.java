@@ -43,7 +43,7 @@ public class ComponentRegistry {
     /**
      * Registers a component.
      *
-     * @param component
+     * @param component the component to register
      */
     public static void registerComponent(
             final SubComponent<EventHandler<Event>, Event, Object> component) {
@@ -55,7 +55,7 @@ public class ComponentRegistry {
     /**
      * Removes component from registry.
      *
-     * @param component
+     * @param component the component to remove
      */
     public static void removeComponent(
             final SubComponent<EventHandler<Event>, Event, Object> component) {
@@ -67,8 +67,8 @@ public class ComponentRegistry {
     /**
      * Returns an active component by component id
      *
-     * @param targetId
-     * @return
+     * @param targetId the component id
+     * @return the requested component
      */
     public static SubComponent<EventHandler<Event>, Event, Object> findComponentById(
             final String targetId) {
@@ -78,8 +78,8 @@ public class ComponentRegistry {
     }
     /**
      * Returns the a component by class.
-     * @param clazz
-     * @return
+     * @param clazz the component class to find
+     * @return the requested component instance
      */
     public static SubComponent<EventHandler<Event>, Event, Object> findComponentByClass(final Class<?> clazz) {
         final Optional<SubComponent<EventHandler<Event>, Event, Object>> returnVal = Collections.unmodifiableList(components).parallelStream().filter(c -> c.getComponent().getClass().isAssignableFrom(clazz)).findFirst();

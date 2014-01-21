@@ -3,9 +3,9 @@ package org.jacpfx.rcp.workbench;
 import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.stage.Stage;
-import org.jacpfx.api.message.Message;
 import org.jacpfx.api.component.Injectable;
 import org.jacpfx.api.componentLayout.WorkbenchLayout;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 
 /**

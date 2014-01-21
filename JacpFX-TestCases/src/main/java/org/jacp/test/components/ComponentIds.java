@@ -26,7 +26,7 @@
 package org.jacp.test.components;
 
 /**
- * Created by amo on 06.01.14.
+ * Created by Andy Moncsek on 06.01.14.
  */
 public class ComponentIds {
 

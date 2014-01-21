@@ -4,8 +4,8 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import org.jacpfx.api.annotations.workbench.Workbench;
 import org.jacpfx.api.component.Declarative;
-import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.Injectable;
+import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.context.JacpContext;
 import org.jacpfx.api.fragment.Scope;
 import org.jacpfx.api.launcher.Launcher;
@@ -39,7 +39,7 @@ public class WorkbenchUtil {
 
     /**
      * Returns an instance of the WorkbenchUtil
-     * @param launcher
+     * @param launcher the launcher instance
      * @return  The WorkbechUtil instance
      */
     public static WorkbenchUtil getInstance(final Launcher<?> launcher) {
@@ -106,20 +106,7 @@ public class WorkbenchUtil {
         initResourceBundleAttributes(perspective,perspectiveAnnotation);
     }
 
-    /**
-     * Returns the ID from annotation for a perspective
-     * @param perspective
-     * @return
-     */
-    public static String getPerspectiveIdFromAnnotation(final Perspective<EventHandler<Event>, Event, Object> perspective) {
-        final Injectable handler = perspective.getPerspective();
-        final org.jacpfx.api.annotations.perspective.Perspective perspectiveAnnotation = handler.getClass()
-                .getAnnotation(org.jacpfx.api.annotations.perspective.Perspective.class);
-        if (perspectiveAnnotation == null) throw new IllegalArgumentException("no perspective annotation found");
-        final String id = perspectiveAnnotation.id();
-        if (id == null) throw new IllegalArgumentException("no perspective id set");
-        return id;
-    }
+
 
     /**
      * Set all resource bundle attributes.
