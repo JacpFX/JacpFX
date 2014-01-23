@@ -122,11 +122,11 @@ public abstract class AFXWorkbench
 
     private void initWorkbenchHandle(final Stage stage) {
         // init user defined workspace
-        getWorkbenchHandle().handleInitialLayout(new MessageImpl("TODO", "init"),
+        handle.handleInitialLayout(new MessageImpl("TODO", "init"),
                 this.getWorkbenchLayout(), stage);
         this.setBasicLayout(stage);
 
-        getWorkbenchHandle().postHandle(new FXComponentLayout(this.getWorkbenchLayout()
+        handle.postHandle(new FXComponentLayout(this.getWorkbenchLayout()
                 .getMenu(), this.getWorkbenchLayout().getRegisteredToolbars(),
                 this.glassPane));
     }
@@ -160,14 +160,13 @@ public abstract class AFXWorkbench
         this.messageCoordinator = new MessageCoordinator(annotation.id(),this.launcher);
         this.messageCoordinator.setDelegateQueue(this.messageDelegator.getMessageDelegateQueue());
         this.context = new JacpContextImpl(annotation.id(), annotation.name(), this.messageCoordinator.getMessageQueue());
-        FXUtil.performResourceInjection(this.getWorkbenchHandle(), this.context);
+        FXUtil.performResourceInjection(this.handle, this.context);
         start(Stage.class.cast(root));
     }
 
 
     private Workbench getWorkbenchAnnotation() {
-        FXWorkbench handler = this.getWorkbenchHandle();
-        return handler.getClass().getAnnotation(Workbench.class);
+        return this.handle.getClass().getAnnotation(Workbench.class);
     }
 
     @Override
@@ -208,11 +207,11 @@ public abstract class AFXWorkbench
         // TODO create status daemon which observes
         // thread component on
         // failure and restarts if needed!!
-        ((MessageCoordinator) AFXWorkbench.this.messageCoordinator)
+        ((Thread) AFXWorkbench.this.messageCoordinator)
                 .start();
-        ((org.jacpfx.rcp.delegator.ComponentDelegator) AFXWorkbench.this.componentDelegator)
+        ((Thread) AFXWorkbench.this.componentDelegator)
                 .start();
-        ((MessageDelegatorImpl) AFXWorkbench.this.messageDelegator)
+        ((Thread) AFXWorkbench.this.messageDelegator)
                 .start();
         // handle perspectives
         AFXWorkbench.this.log("3.3: workbench init perspectives");
@@ -227,14 +226,14 @@ public abstract class AFXWorkbench
     public final void registerComponent(
             final Perspective<EventHandler<Event>, Event, Object> perspective) {
         final String perspectiveId = PerspectiveUtil.getPerspectiveIdFromAnnotation(perspective);
-        final MessageCoordinator messageCoordinator = new MessageCoordinator(perspectiveId,this.launcher);
-        messageCoordinator.setDelegateQueue(this.messageDelegator.getMessageDelegateQueue());
-        messageCoordinator.setPerspectiveHandler(this.componentHandler);
+        final MessageCoordinator messageCoordinatorLocal = new MessageCoordinator(perspectiveId,this.launcher);
+        messageCoordinatorLocal.setDelegateQueue(this.messageDelegator.getMessageDelegateQueue());
+        messageCoordinatorLocal.setPerspectiveHandler(this.componentHandler);
         // use compleatableFuture
         perspective.init(this.componentDelegator.getComponentDelegateQueue(),
                 this.messageDelegator.getMessageDelegateQueue(),
-                messageCoordinator, this.launcher);
-        messageCoordinator.start();
+                messageCoordinatorLocal, this.launcher);
+        messageCoordinatorLocal.start();
         WorkbenchUtil.handleMetaAnnotation(perspective, this.getWorkbenchAnnotation().id());
         addComponent(perspective);
     }
@@ -315,8 +314,8 @@ public abstract class AFXWorkbench
 
     private void completeLayout() {
         // fetch current workbenchsize
-        final int x = this.getWorkbenchLayout().getWorkbenchSize().getX();
-        final int y = this.getWorkbenchLayout().getWorkbenchSize().getY();
+        final int x = this.getWorkbenchLayout().getWorkbenchSize().getX().intValue();
+        final int y = this.getWorkbenchLayout().getWorkbenchSize().getY().intValue();
 
         this.absoluteRoot.getChildren().add(this.baseLayoutPane);
         this.absoluteRoot.setId(CSSUtil.CSSConstants.ID_ROOT);

@@ -446,7 +446,7 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
     }
 
     private enum JACPToolBarPosition {
-        START, MIDDLE, END;
+        START, MIDDLE, END
     }
 
 

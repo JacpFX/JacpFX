@@ -131,15 +131,15 @@ public class DefaultErrorDialog extends VBox implements EventHandler<ActionEvent
 
     private Label createInfoLabel() {
         final Label label = new Label(this.title);
-        GridPane.setColumnIndex(label, 1);
-        GridPane.setRowIndex(label, 0);
+        GridPane.setColumnIndex(label, Integer.valueOf(1));
+        GridPane.setRowIndex(label, Integer.valueOf(0));
         return label;
     }
 
     private ImageView createErrorIcon() {
         final ImageView view = new ImageView(new Image("images/error.png"));
-        GridPane.setColumnIndex(view, 0);
-        GridPane.setRowIndex(view, 0);
+        GridPane.setColumnIndex(view, Integer.valueOf(0));
+        GridPane.setRowIndex(view, Integer.valueOf(0));
         GridPane.setHalignment(view, HPos.CENTER);
         GridPane.setValignment(view, VPos.TOP);
         return view;

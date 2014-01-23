@@ -88,11 +88,11 @@ public abstract class AStatelessCallbackComponent extends ASubComponent
 	}
 
     private void initContextObject(final StatelessCallabackComponent<EventHandler<Event>, Event, Object> comp) {
-        JacpContextImpl context = JacpContextImpl.class.cast(comp.getContext());
-        context.setId(this.getContext().getId());
-        context.setActive(this.getContext().isActive());
-        context.setName(this.getContext().getName());
-        context.setExecutionTarget(JacpContextImpl.class.cast(context).getExecutionTarget());
+        JacpContextImpl currentContext = JacpContextImpl.class.cast(comp.getContext());
+        currentContext.setId(this.getContext().getId());
+        currentContext.setActive(this.getContext().isActive());
+        currentContext.setName(this.getContext().getName());
+        currentContext.setExecutionTarget(JacpContextImpl.class.cast(context).getExecutionTarget());
     }
 
 	@Override

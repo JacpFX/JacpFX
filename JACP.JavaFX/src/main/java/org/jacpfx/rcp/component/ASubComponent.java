@@ -34,6 +34,7 @@ import org.jacpfx.rcp.worker.AEmbeddedComponentWorker;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
 /**
@@ -57,7 +58,7 @@ public abstract class ASubComponent extends AComponent implements
     private volatile ComponentHandle<?, Event, Object> component;
 
 
-    private volatile AEmbeddedComponentWorker worker;
+    private volatile AtomicReference<AEmbeddedComponentWorker> workerRef = new AtomicReference<>();
 
 
     /**
@@ -163,12 +164,13 @@ public abstract class ASubComponent extends AComponent implements
         this.component = handle;
     }
 
-    public synchronized void initWorker(AEmbeddedComponentWorker worker) {
-        this.worker = worker;
-        this.worker.start();
+    public void initWorker(AEmbeddedComponentWorker worker) {
+        this.workerRef.set(worker);
+        worker.start();
     }
 
-    public synchronized void interruptWorker() {
+    public void interruptWorker() {
+        final AEmbeddedComponentWorker worker = workerRef.get();
         if(worker==null)return;
         if(worker.isAlive()) {
             worker.interrupt();

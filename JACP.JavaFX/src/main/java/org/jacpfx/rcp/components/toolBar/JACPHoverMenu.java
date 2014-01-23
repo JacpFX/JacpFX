@@ -161,14 +161,11 @@ public class JACPHoverMenu extends Button {
                 this.verticalHoverMenu.getChildren().setAll(parent, arrow);
 
                 // since the menu is on top we have to check the height, too!
-                this.verticalHoverMenu.heightProperty().addListener(new ChangeListener<Number>() {
-                    @Override
-                    public void changed(ObservableValue<? extends Number> observableValue, Number number, Number number2) {
-                        // get location of the optionbutton - top left corner
-                        translate = localToScene(getBoundsInLocal().getMinX(), getBoundsInLocal().getMinY());
-                        // menu will be cut at the left
-                        buttonYLocation.set(translate.getY() - (verticalHoverMenu.getHeight()));
-                    }
+                this.verticalHoverMenu.heightProperty().addListener((observableValue, number, number2) -> {
+                    // get location of the optionbutton - top left corner
+                    translate = localToScene(getBoundsInLocal().getMinX(), getBoundsInLocal().getMinY());
+                    // menu will be cut at the left
+                    buttonYLocation.set(translate.getY() - (verticalHoverMenu.getHeight()));
                 });
 
                 break;

@@ -65,8 +65,8 @@ public class FXWorkbenchLayout implements WorkbenchLayout<Node> {
 
 	@Override
 	public void setWorkbenchXYSize(final int x, final int y) {
-		this.size.setX(x);
-		this.size.setY(y);
+		this.size.setX(Integer.valueOf(x));
+		this.size.setY(Integer.valueOf(y));
 	}
 
 	@Override

@@ -31,7 +31,7 @@ public class MessageCoordinator extends ACoordinator implements
     private BlockingQueue<DelegateDTO<Event, Object>> delegateQueue;
     private final String parentId;
     private final Launcher<?> launcher;
-    private final String seperator = ".";
+    private static final String seperator = ".";
 
     public MessageCoordinator(final String parentId,
                               final Launcher<?> launcher) {

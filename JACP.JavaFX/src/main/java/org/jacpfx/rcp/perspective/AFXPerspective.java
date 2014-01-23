@@ -143,11 +143,11 @@ public abstract class AFXPerspective extends AComponent implements
             final SubComponent<EventHandler<Event>, Event, Object> component) {
         component.initEnv(this.getContext().getId(),
                 this.messageCoordinator.getMessageQueue());
-        final JacpContextImpl context = JacpContextImpl.class.cast(component.getContext());
-        context.setParentId(this.getContext().getId());
-        context.setFXComponentLayout(JacpContextImpl.class.cast(this.getContext()).getComponentLayout());
+        final JacpContextImpl currentContext = JacpContextImpl.class.cast(component.getContext());
+        currentContext.setParentId(this.context.getId());
+        currentContext.setFXComponentLayout(JacpContextImpl.class.cast(this.context).getComponentLayout());
         PerspectiveUtil.handleComponentMetaAnnotation(component);
-        if (context.isActive()) {
+        if (currentContext.isActive()) {
             addComponent(component);
         }
 

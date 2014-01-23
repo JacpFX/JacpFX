@@ -219,7 +219,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
                                          final Node previousContainer, final String currentTargetLayout, String newTargetLayout) {
         final Node root = component.getRoot();
         // avoid remove/add when root component did not changed!
-        if (!currentTargetLayout.equalsIgnoreCase(newTargetLayout) || root == null || root != previousContainer) {
+        if (!currentTargetLayout.equalsIgnoreCase(newTargetLayout) || root == null || !root.equals(previousContainer)) {
             // remove old view
             this.removeComponentValue(previousContainer);
         }
@@ -234,7 +234,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
         final Node root = component.getRoot();
         if (!currentTargetLayout.equals(newTargetLayout)) {
             executeLayoutTargetUpdate(component, newTargetLayout, targetComponents);
-        } else if (root != null && root != previousContainer) {
+        } else if (root != null && !root.equals(previousContainer)) {
             // add new view
             this.log(" //1.1.1.1.4// handle new component insert: "
                     + component.getContext().getName());

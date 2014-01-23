@@ -83,22 +83,21 @@ public class StateLessComponentRunWorker
 
 	@Override
 	protected void done() {
+        final Thread t = Thread.currentThread();
 		try {
-			final SubComponent<EventHandler<Event>, Event, Object> component = this.get();
+			final SubComponent<EventHandler<Event>, Event, Object> componentResult = this.get();
 			// check if component was deactivated and is still in instance list
-			if (!component.getContext().isActive()) {
+			if (!componentResult.getContext().isActive()) {
                 try{
-                    this.component.lock();
-                    if(parent.getInstances().contains(component))forceShutdown(component, parent);
+                    componentResult.lock();
+                    if(parent.getInstances().contains(componentResult))forceShutdown(componentResult, parent);
                 } finally {
-                    this.component.release();
+                    componentResult.release();
                 }
 
 			}
 		} catch (final InterruptedException | ExecutionException e) {
-			e.printStackTrace();
-			// TODO add to error queue and restart thread if messages in
-			// queue
+			t.getUncaughtExceptionHandler().uncaughtException(t,e);
 		}
 
     }
