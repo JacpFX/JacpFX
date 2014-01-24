@@ -1,25 +1,27 @@
-/************************************************************************
+/*
+ * **********************************************************************
  *
- * Copyright (C) 2010 - 2014
+ *  Copyright (C) 2010 - 2014
  *
- * [PerspectiveOne.java]
- * JACPFX Project (https://github.com/JacpFX/JacpFX/)
- * All rights reserved.
+ *  [Component.java]
+ *  JACPFX Project (https://github.com/JacpFX/JacpFX/)
+ *  All rights reserved.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at 
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0 
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an "AS IS"
- * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either 
- * express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an "AS IS"
+ *  BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *  express or implied. See the License for the specific language
+ *  governing permissions and limitations under the License.
  *
  *
- ************************************************************************/
+ * *********************************************************************
+ */
 package org.jacp.test.perspectives;
 
 import javafx.event.Event;
@@ -31,21 +33,18 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import org.jacpfx.api.message.Message;
-import org.jacpfx.api.annotations.Resource;
+import org.jacp.test.main.ApplicationLauncher;
 import org.jacpfx.api.annotations.lifecycle.OnShow;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
 import org.jacpfx.api.annotations.perspective.Perspective;
-import org.jacpfx.rcp.componentLayout.PerspectiveLayout;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
-import org.jacpfx.rcp.context.Context;
+import org.jacpfx.rcp.componentLayout.PerspectiveLayout;
 import org.jacpfx.rcp.perspective.FXPerspective;
 import org.jacpfx.rcp.util.FXUtil.MessageUtil;
-import org.jacp.test.main.ApplicationLauncherAsyncCallbackComponentMessaginTest1;
 
 import java.util.ResourceBundle;
-import java.util.concurrent.CountDownLatch;
 
 /**
  * A simple perspective defining a split pane
@@ -53,29 +52,26 @@ import java.util.concurrent.CountDownLatch;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@Perspective(id = PerspectiveIds.PerspectiveAsyncCallbackComponentMessagingTest1, name = "contactPerspective",
-        components = {"id011", "id012"},
-        // viewLocation = "/fxml/perspectiveOne.fxml",
+@Perspective(id = PerspectiveIds.PerspectiveContextTest, name = "contactPerspective",
+        components = {
+                "id002"},
+        viewLocation = "/fxml/perspectiveOne.fxml",
         resourceBundleLocation = "bundles.languageBundle",
         localeID = "en_US")
-public class PerspectiveAsyncCallbackComponentMessagingTest1 implements FXPerspective {
-
+public class PerspectiveContextTest implements FXPerspective {
+    @FXML
     private HBox content1;
-
+    @FXML
     private HBox content2;
-
+    @FXML
     private HBox content3;
-
-    private static Context context;
-
-    public static CountDownLatch wait = new CountDownLatch(1);
 
     @Override
     public void handlePerspective(final Message<Event, Object> action,
                                   final PerspectiveLayout perspectiveLayout) {
         if (action.messageBodyEquals(MessageUtil.INIT)) {
 
-            perspectiveLayout.registerRootComponent(createRoot());
+            //perspectiveLayout.registerRootComponent(createRoot());
             GridPane.setVgrow(perspectiveLayout.getRootComponent(),
                     Priority.ALWAYS);
             GridPane.setHgrow(perspectiveLayout.getRootComponent(),
@@ -88,11 +84,10 @@ public class PerspectiveAsyncCallbackComponentMessagingTest1 implements FXPerspe
                     this.content2);
             perspectiveLayout.registerTargetLayoutComponent("content2",
                     this.content3);
-            ApplicationLauncherAsyncCallbackComponentMessaginTest1.latch.countDown();
+            ApplicationLauncher.latch.countDown();
         }
 
     }
-
 
     private Node createRoot() {
         BorderPane pane = new BorderPane();
@@ -130,7 +125,6 @@ public class PerspectiveAsyncCallbackComponentMessagingTest1 implements FXPerspe
      */
     public void onStartPerspective(final FXComponentLayout layout,
                                    final ResourceBundle resourceBundle) {
-
 
     }
 

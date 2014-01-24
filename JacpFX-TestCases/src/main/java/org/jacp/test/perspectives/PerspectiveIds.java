@@ -37,4 +37,5 @@ public class PerspectiveIds {
     public static final String PerspectiveCallbackComponentMessagingTest1 = "id14";
     public static final String PerspectiveComponentMessagingTest1 = "id13";
     public static final String PerspectiveDialogInPerspectiveTest = "id30";
+    public static final String PerspectiveContextTest = "id31";
 }
