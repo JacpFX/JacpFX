@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2014
  *
  * [FX2ComponentLayout.java]
@@ -29,48 +29,53 @@ import org.jacpfx.api.util.ToolbarPosition;
 import org.jacpfx.rcp.components.menuBar.JACPMenuBar;
 import org.jacpfx.rcp.components.toolBar.JACPToolBar;
 
+import java.util.Collections;
 import java.util.Map;
 
 /**
  * A FX2ComponentLayout acts as an wrapper to the references of the main menu
  * and the defined bar entries; The menu and the bars are defined in the
  * workbench instance at application startup.
- * 
+ *
  * @author Andy Moncsek
- * 
  */
 public class FXComponentLayout implements BaseLayout<Node> {
-	private final Map<ToolbarPosition, JACPToolBar> registeredToolBars;
-	private final JACPMenuBar menu;
-	private final Pane glassPane;
+    private final Map<ToolbarPosition, JACPToolBar> registeredToolBars;
+    private final JACPMenuBar menu;
+    private final Pane glassPane;
 
-	public FXComponentLayout(final JACPMenuBar menu,
-			final Map<ToolbarPosition, JACPToolBar> registeredToolBars,
-			final Pane glassPane) {
-		this.menu = menu;
-		this.registeredToolBars = registeredToolBars;
-		this.glassPane = glassPane;
+    public FXComponentLayout(final JACPMenuBar menu,
+                             final Map<ToolbarPosition, JACPToolBar> registeredToolBars,
+                             final Pane glassPane) {
+        this.menu = menu;
+        this.registeredToolBars = registeredToolBars;
+        this.glassPane = glassPane;
 
-	}
+    }
 
-	public FXComponentLayout(final FXWorkbenchLayout layout) {
-		this(layout.getMenu(), layout.getRegisteredToolbars(), layout
-				.getGlassPane());
-	}
+    public FXComponentLayout(final FXWorkbenchLayout layout) {
+        this(layout.getMenu(), layout.getRegisteredToolBars(), layout
+                .getGlassPane());
+    }
 
-	@Override
-	public JACPToolBar getRegisteredToolBar(final ToolbarPosition position) {
-		return this.registeredToolBars.get(position);
-	}
+    @Override
+    public JACPToolBar getRegisteredToolBar(final ToolbarPosition position) {
+        return this.registeredToolBars.get(position);
+    }
 
-	@Override
-	public final JACPMenuBar getMenu() {
-		return this.menu;
-	}
+    @Override
+    public Map<ToolbarPosition, JACPToolBar> getRegisteredToolBars() {
+        return Collections.unmodifiableMap(this.registeredToolBars);
+    }
 
-	@Override
-	public final Pane getGlassPane() {
-		return this.glassPane;
-	}
+    @Override
+    public final JACPMenuBar getMenu() {
+        return this.menu;
+    }
+
+    @Override
+    public final Pane getGlassPane() {
+        return this.glassPane;
+    }
 
 }

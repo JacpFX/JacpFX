@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.lifecycle.OnHide;
@@ -73,14 +74,14 @@ public class PerspectiveTestTwoB implements FXPerspective {
     @OnHide
     public void onHide(final FXComponentLayout layout) {
         final JACPToolBar north = layout.getRegisteredToolBar(ToolbarPosition.SOUTH);
-        final List<Node> breadCrumbButtons = north.getNodes("id02");
+        final List<Region> breadCrumbButtons = north.getNodes("id02");
         setVisibility(breadCrumbButtons, false);
     }
 
     @OnShow
     public void onShow(final FXComponentLayout layout) {
         final JACPToolBar north = layout.getRegisteredToolBar(ToolbarPosition.SOUTH);
-        final List<Node> breadCrumbButtons = north.getNodes("id02");
+        final List<Region> breadCrumbButtons = north.getNodes("id02");
         setVisibility(breadCrumbButtons, true);
     }
 
@@ -95,7 +96,7 @@ public class PerspectiveTestTwoB implements FXPerspective {
 
     }
 
-    private void setVisibility(List<Node> nodes, boolean visibility) {
+    private void setVisibility(List<Region> nodes, boolean visibility) {
         nodes.forEach(n -> n.setVisible(visibility));
     }
 

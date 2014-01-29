@@ -30,55 +30,56 @@ import org.jacpfx.api.util.Tupel;
 import org.jacpfx.rcp.components.menuBar.JACPMenuBar;
 import org.jacpfx.rcp.components.toolBar.JACPToolBar;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 
 /**
  * defines basic layout of workbench; define if menus are enabled; declare tool
  * bars; set workbench size
- * 
+ *
  * @author Andy Moncsek
  */
 public class FXWorkbenchLayout implements WorkbenchLayout<Node> {
 
-	private boolean menueEnabled;
-	private final Tupel<Integer, Integer> size = new Tupel<>();
-	private final Map<ToolbarPosition, JACPToolBar> registeredToolbars = new TreeMap<>();
-	private JACPMenuBar menu;
-	private Pane glassPane;
-	private StageStyle style = StageStyle.DECORATED;
+    private boolean menueEnabled;
+    private final Tupel<Integer, Integer> size = new Tupel<>();
+    private final Map<ToolbarPosition, JACPToolBar> registeredToolBars = new TreeMap<>();
+    private JACPMenuBar menu;
+    private Pane glassPane;
+    private StageStyle style = StageStyle.DECORATED;
 
-	@Override
-	public boolean isMenuEnabled() {
-		return this.menueEnabled;
-	}
+    @Override
+    public boolean isMenuEnabled() {
+        return this.menueEnabled;
+    }
 
-	@Override
-	public void setMenuEnabled(final boolean enabled) {
-		this.menueEnabled = enabled;
-		if (enabled && this.menu == null) {
-			this.menu = new JACPMenuBar();
-			this.menu.setId("main-menu");
-			checkWindowButtons();
-		}
-	}
+    @Override
+    public void setMenuEnabled(final boolean enabled) {
+        this.menueEnabled = enabled;
+        if (enabled && this.menu == null) {
+            this.menu = new JACPMenuBar();
+            this.menu.setId("main-menu");
+            checkWindowButtons();
+        }
+    }
 
-	@Override
-	public void setWorkbenchXYSize(final int x, final int y) {
-		this.size.setX(Integer.valueOf(x));
-		this.size.setY(Integer.valueOf(y));
-	}
+    @Override
+    public void setWorkbenchXYSize(final int x, final int y) {
+        this.size.setX(Integer.valueOf(x));
+        this.size.setY(Integer.valueOf(y));
+    }
 
-	@Override
-	public Tupel<Integer, Integer> getWorkbenchSize() {
-		return this.size;
-	}
+    @Override
+    public Tupel<Integer, Integer> getWorkbenchSize() {
+        return this.size;
+    }
 
-	private JACPToolBar initToolBar(final ToolbarPosition position) {
-		final JACPToolBar bar = new JACPToolBar();
-		bar.setId(position.getName() + "-bar");
-		return bar;
-	}
+    private JACPToolBar initToolBar(final ToolbarPosition position) {
+        final JACPToolBar bar = new JACPToolBar();
+        bar.setId(position.getName() + "-bar");
+        return bar;
+    }
 
     @Override
     public void registerToolBars(final ToolbarPosition... positions){
@@ -87,54 +88,50 @@ public class FXWorkbenchLayout implements WorkbenchLayout<Node> {
         }
     }
 
-	@Override
-	public void registerToolBar(final ToolbarPosition position) {
-		this.registeredToolbars.put(position, this.initToolBar(position));
-	}
+    @Override
+    public void registerToolBar(final ToolbarPosition position) {
+        this.registeredToolBars.put(position, this.initToolBar(position));
+    }
 
-	@SuppressWarnings("rawtypes")
-	@Override
-	public <S extends Enum> void setStyle(final S style) {
-		this.style = (StageStyle) style;
-		checkWindowButtons();
-	}
+    @SuppressWarnings("rawtypes")
+    @Override
+    public <S extends Enum> void setStyle(final S style) {
+        this.style = (StageStyle) style;
+        checkWindowButtons();
+    }
 
-	private void checkWindowButtons() {
-		if (this.menu != null && StageStyle.DECORATED.equals(style))
-			this.menu.deregisterWindowButtons();
-	}
+    private void checkWindowButtons() {
+        if (this.menu != null && StageStyle.DECORATED.equals(style))
+            this.menu.deregisterWindowButtons();
+    }
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	public <S extends Enum> S getStyle() {
-		return (S) this.style;
-	}
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Override
+    public <S extends Enum> S getStyle() {
+        return (S) this.style;
+    }
 
-	@Override
-	public JACPMenuBar getMenu() {
-		return this.menu;
-	}
+    @Override
+    public JACPMenuBar getMenu() {
+        return this.menu;
+    }
 
-	/**
-	 * Gets the registered toolbars.
-	 * 
-	 * @return the registered toolbars
-	 */
-	public Map<ToolbarPosition, JACPToolBar> getRegisteredToolbars() {
-		return this.registeredToolbars;
-	}
+    @Override
+    public JACPToolBar getRegisteredToolBar(final ToolbarPosition position) {
+        return this.registeredToolBars.get(position);
+    }
 
-	@Override
-	public JACPToolBar getRegisteredToolBar(final ToolbarPosition position) {
-		return this.registeredToolbars.get(position);
-	}
+    @Override
+    public Map<ToolbarPosition, JACPToolBar> getRegisteredToolBars() {
+        return Collections.unmodifiableMap(this.registeredToolBars);
+    }
 
-	@Override
-	public Pane getGlassPane() {
-		if (this.glassPane == null) {
-			this.glassPane = new Pane();
-		}
-		return this.glassPane;
-	}
+    @Override
+    public Pane getGlassPane() {
+        if (this.glassPane == null) {
+            this.glassPane = new Pane();
+        }
+        return this.glassPane;
+    }
 
 }

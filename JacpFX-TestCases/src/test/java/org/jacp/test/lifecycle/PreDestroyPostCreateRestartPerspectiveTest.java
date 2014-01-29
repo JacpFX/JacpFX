@@ -1,4 +1,4 @@
-package org.jacp.test.lifesycle;
+package org.jacp.test.lifecycle;
 
 import javafx.application.Platform;
 import javafx.event.Event;

@@ -1,30 +1,26 @@
-package org.jacp.doublePerspective.test.perspectives;
+package org.jacp.test.perspectives;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import org.jacpfx.api.message.Message;
+import org.jacp.test.components.ComponentIds;
+import org.jacp.test.main.ApplicationLauncher;
 import org.jacpfx.api.annotations.Resource;
-import org.jacpfx.api.annotations.lifecycle.OnHide;
-import org.jacpfx.api.annotations.lifecycle.OnShow;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
 import org.jacpfx.api.annotations.perspective.Perspective;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.api.util.ToolbarPosition;
-import org.jacpfx.rcp.componentLayout.PerspectiveLayout;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
+import org.jacpfx.rcp.componentLayout.PerspectiveLayout;
 import org.jacpfx.rcp.components.toolBar.JACPToolBar;
 import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.perspective.FXPerspective;
 import org.jacpfx.rcp.util.FXUtil;
-import org.jacp.test.main.ApplicationLauncher;
 
-import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -34,12 +30,12 @@ import java.util.ResourceBundle;
  * Time: 16:01
  * To change this template use File | Settings | File Templates.
  */
-@Perspective(id = "id02", name = "contactPerspective",
-        components = {""},
-        viewLocation = "/fxml/perspectiveOne.fxml",
+@Perspective(id = PerspectiveIds.PerspectiveToolbarOne, name = "toolBarOnePerspective",
+        components = {ComponentIds.ComponentHandleToolBarBetweenPerspectives1},
+        viewLocation = "/fxml/toolBarperspectiveOne.fxml",
         resourceBundleLocation = "bundles.languageBundle",
         localeID = "en_US", active = true)
-public class PerspectiveTestTwoA implements FXPerspective {
+public class PerspectiveToolbarOne implements FXPerspective {
     @FXML
     private HBox content1;
     @FXML
@@ -71,20 +67,6 @@ public class PerspectiveTestTwoA implements FXPerspective {
 
     }
 
-    @OnHide
-    public void onHide() {
-        final JACPToolBar north = context.getComponentLayout().getRegisteredToolBar(ToolbarPosition.SOUTH);
-        final List<Region> breadCrumbButtons = north.getNodes("id02");
-        setVisibility(breadCrumbButtons, false);
-    }
-
-    @OnShow
-    public void onShow(final FXComponentLayout layout) {
-        final JACPToolBar north = layout.getRegisteredToolBar(ToolbarPosition.SOUTH);
-        final List<Region> breadCrumbButtons = north.getNodes("id02");
-        setVisibility(breadCrumbButtons, true);
-    }
-
     @PostConstruct
     /**
      * @OnStart annotated method will be executed when component is activated.
@@ -93,19 +75,15 @@ public class PerspectiveTestTwoA implements FXPerspective {
      */
     public void onStartPerspective(final FXComponentLayout layout,
                                    final ResourceBundle resourceBundle) {
-        System.out.println("START" + layout);
-        final JACPToolBar toolbar = layout.getRegisteredToolBar(ToolbarPosition.SOUTH);
-        final Button p1 = new Button("Perspective A");
-        p1.setOnMouseClicked(context.getEventHandler("id02", "show"));
-        final Button p2 = new Button("Perspective B");
-        p2.setOnMouseClicked(context.getEventHandler("id03", "show"));
-        p1.setVisible(false);
-        p2.setVisible(false);
-        toolbar.addAllOnEnd("id02", p1, p2);
-    }
-
-    private void setVisibility(List<Region> nodes, boolean visibility) {
-        nodes.forEach(n -> n.setVisible(visibility));
+        System.out.println("START " + layout);
+        final JACPToolBar toolbar = layout.getRegisteredToolBar(ToolbarPosition.NORTH);
+        final Button p1 = new Button("Perspective A " + PerspectiveIds.PerspectiveToolbarOne);
+        p1.setOnMouseClicked((event) -> context.send(PerspectiveIds.PerspectiveToolbarOne, "show"));
+        final Button p2 = new Button("Perspective B " + PerspectiveIds.PerspectiveToolbarOne);
+        p2.setOnMouseClicked((event) -> context.send(PerspectiveIds.PerspectiveToolbarTwo, "show"));
+        final Button p3 = new Button("GLOBAL");
+        toolbar.addAll(p1, p2);
+        toolbar.add("myId", p3);
     }
 
     @PreDestroy
