@@ -34,6 +34,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import org.jacp.test.main.ApplicationLauncher;
+import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.lifecycle.OnShow;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
@@ -41,6 +42,7 @@ import org.jacpfx.api.annotations.perspective.Perspective;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.componentLayout.PerspectiveLayout;
+import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.perspective.FXPerspective;
 import org.jacpfx.rcp.util.FXUtil.MessageUtil;
 
@@ -65,6 +67,9 @@ public class PerspectiveContextTest implements FXPerspective {
     private HBox content2;
     @FXML
     private HBox content3;
+
+    @Resource
+    public static Context context;
 
     @Override
     public void handlePerspective(final Message<Event, Object> action,

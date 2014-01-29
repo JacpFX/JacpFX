@@ -30,8 +30,7 @@ import javafx.stage.Stage;
 import org.jacpfx.api.handler.ErrorDialogHandler;
 import org.jacpfx.rcp.handler.AErrorDialogHandler;
 import org.jacpfx.rcp.workbench.FXWorkbench;
-import org.jacpfx.spring.launcher.AFXSpringLauncher;
-import org.jacp.test.workbench.WorkbenchPredestroyPerspectiveTest;
+import org.jacpfx.spring.launcher.AFXSpringXmlLauncher;
 import org.jacp.test.workbench.WorkbenchShutdownAndReopenComponentsTest;
 
 import java.net.URL;
@@ -43,7 +42,7 @@ import java.util.logging.Logger;
  *
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
-public class ApplicationShutdownAndRestartComponentsTest extends AFXSpringLauncher {
+public class ApplicationShutdownAndRestartComponentsTest extends AFXSpringXmlLauncher {
     private static final Logger log = Logger.getLogger(ApplicationShutdownAndRestartComponentsTest.class
             .getName());
     public static final String[] STYLES = new String[2];
@@ -54,12 +53,15 @@ public class ApplicationShutdownAndRestartComponentsTest extends AFXSpringLaunch
     public static volatile ApplicationShutdownAndRestartComponentsTest[] instance = new ApplicationShutdownAndRestartComponentsTest[1];
     public static AErrorDialogHandler exceptionhandler;
     public ApplicationShutdownAndRestartComponentsTest() {
-        super("main.xml");
     }
 
     public ApplicationShutdownAndRestartComponentsTest(CountDownLatch latch) {
-        super("main.xml");
         this.latch = latch;
+    }
+
+    @Override
+    public String getXmlConfig() {
+        return "main.xml";
     }
 
     /**

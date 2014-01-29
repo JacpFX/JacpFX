@@ -2,7 +2,7 @@
  * 
  * Copyright (C) 2010 - 2013
  *
- * [SpringLauncher.java]
+ * [SpringXmlConfigLauncher.java]
  * JACPFX Project (https://github.com/JacpFX/JacpFX/)
  * All rights reserved.
  *
@@ -37,12 +37,12 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * @author Andy Moncsek
  * 
  */
-public class SpringLauncher implements Launcher<ClassPathXmlApplicationContext> {
+public class SpringXmlConfigLauncher implements Launcher<ClassPathXmlApplicationContext> {
 	private final ClassPathXmlApplicationContext context;
 	private final ConfigurableListableBeanFactory factory;
 	private final String BASIC_CONFIG_BEANS = "basic.xml";
 
-	public SpringLauncher(final String resource) {
+	public SpringXmlConfigLauncher(final String resource) {
 		this.context = new ClassPathXmlApplicationContext(new String[] {
 				resource, this.BASIC_CONFIG_BEANS });
 		this.factory = this.context.getBeanFactory();

@@ -62,7 +62,7 @@ import java.util.List;
 public class WorkbenchContextTest implements FXWorkbench {
     private Stage stage;
     @Resource
-    Context context;
+    public static Context context;
 
     @Override
     public void handleInitialLayout(final Message<Event, Object> action,

@@ -27,7 +27,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.jacpfx.rcp.workbench.FXWorkbench;
-import org.jacpfx.spring.launcher.AFXSpringLauncher;
+import org.jacpfx.spring.launcher.AFXSpringXmlLauncher;
 import org.jacp.test.workbench.WorkbenchPerspectiveMessageTesting;
 
 import java.net.URL;
@@ -39,7 +39,7 @@ import java.util.logging.Logger;
  *
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
-public class ApplicationLauncherPerspectiveMessaginTest extends AFXSpringLauncher {
+public class ApplicationLauncherPerspectiveMessaginTest extends AFXSpringXmlLauncher {
     private static final Logger log = Logger.getLogger(ApplicationLauncherPerspectiveMessaginTest.class
             .getName());
     public static final String[] STYLES = new String[2];
@@ -50,12 +50,15 @@ public class ApplicationLauncherPerspectiveMessaginTest extends AFXSpringLaunche
     public static volatile ApplicationLauncherPerspectiveMessaginTest[] instance = new ApplicationLauncherPerspectiveMessaginTest[1];
 
     public ApplicationLauncherPerspectiveMessaginTest() {
-        super("main.xml");
     }
 
     public ApplicationLauncherPerspectiveMessaginTest(CountDownLatch latch) {
-        super("main.xml");
         this.latch = latch;
+    }
+
+    @Override
+    public String getXmlConfig() {
+        return "main.xml";
     }
 
     /**

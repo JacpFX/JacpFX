@@ -131,11 +131,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>jemmyfx</groupId>
-            <artifactId>jemmyfx</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/lib/JemmyCore.jar</systemPath>
+            <groupId>org.loadui</groupId>
+            <artifactId>testFx</artifactId>
+            <version>3.0.0 </version>
         </dependency>
     </dependencies>
 </project>

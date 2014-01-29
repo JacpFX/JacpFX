@@ -27,7 +27,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.jacpfx.rcp.workbench.FXWorkbench;
-import org.jacpfx.spring.launcher.AFXSpringLauncher;
+import org.jacpfx.spring.launcher.AFXSpringXmlLauncher;
 
 import java.net.URL;
 import java.util.concurrent.CountDownLatch;
@@ -38,7 +38,7 @@ import java.util.logging.Logger;
  *
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
-public class ApplicationLauncherMissconfigWorkbench extends AFXSpringLauncher {
+public class ApplicationLauncherMissconfigWorkbench extends AFXSpringXmlLauncher {
     private static final Logger log = Logger.getLogger(ApplicationLauncherMissconfigWorkbench.class
             .getName());
     public static final String[] STYLES = new String[2];
@@ -49,12 +49,15 @@ public class ApplicationLauncherMissconfigWorkbench extends AFXSpringLauncher {
     public static volatile ApplicationLauncherMissconfigWorkbench[] instance = new ApplicationLauncherMissconfigWorkbench[1];
 
     public ApplicationLauncherMissconfigWorkbench() {
-        super("main.xml");
     }
 
     public ApplicationLauncherMissconfigWorkbench(CountDownLatch latch) {
-        super("main.xml");
         this.latch = latch;
+    }
+
+    @Override
+    public String getXmlConfig() {
+        return "main.xml";
     }
 
     /**

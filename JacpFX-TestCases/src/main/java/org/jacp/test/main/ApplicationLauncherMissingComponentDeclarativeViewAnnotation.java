@@ -27,7 +27,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.jacpfx.rcp.workbench.FXWorkbench;
-import org.jacpfx.spring.launcher.AFXSpringLauncher;
+import org.jacpfx.spring.launcher.AFXSpringXmlLauncher;
 import org.jacp.test.workbench.WorkbenchMissingComponentDeclarativeViewAnnotation;
 
 import java.net.URL;
@@ -39,7 +39,7 @@ import java.util.logging.Logger;
  *
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
-public class ApplicationLauncherMissingComponentDeclarativeViewAnnotation extends AFXSpringLauncher {
+public class ApplicationLauncherMissingComponentDeclarativeViewAnnotation extends AFXSpringXmlLauncher {
     private static final Logger log = Logger.getLogger(ApplicationLauncherMissingComponentDeclarativeViewAnnotation.class
             .getName());
     public static final String[] STYLES = new String[2];
@@ -50,12 +50,15 @@ public class ApplicationLauncherMissingComponentDeclarativeViewAnnotation extend
     public static volatile ApplicationLauncherMissingComponentDeclarativeViewAnnotation[] instance = new ApplicationLauncherMissingComponentDeclarativeViewAnnotation[1];
 
     public ApplicationLauncherMissingComponentDeclarativeViewAnnotation() {
-        super("main.xml");
     }
 
     public ApplicationLauncherMissingComponentDeclarativeViewAnnotation(CountDownLatch latch) {
-        super("main.xml");
         this.latch = latch;
+    }
+
+    @Override
+    public String getXmlConfig() {
+        return "main.xml";
     }
 
     /**

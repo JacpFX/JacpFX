@@ -27,12 +27,10 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import org.jacp.test.dialogs.CustomErrorDialogHandler;
 import org.jacpfx.api.handler.ErrorDialogHandler;
 import org.jacpfx.rcp.handler.AErrorDialogHandler;
-import org.jacpfx.rcp.handler.DefaultErrorDialogHandler;
 import org.jacpfx.rcp.workbench.FXWorkbench;
-import org.jacpfx.spring.launcher.AFXSpringLauncher;
+import org.jacpfx.spring.launcher.AFXSpringXmlLauncher;
 import org.jacp.test.workbench.WorkbenchMissingComponentInitialTargetId;
 
 import java.net.URL;
@@ -44,7 +42,7 @@ import java.util.logging.Logger;
  *
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
-public class ApplicationLauncherMissingComponentInitialTargetId extends AFXSpringLauncher {
+public class ApplicationLauncherMissingComponentInitialTargetId extends AFXSpringXmlLauncher {
     private static final Logger log = Logger.getLogger(ApplicationLauncherMissingComponentInitialTargetId.class
             .getName());
     public static final String[] STYLES = new String[2];
@@ -56,12 +54,15 @@ public class ApplicationLauncherMissingComponentInitialTargetId extends AFXSprin
     public static volatile ApplicationLauncherMissingComponentInitialTargetId[] instance = new ApplicationLauncherMissingComponentInitialTargetId[1];
      public static AErrorDialogHandler exceptionhandler;
     public ApplicationLauncherMissingComponentInitialTargetId() {
-        super("main.xml");
     }
 
     public ApplicationLauncherMissingComponentInitialTargetId(CountDownLatch latch) {
-        super("main.xml");
         this.latch = latch;
+    }
+
+    @Override
+    public String getXmlConfig() {
+        return "main.xml";
     }
 
     /**

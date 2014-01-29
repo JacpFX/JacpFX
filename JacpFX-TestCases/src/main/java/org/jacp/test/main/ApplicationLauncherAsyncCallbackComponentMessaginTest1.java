@@ -27,7 +27,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.jacpfx.rcp.workbench.FXWorkbench;
-import org.jacpfx.spring.launcher.AFXSpringLauncher;
+import org.jacpfx.spring.launcher.AFXSpringXmlLauncher;
 import org.jacp.test.workbench.WorkbenchAsyncCallbackComponentMessageTesting1;
 
 import java.net.URL;
@@ -39,7 +39,7 @@ import java.util.logging.Logger;
  *
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
-public class ApplicationLauncherAsyncCallbackComponentMessaginTest1 extends AFXSpringLauncher {
+public class ApplicationLauncherAsyncCallbackComponentMessaginTest1 extends AFXSpringXmlLauncher {
     private static final Logger log = Logger.getLogger(ApplicationLauncherAsyncCallbackComponentMessaginTest1.class
             .getName());
     public static final String[] STYLES = new String[2];
@@ -50,12 +50,15 @@ public class ApplicationLauncherAsyncCallbackComponentMessaginTest1 extends AFXS
     public static volatile ApplicationLauncherAsyncCallbackComponentMessaginTest1[] instance = new ApplicationLauncherAsyncCallbackComponentMessaginTest1[1];
 
     public ApplicationLauncherAsyncCallbackComponentMessaginTest1() {
-        super("main.xml");
     }
 
     public ApplicationLauncherAsyncCallbackComponentMessaginTest1(CountDownLatch latch) {
-        super("main.xml");
         this.latch = latch;
+    }
+
+    @Override
+    public String getXmlConfig() {
+        return "main.xml";
     }
 
     /**
