@@ -48,6 +48,7 @@ import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.componentLayout.FXMLPerspectiveLayout;
 import org.jacpfx.rcp.componentLayout.FXPerspectiveLayout;
 import org.jacpfx.rcp.componentLayout.FXWorkbenchLayout;
+import org.jacpfx.rcp.components.toolBar.JACPToolBar;
 import org.jacpfx.rcp.context.JacpContextImpl;
 import org.jacpfx.rcp.message.MessageImpl;
 import org.jacpfx.rcp.perspective.AFXPerspective;
@@ -228,14 +229,15 @@ public class PerspectiveHandlerImpl implements
         final Node currentRoot = component.getRoot();
         if (children == null || currentRoot == null) return;
         int index = children.indexOf(currentRoot);
-        if (index<0) {
+        if (index < 0) {
             addNewRoot(children, currentRoot);
         } else {
-            bringRootToFront(index,children, currentRoot);
+            bringRootToFront(index, children, currentRoot);
         }
+
     }
 
-    private void bringRootToFront(int index,final ObservableList<Node> children, final Node root) {
+    private void bringRootToFront(int index, final ObservableList<Node> children, final Node root) {
         if (index != 0) {
             children.remove(index);
             GridPane.setHgrow(root, Priority.ALWAYS);
@@ -266,6 +268,19 @@ public class PerspectiveHandlerImpl implements
         replaceRootNodes(children, oldComp, newComp);
 
         newComp.setVisible(true);
+    }
+
+    private void handleToolBarButtons(final Perspective<EventHandler<Event>, Event, Object> perspective, final boolean visible) {
+        logger.info("handleToolBarButtons >" + perspective.getPerspective().getClass().getName() + "<");
+        for (final Node node : this.workbenchLayout.getRegisteredToolBars().values()) {
+            JACPToolBar toolBar = (JACPToolBar) node;
+            if (visible) {
+                toolBar.showButtons(perspective);
+            } else {
+                toolBar.hideButtons(perspective);
+            }
+
+        }
     }
 
     private void replaceRootNodes(final ObservableList<Node> children, final Node oldComp, final Node newComp) {
@@ -420,6 +435,8 @@ public class PerspectiveHandlerImpl implements
         if (previousPerspective != null && !previousPerspective.equals(perspective)) {
             final PerspectiveView<Node, EventHandler<Event>, Event, Object> perspectiveView = ((PerspectiveView<Node, EventHandler<Event>, Event, Object>) previousPerspective);
             final FXComponentLayout layout = new FXComponentLayout(this.getWorkbenchLayout());
+            this.handleToolBarButtons(previousPerspective, false);
+            this.handleToolBarButtons(perspective, true);
             FXUtil.invokeHandleMethodsByAnnotation(OnHide.class, previousPerspective.getPerspective(), layout,
                     perspectiveView.getType().equals(UIType.DECLARATIVE) ? perspectiveView.getDocumentURL() : null, perspectiveView.getContext().getResourceBundle());
 

@@ -22,7 +22,10 @@
  ************************************************************************/
 package org.jacpfx.api.componentLayout;
 
+import javafx.scene.Node;
 import org.jacpfx.api.util.ToolbarPosition;
+
+import java.util.Map;
 
 /**
  * Defines a bean containing the defined tool bars and the main menu
@@ -39,6 +42,14 @@ public interface BaseLayout<C> {
      * @return the registered tool bar
      */
     C getRegisteredToolBar(ToolbarPosition position);
+
+
+    /**
+     * Gets all registered tool bars.
+     *
+     * @return all registered tool bars
+     */
+    Map<ToolbarPosition, ? extends Node> getRegisteredToolBars();
 
     /**
      * Returns the application menu instance.

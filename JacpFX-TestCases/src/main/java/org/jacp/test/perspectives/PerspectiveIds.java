@@ -26,16 +26,37 @@
 package org.jacp.test.perspectives;
 
 /**
- * Created by Andy Moncsek on 06.01.14.
+ * Created by amo on 06.01.14.
  */
 public class PerspectiveIds {
 
     public static final String PerspectiveOne = "id01";
     public static final String PerspectiveTestTwoA = "id02";
     public static final String PerspectiveTestTwoB = "id03";
+    public static final String PerspectiveToolbarOne = "id38";
+    public static final String PerspectiveToolbarTwo = "id37";
     public static final String PerspectiveAsyncCallbackComponentMessagingTest1 = "id15";
     public static final String PerspectiveCallbackComponentMessagingTest1 = "id14";
     public static final String PerspectiveComponentMessagingTest1 = "id13";
     public static final String PerspectiveDialogInPerspectiveTest = "id30";
     public static final String PerspectiveContextTest = "id31";
+
+
+    public static final String PerspectiveMessagingTestP1 = "id10";
+    public static final String PerspectiveMessagingTestP2 = "id11";
+    public static final String PerspectiveMessagingTestP3 = "id12";
+
+    public static final String PerspectiveMissingComponentDeclarativeViewAnnotation = "id08";
+    public static final String PerspectiveMissingComponentInitialTargetId = "id09";
+    public static final String PerspectiveMissingComponents = "id04";
+    public static final String PerspectiveMissingComponentsIds = "id06";
+    public static final String PerspectiveMissingComponentViewAnnotation = "id07";
+    public static final String PerspectiveMissingIdInPerspective = "id30";
+    public static final String PerspectiveOnePredestroyPerspectiveTest = "id17";
+    public static final String PerspectiveTwoPredestroyPerspectiveTest = "id18";
+    public static final String PerspectiveShutdownAndRestartComponents = "id19";
+    public static final String PerspectiveOneMoveComponentsBetweenPerspectives = "id20";
+    public static final String PerspectiveTwoMoveComponentsBetweenPerspectives = "id21";
+    public static final String PerspectiveOneLifecycleAnnotationTest1 = "id01_x1";
+    public static final String PerspectiveTwoLifecycleAnnotationTest1 = "id01_x2";
 }

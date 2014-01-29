@@ -23,7 +23,7 @@
  * *********************************************************************
  */
 
-package org.jacp.test.lifesycle;
+package org.jacp.test.lifecycle;
 
 import javafx.scene.Node;
 import org.jacpfx.rcp.handler.AErrorDialogHandler;

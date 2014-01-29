@@ -25,15 +25,17 @@ package org.jacpfx.rcp.components.toolBar;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ToolBar;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import org.jacpfx.api.component.Perspective;
+import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.util.CustomSecurityManager;
 import org.jacpfx.rcp.util.CSSUtil;
 
@@ -47,15 +49,19 @@ import static org.jacpfx.rcp.util.CSSUtil.CSSConstants.CLASS_JACP_TOOL_BAR;
 /**
  * The Class JACPToolBar.
  *
- * @author Patrick Symmangk
+ * @author: Patrick Symmangk (pete.jacp@gmail.com)
  */
 public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>, ListChangeListener<Node> {
 
     private final static CustomSecurityManager customSecurityManager = new CustomSecurityManager();
 
-    private final Map<String, List<Node>> nodeMap = new HashMap<>();
+    private final Map<String, List<Region>> regionMap = new HashMap<>();
+
+    private final List<String> manualIds = new ArrayList<>();
+
 
     private static final int FIRST_PLACE = 0;
+
 
     /**
      * The horizontal tool bar.
@@ -91,145 +97,257 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
     }
 
 
-    public void add(final Node node) {
-        this.add(customSecurityManager.getCallerClassName(), node);
+    private void internalAdd(String id, final Region region) {
+        this.addRegion(id, region, JACPToolBarPosition.START, false);
+    }
+
+
+    public void add(final Region region) {
+        this.internalAdd(customSecurityManager.getCallerClassName(), region);
     }
 
     /**
      * Adds the.
      *
-     * @param id the parent id
-     * @param node the node
+     * @param region the region
      */
-    public void add(String id, final Node node) {
-        this.addNode(id, node, JACPToolBarPosition.START, false);
+    public void add(String id, final Region region) {
+        this.manualIds.add(id);
+        this.internalAdd(id, region);
     }
 
 
     public void removeForId(String id) {
-        for (Iterator<Node> iterator = this.getNodes(id).iterator(); iterator.hasNext(); ) {
-            Node node = iterator.next();
-            this.remove(node);
+        for (Iterator<Region> iterator = this.getNodes(id).iterator(); iterator.hasNext(); ) {
+            Region region = iterator.next();
+            this.remove(region);
         }
     }
 
     /**
-     * Add multiple nodes to the toolbar.
-     * Those nodes are added by id and will appear in the first place of the toolbar
-     *
+     * Add multiple regions to the toolbar.
+     * Those regions are added by id and will appear in the first place of the toolbar
+     * <p/>
      * The id is the name of the calling component by default.
-     * For self-managed ids see {@link #addAll(String id, Node... nodes)}
+     * For self-managed ids see {@link #addAll(String id, Region... regions)}
      *
-     * @param nodes the nodes to add
+     * @param regions the regions to add
      */
-    public void addAll(final Node... nodes) {
-        this.addAll(this.getDefaultId(), nodes);
+    public void addAll(final Region... regions) {
+        this.internalAddAll(customSecurityManager.getCallerClassName(), regions);
     }
 
 
     /**
-     * Add multiple nodes to the toolbar.
-     * Those nodes are added by id and will appear in the first place of the toolbar
+     * Add multiple regions to the toolbar.
+     * Those regions are added by id and will appear in the first place of the toolbar
      *
-     * @param id    - the id the nodes will refer to
-     * @param nodes the nodes to add
+     * @param id      - the id the regions will refer to
+     * @param regions the regions to add
      */
-    public void addAll(String id, Node... nodes) {
-        for (final Node node : nodes) {
-            this.add(id, node);
+    public void addAll(String id, Region... regions) {
+        this.manualIds.add(id);
+        this.internalAddAll(id, regions);
+
+    }
+
+
+    private void internalAddAll(String id, Region... regions) {
+        for (final Region region : regions) {
+            this.internalAdd(id, region);
         }
     }
 
+
     /**
-     * Add multiple nodes to the toolbar.
-     * Those nodes are added by id and will appear on the end of the toolbar
+     * Add multiple regions to the toolbar.
+     * Those regions are added by id and will appear on the end of the toolbar
+     * Means right hand side for {@link org.jacpfx.api.util.ToolbarPosition#NORTH} and {@link org.jacpfx.api.util.ToolbarPosition#SOUTH}
+     * and on the bottom for {@link org.jacpfx.api.util.ToolbarPosition#EAST} and {@link org.jacpfx.api.util.ToolbarPosition#WEST}
+     * <p/>
+     * The id is the name of the calling component by default.
+     * For self-managed ids see {@link #addAllOnEnd(String id, Region... regions)}
+     *
+     * @param regions the regions to add
+     */
+    public void addAllOnEnd(final Region... regions) {
+        this.internalAddAllOnEnd(customSecurityManager.getCallerClassName(), regions);
+    }
+
+
+    /**
+     * Add multiple regions to the toolbar.
+     * Those regions are added by id and will appear on the end of the toolbar
      * Means right hand side for {@link org.jacpfx.api.util.ToolbarPosition#NORTH} and {@link org.jacpfx.api.util.ToolbarPosition#SOUTH}
      * and on the bottom for {@link org.jacpfx.api.util.ToolbarPosition#EAST} and {@link org.jacpfx.api.util.ToolbarPosition#WEST}
      *
-     * The id is the name of the calling component by default.
-     * For self-managed ids see {@link #addAllOnEnd(String id, Node... nodes)}
-     *
-     * @param nodes the nodes to add
+     * @param id      self managed id for the given regions
+     * @param regions the regions to add
      */
-    public void addAllOnEnd(final Node... nodes) {
-        this.addAllOnEnd(this.getDefaultId(), nodes);
+    public void addAllOnEnd(final String id, final Region... regions) {
+        this.manualIds.add(id);
+        this.internalAddAllOnEnd(id, regions);
+
     }
 
 
-    /**
-     * Add multiple nodes to the toolbar.
-     * Those nodes are added by id and will appear on the end of the toolbar
-     * Means right hand side for {@link org.jacpfx.api.util.ToolbarPosition#NORTH} and {@link org.jacpfx.api.util.ToolbarPosition#SOUTH}
-     * and on the bottom for {@link org.jacpfx.api.util.ToolbarPosition#EAST} and {@link org.jacpfx.api.util.ToolbarPosition#WEST}
-     *
-     * @param id    self managed id for the given nodes
-     * @param nodes the nodes to add
-     */
-    public void addAllOnEnd(final String id, final Node... nodes) {
-        for (final Node node : nodes) {
-            this.addOnEnd(id, node);
+    private void internalAddAllOnEnd(final String id, final Region... regions) {
+        for (final Region region : regions) {
+            this.internalAddOnEnd(id, region);
         }
     }
 
 
     /**
-     * Add multiple nodes to the toolbar.
-     * Those nodes are added by id and will appear in the middle of the toolbar
-     *
+     * Add multiple regions to the toolbar.
+     * Those regions are added by id and will appear in the middle of the toolbar
+     * <p/>
      * The id is the name of the calling component by default.
-     * For self-managed ids see {@link #addAllOnEnd(String id, Node... nodes)}
+     * For self-managed ids see {@link #addAllOnEnd(String id, Region... regions)}
      *
-     * @param nodes the nodes to add
+     * @param regions the regions to add
      */
-    public void addAllToCenter(final Node... nodes) {
-        this.addAllToCenter(this.getDefaultId(), nodes);
+    public void addAllToCenter(final Region... regions) {
+        this.internalAddAllToCenter(customSecurityManager.getCallerClassName(), regions);
     }
 
     /**
-     * Add multiple nodes to the toolbar.
-     * Those nodes are added by id and will appear in the middle of the toolbar
+     * Add multiple regions to the toolbar.
+     * Those regions are added by id and will appear in the middle of the toolbar
      *
-     * @param id    self managed id for the given nodes
-     * @param nodes the nodes to add
+     * @param id      self managed id for the given regions
+     * @param regions the regions to add
      */
-    public void addAllToCenter(final String id, final Node... nodes) {
-        for (final Node node : nodes) {
-            this.addToCenter(id, node);
+    public void addAllToCenter(final String id, final Region... regions) {
+        this.manualIds.add(id);
+        this.internalAddAllToCenter(id, regions);
+    }
+
+    private void internalAddAllToCenter(final String id, final Region... regions) {
+        for (final Region region : regions) {
+            this.internalAddToCenter(id, region);
         }
+    }
+
+
+    private void internalAddToCenter(String id, final Region region) {
+        this.addRegion(id, region, JACPToolBarPosition.MIDDLE);
     }
 
     /**
      * Adds the on end.
      *
-     * @param id the parent id
-     * @param node the node
+     * @param region the region
      */
-    public void addToCenter(String id, final Node node) {
-        this.addNode(id, node, JACPToolBarPosition.MIDDLE);
+    public void addToCenter(String id, final Region region) {
+        this.manualIds.add(id);
+        this.internalAddToCenter(id, region);
     }
 
     /**
      * Adds the on end.
      *
-     * @param id the parent id
-     * @param node the node
+     * @param region the region
      */
-    public void addOnEnd(String id, final Node node) {
-        this.addNode(id, node, JACPToolBarPosition.END);
+    public void addToCenter(final Region region) {
+        this.internalAddToCenter(customSecurityManager.getCallerClassName(), region);
+    }
+
+
+    private void internalAddOnEnd(String id, final Region region) {
+        this.addRegion(id, region, JACPToolBarPosition.END);
+    }
+
+    /**
+     * Adds the on end.
+     *
+     * @param region the region
+     */
+    public void addOnEnd(String id, final Region region) {
+        this.manualIds.add(id);
+        this.internalAddOnEnd(id, region);
+    }
+
+    /**
+     * Adds the on end.
+     *
+     * @param region the region
+     */
+    public void addOnEnd(final Region region) {
+        this.internalAddOnEnd(customSecurityManager.getCallerClassName(), region);
     }
 
 
     /**
      * Removes the.
      *
-     * @param node the node
+     * @param region the region
      */
-    public void remove(final Node node) {
+    public void remove(final Region region) {
         for (Iterator<Pane> iterator = this.toolBarContainer.values().iterator(); iterator.hasNext(); ) {
             Pane toolBarItem = iterator.next();
-            toolBarItem.getChildren().remove(node);
+            toolBarItem.getChildren().remove(region);
         }
     }
+
+    /**
+     * hide Toolbar Buttons by a given Id
+     *
+     * @param id -the given id
+     */
+    public void hideButtons(final String id) {
+        this.handleButtons(id, false);
+    }
+
+
+    /**
+     * show Toolbar Buttons by a given Id
+     *
+     * @param id -the given id
+     */
+    public void showButtons(final String id) {
+        this.handleButtons(id, true);
+    }
+
+
+    private void handleButtons(final String id, final boolean visible) {
+        for (final Region region : this.getInternalNodes(id)) {
+            region.setVisible(visible);
+            if (visible) {
+                region.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+                this.setInsets(region);
+
+            } else {
+                region.setMaxSize(0, 0);
+                region.setMinSize(0, 0);
+                this.clearInsets(region);
+            }
+        }
+    }
+
+
+    public void hideButtons(final Perspective<EventHandler<Event>, Event, Object> perspective) {
+        this.handleButtons(perspective.getPerspective().getClass().getName(), false);
+        for (final SubComponent<EventHandler<Event>, Event, Object> sub : perspective.getSubcomponents()) {
+            this.hideButtons(sub);
+        }
+    }
+
+    public void hideButtons(final SubComponent<EventHandler<Event>, Event, Object> subcomponent) {
+        this.handleButtons(subcomponent.getComponent().getClass().getName(), false);
+    }
+
+    public void showButtons(final Perspective<EventHandler<Event>, Event, Object> perspective) {
+        this.handleButtons(perspective.getPerspective().getClass().getName(), true);
+        for (final SubComponent<EventHandler<Event>, Event, Object> sub : perspective.getSubcomponents()) {
+            this.showButtons(sub);
+        }
+    }
+
+    public void showButtons(final SubComponent<EventHandler<Event>, Event, Object> subcomponent) {
+        this.handleButtons(subcomponent.getComponent().getClass().getName(), true);
+    }
+
 
     /*
      * (non-Javadoc)
@@ -265,43 +383,51 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
     }
 
     /**
-     * returns all the nodes for the given id.
+     * returns all the regions for the given id.
      *
      * @param id - the custom id, which was provided on add .
-     * @return A list of nodes, if any or an empty list.
+     * @return A list of regions, if any or an empty list.
      */
-    public List<Node> getNodes(String id) {
+    public List<Region> getNodes(String id) {
         return Collections.unmodifiableList(this.getInternalNodes(id));
     }
 
     /*
-        adds a node for a given Id on the given Positon and updates all bindings
+        adds a region for a given Id on the given Positon and updates all bindings
      */
-    private void addNode(final String id, final Node node, final JACPToolBarPosition position) {
-        this.addNode(id, node, position, true);
+    private void addRegion(final String id, final Region region, final JACPToolBarPosition position) {
+        this.addRegion(id, region, position, true);
     }
 
     /*
-        adds a node for a given Id on the given Positon and updates all bindings, as needed.
+        adds a region for a given Id on the given Positon and updates all bindings, as needed.
      */
-    private void addNode(final String id, final Node node, final JACPToolBarPosition position, boolean bind) {
-        this.setInsets(node);
-        this.toolBarContainer.get(position).getChildren().add(node);
-        this.getInternalNodes(id).add(node);
+    private void addRegion(final String id, final Region region, final JACPToolBarPosition position, boolean bind) {
+        // regions are by default invisible and will be visible if the Perspective/Component etc. will be activated
+        this.toolBarContainer.get(position).getChildren().add(region);
+        this.getInternalNodes(id).add(region);
+        if (!this.manualIds.contains(id)) {
+            this.handleButtons(id, false);
+        }
         if (bind) {
             this.bind();
         }
     }
 
+    @Override
+    protected ObservableList<Node> getChildren() {
+        return super.getChildren();
+    }
+
     /*
-        get the Internal Nodes to add some more Nodes.
-     */
-    private List<Node> getInternalNodes(String id) {
-        if (this.nodeMap.containsKey(id)) {
-            return this.nodeMap.get(id);
+         *   get the Internal Regions to add some more Regions.
+         */
+    private List<Region> getInternalNodes(String id) {
+        if (this.regionMap.containsKey(id)) {
+            return this.regionMap.get(id);
         }
-        List<Node> currentList = new ArrayList<>();
-        this.nodeMap.put(id, currentList);
+        List<Region> currentList = new ArrayList<>();
+        this.regionMap.put(id, currentList);
 
         return currentList;
     }
@@ -330,11 +456,21 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
     /*
         add Insets to the buttons as needed
      */
-    private void setInsets(final Node node) {
+    private void setInsets(final Region region) {
+        int INSET = 2;
+        int ZERO = 0;
         if (this.getOrientation() == HORIZONTAL) {
-            HBox.setMargin(node, new Insets(0, 2, 0, 2));
+            HBox.setMargin(region, new Insets(ZERO, INSET, ZERO, INSET));
         } else {
-            VBox.setMargin(node, new Insets(2, 0, 2, 0));
+            VBox.setMargin(region, new Insets(INSET, ZERO, INSET, ZERO));
+        }
+    }
+
+    private void clearInsets(final Region region) {
+        if (this.getOrientation() == HORIZONTAL) {
+            HBox.setMargin(region, new Insets(0));
+        } else {
+            VBox.setMargin(region, new Insets(0));
         }
     }
 
@@ -371,10 +507,6 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
         this.toolBarContainer = new ConcurrentHashMap<>();
     }
 
-
-    private String getDefaultId() {
-        return customSecurityManager.getCallerClassName();
-    }
 
     /**
      * Inits the horizontal tool bar.
@@ -446,7 +578,7 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
     }
 
     private enum JACPToolBarPosition {
-        START, MIDDLE, END
+        START, MIDDLE, END;
     }
 
 

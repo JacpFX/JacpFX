@@ -98,6 +98,7 @@ public abstract class AFXWorkbench
     private JACPModalDialog dimmer;
     private Context context;
     private FXWorkbench handle;
+    private Perspective<EventHandler<Event>, Event, Object> initialPerspective;
 
     /**
      * JavaFX specific start sequence
@@ -127,7 +128,7 @@ public abstract class AFXWorkbench
         this.setBasicLayout(stage);
 
         handle.postHandle(new FXComponentLayout(this.getWorkbenchLayout()
-                .getMenu(), this.getWorkbenchLayout().getRegisteredToolbars(),
+                .getMenu(), this.getWorkbenchLayout().getRegisteredToolBars(),
                 this.glassPane));
     }
 
@@ -157,7 +158,7 @@ public abstract class AFXWorkbench
         this.launcher = launcher;
         ManagedFragment.initManagedFragment(launcher);
         final Workbench annotation = getWorkbenchAnnotation();
-        this.messageCoordinator = new MessageCoordinator(annotation.id(),this.launcher);
+        this.messageCoordinator = new MessageCoordinator(annotation.id(), this.launcher);
         this.messageCoordinator.setDelegateQueue(this.messageDelegator.getMessageDelegateQueue());
         this.context = new JacpContextImpl(annotation.id(), annotation.name(), this.messageCoordinator.getMessageQueue());
         FXUtil.performResourceInjection(this.handle, this.context);
@@ -175,6 +176,11 @@ public abstract class AFXWorkbench
      */
     public final void initComponents(final Message<Event, Object> action) {
         this.perspectives.forEach(this::initPerspective);
+
+        for (final Node node : this.workbenchLayout.getRegisteredToolBars().values()) {
+            JACPToolBar toolBar = (JACPToolBar) node;
+            toolBar.showButtons(this.initialPerspective);
+        }
     }
 
     private void initPerspective(Perspective<EventHandler<Event>, Event, Object> perspective) {
@@ -193,6 +199,8 @@ public abstract class AFXWorkbench
                 Platform.runLater(r);
 
             }
+
+            this.initialPerspective = perspective;
 
         }
     }
@@ -226,7 +234,7 @@ public abstract class AFXWorkbench
     public final void registerComponent(
             final Perspective<EventHandler<Event>, Event, Object> perspective) {
         final String perspectiveId = PerspectiveUtil.getPerspectiveIdFromAnnotation(perspective);
-        final MessageCoordinator messageCoordinatorLocal = new MessageCoordinator(perspectiveId,this.launcher);
+        final MessageCoordinator messageCoordinatorLocal = new MessageCoordinator(perspectiveId, this.launcher);
         messageCoordinatorLocal.setDelegateQueue(this.messageDelegator.getMessageDelegateQueue());
         messageCoordinatorLocal.setPerspectiveHandler(this.componentHandler);
         // use compleatableFuture
@@ -342,14 +350,14 @@ public abstract class AFXWorkbench
 
     private void initToolbarLayout() {
         // add toolbars in a specific order
-        if (!this.getWorkbenchLayout().getRegisteredToolbars().isEmpty()) {
+        if (!this.getWorkbenchLayout().getRegisteredToolBars().isEmpty()) {
 
             // add another Layer to hold all the toolbars
             final BorderPane toolbarPane = new BorderPane();
             this.baseLayoutPane.setCenter(toolbarPane);
 
             final Map<ToolbarPosition, JACPToolBar> registeredToolbars = this
-                    .getWorkbenchLayout().getRegisteredToolbars();
+                    .getWorkbenchLayout().getRegisteredToolBars();
 
             for (Iterator<Entry<ToolbarPosition, JACPToolBar>> iterator = registeredToolbars
                     .entrySet().iterator(); iterator.hasNext(); ) {
@@ -409,8 +417,8 @@ public abstract class AFXWorkbench
      * set toolBars to correct position
      *
      * @param position, The toolbar position
-     * @param bar, the affected toolbar
-     * @param pane, the root pane
+     * @param bar,      the affected toolbar
+     * @param pane,     the root pane
      */
     private void assignCorrectToolBarLayout(final ToolbarPosition position,
                                             final ToolBar bar, final BorderPane pane) {
