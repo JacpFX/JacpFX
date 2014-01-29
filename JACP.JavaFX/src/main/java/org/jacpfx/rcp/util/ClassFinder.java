@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
@@ -91,7 +92,7 @@ public class ClassFinder {
         });
 
         final List<Class> result = exctractClasses(packageDir, files);
-
+        // result.removeAll(Collections.singleton(null));
         return result.toArray(new Class[result.size()]);
 
 
@@ -110,9 +111,11 @@ public class ClassFinder {
                     try {
                         return ClassLoader.getSystemClassLoader().loadClass(cFile);
                     } catch (Exception e) {
+                        e.printStackTrace();
                         return null;
                     }
                 })
+                .filter(clazz->clazz!=null)
                 .collect(Collectors.toList());
 
     }

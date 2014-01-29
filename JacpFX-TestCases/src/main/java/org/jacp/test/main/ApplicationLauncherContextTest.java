@@ -48,7 +48,7 @@ public class ApplicationLauncherContextTest extends AFXSpringXmlLauncher {
     private static final String[] STYLE_FILES = {"/styles/style_light.css", "/styles/style_dark.css"};
     /// binary style sheets created while deployment
     private static final String[] BINARY_FILES = {"/styles/style_light.bss", "/styles/style_dark.bss"};
-    public static CountDownLatch latch = new CountDownLatch(6);
+    public static CountDownLatch latch = new CountDownLatch(1);
     public static volatile ApplicationLauncherContextTest[] instance = new ApplicationLauncherContextTest[1];
 
     public ApplicationLauncherContextTest() {

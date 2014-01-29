@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane id="BorderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+    <center>
+        <SplitPane id="splitPaneHorizontal1" cache="true" cacheHint="SPEED" dividerPositions="0.2506265664160401" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="100.0" minWidth="200.0" prefHeight="600.0" prefWidth="800.0" styleClass="hsplitpane">
+            <items>
+                <HBox fx:id="content1" cache="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
+                <HBox fx:id="paneRight">
+                    <children>
+                        <SplitPane dividerPositions="0.8087248322147651" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="398.0" prefWidth="669.0" styleClass="vsplitpane" HBox.hgrow="ALWAYS">
+                            <items>
+                                <HBox fx:id="content2" cache="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="0.0" prefWidth="667.0" />
+                                <HBox fx:id="content3" cache="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
+
+                            </items>
+                        </SplitPane>
+                    </children>
+                </HBox>
+            </items>
+        </SplitPane>
+    </center>
+</BorderPane>

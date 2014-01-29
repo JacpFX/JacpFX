@@ -66,8 +66,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * represents the basic JavaFX2 workbench instance; handles perspectives and
@@ -98,7 +100,6 @@ public abstract class AFXWorkbench
     private JACPModalDialog dimmer;
     private Context context;
     private FXWorkbench handle;
-    private Perspective<EventHandler<Event>, Event, Object> initialPerspective;
 
     /**
      * JavaFX specific start sequence
@@ -176,31 +177,44 @@ public abstract class AFXWorkbench
      */
     public final void initComponents(final Message<Event, Object> action) {
         this.perspectives.forEach(this::initPerspective);
-
-        for (final Node node : this.workbenchLayout.getRegisteredToolBars().values()) {
-            JACPToolBar toolBar = (JACPToolBar) node;
-            toolBar.showButtons(this.initialPerspective);
+        final List<Perspective<EventHandler<Event>, Event, Object>> activeSequentialPerspectiveList = this.perspectives
+                .stream()
+                .sequential()
+                .filter(p -> p.getContext() != null && p.getContext().isActive())
+                .collect(Collectors.toList());
+        if (!activeSequentialPerspectiveList.isEmpty()) {
+            for (final Node node : this.workbenchLayout.getRegisteredToolBars().values()) {
+                JACPToolBar toolBar = (JACPToolBar) node;
+                toolBar.showButtons(activeSequentialPerspectiveList.get(activeSequentialPerspectiveList.size() - 1));
+            }
         }
+
     }
 
     private void initPerspective(Perspective<EventHandler<Event>, Event, Object> perspective) {
         this.registerComponent(perspective);
         this.log("3.4.1: register component: " + perspective.getContext().getName());
-        // TODO what if component removed an initialized later
-        // again?
+        final CountDownLatch waitForInit = new CountDownLatch(1);
         this.log("3.4.2: create perspective menu");
         if (perspective.getContext().isActive()) {
-            final Runnable r = () -> AFXWorkbench.this.componentHandler.initComponent(
-                    new MessageImpl(perspective.getContext().getId(), perspective
-                            .getContext().getId(), "init", null), perspective);
+            final Runnable r = () -> {
+                AFXWorkbench.this.componentHandler.initComponent(
+                        new MessageImpl(perspective.getContext().getId(), perspective
+                                .getContext().getId(), "init", null), perspective);
+                waitForInit.countDown();
+            };
             if (Platform.isFxApplicationThread()) {
                 r.run();
             } else {
                 Platform.runLater(r);
 
             }
-
-            this.initialPerspective = perspective;
+            try {
+                // wait for possible async execution
+                waitForInit.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
         }
     }

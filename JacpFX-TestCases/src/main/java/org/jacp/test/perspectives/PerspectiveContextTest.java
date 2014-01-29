@@ -34,6 +34,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import org.jacp.test.main.ApplicationLauncher;
+import org.jacp.test.main.ApplicationLauncherContextTest;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.lifecycle.OnShow;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
@@ -89,7 +90,7 @@ public class PerspectiveContextTest implements FXPerspective {
                     this.content2);
             perspectiveLayout.registerTargetLayoutComponent("content2",
                     this.content3);
-            ApplicationLauncher.latch.countDown();
+            ApplicationLauncherContextTest.latch.countDown();
         }
 
     }
