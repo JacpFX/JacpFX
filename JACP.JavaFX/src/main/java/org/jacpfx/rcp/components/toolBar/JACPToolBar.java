@@ -109,6 +109,7 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
     /**
      * Adds the.
      *
+     * @param id     an unique id
      * @param region the region
      */
     public void add(String id, final Region region) {
@@ -118,16 +119,14 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
 
 
     public void removeForId(String id) {
-        for (Iterator<Region> iterator = this.getNodes(id).iterator(); iterator.hasNext(); ) {
-            Region region = iterator.next();
-            this.remove(region);
-        }
+        final List<Region> tmp = this.getNodes(id);
+        this.remove(tmp.toArray(new Region[tmp.size()]));
     }
 
     /**
      * Add multiple regions to the toolbar.
      * Those regions are added by id and will appear in the first place of the toolbar
-     * <p/>
+     * <p>
      * The id is the name of the calling component by default.
      * For self-managed ids see {@link #addAll(String id, Region... regions)}
      *
@@ -164,7 +163,7 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
      * Those regions are added by id and will appear on the end of the toolbar
      * Means right hand side for {@link org.jacpfx.api.util.ToolbarPosition#NORTH} and {@link org.jacpfx.api.util.ToolbarPosition#SOUTH}
      * and on the bottom for {@link org.jacpfx.api.util.ToolbarPosition#EAST} and {@link org.jacpfx.api.util.ToolbarPosition#WEST}
-     * <p/>
+     * <p>
      * The id is the name of the calling component by default.
      * For self-managed ids see {@link #addAllOnEnd(String id, Region... regions)}
      *
@@ -201,7 +200,7 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
     /**
      * Add multiple regions to the toolbar.
      * Those regions are added by id and will appear in the middle of the toolbar
-     * <p/>
+     * <p>
      * The id is the name of the calling component by default.
      * For self-managed ids see {@link #addAllOnEnd(String id, Region... regions)}
      *
@@ -236,10 +235,10 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
 
     /**
      * Adds the on end.
-     *
+     * @param id an unique id
      * @param region the region
      */
-    public void addToCenter(String id, final Region region) {
+    public void addToCenter(final String id, final Region region) {
         this.manualIds.add(id);
         this.internalAddToCenter(id, region);
     }
@@ -260,10 +259,10 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
 
     /**
      * Adds the on end.
-     *
+     * @param id an unique id
      * @param region the region
      */
-    public void addOnEnd(String id, final Region region) {
+    public void addOnEnd(final String id, final Region region) {
         this.manualIds.add(id);
         this.internalAddOnEnd(id, region);
     }
@@ -281,13 +280,13 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
     /**
      * Removes the.
      *
-     * @param region the region
+     * @param regions the region
      */
-    public void remove(final Region region) {
-        for (Iterator<Pane> iterator = this.toolBarContainer.values().iterator(); iterator.hasNext(); ) {
-            Pane toolBarItem = iterator.next();
-            toolBarItem.getChildren().remove(region);
-        }
+    public void remove(final Region... regions) {
+        this.toolBarContainer
+                .values()
+                .forEach(toolBarItem -> toolBarItem.getChildren()
+                        .removeAll(regions));
     }
 
     /**

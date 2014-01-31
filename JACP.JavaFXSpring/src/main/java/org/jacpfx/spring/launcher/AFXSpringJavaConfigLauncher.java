@@ -117,21 +117,21 @@ public abstract class AFXSpringJavaConfigLauncher extends Application {
     /**
      * Return all packages which contains components and perspectives that should be scanned. This is needed to find components/prespectives by id.
      *
-     * @return
+     * @return  an array of package names
      */
     protected abstract String[] getBasePackages();
 
     /**
      * Will be executed after Spring/JavaFX initialisation.
      *
-     * @param stage
+     * @param stage the javafx Stage
      */
     protected abstract void postInit(Stage stage);
 
     /**
      * Returns an ErrorDialog handler to display exceptions and errors in workspace. Overwrite this method if you need a customized handler.
      *
-     * @return
+     * @return an ErrorHandler instance
      */
     protected ErrorDialogHandler<Node> getErrorHandler() {
         return new DefaultErrorDialogHandler();

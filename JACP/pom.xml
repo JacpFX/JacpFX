@@ -1,19 +1,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.jacpfx</groupId>
-	<artifactId>jacpfx-parent</artifactId>
-	<version>2.0-RC2-SNAPSHOT</version>
-	<packaging>pom</packaging>
-	<name>jacpfx Project</name>
-	<url>https://github.com/JacpFX/JacpFX</url>
-
-
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<maven.compiler.source>1.8</maven.compiler.source>
-	</properties>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.jacpfx</groupId>
+    <artifactId>jacpfx-parent</artifactId>
+    <version>2.0-RC2-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>jacpfx Project</name>
+    <url>https://github.com/JacpFX/JacpFX</url>
+    <description>
+        With JacpFX you structure your application with components, perspectives and a workbench, loosely
+        coupled through component id's. All parts are connected through a message bus and have a defined LiveCycle to
+        separate the task execution and UI changes.
+    </description>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+    </properties>
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -21,42 +24,59 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-	<profiles>
-		<profile>
-			<id>all</id>
-			<modules>
-				<module>../JACP.API</module>
-				<module>../JACP.JavaFX</module>
-				<module>../JACP.JavaFXSpring</module>
-				<module>../JACP.JavaFXControls</module>
-			</modules>
-		</profile>
-		<profile>
-			<id>javafx2</id>
-			<modules>
-				<module>../JACP.API</module>
-				<module>../JACP.JavaFX</module>
-				<module>../JACP.JavaFXSpring</module>
-				<module>../JACP.JavaFXControls</module>
-			</modules>
-		</profile>
-		<profile>
-			<id>api</id>
-			<modules>
-				<module>../JACP.API</module>
-			</modules>
-		</profile>
-	</profiles>
-	<dependencies>
+    <developers>
+        <developer>
+            <id>amo</id>
+            <name>Andy Moncsek</name>
+            <email>amo.ahcp@gmail.com</email>
+        </developer>
+        <developer>
+            <id>pete</id>
+            <name>Patrick Symmangk</name>
+            <email>pete.ahcp@gmail.com</email>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:git:git@github.com:JacpFX/JacpFX.git</connection>
+        <developerConnection>scm:git:git@github.com:JacpFX/JacpFX.git</developerConnection>
+        <url>git@github.com:JacpFX/JacpFX.git</url>
+    </scm>
+    <profiles>
+        <profile>
+            <id>all</id>
+            <modules>
+                <module>../JACP.API</module>
+                <module>../JACP.JavaFX</module>
+                <module>../JACP.JavaFXSpring</module>
+                <module>../JACP.JavaFXControls</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>javafx2</id>
+            <modules>
+                <module>../JACP.API</module>
+                <module>../JACP.JavaFX</module>
+                <module>../JACP.JavaFXSpring</module>
+                <module>../JACP.JavaFXControls</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>api</id>
+            <modules>
+                <module>../JACP.API</module>
+            </modules>
+        </profile>
+    </profiles>
+    <dependencies>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.9</version>
         </dependency>
-	</dependencies>
+    </dependencies>
 
-	<build>
-		<plugins>
+    <build>
+        <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -65,8 +85,48 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
-
-		</plugins>
+            <plugin>
+                <!-- create source jar -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>${artifactId}-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <failOnError>false</failOnError>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -81,18 +141,31 @@
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>2.3.2</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.9.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>1.4</version>
+                    <configuration>
+                        <skip>true</skip>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
-	</build>
-	<distributionManagement>
-		<repository>
-			<id>sonatype-nexus-staging</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-		</repository>
+    </build>
+    <distributionManagement>
+        <repository>
+            <id>sonatype-nexus-staging</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+        </repository>
         <snapshotRepository>
             <id>sonatype-nexus-snapshots</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
-	</distributionManagement>
+    </distributionManagement>
 
 </project>
