@@ -40,7 +40,7 @@ public abstract class AFXSpringXmlLauncher extends Application {
     public void start(Stage stage) throws Exception {
         ExceptionHandler.initExceptionHandler(getErrorHandler());
         scanPackegesAndInitRegestry();
-        final Launcher<ClassPathXmlApplicationContext> launcher = new SpringXmlConfigLauncher(getXmlConfig());
+        final Launcher<ClassPathXmlApplicationContext> launcher = new SpringXMLConfigLauncher(getXmlConfig());
         final Class<? extends FXWorkbench> workbenchHandler = getWorkbechClass();
         if (workbenchHandler == null) throw new ComponentNotFoundException("no FXWorkbench class defined");
         initWorkbench(stage, launcher, workbenchHandler);
