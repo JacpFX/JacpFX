@@ -25,6 +25,7 @@
 
 package org.jacpfx.rcp.handler;
 
+import javafx.application.Platform;
 import javafx.scene.Node;
 import org.jacpfx.api.handler.ErrorDialogHandler;
 import org.jacpfx.rcp.components.modalDialog.JACPModalDialog;
@@ -41,6 +42,11 @@ public abstract class AErrorDialogHandler implements ErrorDialogHandler<Node> {
     }
 
     protected void showModalDialog(final Node node) {
-        JACPModalDialog.getInstance().showModalDialog(node);
+        if(Platform.isFxApplicationThread()) {
+            JACPModalDialog.getInstance().showModalDialog(node);
+        }else {
+            Platform.runLater(()->JACPModalDialog.getInstance().showModalDialog(node));
+        }
+
     }
 }

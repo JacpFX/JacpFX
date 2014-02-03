@@ -23,9 +23,12 @@
 package org.jacp.test.main;
 
 import javafx.application.Application;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import org.jacpfx.api.handler.ErrorDialogHandler;
+import org.jacpfx.rcp.handler.AErrorDialogHandler;
 import org.jacpfx.rcp.workbench.FXWorkbench;
 import org.jacpfx.spring.launcher.AFXSpringXmlLauncher;
 import org.jacp.test.workbench.WorkbenchMissingComponentids;
@@ -48,6 +51,7 @@ public class ApplicationLauncherMissingComponentIds extends AFXSpringXmlLauncher
     private static final String[] BINARY_FILES = {"/styles/style_light.bss", "/styles/style_dark.bss"};
     public static CountDownLatch latch = new CountDownLatch(1);
     public static volatile ApplicationLauncherMissingComponentIds[] instance = new ApplicationLauncherMissingComponentIds[1];
+    public static AErrorDialogHandler exceptionhandler;
 
     public ApplicationLauncherMissingComponentIds() {
     }
@@ -105,4 +109,13 @@ public class ApplicationLauncherMissingComponentIds extends AFXSpringXmlLauncher
     }
 
 
+    /**
+     * Returns an ErrorDialog handler to display exceptions and errors in workspace. Overwrite this method if you need a customized handler.
+     *
+     * @return
+     */
+    @Override
+    protected ErrorDialogHandler<Node> getErrorHandler() {
+        return exceptionhandler;
+    }
 }

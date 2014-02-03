@@ -23,10 +23,13 @@
 package org.jacp.doublePerspective.test.main;
 
 import javafx.application.Application;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.jacp.doublePerspective.test.workbench.WorkbenchDuplicateComponentsTest;
+import org.jacpfx.api.handler.ErrorDialogHandler;
+import org.jacpfx.rcp.handler.AErrorDialogHandler;
 import org.jacpfx.rcp.workbench.FXWorkbench;
 import org.jacpfx.spring.launcher.AFXSpringXmlLauncher;
 
@@ -48,7 +51,7 @@ public class ApplicationLauncherDuplicateComponentTest extends AFXSpringXmlLaunc
     private static final String[] BINARY_FILES = {"/styles/style_light.bss", "/styles/style_dark.bss"};
     public static CountDownLatch latch = new CountDownLatch(6);
     public static volatile ApplicationLauncherDuplicateComponentTest[] instance = new ApplicationLauncherDuplicateComponentTest[1];
-
+    public static AErrorDialogHandler exceptionhandler;
     public ApplicationLauncherDuplicateComponentTest() {
     }
 
@@ -107,6 +110,16 @@ public class ApplicationLauncherDuplicateComponentTest extends AFXSpringXmlLaunc
             log.info("found: " + STYLES[i] + " stylesheet");
         }
 
+    }
+
+    /**
+     * Returns an ErrorDialog handler to display exceptions and errors in workspace. Overwrite this method if you need a customized handler.
+     *
+     * @return
+     */
+    @Override
+    protected ErrorDialogHandler<Node> getErrorHandler() {
+        return exceptionhandler;
     }
 
 

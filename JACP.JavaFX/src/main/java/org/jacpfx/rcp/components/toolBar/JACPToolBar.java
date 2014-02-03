@@ -337,6 +337,7 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
     }
 
     public void showButtons(final Perspective<EventHandler<Event>, Event, Object> perspective) {
+        if(perspective==null || perspective.getSubcomponents() == null) return;
         this.handleButtons(perspective.getPerspective().getClass().getName(), true);
         for (final SubComponent<EventHandler<Event>, Event, Object> sub : perspective.getSubcomponents()) {
             this.showButtons(sub);

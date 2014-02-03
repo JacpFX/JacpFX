@@ -30,6 +30,7 @@ import javafx.scene.Node;
 import javafx.stage.Stage;
 import org.jacpfx.api.handler.ErrorDialogHandler;
 import org.jacpfx.rcp.handler.DefaultErrorDialogHandler;
+import org.jacpfx.rcp.handler.ExceptionHandler;
 import org.jacpfx.rcp.registry.ClassRegistry;
 import org.jacpfx.rcp.util.ClassFinder;
 import org.jacpfx.rcp.workbench.AFXWorkbench;
@@ -68,6 +69,12 @@ public abstract class ASpringLauncher extends Application{
                 e.printStackTrace();
             }
         });
+    }
+
+    protected void initExceptionHandler() {
+        ExceptionHandler.initExceptionHandler(getErrorHandler());
+        Thread.currentThread().setUncaughtExceptionHandler(ExceptionHandler.getInstance());
+
     }
 
     /**

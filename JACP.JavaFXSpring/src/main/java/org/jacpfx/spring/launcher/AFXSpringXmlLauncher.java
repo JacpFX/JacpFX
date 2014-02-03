@@ -26,16 +26,14 @@ public abstract class AFXSpringXmlLauncher extends ASpringLauncher {
     @SuppressWarnings("unchecked")
     @Override
     public void start(Stage stage) throws Exception {
-        ExceptionHandler.initExceptionHandler(getErrorHandler());
+        initExceptionHandler();
         scanPackegesAndInitRegestry();
         final Launcher<ClassPathXmlApplicationContext> launcher = new SpringXmlConfigLauncher(getXmlConfig());
         final Class<? extends FXWorkbench> workbenchHandler = getWorkbenchClass();
         if (workbenchHandler == null) throw new ComponentNotFoundException("no FXWorkbench class defined");
         initWorkbench(stage, launcher, workbenchHandler);
-
-        Thread.currentThread().setUncaughtExceptionHandler(ExceptionHandler.getInstance());
-
     }
+
 
 
     private void initWorkbench(final Stage stage, final Launcher<ClassPathXmlApplicationContext> launcher, final Class<? extends FXWorkbench> workbenchHandler) {

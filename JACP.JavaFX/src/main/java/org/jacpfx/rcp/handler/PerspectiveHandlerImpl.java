@@ -165,18 +165,22 @@ public class PerspectiveHandlerImpl implements
     @Override
     public final void initComponent(final Message<Event, Object> action,
                                     final Perspective<EventHandler<Event>, Event, Object> perspective) {
+        final Thread t = Thread.currentThread();
+        try {
+            this.log("3.4.3: perspective handle init");
+            FXUtil.performResourceInjection(perspective.getPerspective(), perspective.getContext());
 
-        this.log("3.4.3: perspective handle init");
-        FXUtil.performResourceInjection(perspective.getPerspective(), perspective.getContext());
-
-        this.handlePerspectiveInitMethod(action, perspective);
-        this.log("3.4.5: perspective init bar entries");
-        final PerspectiveLayoutInterface<? extends Node, Node> perspectiveLayout = ((AFXPerspective) perspective)
-                .getIPerspectiveLayout();
-        this.initPerspectiveUI(perspectiveLayout);
-        PerspectiveRegistry.getAndSetCurrentVisiblePerspective(perspective.getContext().getId());
-        this.log("3.4.4: perspective init subcomponents");
-        perspective.initComponents(action);
+            this.handlePerspectiveInitMethod(action, perspective);
+            this.log("3.4.5: perspective init bar entries");
+            final PerspectiveLayoutInterface<? extends Node, Node> perspectiveLayout = ((AFXPerspective) perspective)
+                    .getIPerspectiveLayout();
+            this.initPerspectiveUI(perspectiveLayout);
+            PerspectiveRegistry.getAndSetCurrentVisiblePerspective(perspective.getContext().getId());
+            this.log("3.4.4: perspective init subcomponents");
+            perspective.initComponents(action);
+        } catch (Exception e) {
+            t.getUncaughtExceptionHandler().uncaughtException(t, e);
+        }
 
     }
 

@@ -58,9 +58,9 @@ public class PerspectiveMessagingTest {
         PerspectiveMessagingTestP1.wait = new CountDownLatch(1);
         PerspectiveMessagingTestP2.wait = new CountDownLatch(1);
         PerspectiveMessagingTestP3.wait = new CountDownLatch(1);
-        PerspectiveMessagingTestP1.counter = new AtomicInteger(10000);
-        PerspectiveMessagingTestP2.counter = new AtomicInteger(10000);
-        PerspectiveMessagingTestP3.counter = new AtomicInteger(10000);
+        PerspectiveMessagingTestP1.counter = new AtomicInteger(1000);
+        PerspectiveMessagingTestP2.counter = new AtomicInteger(1000);
+        PerspectiveMessagingTestP3.counter = new AtomicInteger(1000);
         PerspectiveMessagingTestP1.fireMessage();
         PerspectiveMessagingTestP1.wait.await();
         PerspectiveMessagingTestP2.wait.await();
