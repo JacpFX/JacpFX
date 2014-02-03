@@ -67,7 +67,7 @@ public class ApplicationLauncherComponentMessaginTest1 extends AFXSpringXmlLaunc
     }
 
     @Override
-    protected Class<? extends FXWorkbench> getWorkbechClass() {
+    protected Class<? extends FXWorkbench> getWorkbenchClass() {
         return WorkbenchComponentMessageTesting1.class;
     }
 

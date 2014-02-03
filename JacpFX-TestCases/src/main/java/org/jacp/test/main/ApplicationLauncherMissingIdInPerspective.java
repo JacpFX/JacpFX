@@ -69,7 +69,7 @@ public class ApplicationLauncherMissingIdInPerspective extends AFXSpringXmlLaunc
     }
 
     @Override
-    protected Class<? extends FXWorkbench> getWorkbechClass() {
+    protected Class<? extends FXWorkbench> getWorkbenchClass() {
         return WorkbenchMissingIdInPerspective.class;
     }
 

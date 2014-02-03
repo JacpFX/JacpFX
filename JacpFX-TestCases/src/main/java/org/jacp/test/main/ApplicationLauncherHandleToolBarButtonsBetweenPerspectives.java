@@ -70,7 +70,7 @@ public class ApplicationLauncherHandleToolBarButtonsBetweenPerspectives extends 
     }
 
     @Override
-    protected Class<? extends FXWorkbench> getWorkbechClass() {
+    protected Class<? extends FXWorkbench> getWorkbenchClass() {
         return WorkbenchHandleToolBarButtonsBetweenPerspectives.class;
     }
 

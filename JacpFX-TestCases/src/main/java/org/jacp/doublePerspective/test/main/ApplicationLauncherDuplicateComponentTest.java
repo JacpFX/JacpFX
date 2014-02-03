@@ -69,7 +69,7 @@ public class ApplicationLauncherDuplicateComponentTest extends AFXSpringXmlLaunc
     }
 
     @Override
-    protected Class<? extends FXWorkbench> getWorkbechClass() {
+    protected Class<? extends FXWorkbench> getWorkbenchClass() {
         return WorkbenchDuplicateComponentsTest.class;
     }
 

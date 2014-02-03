@@ -69,7 +69,7 @@ public class ApplicationLauncherCallbackComponentMessaginTest1 extends AFXSpring
     }
 
     @Override
-    protected Class<? extends FXWorkbench> getWorkbechClass() {
+    protected Class<? extends FXWorkbench> getWorkbenchClass() {
         return WorkbenchCallbackComponentMessageTesting1.class;
     }
 

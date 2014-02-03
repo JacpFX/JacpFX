@@ -73,7 +73,7 @@ public class ApplicationLauncherMissingComponentInitialTargetId extends AFXSprin
     }
 
     @Override
-    protected Class<? extends FXWorkbench> getWorkbechClass() {
+    protected Class<? extends FXWorkbench> getWorkbenchClass() {
         return WorkbenchMissingComponentInitialTargetId.class;
     }
 

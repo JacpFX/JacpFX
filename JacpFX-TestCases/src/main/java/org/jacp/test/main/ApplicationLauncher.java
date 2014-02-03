@@ -71,7 +71,7 @@ public class ApplicationLauncher extends AFXSpringJavaConfigLauncher {
     }
 
     @Override
-    protected Class<? extends FXWorkbench> getWorkbechClass() {
+    protected Class<? extends FXWorkbench> getWorkbenchClass() {
         return Workbench.class;
     }
 

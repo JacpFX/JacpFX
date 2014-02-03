@@ -71,7 +71,7 @@ public class ApplicationLauncherContextTest extends AFXSpringXmlLauncher {
     }
 
     @Override
-    protected Class<? extends FXWorkbench> getWorkbechClass() {
+    protected Class<? extends FXWorkbench> getWorkbenchClass() {
         return WorkbenchContextTest.class;
     }
 

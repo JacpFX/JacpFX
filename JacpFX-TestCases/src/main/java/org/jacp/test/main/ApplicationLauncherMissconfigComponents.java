@@ -69,7 +69,7 @@ public class ApplicationLauncherMissconfigComponents extends AFXSpringXmlLaunche
     }
 
     @Override
-    protected Class<? extends FXWorkbench> getWorkbechClass() {
+    protected Class<? extends FXWorkbench> getWorkbenchClass() {
         return WorkbenchMissingComponents.class;
     }
 

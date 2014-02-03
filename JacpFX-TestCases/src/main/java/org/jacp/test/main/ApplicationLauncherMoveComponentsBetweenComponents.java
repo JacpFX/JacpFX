@@ -73,7 +73,7 @@ public class ApplicationLauncherMoveComponentsBetweenComponents extends AFXSprin
     }
 
     @Override
-    protected Class<? extends FXWorkbench> getWorkbechClass() {
+    protected Class<? extends FXWorkbench> getWorkbenchClass() {
         return WorkbenchMoveComponentsBetweenPerspectives.class;
     }
 

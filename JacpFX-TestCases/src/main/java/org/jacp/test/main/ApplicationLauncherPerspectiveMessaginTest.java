@@ -69,7 +69,7 @@ public class ApplicationLauncherPerspectiveMessaginTest extends AFXSpringXmlLaun
     }
 
     @Override
-    protected Class<? extends FXWorkbench> getWorkbechClass() {
+    protected Class<? extends FXWorkbench> getWorkbenchClass() {
         return WorkbenchPerspectiveMessageTesting.class;
     }
 
