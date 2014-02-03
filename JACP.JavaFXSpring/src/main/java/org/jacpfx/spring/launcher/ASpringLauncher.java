@@ -60,7 +60,7 @@ public abstract class ASpringLauncher extends Application{
     protected void scanPackegesAndInitRegestry() {
         final String[] packages = getBasePackages();
         if (packages == null)
-            throw new InvalidParameterException("no packes declared, declare all packages containing perspectives and components");
+            throw new InvalidParameterException("no  packes declared, declare all packages containing perspectives and components");
         final ClassFinder finder = new ClassFinder();
         Stream.of(packages).parallel().forEach(p -> {
             try {
