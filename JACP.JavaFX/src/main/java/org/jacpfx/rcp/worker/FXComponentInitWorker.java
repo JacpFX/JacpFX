@@ -139,9 +139,13 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
         this.executePostHandleAndAddComponent(handleReturnValue,
                 this.component, this.message, this.targetComponents);
         // check if component was shutdown
-        if (!component.isStarted()) return this.component;
+        if (!checkIfStartedAndValid(component)) return this.component;
         this.component.initWorker(new EmbeddedFXComponentWorker(this.targetComponents, this.componentDelegateQueue, this.component));
         return this.component;
+    }
+
+    private boolean checkIfStartedAndValid(final AFXComponent componentToCheck) {
+       return componentToCheck.isStarted();
     }
 
     /**

@@ -254,14 +254,12 @@ public class ShutdownAndReopenComponentsTest {
         }
         int i = 0;
         while (i < 500) {
-            CustomErrorDialogHandler.exceptionLatch = new CountDownLatch(1);
 
             ComponentShutdownAndRestartComponentsTests2.startLatch = new CountDownLatch(1);
             ComponentShutdownAndRestartComponentsTests2.stopLatch = new CountDownLatch(1);
             PerspectiveShutdownAndRestartComponents.stopStartComponent();
             ComponentShutdownAndRestartComponentsTests2.startLatch.await();
             ComponentShutdownAndRestartComponentsTests2.stopLatch.await();
-            CustomErrorDialogHandler.exceptionLatch.await();
             i++;
         }
     }
