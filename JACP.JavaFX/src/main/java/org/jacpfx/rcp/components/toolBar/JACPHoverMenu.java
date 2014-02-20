@@ -22,18 +22,25 @@
  ************************************************************************/
 package org.jacpfx.rcp.components.toolBar;
 
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import org.jacpfx.rcp.common.ColorDefinitions;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.util.CSSUtil;
@@ -80,6 +87,7 @@ public class JACPHoverMenu extends Button {
     private static final String CSS_RGT_ARROW_CLASS     = "rgt-arrow";
 
     private Logger LOGGER = Logger.getLogger(JACPHoverMenu.class.getName());
+    private Timeline hideTimeline;
 
     /**
      *
@@ -117,8 +125,21 @@ public class JACPHoverMenu extends Button {
 
 
     private void initParent(){
+        CSSUtil.addCSSClass(CSSUtil.CSSConstants.CLASS_JACP_OPTION_PANE_PARENT, this.parent);
         this.parent.setMaxHeight(Integer.MAX_VALUE);
         this.parent.setMaxWidth(Integer.MAX_VALUE);
+        parent.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                getHideTimeline().play();
+            }
+        });
+        parent.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                getHideTimeline().stop();
+            }
+        });
     }
 
 
@@ -335,7 +356,19 @@ public class JACPHoverMenu extends Button {
         });
     }
 
-
+    private Timeline getHideTimeline() {
+        if(hideTimeline==null){
+            hideTimeline = new Timeline(new KeyFrame(Duration.millis(500), (t)-> {
+                JACPHoverMenu.this.setCache(false);
+            },
+                new KeyValue(this.glassPane.visibleProperty(), false, Interpolator.EASE_BOTH),
+                new KeyValue(this.verticalHoverMenu.visibleProperty(), false, Interpolator.EASE_BOTH),
+                new KeyValue(this.horizontalHoverMenu.visibleProperty(), false, Interpolator.EASE_BOTH)
+            ));
+            hideTimeline.setDelay(new Duration(1000));
+        }
+        return hideTimeline;
+    }
 
     /**
      * Hides the menu.

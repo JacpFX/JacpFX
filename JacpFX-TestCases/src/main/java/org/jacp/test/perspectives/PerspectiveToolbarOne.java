@@ -16,6 +16,7 @@ import org.jacpfx.api.message.Message;
 import org.jacpfx.api.util.ToolbarPosition;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.componentLayout.PerspectiveLayout;
+import org.jacpfx.rcp.components.toolBar.JACPOptionButton;
 import org.jacpfx.rcp.components.toolBar.JACPToolBar;
 import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.perspective.FXPerspective;
@@ -82,7 +83,11 @@ public class PerspectiveToolbarOne implements FXPerspective {
         final Button p2 = new Button("Perspective B " + PerspectiveIds.PerspectiveToolbarOne);
         p2.setOnMouseClicked((event) -> context.send(PerspectiveIds.PerspectiveToolbarTwo, "show"));
         final Button p3 = new Button("GLOBAL");
-        toolbar.addAll(p1, p2);
+
+        final JACPOptionButton btn = new JACPOptionButton("TEST BUTTON", layout);
+        btn.addOptions(new Button("TEST"), new Button("TEST"), new Button("TEST"), new Button("TEST"));
+
+        toolbar.addAll(p1, p2, btn);
         toolbar.add("myId", p3);
     }
 

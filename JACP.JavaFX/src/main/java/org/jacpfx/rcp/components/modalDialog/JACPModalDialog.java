@@ -104,7 +104,7 @@ public class JACPModalDialog extends StackPane implements IModalMessageNode {
         this.setCache(true);
         JACPModalDialog.root.setEffect(new GaussianBlur(this.MAX_BLUR));
 
-        getShowTimeline().play();
+        this.getShowTimeline().play();
     }
 
     /**
@@ -113,7 +113,7 @@ public class JACPModalDialog extends StackPane implements IModalMessageNode {
     @Override
     public synchronized void hideModalDialog() {
         this.setCache(true);
-        getHideTimeline().play();
+        this.getHideTimeline().play();
         // "remove" effect.
         JACPModalDialog.root.setEffect(null);
     }

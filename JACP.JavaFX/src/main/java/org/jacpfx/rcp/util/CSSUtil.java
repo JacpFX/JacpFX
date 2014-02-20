@@ -39,6 +39,8 @@ public class CSSUtil {
         static final String CLASS_JACP_BUTTON_BAR           = "jacp-button-bars";
         static final String CLASS_JACP_BREAD_CUMB           = "jacp-bread-crumb";
         static final String CLASS_JACP_BREAD_CRUMB_ITEM     = "jacp-bread-crumb-item";
+        static final String CLASS_JACP_OPTION_PANE_PARENT   = "jacp-option-pane-parent";
+
 
 
         // IDS

@@ -29,6 +29,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -38,6 +39,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import org.jacpfx.rcp.components.modalDialog.JACPModalDialog;
 import org.jacpfx.rcp.util.DimensionUtil;
+import org.jacpfx.rcp.util.LayoutUtil;
+
+import java.awt.*;
 
 /**
  * Created by Andy Moncsek on 13.01.14.
@@ -81,10 +85,10 @@ public class DefaultErrorDialog extends VBox implements EventHandler<ActionEvent
         this.maxHeightProperty().bind(dUtil.getStageHeightProperty().multiply(.6));
         this.maxWidthProperty().bind(dUtil.getStageHeightProperty().multiply(.8));
 
-        titlePane = createTitleBar();
-        buttonBox = createButtonBar();
-        this.getChildren().addAll(titlePane, createErrorMessageField(), buttonBox);
+        this.titlePane = this.createTitleBar();
+        this.buttonBox = this.createButtonBar();
 
+        this.getChildren().addAll(titlePane, createErrorMessageField(), buttonBox);
 
     }
 
@@ -92,57 +96,43 @@ public class DefaultErrorDialog extends VBox implements EventHandler<ActionEvent
         final TextArea explanation = new TextArea(this.message);
         explanation.setEditable(false);
         explanation.getStyleClass().add("jacp-option-pane-message");
-        VBox.setMargin(explanation, new Insets(1, 1, 1, 1));
-        VBox.setVgrow(explanation,Priority.ALWAYS);
+        VBox.setMargin(explanation, new Insets(1));
+        VBox.setVgrow(explanation, Priority.ALWAYS);
         return explanation;
     }
 
     private GridPane createTitleBar() {
-        final GridPane box = new GridPane();
-        box.setVgap(10);
-        box.setHgap(20);
-        VBox.setVgrow(box, Priority.ALWAYS);
-        box.getChildren().addAll(this.createErrorIcon(), this.createInfoLabel());
+        final GridPane p = new GridPane();
+        final Label label = new Label(this.title);
 
-        return box;
+        p.getStyleClass().add("jacp-error-dialog-icon");
+        p.getChildren().add(label);
+
+        label.translateXProperty().bind(p.widthProperty().subtract(label.widthProperty()).divide(2));
+
+        return p;
     }
 
 
     private HBox createButtonBar() {
         final HBox box = new HBox();
+        final Pane fillPane = new Pane();
+        final Button but = new Button("OK");
+
         box.maxHeightProperty().bind(this.maxHeightProperty().multiply(.1));
         VBox.setVgrow(box, Priority.ALWAYS);
-
-
-        final Pane fillPane = new Pane();
-        fillPane.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(fillPane, Priority.ALWAYS);
+        fillPane.setMaxWidth(Double.MAX_VALUE);
 
-        final Button but = new Button("OK");
-        but.addEventHandler(ActionEvent.ACTION, this);
         HBox.setMargin(but, new Insets(16, 8, 8, 8));
+        but.addEventHandler(ActionEvent.ACTION, this);
         but.setDefaultButton(true);
         but.requestFocus();
         but.getStyleClass().add("jacp-option-pane-button");
         box.getChildren().addAll(fillPane, but);
+
         return box;
 
-    }
-
-    private Label createInfoLabel() {
-        final Label label = new Label(this.title);
-        GridPane.setColumnIndex(label, Integer.valueOf(1));
-        GridPane.setRowIndex(label, Integer.valueOf(0));
-        return label;
-    }
-
-    private ImageView createErrorIcon() {
-        final ImageView view = new ImageView(new Image("images/error.png"));
-        GridPane.setColumnIndex(view, Integer.valueOf(0));
-        GridPane.setRowIndex(view, Integer.valueOf(0));
-        GridPane.setHalignment(view, HPos.CENTER);
-        GridPane.setValignment(view, VPos.TOP);
-        return view;
     }
 
 

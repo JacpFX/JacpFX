@@ -1,44 +1,64 @@
 @CHARSET "ISO-8859-1";
 
 .jacp-option-pane {
-    -fx-background-color:#CCCCCC;
+    -fx-background-color: #CCCCCC;
     -fx-background-insets: 0, 1, 2;
     -fx-background-radius: 15, 14, 13;
     -fx-padding: 15;
-    -fx-effect: dropshadow( three-pass-box , black , 20, 0 , 0 , 0   );
+    -fx-effect: dropshadow(three-pass-box, black, 20, 0, 0, 0);
 }
-.jacp-option-pane .jacp-option-pane-title{
+
+.jacp-option-pane .jacp-option-pane-title {
     -fx-font-size: 1.4em;
     -fx-font-weight: bold;
 }
 
-.jacp-option-pane .jacp-error-pane-title{
+.jacp-option-pane .jacp-error-pane-title {
     -fx-font-size: 1.4em;
     -fx-font-weight: bold;
     -fx-text-fill: red;
 }
+
+/*********************
+*
+* ERROR DIALOG
+*
+*********************/
+
+.jacp-error-dialog-icon {
+    -fx-background-image: url("../images/error.png");
+    -fx-background-size: 32 32;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: left;
+    -fx-padding: 20;
+}
+
+.jacp-error-dialog-icon .label{
+    -fx-padding: 0 20 0 0 ;
+}
+
 /*********************
 *
 * HOVER-MENU
 *
 *********************/
 
-.top-arrow, .btm-arrow, .lft-arrow, .rgt-arrow{
+.top-arrow, .btm-arrow, .lft-arrow, .rgt-arrow {
     -fx-background-color: #333333;
 }
 
-.top-arrow{
+.top-arrow {
     -fx-shape: "m 138.84341,374.47684 54.45117,54.45118 -108.902347,0 54.451177,-54.45118 z";
 }
 
-.btm-arrow{
+.btm-arrow {
     -fx-shape: "m 138.84341,428.92802 54.45117,-54.45118 -108.902347,0 54.451177,54.45118 z";
 }
 
-.lft-arrow{
+.lft-arrow {
     -fx-shape: "m 111.61782,401.70243 54.45118,54.45117 0,-108.90234 -54.45118,54.45117 z";
 }
 
-.rgt-arrow{
+.rgt-arrow {
     -fx-shape: "m 166.069,401.70243 -54.45118,54.45117 0,-108.90234 54.45118,54.45117 z";
 }
