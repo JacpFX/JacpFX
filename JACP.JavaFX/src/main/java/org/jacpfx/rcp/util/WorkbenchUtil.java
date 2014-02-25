@@ -7,6 +7,7 @@ import org.jacpfx.api.component.Declarative;
 import org.jacpfx.api.component.Injectable;
 import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.context.JacpContext;
+import org.jacpfx.api.exceptions.NonUniqueComponentException;
 import org.jacpfx.api.fragment.Scope;
 import org.jacpfx.api.launcher.Launcher;
 import org.jacpfx.api.util.UIType;
@@ -15,7 +16,10 @@ import org.jacpfx.rcp.perspective.EmbeddedFXPerspective;
 import org.jacpfx.rcp.registry.ClassRegistry;
 
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -39,8 +43,9 @@ public class WorkbenchUtil {
 
     /**
      * Returns an instance of the WorkbenchUtil
+     *
      * @param launcher the launcher instance
-     * @return  The WorkbechUtil instance
+     * @return The WorkbechUtil instance
      */
     public static WorkbenchUtil getInstance(final Launcher<?> launcher) {
         return new WorkbenchUtil(launcher);
@@ -51,17 +56,72 @@ public class WorkbenchUtil {
      * Creates all perspective instances by annotated id's in @Workbench annotation
      *
      * @param annotation , the workbench annotation
-     * @return  a list with all perspectives associated with a workbench
+     * @return a list with all perspectives associated with a workbench
      */
     public List<Perspective<EventHandler<Event>, Event, Object>> createPerspectiveInstances(final Workbench annotation) {
         final Stream<String> componentIds = CommonUtil.getStringStreamFromArray(annotation.perspectives());
-        final Stream<Injectable> perspectiveHandlerList = componentIds
-                .map(this::mapToInjectable);
-        return perspectiveHandlerList.map(this::mapToPerspective).collect(Collectors.toList());
+        final Stream<Injectable> perspectiveHandlerList = componentIds.parallel()
+                .sequential().map(this::mapToInjectable);
+        final List<Injectable> tmp = perspectiveHandlerList.collect(Collectors.toList());
+        checkUniqueComponentReferences(tmp.stream());
+        return tmp.stream().map(this::mapToPerspective).collect(Collectors.toList());
+    }
+
+    private void checkUniqueComponentReferences(final Stream<Injectable> perspectiveHandlerList) {
+       perspectiveHandlerList.
+                map(handler -> handler.getClass()).
+                map(clazz -> clazz.getAnnotation(org.jacpfx.api.annotations.perspective.Perspective.class)).
+                filter(ann -> ann != null).
+                map(annotation -> new PerspectiveCheckDTO(annotation.id(), Arrays.asList(annotation.components()))).
+                collect(UniqueCheckConsumer::new, UniqueCheckConsumer::accept, UniqueCheckConsumer::andThen);
+
+    }
+
+    private class UniqueCheckConsumer implements Consumer<PerspectiveCheckDTO> {
+        private List<String> componentIds = new ArrayList<>();
+
+        @Override
+        public void accept(PerspectiveCheckDTO perspectiveCheckDTO) {
+            final List<String> tmp = perspectiveCheckDTO.checkForCommon(componentIds);
+            componentIds.addAll(perspectiveCheckDTO.getComponentIds());
+            if (tmp.size() > 1)
+                throw new NonUniqueComponentException("ERROR in perspective " + perspectiveCheckDTO.getId() + " non unique component ids: " + tmp);
+
+        }
+
+        @Override
+        public Consumer<PerspectiveCheckDTO> andThen(Consumer<? super PerspectiveCheckDTO> after) {
+            return this;
+        }
+    }
+
+    public class PerspectiveCheckDTO {
+        private final String id;
+        private final List<String> componentIds;
+
+        public PerspectiveCheckDTO(final String id, final List<String> componentIds) {
+            this.id = id;
+            this.componentIds = componentIds;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public List<String> getComponentIds() {
+            return componentIds;
+        }
+
+        public List<String> checkForCommon(final List<String> other) {
+            final List<String> l3 = new ArrayList<>(componentIds);
+            l3.retainAll(other);
+            return l3;
+        }
     }
 
     /**
      * Returns a FXPerspective instance.
+     *
      * @param handler, the handler
      * @return The FXPerspective instance
      */
@@ -71,6 +131,7 @@ public class WorkbenchUtil {
 
     /**
      * Returns a handler by id.
+     *
      * @param id, The component id
      * @return, The handler instance.
      */
@@ -88,7 +149,7 @@ public class WorkbenchUtil {
      * set meta attributes defined in annotations
      *
      * @param perspective, the perspective where to handle the metadata
-     * @param parentId, the id of parent workbench
+     * @param parentId,    the id of parent workbench
      */
     public static void handleMetaAnnotation(
             final Perspective<EventHandler<Event>, Event, Object> perspective, final String parentId) {
@@ -101,19 +162,19 @@ public class WorkbenchUtil {
         initContext(perspective.getContext(), parentId, id, perspectiveAnnotation.active(), perspectiveAnnotation.name());
         LOGGER.fine("register perspective with annotations : "
                 + perspectiveAnnotation.id());
-        initDeclarativePerspectiveParts(perspective,perspectiveAnnotation);
-        initLocaleAttributes(perspective,perspectiveAnnotation);
-        initResourceBundleAttributes(perspective,perspectiveAnnotation);
+        initDeclarativePerspectiveParts(perspective, perspectiveAnnotation);
+        initLocaleAttributes(perspective, perspectiveAnnotation);
+        initResourceBundleAttributes(perspective, perspectiveAnnotation);
     }
-
 
 
     /**
      * Set all resource bundle attributes.
-     * @param perspective, the perspective instance
+     *
+     * @param perspective,           the perspective instance
      * @param perspectiveAnnotation, the @Perspective annotation
      */
-    private static void initResourceBundleAttributes(final Perspective<EventHandler<Event>, Event, Object> perspective,final org.jacpfx.api.annotations.perspective.Perspective perspectiveAnnotation) {
+    private static void initResourceBundleAttributes(final Perspective<EventHandler<Event>, Event, Object> perspective, final org.jacpfx.api.annotations.perspective.Perspective perspectiveAnnotation) {
         final String resourceBundleLocation = perspectiveAnnotation
                 .resourceBundleLocation();
         if (resourceBundleLocation.length() > 1)
@@ -122,10 +183,11 @@ public class WorkbenchUtil {
 
     /**
      * Set locale attributes.
-     * @param perspective , the perspective instance
+     *
+     * @param perspective            , the perspective instance
      * @param perspectiveAnnotation, the @Perspective annotation
      */
-    private static void initLocaleAttributes(final Perspective<EventHandler<Event>, Event, Object> perspective,final org.jacpfx.api.annotations.perspective.Perspective perspectiveAnnotation) {
+    private static void initLocaleAttributes(final Perspective<EventHandler<Event>, Event, Object> perspective, final org.jacpfx.api.annotations.perspective.Perspective perspectiveAnnotation) {
         final String localeID = perspectiveAnnotation.localeID();
         if (localeID.length() > 1)
             perspective.setLocaleID(localeID);
@@ -133,10 +195,11 @@ public class WorkbenchUtil {
 
     /**
      * Set all metadata for a declarative perspective
-     * @param perspective , the perspective instance
+     *
+     * @param perspective               , the perspective instance
      * @param perspectiveAnnotation,the @Perspective annotation
      */
-    private static void initDeclarativePerspectiveParts(final Perspective<EventHandler<Event>, Event, Object> perspective,final org.jacpfx.api.annotations.perspective.Perspective perspectiveAnnotation) {
+    private static void initDeclarativePerspectiveParts(final Perspective<EventHandler<Event>, Event, Object> perspective, final org.jacpfx.api.annotations.perspective.Perspective perspectiveAnnotation) {
         final String viewLocation = perspectiveAnnotation.viewLocation();
         if (viewLocation.length() > 1 && Declarative.class.isAssignableFrom(perspective.getClass())) {
             final Declarative declarative = Declarative.class.cast(perspective);
@@ -147,11 +210,12 @@ public class WorkbenchUtil {
 
     /**
      * Create context object instance.
+     *
      * @param contextInterface, the context instance
-     * @param parentId, the parent id
-     * @param id, the component id
-     * @param active, the active state
-     * @param name, the component name
+     * @param parentId,         the parent id
+     * @param id,               the component id
+     * @param active,           the active state
+     * @param name,             the component name
      */
     private static void initContext(final JacpContext contextInterface, final String parentId, final String id, final boolean active, final String name) {
         final JacpContextImpl context = JacpContextImpl.class.cast(contextInterface);
