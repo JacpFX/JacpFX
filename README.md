@@ -1,7 +1,7 @@
 JacpFX
 ======
 
-The JacpFX Project is an API to create Rich Clients in MVC style with JavaFX, Spring (or other DI frameworks) and an Actor like component approach.
+Event bus, message passing and async execution are concepts, getting more and more popular for server side applications. JacpFX brings this approach to the client, combining JavaFX with an actor-like component model. It is an UI application framework based on JavaFX, supporting developers to structure an application with loosely coupled, reusable components. It frees you from the pitfalls of traditional multi-threaded programming helping you to separate the task execution from UI changes in you client application.
 
 ### 09.09.2013 We are currently migrating JacpFX from google code to GitHub!
 You can find the old sources [here:] (https://code.google.com/p/jacp/)
