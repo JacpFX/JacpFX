@@ -3,5 +3,5 @@ markdown: redcarpet
 safe: true
 lsi: false
 pygments: true
-
+gems: [kramdown]
 baseurl: /JacpFX
