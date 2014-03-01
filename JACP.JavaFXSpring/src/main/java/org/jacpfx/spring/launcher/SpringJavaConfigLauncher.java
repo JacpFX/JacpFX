@@ -33,6 +33,8 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 /**
  * Created by amo on 28.01.14.
  */
@@ -41,6 +43,8 @@ public class SpringJavaConfigLauncher implements Launcher<AnnotationConfigApplic
     private final AnnotationConfigApplicationContext context =
             new AnnotationConfigApplicationContext();
     private final ConfigurableListableBeanFactory factory;
+
+    private ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
     public SpringJavaConfigLauncher(java.lang.Class<?>... annotatedClasses) {
         context.register(annotatedClasses);
@@ -55,23 +59,42 @@ public class SpringJavaConfigLauncher implements Launcher<AnnotationConfigApplic
 
     @Override
     public <P> P getBean(Class<P> clazz) {
-        return this.factory.getBean(clazz);
+        lock.readLock().lock();
+        try {
+            return this.factory.getBean(clazz);
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    private boolean contains(final String id) {
+        lock.readLock().lock();
+        try {
+            return this.factory.containsBean(id);
+        } finally {
+            lock.readLock().unlock();
+        }
     }
 
     @Override
     public <P> P registerAndGetBean(Class<? extends P> type, String id, Scope scope) {
-        if (this.factory.containsBean(id))
+        if (contains(id))
             return getBean(type);
-        final AutowireCapableBeanFactory factory = getContext()
-                .getAutowireCapableBeanFactory();
-        final BeanDefinitionRegistry registry = (BeanDefinitionRegistry) factory;
         final GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
         beanDefinition.setBeanClass(type);
         if (scope != null) beanDefinition.setScope(scope.getType());
         beanDefinition.setAutowireCandidate(true);
-        registry.registerBeanDefinition(id, beanDefinition);
-        factory.autowireBeanProperties(this,
-                AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false);
+        lock.writeLock().lock();
+        try {
+            final AutowireCapableBeanFactory factory = getContext()
+                    .getAutowireCapableBeanFactory();
+            final BeanDefinitionRegistry registry = (BeanDefinitionRegistry) factory;
+            registry.registerBeanDefinition(id, beanDefinition);
+            factory.autowireBeanProperties(this,
+                    AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false);
+        } finally {
+            lock.writeLock().unlock();
+        }
         return getBean(type);
     }
 }
