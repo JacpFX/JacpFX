@@ -39,8 +39,25 @@ public class CSSUtil {
         static final String CLASS_JACP_BUTTON_BAR           = "jacp-button-bars";
         static final String CLASS_JACP_BREAD_CUMB           = "jacp-bread-crumb";
         static final String CLASS_JACP_BREAD_CRUMB_ITEM     = "jacp-bread-crumb-item";
-        static final String CLASS_JACP_OPTION_PANE_PARENT   = "jacp-option-pane-parent";
 
+        /* ***** OptionPane ***** */
+
+        static final String CLASS_JACP_OPTION_PANE          = "jacp-option-pane";
+        static final String CLASS_JACP_OPTION_PANE_BUTTON   = "jacp-option-pane-button";
+        static final String CLASS_JACP_OPTION_PANE_PARENT   = "jacp-option-pane-parent";
+        static final String CLASS_JACP_OPTION_PANE_MESSAGE  = "jacp-option-pane-message";
+        static final String CLASS_JACP_OPTION_PANE_CLOSE    = "jacp-option-pane-close";
+        static final String CLASS_JACP_OPTION_PANE_TITLE    = "jacp-option-pane-title";
+
+        // HOVER MENU
+        static final String CSS_TOP_ARROW_CLASS             = "top-arrow";
+        static final String CSS_BTM_ARROW_CLASS             = "btm-arrow";
+        static final String CSS_LFT_ARROW_CLASS             = "lft-arrow";
+        static final String CSS_RGT_ARROW_CLASS             = "rgt-arrow";
+
+        // Button
+        static final String CLASS_HOVER_MENU_BUTTON         = "jacp-hovermenu-button";
+        static final String CLASS_HOVER_MENU_PANE           = "jacp-hovermenu-pane";
 
 
         // IDS

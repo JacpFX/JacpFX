@@ -29,6 +29,7 @@ import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ToolBar;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -336,8 +337,8 @@ public abstract class AFXWorkbench
 
     private void completeLayout() {
         // fetch current workbenchsize
-        final int x = this.getWorkbenchLayout().getWorkbenchSize().getX().intValue();
-        final int y = this.getWorkbenchLayout().getWorkbenchSize().getY().intValue();
+        final int x = this.getWorkbenchLayout().getWorkbenchSize().getX();
+        final int y = this.getWorkbenchLayout().getWorkbenchSize().getY();
 
         this.absoluteRoot.getChildren().add(this.baseLayoutPane);
         this.absoluteRoot.setId(CSSUtil.CSSConstants.ID_ROOT);
@@ -346,11 +347,21 @@ public abstract class AFXWorkbench
         this.stage.setScene(new Scene(this.base, x, y));
         this.initCSS(this.stage.getScene());
         SceneUtil.setScene(this.stage.getScene());
-
-        // new Layer for Menu Effects
         this.absoluteRoot.getChildren().add(this.glassPane);
         this.absoluteRoot.getChildren().add(this.dimmer);
 
+        this.initGlobalMouseEvents();
+
+    }
+
+    private void initGlobalMouseEvents(){
+        // catch global clicks
+        this.stage.getScene().addEventFilter(
+                MouseEvent.MOUSE_RELEASED,
+                (event) -> {
+                    GlobalMediator.getInstance().hideAllHideables(event);
+
+                });
     }
 
     private void initMenuLayout() {

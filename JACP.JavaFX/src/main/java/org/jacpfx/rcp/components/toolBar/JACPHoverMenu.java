@@ -22,79 +22,66 @@
  ************************************************************************/
 package org.jacpfx.rcp.components.toolBar;
 
-import javafx.animation.Interpolator;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
 import javafx.geometry.Dimension2D;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.util.Duration;
+import org.jacpfx.api.component.ui.Hideable;
+import org.jacpfx.api.component.ui.HideableComponent;
 import org.jacpfx.rcp.common.ColorDefinitions;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.util.CSSUtil;
 import org.jacpfx.rcp.util.LayoutUtil;
+import org.jacpfx.rcp.workbench.GlobalMediator;
 import org.jacpfx.rcp.workbench.SceneUtil;
 
-import java.util.logging.Logger;
-
 import static org.jacpfx.rcp.components.toolBar.JACPOptionButtonOrientation.BOTTOM;
+import static org.jacpfx.rcp.util.CSSUtil.CSSConstants.*;
 
 /**
  * The Class JACPOptionButton.
- *
+ * <p/>
  * A simple button, with some more parent. The button holds no message, except displaying the child parent.
  *
  * @author Patrick Symmangk
  */
-public class JACPHoverMenu extends Button {
+public class JACPHoverMenu extends Button implements Hideable {
 
-    private Pane                        glassPane;
-    private Pane                        arrow;
+    private Pane glassPane;
+    private Pane arrow;
     // used for TOP and BOTTOM
-    private VBox                        verticalHoverMenu   = new VBox();
+    private VBox verticalHoverMenu = new HideableVBox(this);
     // used for LEFT and RIGHT
-    private HBox                        horizontalHoverMenu = new HBox();
-    private final Pane                  parent              = new Pane();
-    private Point2D                     translate;
+    private HBox horizontalHoverMenu = new HideableHBox(this);
+    private final Pane parent = new Pane();
+    private Point2D translate;
     private JACPOptionButtonOrientation orientation;
 
     // properties
-    private SimpleDoubleProperty padding                = new SimpleDoubleProperty();
-    private SimpleDoubleProperty buttonXLocation        = new SimpleDoubleProperty();
-    private SimpleDoubleProperty buttonYLocation        = new SimpleDoubleProperty();
+    private SimpleDoubleProperty padding = new SimpleDoubleProperty();
+    private SimpleDoubleProperty buttonXLocation = new SimpleDoubleProperty();
+    private SimpleDoubleProperty buttonYLocation = new SimpleDoubleProperty();
 
     // constants
-    private static final double NO_PADDING              = 0.0;
-    private static final double ARROW_WIDTH             = 10.0;
-    private static final double ARROW_HEIGHT            = 5.0;
-    private static final int INSETS                     = 5;
-    private static final Dimension2D ARROW_CENTER       = new Dimension2D(ARROW_WIDTH / 2, ARROW_HEIGHT / 2);
-    private static final String CSS_TOP_ARROW_CLASS     = "top-arrow";
-    private static final String CSS_BTM_ARROW_CLASS     = "btm-arrow";
-    private static final String CSS_LFT_ARROW_CLASS     = "lft-arrow";
-    private static final String CSS_RGT_ARROW_CLASS     = "rgt-arrow";
+    private static final double NO_PADDING = 0.0;
+    private static final double ARROW_WIDTH = 10.0;
+    private static final double ARROW_HEIGHT = 5.0;
+    private static final Dimension2D ARROW_CENTER = new Dimension2D(ARROW_WIDTH / 2, ARROW_HEIGHT / 2);
 
-    private Logger LOGGER = Logger.getLogger(JACPHoverMenu.class.getName());
-    private Timeline hideTimeline;
 
     /**
-     *
      * Constructor without {@link org.jacpfx.rcp.components.toolBar.JACPOptionButtonOrientation} option.
      * The default orientation will be BOTTOM.
      *
-     * @param label - the label to show
+     * @param label  - the label to show
      * @param layout - the {@link org.jacpfx.rcp.componentLayout.FXComponentLayout} to use
      */
     public JACPHoverMenu(final String label, final FXComponentLayout layout) {
@@ -102,144 +89,145 @@ public class JACPHoverMenu extends Button {
     }
 
     /**
-     *
      * Constructor with {@link org.jacpfx.rcp.components.toolBar.JACPOptionButtonOrientation} option.
      *
-     * @param label - the label to show
-     * @param layout - the {@link org.jacpfx.rcp.componentLayout.FXComponentLayout} to use
+     * @param label       - the label to show
+     * @param layout      - the {@link org.jacpfx.rcp.componentLayout.FXComponentLayout} to use
      * @param orientation - the {@link org.jacpfx.rcp.components.toolBar.JACPOptionButtonOrientation} option, depending on the Orientation of the {@link org.jacpfx.rcp.components.toolBar.JACPToolBar}. [LEFT, TOP, RIGHT, BOTTOM]
      */
     public JACPHoverMenu(final String label, final FXComponentLayout layout, final JACPOptionButtonOrientation orientation) {
         super(label);
-        this.glassPane      = layout.getGlassPane();
-        this.orientation    = orientation;
-        initParent();
-        initLayout();
+        this.glassPane = layout.getGlassPane();
+        this.orientation = orientation;
+        this.initComponent();
+        GlobalMediator.getInstance().registerHideAble(this);
     }
 
-    public Pane getContentPane(){
+    private void initComponent() {
+        this.initParent();
+        this.initLayout();
+        this.initStyles();
+    }
+
+    private void initStyles() {
+        CSSUtil.addCSSClass(CLASS_HOVER_MENU_BUTTON, this);
+        CSSUtil.addCSSClass(CLASS_HOVER_MENU_PANE, this.parent);
+    }
+
+    public Pane getContentPane() {
         return this.parent;
-
-
     }
 
 
-    private void initParent(){
-        CSSUtil.addCSSClass(CSSUtil.CSSConstants.CLASS_JACP_OPTION_PANE_PARENT, this.parent);
+    private void initParent() {
+        CSSUtil.addCSSClass(CLASS_JACP_OPTION_PANE_PARENT, this.parent);
         this.parent.setMaxHeight(Integer.MAX_VALUE);
         this.parent.setMaxWidth(Integer.MAX_VALUE);
-        parent.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                getHideTimeline().play();
-            }
-        });
-        parent.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                getHideTimeline().stop();
-            }
-        });
     }
 
 
-    private void initArrow(){
+    private void initArrow() {
         this.arrow = new Pane();
-        switch (orientation){
-            case TOP: case BOTTOM:
-                arrow.setMinHeight(ARROW_HEIGHT);
-                arrow.setMaxWidth(ARROW_WIDTH);
+        switch (this.orientation) {
+            case TOP:
+            case BOTTOM:
+                this.arrow.setMinHeight(ARROW_HEIGHT);
+                this.arrow.setMaxWidth(ARROW_WIDTH);
                 break;
-            case LEFT: case RIGHT:
-                arrow.setMinHeight(ARROW_WIDTH);
-                arrow.setMaxHeight(ARROW_WIDTH);
-                arrow.setMinWidth(ARROW_HEIGHT);
-                arrow.setMaxWidth(ARROW_HEIGHT);
+            case LEFT:
+            case RIGHT:
+                this.arrow.setMinHeight(ARROW_WIDTH);
+                this.arrow.setMaxHeight(ARROW_WIDTH);
+                this.arrow.setMinWidth(ARROW_HEIGHT);
+                this.arrow.setMaxWidth(ARROW_HEIGHT);
                 break;
         }
 
     }
 
-    private void initHoverMenu(){
-        verticalHoverMenu.setAlignment(Pos.CENTER);
-        verticalHoverMenu.setVisible(false);
-        horizontalHoverMenu.setVisible(false);
+    private void initHoverMenu() {
+        this.verticalHoverMenu.setAlignment(Pos.CENTER);
+        this.verticalHoverMenu.setVisible(false);
+        this.horizontalHoverMenu.setVisible(false);
         CSSUtil.setBackgroundColor(parent, ColorDefinitions.HEX_MID_GRAY);
     }
 
-    /*********************
-     *   VERTICAL MENU   *
-     *********************/
+    /**
+     * ******************
+     * VERTICAL MENU   *
+     * *******************
+     */
 
     private void initVerticalLayout() {
 
-        this.verticalHoverMenu.boundsInLocalProperty().addListener(new RealignListener<>(orientation));
+        this.verticalHoverMenu.boundsInLocalProperty().addListener(new RealignListener<>(this.orientation));
 
-        switch (orientation) {
+        switch (this.orientation) {
 
             case TOP:
                 CSSUtil.addCSSClass(CSS_BTM_ARROW_CLASS, arrow);
-                this.verticalHoverMenu.getChildren().setAll(parent, arrow);
+                this.verticalHoverMenu.getChildren().setAll(this.parent, this.arrow);
 
                 // since the menu is on top we have to check the height, too!
                 this.verticalHoverMenu.heightProperty().addListener((observableValue, number, number2) -> {
                     // get location of the optionbutton - top left corner
-                    translate = localToScene(getBoundsInLocal().getMinX(), getBoundsInLocal().getMinY());
-                    // menu will be cut at the left
-                    buttonYLocation.set(translate.getY() - (verticalHoverMenu.getHeight()));
+                    this.translate = localToScene(getBoundsInLocal().getMinX(), getBoundsInLocal().getMinY());
+                    // menu will be cut at ththis.e left
+                    this.buttonYLocation.set(this.translate.getY() - (this.verticalHoverMenu.getHeight()));
                 });
 
                 break;
 
             case BOTTOM:
-                CSSUtil.addCSSClass(CSS_TOP_ARROW_CLASS, arrow);
-                this.verticalHoverMenu.getChildren().setAll(arrow, parent);
+                CSSUtil.addCSSClass(CSS_TOP_ARROW_CLASS, this.arrow);
+                this.verticalHoverMenu.getChildren().setAll(this.arrow, this.parent);
                 break;
         }
 
     }
 
-    private void realignVerticalMenu(){
+    private void realignVerticalMenu() {
         // get padding to center hovermenu
-        double fullPadding = (getWidth() - verticalHoverMenu.getWidth());
-        padding.set(fullPadding / 2);
+        double fullPadding = (getWidth() - this.verticalHoverMenu.getWidth());
+        this.padding.set(fullPadding / 2);
 
         switch (orientation) {
             case TOP:
-                translate = localToScene(getBoundsInLocal().getMinX(), getBoundsInLocal().getMinY() - this.verticalHoverMenu.getHeight());
+                this.translate = localToScene(getBoundsInLocal().getMinX(), getBoundsInLocal().getMinY() - this.verticalHoverMenu.getHeight());
                 break;
             case BOTTOM:
-                translate = localToScene(getBoundsInLocal().getMinX(), getBoundsInLocal().getMaxY());
+                this.translate = localToScene(getBoundsInLocal().getMinX(), getBoundsInLocal().getMaxY());
                 break;
         }
 
         // get location of the optionbutton - buttom left corner
 
         // menu will be cut at the left
-        if (translate.getX() + padding.get() < 0) {
+        if (this.translate.getX() + this.padding.get() < 0) {
             // hovermenu alignes with the optionbutton on the left hand side
-            arrow.setTranslateX(padding.get());
-            padding.set(NO_PADDING);
+            this.arrow.setTranslateX(this.padding.get());
+            this.padding.set(NO_PADDING);
         }
 
-        if(translate.getX() + padding.get() + this.verticalHoverMenu.getWidth() > SceneUtil.getScene().getWidth()){
-            arrow.setTranslateX(getHalfWidth());
-            padding.set(fullPadding);
+        if (this.translate.getX() + this.padding.get() + this.verticalHoverMenu.getWidth() > SceneUtil.getScene().getWidth()) {
+            this.arrow.setTranslateX(getHalfWidth());
+            this.padding.set(fullPadding);
         }
 
 
-
-        buttonXLocation.set(translate.getX());
-        buttonYLocation.set(translate.getY());
+        this.buttonXLocation.set(this.translate.getX());
+        this.buttonYLocation.set(this.translate.getY());
     }
 
-    /***********************
-     *   HORIZONTAL MENU   *
-     ***********************/
+    /**
+     * ********************
+     * HORIZONTAL MENU   *
+     * *********************
+     */
 
-    private void initHorizontalLayout(){
+    private void initHorizontalLayout() {
         this.horizontalHoverMenu.boundsInLocalProperty().addListener(new RealignListener<>(orientation));
-        switch (orientation){
+        switch (this.orientation) {
             case LEFT:
                 CSSUtil.addCSSClass(CSS_RGT_ARROW_CLASS, arrow);
                 this.horizontalHoverMenu.getChildren().setAll(parent, arrow);
@@ -251,7 +239,8 @@ public class JACPHoverMenu extends Button {
         }
     }
 
-    private class RealignListener<T> implements ChangeListener<T>{
+
+    private class RealignListener<T> implements ChangeListener<T> {
 
         private JACPOptionButtonOrientation orientation;
 
@@ -262,91 +251,99 @@ public class JACPHoverMenu extends Button {
 
         @Override
         public void changed(ObservableValue<? extends T> observableValue, T t, T t2) {
-             switch(orientation){
-                 case TOP: case BOTTOM: realignVerticalMenu(); break;
-                 case LEFT: case RIGHT: realignHorizontalMenu(); break;
-             }
-
+            switch (this.orientation) {
+                case TOP:
+                case BOTTOM:
+                    realignVerticalMenu();
+                    break;
+                case LEFT:
+                case RIGHT:
+                    realignHorizontalMenu();
+                    break;
+            }
         }
     }
 
 
+    private void realignHorizontalMenu() {
 
-    private void realignHorizontalMenu(){
-
-        switch (orientation) {
+        switch (this.orientation) {
             case LEFT:
-                translate = localToScene(getBoundsInLocal().getMinX() - this.horizontalHoverMenu.getWidth(), getBoundsInLocal().getMinY());
+                this.translate = localToScene(getBoundsInLocal().getMinX() - this.horizontalHoverMenu.getWidth(), getBoundsInLocal().getMinY());
                 break;
             case RIGHT:
-                translate = localToScene(getBoundsInLocal().getMaxX(), getBoundsInLocal().getMinY());
+                this.translate = localToScene(getBoundsInLocal().getMaxX(), getBoundsInLocal().getMinY());
                 break;
         }
 
         // not enough space to the top... menu aligns with top of the button
-        if (translate.getY() + padding.get() < 0) {
+        if (this.translate.getY() + this.padding.get() < 0) {
             // hovermenu alignes with the optionbutton on the top
-            arrow.setTranslateY(padding.get());
+            this.arrow.setTranslateY(this.padding.get());
             // clear padding
-            padding.set(NO_PADDING);
-        } else{
-            arrow.setTranslateY(getHalfHeight() - ARROW_CENTER.getWidth());
+            this.padding.set(NO_PADDING);
+        } else {
+            this.arrow.setTranslateY(getHalfHeight() - ARROW_CENTER.getWidth());
         }
 
         // not enough space to the bottom --> menu aligns with bottom of the button
-        if(translate.getY() + this.horizontalHoverMenu.getHeight() > SceneUtil.getScene().getHeight()){
-            arrow.setTranslateY(this.horizontalHoverMenu.getHeight() - getHalfHeight());
-            padding.set(-this.horizontalHoverMenu.getHeight() + getHeight());
+        if (this.translate.getY() + this.horizontalHoverMenu.getHeight() > SceneUtil.getScene().getHeight()) {
+            this.arrow.setTranslateY(this.horizontalHoverMenu.getHeight() - getHalfHeight());
+            this.padding.set(-this.horizontalHoverMenu.getHeight() + getHeight());
         }
 
-        buttonXLocation.set(translate.getX());
-        buttonYLocation.set(translate.getY());
+        this.buttonXLocation.set(this.translate.getX());
+        this.buttonYLocation.set(this.translate.getY());
     }
 
 
-    private void initLayout(){
+    private void initLayout() {
 
         // check for changes
-        this.localToSceneTransformProperty().addListener(new RealignListener<>(orientation));
-        this.glassPane.visibleProperty().addListener(new RealignListener<>(orientation));
+        this.localToSceneTransformProperty().addListener(new RealignListener<>(this.orientation));
+        this.glassPane.visibleProperty().addListener(new RealignListener<>(this.orientation));
 
         initArrow();
         initHoverMenu();
 
-        switch(orientation){
-            case TOP: case BOTTOM:
+        switch (this.orientation) {
+            case TOP:
+            case BOTTOM:
                 initVerticalLayout();
-                initAction(verticalHoverMenu);
+                initAction(this.verticalHoverMenu);
                 break;
-            case LEFT: case RIGHT:
+            case LEFT:
+            case RIGHT:
                 initHorizontalLayout();
-                initAction(horizontalHoverMenu);
+                initAction(this.horizontalHoverMenu);
                 break;
         }
     }
 
     private void initAction(final Node node) {
-        this.setOnAction((actionEvent)-> {
+        this.setOnAction((actionEvent) -> {
 
             node.setVisible(!node.isVisible());
             // if another option is shown, hide everything before switching to the current content
-            if(!glassPane.getChildren().contains(node)){
-                LayoutUtil.hideAllChildren(glassPane);
+            if (!this.glassPane.getChildren().contains(node)) {
+                LayoutUtil.hideAllChildren(this.glassPane);
             }
             // adjust hovermenu
-            glassPane.getChildren().setAll(node);
-            glassPane.setMaxWidth(parent.getWidth());
-            glassPane.setMaxHeight(parent.getHeight());
-            StackPane.setAlignment(glassPane, Pos.TOP_LEFT);
+            this.glassPane.getChildren().setAll(node);
+            this.glassPane.setMaxWidth(this.parent.getWidth());
+            this.glassPane.setMaxHeight(this.parent.getHeight());
+            StackPane.setAlignment(this.glassPane, Pos.TOP_LEFT);
 
-            switch (orientation) {
-                case LEFT: case RIGHT:
-                    glassPane.translateXProperty().bind(buttonXLocation);
-                    glassPane.translateYProperty().bind(buttonYLocation.add(padding));
+            switch (this.orientation) {
+                case LEFT:
+                case RIGHT:
+                    this.glassPane.translateXProperty().bind(this.buttonXLocation);
+                    this.glassPane.translateYProperty().bind(this.buttonYLocation.add(this.padding));
                     break;
-                case TOP: case BOTTOM:
-                    glassPane.translateXProperty().bind(buttonXLocation.add(padding));
-                    glassPane.translateYProperty().bind(buttonYLocation);
+                case TOP:
+                case BOTTOM:
+                    this.glassPane.translateXProperty().bind(this.buttonXLocation.add(this.padding));
+                    this.glassPane.translateYProperty().bind(this.buttonYLocation);
                     break;
             }
 
@@ -356,36 +353,52 @@ public class JACPHoverMenu extends Button {
         });
     }
 
-    private Timeline getHideTimeline() {
-        if(hideTimeline==null){
-            hideTimeline = new Timeline(new KeyFrame(Duration.millis(500), (t)-> {
-                JACPHoverMenu.this.setCache(false);
-            },
-                new KeyValue(this.glassPane.visibleProperty(), false, Interpolator.EASE_BOTH),
-                new KeyValue(this.verticalHoverMenu.visibleProperty(), false, Interpolator.EASE_BOTH),
-                new KeyValue(this.horizontalHoverMenu.visibleProperty(), false, Interpolator.EASE_BOTH)
-            ));
-            hideTimeline.setDelay(new Duration(1000));
+    private class HideableHBox extends HBox implements HideableComponent {
+        private Hideable hideableParent;
+
+        private HideableHBox(final Hideable hideableParent) {
+            super();
+            this.hideableParent = hideableParent;
         }
-        return hideTimeline;
+
+        public Hideable getHideableParent() {
+            return hideableParent;
+        }
+    }
+
+    private class HideableVBox extends VBox implements HideableComponent {
+        private Hideable hideableParent;
+
+        private HideableVBox(final Hideable hideableParent) {
+            super();
+            this.hideableParent = hideableParent;
+        }
+
+        public Hideable getHideableParent() {
+            return hideableParent;
+        }
     }
 
     /**
      * Hides the menu.
      */
-    public void hideOptions(){
+    public void hideOptions() {
         this.glassPane.setVisible(false);
         this.verticalHoverMenu.setVisible(false);
         this.horizontalHoverMenu.setVisible(false);
     }
 
-    private double getHalfWidth(){
-        return getWidth()/2;
+    private double getHalfWidth() {
+        return getWidth() / 2;
     }
 
-    private double getHalfHeight(){
-        return getHeight()/2;
+    private double getHalfHeight() {
+        return getHeight() / 2;
     }
 
 
+    @Override
+    public void hide() {
+        this.hideOptions();
+    }
 }

@@ -27,7 +27,7 @@ import org.jacpfx.controls.util.ResourceBundleUtil;
 /**
  * The Enum JACPDialogButton.
  * 
- * @author Patrick Symmangk
+ * @author Patrick Symmangk (pete.jacp@gmail.com)
  */
 public enum JACPDialogButton {
 
@@ -67,7 +67,7 @@ public enum JACPDialogButton {
      * @return the jACP dialog button
      */
     public static JACPDialogButton fromId(final int id) {
-        JACPDialogButton currentButton = JACPDialogButton.OK;
+        JACPDialogButton currentButton;
         switch (id) {
         case 1:
             currentButton = JACPDialogButton.OK;
@@ -113,7 +113,6 @@ public enum JACPDialogButton {
      * @return the label
      */
     public String getLabel() {
-//        return this.label;
         return ResourceBundleUtil.getBundle().getString(this.label);
     }
 

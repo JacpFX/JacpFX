@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2013
  *
  * [JACPDialogUtil.java]
@@ -25,24 +25,21 @@ package org.jacpfx.controls.optionPane;
 /**
  * The Class JACPDialogUtil, contains methods to create Options panes and
  * managed dialogs.
- * 
+ *
  * @author Patrick Symmangk, Andy Moncsek
- * 
  */
 public final class JACPDialogUtil {
 
-	/**
-	 * Creates the option pane.
-	 * 
-	 * @param title
-	 *            the title
-	 * @param message
-	 *            the message
-	 * @return the jACP option pane
-	 */
-	public static JACPOptionPane createOptionPane(final String title,
-			final String message) {
-		return new JACPOptionPane(title, message);
-	}
+    /**
+     * Creates the option pane.
+     *
+     * @param title   the title
+     * @param message the message
+     * @return the jACP option pane
+     */
+    public static JACPOptionPane createOptionPane(final String title,
+                                                  final String message) {
+        return new JACPOptionPane(title, message);
+    }
 
 }
