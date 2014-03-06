@@ -3,7 +3,7 @@
 .jacp-option-pane {
     -fx-background-color: #CCCCCC;
     -fx-background-insets: 0, 1, 2;
-    -fx-background-radius: 15, 14, 13;
+    -fx-background-radius: 6, 5, 4;
     -fx-padding: 15;
     -fx-effect: dropshadow(three-pass-box, black, 20, 0, 0, 0);
 }
