@@ -48,7 +48,7 @@ import static org.jacpfx.rcp.util.CSSUtil.CSSConstants.*;
 
 /**
  * The Class JACPOptionButton.
- * <p/>
+ *
  * A simple button, with some more parent. The button holds no message, except displaying the child parent.
  *
  * @author Patrick Symmangk
