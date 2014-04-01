@@ -324,7 +324,7 @@ textarea {
 }
 
 a {
-  color: #3083a7;
+	color: #0b516f;
   text-decoration: none;
 }
 
@@ -375,7 +375,7 @@ hr {
   margin-top: 20px;
   margin-bottom: 20px;
   border: 0;
-  border-top: 1px solid #B8DBEB;
+  border-top: 1px solid #eeeeee;
 }
 
 .sr-only {
@@ -464,7 +464,7 @@ h6,
 .h4,
 .h5,
 .h6 {
-  font-family: "jacpfxfont.ttf", Helvetica, Arial, sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 500;
   line-height: 1.1;
 }
@@ -503,7 +503,7 @@ h6 {
 h1,
 .h1 {
 	font-size: 32px;
-	color: #ffffff;
+	color: #0b516f;
 	font-weight: bold;
 }
 
@@ -552,7 +552,6 @@ h4 small,
 .page-header {
   padding-bottom: 9px;
   margin: 40px 0 20px;
-  border-bottom: 1px solid #eeeeee;
 }
 
 ul,
@@ -779,8 +778,6 @@ pre code {
 .row {
   margin-right: -15px;
   margin-left: -15px;
-  margin-top: 60px;
-  margin-bottom: 60px;
 }
 
 .row:before,
@@ -1104,13 +1101,13 @@ pre code {
     width: 33.33333333333333%;
   }
   .col-md-5 {
-    width: 42%;
+    width: 41.66666666666667%;
   }
   .col-md-6 {
     width: 50%;
   }
   .col-md-7 {
-    width: 58%;
+    width: 58.333333333333336%;
   }
   .col-md-8 {
     width: 66.66666666666666%;
@@ -2045,8 +2042,9 @@ fieldset[disabled] .btn {
 }
 
 .btn-default {
-  color: #ff6600;
+  color: #3083a7;
   background-color: #ffffff;
+  border-color: none;
 }
 
 .btn-default:hover,
@@ -2055,7 +2053,8 @@ fieldset[disabled] .btn {
 .btn-default.active,
 .open .dropdown-toggle.btn-default {
   color: #ffffff;
-  background-color: #ff6600;
+  background-color: #3083a7;
+  border-color: none;
 }
 
 .btn-default:active,
@@ -4247,6 +4246,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
   .navbar-nav .open .dropdown-menu {
     position: static;
     float: none;
+
     width: auto;
     margin-top: 0;
     background-color: transparent;
@@ -6009,10 +6009,10 @@ body.modal-open,
 }
 
 .carousel-inner > .item {
-	position: relative;
-	display: none;
-	-webkit-transition: 0.6s ease-in-out left;
-	transition: 0.6s ease-in-out left;
+  position: relative;
+  display: none;
+  -webkit-transition: 0.6s ease-in-out left;
+          transition: 0.6s ease-in-out left;
 }
 
 .carousel-inner > .item > img,
@@ -6144,6 +6144,7 @@ body.modal-open,
 }
 
 .carousel-indicators li {
+
   display: inline-block;
   width: 10px;
   height: 10px;

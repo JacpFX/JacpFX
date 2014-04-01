@@ -3,12 +3,105 @@ layout: default
 title: JacpFX project Site
 ---
 
-<div id="home">
-  <h1>Blog Posts</h1>
-  <ul class="posts">
-    {% for post in site.posts %}
-      <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ post.url }}">{{ post.title }} {{ post.url }}</a></li>
-    {% endfor %}
-  </ul>
-  ...
-</div>
+      <div class="row">
+        <div class="col-lg-4">
+			<img src="{{site.baseurl}}/img/javaFX_release.png" alt="JacpFX Release">
+          <h2></h2><br>
+          <p><a class="btn btn-primary" href="#" id="tooltip" rel="tooltip" data-placement="left" data-original-title="Keep Up To Date">Release</a></p>
+              <p>This JacpFX 1.2 release is mainly a bugfix release and improves stability and overall performance.</p>
+
+        </div>
+        <div class="col-lg-4">
+			<img src="{{site.baseurl}}/img/javaFX_documentation.png" alt="JacpFX Documentation">
+          <h2></h2><br>
+          <p><a class="btn btn-primary" href="https://github.com/JacpFX" id="tooltip" rel="tooltip" data-placement="top" data-original-title="Find Complete Source On GitHub" target="_blank">GitHub</a></p>
+              <p>Development of JacpFX on GitHub. Find the complete code an all your needs.</p>
+        </div>
+        <div class="col-lg-4">
+			<img src="{{site.baseurl}}/img/javaFX_tweets.png" alt="JacpFX on Twitter">
+          <h2></h2><br>
+          <p><a class="btn btn-primary" href="https://twitter.com/AndyAHCP" id="tooltip" rel="tooltip" data-placement="right" data-original-title="Never Missing JacpFX Tweets" target="_blank">Twitter</a></p>
+              <p>Follow us to get instant updates from our professionals on what's happening around the code at JacpFX.</p>
+
+        </div>
+      </div>
+
+      <!-- START THE FEATURETTES -->
+
+     <!-- <hr class="featurette-divider"> -->
+
+      <div class="row featurette">
+        <div class="col-md-7"><a name="Structur"></a><br>
+          <h2 class="featurette-heading">Structuring And Composition<span class="text-muted"></span></h2><br>
+          <p class="lead">All components triggered by messages and have a
+ defined life cycle; a component handle() method is always executed in a
+ separate thread, so developers should have less effort on threading 
+topics nor be afraid of locking and unresponsive UI.<br>
+          </p>
+          <p><a class="btn btn-primary" href="JacpFX_Documentation.html" id="tooltip" rel="tooltip" data-placement="right" data-original-title="Tune In and Drop Out">Turn On</a></p><br>
+        </div>
+        <div class="col-md-5">
+          <div align="center"><img src="{{site.baseurl}}/img/JacpFX_Project_Usp_1.png" alt="Structuring &amp; Composition" style="position: center;" align="middle">            </div>
+        </div>
+      </div>
+
+     <!-- <hr class="featurette-divider"> -->
+
+      <div class="row featurette">
+        <div class="col-md-5">
+          <div align="center"><a name="LooselyCoupled"></a>
+            <img src="{{site.baseurl}}/img/JacpFX_Project_Usp_2.png" alt="Loosely Coupled" style="position: center;" align="middle">        </div>
+        </div>
+        <div class="col-md-7"><br>
+          <h2 class="featurette-heading">Loosely Coupled<span class="text-muted"></span></h2><br>
+          <p class="lead">Components are basically distinguished in UI- 
+and NonUI-Components; UIComponents are the place where you put all the 
+complex UI code (TextFields, Buttons, etc.) in. NonUIComponents are 
+services for long running tasks. All components have an input and an 
+output. <br>
+          </p>
+          <p><a class="btn btn-primary" href="JacpFX_Documentation.html" id="tooltip" rel="tooltip" data-placement="right" data-original-title="Click Here">Learn More</a></p><br>
+        </div>
+      </div>
+
+     <!-- <hr class="featurette-divider"> -->
+      
+      <div class="row featurette">
+        <div class="col-md-7"><a name="Messaging"></a><br>
+          <h2 class="featurette-heading">JacpFX Messaging<span class="text-muted"></span></h2><br>
+          <p class="lead">Messaging is the basic concept to change the 
+state of an JacpFX component (and perspective too) and to exchange data 
+between components. When a component receives a message it will execute 
+the handle(...) method, which is executed in a separate thread and will 
+not block the FX application thread.</p>
+          <p><a class="btn btn-primary" href="JacpFX_Documentation.html" id="tooltip" rel="tooltip" data-placement="right" data-original-title="We Speak JacpFX">Learn More</a></p><br>
+
+        </div>
+        <div class="col-md-5">
+          <div align="center"><img style="position: center;" src="{{site.baseurl}}/img/JacpFX_Project_Usp_3.png" alt="Messaging">
+            </div>
+        </div>
+      </div>
+
+     <!-- <hr class="featurette-divider"> -->
+
+      <div class="row featurette">
+        <div class="col-md-5">
+          <div align="center"><a name="Non-BlockingUI"></a>
+            <img style="position: center;" src="{{site.baseurl}}/img/JacpFX_Project_Usp_4.png" alt="Non-Blocking UI">
+            </div>
+        </div>
+        <div class="col-md-7"><br>
+          <h2 class="featurette-heading">Non-Blocking UI<span class="text-muted"></span></h2><br>
+          <p class="lead">Currently you can use four types of 
+components: AFXComponent are UI components, they can either be plain 
+JavaFX components or FXML components (depends on annotation ). 
+AStatefulCallbackComponent and AStatelessCallbackComponent are 
+NonUIcomponents. All components in common is, that they have a “handle” 
+method that is running outside the FX application thread, so the 
+execution of this method will not block the rest of your UI.</p>
+          <p><a class="btn btn-primary" href="JacpFX_Documentation.html" id="tooltip" rel="tooltip" data-placement="right" data-original-title="Without Blocking UI">Learn More</a></p><br>
+        </div>
+      </div>
+<br><br>
+     <!-- /END THE FEATURETTES -->
