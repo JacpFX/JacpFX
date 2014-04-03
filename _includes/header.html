@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html lang="en"><head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="The JacpFX Project is an API to create Rich Clients in MVC style with JavaFX, Spring (or other DI frameworks) and an Actor like component approach. It provides a simple API to create a workspace, perspectives and components; to communicate with all parts trough messages and to compose your Client application easily. All components triggered by messages and have a defined life cycle; a component handle() method is always executed in a separate thread, so developers should have less effort on threading topics nor be afraid of locking and unresponsive UI. The API uses dependency injection to initialize all parts of your client; the currently used DI implementation is Spring. You can inject spring beans to your components and use the complete Spring stack in your JACP Application.">
+    <meta name="description"
+          content="The JacpFX Project is an API to create Rich Clients in MVC style with JavaFX, Spring (or other DI frameworks) and an Actor like component approach. It provides a simple API to create a workspace, perspectives and components; to communicate with all parts trough messages and to compose your Client application easily. All components triggered by messages and have a defined life cycle; a component handle() method is always executed in a separate thread, so developers should have less effort on threading topics nor be afraid of locking and unresponsive UI. The API uses dependency injection to initialize all parts of your client; the currently used DI implementation is Spring. You can inject spring beans to your components and use the complete Spring stack in your JACP Application.">
     <meta name="author" content="Andy Moncsek">
-        <meta name="keywords" content="JacpFX, JavaFX, AFX Component, JacpFX Messaging, JacpFX local messages, JacpFX global messages, Modal Dialogs, JacpFX OptionPane, Styling the JacpFX OptionPane, JACPToolBar, JACPMenuBar, Non blocking UI, User Interface Application, Framework, Jacp, API, WCS, MVC, Rich Client, Javascript">
+    <meta name="keywords"
+          content="JacpFX, JavaFX, AFX Component, JacpFX Messaging, JacpFX local messages, JacpFX global messages, Modal Dialogs, JacpFX OptionPane, Styling the JacpFX OptionPane, JACPToolBar, JACPMenuBar, Non blocking UI, User Interface Application, Framework, Jacp, API, WCS, MVC, Rich Client, Javascript">
     <meta name="author" content="Andy Moncsek and Patric Symmangk">
     <link rel="shortcut icon" href="{{site.baseurl}}/img/favicon.png">
 
@@ -15,227 +18,289 @@
     <link href="css/bootstrap.css" rel="stylesheet">
 
 
-
-	<script type="text/javascript">
-    $(function(){
-       $('[rel="tooltip"]').tooltip();
-    });
-	</script>
-        <!-- Social Bar -->
+    <script type="text/javascript">
+        $(function () {
+            $('[rel="tooltip"]').tooltip();
+        });
+    </script>
+    <!-- Social Bar -->
 
     <style type="text/css">
-        .sticky-container{
-                /*background-color: #333;*/
-                padding: 0px;
-                margin: 0px;
-                position: fixed;
-                right: -119px;
-                top:40%;
-                width: 200px;
+        .sticky-container {
+            /*background-color: #333;*/
+            padding: 0px;
+            margin: 0px;
+            position: fixed;
+            right: -119px;
+            top: 40%;
+            width: 200px;
 
         }
 
-        .sticky li{
-                list-style-type: none;
-                background-color: #0b516f;
-                color: #3083a7;
-                height: 43px;
-                padding: 0px;
-                margin: 0px 0px 1px 0px;
-                -webkit-transition:all 0.25s ease-in-out;
-                -moz-transition:all 0.25s ease-in-out;
-                -o-transition:all 0.25s ease-in-out;
-                transition:all 0.25s ease-in-out;
-                cursor: pointer;
-
-
-        }
-
-        .sticky li:hover{
-                margin-left: -115px;
-                /*-webkit-transform: translateX(-115px);
-                -moz-transform: translateX(-115px);
-                -o-transform: translateX(-115px);
-                -ms-transform: translateX(-115px);
-                transform:translateX(-115px);*/
-                /*background-color: #8e44ad;*/
-                filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 1 0\'/></filter></svg>#grayscale");
-                -webkit-filter: grayscale(0%);
-        }
-
-        .sticky li img{
-                float: left;
-                margin: 5px 5px;
-                margin-right: 10px;
+        .sticky li {
+            list-style-type: none;
+            background-color: #0b516f;
+            color: #3083a7;
+            height: 43px;
+            padding: 0px;
+            margin: 0px 0px 1px 0px;
+            -webkit-transition: all 0.25s ease-in-out;
+            -moz-transition: all 0.25s ease-in-out;
+            -o-transition: all 0.25s ease-in-out;
+            transition: all 0.25s ease-in-out;
+            cursor: pointer;
 
         }
 
-        .sticky li p{
-                padding: 0px;
-                margin: 0px;
-                text-transform: uppercase;
-                line-height: 43px;
+        .sticky li:hover {
+            margin-left: -115px;
+            /*-webkit-transform: translateX(-115px);
+            -moz-transform: translateX(-115px);
+            -o-transform: translateX(-115px);
+            -ms-transform: translateX(-115px);
+            transform:translateX(-115px);*/
+            /*background-color: #8e44ad;*/
+            filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 1 0\'/></filter></svg>#grayscale");
+            -webkit-filter: grayscale(0%);
+        }
+
+        .sticky li img {
+            float: left;
+            margin: 5px 5px;
+            margin-right: 10px;
+
+        }
+
+        .sticky li p {
+            padding: 0px;
+            margin: 0px;
+            text-transform: uppercase;
+            line-height: 43px;
 
         }
 
         /** content **/
-        .content{
-                margin-top: 150px;
-                margin-left: 100px;
-                width: 700px;
-        }
-        h1, h2{
-                font-family: "jacpfxfont.ttf",sans-serif;
-                padding: 0px;
-                margin-bottom: 10px;
-                font-weight: normal;
+        .content {
+            margin-top: 150px;
+            margin-left: 100px;
+            width: 700px;
         }
 
-        h1{
-                font-weight: 900;
-                font-size: 32px;
+        h1, h2 {
+            font-family: "jacpfxfont.ttf", sans-serif;
+            padding: 0px;
+            margin-bottom: 10px;
+            font-weight: normal;
         }
 
-        h2{
-                font-size:26px;
+        h1 {
+            font-weight: 900;
+            font-size: 32px;
         }
 
-        p.credit{
-                padding-top: 20px;
-                font-size: 12px;
+        h2 {
+            font-size: 26px;
         }
 
-        p a{
-                color: #ecf0f1;
+        p.credit {
+            padding-top: 20px;
+            font-size: 12px;
         }
-        </style>
+
+        p a {
+            color: #ecf0f1;
+        }
+    </style>
 
     <!-- Custom styles for this template -->
     <link href="css/carousel.css" rel="stylesheet">
-  <style type="text/css" id="holderjs-style">.holderjs-fluid {font-size:16px;font-weight:bold;text-align:center;font-family:sans-serif;margin:0}</style></head>
+    <style type="text/css" id="holderjs-style">.holderjs-fluid {
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        font-family: sans-serif;
+        margin: 0
+    }</style>
+</head>
 <!-- NAVBAR
 ================================================== -->
-  <body>
+<body>
 
-        <div class="navbar-wrapper">
-      <div class="container">
-      
-    <!-- Social Bar -->
+<div class="navbar-wrapper">
+    <div class="container">
 
-    <div class="sticky-container">
-                <ul class="sticky">
-                        <li>
-                                <img title="JacpFX on Google+" alt="JacpFX on Google+" src="{{site.baseurl}}/img/jacpfx_google.jpg" height="32" width="32">
-                                <p><a href="https://plus.google.com/share?url=%7Bhttps://github.com/JacpFX%7D" target="_blank" alt="Share on Google+" data-pin-do="buttonBookmark"> Google+</a></p>
-                        </li>
-                        <li>
-                                <img title="JacpFX on Twitter" alt="JacpFX on Twitter" src="{{site.baseurl}}/img/jacpfx_twitter.jpg" height="32" width="32">
-                                <p><a href="https://twitter.com/AndyAHCP" target="_blank" alt="Share on GitHub" data-pin-do="buttonBookmark">Twitter</a></p> 
-                        </li>
-                        <li>
-                                <img title="Go To GitHub" alt="Go To GitHub" src="{{site.baseurl}}/img/jacpfx_github.jpg" height="32" width="32">
-                                <p><a href="https://github.com/JacpFX" target="_blank" alt="Share on GitHub" data-pin-do="buttonBookmark">GitHub</a></p>
-                        </li>
-                </ul>
+        <!-- Social Bar -->
+
+        <div class="sticky-container">
+            <ul class="sticky">
+                <li>
+                    <img title="JacpFX on Google+" alt="JacpFX on Google+" src="{{site.baseurl}}/img/jacpfx_google.jpg"
+                         height="32" width="32">
+
+                    <p><a href="https://plus.google.com/share?url=%7Bhttps://github.com/JacpFX%7D" target="_blank"
+                          alt="Share on Google+" data-pin-do="buttonBookmark"> Google+</a></p>
+                </li>
+                <li>
+                    <img title="JacpFX on Twitter" alt="JacpFX on Twitter" src="{{site.baseurl}}/img/jacpfx_twitter.jpg"
+                         height="32" width="32">
+
+                    <p><a href="https://twitter.com/AndyAHCP" target="_blank" alt="Share on GitHub"
+                          data-pin-do="buttonBookmark">Twitter</a></p>
+                </li>
+                <li>
+                    <img title="Go To GitHub" alt="Go To GitHub" src="{{site.baseurl}}/img/jacpfx_github.jpg"
+                         height="32" width="32">
+
+                    <p><a href="https://github.com/JacpFX" target="_blank" alt="Share on GitHub"
+                          data-pin-do="buttonBookmark">GitHub</a></p>
+                </li>
+            </ul>
         </div>
 
         <div class="navbar navbar-inverse navbar-fixed-top">
-          <div class="container">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <img src="{{site.baseurl}}/img/JacpFX_Project_Switzerland_Logo_blue.png" alt="JacpFX Project Switzerland Logo">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <img src="{{site.baseurl}}/img/JacpFX_Project_Switzerland_Logo_blue.png"
+                         alt="JacpFX Project Switzerland Logo">
+                </div>
+                <div class="navbar-header">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Documentation <b
+                                    class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="documentation_quickstart.html">Quickstart</a></li>
+                                <li><a href="documentation_main.html">Documentation main</a></li>
+                                <li><a href="#">Full Documentation</a></li>
+                            </ul>
+                        </li>
+                        <li><a class="navbar-brand" href="https://github.com/JacpFX" id="tooltip" rel="tooltip"
+                               data-placement="bottom" data-original-title="Go To GitHub" target="_blank">Download</a>
+                        </li>
+                    </ul>
+                    <a href="https://github.com/JacpFX" target="_blank"><img
+                            style="position: absolute; top: 0; right: 0; border: 0;"
+                            src="{{site.baseurl}}/img/DOWNLOAD_JacpFX_On_GitHUB.png" alt="Fork me on GitHub"></a>
+                </div>
             </div>
-            <div class="navbar-header">
-              <ul class="nav navbar-nav">
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Documentation <b class="caret"></b></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="documentation_quickstart.html">Quickstart</a></li>
-                    <li><a href="documentation_main.html">Documentation main</a></li>
-                    <li><a href="#">Full Documentation</a></li>
-                  </ul>
-                </li>
-                <li><a class="navbar-brand" href="https://github.com/JacpFX" id="tooltip" rel="tooltip" data-placement="bottom" data-original-title="Go To GitHub" target="_blank">Download</a></li> 
-              </ul><a href="https://github.com/JacpFX" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0;" src="{{site.baseurl}}/img/DOWNLOAD_JacpFX_On_GitHUB.png" alt="Fork me on GitHub"></a>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
+</div>
 
-    <!-- Carousel
-    ================================================== -->
-    <div class="carousel slide" id="myCarousel" title="JacpFX Project Website"> 
-      <!-- Indicators -->
-      <ol class="carousel-indicators">
+<!-- Carousel
+================================================== -->
+<div class="carousel slide" id="myCarousel" title="JacpFX Project Website">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
         <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
         <li data-target="#myCarousel" data-slide-to="1"></li>
         <li data-target="#myCarousel" data-slide-to="2"></li>
         <li data-target="#myCarousel" data-slide-to="3"></li>
-      </ol>
-      <div class="carousel-inner">
+    </ol>
+    <div class="carousel-inner">
         <div class="item active">
-           <!-- <img src="../../../1.png" alt="Structuring & Composition">-->
-          <div class="container">
-            <div class="carousel-caption">
-            <table border="0" cellspacing="10" width="100%">
-  			<tbody><tr><td width="58%"><h1>Structuring And Composition</h1>
-              <p><span class="glyphicon glyphicon-ok"></span> JacpFX components are simple controller classes<br>
-              <span class="glyphicon glyphicon-ok"></span> Compose your applications with FXML and plain JavaFX<br>
-    			</p></td><td width="42%"><img style="position: center;" src="{{site.baseurl}}/img/Structuring_And_Composition.png" alt="Structuring &amp; Composition"></td>
- 			 </tr></tbody></table>            
-            </div>
-          </div>
-        </div>
-        <div class="item">
-          <!-- <img src="../../../2.png" alt="Loosely Coupled">-->
-          <div class="container">
-            <div class="carousel-caption">
-            <table border="0" cellspacing="10" width="100%">
-              <tbody><tr><td width="58%"><h1>Loosely Coupled</h1>
-              <p>JacpFX components are referenced by id!</p>
-    		</td><td width="42%"><img style="position: center;" src="{{site.baseurl}}/img/Loosely_Coupled.png" alt="Loosely Coupled"></td>
-  			</tr></tbody></table>
-            </div>
-          </div>
-        </div>
-        <div class="item">
-           <!-- <img src="../../../3.png" alt="Messaging">-->
-          <div class="container">
-            <div class="carousel-caption">
-            <table border="0" cellspacing="10" width="100%">
-              <tbody><tr><td width="58%"><h1>JacpFX Messaging</h1>
-              <p><span class="glyphicon glyphicon-ok"></span> All components connected through a message bus<br>
-              <span class="glyphicon glyphicon-ok"></span> Change components state through messages</p>
-    		</td><td width="42%"><img style="position: center;" src="{{site.baseurl}}/img/JacpFX_Messaging.png" alt="Messaging"></td>
-  			</tr></tbody></table>
-            </div>
-          </div>
-        </div>
-        <div class="item">
-           <!-- <img src="../../../4.png" alt="Non-Blocking UI">-->
-          <div class="container">
-            <div class="carousel-caption">
-             <table border="0" cellspacing="10" width="100%">
-              <tbody><tr><td width="58%"><h1>Non-Blocking UI</h1>
-              <p>JacpFX components have a defined LifeCycle<br> to separate the task execution and UI changes.</p>
-    		</td><td width="42%"><img style="position: center;" src="{{site.baseurl}}/img/Non-Blocking_UI.png" alt="Non-Blocking UI"></td>
-  			</tr></tbody></table>
-            </div>
-          </div>
-        </div>
-       </div>
-      <a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
-      <a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
-<div class="orange"><p></p></div>
-   
-    </div><!-- /.carousel -->
-       <!-- Marketing messaging and featurettes
-    ================================================== -->
-    <!-- Wrap the rest of the page in another container to center all the content. -->
+            <!-- <img src="../../../1.png" alt="Structuring & Composition">-->
+            <div class="container">
+                <div class="carousel-caption">
+                    <table border="0" cellspacing="10" width="100%">
+                        <tbody>
+                        <tr>
+                            <td width="58%"><h1>Structuring And Composition</h1>
 
-    <div class="container marketing">
+                                <p>
+                                    <span class="glyphicon glyphicon-ok"></span> Compose your applications with FXML and
+                                    plain JavaFX<br>
+                                </p></td>
+                            <td width="42%"><img style="position: center;"
+                                                 src="{{site.baseurl}}/img/Structuring_And_Composition.png"
+                                                 alt="Structuring &amp; Composition"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <!-- <img src="../../../2.png" alt="Loosely Coupled">-->
+            <div class="container">
+                <div class="carousel-caption">
+                    <table border="0" cellspacing="10" width="100%">
+                        <tbody>
+                        <tr>
+                            <td width="58%"><h1>Loosely Coupled</h1>
+
+                                <p><span class="glyphicon glyphicon-ok"></span> JacpFX components are referenced by id
+                                </p>
+                            </td>
+                            <td width="42%"><img style="position: center;"
+                                                 src="{{site.baseurl}}/img/Loosely_Coupled.png" alt="Loosely Coupled">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <!-- <img src="../../../3.png" alt="Messaging">-->
+            <div class="container">
+                <div class="carousel-caption">
+                    <table border="0" cellspacing="10" width="100%">
+                        <tbody>
+                        <tr>
+                            <td width="58%"><h1>JacpFX Messaging</h1>
+
+                                <p>
+                                    <span class="glyphicon glyphicon-ok"></span> Change components state through
+                                    messages</p>
+                            </td>
+                            <td width="42%"><img style="position: center;"
+                                                 src="{{site.baseurl}}/img/JacpFX_Messaging.png" alt="Messaging"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="item">
+            <!-- <img src="../../../4.png" alt="Non-Blocking UI">-->
+            <div class="container">
+                <div class="carousel-caption">
+                    <table border="0" cellspacing="10" width="100%">
+                        <tbody>
+                        <tr>
+                            <td width="58%"><h1>Non-Blocking UI</h1>
+
+                                <p><span class="glyphicon glyphicon-ok"></span> Avoid pitfalls of traditional <br/>multi-threaded
+                                    programming
+                                </p>
+                            </td>
+                            <td width="42%"><img style="position: center;"
+                                                 src="{{site.baseurl}}/img/Non-Blocking_UI.png" alt="Non-Blocking UI">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a class="left carousel-control" href="#myCarousel" data-slide="prev"><span
+            class="glyphicon glyphicon-chevron-left"></span></a>
+    <a class="right carousel-control" href="#myCarousel" data-slide="next"><span
+            class="glyphicon glyphicon-chevron-right"></span></a>
+
+    <div class="orange"><p></p></div>
+
+</div>
+<!-- /.carousel -->
+<!-- Marketing messaging and featurettes
+================================================== -->
+<!-- Wrap the rest of the page in another container to center all the content. -->
+
+<div class="container marketing">

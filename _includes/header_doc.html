@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The JacpFX Project is an API to create Rich Clients in MVC style with JavaFX, Spring (or other DI frameworks) and an Actor like component approach. It provides a simple API to create a workspace, perspectives and components; to communicate with all parts trough messages and to compose your Client application easily. All components triggered by messages and have a defined life cycle; a component handle() method is always executed in a separate thread, so developers should have less effort on threading topics nor be afraid of locking and unresponsive UI. The API uses dependency injection to initialize all parts of your client; the currently used DI implementation is Spring. You can inject spring beans to your components and use the complete Spring stack in your JACP Application.">
+    <meta name="author" content="Andy Moncsek">
+        <meta name="keywords" content="JacpFX, JavaFX, AFX Component, JacpFX Messaging, JacpFX local messages, JacpFX global messages, Modal Dialogs, JacpFX OptionPane, Styling the JacpFX OptionPane, JACPToolBar, JACPMenuBar, Non blocking UI, User Interface Application, Framework, Jacp, API, WCS, MVC, Rich Client, Javascript">
+    <meta name="author" content="Andy Moncsek and Patric Symmangk">
+    <link rel="shortcut icon" href="{{site.baseurl}}/img/favicon.png">
+
+    <title>JacpFX Project - Java Asynchronous Client Platform</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap_docu.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<script src="js/html5shiv.js"></script>
+	<script src="js/respond.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <!-- Custom styles for this template -->
+    <!-- Social Bar -->
+
+    <style type="text/css">
+        .sticky-container{
+                /*background-color: #333;*/
+                padding: 0px;
+                margin: 0px;
+                position: fixed;
+                right: -119px;
+                top:40%;
+                width: 200px;
+
+        }
+
+        .sticky li{
+                list-style-type: none;
+                background-color: #0b516f;
+                color: #3083a7;
+                height: 43px;
+                padding: 0px;
+                margin: 0px 0px 1px 0px;
+                -webkit-transition:all 0.25s ease-in-out;
+                -moz-transition:all 0.25s ease-in-out;
+                -o-transition:all 0.25s ease-in-out;
+                transition:all 0.25s ease-in-out;
+                cursor: pointer;
+
+
+        }
+
+        .sticky li:hover{
+                margin-left: -115px;
+                /*-webkit-transform: translateX(-115px);
+                -moz-transform: translateX(-115px);
+                -o-transform: translateX(-115px);
+                -ms-transform: translateX(-115px);
+                transform:translateX(-115px);*/
+                /*background-color: #8e44ad;*/
+                filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 1 0\'/></filter></svg>#grayscale");
+                -webkit-filter: grayscale(0%);
+        }
+
+        .sticky li img{
+                float: left;
+                margin: 5px 5px;
+                margin-right: 10px;
+
+        }
+
+        .sticky li p{
+                padding: 0px;
+                margin: 0px;
+                text-transform: uppercase;
+                line-height: 43px;
+
+        }
+
+        /** content **/
+        .content{
+                margin-top: 150px;
+                margin-left: 100px;
+                width: 700px;
+        }
+        h1, h2{
+                font-family: "jacpfxfont.ttf",sans-serif;
+                padding: 0px;
+                margin: 0px;
+                font-weight: normal;
+        }
+
+        h1{
+                font-weight: 900;
+                font-size: 32px;
+        }
+
+        h2{
+                font-size:26px;
+        }
+
+        p.credit{
+                padding-top: 20px;
+                font-size: 12px;
+        }
+        </style>
+    <link href="css/carousel_docu.css" rel="stylesheet">
+  </head>
+<!-- NAVBAR
+================================================== -->
+  <body>
+    
+        <div class="navbar-wrapper">
+      <div class="container">
+    <!-- Social Bar -->
+
+    <div class="sticky-container">
+                <ul class="sticky">
+                        <li>
+                                <img title="JacpFX on Google+" alt="JacpFX on Google+" src="{{site.baseurl}}/img/jacpfx_google.jpg" height="32" width="32">
+                                <p><a href="https://plus.google.com/share?url=%7Bhttps://github.com/JacpFX%7D" target="_blank" alt="Share on Google+" data-pin-do="buttonBookmark"> Google+</a></p>
+                        </li>
+                        <li>
+                                <img title="JacpFX on Twitter" alt="JacpFX on Twitter" src="{{site.baseurl}}/img/jacpfx_twitter.jpg" height="32" width="32">
+                                <p><a href="https://twitter.com/AndyAHCP" target="_blank" alt="Share on GitHub" data-pin-do="buttonBookmark">Twitter</a></p> 
+                        </li>
+                        <li>
+                                <img title="Go To GitHub" alt="Go To GitHub" src="{{site.baseurl}}/img/jacpfx_github.jpg" height="32" width="32">
+                                <p><a href="https://github.com/JacpFX" target="_blank" alt="Share on GitHub" data-pin-do="buttonBookmark">GitHub</a></p>
+                        </li>
+                </ul>
+        </div>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <img src="{{site.baseurl}}/img/JacpFX_Project_Switzerland_Logo_White.png" alt="JacpFX Project Switzerland Logo">
+            </div>
+            <div class="navbar-header">
+              <ul class="nav navbar-nav">
+                <li><a class="navbar-brand" href="/"><span class="glyphicon glyphicon-arrow-left"></span> Return to Website </a></li>
+              </ul><a href="https://github.com/JacpFX" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0;" src="{{site.baseurl}}/img/DOWNLOAD_JacpFX_On_GitHUB.png" alt="Fork me on GitHub"></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+      <!-- Begin page content -->
+      <div class="container">
