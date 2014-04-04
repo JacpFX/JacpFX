@@ -9,24 +9,32 @@ JacpFX is an UI application framework based on JavaFX, supporting developers to 
 * Support of asynchronous processes to avoid blocking UIs
 * Lightweight (size and memory footprint)
 
-## general structure ##
+## General structure ##
 JacpFX has, like any other UI application framework, a hierarchic component structure to create client applications.
 
 ![JacpFX Component structure](http://jacp.googlecode.com/svn/wiki/JACP_Overview_v1.png "JacpFX Component structure") 
 
 A JacpFX application consists of following components:
 
-* An **[ApplicationLauncher](/applauncher.html/)**, which contains any configurations to bootstrap the application as well as the application main method.
-* A **[Workbench](/workbench.html/)**, this is the root Node of the client application. He basically contains any perspective constraints and some application specific configurations.
-* At least one **[Perspective](/perspective.html/)** to define the basic layout of your view
-* **[UI Components](/components.html/)**, to define the contents in a perspective
-* **[UI Fragments](/fragments.html/)**, to define parts of your UI in a component, this allows you to seperate one component in more fine-grained parts
-* **[Stateful/Stateless service Components](/services.html/)**, non UI service components for task execution and communication with external systems.
+* An **[ApplicationLauncher](#ApplicationLauncher)**, which contains any configurations to bootstrap the application as well as the application main method.
+* A **[Workbench](#workbench)**, this is the root Node of the client application. He basically contains any perspective constraints and some application specific configurations.
+* At least one **[Perspective](#perspective)** to define the basic layout of your view
+* **[UI Components](#components)**, to define the contents in a perspective
+* **[UI Fragments](#fragments)**, to define parts of your UI in a component, this allows you to seperate one component in more fine-grained parts
+* **[Stateful/Stateless service Components](#services)**, non UI service components for task execution and communication with external systems.
 
-##project structure##
+##Project structure##
+JacpFX projects have a typical maven (Java) project structure.
+###Dependencies###
 
-###dependencies###
+##Configuration##
 
+## <a name=ApplicationLauncher></a>ApplicationLauncher 
+## <a name=workbench></a>Workbench
+## <a name=perspective></a>Perspective 
+## <a name=components></a>Components
+## <a name=fragments></a>Fragments
+## <a name=services></a>Service components
 ##JacpFX messaging##
 
 ##modal dialogs##
