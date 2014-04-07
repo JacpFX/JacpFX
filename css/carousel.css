@@ -21,12 +21,29 @@ background-color: #3083a7;
  -o-transition:color 500ms linear;
 transition:color 500ms linear;
 }
+/* Normale Buttons */
+.btn-carousel-primary {
+color: #3083a7;
+border-color: #3083a7;
+background-color: #ffffff;
+ -webkit-transition:color 500ms linear;
+ -moz-transition:color 500ms linear;
+ -o-transition:color 500ms linear;
+transition:color 500ms linear;
+}
 /* Normale Buttons hover effect*/
 .btn-primary:hover{
 color:#3083a7;
 text-decoration:none;
 border-color: #3083a7;
 background-color: #ffffff;
+}
+/* Normale Buttons hover effect*/
+.btn-carousel-primary:hover{
+color:#ffffff;
+text-decoration:none;
+border-color: #ffffff;
+background-color: #3083a7;
 }
 #myCarousel{
 	background-image:url(../../../JacpFX_Header.png);
