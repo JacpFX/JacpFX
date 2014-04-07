@@ -13,23 +13,25 @@ public class ExamplePerspective implements FXPerspective {
    …
 }
 </pre>
-and the ExamplePerspective.fxml :
+####the ExamplePerspective.fxml :
 
-```
-<BorderPane id="BorderPane">
+```xml
+<BorderPane id="mainPane"
+            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <center>
-        <HBox fx:id="paneRight">
-            <children>
-                <SplitPane dividerPositions="0.5"
-                           orientation="VERTICAL"  HBox.hgrow="ALWAYS">
-                    <items>
-                        <HBox fx:id="contentTop" />
-                        <BorderPane fx:id="contentBottom">
-                        </BorderPane>
-                    </items>
-                </SplitPane>
-            </children>
-        </HBox>
+        <SplitPane fx:id="mainLayout" dividerPositions="0.55" focusTraversable="true"
+                   orientation="VERTICAL"  HBox.hgrow="ALWAYS">
+            <items>
+                <HBox fx:id="contentTop" />
+                <BorderPane fx:id="contentBottom" >
+                    <center>
+                        <Button fx:id="myButton" mnemonicParsing="false" text="my botton"/>
+                    </center>
+                </BorderPane>
+            </items>
+        </SplitPane>
     </center>
 </BorderPane>
 ```
+
+## JacpFX perspective example ##
