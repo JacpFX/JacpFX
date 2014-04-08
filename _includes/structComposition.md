@@ -12,7 +12,8 @@ JacpFX can help you to define your application UI in various ways. It allows you
 
 > The example below will demonstrate how to define FXML and JavaFX perspectives, how to declare the targets for components and how to implement FXML and JavaFX components. Each component will use a ManagedFragment for a specific part of the view to show the usage of ManagedFragments.
 
-## define the perspective view ##
+## Define the perspective view ##
+The first step is to create two perspectives having the same UI, one implemented with a FXML view and the other with a JavaFX view.
 ### FXML perspective example ###
 <pre>
 @Perspective(id = BaseConfig.ID, name = "p1",components = {…},
@@ -73,5 +74,15 @@ public class ExampleJavaFXPerspective implements FXPerspective {
     }
 }
 ```
+> Note: In case of JavaFX views you have to register the root component of your view:
+
+```java
+// Register root component
+perspectiveLayout.registerRootComponent(mainPane);
+```
+
 #### The resulting UI will look in both cases (FXML and JavaFX) like this: ####
 ![basic perspective](/img/basicPerspective.jpg)
+
+## Define target areas for components ##
+Both perspectives defines a very basic SplitPane layout with a top content- and bottom-content area. 
