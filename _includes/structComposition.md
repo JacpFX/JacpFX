@@ -1,30 +1,32 @@
 
 #Structuring and composition#
-JacpFX can help you to define your application UI in various ways. It allows you to mix FXML and JavaFX easily. 
+<br/>
 
-* The root of a JacpFX application is always the workbench, which defines an application window.
+> JacpFX can help you to define your application UI in various ways. It allows you to mix FXML and JavaFX easily. 
 
-* A workbench contains 1-n perspectives, each defining the layout of their view. A perspective defines his view either programmatically with JavaFX or by using a FXML file. In each view you can register several UI nodes as a target (placeholder) for a component view. 
+* The root of a JacpFX application is always the workbench which defines an application window.
+
+* A workbench contains 1-n perspectives, each defining the layout of their view. A perspective defines his view either programmatically with JavaFX or by using a FXML file. In each perspective view you can register several UI nodes as a target (placeholder) for a component view. 
 
 * A perspective contains 0-n UI components. Each component registers for a specific target (defined in the parent perspective) where the component view will be rendered. A component can represent e.g. a complex form or any other complex UI part. Like any perspective you can define the view either in FXML or JavaFX.
 
-* A component can contain 0-n ManagedFragments. A ManagedFragment is a reusable custom control which has access to the context of the parent component and can use DI (in case you use a DI container like Spring). A ManagedForm can be, e.g a part of a complex form (the address part) which can also be reused in other components. Like all perspectives and components, a ManagedFragment can have a FXML or JavaFX view.
+* A component can contain 0-n ManagedFragments. A ManagedFragment is a reusable custom control which can be e.g a part of a complex form (the address part) and can also be reused in other components. Like all perspectives and components, a ManagedFragment can have a FXML or JavaFX view.
 
-> The example below will demonstrate how to define FXML and JavaFX perspectives, how to declare the target areas for components and how to implement FXML and JavaFX components. Each component will use a ManagedFragment for a specific part of the view to show the usage of ManagedFragments.
+> The following example demonstrates how to define a FXML and a JavaFX perspective, how to declare the target areas for component views and how to implement FXML and JavaFX components. 
 
 ## Define the perspective view ##
 The first step is to create two perspectives having the same UI, one implemented with a FXML view and the other with a JavaFX view.
 ### FXML perspective example ###
 <pre>
 @Perspective(id = BaseConfig.ID, name = "p1",components = {…},
-        ```javaviewLocation = "/fxml/ExamplePerspective.fxml")</b>
+        <b>viewLocation = "/fxml/ExamplePerspective.fxml")</b>
 public class ExampleFXMLPerspective implements FXPerspective {
    …
 }
 </pre>
 
 
-####the ExamplePerspective.fxml :
+####The ExamplePerspective.fxml file:
 
 ```xml
 <BorderPane id="mainPane"
@@ -44,7 +46,7 @@ public class ExampleFXMLPerspective implements FXPerspective {
     </center>
 </BorderPane>
 ```
-
+<br/>
 ### JavaFX perspective example ###
 The code example below will produce exactly the same UI output like the FXML Perspective. You are free to mix FXML- and JavaFX-perspectives in a workbench. 
 
@@ -80,10 +82,10 @@ public class ExampleJavaFXPerspective implements FXPerspective {
 // Register root component
 perspectiveLayout.registerRootComponent(mainPane);
 ```
-
+<br/>
 #### The resulting UI will look in both cases (FXML and JavaFX) like this: ####
 ![basic perspective](/img/basicPerspective.jpg)
-
+<br/>
 ## Define target areas for component view rendering ##
 Both perspectives define a very basic SplitPane layout with a top content- and bottom-content area. The examples above define a HBox for top area and a BorderPane for the bottom area. Both nodes can be registered to be a target for components. 
 ### Register targets in the FXML perspective ###
@@ -132,4 +134,66 @@ public class ExampleJavaFXPerspective implements FXPerspective {
     }
 }
 </pre>
+<br/>
 ## Define the component views ##
+Component views are detailed parts of your perspective view. Each perspective view can have many component views defined in FXML or programmatically.
+<br/>
+### FXML component example: ###
+<pre>
+@DeclarativeView(id = ComponentIds.COMPONENT_ONE,
+        name = "SimpleView",
+        active = true,
+        resourceBundleLocation = "bundles.languageBundle",
+        <b>initialTargetLayoutId = PerspectiveIds.TARGET_CONTAINER_TOP,</b>
+        <b>viewLocation = "/fxml/ComponentOne.fxml")</b>
+public class ComponentOne implements FXComponent {
+
+    @FXML
+    private VBox mainPane;
+
+    @Override
+    public Node handle(final Message<Event, Object> message) {
+        // runs in worker thread
+        return null;
+    }
+
+    @Override
+    public Node postHandle(final Node arg0,
+                           final Message<Event, Object> message) {
+        // runs in FX application thread
+        return null;
+    }
+
+    @PostConstruct
+    public void onStartComponent(final FXComponentLayout arg0,
+                                 final ResourceBundle resourceBundle) {
+        HBox.setHgrow(mainPane, Priority.ALWAYS);
+
+    }
+}
+
+</pre>
+> Note: the "initialTargetLayoutId" attribute registers the component view for a specific targetLayout defined in the perspective.  
+<br/>
+
+### The ComponentOne.fxml file: ###
+```xml
+<VBox fx:id="mainPane" xmlns="http://javafx.com/javafx/8"
+      xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <HBox prefHeight="100.0" prefWidth="200.0">
+            <children>
+                <Label text="First name:">
+                   ...
+                </Label>
+                <TextField prefHeight="50.0" HBox.hgrow="ALWAYS">
+                    ...
+                </TextField>
+            </children>
+        </HBox>
+        <HBox prefHeight="100.0" prefWidth="200.0">
+            ...
+        </HBox>
+    </children>
+</VBox>
+```
