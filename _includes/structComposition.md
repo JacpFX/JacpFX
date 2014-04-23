@@ -36,11 +36,11 @@ public class ExampleFXMLPerspective implements FXPerspective {
                    orientation="VERTICAL"  HBox.hgrow="ALWAYS">
             <items>
                 <HBox fx:id="contentTop" />
-                <BorderPane fx:id="contentBottom" >
-                    <center>
-                        <Button fx:id="myButton" text="my button"/>
-                    </center>
-                </BorderPane>
+                <HBox fx:id="contentBottom">
+                    <children>
+                        <Button fx:id="myButton" mnemonicParsing="false" text="my button"/>
+                    </children>
+                </HBox>
             </items>
         </SplitPane>
     </center>
@@ -66,8 +66,11 @@ public class ExampleJavaFXPerspective implements FXPerspective {
 
         HBox contentTop = new HBox();
         HBox.setHgrow(contentTop, Priority.ALWAYS);
-        BorderPane contentBottom = new BorderPane();
-        contentBottom.setCenter(new Button("my button"));
+        
+        HBox contentBottom = new HBox();
+        HBox.setHgrow(contentBottom, Priority.ALWAYS);
+        
+        contentBottom.getChildren().add(new Button("my button"));
         mainLayout.getItems().addAll(contentTop,contentBottom);
 
         // Register root component
@@ -122,7 +125,7 @@ public class ExampleJavaFXPerspective implements FXPerspective {
         SplitPane mainLayout = new SplitPane();
 		...
         HBox contentTop = new HBox();
-        BorderPane contentBottom = new BorderPane();
+        HBox contentBottom = new HBox();
 		...
         // Register root component
         perspectiveLayout.registerRootComponent(mainPane);
@@ -167,21 +170,19 @@ public class ComponentOne implements FXComponent {
     @PostConstruct
     public void onStartComponent(final FXComponentLayout arg0,
                                  final ResourceBundle resourceBundle) {
-        HBox.setHgrow(mainPane, Priority.ALWAYS);
-
     }
 }
 
 </pre>
-> Note: the "initialTargetLayoutId" attribute registers the component view for a specific targetLayout defined in the perspective.  
+> Note: the "initialTargetLayoutId" attribute registers the component view for a specific targetLayout defined in the perspective. The FXML component will be registered for "TARGET_CONTAINER_TOP" in the parent perspective.   
 <br/>
 
 ### The ComponentOne.fxml file: ###
 ```xml
 <VBox fx:id="mainPane" xmlns="http://javafx.com/javafx/8"
-      xmlns:fx="http://javafx.com/fxml/1">
+      xmlns:fx="http://javafx.com/fxml/1" HBox.hgrow="ALWAYS">
     <children>
-        <HBox prefHeight="100.0" prefWidth="200.0">
+        <HBox prefHeight="100.0" prefWidth="200.0" fx:id="top">
             <children>
                 <Label text="First name:">
                    ...
@@ -191,9 +192,61 @@ public class ComponentOne implements FXComponent {
                 </TextField>
             </children>
         </HBox>
-        <HBox prefHeight="100.0" prefWidth="200.0">
+        <HBox prefHeight="100.0" prefWidth="200.0" fx:id="bottom">
             ...
         </HBox>
     </children>
 </VBox>
 ```
+### JavaFX component example ###
+The following component example will produce the same UI output as the FXML example above.
+<br/>
+<pre>
+@View(id = ComponentIds.COMPONENT_TWO,
+        name = "SimpleView",
+        active = true,
+        resourceBundleLocation = "bundles.languageBundle",
+        initialTargetLayoutId = PerspectiveIds.TARGET_CONTAINER_MAIN)
+public class ComponentTwo implements FXComponent {
+	private VBox pane;
+    @Override
+    public Node handle(final Message<Event, Object> message) {
+        // runs in worker thread
+        return null;
+    }
+    @Override
+    public Node postHandle(final Node arg0,
+                           final Message<Event, Object> message) {
+        // runs in FX application thread
+        return this.pane;
+    }
+	@PostConstruct
+    public void onStartComponent(final FXComponentLayout arg0,
+                                 final ResourceBundle resourceBundle) {
+       pane = (VBox) createUI();
+	}
+	private Node createUI() {
+        final VBox pane = new VBox();
+        HBox.setHgrow(pane, Priority.ALWAYS);
+        final HBox top = new HBox();
+        top.setPrefHeight(100);
+        top.setPrefWidth(200);
+        Label firstName = new Label("First name:");
+        firstName.setFont(new Font(29.0));
+        HBox.setMargin(firstName, new Insets(15,5,0,5));
+        TextField firstNameText = new TextField();
+        firstNameText.setPrefHeight(50);
+        firstNameText.setPadding(new Insets(10, 0, 0, 0));
+        HBox.setHgrow(firstNameText,Priority.ALWAYS);
+        HBox.setMargin(firstNameText, new Insets(10,5,0,0));
+        top.getChildren().addAll(firstName,firstNameText);
+        final HBox bottom = new HBox();
+		...
+        pane.getChildren().addAll(top,bottom);
+        return pane;
+    }
+}
+</pre>
+> The JavaFX component will be registered for "TARGET_CONTAINER_MAIN" in the parent perspective. The resulting application will show both (the FXML and the JavaFX component) in one perspective.
+### The resulting application ###
+![basic perspective](/img/perspectiveWithComponents.jpg)
