@@ -12,7 +12,11 @@
 
 * A component can contain 0-n ManagedFragments. A ManagedFragment is a reusable custom control which can be e.g a part of a complex form (the address part) and can also be reused in other components. Like all perspectives and components, a ManagedFragment can have a FXML or JavaFX view.
 
-> The following example demonstrates how to define a FXML and a JavaFX perspective, how to declare the target areas for component views and how to implement FXML and JavaFX components. 
+> The following example demonstrates how to define a FXML and a JavaFX perspective, how to declare the target areas for component views and how to implement FXML and JavaFX components.
+
+<br/>
+![basic perspective](/img/overview.jpg)
+<br/>
 
 ## Define the perspective view ##
 The first step is to create two perspectives having the same UI, one implemented with a FXML view and the other with a JavaFX view.
@@ -248,5 +252,113 @@ public class ComponentTwo implements FXComponent {
 }
 </pre>
 > The JavaFX component will be registered for "TARGET_CONTAINER_MAIN" in the parent perspective. The resulting application will show both (the FXML and the JavaFX component) in one perspective.
+
 ### The resulting application ###
 ![basic perspective](/img/perspectiveWithComponents.jpg)
+## Managed fragments ##
+The next (optional) step is to create reusable controls, the so called "ManagedFragments". A ManagedFragment has access to the parent context (of the component or perspective), can use dependency injection like any other component and can be used to create parts of your view.
+Like any other component or perspective a ManagedFragment can define it's view either in JavaFX or FXML.
+## The FXML ManagedFragment example ##
+
+<pre>
+@Fragment(id = ComponentIds.FRAGMENT_ONE,
+        <b>viewLocation = "/fxml/FragmentOne.fxml",</b>
+        resourceBundleLocation = "bundles.languageBundle",
+        localeID = "en_US",
+        scope = Scope.PROTOTYPE)
+public class FragmentOne {
+}
+</pre>
+
+### The FragmentOne.fxml file ###
+
+```xml
+
+<VBox fx:id="mainPane" xmlns="http://javafx.com/javafx/8"
+      xmlns:fx="http://javafx.com/fxml/1" HBox.hgrow="ALWAYS" style="-fx-background-color:#f5f5f5">
+    <children>
+        <HBox prefHeight="100.0" prefWidth="200.0" fx:id="top">
+            <children>
+                <Label text="Phone:">
+                    <font>
+                        <Font size="29.0"/>
+                    </font>
+                    <HBox.margin>
+                        <Insets left="5.0" right="5.0" top="15.0"/>
+                    </HBox.margin>
+                </Label>
+                <TextField prefHeight="50.0" HBox.hgrow="ALWAYS">
+                    <padding>
+                        <Insets top="10.0"/>
+                    </padding>
+                    <HBox.margin>
+                        <Insets right="5.0" top="10.0"/>
+                    </HBox.margin>
+                </TextField>
+            </children>
+        </HBox>
+        <HBox prefHeight="100.0" prefWidth="200.0" fx:id="bottom">
+           ...
+        </HBox>
+    </children>
+</VBox>
+
+```
+
+### The JavaFX ManagedFragment example ###
+The same UI can be also achieved using plain JavaFX. In this case a ManagedFragment extends a node / control.
+<pre>
+@Fragment(id = ComponentIds.FRAGMENT_TWO,
+        resourceBundleLocation = "bundles.languageBundle",
+        localeID = "en_US",
+        scope = Scope.PROTOTYPE)
+public class FragmentTwo extends VBox{
+	public FragmentTwo() {
+          setStyle("-fx-background-color:#f5f5f5");
+          HBox.setHgrow(this, Priority.ALWAYS);
+          final HBox top = new HBox();
+          top.setPrefHeight(100);
+          top.setPrefWidth(200);
+          Label firstName = new Label("Phone:");
+          firstName.setFont(new Font(29.0));
+          HBox.setMargin(firstName, new Insets(15,5,0,5));
+          TextField firstNameText = new TextField();
+          firstNameText.setPrefHeight(50);
+          firstNameText.setPadding(new Insets(10, 0, 0, 0));
+          HBox.setHgrow(firstNameText,Priority.ALWAYS);
+          HBox.setMargin(firstNameText, new Insets(10,5,0,0));
+          top.getChildren().addAll(firstName,firstNameText);
+          final HBox bottom = new HBox();
+          ...
+          this.getChildren().addAll(top,bottom);
+          }
+}
+</pre> 
+
+### Creating a ManagedFragment instance ###
+ManagedFragments can be used in perspectives or components. To create a new instance the JacpFX Context provides a method to create a typed fragment handler. The following example will create a ManagedFragment in ComponentOne and include the fragment view to his component view.
+<pre>
+@View(id = ComponentIds.COMPONENT_TWO,
+        name = "SimpleView",
+        active = true,
+        resourceBundleLocation = "bundles.languageBundle",
+        initialTargetLayoutId = PerspectiveIds.TARGET_CONTAINER_MAIN)
+public class ComponentTwo implements FXComponent {
+...
+	@PostConstruct
+    public void onStartComponent(final FXComponentLayout arg0,
+                                 final ResourceBundle resourceBundle) {
+        pane = (VBox) createUI();
+        HBox lastRow = new HBox();
+       <b> ManagedFragmentHandler<FragmentOne> fragment = context.getManagedFragmentHandler(FragmentOne.class);
+        lastRow.getChildren().addAll(fragment.getFragmentNode());</b>
+        pane.getChildren().add(lastRow);
+    }
+}
+</pre>
+> Note: The same ManagedFragment class can be reused in any other component or perspective. Detailed documentation about context access and the scope of ManagedFragments can be found in the documentation section.
+
+### The final UI ### 
+![basic perspective](/img/fullResult.jpg)
+
+> The example code you can download here : 
