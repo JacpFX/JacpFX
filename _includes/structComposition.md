@@ -358,7 +358,8 @@ public class ComponentTwo implements FXComponent {
 </pre>
 > Note: The same ManagedFragment class can be reused in any other component or perspective. Detailed documentation about context access and the scope of ManagedFragments can be found in the documentation section.
 
-### The final UI ### 
+### The final UI  
+
 ![basic perspective](/img/fullResult.jpg)
 
 > The example code you can download here : 
