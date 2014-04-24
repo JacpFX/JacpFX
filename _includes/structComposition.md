@@ -52,9 +52,9 @@ public class ExampleFXMLPerspective implements FXPerspective {
 ```
 <br/>
 ### JavaFX perspective example ###
-The code example below will produce exactly the same UI output like the FXML Perspective. You are free to mix FXML- and JavaFX-perspectives in a workbench. 
+The code example below will produce exactly the same UI output like the FXML Perspective. You are free to mix FXML- and JavaFX-perspectives in one workbench. 
 
-```java
+<pre>
 @Perspective(id = BaseConfig.ID, name = "p1",components = {…})
 public class ExampleJavaFXPerspective implements FXPerspective {
 
@@ -78,11 +78,11 @@ public class ExampleJavaFXPerspective implements FXPerspective {
         mainLayout.getItems().addAll(contentTop,contentBottom);
 
         // Register root component
-        perspectiveLayout.registerRootComponent(mainPane);
+       <b> perspectiveLayout.registerRootComponent(mainPane);</b>
  		...
     }
 }
-```
+</pre>
 > Note: In case of JavaFX views you must register the root component of your view:
 
 ```java
@@ -93,7 +93,7 @@ perspectiveLayout.registerRootComponent(mainPane);
 #### The resulting UI will look in both cases (FXML and JavaFX) like this: ####
 ![basic perspective](/img/basicPerspective.jpg)
 <br/>
-## Define target areas for component view rendering ##
+## Define target areas for component rendering ##
 Both perspectives define a very basic SplitPane layout with a top content- and bottom-content area. The examples above define a HBox for top area and a BorderPane for the bottom area. Both nodes can be registered to be a target for components. 
 ### Register targets in the FXML perspective ###
 <pre>
@@ -178,7 +178,7 @@ public class ComponentOne implements FXComponent {
 }
 
 </pre>
-> Note: the "initialTargetLayoutId" attribute registers the component view for a specific targetLayout defined in the perspective. The FXML component will be registered for "TARGET_CONTAINER_TOP" in the parent perspective.   
+> Note: the "initialTargetLayoutId" attribute registers the component view for a specific targetLayout defined in the parent perspective. The current FXML component will be registered for "TARGET_CONTAINER_TOP" in the parent perspective.   
 <br/>
 
 ### The ComponentOne.fxml file: ###
