@@ -27,8 +27,8 @@ Example perspective annotation, referencing two components:
 Perspectives and components are resolved by component scanning on application startup. To exchange a component-reference in a perspective, simply remove the "old" component ID and add the new ID.
 <br/>
 ## Loosely coupled view rendering ##
-Perspectives are defining the layout structure of you view. You can define "render" targets by ID in your perspective where a component view should be rendered. Each component of a perspective can register to a specific render target, so the resulting view of a component will be included at that specific area. The render target of a component can also be changed at runtime so a component view can be moved from one area in perspective to an other.
-### Register targets in a perspective ###
+Perspectives are defining the layout structure of you view. You can define "render-targets" in your perspective by ID, to mark areas where component views should be rendered. Each component of a perspective can register to a specific "render-target", so the resulting view of a component will be included at that specific area. The "render-target" of a component can also be changed at runtime, so a component view can be moved from one area in perspective to an other.
+### Register targets in a perspective ### 
 <pre>
 @Perspective(id = BaseConfig.ID, name = "p1",components = {…},
         <b>viewLocation = "/fxml/ExamplePerspective.fxml")</b>
