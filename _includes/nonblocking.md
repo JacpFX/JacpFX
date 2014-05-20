@@ -1,4 +1,8 @@
 
 #JacpFX Non Blocking UI#
-When an UI Component receives a message, it first executes a handle method inside a worker thread and then it executes a handle method on FX Appliaction Thread. A JacpFX component is similar to an Actor, it has a unique ID and a message box where all the messages are queued and it can send messages to itself or to other components.
+<br/>
+The JacpFX component-lifecycle separates the tasks execution and state changes from each other. When a component receives a message, it first executes a "handle" method, which is running inside a worker thread. 
+In this stage you can execute any long running task or create new JavaFX nodes without blocking the application. When the task execution is finished, the subsequent "postHandle" method will be executed inside the FX Application thread.
+
+![component-lifecycle](/img/AsyncModel.png)
 
