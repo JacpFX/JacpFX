@@ -26,16 +26,48 @@ A JacpFX application consists of following components:
 ##Project structure##
 JacpFX projects have a typical maven (Java) project structure.
 ###Dependencies###
-
+#### JacpFX.API ####
+#### JacpFX.JavaFX ####
+#### JacpFX.JavaFXControls ####
+#### JacpFX.JavaFXSpring ####
 ##Configuration##
+<br/>
 
 ## <a name=ApplicationLauncher></a>ApplicationLauncher 
+The ApplicationLauncher is the entry point to bootstrap a JacpFX application. It contains the main method, the configuration for component scanning, the managed container configuration and the reference to the workbench class.
+JacpFX defines an Launcher interface which is currently using Spring as the managed container. A CDI implementation is planned, but not available yet. For the Spring implementation there are two abstract launcher implementations available:
+
+- The AFXSpringXmlLauncher
+- The AFXSpringJavaConfigLauncher
+
+<br/>
 ## <a name=workbench></a>Workbench
+### Declare references to perspectives ###
+### Set window style ###
+### Set workbench size ###
+### Enable menus ###
+### Enable toolbars ###
+<br/>
 ## <a name=perspective></a>Perspective 
+### The perspective lifecycle ###
+### Perspective types ###
+#### Programmatic Perspectives ####
+#### Declarative Perspectives ####
+<br/>
 ## <a name=components></a>Components
+### UI Components ###
+#### component lifecycle ###
+<br/>
+### Callback Components ###
+<br/>
 ## <a name=fragments></a>Fragments
+<br/>
 ## <a name=services></a>Service components
+<br/>
 ##JacpFX messaging##
+### The message interface ###
+<br/>
+### The JacpFX Context ###
 
 ##modal dialogs##
 
