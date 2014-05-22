@@ -2,10 +2,6 @@
 #Loosely coupled#
 A JacpFX application has a hierarchical structure composed of a workbench, perspective(s) and component(s). All references to perspectives and components handled by ID's inside the component-annotation of the parent component.
 <br/>
-<div align="center">
-![loosely coupled](/img/JacpFX_Loosely_Coupled.png)
-</div>
-
 <br/>
 Example workbench annotation, referencing two perspectives:
 <br/>

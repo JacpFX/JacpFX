@@ -2,11 +2,6 @@
 #JacpFX messaging#
 Messaging is an essential part of JacpFX. JacpFX components (workbench, perspectives, components) have no direct reference to each other and communicate via messages.
 Every component has a message box and handles it's messages sequential, similar to an actor. 
-<br/>
-<div align="center">
-![messaging](/img/JacpFX_Messaging.png)
-</div>
-<br/>
 To send a message the JacpFX context contains following two methods:
 ### sending a message to yourself ###
 <pre>

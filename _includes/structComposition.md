@@ -16,7 +16,7 @@
 
 <br/>
 <div align="center">
-![basic perspective](/img/JacpFX_Structure_and_Composition.png)
+![basic perspective](/img/overview.jpg)
 </div>
 <br/>
 
@@ -95,7 +95,7 @@ perspectiveLayout.registerRootComponent(mainPane);
 #### The resulting UI will look in both cases (FXML and JavaFX) like this: ####
 <br/>
 <div align="center">
-![basic perspective](/img/JacpFX_Structure_and_Composition_Abb2.png)
+![basic perspective](/img/basicPerspective.jpg)
 </div>
 
 <br/>
@@ -262,7 +262,7 @@ public class ComponentTwo implements FXComponent {
 ### The resulting application ###
 <br/>
 <div align="center">
-![basic perspective](/img/JacpFX_Structure_and_Composition_Abb3.png)
+![basic perspective](/img/perspectiveWithComponents.jpg)
 </div>
 ## Managed fragments ##
 The next (optional) step is to create reusable controls, the so called "ManagedFragments". A ManagedFragment has access to the parent context (of the component or perspective), can use dependency injection like any other component and can be used to create parts of your view.
