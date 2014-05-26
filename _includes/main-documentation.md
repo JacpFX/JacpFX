@@ -1,5 +1,5 @@
 
-#JacpFX Documentation#
+#JacpFX Documentation --- WORK IN PROGRESS --- #
 This documentation pages gives you detailed informations about all parts of JacpFX; how to bootstrap a new JacpFX application and the general usage. You may want to read the [quick-start tutorial](http://) to start with a JacpFX project directly.
 ## What it is##
 JacpFX is an UI application framework based on JavaFX, supporting developers to structure an application with loosely coupled, reusable components. It frees you from the pitfalls of traditional multi-threaded programming helping you to separate the task execution from UI changes in you client application. JacpFX focusing on following goals to deliver best developer- and user-experience:
@@ -40,8 +40,96 @@ JacpFX defines an Launcher interface which is currently using Spring as the mana
 - The AFXSpringXmlLauncher
 - The AFXSpringJavaConfigLauncher
 
+### AFXSpringXmlLauncher example ###
+
+<pre>
+public class ApplicationLauncher extends AFXSpringXmlLauncher {
+
+
+    @Override
+    public String getXmlConfig() {
+        return "main.xml";
+    }
+
+    @Override
+    protected Class<? extends FXWorkbench> getWorkbenchClass() {
+        return JacpFXWorkbench.class;
+    }
+
+    @Override
+    protected String[] getBasePackages() {
+        return new String[]{"my.project.quickstart"};
+    }
+
+
+    public static void main(String[] args) {
+        Application.launch(args);
+    }
+
+    @Override
+    public void postInit(Stage stage) {
+	...
+    }
+
+}
+
+</pre>
+
+> The "getXMLConfig()" methods returns the name of your spring configuration xml, which is located in resources folder.
+
 <br/>
-## <a name=workbench></a>Workbench
+### AFXSpringXmlLauncher example ###
+
+<pre>
+public class ApplicationLauncher extends AFXSpringJavaConfigLauncher {
+
+    @Override
+    protected Class<?>[] getConfigClasses() {
+        return new Class<?>[]{BaseConfiguration.class};
+    }
+
+    @Override
+    protected Class<? extends FXWorkbench> getWorkbenchClass() {
+        return JacpFXWorkbench.class;
+    }
+
+    @Override
+    protected String[] getBasePackages() {
+        return new String[]{"my.project.quickstart"};
+    }
+
+    /**
+     * @param args
+     */
+    public static void main(String[] args) {
+        Application.launch(args);
+    }
+
+    @Override
+    public void postInit(Stage stage) {
+	...
+    }
+}
+</pre>
+
+> The "getConfigClasses()" returns an array with all valid spring configuration classes (annotated with @Configuration)
+<br/>
+
+### Common applicationLauncher methods ###
+#### getWorkbenchClass ####
+Returns the defined Workbench class
+<br/>
+
+#### getBasePackages ####
+Define all packages to scan for components and perspectives. JacpFX uses component scanning to resolve all components and perspectives by ID.
+<br/>
+
+#### postInit ####
+This method gives you access to the JavaFX stage. You can e.g. define stylesheet for you application.
+
+## <a name=workbench></a>Workbench ##
+The workbench is the root node of your client project, providing simple interfaces to configure the basic behavior of your client. Besides the application launcher, it is the only component where you can get direct access to the JavaFX "stage". 
+Furthermore a workbench logically groups all perspectives defined in the @workbench annotation. 
 ### Declare references to perspectives ###
 ### Set window style ###
 ### Set workbench size ###
