@@ -98,9 +98,7 @@ public class ApplicationLauncher extends AFXSpringJavaConfigLauncher {
         return new String[]{"my.project.quickstart"};
     }
 
-    /**
-     * @param args
-     */
+
     public static void main(String[] args) {
         Application.launch(args);
     }
@@ -130,6 +128,52 @@ This method gives you access to the JavaFX stage. You can e.g. define stylesheet
 ## <a name=workbench></a>Workbench ##
 The workbench is the root node of your client project, providing simple interfaces to configure the basic behavior of your client. Besides the application launcher, it is the only component where you can get direct access to the JavaFX "stage". 
 Furthermore a workbench logically groups all perspectives defined in the @workbench annotation. 
+### Example workbench ###
+<br/>
+<pre>
+@Workbench(id = "id1", name = "workbench",
+        perspectives = {
+                BaseConfiguration.PERSPECTIVE_TWO,
+                BaseConfiguration.PERSPECTIVE_ONE
+        })
+public class JacpFXWorkbench implements FXWorkbench {
+    @Override
+    public void handleInitialLayout(final Message<Event, Object> action,
+                                    final WorkbenchLayout<Node> layout, final Stage stage) {
+        layout.setWorkbenchXYSize(1024, 768);
+        layout.registerToolBar(ToolbarPosition.NORTH);
+        layout.setStyle(StageStyle.DECORATED);
+        layout.setMenuEnabled(false);
+    }
+    @Override
+    public void postHandle(final FXComponentLayout layout) {
+    ...
+    }
+}
+</pre>
+<br/>
+
+The workbench interface defines two method:
+
+- handleInitialLayout
+- postHandle
+<br/>
+
+#### The handleInitialLayout method ####
+This method is the first one which will be called on application start. It allows to do a basic configuration of you application. The method signature defines three parameter:
+
+- Message<Event,Object> action : the initial message, see **[JacpFX messaging](#messaging)**
+
+- WorkbenchLayout<Node> layout (the configuration handler to define following application values): 
+	- layout.setWorkbenchXYSize(x,y) : define the initial workbench size
+	- layout.registerToolBar(ToolbarPosition.NORTH): activate toolbars (ORTH, SOUTH, EAST, WEST)
+	- layout.setStyle(StageStyle.DECORATED): enable/disable window decoration 
+	- layout.setMenuEnabled(false): enable/disable application menues
+	
+- Stage: the JavaFX "Stage" object
+
+
+
 ### Declare references to perspectives ###
 ### Set window style ###
 ### Set workbench size ###
@@ -152,7 +196,7 @@ Furthermore a workbench logically groups all perspectives defined in the @workbe
 <br/>
 ## <a name=services></a>Service components
 <br/>
-##JacpFX messaging##
+## <a name=messaging></a>JacpFX messaging##
 ### The message interface ###
 <br/>
 ### The JacpFX Context ###
