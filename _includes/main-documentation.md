@@ -1,6 +1,6 @@
 
 #JacpFX Documentation --- WORK IN PROGRESS --- #
-This documentation pages gives you detailed informations about all parts of JacpFX; how to bootstrap a new JacpFX application and the general usage. You may want to read the [quick-start tutorial](http://) to start with a JacpFX project directly.
+This documentation pages gives you detailed informations about all parts of JacpFX; how to bootstrap a new JacpFX application and the general usage. You may want to read the [quick-start tutorial](documentation_quickstart.html) to start with a JacpFX project directly.
 ## What it is##
 JacpFX is an UI application framework based on JavaFX, supporting developers to structure an application with loosely coupled, reusable components. It frees you from the pitfalls of traditional multi-threaded programming helping you to separate the task execution from UI changes in you client application. JacpFX focusing on following goals to deliver best developer- and user-experience:
 
@@ -78,7 +78,7 @@ public class ApplicationLauncher extends AFXSpringXmlLauncher {
 > The "getXMLConfig()" methods returns the name of your spring configuration xml, which is located in resources folder.
 
 <br/>
-### AFXSpringXmlLauncher example ###
+### AFXSpringJavaConfigLauncher example ###
 
 <pre>
 public class ApplicationLauncher extends AFXSpringJavaConfigLauncher {
@@ -115,7 +115,7 @@ public class ApplicationLauncher extends AFXSpringJavaConfigLauncher {
 
 ### Common applicationLauncher methods ###
 #### getWorkbenchClass ####
-Returns the defined Workbench class
+Returns the defined Workbench class.
 <br/>
 
 #### getBasePackages ####
