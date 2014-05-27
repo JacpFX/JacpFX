@@ -127,7 +127,8 @@ This method gives you access to the JavaFX stage. You can e.g. define stylesheet
 
 ## <a name=workbench></a>Workbench ##
 The workbench is the root node of your client project, providing simple interfaces to configure the basic behavior of your client. Besides the application launcher, it is the only component where you can get direct access to the JavaFX "stage". 
-Furthermore a workbench logically groups all perspectives defined in the @workbench annotation. 
+Furthermore a workbench logically groups all perspectives defined in the @workbench annotation.
+ 
 ### Example workbench ###
 <br/>
 <pre>
@@ -159,26 +160,34 @@ The workbench interface defines two method:
 - postHandle
 <br/>
 
-#### The handleInitialLayout method ####
+### The handleInitialLayout method ###
 This method is the first one which will be called on application start. It allows to do a basic configuration of you application. The method signature defines three parameter:
 
 - Message<Event,Object> action : the initial message, see **[JacpFX messaging](#messaging)**
 
 - WorkbenchLayout<Node> layout (the configuration handler to define following application values): 
 	- layout.setWorkbenchXYSize(x,y) : define the initial workbench size
-	- layout.registerToolBar(ToolbarPosition.NORTH): activate toolbars (ORTH, SOUTH, EAST, WEST)
+	- layout.registerToolBar(ToolbarPosition.NORTH): activate toolbars (NORTH, SOUTH, EAST, WEST)
 	- layout.setStyle(StageStyle.DECORATED): enable/disable window decoration 
 	- layout.setMenuEnabled(false): enable/disable application menues
 	
 - Stage: the JavaFX "Stage" object
 
+<br/>
+### The postHandle method ###
 
+The postHandle method will be executed after the configuration in the "handleInitialLayout" method was done. Depending on the configured toolbars and menus you can add global toolbar/menue entries to you application here.
+The FXComponentLayout interface defines following methods:
 
+- layout.getRegisteredToolBar(ToolbarPosition.NORTH) : returns the (NORTH, SOUTH, EAST, WEST) toolbar
+- layout.getRegisteredToolBars() : returns all registered toolbars
+- layout.getMenu(): returns the application menu
+
+To get detailled informations about toolbars, see **[Toolbars](#toolbars)**
+
+<br/>
 ### Declare references to perspectives ###
-### Set window style ###
-### Set workbench size ###
-### Enable menus ###
-### Enable toolbars ###
+
 <br/>
 ## <a name=perspective></a>Perspective 
 ### The perspective lifecycle ###
