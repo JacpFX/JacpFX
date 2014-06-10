@@ -15,7 +15,7 @@ JacpFX has, like any other UI application framework, a hierarchic component stru
 
 <br/>
 <div align="center">
-![JacpFX Component structure](/img/JACP_Overview_v2_1.png)
+![JacpFX Component structure](/img/JACP_Overview_v2.png)
 </div>
 <br/>
 
@@ -207,7 +207,7 @@ To declare references to perspectives, simply add the perspective ID's in the "p
 
 A perspective defines the basic UI structure for your view and provides a container for components. While a perspective is more like a template with placeholders, components are the detail views of your application.
 <br/>
-A typical UI application has a root node and a large tree of components which represents your UI structure. The leaf nodes of such a component-tree are your user-defined nodes containing the Buttons, TextFields and so on.  In a typical business application you can create a (Split-)Pane in your perspective, which represents the the root node of your current view, place a Pane on the left and on the right and register those Panes as “Targets” for your components. Child components of your perspective can now registers themselves to be rendered in one of those targets.
+A typical UI application has a root node and a large tree of components which represents your UI structure. The leaf nodes of such a component-tree are your user-defined controles like Buttons, TextFields and so on.  In a typical business application you can create a (Split-)Pane in your perspective, which represents the the root node of your current view, place a Pane on the left and on the right and register those Panes as “targets” for your components. Child components of your perspective can now registers themselves to be rendered in one of those targets.
 <br/>
 <div align="center">
 ![perspective node tree](/img/JACP_NodeTree_View.png)
@@ -216,6 +216,15 @@ A typical UI application has a root node and a large tree of components which re
 
 
 ### The perspective lifecycle ###
+A perspective defines five lifecycle hooks:
+
+- The <b>"handlePerspective"</b> method must be overwritten and will be executed on each message the perspective is receiving.
+- <b>@PostConstruct:</b> A method annotated with @PostConstruct will be executed when a perspective will be activated, usually this happens on start 
+- <b>@PreDestroy:</b> A method annotated with @PreDestroy will be executed when a perspective will be destroyed
+- <b>@OnShow:</b> A method annotated with @OnShow will be executed when an active perspective gets the focus. Only one perspective is visible in a workbench at the same time, when a perspective gets a message it will be focused and placed in the foreground.
+	- in this phase you can e.g. turn on toolbar buttons or start timer tasks
+- <b>@OnHide:</b> A method annotated with @OnHide will be executed when an active perspective looses the focus and moved to the background.
+
 
 <br/>
 <div align="center">
@@ -238,20 +247,14 @@ public class PerspectiveOne implements FXPerspective {
 
 
     @Override
-    public void handlePerspective(final Message<Event, Object> action,
-                                  final PerspectiveLayout perspectiveLayout) {
-        
-    }
-
+    public void handlePerspective(final Message<Event, Object> message,
+                                  final PerspectiveLayout perspectiveLayout) { ... }
 
     @OnShow
-    public void onShow(final FXComponentLayout layout) {
-
-    }
+    public void onShow(final FXComponentLayout layout) { ... }
+    
     @OnHide
-    public void onHide(final FXComponentLayout layout) {
-
-    }
+    public void onHide(final FXComponentLayout layout) { ... }
 
     @PostConstruct
     public void onStartPerspective(final PerspectiveLayout perspectiveLayout, final FXComponentLayout layout,
@@ -267,10 +270,7 @@ public class PerspectiveOne implements FXPerspective {
         mainPane.setCenter(mainLayout);
 
         HBox contentTop = new HBox();
-        HBox.setHgrow(contentTop, Priority.ALWAYS);
-
         HBox contentBottom = new HBox();
-        HBox.setHgrow(contentBottom, Priority.ALWAYS);
 
         mainLayout.getItems().addAll(contentTop, contentBottom);
 		<b>
@@ -281,9 +281,7 @@ public class PerspectiveOne implements FXPerspective {
     }
 
     @PreDestroy
-    public void onTearDownPerspective(final FXComponentLayout arg0) {
-       ...
-    }
+    public void onTearDownPerspective(final FXComponentLayout arg0) { ... }
     
 </pre>
 #### Declarative Perspectives ####
@@ -301,42 +299,49 @@ public class PerspectiveTwo implements FXPerspective {
     @FXML
     private HBox contentBottom;
     @FXML
-    private VBox mainPane;
+    private BorderPane mainPane;
 
 
     @Resource
     public Context context;
 
     @Override
-    public void handlePerspective(final Message<Event, Object> action,
-                                  final PerspectiveLayout perspectiveLayout) {
+    public void handlePerspective(final Message<Event, Object> message,
+                                  final PerspectiveLayout perspectiveLayout) { ... }
 
-    }
-
-
- 	@OnShow
-    public void onShow(final FXComponentLayout layout) {
-
-    }
+    @OnShow
+    public void onShow(final FXComponentLayout layout) { ... }
+    
     @OnHide
-    public void onHide(final FXComponentLayout layout) {
-
-    }
+    public void onHide(final FXComponentLayout layout) { ... }
 
     @PostConstruct
     public void onStartPerspective(final FXComponentLayout layout,
-                                   final ResourceBundle resourceBundle) {
-       LayoutUtil.GridPaneUtil.setFullGrow(ALWAYS, mainPane);
-    }
+                                   final ResourceBundle resourceBundle) { ... }
 
     @PreDestroy
-    public void onTearDownPerspective(final FXComponentLayout arg0) {
-
-    }
+    public void onTearDownPerspective(final FXComponentLayout arg0) { ... }
 
 }
 
 </pre>
+
+####The FXML view:####
+
+```xml
+<BorderPane id="mainPane"
+            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+    <center>
+        <SplitPane fx:id="mainLayout" dividerPositions="0.55" focusTraversable="true"
+                   orientation="VERTICAL" HBox.hgrow="ALWAYS">
+            <items>
+                <HBox fx:id="contentTop"/>
+                <HBox fx:id="contentBottom"/>
+            </items>
+        </SplitPane>
+    </center>
+</BorderPane>
+```
 ### Register targets ###
 
 <br/>

@@ -72,10 +72,7 @@ public class ExampleJavaFXPerspective implements FXPerspective {
         mainPane.setCenter(mainLayout);
 
         HBox contentTop = new HBox();
-        HBox.setHgrow(contentTop, Priority.ALWAYS);
-        
         HBox contentBottom = new HBox();
-        HBox.setHgrow(contentBottom, Priority.ALWAYS);
         
         contentBottom.getChildren().add(new Button("my button"));
         mainLayout.getItems().addAll(contentTop,contentBottom);
