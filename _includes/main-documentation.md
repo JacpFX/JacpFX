@@ -9,6 +9,7 @@ JacpFX is an UI application framework based on JavaFX, supporting developers to 
 * Support of asynchronous processes to avoid blocking UIs
 * Lightweight (size and memory footprint)
 
+
 ## General structure ##
 JacpFX has, like any other UI application framework, a hierarchic component structure to create client applications.
 
@@ -212,9 +213,119 @@ A typical UI application has a root node and a large tree of components which re
 <br/>
 
 ### Perspective types ###
+Perspectives can be written either <b>programmatic</b> in plain JavaFX or <b>declarative</b>, with an FXML view.
+<br/> 
 #### Programmatic Perspectives ####
+
+Programmatic perspectives declare their view in plain JavaFX. You can create any complex UI tree, but you have to register the root node of you UI tree which will than be added to the workbench.
+
+<pre>
+@Perspective(id = BaseConfiguration.PERSPECTIVE_ONE, name = "PerspectiveOne",
+        components = {...},
+        resourceBundleLocation = "bundles.languageBundle")
+public class PerspectiveOne implements FXPerspective {
+
+
+    @Override
+    public void handlePerspective(final Message<Event, Object> action,
+                                  final PerspectiveLayout perspectiveLayout) {
+        
+    }
+
+
+    @OnShow
+    public void onShow(final FXComponentLayout layout) {
+
+    }
+    @OnHide
+    public void onHide(final FXComponentLayout layout) {
+
+    }
+
+    @PostConstruct
+    public void onStartPerspective(final PerspectiveLayout perspectiveLayout, final FXComponentLayout layout,
+                                   final ResourceBundle resourceBundle) {
+                                   
+       <b> // define the perspective view with JavaFX </b>  
+		BorderPane mainPane = new BorderPane();
+        LayoutUtil.GridPaneUtil.setFullGrow(ALWAYS, mainPane);
+
+        SplitPane mainLayout = new SplitPane();
+        mainLayout.setOrientation(Orientation.VERTICAL);
+        mainLayout.setDividerPosition(0, 0.55f);
+        mainPane.setCenter(mainLayout);
+
+        HBox contentTop = new HBox();
+        HBox.setHgrow(contentTop, Priority.ALWAYS);
+
+        HBox contentBottom = new HBox();
+        HBox.setHgrow(contentBottom, Priority.ALWAYS);
+
+        mainLayout.getItems().addAll(contentTop, contentBottom);
+		<b>
+       // Register root component
+        perspectiveLayout.registerRootComponent(mainPane);
+        </b>
+		...
+    }
+
+    @PreDestroy
+    public void onTearDownPerspective(final FXComponentLayout arg0) {
+       ...
+    }
+    
+</pre>
 #### Declarative Perspectives ####
-### Register the root node in programmatic perspectives ###
+Declarative perspectives provides their view by defining a FXML file representing the view. The root node is always the root of your FXML and will be automatically registered.
+
+<pre>
+@Perspective(id = PerspectiveIds.PERSPECTIVE_TWO, name = "PerspectiveTwo",
+        components = {},
+        <b>viewLocation = "/fxml/perspectiveOne.fxml",</b>
+        resourceBundleLocation = "bundles.languageBundle")
+public class PerspectiveTwo implements FXPerspective {
+
+    @FXML
+    private HBox contentTop;
+    @FXML
+    private HBox contentBottom;
+    @FXML
+    private VBox mainPane;
+
+
+    @Resource
+    public Context context;
+
+    @Override
+    public void handlePerspective(final Message<Event, Object> action,
+                                  final PerspectiveLayout perspectiveLayout) {
+
+    }
+
+
+ 	@OnShow
+    public void onShow(final FXComponentLayout layout) {
+
+    }
+    @OnHide
+    public void onHide(final FXComponentLayout layout) {
+
+    }
+
+    @PostConstruct
+    public void onStartPerspective(final FXComponentLayout layout,
+                                   final ResourceBundle resourceBundle) {
+       LayoutUtil.GridPaneUtil.setFullGrow(ALWAYS, mainPane);
+    }
+
+    @PreDestroy
+    public void onTearDownPerspective(final FXComponentLayout arg0) {
+
+    }
+
+}
+
+</pre>
 ### Register targets ###
 
 <br/>

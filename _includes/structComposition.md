@@ -20,6 +20,7 @@
 </div>
 <br/>
 
+
 ## Define the perspective view ##
 The first step is to create two perspectives having the same UI, one implemented with a FXML view and the other with a JavaFX view.
 ### FXML perspective example ###
