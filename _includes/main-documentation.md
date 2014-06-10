@@ -187,13 +187,36 @@ To get detailled informations about toolbars, see **[Toolbars](#toolbars)**
 
 <br/>
 ### Declare references to perspectives ###
+To declare references to perspectives, simply add the perspective ID's in the "perspective" attribute located in the "@Workbench" annotation. The component scanning tries to find the corresponding perspective implementation in the classpath, so the implementations do not need to be located in the same project as the workbench.
+<br/>
+<pre>
+@Workbench(id = "id1", name = "workbench",
+      <b>  perspectives = {
+                BaseConfiguration.PERSPECTIVE_TWO,
+                BaseConfiguration.PERSPECTIVE_ONE
+        }) </b>
+</pre>
+
+##<a name=perspective></a>Perspective##
+
+A perspective defines the basic UI structure for your view and provides a container for components. While a perspective is more like a template with placeholders, components are the detail views of your application.
+<br/>
+A typical UI application has a root node and a large tree of components which represents your UI structure. The leaf nodes of such a component-tree are your user-defined nodes containing the Buttons, TextFields and so on.  In a typical business application you can create a (Split-)Pane in your perspective, which represents the the root node of your current view, place a GridPane on the left and on the right and register those GridPanes as “Targets” for your components. Child components of your perspective can now registers themselves to be rendered in one of those targets.
+
+### The perspective lifecycle ###
 
 <br/>
-## <a name=perspective></a>Perspective 
-### The perspective lifecycle ###
+<div align="center">
+![perspective lifecycle](/img/JACP_Perspective_Lifecycle.png)
+</div>
+<br/>
+
 ### Perspective types ###
 #### Programmatic Perspectives ####
 #### Declarative Perspectives ####
+### Register the root node in programmatic perspectives ###
+### Register targets ###
+
 <br/>
 ## <a name=components></a>Components
 ### UI Components ###
