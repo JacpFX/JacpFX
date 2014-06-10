@@ -13,7 +13,12 @@ JacpFX is an UI application framework based on JavaFX, supporting developers to 
 ## General structure ##
 JacpFX has, like any other UI application framework, a hierarchic component structure to create client applications.
 
-![JacpFX Component structure](http://jacp.googlecode.com/svn/wiki/JACP_Overview_v1.png "JacpFX Component structure") 
+<br/>
+<div align="center">
+![JacpFX Component structure](/img/JACP_Overview_v2_1.png)
+</div>
+<br/>
+
 
 A JacpFX application consists of following components:
 
@@ -202,7 +207,13 @@ To declare references to perspectives, simply add the perspective ID's in the "p
 
 A perspective defines the basic UI structure for your view and provides a container for components. While a perspective is more like a template with placeholders, components are the detail views of your application.
 <br/>
-A typical UI application has a root node and a large tree of components which represents your UI structure. The leaf nodes of such a component-tree are your user-defined nodes containing the Buttons, TextFields and so on.  In a typical business application you can create a (Split-)Pane in your perspective, which represents the the root node of your current view, place a GridPane on the left and on the right and register those GridPanes as “Targets” for your components. Child components of your perspective can now registers themselves to be rendered in one of those targets.
+A typical UI application has a root node and a large tree of components which represents your UI structure. The leaf nodes of such a component-tree are your user-defined nodes containing the Buttons, TextFields and so on.  In a typical business application you can create a (Split-)Pane in your perspective, which represents the the root node of your current view, place a Pane on the left and on the right and register those Panes as “Targets” for your components. Child components of your perspective can now registers themselves to be rendered in one of those targets.
+<br/>
+<div align="center">
+![perspective node tree](/img/JACP_NodeTree_View.png)
+</div>
+<br/>
+
 
 ### The perspective lifecycle ###
 
