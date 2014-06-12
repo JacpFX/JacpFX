@@ -205,9 +205,10 @@ To declare references to perspectives, simply add the perspective ID's in the "p
 
 ##<a name=perspective></a>Perspective##
 
-A perspective defines the basic UI structure for your view and provides a container for components. While a perspective is more like a template with placeholders, components are the detail views of your application.
+A perspective defines the basic UI structure for your view and provides a container for components. 
+While a perspective is more like a template with placeholders (or a portal page), components are the detail views of your application (or the portlets).
 <br/>
-A typical UI application has a root node and a large tree of components which represents your UI structure. The leaf nodes of such a component-tree are your user-defined controles like Buttons, TextFields and so on.  In a typical business application you can create a (Split-)Pane in your perspective, which represents the the root node of your current view, place a Pane on the left and on the right and register those Panes as “targets” for your components. Child components of your perspective can now registers themselves to be rendered in one of those targets.
+A typical UI application has a root node and a large tree of components which represents your application UI. The leaf nodes of such a component-tree are your user-defined controles like Buttons, TextFields and so on.  In a typical business application you can create a (Split-)Pane in your perspective, which represents the the root node of your current view, place a Pane on the left and on the right and register those Panes as “targets” for your components. Child components of your perspective can now registers themselves to be rendered in one of those targets.
 <br/>
 <div align="center">
 ![perspective node tree](/img/JACP_NodeTree_View.png)
@@ -233,7 +234,7 @@ A perspective defines five lifecycle hooks:
 <br/>
 
 ### Perspective types ###
-Perspectives can be written either <b>programmatic</b> in plain JavaFX or <b>declarative</b>, with an FXML view.
+Perspectives can be written either <b>programmatically</b> in plain JavaFX or <b>declarative</b>, with an FXML view.
 <br/> 
 #### Programmatic Perspectives ####
 
@@ -302,9 +303,6 @@ public class PerspectiveTwo implements FXPerspective {
     private BorderPane mainPane;
 
 
-    @Resource
-    public Context context;
-
     @Override
     public void handlePerspective(final Message<Event, Object> message,
                                   final PerspectiveLayout perspectiveLayout) { ... }
@@ -342,9 +340,48 @@ public class PerspectiveTwo implements FXPerspective {
     </center>
 </BorderPane>
 ```
-### Register targets ###
+### Register render-targets ###
+Render-targets are areas in your perspective where component-views can be rendered. You can register any node of your perspective-view (except the root-node) to be a render-target. A child component of your perspective can now register itself to be rendered in this node.
+#### Definition of render-targets####
+<pre>
+@Perspective(id = BaseConfiguration.PERSPECTIVE_ONE, name = "PerspectiveOne",
+        components = {...},
+        resourceBundleLocation = "bundles.languageBundle")
+public class PerspectiveOne implements FXPerspective {
+   ...
+
+    @PostConstruct
+    public void onStartPerspective(final PerspectiveLayout perspectiveLayout, final FXComponentLayout layout,
+                                   final ResourceBundle resourceBundle) {                                  
+		...
+
+        HBox contentTop = new HBox();
+        HBox contentBottom = new HBox();
+
+        mainLayout.getItems().addAll(contentTop, contentBottom);
+		<b>
+       // register top menu
+        perspectiveLayout.registerTargetLayoutComponent(BaseConfiguration.TARGET_CONTAINER_TOP, contentTop);
+        // register bottom content
+        perspectiveLayout.registerTargetLayoutComponent(BaseConfiguration.TARGET_CONTAINER_MAIN, contentBottom);
+        </b>
+		...
+    }   
+</pre>
 
 <br/>
+
+### The @Perspective annotation ###
+The @Perspective annotation provides necessary meta-informations for all classes implementing FXPerspective. Following attributes describes a JacpFX perspective:
+
+- name (mandatory): The perspective name
+- id (mandatory): The perspective id
+- components (mandatory): all referenced component id's
+- active (optional): The state of the perspective. The default value is "true", if the value is set to "false" the perspective will be activated when it receives the first message.
+- viewLocation (optional): The path to the FXML file, if this attribute is set, the perspective will be handled as a declarative perspective.
+- resourceBundleLocation (optional): The path to your resource bundle.
+- localeID (optional): The default locale, if not set the system default will be used.
+
 ## <a name=components></a>Components
 ### UI Components ###
 #### component lifecycle ###
