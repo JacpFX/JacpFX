@@ -41,6 +41,7 @@ import org.jacpfx.api.message.DelegateDTO;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.api.util.UIType;
 import org.jacpfx.rcp.component.AComponent;
+import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.componentLayout.PerspectiveLayout;
 import org.jacpfx.rcp.context.JacpContextImpl;
 import org.jacpfx.rcp.message.MessageImpl;
@@ -145,11 +146,17 @@ public abstract class AFXPerspective extends AComponent implements
                 this.messageCoordinator.getMessageQueue());
         final JacpContextImpl currentContext = JacpContextImpl.class.cast(component.getContext());
         currentContext.setParentId(this.context.getId());
-        currentContext.setFXComponentLayout(JacpContextImpl.class.cast(this.context).getComponentLayout());
         PerspectiveUtil.handleComponentMetaAnnotation(component);
+        currentContext.setFXComponentLayout(getFXComponentLayoutInstance(currentContext));
         if (currentContext.isActive()) {
             addComponent(component);
         }
+
+    }
+
+    private  FXComponentLayout getFXComponentLayoutInstance(final JacpContextImpl currentContext) {
+        final FXComponentLayout currentLayout =      JacpContextImpl.class.cast(this.context).getComponentLayout();
+        return new FXComponentLayout(currentLayout.getMenu(),currentLayout.getRegisteredToolBars(),currentLayout.getGlassPane(),currentContext.getParentId(),currentContext.getId());
 
     }
 

@@ -43,19 +43,32 @@ public class FXComponentLayout implements BaseLayout<Node> {
     private final Map<ToolbarPosition, JACPToolBar> registeredToolBars;
     private final JACPMenuBar menu;
     private final Pane glassPane;
+    private final String parentId;
+    private final String componentId;
 
     public FXComponentLayout(final JACPMenuBar menu,
                              final Map<ToolbarPosition, JACPToolBar> registeredToolBars,
                              final Pane glassPane) {
-        this.menu = menu;
-        this.registeredToolBars = registeredToolBars;
-        this.glassPane = glassPane;
+        this(menu,registeredToolBars,glassPane,null,null);
+
 
     }
 
-    public FXComponentLayout(final FXWorkbenchLayout layout) {
+    public FXComponentLayout(final JACPMenuBar menu,
+                             final Map<ToolbarPosition, JACPToolBar> registeredToolBars,
+                             final Pane glassPane,
+                             final String parentId,
+                             final String componentId) {
+        this.menu = menu;
+        this.registeredToolBars = registeredToolBars;
+        this.glassPane = glassPane;
+        this.parentId = parentId;
+        this.componentId = componentId;
+    }
+
+    public FXComponentLayout(final FXWorkbenchLayout layout,final String componentId) {
         this(layout.getMenu(), layout.getRegisteredToolBars(), layout
-                .getGlassPane());
+                .getGlassPane(),null,componentId);
     }
 
     @Override

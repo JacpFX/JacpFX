@@ -111,6 +111,17 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
                 component.getContext().getResourceBundle());
     }
 
+    /**
+     * Run at startup method in perspective.
+     *
+     * @param component, the component
+     * @param param,     all parameters
+     */
+    private void runComponentOnStartupSequence(final AFXComponent component,
+                                               final Object... param) {
+        FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, component.getComponent(), param);
+    }
+
     private void setComponentToActiveAndStarted(final AFXComponent component) {
         component.getContext().setActive(true);
         component.setStarted(true);
@@ -164,16 +175,7 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
 
     }
 
-    /**
-     * Run at startup method in perspective.
-     *
-     * @param component, the component
-     * @param param,     all parameters
-     */
-    private void runComponentOnStartupSequence(final AFXComponent component,
-                                               final Object... param) {
-        FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, component.getComponent(), param);
-    }
+
 
     /**
      * Handles "component add" in EDT must be called outside EDT.
