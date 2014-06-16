@@ -98,7 +98,7 @@ perspectiveLayout.registerRootComponent(mainPane);
 
 <br/>
 ## Define target areas for component rendering ##
-Both perspectives define a very basic SplitPane layout with a top content- and bottom-content area. The examples above define a HBox for top area and a BorderPane for the bottom area. Both nodes can be registered to be a target for components. 
+Both perspectives define a very basic SplitPane layout with a top- and a bottom-content area. The examples above defines a HBox for the top- and the bottom-area. Both nodes can be registered to be a target for components. 
 ### Register targets in the FXML perspective ###
 <pre>
 @Perspective(id = BaseConfig.ID, name = "p1",components = {…},
