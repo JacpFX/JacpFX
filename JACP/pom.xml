@@ -151,7 +151,7 @@
                     <artifactId>maven-gpg-plugin</artifactId>
                     <version>1.4</version>
                     <configuration>
-                        <skip>true</skip>
+                        <skip>false</skip>
                     </configuration>
                 </plugin>
             </plugins>

@@ -354,6 +354,18 @@ public class FXUtil {
     }
 
     /**
+     * Creates a full qualified component name like parentId.componentId
+     * @param parentId
+     * @param componentId
+     * @return  The qualified componentId
+     */
+    public static String getQualifiedComponentId(final String parentId, final String componentId) {
+        if(parentId==null) return componentId;
+        return new StringBuffer(parentId).append(PATTERN_GLOBAL).append(componentId).toString();
+
+    }
+
+    /**
      * when id has no separator it is a local message
      *
      * @param messageId the message id to analyze
@@ -402,6 +414,20 @@ public class FXUtil {
             final String id, final List<P> components) {
         final String parentId=  getParentFromId(id);
         final String componentId= getTargetComponentId(id);
+        return getObserveableByQualifiedId(parentId,componentId,components);
+    }
+
+    /**
+     * Returns a component by full qualified id (like parentId.componentId) from a provided component list
+     *
+     * @param componentId the component id to look for
+     * @param parentId the parentId
+     * @param components the component list
+     * @param <P>  the concrete type of components
+     * @return  the component by id
+     */
+    public static <P extends Component<EventHandler<Event>, Object>> P getObserveableByQualifiedId(
+            final String parentId,final String componentId, final List<P> components) {
         final Optional<P> filter = components.parallelStream().
                 filter(comp -> comp.getContext().getId() != null && comp.getContext().getParentId()!=null).
                 filter(c -> c.getContext().getId().equals(componentId) && c.getContext().getParentId().equals(parentId)).

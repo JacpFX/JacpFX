@@ -76,6 +76,32 @@ public class ComponentRegistry {
                 Collections.unmodifiableList(components));
 
     }
+
+    /**
+     * Find a component by qualified name like parentId.componentId
+     * @param targetId
+     * @return The SubComponent
+     */
+    public static  SubComponent<EventHandler<Event>, Event, Object> findComponentByQualifiedId(
+            final String targetId) {
+        return FXUtil.getObserveableByQualifiedId(targetId,
+                Collections.unmodifiableList(components));
+
+    }
+
+    /**
+     *   Find a component by parent and componentId
+     *   Find a component by parent and componentId
+     * @param parentId
+     * @param componentId
+     * @return  The SubComponent
+     */
+    public static  SubComponent<EventHandler<Event>, Event, Object> findComponentByQualifiedId(
+            final String parentId, final String componentId) {
+        return FXUtil.getObserveableByQualifiedId(parentId,componentId,
+                Collections.unmodifiableList(components));
+
+    }
     /**
      * Returns the a component by class.
      * @param clazz the component class to find
