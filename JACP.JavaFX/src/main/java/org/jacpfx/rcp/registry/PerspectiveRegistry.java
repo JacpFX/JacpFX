@@ -112,6 +112,19 @@ public class PerspectiveRegistry {
     }
 
     /**
+     * Returns a perspective by perspectiveId
+     *
+     * @param componentId , the target perspective id
+     * @param parentId , the target workbench id
+     * @return a perspective
+     */
+    public static Perspective<EventHandler<Event>, Event, Object> findPerspectiveById(
+            final String parentId, final String componentId) {
+        return FXUtil.getObserveableByQualifiedId(parentId,componentId,
+                getAllPerspectives());
+    }
+
+    /**
      * Searches the given component id in metadata of all perspectives and returns the responsible perspective
      *
      * @param componentId  the component id

@@ -189,7 +189,7 @@ public class JacpContextImpl implements Context {
         final String callerClassName = customSecurityManager.getCallerClassName();
         if (!AccessUtil.hasAccess(callerClassName, FXPerspective.class, FXComponent.class))
             throw new IllegalStateException(" managed fragments are accessible from FXPerspective and FXComponent");
-        return ManagedFragment.getInstance().getManagedFragment(clazz, callerClassName);
+        return ManagedFragment.getInstance().getManagedFragment(clazz, this.parentId,this.id);
     }
 
     /**

@@ -393,6 +393,7 @@ public class FXUtil {
      * @param <P>  the concrete type of components
      * @return  the component by id
      */
+    @Deprecated
     public static <P extends Component<EventHandler<Event>, Object>> P getObserveableById(
             final String id, final List<P> components) {
         final Optional<P> filter = components.parallelStream().
@@ -412,9 +413,9 @@ public class FXUtil {
      */
     public static <P extends Component<EventHandler<Event>, Object>> P getObserveableByQualifiedId(
             final String id, final List<P> components) {
-        final String parentId=  getParentFromId(id);
+        final String parentId=  getTargetPerspectiveId(id);
         final String componentId= getTargetComponentId(id);
-        return getObserveableByQualifiedId(parentId,componentId,components);
+        return parentId.equals(componentId)==false? getObserveableByQualifiedId(parentId,componentId,components):getObserveableById(componentId,components);
     }
 
     /**
@@ -445,6 +446,7 @@ public class FXUtil {
      * @param perspectives  the perspective list
      * @return  the parent perspective for the component with the id in param list
      */
+    @Deprecated
     public static Perspective<EventHandler<Event>, Event, Object> findRootByObserveableId(
             final String id,
             final List<Perspective<EventHandler<Event>, Event, Object>> perspectives) {
