@@ -182,7 +182,7 @@ public class ManagedFragment {
      *
      * @param bean
      * @param bundle
-     * @param parentID the ID of the parent perspective, if it is null than the componentId means the perspective
+     * @param parentId the ID of the parent perspective, if it is null than the componentId means the perspective
      * @param componentId the component id to find
      * @param <T>
      * @throws IllegalArgumentException
@@ -190,7 +190,7 @@ public class ManagedFragment {
      * @throws ClassNotFoundException
      */
     private <T> void checkMemberAnnotations(final T bean,
-                                            final ResourceBundle bundle, final String parentID, final String componentId)
+                                            final ResourceBundle bundle, final String parentId, final String componentId)
             throws IllegalArgumentException {
         final Field[] fields = bean.getClass().getDeclaredFields();
         Stream.of(fields).forEach(field -> {
@@ -202,13 +202,13 @@ public class ManagedFragment {
                         field.set(bean, bundle);
                     } else if (FXComponent.class.isAssignableFrom(field.getType())) {
                         handleParentComponentAnnotation(bean, field, resource,
-                                parentID,componentId);
+                                parentId,componentId);
                     } else if (FXPerspective.class.isAssignableFrom(field.getType())) {
                         handleParentPerspectiveAnnotation(bean, field, resource,
-                                parentID,componentId);
+                                parentId,componentId);
                     } else if (JacpContext.class.isAssignableFrom(field.getType())) {
                         handleParentComponentContextAnnotation(bean, field, resource,
-                                parentID,componentId);
+                                parentId,componentId);
                     }
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();  //Hide error in UI.
@@ -219,9 +219,9 @@ public class ManagedFragment {
 
     private <T> void handleParentComponentAnnotation(final T bean,
                                                      final Field field, final Resource resource,
-                                                     final String parentID, final String componentId) throws
+                                                     final String parentId, final String componentId) throws
             IllegalArgumentException, IllegalAccessException {
-        final SubComponent<EventHandler<Event>, Event, Object> comp = findSubcomponentById(resource, parentID,componentId);
+        final SubComponent<EventHandler<Event>, Event, Object> comp = findSubcomponentById(resource, parentId,componentId);
         if (comp == null)
             throw new IllegalArgumentException("component could not be found");
         field.setAccessible(true);
@@ -230,9 +230,9 @@ public class ManagedFragment {
 
     private <T> void handleParentPerspectiveAnnotation(final T bean,
                                                      final Field field, final Resource resource,
-                                                     final String parentID, final String componentId) throws
+                                                     final String parentId, final String componentId) throws
             IllegalArgumentException, IllegalAccessException {
-        final Perspective<EventHandler<Event>, Event, Object> persp = findPerspective(resource, parentID,componentId);
+        final Perspective<EventHandler<Event>, Event, Object> persp = findPerspective(resource, parentId,componentId);
         if (persp == null)
             throw new IllegalArgumentException("component could not be found for class name: "+componentId);
         field.setAccessible(true);
@@ -244,7 +244,7 @@ public class ManagedFragment {
      * @param bean
      * @param field
      * @param resource
-     * @param parentID
+     * @param parentId
      * @param componentId
      * @param <T>
      * @throws ClassNotFoundException
@@ -253,39 +253,39 @@ public class ManagedFragment {
      */
     private <T> void handleParentComponentContextAnnotation(final T bean,
                                                             final Field field, final Resource resource,
-                                                            final String parentID, final String componentId) throws
+                                                            final String parentId, final String componentId) throws
             IllegalArgumentException, IllegalAccessException {
         field.setAccessible(true);
-        final SubComponent<EventHandler<Event>, Event, Object> comp = findSubcomponentById(resource, parentID,componentId);
+        final SubComponent<EventHandler<Event>, Event, Object> comp = findSubcomponentById(resource, parentId,componentId);
         if(comp!=null) {
-            if(!comp.getContext().getParentId().equalsIgnoreCase(parentID))  throw new IllegalArgumentException("parentId annotation must be unique "+componentId);
+            if(!comp.getContext().getParentId().equalsIgnoreCase(parentId))  throw new IllegalArgumentException("parentId annotation must be unique "+componentId);
             field.set(bean, comp.getContext());
             return;
         }
-        final Perspective<EventHandler<Event>, Event, Object> persp = findPerspective(resource, parentID, componentId);
+        final Perspective<EventHandler<Event>, Event, Object> persp = findPerspective(resource, parentId, componentId);
         if (persp == null) throw new IllegalArgumentException("component could not be found: "+componentId);
         field.set(bean, persp.getContext());
 
     }
 
-    private SubComponent<EventHandler<Event>, Event, Object> findSubcomponentById(final Resource resource, final String parentID, final String componentId)  {
-        final String parentId = resource.parentId();
-        if (parentId.isEmpty()) {
-            return ComponentRegistry.findComponentByQualifiedId(parentID,componentId);
+    private SubComponent<EventHandler<Event>, Event, Object> findSubcomponentById(final Resource resource, final String parentId, final String componentId)  {
+        final String userDefinedId = resource.parentId();
+        if (userDefinedId.isEmpty()) {
+            return ComponentRegistry.findComponentByQualifiedId(parentId,componentId);
         } else {
-            return ComponentRegistry.findComponentByQualifiedId(parentId);
+            return ComponentRegistry.findComponentByQualifiedId(userDefinedId);
         }
 
     }
 
 
-    private Perspective<EventHandler<Event>, Event, Object> findPerspective(final Resource resource, final String perspectiveID, final String componentId){
+    private Perspective<EventHandler<Event>, Event, Object> findPerspective(final Resource resource, final String parentId, final String componentId){
         // the user defined id
-        final String parentId = resource.parentId();
-        if (parentId.isEmpty()) {
-            return PerspectiveRegistry.findPerspectiveById(perspectiveID,componentId);
+        final String userDefinedId = resource.parentId();
+        if (userDefinedId.isEmpty()) {
+            return PerspectiveRegistry.findPerspectiveById(parentId,componentId);
         } else {
-            return PerspectiveRegistry.findPerspectiveById(parentId);
+            return PerspectiveRegistry.findPerspectiveById(userDefinedId);
         }
     }
 

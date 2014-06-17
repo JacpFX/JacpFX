@@ -66,9 +66,9 @@ public class FXComponentLayout implements BaseLayout<Node> {
         this.componentId = componentId;
     }
 
-    public FXComponentLayout(final FXWorkbenchLayout layout,final String componentId) {
+    public FXComponentLayout(final FXWorkbenchLayout layout,final String parentId,final String componentId) {
         this(layout.getMenu(), layout.getRegisteredToolBars(), layout
-                .getGlassPane(),null,componentId);
+                .getGlassPane(),parentId,componentId);
     }
 
     @Override
