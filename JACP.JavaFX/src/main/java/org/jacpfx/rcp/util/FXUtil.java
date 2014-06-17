@@ -181,7 +181,7 @@ public class FXUtil {
     public static void performResourceInjection(final Injectable handler,JacpContext<EventHandler<Event>, Object> context) {
         final Field[] fields = handler.getClass().getDeclaredFields();
         final List<Field> fieldList = Arrays.asList(fields);
-        fieldList.parallelStream().filter(f -> f.isAnnotationPresent(Resource.class)).forEach(f -> {
+        fieldList.stream().filter(f -> f.isAnnotationPresent(Resource.class)).forEach(f -> {
             // context injection
             if (f.getType().isAssignableFrom(context.getClass())) {
                 injectContext(handler, f, context);
@@ -225,7 +225,7 @@ public class FXUtil {
     private static Object[] getValidParameterList(final Class<?>[] types,
                                                   Object... value) {
         final List<Object> resultList = Arrays.asList(types).
-                parallelStream().map(t -> findByClass(t, value)).
+                stream().map(t -> findByClass(t, value)).
                 collect(Collectors.toList());
         return !resultList.isEmpty() ?resultList.toArray(new Object[resultList.size()]):new Object[types.length];
     }
@@ -396,7 +396,7 @@ public class FXUtil {
     @Deprecated
     public static <P extends Component<EventHandler<Event>, Object>> P getObserveableById(
             final String id, final List<P> components) {
-        final Optional<P> filter = components.parallelStream().
+        final Optional<P> filter = components.stream().
                 filter(comp -> comp.getContext().getId() != null).
                 filter(c -> c.getContext().getId().equals(id)).
                 findFirst();
@@ -429,7 +429,7 @@ public class FXUtil {
      */
     public static <P extends Component<EventHandler<Event>, Object>> P getObserveableByQualifiedId(
             final String parentId,final String componentId, final List<P> components) {
-        final Optional<P> filter = components.parallelStream().
+        final Optional<P> filter = components.stream().
                 filter(comp -> comp.getContext().getId() != null && comp.getContext().getParentId()!=null).
                 filter(c -> c.getContext().getId().equals(componentId) && c.getContext().getParentId().equals(parentId)).
                 findFirst();
@@ -454,7 +454,7 @@ public class FXUtil {
                 parallelStream().
                 filter(perspective ->
                         perspective.getSubcomponents().
-                                parallelStream().map(s -> s.getContext().getId()).
+                                stream().map(s -> s.getContext().getId()).
                                 anyMatch(cId -> cId.equals(id))).findFirst();
         if (result.isPresent()) return result.get();
         return null;

@@ -210,8 +210,8 @@ public class ManagedFragment {
                         handleParentComponentContextAnnotation(bean, field, resource,
                                 parentID,componentId);
                     }
-                } catch (IllegalAccessException | ClassNotFoundException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();  //Hide error in UI.
                 }
             }
         });
@@ -219,7 +219,7 @@ public class ManagedFragment {
 
     private <T> void handleParentComponentAnnotation(final T bean,
                                                      final Field field, final Resource resource,
-                                                     final String parentID, final String componentId) throws ClassNotFoundException,
+                                                     final String parentID, final String componentId) throws
             IllegalArgumentException, IllegalAccessException {
         final SubComponent<EventHandler<Event>, Event, Object> comp = findSubcomponentById(resource, parentID,componentId);
         if (comp == null)
@@ -230,7 +230,7 @@ public class ManagedFragment {
 
     private <T> void handleParentPerspectiveAnnotation(final T bean,
                                                      final Field field, final Resource resource,
-                                                     final String parentID, final String componentId) throws ClassNotFoundException,
+                                                     final String parentID, final String componentId) throws
             IllegalArgumentException, IllegalAccessException {
         final Perspective<EventHandler<Event>, Event, Object> persp = findPerspective(resource, parentID,componentId);
         if (persp == null)
