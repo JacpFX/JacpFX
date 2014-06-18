@@ -56,4 +56,7 @@ public class ComponentIds {
     public static final String ComponentHandleToolBarBetweenPerspectives1       ="id025";
     public static final String ComponentHandleToolBarBetweenPerspectives2       ="id026";
     public static final String ComponentDialogInPerspective                     ="id033";
+    public static final String ComponentMessagingTests1                     ="id034";
+    public static final String ComponentMessagingTests2                     ="id035";
+    public static final String ComponentMessagingTests3                     ="id036";
 }

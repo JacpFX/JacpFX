@@ -22,6 +22,7 @@
  ************************************************************************/
 package org.jacpfx.rcp.handler;
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -60,6 +61,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -164,26 +166,27 @@ public class PerspectiveHandlerImpl implements
     }
 
     @Override
-    public final void initComponent(final Message<Event, Object> action,
+    public final void initComponent(final Message<Event, Object> message,
                                     final Perspective<EventHandler<Event>, Event, Object> perspective) {
         final Thread t = Thread.currentThread();
         try {
             this.log("3.4.3: perspective handle init");
             FXUtil.performResourceInjection(perspective.getPerspective(), perspective.getContext());
 
-            this.handlePerspectiveInitMethod(action, perspective);
+            this.handlePerspectiveInitMethod(message, perspective);
             this.log("3.4.5: perspective init bar entries");
             final PerspectiveLayoutInterface<? extends Node, Node> perspectiveLayout = ((AFXPerspective) perspective)
                     .getIPerspectiveLayout();
             this.initPerspectiveUI(perspectiveLayout);
             PerspectiveRegistry.getAndSetCurrentVisiblePerspective(perspective.getContext().getId());
             this.log("3.4.4: perspective init subcomponents");
-            perspective.initComponents(action);
+            perspective.initComponents(message);
         } catch (Exception e) {
             t.getUncaughtExceptionHandler().uncaughtException(t, e);
         }
 
     }
+
 
     /**
      * reassignment can only be done in FX main thread;

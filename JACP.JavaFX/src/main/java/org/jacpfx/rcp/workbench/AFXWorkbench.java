@@ -196,7 +196,7 @@ public abstract class AFXWorkbench
         this.registerComponent(perspective);
         this.log("3.4.1: register component: " + perspective.getContext().getName());
         final CountDownLatch waitForInit = new CountDownLatch(1);
-        this.log("3.4.2: create perspective menu");
+        this.log("3.4.2: init perspective");
         if (perspective.getContext().isActive()) {
             final Runnable r = () -> {
                 AFXWorkbench.this.componentHandler.initComponent(

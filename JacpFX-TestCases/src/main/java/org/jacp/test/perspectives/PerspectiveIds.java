@@ -40,6 +40,9 @@ public class PerspectiveIds {
     public static final String PerspectiveComponentMessagingTest1 = "id13";
     public static final String PerspectiveDialogInPerspectiveTest = "id30";
     public static final String PerspectiveContextTest = "id31";
+    public static final String PerspectiveMessagingTest = "id32";
+    public static final String PerspectiveMessagingTest2 = "id33";
+    public static final String PerspectiveMessagingTest3 = "id34";
 
 
     public static final String PerspectiveMessagingTestP1 = "id10";
