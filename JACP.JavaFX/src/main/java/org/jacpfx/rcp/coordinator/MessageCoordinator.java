@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import org.jacpfx.api.component.Component;
 import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.SubComponent;
+import org.jacpfx.api.context.JacpContext;
 import org.jacpfx.api.coordinator.Coordinator;
 import org.jacpfx.api.exceptions.ComponentNotFoundException;
 import org.jacpfx.api.handler.ComponentHandler;
@@ -75,11 +76,12 @@ public class MessageCoordinator extends ACoordinator implements
     }
 
     private <P extends Component<EventHandler<Event>,Object>> void handleInActive(P component, final Perspective<EventHandler<Event>, Event, Object> parentPerspective, Message<Event, Object> message) {
-        component.getContext().setActive(true);
-        component.setStarted(true);
-        parentPerspective.addComponent((SubComponent<EventHandler<Event>, Event, Object>) component);
-        this.componentHandler.initComponent(message,
-                (SubComponent<EventHandler<Event>, Event, Object>) component);
+        final SubComponent<EventHandler<Event>, Event, Object> subcomponent = (SubComponent<EventHandler<Event>, Event, Object>) component;
+        final JacpContext<EventHandler<Event>, Object> context = subcomponent.getContext();
+        context.setActive(true);
+        subcomponent.setStarted(true);
+        parentPerspective.addComponent(subcomponent);
+        this.componentHandler.initComponent(message,subcomponent);
     }
 
     private void delegateMessageToCorrectPerspective(final DelegateDTOImpl dto) {
@@ -110,18 +112,10 @@ public class MessageCoordinator extends ACoordinator implements
         }
 
         // 2. check if it is an active component in registry, active components must have active perspectives
-        final SubComponent<EventHandler<Event>, Event, Object> targetComponent = ComponentRegistry.findComponentById(targetId);
+        final SubComponent<EventHandler<Event>, Event, Object> targetComponent = ComponentRegistry.findComponentByQualifiedId(parentId,targetId);
         if (targetComponent != null) {
             // found an active component
-            // check if is in current perspective
-            if (parentId.equalsIgnoreCase(targetComponent.getParentId())) {
-                return new MessageCoordinatorExecutionResult(targetComponent, message, MessageCoordinatorExecutionResult.State.HANDLE_ACTIVE);
-            } else {
-                // convert to global message and delegate to correct perspective
-                final String globalTarget = targetComponent.getParentId().concat(seperator).concat(targetId);
-                return new MessageCoordinatorExecutionResult(new DelegateDTOImpl(globalTarget, new MessageImpl(message.getSourceId(), globalTarget, message.getMessageBody(), message.getSourceEvent())), MessageCoordinatorExecutionResult.State.DELEGATE);
-            }
-
+            return new MessageCoordinatorExecutionResult(targetComponent, message, MessageCoordinatorExecutionResult.State.HANDLE_ACTIVE);
         }
 
         // 3. check if it is a perspective
@@ -134,18 +128,23 @@ public class MessageCoordinator extends ACoordinator implements
         }
 
         // 4. check if it is an inactive component in perspective
-        // first find possible parent perspective
-        final Perspective<EventHandler<Event>, Event, Object> parentPerspectiveByComponentId = PerspectiveRegistry.findParentPerspectiveByComponentId(targetId);
-        if (parentPerspectiveByComponentId != null) {
-            // invoke perspective init with default message and wait
+        boolean exists = PerspectiveRegistry.perspectiveContainsComponent(this.parentId,targetId);
+        if(exists) {
             // create global id
-            final String globalTarget = parentPerspectiveByComponentId.getContext().getId().concat(seperator).concat(targetId);
-            return new MessageCoordinatorExecutionResult(new DelegateDTOImpl(globalTarget, new MessageImpl(message.getSourceId(), globalTarget, message.getMessageBody(), message.getSourceEvent())), MessageCoordinatorExecutionResult.State.DELEGATE);
-
+            final String globalTarget = this.parentId.concat(seperator).concat(targetId);
+            return createComponentInstanceAndRegister(globalTarget,message);
         }
+
+        // TODO check for inactive perspectives!!!
         return new MessageCoordinatorExecutionResult(MessageCoordinatorExecutionResult.State.ERROR);
     }
 
+    /**
+     * Handles messages with fully qualified value like "parentId.componentId"
+     * @param targetId the fully qualified id
+     * @param message the message
+     * @return a MessageCoordinatorExecutionResult with values "HANDLE_ACTIVE" , "HANDLE_INACTIVE", "DELEGATE", or "ERROR"
+     */
     private MessageCoordinatorExecutionResult handleGlobalComponentMessage(final String targetId, final Message<Event, Object> message) {
         final String parentMessageId = FXUtil.getParentFromId(targetId);
         if (parentId.equalsIgnoreCase(parentMessageId)) {
@@ -161,20 +160,30 @@ public class MessageCoordinator extends ACoordinator implements
     /**
      * Returns the target component by targetId specified in message.
      *
-     * @param targetId
-     * @param message
-     * @return
+     * @param targetId the fully qualified id
+     * @param message the message
+     * @return  a MessageCoordinatorExecutionResult  with value "HANDLE_ACTIVE"  or "HANDLE_INACTIVE"
      */
     private MessageCoordinatorExecutionResult getTargetComponentInCurrentPerspective(final String targetId,
                                                                                      final Message<Event, Object> message) {
-        SubComponent<EventHandler<Event>, Event, Object> component = ComponentRegistry.findComponentById(targetId);
+        final SubComponent<EventHandler<Event>, Event, Object> component = ComponentRegistry.findComponentByQualifiedId(targetId);
         if (component != null) {
             // component is active
             return new MessageCoordinatorExecutionResult(component, message, MessageCoordinatorExecutionResult.State.HANDLE_ACTIVE);
         } else {
             // start inactive component
-            component = PerspectiveUtil.getInstance(this.launcher).createSubcomponentById(targetId);
+            return createComponentInstanceAndRegister(targetId,message);
         }
+    }
+
+    /**
+     * Creates a new component instance and registers it
+     * @param targetId the fully qualified id
+     * @param message the message
+     * @return  a MessageCoordinatorExecutionResult  with value "HANDLE_INACTIVE"
+     */
+    private MessageCoordinatorExecutionResult createComponentInstanceAndRegister(final String targetId,final Message<Event, Object> message) {
+        final SubComponent<EventHandler<Event>, Event, Object> component = PerspectiveUtil.getInstance(this.launcher).createSubcomponentById(targetId);
         if (component == null) throw new ComponentNotFoundException(
                 "invalid component id. Source: "
                         + message.getSourceId() + " target: "

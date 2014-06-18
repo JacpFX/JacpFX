@@ -393,7 +393,6 @@ public class FXUtil {
      * @param <P>  the concrete type of components
      * @return  the component by id
      */
-    @Deprecated
     public static <P extends Component<EventHandler<Event>, Object>> P getObserveableById(
             final String id, final List<P> components) {
         final Optional<P> filter = components.stream().
@@ -436,32 +435,6 @@ public class FXUtil {
         if (filter.isPresent()) return filter.get();
         return null;
     }
-
-
-    /**
-     * find the parent perspective to id; should be only used when no
-     * responsible component was found ,
-     *
-     * @param id the id of the child component
-     * @param perspectives  the perspective list
-     * @return  the parent perspective for the component with the id in param list
-     */
-    @Deprecated
-    public static Perspective<EventHandler<Event>, Event, Object> findRootByObserveableId(
-            final String id,
-            final List<Perspective<EventHandler<Event>, Event, Object>> perspectives) {
-        final Optional<Perspective<EventHandler<Event>, Event, Object>> result = perspectives.
-                parallelStream().
-                filter(perspective ->
-                        perspective.getSubcomponents().
-                                stream().map(s -> s.getContext().getId()).
-                                anyMatch(cId -> cId.equals(id))).findFirst();
-        if (result.isPresent()) return result.get();
-        return null;
-    }
-
-
-
 
 
 }

@@ -135,7 +135,7 @@ public class PerspectiveRegistry {
     }
 
     private static Perspective<EventHandler<Event>, Event, Object> findByComponentId(List<Perspective<EventHandler<Event>, Event, Object>> perspectives, final String componentId) {
-        final Optional<Perspective<EventHandler<Event>, Event, Object>> first = perspectives.parallelStream()
+        final Optional<Perspective<EventHandler<Event>, Event, Object>> first = perspectives.stream()
                 .filter(p -> {
                     final Class perspectiveClass = p.getPerspective().getClass();
                     if (!perspectiveClass.isAnnotationPresent(org.jacpfx.api.annotations.perspective.Perspective.class)) return false;
@@ -146,9 +146,24 @@ public class PerspectiveRegistry {
         return first.isPresent() ? first.get() : null;
     }
 
+    /**
+     * Checks if a specific componentId is present in defined perspective
+     * @param parentId The perspective ID
+     * @param componentId The component ID
+     * @return True if component exists in perspective
+     */
+    public static boolean perspectiveContainsComponent(final String parentId, final String componentId) {
+        final Perspective<EventHandler<Event>, Event, Object> perspective = findPerspectiveById(parentId);
+        if(perspective==null) return false;
+        final Class perspectiveClass = perspective.getPerspective().getClass();
+        if (!perspectiveClass.isAnnotationPresent(org.jacpfx.api.annotations.perspective.Perspective.class)) return false;
+        final org.jacpfx.api.annotations.perspective.Perspective annotation = (org.jacpfx.api.annotations.perspective.Perspective) perspectiveClass.getAnnotation(org.jacpfx.api.annotations.perspective.Perspective.class);
+        return containsComponentInAnnotation(annotation,componentId);
+    }
+
     private static boolean containsComponentInAnnotation(final org.jacpfx.api.annotations.perspective.Perspective annotation, final String componentId) {
         final String[] componentIds = annotation.components();
-        Arrays.parallelSort(componentIds);
+        Arrays.sort(componentIds);
         return Arrays.binarySearch(componentIds, componentId) >= 0;
     }
 

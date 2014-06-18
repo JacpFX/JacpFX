@@ -108,7 +108,7 @@ public class ComponentRegistry {
      * @return the requested component instance
      */
     public static SubComponent<EventHandler<Event>, Event, Object> findComponentByClass(final Class<?> clazz) {
-        final Optional<SubComponent<EventHandler<Event>, Event, Object>> returnVal = Collections.unmodifiableList(components).parallelStream().filter(c -> c.getComponent().getClass().isAssignableFrom(clazz)).findFirst();
+        final Optional<SubComponent<EventHandler<Event>, Event, Object>> returnVal = Collections.unmodifiableList(components).stream().filter(c -> c.getComponent().getClass().isAssignableFrom(clazz)).findFirst();
         if(returnVal.isPresent())return returnVal.get();
 
         return null;
