@@ -25,6 +25,7 @@ package org.jacpfx.rcp.coordinator;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import org.jacpfx.api.coordinator.Coordinator;
+import org.jacpfx.api.exceptions.ComponentNotFoundException;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.util.ShutdownThreadsHandler;
 
@@ -65,10 +66,9 @@ public abstract class ACoordinator extends Thread implements
 			this.log(" handle message to: " + message.getTargetId());
 			try {
 				this.handleMessage(message.getTargetId(), message);
-			} catch (UnsupportedOperationException e) {
-				logger.info("UnsupportedOperationException in ACoordinator");
-				e.printStackTrace();
-			}
+			} catch (Exception e){
+                Thread.currentThread().getUncaughtExceptionHandler().uncaughtException(Thread.currentThread(),e);
+            }
 			this.log(" observer thread DONE");
 		}
 	}
