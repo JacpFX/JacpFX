@@ -65,7 +65,7 @@ public class PerspectiveUtil {
      * @return the component instance
      */
     public SubComponent<EventHandler<Event>, Event, Object> createSubcomponentById(final String componentId) {
-        return mapToSubcomponent(mapToInjectAbleComponent(FXUtil.getTargetComponentId(componentId)));
+        return mapToSubcomponent(mapToInjectAbleComponent(FXUtil.getTargetPerspectiveId(componentId),FXUtil.getTargetComponentId(componentId)));
     }
 
     /**
@@ -75,7 +75,8 @@ public class PerspectiveUtil {
      */
     private Stream<Injectable> getInjectAbles(final org.jacpfx.api.annotations.perspective.Perspective perspectiveAnnotation) {
         final Stream<String> idStream = CommonUtil.getStringStreamFromArray(getComponentIds(perspectiveAnnotation));
-        return idStream.parallel().filter(id->!id.isEmpty()).map(this::mapToInjectAbleComponent);
+        final String parentId = perspectiveAnnotation.id();
+        return idStream.parallel().filter(id->!id.isEmpty()).map(id->mapToInjectAbleComponent(parentId,id));
     }
 
     /**
@@ -83,10 +84,11 @@ public class PerspectiveUtil {
      * @param id the component id
      * @return
      */
-    private Injectable mapToInjectAbleComponent(final String id) {
+    private Injectable mapToInjectAbleComponent(final String parentId,final String id) {
         final Class componentClass = ClassRegistry.getComponentClassById(id);
         final Scope scope = getCorrectScopeOfComponent(componentClass);
-        final Object component = launcher.registerAndGetBean(componentClass, id, scope);
+        final String qualifiedName = parentId.concat(".").concat(id);
+        final Object component = launcher.registerAndGetBean(componentClass, qualifiedName, scope);
         if (Injectable.class.isAssignableFrom(component.getClass())) {
             return Injectable.class.cast(component);
         } else {

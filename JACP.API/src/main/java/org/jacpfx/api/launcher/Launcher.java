@@ -48,6 +48,15 @@ public interface Launcher<E> {
     <P> P getBean(final Class<P> clazz);
 
     /**
+     * Returns a bean by qualifier.
+     *
+     * @param qualifier, the qualifier of requested bean
+     * @param <P>,   P is the type of requested bean
+     * @return the bean
+     */
+    <P> P getBean(final String qualifier);
+
+    /**
      * Registers a Class in context and returns a managed bean.
      *
      * @param type,  the class of requested bean

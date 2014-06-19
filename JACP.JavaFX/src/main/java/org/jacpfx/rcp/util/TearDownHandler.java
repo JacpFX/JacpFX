@@ -36,10 +36,13 @@ import org.jacpfx.rcp.registry.ComponentRegistry;
 import org.jacpfx.rcp.worker.AComponentWorker;
 import org.jacpfx.rcp.worker.TearDownWorker;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 /**
  * Handles TearDown annotations on all components when application is closed.

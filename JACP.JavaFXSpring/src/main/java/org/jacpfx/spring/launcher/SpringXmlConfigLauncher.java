@@ -33,6 +33,8 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 /**
  * The SpringLaucher class resolves the spring.xml file and handles access to
  * beans
@@ -44,6 +46,7 @@ public class SpringXmlConfigLauncher implements Launcher<ClassPathXmlApplication
     private final ClassPathXmlApplicationContext context;
     private final ConfigurableListableBeanFactory factory;
     private final String BASIC_CONFIG_BEANS = "basic.xml";
+    private ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
     public SpringXmlConfigLauncher(final String resource) {
         this.context = new ClassPathXmlApplicationContext(new String[] {
@@ -57,15 +60,39 @@ public class SpringXmlConfigLauncher implements Launcher<ClassPathXmlApplication
     }
 
     @Override
-    public synchronized <E> E getBean(final Class<E> clazz) {
-        return this.factory.getBean(clazz);
+    public <P> P getBean(Class<P> clazz) {
+        lock.readLock().lock();
+        try {
+            return this.factory.getBean(clazz);
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    @Override
+    public <P> P getBean(final String qualifier) {
+        lock.readLock().lock();
+        try {
+            return (P) this.factory.getBean(qualifier);
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
+    private boolean contains(final String id) {
+        lock.readLock().lock();
+        try {
+            return this.factory.containsBean(id);
+        } finally {
+            lock.readLock().unlock();
+        }
     }
 
     @Override
     public synchronized <T> T registerAndGetBean(Class<? extends T> type,
                                                  final String id, final Scope scope) {
-        if (this.factory.containsBean(id))
-            return getBean(type);
+        if (contains(id))
+            return getBean(id);
         final AutowireCapableBeanFactory factory = getContext()
                 .getAutowireCapableBeanFactory();
         final BeanDefinitionRegistry registry = (BeanDefinitionRegistry) factory;
@@ -76,7 +103,7 @@ public class SpringXmlConfigLauncher implements Launcher<ClassPathXmlApplication
         registry.registerBeanDefinition(id, beanDefinition);
         factory.autowireBeanProperties(this,
                 AutowireCapableBeanFactory.AUTOWIRE_BY_TYPE, false);
-        return getBean(type);
+        return getBean(id);
     }
 
 }

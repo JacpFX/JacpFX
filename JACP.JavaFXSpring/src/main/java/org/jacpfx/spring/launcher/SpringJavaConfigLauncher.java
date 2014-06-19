@@ -27,6 +27,7 @@ package org.jacpfx.spring.launcher;
 
 import org.jacpfx.api.fragment.Scope;
 import org.jacpfx.api.launcher.Launcher;
+import org.jacpfx.spring.processor.StatelessScopedPostProcessor;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -47,6 +48,7 @@ public class SpringJavaConfigLauncher implements Launcher<AnnotationConfigApplic
     private ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
     public SpringJavaConfigLauncher(java.lang.Class<?>... annotatedClasses) {
+        context.register(StatelessScopedPostProcessor.class);
         context.register(annotatedClasses);
         context.refresh();
         this.factory = this.context.getBeanFactory();
@@ -67,6 +69,16 @@ public class SpringJavaConfigLauncher implements Launcher<AnnotationConfigApplic
         }
     }
 
+    @Override
+    public <P> P getBean(final String qualifier) {
+        lock.readLock().lock();
+        try {
+            return (P) this.factory.getBean(qualifier);
+        } finally {
+            lock.readLock().unlock();
+        }
+    }
+
     private boolean contains(final String id) {
         lock.readLock().lock();
         try {
@@ -79,7 +91,7 @@ public class SpringJavaConfigLauncher implements Launcher<AnnotationConfigApplic
     @Override
     public <P> P registerAndGetBean(Class<? extends P> type, String id, Scope scope) {
         if (contains(id))
-            return getBean(type);
+            return getBean(id);
         final GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
         beanDefinition.setBeanClass(type);
         if (scope != null) beanDefinition.setScope(scope.getType());
@@ -95,6 +107,6 @@ public class SpringJavaConfigLauncher implements Launcher<AnnotationConfigApplic
         } finally {
             lock.writeLock().unlock();
         }
-        return getBean(type);
+        return getBean(id);
     }
 }
