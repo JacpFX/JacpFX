@@ -16,9 +16,7 @@ import org.jacpfx.rcp.perspective.EmbeddedFXPerspective;
 import org.jacpfx.rcp.registry.ClassRegistry;
 
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -68,7 +66,7 @@ public class WorkbenchUtil {
     }
 
     private void checkUniqueComponentReferences(final Stream<Injectable> perspectiveHandlerList) {
-       perspectiveHandlerList.
+      perspectiveHandlerList.
                 map(handler -> handler.getClass()).
                 map(clazz -> clazz.getAnnotation(org.jacpfx.api.annotations.perspective.Perspective.class)).
                 filter(ann -> ann != null).
@@ -78,14 +76,12 @@ public class WorkbenchUtil {
     }
 
     private class UniqueCheckConsumer implements Consumer<PerspectiveCheckDTO> {
-        private List<String> componentIds = new ArrayList<>();
 
         @Override
         public void accept(PerspectiveCheckDTO perspectiveCheckDTO) {
-            final List<String> tmp = perspectiveCheckDTO.checkForCommon(componentIds);
-            componentIds.addAll(perspectiveCheckDTO.getComponentIds());
-            if (tmp.size() > 1)
-                throw new NonUniqueComponentException("ERROR in perspective " + perspectiveCheckDTO.getId() + " non unique component ids: " + tmp);
+            final Set<String> duplicateTest = new HashSet<>(perspectiveCheckDTO.getComponentIds());
+            if (duplicateTest.size()<perspectiveCheckDTO.getComponentIds().size())
+                throw new NonUniqueComponentException("ERROR in perspective " + perspectiveCheckDTO.getId() + " non unique component ids: " + perspectiveCheckDTO.getComponentIds());
 
         }
 
