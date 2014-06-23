@@ -35,6 +35,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import org.jacp.test.components.ComponentIds;
 import org.jacp.test.main.ApplicationLauncher;
+import org.jacp.test.main.ApplicationLauncherMessagingTest;
 import org.jacpfx.api.annotations.lifecycle.OnShow;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
@@ -85,7 +86,7 @@ public class PerspectiveMessagingTest2 implements FXPerspective {
                     this.content2);
             perspectiveLayout.registerTargetLayoutComponent("content2",
                     this.content3);
-            ApplicationLauncher.latch.countDown();
+            ApplicationLauncherMessagingTest.latch.countDown();
         }
 
     }

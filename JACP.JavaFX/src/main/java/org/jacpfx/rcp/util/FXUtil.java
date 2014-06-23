@@ -402,6 +402,23 @@ public class FXUtil {
         if (filter.isPresent()) return filter.get();
         return null;
     }
+
+    /**
+     * Returns a component by parent id from a provided component list
+     *
+     * @param id the component id to look for
+     * @param components the component list
+     * @param <P>  the concrete type of components
+     * @return  the component by id
+     */
+    public static <P extends Component<EventHandler<Event>, Object>> List<P> getObserveableByParentId(
+            final String id, final List<P> components) {
+        return components.stream().
+                filter(comp -> comp.getContext().getParentId() != null).
+                filter(c -> c.getContext().getParentId().equals(id)).
+                collect(Collectors.toList());
+
+    }
     /**
      * Returns a component by full qualified id (like parentId.componentId) from a provided component list
      *

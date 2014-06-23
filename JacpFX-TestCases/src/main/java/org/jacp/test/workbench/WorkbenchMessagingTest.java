@@ -35,6 +35,7 @@ import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.jacp.test.main.ApplicationLauncher;
+import org.jacp.test.main.ApplicationLauncherMessagingTest;
 import org.jacp.test.perspectives.PerspectiveIds;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.componentLayout.WorkbenchLayout;
@@ -92,6 +93,7 @@ public class WorkbenchMessagingTest implements FXWorkbench {
 
         // show windowButtons
         menu.registerWindowButtons();
+        ApplicationLauncherMessagingTest.latch.countDown();
     }
 
 

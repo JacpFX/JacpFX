@@ -1,27 +1,26 @@
 /*
- * Copyright (c) 2013, Andy Moncsek, inc.
- * All rights reserved.
+ * **********************************************************************
  *
- * Redistribution and use in source and binary forms, with or without modification, are permitted provided
- * that the following conditions are met:
+ *  Copyright (C) 2010 - 2014
  *
- *    Redistributions of source code must retain the above copyright notice, this list of conditions and the
- *    following disclaimer.
+ *  [Component.java]
+ *  JACPFX Project (https://github.com/JacpFX/JacpFX/)
+ *  All rights reserved.
  *
- *    Redistributions in binary form must reproduce the above copyright notice, this list of conditions and
- *    the following disclaimer in the documentation and/or other materials provided with the distribution.
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- *    Neither the name of Andy Moncsek, inc. nor the names of its contributors may be used to endorse or
- *    promote products derived from this software without specific prior written permission.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED
- * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
- * PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
- * TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an "AS IS"
+ *  BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *  express or implied. See the License for the specific language
+ *  governing permissions and limitations under the License.
+ *
+ *
+ * *********************************************************************
  */
 package org.jacp.test.components;
 
@@ -29,16 +28,17 @@ import javafx.event.Event;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import org.jacpfx.api.message.Message;
+import org.jacp.test.main.ApplicationLauncherCallbackComponentMessaginTest1;
+import org.jacp.test.main.ApplicationLauncherMessagingTest;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.component.Component;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.CallbackComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.util.FXUtil;
-import org.jacp.test.main.ApplicationLauncherCallbackComponentMessaginTest1;
 
 import java.util.ResourceBundle;
 import java.util.concurrent.CountDownLatch;
@@ -51,17 +51,13 @@ import java.util.logging.Logger;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@Component(id = ComponentIds.CallbackComponentMessagingTest1Component1, name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
-public class CallbackComponentMessagingTest1Component1 implements CallbackComponent {
+@Component(id = ComponentIds.CallbackComponentMessagingTest1, name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
+public class CallbackComponentMessagingTest1 implements CallbackComponent {
 
-    private final Logger log = Logger.getLogger(CallbackComponentMessagingTest1Component1.class
+    private final Logger log = Logger.getLogger(CallbackComponentMessagingTest1.class
             .getName());
 
-    String current = "content0";
-    Button button = new Button("move to next target");
-    VBox container = new VBox();
-    Label label = new Label();
-    public static boolean ui = false;
+;
 
     @Resource
     private static Context context;
@@ -75,13 +71,16 @@ public class CallbackComponentMessagingTest1Component1 implements CallbackCompon
      */
     public Object handle(final Message<Event, Object> action) {
         if (action.messageBodyEquals(FXUtil.MessageUtil.INIT)) {
-            ApplicationLauncherCallbackComponentMessaginTest1.latch.countDown();
-        } else {
+            ApplicationLauncherMessagingTest.latch.countDown();
+        } else if(action.messageBodyEquals("stop")) {
+               context.setActive(false);
+        }
+        else {
             if (counter.get() > 1) {
                 counter.decrementAndGet();
 
             } else {
-                System.out.println("Component id009: FINISH");
+                System.out.println("Component "+ComponentIds.CallbackComponentMessagingTest1+" FINISH");
                 if (wait.getCount() > 0) wait.countDown();
 
                 return null;
@@ -118,7 +117,7 @@ public class CallbackComponentMessagingTest1Component1 implements CallbackCompon
      */
     public void onStartComponent(final FXComponentLayout arg0,
                                  final ResourceBundle resourceBundle) {
-
+        this.log.info("run on start  of CallbackComponentMessagingTest1: "+this);
 
     }
 
@@ -128,7 +127,7 @@ public class CallbackComponentMessagingTest1Component1 implements CallbackCompon
      * @param arg0
      */
     public void onTearDownComponent(final FXComponentLayout arg0) {
-        this.log.info("run on tear down of ComponentRight ");
+        this.log.info("run on tear down of CallbackComponentMessagingTest1 "+this);
 
     }
 

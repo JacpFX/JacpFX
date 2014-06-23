@@ -53,6 +53,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -67,7 +68,7 @@ public abstract class AFXPerspective extends AComponent implements
         PerspectiveView<Node, EventHandler<Event>, Event, Object>,
         Initializable {
     private final Logger logger = Logger.getLogger(this.getClass().getName());
-    private volatile List<SubComponent<EventHandler<Event>, Event, Object>> subcomponents;
+    //private volatile List<SubComponent<EventHandler<Event>, Event, Object>> subcomponents;
     private ComponentHandler<SubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
     private BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
     private BlockingQueue<DelegateDTO<Event, Object>> messageDelegateQueue;
@@ -109,9 +110,8 @@ public abstract class AFXPerspective extends AComponent implements
         // init component handler
         this.componentHandler = componentHandler;
         this.messageCoordinator.setComponentHandler(this.componentHandler);
-        if (this.subcomponents != null) this.subcomponents.clear();
-        this.subcomponents = createAllDeclaredSubcomponents();
-        if (this.subcomponents != null) this.registerSubcomponents(this.subcomponents);
+        final List<SubComponent<EventHandler<Event>, Event, Object>> tmp = createAllDeclaredSubcomponents();
+        if (tmp != null) this.registerSubcomponents(tmp);
     }
 
     /**
@@ -166,9 +166,6 @@ public abstract class AFXPerspective extends AComponent implements
         synchronized (lock) {
             this.log("register component: " + component.getContext().getId());
             ComponentRegistry.registerComponent(component);
-            if (!this.subcomponents.contains(component)) {
-                this.subcomponents.add(component);
-            }
         }
     }
 
@@ -180,17 +177,12 @@ public abstract class AFXPerspective extends AComponent implements
             this.log("unregister component: " + component.getContext().getId());
             ComponentRegistry.removeComponent(component);
             component.initEnv(null, null);
-            if (this.subcomponents.contains(component)) {
-                this.subcomponents.remove(component);
-            }
         }
     }
 
     @Override
     public final void removeAllCompnents() {
-        synchronized (lock) {
-            this.subcomponents.clear();
-        }
+
     }
 
     @Override
@@ -198,7 +190,7 @@ public abstract class AFXPerspective extends AComponent implements
         final String targetId = FXUtil.getTargetComponentId(action
                 .getTargetId());
         this.log("3.4.4.1: subcomponent targetId: " + targetId);
-        final List<SubComponent<EventHandler<Event>, Event, Object>> components = this.subcomponents;
+        final List<SubComponent<EventHandler<Event>, Event, Object>> components = getSubcomponents();
         if (components == null) return;
         components.parallelStream().forEach(component -> initComponent(component, action, targetId));
     }
@@ -235,7 +227,7 @@ public abstract class AFXPerspective extends AComponent implements
 
     @Override
     public List<SubComponent<EventHandler<Event>, Event, Object>> getSubcomponents() {
-        return this.subcomponents;
+        return ComponentRegistry.findComponentsByParentId(this.getContext().getId());
     }
 
     @Override

@@ -59,4 +59,6 @@ public class ComponentIds {
     public static final String ComponentMessagingTests1                     ="id034";
     public static final String ComponentMessagingTests2                     ="id035";
     public static final String ComponentMessagingTests3                     ="id036";
+    public static final String CallbackComponentMessagingTest1       ="id037";
+    public static final String CallbackComponentMessagingTest1_1       ="id038";
 }

@@ -28,8 +28,10 @@ import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.jacp.test.main.ApplicationLauncherComponentMessaginTest1;
+import org.jacp.test.main.ApplicationLauncherMessagingTest;
 import org.jacp.test.perspectives.PerspectiveIds;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.component.View;
@@ -63,8 +65,12 @@ public class ComponentMessagingTest1 implements FXComponent {
     Button button2 = new Button("message without parent");
     Button button3 = new Button("message fullqualified");
     Button button4 = new Button("message without parent to inactive");
-    Button button5 = new Button("message fullqualified to inactive");
-    Button button6 = new Button("message fullqualified to inactive in other perspective");
+    Button button5 = new Button("message fullqualified to inactive in p1");
+    Button button7 = new Button("message fullqualified to inactive in p3");
+    Button button6 = new Button("message fullqualified to inactive in other perspective (p2)");
+    Button button8 = new Button("message without parent to local callback (c1)");
+    Button button9 = new Button("message fullqualified to local callback (c1)");
+    Button button10 = new Button("deactivate c1");
     VBox container = new VBox();
     Label label = new Label();
     public static boolean ui = false;
@@ -93,7 +99,7 @@ public class ComponentMessagingTest1 implements FXComponent {
         if (action.messageBodyEquals(FXUtil.MessageUtil.INIT)) {
 
 
-            ApplicationLauncherComponentMessaginTest1.latch.countDown();
+            ApplicationLauncherMessagingTest.latch.countDown();
         } else {
             label.setText(action.getMessageBody().toString());
 
@@ -117,10 +123,15 @@ public class ComponentMessagingTest1 implements FXComponent {
          button3 = new Button("message fullqualified");
          button4 = new Button("message without parent to inactive");
          button5 = new Button("message fullqualified to inactive");
-         button6 = new Button("message fullqualified to inactive in other perspective");
-
+         button6 = new Button("message fullqualified to inactive component in other perspective (p2)");
+         button7 = new Button("message fullqualified to inactive in p3");
+         button8 = new Button("message without parent to local callback (c1)");
+         button9 = new Button("message fullqualified to local callback (c1)");
+         button10 = new Button("deactivate c1");
         container = new VBox();
          label = new Label();
+
+        HBox group1 = new HBox();
         button1.setOnMouseClicked((event)->{
             context.send("message1Local");
         });
@@ -130,17 +141,36 @@ public class ComponentMessagingTest1 implements FXComponent {
         button3.setOnMouseClicked((event)->{
             context.send(PerspectiveIds.PerspectiveMessagingTest.concat(".").concat(ComponentIds.ComponentMessagingTests1),"message2");
         });
+        group1.getChildren().addAll(button1,button2,button3);
+        HBox group2 = new HBox();
         button4.setOnMouseClicked((event)->{
             context.send(ComponentIds.ComponentMessagingTests2,"message3");
         });
         button5.setOnMouseClicked((event)->{
             context.send(PerspectiveIds.PerspectiveMessagingTest.concat(".").concat(ComponentIds.ComponentMessagingTests2),"message4");
         });
+        group2.getChildren().addAll(button4,button5);
+
         button6.setOnMouseClicked((event)->{
             context.send(PerspectiveIds.PerspectiveMessagingTest2.concat(".").concat(ComponentIds.ComponentMessagingTests3),"message4");
         });
-        container.getChildren().addAll(label,button1,button2,button3,button4,button5,button6);
+        button7.setOnMouseClicked((event)->{
+            context.send(PerspectiveIds.PerspectiveMessagingTest3.concat(".").concat(ComponentIds.ComponentMessagingTests2),"message4");
+        });
 
+        HBox group3 = new HBox();
+        button8.setOnMouseClicked((event)->{
+            context.send(ComponentIds.CallbackComponentMessagingTest1_1,"message5");
+        });
+        button9.setOnMouseClicked((event)->{
+            context.send(PerspectiveIds.PerspectiveMessagingTest.concat(".").concat(ComponentIds.CallbackComponentMessagingTest1_1),"message6");
+        });
+        button10.setOnMouseClicked((event)->{
+            context.send(ComponentIds.CallbackComponentMessagingTest1_1,"stop");
+        });
+        group3.getChildren().addAll(button8,button9,button10) ;
+        container.getChildren().addAll(label,group1,group2,button6,button7,group3);
+        this.log.info("run on start of ComponentMessagingTest1 "+this);
     }
 
     @PreDestroy
@@ -149,7 +179,7 @@ public class ComponentMessagingTest1 implements FXComponent {
      * @param arg0
      */
     public void onTearDownComponent(final FXComponentLayout arg0) {
-        this.log.info("run on tear down of ComponentRight ");
+        this.log.info("run on tear down of ComponentMessagingTest1 "+this);
 
     }
 

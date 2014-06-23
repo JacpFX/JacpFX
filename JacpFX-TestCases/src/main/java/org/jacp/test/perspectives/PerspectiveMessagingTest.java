@@ -35,6 +35,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import org.jacp.test.components.ComponentIds;
 import org.jacp.test.main.ApplicationLauncher;
+import org.jacp.test.main.ApplicationLauncherMessagingTest;
+import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.lifecycle.OnShow;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
@@ -42,6 +44,7 @@ import org.jacpfx.api.annotations.perspective.Perspective;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.componentLayout.PerspectiveLayout;
+import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.perspective.FXPerspective;
 import org.jacpfx.rcp.util.FXUtil.MessageUtil;
 
@@ -55,7 +58,7 @@ import java.util.ResourceBundle;
 
 @Perspective(id = PerspectiveIds.PerspectiveMessagingTest, name = "contactPerspective",
         components = {
-                ComponentIds.ComponentMessagingTests1,ComponentIds.ComponentMessagingTests2},
+                ComponentIds.ComponentMessagingTests1,ComponentIds.ComponentMessagingTests2,ComponentIds.CallbackComponentMessagingTest1,ComponentIds.CallbackComponentMessagingTest1_1},
         viewLocation = "/fxml/perspectiveOne.fxml",
         resourceBundleLocation = "bundles.languageBundle",
         localeID = "en_US")
@@ -66,6 +69,9 @@ public class PerspectiveMessagingTest implements FXPerspective {
     private HBox content2;
     @FXML
     private HBox content3;
+
+    @Resource
+    private static Context context;
 
     @Override
     public void handlePerspective(final Message<Event, Object> action,
@@ -85,7 +91,7 @@ public class PerspectiveMessagingTest implements FXPerspective {
                     this.content2);
             perspectiveLayout.registerTargetLayoutComponent("content2",
                     this.content3);
-            ApplicationLauncher.latch.countDown();
+            ApplicationLauncherMessagingTest.latch.countDown();
         }
 
     }
@@ -136,6 +142,78 @@ public class PerspectiveMessagingTest implements FXPerspective {
      */
     public void onTearDownPerspective(final FXComponentLayout arg0) {
         // remove toolbars and menu entries when close perspective
+
+    }
+
+    /**
+     * sends a message ComponentMessagingTest1 and executes Button1
+     */
+    public static void ClickButtonOne() {
+              context.send((PerspectiveIds.PerspectiveMessagingTest).concat(".").concat(ComponentIds.ComponentMessagingTests1),"button1");
+    }
+
+    /**
+     * sends a message ComponentMessagingTest1 and executes Button1
+     */
+    public static void ClickButtonTwo() {
+        context.send((PerspectiveIds.PerspectiveMessagingTest).concat(".").concat(ComponentIds.ComponentMessagingTests1),"button2");
+
+    }
+    /**
+     * sends a message ComponentMessagingTest1 and executes Button1
+     */
+    public static void ClickButtonThree() {
+        context.send((PerspectiveIds.PerspectiveMessagingTest).concat(".").concat(ComponentIds.ComponentMessagingTests1),"button3");
+
+    }
+    /**
+     * sends a message ComponentMessagingTest1 and executes Button1
+     */
+    public static void ClickButtonFour() {
+        context.send((PerspectiveIds.PerspectiveMessagingTest).concat(".").concat(ComponentIds.ComponentMessagingTests1),"button4");
+
+    }
+    /**
+     * sends a message ComponentMessagingTest1 and executes Button1
+     */
+    public static void ClickButtonFive() {
+        context.send((PerspectiveIds.PerspectiveMessagingTest).concat(".").concat(ComponentIds.ComponentMessagingTests1),"button5");
+
+    }
+    /**
+     * sends a message ComponentMessagingTest1 and executes Button1
+     */
+    public static void ClickButtonSix() {
+        context.send((PerspectiveIds.PerspectiveMessagingTest).concat(".").concat(ComponentIds.ComponentMessagingTests1),"button6");
+
+    }
+    /**
+     * sends a message ComponentMessagingTest1 and executes Button1
+     */
+    public static void ClickButtonSeven() {
+        context.send((PerspectiveIds.PerspectiveMessagingTest).concat(".").concat(ComponentIds.ComponentMessagingTests1),"button7");
+
+    }
+    /**
+     * sends a message ComponentMessagingTest1 and executes Button1
+     */
+    public static void ClickButtonEight() {
+        context.send((PerspectiveIds.PerspectiveMessagingTest).concat(".").concat(ComponentIds.ComponentMessagingTests1),"button8");
+
+    }
+    /**
+     * sends a message ComponentMessagingTest1 and executes Button1
+     */
+    public static void ClickButtonNine() {
+        context.send((PerspectiveIds.PerspectiveMessagingTest).concat(".").concat(ComponentIds.ComponentMessagingTests1),"button9");
+
+    }
+
+    /**
+     * sends a message ComponentMessagingTest1 and executes Button1
+     */
+    public static void ClickButtonTen() {
+        context.send((PerspectiveIds.PerspectiveMessagingTest).concat(".").concat(ComponentIds.ComponentMessagingTests1),"button10");
 
     }
 

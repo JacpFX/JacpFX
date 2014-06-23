@@ -51,7 +51,7 @@ import java.util.logging.Logger;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@Component(id = "id010", name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
+@Component(id = ComponentIds.CallbackComponentMessagingTest1Component2, name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
 public class CallbackComponentMessagingTest1Component2 implements CallbackComponent {
 
     private final Logger log = Logger.getLogger(CallbackComponentMessagingTest1Component2.class

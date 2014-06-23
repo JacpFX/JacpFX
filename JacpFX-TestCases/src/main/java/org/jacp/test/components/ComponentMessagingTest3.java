@@ -30,6 +30,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import org.jacp.test.main.ApplicationLauncherComponentMessaginTest1;
+import org.jacp.test.main.ApplicationLauncherMessagingTest;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.component.View;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
@@ -87,7 +88,7 @@ public class ComponentMessagingTest3 implements FXComponent {
         if (action.messageBodyEquals(FXUtil.MessageUtil.INIT)) {
 
 
-            ApplicationLauncherComponentMessaginTest1.latch.countDown();
+            ApplicationLauncherMessagingTest.latch.countDown();
         }else if(action.messageBodyEquals("deactivate")) {
                   context.setActive(false);
         }
