@@ -31,7 +31,6 @@ import javafx.scene.Parent;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.component.Component;
 import org.jacpfx.api.component.Injectable;
-import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.context.JacpContext;
 
 import java.io.IOException;

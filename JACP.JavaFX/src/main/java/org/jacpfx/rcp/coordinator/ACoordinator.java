@@ -25,7 +25,6 @@ package org.jacpfx.rcp.coordinator;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import org.jacpfx.api.coordinator.Coordinator;
-import org.jacpfx.api.exceptions.ComponentNotFoundException;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.util.ShutdownThreadsHandler;
 

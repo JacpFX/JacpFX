@@ -53,7 +53,6 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -68,7 +67,6 @@ public abstract class AFXPerspective extends AComponent implements
         PerspectiveView<Node, EventHandler<Event>, Event, Object>,
         Initializable {
     private final Logger logger = Logger.getLogger(this.getClass().getName());
-    //private volatile List<SubComponent<EventHandler<Event>, Event, Object>> subcomponents;
     private ComponentHandler<SubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
     private BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
     private BlockingQueue<DelegateDTO<Event, Object>> messageDelegateQueue;
@@ -110,8 +108,8 @@ public abstract class AFXPerspective extends AComponent implements
         // init component handler
         this.componentHandler = componentHandler;
         this.messageCoordinator.setComponentHandler(this.componentHandler);
-        final List<SubComponent<EventHandler<Event>, Event, Object>> tmp = createAllDeclaredSubcomponents();
-        if (tmp != null) this.registerSubcomponents(tmp);
+        final List<SubComponent<EventHandler<Event>, Event, Object>> subcomponents = createAllDeclaredSubcomponents();
+        if (subcomponents != null) this.registerSubcomponents(subcomponents);
     }
 
     /**
@@ -138,7 +136,6 @@ public abstract class AFXPerspective extends AComponent implements
 
     }
 
-    //TODO extract metadata initialisation to perform this on parallel stream!!!
     @Override
     public final void registerComponent(
             final SubComponent<EventHandler<Event>, Event, Object> component) {

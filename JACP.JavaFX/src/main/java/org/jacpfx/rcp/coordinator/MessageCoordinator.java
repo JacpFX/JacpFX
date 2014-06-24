@@ -14,7 +14,6 @@ import org.jacpfx.api.launcher.Launcher;
 import org.jacpfx.api.message.DelegateDTO;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.delegator.DelegateDTOImpl;
-import org.jacpfx.rcp.message.MessageImpl;
 import org.jacpfx.rcp.registry.ComponentRegistry;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.FXUtil;

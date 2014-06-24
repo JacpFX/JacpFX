@@ -26,11 +26,9 @@
 package org.jacp.test.messaging;
 
 import javafx.application.Platform;
+import junit.framework.Assert;
 import org.jacp.test.AllTests;
-import org.jacp.test.components.ComponentMessagingTest1Component1;
-import org.jacp.test.components.ComponentMessagingTest1Component2;
-import org.jacp.test.main.ApplicationLauncher;
-import org.jacp.test.main.ApplicationLauncherComponentMessaginTest1;
+import org.jacp.test.components.*;
 import org.jacp.test.main.ApplicationLauncherMessagingTest;
 import org.jacp.test.perspectives.PerspectiveComponentMessagingTest1;
 import org.junit.AfterClass;
@@ -41,7 +39,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static junit.framework.TestCase.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Created with IntelliJ IDEA.
@@ -103,42 +100,108 @@ public class FXComponentMessagingTest2 {
         assertNotNull(launcher);
     }
 
+    @Test
+    public void checkLocalMessages() throws InterruptedException {
+        ComponentMessagingTest1.waitButton1 = new CountDownLatch(1);
+        ComponentMessagingTest1.waitButton2 = new CountDownLatch(1);
+        ComponentMessagingTest1.waitButton3 = new CountDownLatch(1);
 
 
-    private void warmUp() throws InterruptedException {
-        executeMessaging();
+        ComponentMessagingTest2.waitButton3 = new CountDownLatch(1);
+        ComponentMessagingTest3.waitButton1 = new CountDownLatch(1);
+        org.jacp.test.perspectives.PerspectiveMessagingTest.ClickButtonOne();
+        ComponentMessagingTest1.waitButton1.await();
+        Assert.assertTrue(ComponentMessagingTest1.value[0].equals("message1Local"));
+
+        org.jacp.test.perspectives.PerspectiveMessagingTest.ClickButtonTwo();
+        ComponentMessagingTest1.waitButton2.await();
+        Assert.assertTrue(ComponentMessagingTest1.value[0].equals("message1"));
+
+        org.jacp.test.perspectives.PerspectiveMessagingTest.ClickButtonThree();
+        ComponentMessagingTest1.waitButton3.await();
+        Assert.assertTrue(ComponentMessagingTest1.value[0].equals("message2"));
+
+
+        org.jacp.test.perspectives.PerspectiveMessagingTest.ClickButtonSix();
+        ComponentMessagingTest3.waitButton1.await();
+        Assert.assertTrue(ComponentMessagingTest3.value[0].equals("message5"));
+
+        org.jacp.test.perspectives.PerspectiveMessagingTest.ClickButtonSeven();
+        ComponentMessagingTest2.waitButton3.await();
+        Assert.assertTrue(ComponentMessagingTest2.value[0].equals("message6"));
+    }
+
+    @Test
+    public void sendMessageToInactiveComponent() throws InterruptedException {
+        run(() -> {
+            try {
+                ComponentMessagingTest2.waitButton1 = new CountDownLatch(1);
+                ComponentMessagingTest2.waitButton2 = new CountDownLatch(1);
+                ComponentMessagingTest2.waitButton4 = new CountDownLatch(1);
+                org.jacp.test.perspectives.PerspectiveMessagingTest.ClickButtonFour();
+                ComponentMessagingTest2.waitButton1.await();
+                Assert.assertTrue(ComponentMessagingTest2.value[0].equals("message3"));
+
+                org.jacp.test.perspectives.PerspectiveMessagingTest.StopComponent2InP1();
+                ComponentMessagingTest2.waitButton4.await();
+                Assert.assertTrue(ComponentMessagingTest2.value[0].equals("stop"));
+
+
+                org.jacp.test.perspectives.PerspectiveMessagingTest.ClickButtonFive();
+                ComponentMessagingTest2.waitButton2.await();
+                Assert.assertTrue(ComponentMessagingTest2.value[0].equals("message4"));
+
+                ComponentMessagingTest2.waitButton4 = new CountDownLatch(1);
+
+                org.jacp.test.perspectives.PerspectiveMessagingTest.StopComponent2InP1();
+                ComponentMessagingTest2.waitButton4.await();
+                Assert.assertTrue(ComponentMessagingTest2.value[0].equals("stop"));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @Test
+    public void sendMessagesToInactiveCallback() throws InterruptedException {
+        run(() -> {
+            try {
+
+
+                CallbackComponentMessagingTest1_1.wait1 = new CountDownLatch(1);
+
+                CallbackComponentMessagingTest1_1.wait2 = new CountDownLatch(1);
+                CallbackComponentMessagingTest1_1.wait3 = new CountDownLatch(1);
+                org.jacp.test.perspectives.PerspectiveMessagingTest.ClickButtonEight();
+                CallbackComponentMessagingTest1_1.wait1.await();
+                Assert.assertTrue(CallbackComponentMessagingTest1_1.value[0].equals("message7"));
+
+                org.jacp.test.perspectives.PerspectiveMessagingTest.StopCallbackInP1();
+                CallbackComponentMessagingTest1_1.wait3.await();
+                Assert.assertTrue(CallbackComponentMessagingTest1_1.value[0].equals("stop"));
+
+                org.jacp.test.perspectives.PerspectiveMessagingTest.ClickButtonNine();
+                CallbackComponentMessagingTest1_1.wait2.await();
+
+                Assert.assertTrue(CallbackComponentMessagingTest1_1.value[0].equals("message8"));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
 
-    private void withUI() throws InterruptedException {
+    public void run(Runnable r) {
         long start = System.currentTimeMillis();
         int i = 0;
-        ComponentMessagingTest1Component1.ui = true;
-        ComponentMessagingTest1Component2.ui = true;
-        while (i < 10) {
-            executeMessaging();
-            assertTrue(true);
+        while (i < 500) {
+            r.run();
             i++;
         }
-
         long end = System.currentTimeMillis();
 
-        System.out.println("Execution with ui time was " + (end - start) + " ms.");
+        System.out.println("Execution  time was " + (end - start) + " ms.");
     }
 
-    private void withoutUI() throws InterruptedException {
-        long start = System.currentTimeMillis();
-        int i = 0;
-        ComponentMessagingTest1Component1.ui = false;
-        ComponentMessagingTest1Component2.ui = false;
-        while (i < 10) {
-            executeMessaging();
-            assertTrue(true);
-            i++;
-        }
 
-        long end = System.currentTimeMillis();
-
-        System.out.println("Execution without ui time was " + (end - start) + " ms.");
-    }
 }

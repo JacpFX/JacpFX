@@ -69,7 +69,8 @@ public class ComponentMessagingTest3 implements FXComponent {
 
     public static AtomicInteger counter = new AtomicInteger(10000);
     public static CountDownLatch wait = new CountDownLatch(1);
-
+    public static String[] value =new String[1];
+    public static CountDownLatch waitButton1 = new CountDownLatch(1);
     @Override
     /**
      * The handleAction method always runs outside the main application thread. You can create new nodes, execute long running tasks but you are not allowed to manipulate existing nodes here.
@@ -89,8 +90,13 @@ public class ComponentMessagingTest3 implements FXComponent {
 
 
             ApplicationLauncherMessagingTest.latch.countDown();
+        }else if(action.messageBodyEquals("message5")) {
+            label.setText(action.getMessageBody().toString());
+            value[0]= action.getMessageBody().toString();
+            waitButton1.countDown();
         }else if(action.messageBodyEquals("deactivate")) {
                   context.setActive(false);
+            value[0]= action.getMessageBody().toString();
         }
         else {
             label.setText(action.getMessageBody().toString());

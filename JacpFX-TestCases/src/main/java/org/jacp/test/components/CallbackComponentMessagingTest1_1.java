@@ -25,7 +25,6 @@
 package org.jacp.test.components;
 
 import javafx.event.Event;
-import org.jacp.test.main.ApplicationLauncherCallbackComponentMessaginTest1;
 import org.jacp.test.main.ApplicationLauncherMessagingTest;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.component.Component;
@@ -54,13 +53,17 @@ public class CallbackComponentMessagingTest1_1 implements CallbackComponent {
     private final Logger log = Logger.getLogger(CallbackComponentMessagingTest1_1.class
             .getName());
 
-;
+    ;
 
     @Resource
-    private  Context context;
+    private Context context;
 
     public static AtomicInteger counter = new AtomicInteger(10000);
     public static CountDownLatch wait = new CountDownLatch(1);
+    public static CountDownLatch wait1 = new CountDownLatch(1);
+    public static CountDownLatch wait2 = new CountDownLatch(1);
+    public static CountDownLatch wait3 = new CountDownLatch(1);
+    public static String[] value =new String[1];
 
     @Override
     /**
@@ -69,27 +72,22 @@ public class CallbackComponentMessagingTest1_1 implements CallbackComponent {
     public Object handle(final Message<Event, Object> action) {
         if (action.messageBodyEquals(FXUtil.MessageUtil.INIT)) {
             ApplicationLauncherMessagingTest.latch.countDown();
-        } else if(action.messageBodyEquals("stop")) {
-               context.setActive(false);
+        } else if (action.messageBodyEquals("stop")) {
+            context.setActive(false);
+            value[0]= action.getMessageBody().toString();
+
+        } else if (action.messageBodyEquals("message7")) {
+            value[0]= action.getMessageBody().toString();
+            wait1.countDown();
+        } else if (action.messageBodyEquals("message8")) {
+            value[0]= action.getMessageBody().toString();
+            wait2.countDown();
         }
-        else {
-            if (counter.get() > 1) {
-                counter.decrementAndGet();
-
-            } else {
-                System.out.println("Component "+ComponentIds.CallbackComponentMessagingTest1+" FINISH");
-                if (wait.getCount() > 0) wait.countDown();
-
-                return null;
-            }
-        }
-
         return null;
     }
 
 
-
-    public  synchronized Context getContext() {
+    public synchronized Context getContext() {
         return context;
     }
 
@@ -102,7 +100,7 @@ public class CallbackComponentMessagingTest1_1 implements CallbackComponent {
      */
     public void onStartComponent(final FXComponentLayout arg0,
                                  final ResourceBundle resourceBundle) {
-        this.log.info("run on start  of CallbackComponentMessagingTest1_1: "+this);
+        this.log.info("run on start  of CallbackComponentMessagingTest1_1: " + this);
 
     }
 
@@ -112,7 +110,8 @@ public class CallbackComponentMessagingTest1_1 implements CallbackComponent {
      * @param arg0
      */
     public void onTearDownComponent(final FXComponentLayout arg0) {
-        this.log.info("run on tear down of CallbackComponentMessagingTest1_1 "+this);
+        this.log.info("run on tear down of CallbackComponentMessagingTest1_1 " + this);
+        wait3.countDown();
 
     }
 

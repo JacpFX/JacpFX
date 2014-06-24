@@ -27,21 +27,13 @@ package org.jacpfx.rcp.components.errorDialog;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import org.jacpfx.rcp.components.modalDialog.JACPModalDialog;
 import org.jacpfx.rcp.util.DimensionUtil;
-import org.jacpfx.rcp.util.LayoutUtil;
-
-import java.awt.*;
 
 /**
  * Created by Andy Moncsek on 13.01.14.

@@ -74,12 +74,14 @@ public class ComponentMessagingTest1 implements FXComponent {
     VBox container = new VBox();
     Label label = new Label();
     public static boolean ui = false;
-
+    public static String[] value =new String[1];
     @Resource
     private Context context;
 
     public static AtomicInteger counter = new AtomicInteger(10000);
-    public static CountDownLatch wait = new CountDownLatch(1);
+    public static CountDownLatch waitButton1 = new CountDownLatch(1);
+    public static CountDownLatch waitButton2 = new CountDownLatch(1);
+    public static CountDownLatch waitButton3 = new CountDownLatch(1);
 
     @Override
     /**
@@ -100,12 +102,49 @@ public class ComponentMessagingTest1 implements FXComponent {
 
 
             ApplicationLauncherMessagingTest.latch.countDown();
-        } else {
+        } else if(action.messageBodyEquals("button1")) {
+            label.setText(action.getMessageBody().toString());
+            context.send("message1Local");
+        } else if(action.messageBodyEquals("message1Local")) {
+            label.setText(action.getMessageBody().toString());
+            waitButton1.countDown();
+        }  else if(action.messageBodyEquals("button2")) {
+            label.setText(action.getMessageBody().toString());
+            context.send(ComponentIds.ComponentMessagingTests1,"message1");
+        } else if(action.messageBodyEquals("message1")) {
+            label.setText(action.getMessageBody().toString());
+            waitButton2.countDown();
+        }else if(action.messageBodyEquals("button3")) {
+            label.setText(action.getMessageBody().toString());
+            context.send(PerspectiveIds.PerspectiveMessagingTest.concat(".").concat(ComponentIds.ComponentMessagingTests1),"message2");
+        } else if(action.messageBodyEquals("message2")) {
+            label.setText(action.getMessageBody().toString());
+            waitButton3.countDown();
+        } else if(action.messageBodyEquals("button4")) {
+            label.setText(action.getMessageBody().toString());
+            context.send(ComponentIds.ComponentMessagingTests2,"message3");
+        }   else if(action.messageBodyEquals("button5")) {
+            label.setText(action.getMessageBody().toString());
+            context.send(PerspectiveIds.PerspectiveMessagingTest.concat(".").concat(ComponentIds.ComponentMessagingTests2),"message4");
+        } else if(action.messageBodyEquals("button6")) {
+            label.setText(action.getMessageBody().toString());
+            context.send(PerspectiveIds.PerspectiveMessagingTest2.concat(".").concat(ComponentIds.ComponentMessagingTests3),"message5");
+        } else if(action.messageBodyEquals("button7")) {
+            label.setText(action.getMessageBody().toString());
+            context.send(PerspectiveIds.PerspectiveMessagingTest3.concat(".").concat(ComponentIds.ComponentMessagingTests2),"message6");
+        }  else if(action.messageBodyEquals("button8")) {
+            label.setText(action.getMessageBody().toString());
+            context.send(ComponentIds.CallbackComponentMessagingTest1_1,"message7");
+        }  else if(action.messageBodyEquals("button9")) {
+            label.setText(action.getMessageBody().toString());
+            context.send(PerspectiveIds.PerspectiveMessagingTest.concat(".").concat(ComponentIds.CallbackComponentMessagingTest1_1),"message8");
+        }
+        else {
             label.setText(action.getMessageBody().toString());
 
         }
 
-
+        value[0]= action.getMessageBody().toString();
         return container;
     }
 
@@ -152,18 +191,18 @@ public class ComponentMessagingTest1 implements FXComponent {
         group2.getChildren().addAll(button4,button5);
 
         button6.setOnMouseClicked((event)->{
-            context.send(PerspectiveIds.PerspectiveMessagingTest2.concat(".").concat(ComponentIds.ComponentMessagingTests3),"message4");
+            context.send(PerspectiveIds.PerspectiveMessagingTest2.concat(".").concat(ComponentIds.ComponentMessagingTests3),"message5");
         });
         button7.setOnMouseClicked((event)->{
-            context.send(PerspectiveIds.PerspectiveMessagingTest3.concat(".").concat(ComponentIds.ComponentMessagingTests2),"message4");
+            context.send(PerspectiveIds.PerspectiveMessagingTest3.concat(".").concat(ComponentIds.ComponentMessagingTests2),"message6");
         });
 
         HBox group3 = new HBox();
         button8.setOnMouseClicked((event)->{
-            context.send(ComponentIds.CallbackComponentMessagingTest1_1,"message5");
+            context.send(ComponentIds.CallbackComponentMessagingTest1_1,"message7");
         });
         button9.setOnMouseClicked((event)->{
-            context.send(PerspectiveIds.PerspectiveMessagingTest.concat(".").concat(ComponentIds.CallbackComponentMessagingTest1_1),"message6");
+            context.send(PerspectiveIds.PerspectiveMessagingTest.concat(".").concat(ComponentIds.CallbackComponentMessagingTest1_1),"message8");
         });
         button10.setOnMouseClicked((event)->{
             context.send(ComponentIds.CallbackComponentMessagingTest1_1,"stop");

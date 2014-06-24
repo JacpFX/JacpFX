@@ -29,9 +29,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import org.jacp.test.main.ApplicationLauncherComponentMessaginTest1;
 import org.jacp.test.main.ApplicationLauncherMessagingTest;
-import org.jacp.test.perspectives.PerspectiveIds;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.component.View;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
@@ -70,6 +68,11 @@ public class ComponentMessagingTest2 implements FXComponent {
 
     public static AtomicInteger counter = new AtomicInteger(10000);
     public static CountDownLatch wait = new CountDownLatch(1);
+    public static CountDownLatch waitButton1 = new CountDownLatch(1);
+    public static CountDownLatch waitButton2 = new CountDownLatch(1);
+    public static CountDownLatch waitButton3 = new CountDownLatch(1);
+    public static CountDownLatch waitButton4 = new CountDownLatch(1);
+    public static String[] value = new String[1];
 
     @Override
     /**
@@ -88,10 +91,22 @@ public class ComponentMessagingTest2 implements FXComponent {
                            final Message<Event, Object> action) {
         if (action.messageBodyEquals(FXUtil.MessageUtil.INIT)) {
             ApplicationLauncherMessagingTest.latch.countDown();
-        }else if(action.messageBodyEquals("deactivate")) {
-                  context.setActive(false);
-        }
-        else {
+        } else if (action.messageBodyEquals("stop")) {
+            context.setActive(false);
+            value[0] = action.getMessageBody().toString();
+        } else if (action.messageBodyEquals("message3")) {
+            label.setText(action.getMessageBody().toString());
+            value[0] = action.getMessageBody().toString();
+            waitButton1.countDown();
+        } else if (action.messageBodyEquals("message4")) {
+            label.setText(action.getMessageBody().toString());
+            value[0] = action.getMessageBody().toString();
+            waitButton2.countDown();
+        } else if (action.messageBodyEquals("message6")) {
+            label.setText(action.getMessageBody().toString());
+            value[0] = action.getMessageBody().toString();
+            waitButton3.countDown();
+        } else {
             label.setText(action.getMessageBody().toString());
 
         }
@@ -109,15 +124,15 @@ public class ComponentMessagingTest2 implements FXComponent {
      */
     public void onStartComponent(final FXComponentLayout arg0,
                                  final ResourceBundle resourceBundle) {
-         button1 = new Button("deactivate");
-         container = new VBox();
-         label = new Label();
-        button1.setOnMouseClicked((event)->{
+        button1 = new Button("deactivate");
+        container = new VBox();
+        label = new Label();
+        button1.setOnMouseClicked((event) -> {
             context.send("deactivate");
         });
 
-        container.getChildren().addAll(label,button1);
-        this.log.info("run onStartComponent of ComponentMessagingTest2 "+ this+" parent:"+context.getParentId()+"  id:"+context.getId());
+        container.getChildren().addAll(label, button1);
+        this.log.info("run onStartComponent of ComponentMessagingTest2 " + this + " parent:" + context.getParentId() + "  id:" + context.getId());
     }
 
     @PreDestroy
@@ -126,8 +141,8 @@ public class ComponentMessagingTest2 implements FXComponent {
      * @param arg0
      */
     public void onTearDownComponent(final FXComponentLayout arg0) {
-        this.log.info("run on tear down of ComponentMessagingTest2 "+ this);
-
+        this.log.info("run on tear down of ComponentMessagingTest2 " + this);
+        waitButton4.countDown();
     }
 
 
