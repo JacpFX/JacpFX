@@ -31,6 +31,7 @@ import org.jacpfx.api.launcher.Launcher;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.api.scheduler.StatelessComponentScheduler;
 import org.jacpfx.rcp.component.AStatelessCallbackComponent;
+import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.worker.StateLessComponentRunWorker;
 
 import java.util.List;
@@ -131,8 +132,9 @@ public class StatelessComponentSchedulerImpl implements
     public final <T extends StatelessCallabackComponent<EventHandler<Event>, Event, Object>, H extends ComponentHandle> StatelessCallabackComponent<EventHandler<Event>, Event, Object> getCloneBean(
             final T baseComponent,
             final Class<H> clazz) {
-        return ((AStatelessCallbackComponent) baseComponent).init(this.launcher
-                .getBean(clazz));
+        final AStatelessCallbackComponent component = AStatelessCallbackComponent.class.cast(baseComponent);
+        final Context context = (Context) component.getContext();
+        return component.init(this.launcher.getBean(context.getParentId().concat(".").concat(context.getId())));
     }
 
     /**

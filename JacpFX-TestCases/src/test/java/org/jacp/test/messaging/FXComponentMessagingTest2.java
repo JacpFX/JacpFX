@@ -37,6 +37,7 @@ import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.IntStream;
 
 import static junit.framework.TestCase.assertNotNull;
 
@@ -193,11 +194,7 @@ public class FXComponentMessagingTest2 {
 
     public void run(Runnable r) {
         long start = System.currentTimeMillis();
-        int i = 0;
-        while (i < 500) {
-            r.run();
-            i++;
-        }
+        IntStream.rangeClosed(1, 500).forEach(i->r.run());
         long end = System.currentTimeMillis();
 
         System.out.println("Execution  time was " + (end - start) + " ms.");

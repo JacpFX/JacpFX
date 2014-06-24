@@ -25,17 +25,14 @@
 package org.jacp.test.components;
 
 import javafx.event.Event;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import org.jacp.test.main.ApplicationLauncherMessagingTest;
 import org.jacpfx.api.annotations.Resource;
-import org.jacpfx.api.annotations.component.View;
+import org.jacpfx.api.annotations.component.Component;
+import org.jacpfx.api.annotations.component.Stateless;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
 import org.jacpfx.api.message.Message;
-import org.jacpfx.rcp.component.FXComponent;
+import org.jacpfx.rcp.component.CallbackComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.util.FXUtil;
@@ -51,68 +48,50 @@ import java.util.logging.Logger;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@View(id = ComponentIds.ComponentMessagingTests2, name = "SimpleView", active = false, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", initialTargetLayoutId = "content2")
-public class ComponentMessagingTest2 implements FXComponent {
+@Component(id = ComponentIds.CallbackComponentMessagingTest2, name = "SimpleView", active = false, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
+@Stateless
+public class CallbackComponentMessagingTest2 implements CallbackComponent {
 
-    private final Logger log = Logger.getLogger(ComponentMessagingTest2.class
+    private final Logger log = Logger.getLogger(CallbackComponentMessagingTest2.class
             .getName());
 
-    String current = "content0";
-    Button button1 = new Button("deactivate");
-    VBox container = new VBox();
-    Label label = new Label();
-    public static boolean ui = false;
+    ;
 
     @Resource
     private Context context;
 
     public static AtomicInteger counter = new AtomicInteger(10000);
     public static CountDownLatch wait = new CountDownLatch(1);
-    public static CountDownLatch waitButton1 = new CountDownLatch(1);
-    public static CountDownLatch waitButton2 = new CountDownLatch(1);
-    public static CountDownLatch waitButton3 = new CountDownLatch(1);
-    public static CountDownLatch waitButton4 = new CountDownLatch(1);
-    public static String[] value = new String[1];
+    public static CountDownLatch wait1 = new CountDownLatch(1);
+    public static CountDownLatch wait2 = new CountDownLatch(1);
+    public static CountDownLatch wait3 = new CountDownLatch(1);
+    public static String[] value =new String[1];
 
     @Override
     /**
      * The handleAction method always runs outside the main application thread. You can create new nodes, execute long running tasks but you are not allowed to manipulate existing nodes here.
      */
-    public Node handle(final Message<Event, Object> action) {
-
-        return null;
-    }
-
-    @Override
-    /**
-     * The postHandleAction method runs always in the main application thread.
-     */
-    public Node postHandle(final Node arg0,
-                           final Message<Event, Object> action) {
+    public Object handle(final Message<Event, Object> action) {
         if (action.messageBodyEquals(FXUtil.MessageUtil.INIT)) {
             ApplicationLauncherMessagingTest.latch.countDown();
         } else if (action.messageBodyEquals("stop")) {
             context.setActive(false);
-            value[0] = action.getMessageBody().toString();
-        } else if (action.messageBodyEquals("message3")) {
-            label.setText(action.getMessageBody().toString());
-            value[0] = action.getMessageBody().toString();
-            waitButton1.countDown();
-        } else if (action.messageBodyEquals("message4")) {
-            label.setText(action.getMessageBody().toString());
-            value[0] = action.getMessageBody().toString();
-            waitButton2.countDown();
-        } else if (action.messageBodyEquals("message6")) {
-            label.setText(action.getMessageBody().toString());
-            value[0] = action.getMessageBody().toString();
-            waitButton3.countDown();
-        } else {
-            label.setText(action.getMessageBody().toString());
+            value[0]= action.getMessageBody().toString();
 
+        } else if (action.messageBodyEquals("message9")) {
+            value[0]= action.getMessageBody().toString();
+            wait1.countDown();
+        } else if (action.messageBodyEquals("message10")) {
+            value[0]= action.getMessageBody().toString();
+            wait2.countDown();
         }
+        System.out.println(action.getMessageBody());
+        return null;
+    }
 
 
-        return container;
+    public synchronized Context getContext() {
+        return context;
     }
 
 
@@ -124,15 +103,8 @@ public class ComponentMessagingTest2 implements FXComponent {
      */
     public void onStartComponent(final FXComponentLayout arg0,
                                  final ResourceBundle resourceBundle) {
-        button1 = new Button("stop");
-        container = new VBox();
-        label = new Label();
-        button1.setOnMouseClicked((event) -> {
-            context.send("stop");
-        });
+        this.log.info("run on start  of CallbackComponentMessagingTest1_1: " + this);
 
-        container.getChildren().addAll(label, button1);
-        this.log.info("run onStartComponent of ComponentMessagingTest2 " + this + " parent:" + context.getParentId() + "  id:" + context.getId());
     }
 
     @PreDestroy
@@ -141,8 +113,9 @@ public class ComponentMessagingTest2 implements FXComponent {
      * @param arg0
      */
     public void onTearDownComponent(final FXComponentLayout arg0) {
-        this.log.info("run on tear down of ComponentMessagingTest2 " + this);
-        waitButton4.countDown();
+        this.log.info("run on tear down of CallbackComponentMessagingTest1_1 " + this);
+        wait3.countDown();
+
     }
 
 

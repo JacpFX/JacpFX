@@ -61,4 +61,5 @@ public class ComponentIds {
     public static final String ComponentMessagingTests3                     ="id036";
     public static final String CallbackComponentMessagingTest1       ="id037";
     public static final String CallbackComponentMessagingTest1_1       ="id038";
+    public static final String CallbackComponentMessagingTest2       ="id039";
 }

@@ -47,6 +47,8 @@ import java.util.ResourceBundle;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 /**
  * A simple JacpFX FXML UI component
@@ -71,6 +73,8 @@ public class ComponentMessagingTest1 implements FXComponent {
     Button button8 = new Button("message without parent to local callback (c1)");
     Button button9 = new Button("message fullqualified to local callback (c1)");
     Button button10 = new Button("deactivate c1");
+    Button button11 = new Button("message to asyncCallbac");
+    Button button12 = new Button("fullqualified message to asyncCallbac");
     VBox container = new VBox();
     Label label = new Label();
     public static boolean ui = false;
@@ -88,7 +92,11 @@ public class ComponentMessagingTest1 implements FXComponent {
      * The handleAction method always runs outside the main application thread. You can create new nodes, execute long running tasks but you are not allowed to manipulate existing nodes here.
      */
     public Node handle(final Message<Event, Object> action) {
-
+         if(action.messageBodyEquals("button10")) {
+             IntStream.rangeClosed(1, 100).forEach(i->context.send(ComponentIds.CallbackComponentMessagingTest2, "message9"));
+        }else if(action.messageBodyEquals("button11")) {
+             IntStream.rangeClosed(1, 100).forEach(i->context.send(PerspectiveIds.PerspectiveMessagingTest.concat(".").concat(ComponentIds.CallbackComponentMessagingTest2),"message10"));
+        }
         return null;
     }
 
@@ -138,6 +146,10 @@ public class ComponentMessagingTest1 implements FXComponent {
         }  else if(action.messageBodyEquals("button9")) {
             label.setText(action.getMessageBody().toString());
             context.send(PerspectiveIds.PerspectiveMessagingTest.concat(".").concat(ComponentIds.CallbackComponentMessagingTest1_1),"message8");
+        } else if(action.messageBodyEquals("button10")) {
+            label.setText(action.getMessageBody().toString());
+        }else if(action.messageBodyEquals("button11")) {
+            label.setText(action.getMessageBody().toString());
         }
         else {
             label.setText(action.getMessageBody().toString());
@@ -208,7 +220,16 @@ public class ComponentMessagingTest1 implements FXComponent {
             context.send(ComponentIds.CallbackComponentMessagingTest1_1,"stop");
         });
         group3.getChildren().addAll(button8,button9,button10) ;
-        container.getChildren().addAll(label,group1,group2,button6,button7,group3);
+
+        HBox group4 = new HBox();
+        button11.setOnMouseClicked((event)->{
+            context.send("button10");
+        });
+        button12.setOnMouseClicked((event)->{
+            context.send("button11");
+        });
+        group4.getChildren().addAll(button11,button12);
+        container.getChildren().addAll(label,group1,group2,button6,button7,group3,group4);
         this.log.info("run on start of ComponentMessagingTest1 "+this);
     }
 

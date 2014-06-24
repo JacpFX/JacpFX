@@ -58,7 +58,7 @@ import java.util.ResourceBundle;
 
 @Perspective(id = PerspectiveIds.PerspectiveMessagingTest3, name = "contactPerspective",
         components = {
-                ComponentIds.ComponentMessagingTests1,ComponentIds.ComponentMessagingTests2 ,ComponentIds.CallbackComponentMessagingTest1_1
+                ComponentIds.ComponentMessagingTests1,ComponentIds.ComponentMessagingTests2 ,ComponentIds.CallbackComponentMessagingTest1_1,ComponentIds.CallbackComponentMessagingTest2
                 },
         viewLocation = "/fxml/perspectiveOne.fxml",
         resourceBundleLocation = "bundles.languageBundle",
