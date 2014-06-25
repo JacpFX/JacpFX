@@ -235,5 +235,12 @@ public class PerspectiveMessagingTest implements FXPerspective {
         context.send(PerspectiveIds.PerspectiveMessagingTest.concat(".").concat(ComponentIds.CallbackComponentMessagingTest1_1), "stop");
     }
 
+    public static void MoveC1FromP1ToP2() {
+        context.send(PerspectiveIds.PerspectiveMessagingTest.concat(".").concat(ComponentIds.ComponentMessagingTests1), "button14");
+    }
+    public static void MoveC1FromP3ToP1() {
+        context.send(PerspectiveIds.PerspectiveMessagingTest3.concat(".").concat(ComponentIds.ComponentMessagingTests1), "button14");
+    }
+
 
 }

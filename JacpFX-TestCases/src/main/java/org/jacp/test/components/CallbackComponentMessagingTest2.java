@@ -103,7 +103,7 @@ public class CallbackComponentMessagingTest2 implements CallbackComponent {
      */
     public void onStartComponent(final FXComponentLayout arg0,
                                  final ResourceBundle resourceBundle) {
-        this.log.info("run on start  of CallbackComponentMessagingTest1_1: " + this);
+        this.log.info("run on start  of CallbackComponentMessagingTest2: " + this);
 
     }
 
@@ -113,7 +113,7 @@ public class CallbackComponentMessagingTest2 implements CallbackComponent {
      * @param arg0
      */
     public void onTearDownComponent(final FXComponentLayout arg0) {
-        this.log.info("run on tear down of CallbackComponentMessagingTest1_1 " + this);
+        this.log.info("run on tear down of CallbackComponentMessagingTest2" + this);
         wait3.countDown();
 
     }

@@ -26,11 +26,15 @@
 package org.jacp.test.messaging;
 
 import javafx.application.Platform;
+import javafx.scene.Node;
 import junit.framework.Assert;
+import junit.framework.TestCase;
+import org.jacp.doublePerspective.test.main.ApplicationLauncherDuplicateComponentTest;
 import org.jacp.test.AllTests;
 import org.jacp.test.components.*;
 import org.jacp.test.main.ApplicationLauncherMessagingTest;
 import org.jacp.test.perspectives.PerspectiveComponentMessagingTest1;
+import org.jacpfx.rcp.handler.AErrorDialogHandler;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -65,7 +69,7 @@ public class FXComponentMessagingTest2 {
 
         t = new Thread("JavaFX Init Thread") {
             public void run() {
-
+                ApplicationLauncherMessagingTest.exceptionhandler = new CustomErrorDialogHandler();
                 ApplicationLauncherMessagingTest.main(new String[0]);
 
             }
@@ -75,6 +79,7 @@ public class FXComponentMessagingTest2 {
         // Pause briefly to give FX a chance to start
         try {
             ApplicationLauncherMessagingTest.latch.await();
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -96,13 +101,13 @@ public class FXComponentMessagingTest2 {
 
 
     @Test
-    public void checkApplicationLauncher() {
+    public void A_checkApplicationLauncher() {
         ApplicationLauncherMessagingTest launcher = ApplicationLauncherMessagingTest.instance[0];
         assertNotNull(launcher);
     }
 
     @Test
-    public void checkLocalMessages() throws InterruptedException {
+    public void B_checkLocalMessages() throws InterruptedException {
         ComponentMessagingTest1.waitButton1 = new CountDownLatch(1);
         ComponentMessagingTest1.waitButton2 = new CountDownLatch(1);
         ComponentMessagingTest1.waitButton3 = new CountDownLatch(1);
@@ -133,7 +138,7 @@ public class FXComponentMessagingTest2 {
     }
 
     @Test
-    public void sendMessageToInactiveComponent() throws InterruptedException {
+    public void C_sendMessageToInactiveComponent() throws InterruptedException {
         run(() -> {
             try {
                 ComponentMessagingTest2.waitButton1 = new CountDownLatch(1);
@@ -164,7 +169,7 @@ public class FXComponentMessagingTest2 {
     }
 
     @Test
-    public void sendMessagesToInactiveCallback() throws InterruptedException {
+    public void D_sendMessagesToInactiveCallback() throws InterruptedException {
         run(() -> {
             try {
 
@@ -192,6 +197,23 @@ public class FXComponentMessagingTest2 {
     }
 
 
+   //@Test
+    public void E_checkNonUniqueException() throws InterruptedException {
+        ComponentMessagingTest1.waitButton4 = new CountDownLatch(2);
+        org.jacp.test.perspectives.PerspectiveMessagingTest.MoveC1FromP1ToP2();
+        ComponentMessagingTest1.waitButton4.await();
+
+        ComponentMessagingTest1.waitButton4 = new CountDownLatch(2);
+        org.jacp.test.perspectives.PerspectiveMessagingTest.MoveC1FromP3ToP1();
+        ComponentMessagingTest1.waitButton4.await();
+
+        // should throw non unique component exception
+       CustomErrorDialogHandler.latch = new CountDownLatch(1);
+        org.jacp.test.perspectives.PerspectiveMessagingTest.MoveC1FromP1ToP2();
+       CustomErrorDialogHandler.latch.await();
+    }
+
+
     public void run(Runnable r) {
         long start = System.currentTimeMillis();
         IntStream.rangeClosed(1, 500).forEach(i->r.run());
@@ -199,6 +221,18 @@ public class FXComponentMessagingTest2 {
 
         System.out.println("Execution  time was " + (end - start) + " ms.");
     }
+    public static class CustomErrorDialogHandler extends AErrorDialogHandler {
+        public static CountDownLatch latch = new CountDownLatch(1);
+        @Override
+        public Node createExceptionDialog(Throwable e) {
+            System.out.println("ERROR "+e.getMessage());
+            //
+           // TestCase.assertTrue(e.getMessage().contains("more than one component found for id"));
+            latch.countDown();
+            Platform.exit();
 
+            return null;
+        }
+    }
 
 }
