@@ -27,6 +27,7 @@ import javafx.event.EventHandler;
 import org.jacpfx.api.component.ComponentHandle;
 import org.jacpfx.api.component.StatelessCallabackComponent;
 import org.jacpfx.api.component.SubComponent;
+import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.context.JacpContextImpl;
 import org.jacpfx.rcp.util.HandlerThreadFactory;
 import org.jacpfx.rcp.util.ShutdownThreadsHandler;
@@ -79,19 +80,19 @@ public abstract class AStatelessCallbackComponent extends ASubComponent
 	 * @return a statless callback component
 	 */
 	public final StatelessCallabackComponent<EventHandler<Event>, Event, Object> init(
-			final ComponentHandle<Object,Event, Object> handler) {
+			final ComponentHandle<Object,Event, Object> handler, final Context context) {
 
         final StatelessCallabackComponent<EventHandler<Event>, Event, Object> comp = new EmbeddedStatelessCallbackComponent(handler);
         comp.initEnv(this.getParentId(), this.globalMessageQueue);
-        initContextObject(comp);
+        initContextObject(comp,context);
 		return comp;
 	}
 
-    private void initContextObject(final StatelessCallabackComponent<EventHandler<Event>, Event, Object> comp) {
+    private void initContextObject(final StatelessCallabackComponent<EventHandler<Event>, Event, Object> comp,final Context context) {
         JacpContextImpl currentContext = JacpContextImpl.class.cast(comp.getContext());
-        currentContext.setId(this.getContext().getId());
-        currentContext.setActive(this.getContext().isActive());
-        currentContext.setName(this.getContext().getName());
+        currentContext.setId(context.getId());
+        currentContext.setParentId(context.getParentId());
+        currentContext.setName(context.getName());
         currentContext.setExecutionTarget(JacpContextImpl.class.cast(context).getExecutionTarget());
     }
 

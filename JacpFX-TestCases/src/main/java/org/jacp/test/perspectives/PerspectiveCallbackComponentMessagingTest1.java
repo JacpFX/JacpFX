@@ -31,6 +31,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import org.jacp.test.components.ComponentIds;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.lifecycle.OnShow;
@@ -54,7 +55,7 @@ import java.util.concurrent.CountDownLatch;
  */
 
 @Perspective(id = PerspectiveIds.PerspectiveCallbackComponentMessagingTest1, name = "contactPerspective",
-        components = {"id009", "id010"},
+        components = {ComponentIds.CallbackComponentMessagingTest1Component1, ComponentIds.CallbackComponentMessagingTest1Component2},
         // viewLocation = "/fxml/perspectiveOne.fxml",
         resourceBundleLocation = "bundles.languageBundle",
         localeID = "en_US")
@@ -142,6 +143,20 @@ public class PerspectiveCallbackComponentMessagingTest1 implements FXPerspective
     public void onTearDownPerspective(final FXComponentLayout arg0) {
         // remove toolbars and menu entries when close perspective
 
+    }
+
+    public static void fireMessage() {
+        context.send(PerspectiveIds.PerspectiveCallbackComponentMessagingTest1.concat(".").concat(ComponentIds.CallbackComponentMessagingTest1Component2), "message");
+    }
+
+    public static void fireBurst(final int count) {
+        Thread t = new Thread(() -> {
+            for (int i = 0; i < count; i++) {
+                context.send(PerspectiveIds.PerspectiveCallbackComponentMessagingTest1.concat(".").concat(ComponentIds.CallbackComponentMessagingTest1Component2), "message");
+            }
+        });
+        t.setDaemon(true);
+        t.start();
     }
 
 }

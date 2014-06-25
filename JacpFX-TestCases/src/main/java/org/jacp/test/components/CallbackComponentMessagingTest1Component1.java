@@ -64,7 +64,7 @@ public class CallbackComponentMessagingTest1Component1 implements CallbackCompon
     public static boolean ui = false;
 
     @Resource
-    private static Context context;
+    private  Context context;
 
     public static AtomicInteger counter = new AtomicInteger(10000);
     public static CountDownLatch wait = new CountDownLatch(1);
@@ -91,21 +91,11 @@ public class CallbackComponentMessagingTest1Component1 implements CallbackCompon
         return "message";
     }
 
-    public static void fireMessage() {
-        context.send("id14.id010", "message");
-    }
 
-    public static void fireBurst(final int count) {
-        Thread t = new Thread(() -> {
-            for (int i = 0; i < count; i++) {
-                getContext().send("id14.id010", "message");
-            }
-        });
-        t.setDaemon(true);
-        t.start();
-    }
 
-    public static synchronized Context getContext() {
+
+
+    public   Context getContext() {
         return context;
     }
 

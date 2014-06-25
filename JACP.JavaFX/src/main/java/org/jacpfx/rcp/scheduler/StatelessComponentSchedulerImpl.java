@@ -137,7 +137,7 @@ public class StatelessComponentSchedulerImpl implements
             final Class<H> clazz) {
         final AStatelessCallbackComponent component = AStatelessCallbackComponent.class.cast(baseComponent);
         final Context context = (Context) component.getContext();
-        return component.init(this.launcher.getBean(context.getParentId().concat(FXUtil.PATTERN_GLOBAL).concat(context.getId())));
+        return component.init(this.launcher.getBean(context.getParentId().concat(FXUtil.PATTERN_GLOBAL).concat(context.getId())),context);
     }
 
     /**
@@ -151,7 +151,7 @@ public class StatelessComponentSchedulerImpl implements
         final Optional<SubComponent<EventHandler<Event>, Event, Object>> result = baseComponent.
                 getInstances().
                 stream().
-                filter(comp -> !comp.isBlocked()).findAny();
+                filter(comp -> !comp.isBlocked()).findFirst();
         return result.isPresent() ? result.get() : null;
     }
 

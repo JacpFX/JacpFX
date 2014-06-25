@@ -29,6 +29,7 @@ import javafx.event.Event;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import org.jacp.test.perspectives.PerspectiveIds;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.component.Component;
@@ -89,7 +90,7 @@ public class CallbackComponentMessagingTest1Component2 implements CallbackCompon
                 return MESSAGE;
             }
         }
-
+        context.setReturnTarget(PerspectiveIds.PerspectiveCallbackComponentMessagingTest1.concat(".").concat(ComponentIds.CallbackComponentMessagingTest1Component1));
         return MESSAGE;
     }
 

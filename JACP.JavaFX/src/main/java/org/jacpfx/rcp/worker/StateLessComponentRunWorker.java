@@ -61,11 +61,12 @@ public class StateLessComponentRunWorker
 			throws Exception {
 			try {
                 this.component.lock();
-                runCallbackOnStartMethods(this.component);
+                if(!component.getContext().isActive())runCallbackOnStartMethods(this.component);
 				while (this.component.hasIncomingMessage()) {
 					final Message<Event, Object> myAction = this.component
 							.getNextIncomingMessage();
                     final JacpContextImpl context = JacpContextImpl.class.cast(this.component.getContext());
+                    context.setActive(true);
                     context.setReturnTarget(myAction.getSourceId());
                     final Object value = this.component.getComponent().handle(myAction);
                     final String targetId = context

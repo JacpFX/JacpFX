@@ -5,6 +5,7 @@ import org.jacp.test.AllTests;
 import org.jacp.test.components.CallbackComponentMessagingTest1Component1;
 import org.jacp.test.components.CallbackComponentMessagingTest1Component2;
 import org.jacp.test.main.ApplicationLauncherCallbackComponentMessaginTest1;
+import org.jacp.test.perspectives.PerspectiveCallbackComponentMessagingTest1;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -60,7 +61,7 @@ public class FXComponentCallBackMessagingTest {
         CallbackComponentMessagingTest1Component1.counter = new AtomicInteger(10000);
         CallbackComponentMessagingTest1Component2.counter = new AtomicInteger(10000);
 
-        CallbackComponentMessagingTest1Component1.fireMessage();
+        PerspectiveCallbackComponentMessagingTest1.fireMessage();
 
         CallbackComponentMessagingTest1Component1.wait.await();
         CallbackComponentMessagingTest1Component2.wait.await();
@@ -91,7 +92,7 @@ public class FXComponentCallBackMessagingTest {
         CallbackComponentMessagingTest1Component1.counter = new AtomicInteger(0);
         CallbackComponentMessagingTest1Component2.counter = new AtomicInteger(200000);
         CallbackComponentMessagingTest1Component2.MESSAGE = null;
-        CallbackComponentMessagingTest1Component1.fireBurst(200000);
+        PerspectiveCallbackComponentMessagingTest1.fireBurst(200000);
 
         CallbackComponentMessagingTest1Component2.wait.await();
         long end = System.currentTimeMillis();
