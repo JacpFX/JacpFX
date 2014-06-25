@@ -70,6 +70,7 @@ public class PerspectiveRegistry {
 
     /**
      * Returns the next active perspective. This can happen when a perspective was set to inactive. In this case the next underlying perspective should be displayed.
+     *
      * @param current the current active perspective
      * @return the next active perspective
      */
@@ -115,19 +116,19 @@ public class PerspectiveRegistry {
      * Returns a perspective by perspectiveId
      *
      * @param componentId , the target perspective id
-     * @param parentId , the target workbench id
+     * @param parentId    , the target workbench id
      * @return a perspective
      */
     public static Perspective<EventHandler<Event>, Event, Object> findPerspectiveById(
             final String parentId, final String componentId) {
-        return FXUtil.getObserveableByQualifiedId(parentId,componentId,
+        return FXUtil.getObserveableByQualifiedId(parentId, componentId,
                 getAllPerspectives());
     }
 
     /**
      * Searches the given component id in metadata of all perspectives and returns the responsible perspective
      *
-     * @param componentId  the component id
+     * @param componentId the component id
      * @return The parent perspective of given component id
      */
     public static Perspective<EventHandler<Event>, Event, Object> findParentPerspectiveByComponentId(final String componentId) {
@@ -138,7 +139,8 @@ public class PerspectiveRegistry {
         final Optional<Perspective<EventHandler<Event>, Event, Object>> first = perspectives.stream()
                 .filter(p -> {
                     final Class perspectiveClass = p.getPerspective().getClass();
-                    if (!perspectiveClass.isAnnotationPresent(org.jacpfx.api.annotations.perspective.Perspective.class)) return false;
+                    if (!perspectiveClass.isAnnotationPresent(org.jacpfx.api.annotations.perspective.Perspective.class))
+                        return false;
                     final org.jacpfx.api.annotations.perspective.Perspective annotation = (org.jacpfx.api.annotations.perspective.Perspective) perspectiveClass.getAnnotation(org.jacpfx.api.annotations.perspective.Perspective.class);
                     return containsComponentInAnnotation(annotation, componentId);
                 }).findFirst();
@@ -146,25 +148,35 @@ public class PerspectiveRegistry {
         return first.isPresent() ? first.get() : null;
     }
 
+
+
     /**
-     * Checks if a specific componentId is present in defined perspective
-     * @param parentId The perspective ID
+     * Checks if a specific componentId is present in defined perspective annotation. This method call assumes that a check for component instances for this perspective was already done
+     *
+     * @param parentId    The perspective ID
      * @param componentId The component ID
      * @return True if component exists in perspective
      */
-    public static boolean perspectiveContainsComponent(final String parentId, final String componentId) {
+    public static boolean perspectiveContainsComponentIdInAnnotation(final String parentId, final String componentId) {
         final Perspective<EventHandler<Event>, Event, Object> perspective = findPerspectiveById(parentId);
-        if(perspective==null) return false;
+        if (perspective == null) return false;
         final Class perspectiveClass = perspective.getPerspective().getClass();
-        if (!perspectiveClass.isAnnotationPresent(org.jacpfx.api.annotations.perspective.Perspective.class)) return false;
+        if (!perspectiveClass.isAnnotationPresent(org.jacpfx.api.annotations.perspective.Perspective.class))
+            return false;
         final org.jacpfx.api.annotations.perspective.Perspective annotation = (org.jacpfx.api.annotations.perspective.Perspective) perspectiveClass.getAnnotation(org.jacpfx.api.annotations.perspective.Perspective.class);
-        return containsComponentInAnnotation(annotation,componentId);
+        return containsComponentInAnnotation(annotation, componentId);
     }
 
     private static boolean containsComponentInAnnotation(final org.jacpfx.api.annotations.perspective.Perspective annotation, final String componentId) {
         final String[] componentIds = annotation.components();
         Arrays.sort(componentIds);
         return Arrays.binarySearch(componentIds, componentId) >= 0;
+    }
+
+    public static boolean perspectiveContainsComponentInstance(final String parentId, final String componentId) {
+
+
+        return false;
     }
 
     /**

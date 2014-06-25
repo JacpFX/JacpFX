@@ -26,10 +26,12 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.SubComponent;
+import org.jacpfx.api.exceptions.NonUniqueComponentException;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.ASubComponent;
 import org.jacpfx.rcp.context.JacpContextImpl;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
+import org.jacpfx.rcp.util.FXUtil;
 import org.jacpfx.rcp.util.ShutdownThreadsHandler;
 import org.jacpfx.rcp.util.TearDownHandler;
 import org.jacpfx.rcp.util.WorkerUtil;
@@ -122,8 +124,11 @@ class EmbeddedCallbackComponentWorker
     private void checkAndHandleTargetChange(
             final SubComponent<EventHandler<Event>, Event, Object> comp,
             final String currentExecutionTarget) {
-        final String targetNew = JacpContextImpl.class.cast(comp.getContext()).getExecutionTarget();
-        if (!targetNew.equals(currentExecutionTarget)) {
+        final JacpContextImpl context = JacpContextImpl.class.cast(comp.getContext());
+        final String newExecutionTarget = context.getExecutionTarget();
+        if (!newExecutionTarget.equals(currentExecutionTarget)) {
+            if (FXUtil.perspectiveContainsComponentInstance(newExecutionTarget, context.getId()))
+                throw new NonUniqueComponentException("perspective " + newExecutionTarget + " already contains a component with id: " + context.getId());
             if (!component.getContext().isActive())
                 throw new UnsupportedOperationException(
                         "CallbackComponent may be moved or set to inactive but not both");

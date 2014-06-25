@@ -31,7 +31,10 @@ import javafx.scene.Parent;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.component.Component;
 import org.jacpfx.api.component.Injectable;
+import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.context.JacpContext;
+import org.jacpfx.rcp.registry.ComponentRegistry;
+import org.jacpfx.rcp.registry.PerspectiveRegistry;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -450,6 +453,31 @@ public class FXUtil {
                 findFirst();
         if (filter.isPresent()) return filter.get();
         return null;
+    }
+
+    /**
+     * Checks if a component annotation reference or component instance with the same id is already present in perspective
+     * @param parentId the perspectiveId to check
+     * @param componentId the component id to look for
+     * @return true if a component already exists
+     */
+    public static boolean perspectiveContainsComponentReference(final String parentId, final String componentId) {
+        boolean checkForAnnotation = PerspectiveRegistry.perspectiveContainsComponentIdInAnnotation(parentId, componentId);
+        if (checkForAnnotation) return true;
+        final SubComponent<EventHandler<Event>, Event, Object> presentComponent = ComponentRegistry.findComponentByQualifiedId(parentId, getTargetComponentId(componentId));
+        return presentComponent!=null?true:false;
+    }
+
+
+    /**
+     * Checks if a component instance with the same id is already present in perspective
+     * @param parentId the perspectiveId to check
+     * @param componentId the component id to look for
+     * @return true if a component already exists
+     */
+    public static boolean perspectiveContainsComponentInstance(final String parentId, final String componentId) {
+        final SubComponent<EventHandler<Event>, Event, Object> presentComponent = ComponentRegistry.findComponentByQualifiedId(parentId, getTargetComponentId(componentId));
+        return presentComponent!=null?true:false;
     }
 
 

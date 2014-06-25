@@ -29,6 +29,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.SubComponent;
+import org.jacpfx.api.exceptions.NonUniqueComponentException;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.AFXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
@@ -171,6 +172,8 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
             final JacpContextImpl context = JacpContextImpl.class.cast(this.component.getContext());
             final String newExecutionTarget = context.getExecutionTarget();
             if (!currentExecutionTarget.equalsIgnoreCase(newExecutionTarget)) {
+                if (FXUtil.perspectiveContainsComponentInstance(newExecutionTarget, context.getId()))
+                    throw new NonUniqueComponentException("perspective " + newExecutionTarget + " already contains a component with id: " + context.getId());
                 this.shutDownComponent(component, layout, previousContainer, currentTargetLayout);
                 // restore target execution
                 component.getContext().setExecutionTarget(newExecutionTarget);
@@ -192,15 +195,15 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
         final Perspective<EventHandler<Event>, Event, Object> parentPerspective = PerspectiveRegistry.findPerspectiveById(parentId);
         if (parentPerspective != null) {
             // unregister component
-            if(!this.removeComponentValue(previousContainer)) {
-                clearTargetLayoutInPerspective(parentPerspective,currentTargetLayout);
+            if (!this.removeComponentValue(previousContainer)) {
+                clearTargetLayoutInPerspective(parentPerspective, currentTargetLayout);
             }
             parentPerspective.unregisterComponent(component);
         }
         TearDownHandler.shutDownFXComponent(component, layout);
     }
 
-    private void clearTargetLayoutInPerspective(final Perspective<EventHandler<Event>, Event, Object> parentPerspective,final String currentTargetLayout) {
+    private void clearTargetLayoutInPerspective(final Perspective<EventHandler<Event>, Event, Object> parentPerspective, final String currentTargetLayout) {
         final PerspectiveLayout playout = PerspectiveUtil.getPerspectiveLayoutFromPerspective(parentPerspective);
         if (playout != null && currentTargetLayout != null) {
             final Node container = playout.getTargetLayoutComponents().get(currentTargetLayout);

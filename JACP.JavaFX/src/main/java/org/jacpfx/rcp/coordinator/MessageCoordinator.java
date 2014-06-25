@@ -122,7 +122,7 @@ public class MessageCoordinator extends ACoordinator implements
 
         }
         // 4. check if it is an inactive component in perspective
-        boolean exists = PerspectiveRegistry.perspectiveContainsComponent(this.parentId,targetId);
+        boolean exists = PerspectiveRegistry.perspectiveContainsComponentIdInAnnotation(this.parentId, targetId);
         if(exists) {
             // create global id
             final String globalTarget = this.parentId.concat(seperator).concat(targetId);
