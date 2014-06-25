@@ -87,7 +87,7 @@ public class PerspectiveUtil {
     private Injectable mapToInjectAbleComponent(final String parentId,final String id) {
         final Class componentClass = ClassRegistry.getComponentClassById(id);
         final Scope scope = getCorrectScopeOfComponent(componentClass);
-        final String qualifiedName = parentId.concat(".").concat(id);
+        final String qualifiedName = parentId.concat(FXUtil.PATTERN_GLOBAL).concat(id);
         final Object component = launcher.registerAndGetBean(componentClass, qualifiedName, scope);
         if (Injectable.class.isAssignableFrom(component.getClass())) {
             return Injectable.class.cast(component);

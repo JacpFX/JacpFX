@@ -67,7 +67,7 @@ public class WorkbenchUtil {
 
     private void checkUniqueComponentReferences(final Stream<Injectable> perspectiveHandlerList) {
       perspectiveHandlerList.
-                map(handler -> handler.getClass()).
+                map(Object::getClass).
                 map(clazz -> clazz.getAnnotation(org.jacpfx.api.annotations.perspective.Perspective.class)).
                 filter(ann -> ann != null).
                 map(annotation -> new PerspectiveCheckDTO(annotation.id(), Arrays.asList(annotation.components()))).

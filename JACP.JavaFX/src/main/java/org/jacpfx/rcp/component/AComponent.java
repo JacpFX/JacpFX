@@ -57,7 +57,7 @@ public abstract class AComponent implements
     }
 
     @Override
-    public void setStarted(boolean started) {
+    public final void setStarted(boolean started) {
         this.started.set(started);
     }
 
@@ -65,7 +65,7 @@ public abstract class AComponent implements
      * {@inheritDoc}
      */
     @Override
-    public String getLocaleID() {
+    public final String getLocaleID() {
         return localeID;
     }
 
@@ -73,7 +73,7 @@ public abstract class AComponent implements
      * {@inheritDoc}
      */
     @Override
-    public void setLocaleID(String localeID) {
+    public final void setLocaleID(String localeID) {
         this.localeID = localeID;
     }
 
@@ -111,9 +111,7 @@ public abstract class AComponent implements
 
         if (started.get() != that.started.get()) return false;
         if (context != null ? !context.equals(that.context) : that.context != null) return false;
-        if (globalMessageQueue != null ? !globalMessageQueue.equals(that.globalMessageQueue) : that.globalMessageQueue != null)
-            return false;
-        return !(localeID != null ? !localeID.equals(that.localeID) : that.localeID != null) && !(resourceBundleLocation != null ? !resourceBundleLocation.equals(that.resourceBundleLocation) : that.resourceBundleLocation != null);
+        return !(globalMessageQueue != null ? !globalMessageQueue.equals(that.globalMessageQueue) : that.globalMessageQueue != null) && !(localeID != null ? !localeID.equals(that.localeID) : that.localeID != null) && !(resourceBundleLocation != null ? !resourceBundleLocation.equals(that.resourceBundleLocation) : that.resourceBundleLocation != null);
 
     }
 

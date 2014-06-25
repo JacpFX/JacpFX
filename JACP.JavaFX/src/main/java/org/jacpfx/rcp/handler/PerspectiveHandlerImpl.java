@@ -57,6 +57,7 @@ import org.jacpfx.rcp.util.FXUtil;
 import org.jacpfx.rcp.util.TearDownHandler;
 
 import java.net.URL;
+import java.util.Collection;
 import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -278,15 +279,15 @@ public class PerspectiveHandlerImpl implements
 
     private void handleToolBarButtons(final Perspective<EventHandler<Event>, Event, Object> perspective, final boolean visible) {
         log("handleToolBarButtons >" + perspective.getPerspective().getClass().getName() + "<");
-        for (final Node node : this.workbenchLayout.getRegisteredToolBars().values()) {
+        final Collection<? extends Node> values = this.workbenchLayout.getRegisteredToolBars().values();
+        values.forEach(node->{
             JACPToolBar toolBar = (JACPToolBar) node;
             if (visible) {
                 toolBar.showButtons(perspective);
             } else {
                 toolBar.hideButtons(perspective);
             }
-
-        }
+        });
     }
 
     private void replaceRootNodes(final ObservableList<Node> children, final Node oldComp, final Node newComp) {

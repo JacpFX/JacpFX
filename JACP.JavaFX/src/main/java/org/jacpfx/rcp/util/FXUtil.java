@@ -70,7 +70,7 @@ public class FXUtil {
     public static final String AFXPERSPECTIVE_PERSPECTIVE_LAYOUT = "perspectiveLayout";
     private final static String PATTERN_LOCALE ="_";
     private final static String PATTERN_SPLIT="\\.";
-    private final static String PATTERN_GLOBAL=".";
+    public final static String PATTERN_GLOBAL=".";
 
 
     /**
@@ -363,7 +363,7 @@ public class FXUtil {
      */
     public static String getQualifiedComponentId(final String parentId, final String componentId) {
         if(parentId==null) return componentId;
-        return new StringBuffer(parentId).append(PATTERN_GLOBAL).append(componentId).toString();
+        return  parentId.concat(PATTERN_GLOBAL).concat(componentId).toString();
 
     }
 
@@ -433,7 +433,7 @@ public class FXUtil {
             final String id, final List<P> components) {
         final String parentId=  getTargetPerspectiveId(id);
         final String componentId= getTargetComponentId(id);
-        return parentId.equals(componentId)==false? getObserveableByQualifiedId(parentId,componentId,components):getObserveableById(componentId,components);
+        return !parentId.equals(componentId) ? getObserveableByQualifiedId(parentId,componentId,components):getObserveableById(componentId,components);
     }
 
     /**
@@ -465,7 +465,7 @@ public class FXUtil {
         boolean checkForAnnotation = PerspectiveRegistry.perspectiveContainsComponentIdInAnnotation(parentId, componentId);
         if (checkForAnnotation) return true;
         final SubComponent<EventHandler<Event>, Event, Object> presentComponent = ComponentRegistry.findComponentByQualifiedId(parentId, getTargetComponentId(componentId));
-        return presentComponent!=null?true:false;
+        return presentComponent != null;
     }
 
 
@@ -477,7 +477,7 @@ public class FXUtil {
      */
     public static boolean perspectiveContainsComponentInstance(final String parentId, final String componentId) {
         final SubComponent<EventHandler<Event>, Event, Object> presentComponent = ComponentRegistry.findComponentByQualifiedId(parentId, getTargetComponentId(componentId));
-        return presentComponent!=null?true:false;
+        return presentComponent != null;
     }
 
 

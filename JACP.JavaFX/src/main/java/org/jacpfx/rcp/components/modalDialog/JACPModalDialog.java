@@ -44,7 +44,7 @@ import static org.jacpfx.rcp.util.CSSUtil.CSSConstants.ID_ERROR_DIMMER;
 public class JACPModalDialog extends StackPane implements IModalMessageNode {
 
     /** The maximum blur radius. */
-    private final double MAX_BLUR = 4.0;
+    private static final double MAX_BLUR = 4.0;
 
     /** The root. */
     private static Node root;
@@ -70,52 +70,54 @@ public class JACPModalDialog extends StackPane implements IModalMessageNode {
 
     /**
      * Inits the dialog.
-     * 
-     * @param rootNode
-     *            the root node
+     *
+     * @param rootNode the root node
      */
-    public synchronized static void initDialog(final Node rootNode) {
-        if (JACPModalDialog.instance == null) {
-            JACPModalDialog.root = rootNode;
-            JACPModalDialog.instance = new JACPModalDialog();
-            JACPModalDialog.instance.setId(ID_ERROR_DIMMER);
-            final Button close = new Button("close");
-            close.setOnAction(arg -> {
-                JACPModalDialog.instance.setVisible(false);
-            });
-        }
+    public static void initDialog(final Node rootNode) {
+        synchronized (JACPModalDialog.class) {
+            if (JACPModalDialog.instance == null) {
+                JACPModalDialog.root = rootNode;
+                JACPModalDialog.instance = new JACPModalDialog();
+                JACPModalDialog.instance.setId(ID_ERROR_DIMMER);
+                final Button close = new Button("close");
+                close.setOnAction(arg -> JACPModalDialog.instance.setVisible(false));
+            }
 
+        }
     }
 
     /**
      * Show modal message.
-     * 
-     * @param message
-     *            the message
+     *
+     * @param message the message
      */
-    public synchronized void showModalDialog(final Node message) {
-        if (getHideTimeline().getStatus() == Status.RUNNING) {
-            getHideTimeline().stop();
-        }
-        this.getChildren().clear();
-        this.getChildren().add(message);
-        this.setOpacity(0);
-        this.setVisible(true);
-        this.setCache(true);
-        JACPModalDialog.root.setEffect(new GaussianBlur(this.MAX_BLUR));
+    public void showModalDialog(final Node message) {
+        synchronized (this) {
+            if (getHideTimeline().getStatus() == Status.RUNNING) {
+                getHideTimeline().stop();
+            }
+            this.getChildren().clear();
+            this.getChildren().add(message);
+            this.setOpacity(0);
+            this.setVisible(true);
+            this.setCache(true);
+            JACPModalDialog.root.setEffect(new GaussianBlur(this.MAX_BLUR));
 
-        this.getShowTimeline().play();
+            this.getShowTimeline().play();
+        }
     }
 
     /**
      * Hide any modal message that is shown.
      */
     @Override
-    public synchronized void hideModalDialog() {
-        this.setCache(true);
-        this.getHideTimeline().play();
-        // "remove" effect.
-        JACPModalDialog.root.setEffect(null);
+    public void hideModalDialog() {
+        synchronized (this) {
+            this.setCache(true);
+            this.getHideTimeline().play();
+            // "remove" effect.
+            JACPModalDialog.root.setEffect(null);
+        }
     }
 
     /**
@@ -127,7 +129,7 @@ public class JACPModalDialog extends StackPane implements IModalMessageNode {
             hideTimeline = new Timeline(new KeyFrame(Duration.millis(250), (t)-> {
                 JACPModalDialog.this.setCache(false);
                 JACPModalDialog.this.setVisible(false);
-            }, new KeyValue(this.opacityProperty(), Integer.valueOf(0), Interpolator.EASE_BOTH)));
+            }, new KeyValue(this.opacityProperty(), 0, Interpolator.EASE_BOTH)));
         }
         return hideTimeline;
     }
@@ -140,7 +142,7 @@ public class JACPModalDialog extends StackPane implements IModalMessageNode {
         if(showTimeline==null) {
             showTimeline = new Timeline(new KeyFrame(Duration.millis(250), (t)->
                     JACPModalDialog.this.setCache(false),
-                    new KeyValue(this.opacityProperty(), Integer.valueOf(1), Interpolator.EASE_BOTH)));
+                    new KeyValue(this.opacityProperty(), 1, Interpolator.EASE_BOTH)));
         }
         return showTimeline;
     }

@@ -19,8 +19,10 @@ public class DimensionUtil {
     
     private DimensionUtil(final Stage stage) {this.stage = stage;}
 
-    public static synchronized void init(final Stage stage) {
-        instance = new DimensionUtil(stage);
+    public static void init(final Stage stage) {
+        synchronized (DimensionUtil.class) {
+            instance = new DimensionUtil(stage);
+        }
     }
 
     public static synchronized DimensionUtil getInstance(){

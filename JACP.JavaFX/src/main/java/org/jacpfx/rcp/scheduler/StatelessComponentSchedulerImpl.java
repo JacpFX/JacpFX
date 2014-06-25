@@ -32,9 +32,11 @@ import org.jacpfx.api.message.Message;
 import org.jacpfx.api.scheduler.StatelessComponentScheduler;
 import org.jacpfx.rcp.component.AStatelessCallbackComponent;
 import org.jacpfx.rcp.context.Context;
+import org.jacpfx.rcp.util.FXUtil;
 import org.jacpfx.rcp.worker.StateLessComponentRunWorker;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -94,8 +96,8 @@ public class StatelessComponentSchedulerImpl implements
      * block component, put message to component's queue and run in thread
      *
      * @param baseComponent, the parent component
-     * @param comp, the child component
-     * @param message, the message
+     * @param comp,          the child component
+     * @param message,       the message
      */
     private void instanceRun(
             final StatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent,
@@ -110,8 +112,9 @@ public class StatelessComponentSchedulerImpl implements
     /**
      * if max thread count is not reached and all available component instances
      * are blocked create a new one, block it an run in thread
+     *
      * @param baseComponent, the parent component
-     * @param message, the current message
+     * @param message,       the current message
      */
     private void createInstanceAndRun(
             final StatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent,
@@ -134,7 +137,7 @@ public class StatelessComponentSchedulerImpl implements
             final Class<H> clazz) {
         final AStatelessCallbackComponent component = AStatelessCallbackComponent.class.cast(baseComponent);
         final Context context = (Context) component.getContext();
-        return component.init(this.launcher.getBean(context.getParentId().concat(".").concat(context.getId())));
+        return component.init(this.launcher.getBean(context.getParentId().concat(FXUtil.PATTERN_GLOBAL).concat(context.getId())));
     }
 
     /**
@@ -145,15 +148,11 @@ public class StatelessComponentSchedulerImpl implements
      */
     private SubComponent<EventHandler<Event>, Event, Object> getActiveComponent(
             final StatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent) {
-        // TODO this solution is crappy and dangerous!
-        for (final SubComponent<EventHandler<Event>, Event, Object> comp : baseComponent
-                .getInstances()) {
-            if (!comp.isBlocked()) {
-                return comp;
-            } // End if
-        } // End for
-
-        return null;
+        final Optional<SubComponent<EventHandler<Event>, Event, Object>> result = baseComponent.
+                getInstances().
+                stream().
+                filter(comp -> !comp.isBlocked()).findAny();
+        return result.isPresent() ? result.get() : null;
     }
 
     /**
@@ -161,7 +160,7 @@ public class StatelessComponentSchedulerImpl implements
      * of selected component
      *
      * @param baseComponent, the root component
-     * @param message, the current message
+     * @param message,       the current message
      */
     private void seekAndPutMessage(
             final StatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent,

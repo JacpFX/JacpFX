@@ -63,6 +63,7 @@ import org.jacpfx.rcp.perspective.AFXPerspective;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.*;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -184,10 +185,11 @@ public abstract class AFXWorkbench
                 .filter(p -> p.getContext() != null && p.getContext().isActive())
                 .collect(Collectors.toList());
         if (!activeSequentialPerspectiveList.isEmpty()) {
-            for (final Node node : this.workbenchLayout.getRegisteredToolBars().values()) {
+            final Collection<? extends Node> toolBarValues = this.workbenchLayout.getRegisteredToolBars().values();
+            toolBarValues.forEach(node->{
                 JACPToolBar toolBar = (JACPToolBar) node;
                 toolBar.showButtons(activeSequentialPerspectiveList.get(activeSequentialPerspectiveList.size() - 1));
-            }
+            });
         }
 
     }
@@ -358,10 +360,7 @@ public abstract class AFXWorkbench
         // catch global clicks
         this.stage.getScene().addEventFilter(
                 MouseEvent.MOUSE_RELEASED,
-                (event) -> {
-                    GlobalMediator.getInstance().hideAllHideables(event);
-
-                });
+                (event) -> GlobalMediator.getInstance().hideAllHideables(event));
     }
 
     private void initMenuLayout() {
