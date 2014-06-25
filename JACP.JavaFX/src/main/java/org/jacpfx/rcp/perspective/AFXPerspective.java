@@ -304,18 +304,6 @@ public abstract class AFXPerspective extends AComponent implements
         this.type = type;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final String getLocaleID() {
-        return localeID;
-    }
-
-    public final void setLocaleID(String localeID) {
-        this.localeID = localeID;
-    }
-
 
     FXPerspective getFXPerspectiveHandler() {
         return FXPerspective.class.cast(perspective);
