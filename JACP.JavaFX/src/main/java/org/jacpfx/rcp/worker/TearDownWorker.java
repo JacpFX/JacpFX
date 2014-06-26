@@ -30,7 +30,7 @@ import org.jacpfx.rcp.util.TearDownHandler;
 import java.util.concurrent.Callable;
 
 /**
- * This worker handles TearDown annotated methods for state- and stateless components. This type of components handle their live cycle always aoutside application thread.
+ * This worker handles TearDown annotated methods for state- and stateless component. This type of component handle their live cycle always aoutside application thread.
  * @author Andy Moncsek
  *
  */

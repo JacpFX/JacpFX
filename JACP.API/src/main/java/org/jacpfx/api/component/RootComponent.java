@@ -25,8 +25,8 @@ package org.jacpfx.api.component;
 import org.jacpfx.api.handler.ComponentHandler;
 
 /**
- * All root components have containing sub components (workspace -
- * perspectives; perspective - editors) and listeners; all sub components have
+ * All root component have containing sub component (workspace -
+ * perspective; perspective - editors) and listeners; all sub component have
  * to be initialized, registered and handled
  *
  * @param <T> component type to register
@@ -59,7 +59,7 @@ public interface RootComponent<T, A> {
 
 
     /**
-     * Remove all components when perspective is shut down.
+     * Remove all component when perspective is shut down.
      */
     void removeAllCompnents();
 

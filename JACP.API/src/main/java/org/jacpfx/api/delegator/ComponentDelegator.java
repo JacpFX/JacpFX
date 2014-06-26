@@ -45,7 +45,7 @@ public interface ComponentDelegator<L, A, M> extends Delegator<L, A, M> {
     void delegateComponent(final SubComponent<L, A, M> component);
 
     /**
-     * Get the delegate queue to add components to be delegated.
+     * Get the delegate queue to add component to be delegated.
      *
      * @return delegateQueue, The delegate queue.
      */

@@ -33,9 +33,9 @@ import java.util.concurrent.BlockingQueue;
 
 /**
  * Defines a perspective, a perspective is a root component handled by an
- * workbench and contains sub-components such as visible UI components or
- * background components. A workbench can handle one or more perspectives (1-n)
- * and every perspective can handle one ore more components (1-n).
+ * workbench and contains sub-component such as visible UI component or
+ * background component. A workbench can handle one or more perspective (1-n)
+ * and every perspective can handle one ore more component (1-n).
  *
  * @param <L> defines the message listener type
  * @param <A> defines the basic event type
@@ -48,9 +48,9 @@ public interface Perspective<L, A, M> extends Component<L, M>,
     /**
      * The initialization method.
      *
-     * @param componentDelegateQueue, components that should be delegated to an other perspective
-     * @param messageDelegateQueue,   messages to components
-     * @param messageCoordinator,     coordinates messages to components
+     * @param componentDelegateQueue, component that should be delegated to an other perspective
+     * @param messageDelegateQueue,   messages to component
+     * @param messageCoordinator,     coordinates messages to component
      * @param launcher,               the component launcher
      */
     void init(
@@ -60,7 +60,7 @@ public interface Perspective<L, A, M> extends Component<L, M>,
 
     /**
      * post init method to set correct component handler and to initialize
-     * components depending on objects created in startUp sequence.
+     * component depending on objects created in startUp sequence.
      *
      * @param componentHandler, the component handler
      */
@@ -70,7 +70,7 @@ public interface Perspective<L, A, M> extends Component<L, M>,
     /**
      * Returns all subcomponents in perspective.
      *
-     * @return a list of all handled components in current perspective.
+     * @return a list of all handled component in current perspective.
      */
     List<SubComponent<L, A, M>> getSubcomponents();
 
@@ -84,7 +84,7 @@ public interface Perspective<L, A, M> extends Component<L, M>,
     void handlePerspective(final Message<A, M> message);
 
     /**
-     * Returns delegate queue to delegate components to correct target
+     * Returns delegate queue to delegate component to correct target
      *
      * @return the delegate queue
      */
@@ -98,7 +98,7 @@ public interface Perspective<L, A, M> extends Component<L, M>,
     BlockingQueue<DelegateDTO<A, M>> getMessageDelegateQueue();
 
     /**
-     * returns the components coordinator message queue;
+     * returns the component coordinator message queue;
      *
      * @return message queue
      */

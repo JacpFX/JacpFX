@@ -33,7 +33,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.logging.Logger;
 
 /**
- * Observer handles messages and notifies correct components, the observer is
+ * Observer handles messages and notifies correct component, the observer is
  * running in an own thread so that message handling can be done in background
  * 
  * @author Andy Moncsek

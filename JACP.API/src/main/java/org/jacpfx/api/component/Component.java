@@ -79,7 +79,7 @@ public interface Component<L, M> extends Comparable<Component<L, M>> {
     void setResourceBundleLocation(final String location);
 
     /**
-     * Returns the components context object.
+     * Returns the component context object.
      *
      * @return the context object.
      */

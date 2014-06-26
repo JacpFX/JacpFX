@@ -28,7 +28,7 @@ import org.jacpfx.api.message.Message;
 
 /**
  * Handles instances of a state less component; delegates message to a non
- * blocked component instance or if all components are blocked message is
+ * blocked component instance or if all component are blocked message is
  * delegated to queue in one of existing instances
  *
  * @param <L> The listener type.

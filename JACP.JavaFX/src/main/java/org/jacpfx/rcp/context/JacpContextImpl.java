@@ -33,7 +33,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * User: Andy Moncsek
  * Date: 24.06.13
  * Time: 21:36
- * JACP context object provides functionality to components context and basic features.
+ * JACP context object provides functionality to component context and basic features.
  */
 public class JacpContextImpl implements Context {
 

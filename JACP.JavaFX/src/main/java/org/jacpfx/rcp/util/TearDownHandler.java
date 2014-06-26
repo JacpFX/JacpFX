@@ -42,7 +42,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Handles TearDown annotations on all components when application is closed.
+ * Handles TearDown annotations on all component when application is closed.
  * 
  * @author Andy Moncsek
  * 
@@ -54,7 +54,7 @@ public class TearDownHandler {
 					"PerspectiveHandlerImpl:"));
 
 	/**
-	 * Register the parent workbench, from here all perspectives and component
+	 * Register the parent workbench, from here all perspective and component
 	 * should be reachable.
 	 * 
 	 * @param rootWorkbench, the root workbench
@@ -65,7 +65,7 @@ public class TearDownHandler {
 	}
 
 	/**
-	 * perform global teardown on all components. This method will cause all @TearDown
+	 * perform global teardown on all component. This method will cause all @TearDown
 	 * annotated methods to be executed.
 	 */
 	public static void handleGlobalTearDown() {
@@ -109,7 +109,7 @@ public class TearDownHandler {
 	 * executes all methods in ICallbackComponent, annotated with @OnTeardown
 	 * outside application thread.
 	 * 
-	 * @param components, all components that should execute an async teardown
+	 * @param components, all component that should execute an async teardown
 	 */
 	@SafeVarargs
     public static void handleAsyncTearDown(
@@ -123,7 +123,7 @@ public class TearDownHandler {
 	 * executes all methods in ICallbackComponent, annotated with @OnTeardown
 	 * outside application thread.
 	 * 
-	 * @param components, all components that should execute an async teardown
+	 * @param components, all component that should execute an async teardown
 	 */
 	private static void handleAsyncTearDown(
             final List<SubComponent<EventHandler<Event>, Event, Object>> components) {

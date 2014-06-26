@@ -23,7 +23,7 @@
 package org.jacpfx.api.handler;
 
 /**
- * A component handler handles initialization and reassignment of components
+ * A component handler handles initialization and reassignment of component
  *
  * @param <T> component type to register
  * @param <A> message type to use in registration process

@@ -15,7 +15,7 @@ import java.util.stream.Collector;
  * User: Andy
  * Date: 28.05.13
  * Time: 21:13
- * Global registry with references to all perspectives
+ * Global registry with references to all perspective
  */
 public class PerspectiveRegistry {
     private static final List<Perspective<EventHandler<Event>, Event, Object>> perspectives = new CopyOnWriteArrayList<>();
@@ -37,9 +37,9 @@ public class PerspectiveRegistry {
     }
 
     /**
-     * Returns a unmodifiable list of all available perspectives.
+     * Returns a unmodifiable list of all available perspective.
      *
-     * @return a list of current registered perspectives
+     * @return a list of current registered perspective
      */
     private static List<Perspective<EventHandler<Event>, Event, Object>> getAllPerspectives() {
         return Collections.unmodifiableList(perspectives);
@@ -126,7 +126,7 @@ public class PerspectiveRegistry {
     }
 
     /**
-     * Searches the given component id in metadata of all perspectives and returns the responsible perspective
+     * Searches the given component id in metadata of all perspective and returns the responsible perspective
      *
      * @param componentId the component id
      * @return The parent perspective of given component id

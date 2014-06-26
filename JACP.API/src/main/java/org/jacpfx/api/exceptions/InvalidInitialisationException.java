@@ -30,7 +30,7 @@ package org.jacpfx.api.exceptions;
  * User: Andy Moncsek
  * Date: 09.09.13
  * Time: 21:05
- * This Exception will be thrown when components are not initialized correctly
+ * This Exception will be thrown when component are not initialized correctly
  */
 public class InvalidInitialisationException extends RuntimeException {
 

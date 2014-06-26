@@ -35,7 +35,7 @@ import java.lang.annotation.Target;
  * User: Andy Moncsek
  * Date: 23.07.13
  * Time: 11:13
- * Defines NON-UI components for stateless usage
+ * Defines NON-UI component for stateless usage
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

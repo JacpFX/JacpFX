@@ -33,7 +33,7 @@ import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * Global registry with references to all components.
+ * Global registry with references to all component.
  *
  * @author Andy Moncsek
  *
@@ -78,7 +78,7 @@ public class ComponentRegistry {
     }
 
     /**
-     * Returns all components for a parent id
+     * Returns all component for a parent id
      * @param parentId
      * @return
      */

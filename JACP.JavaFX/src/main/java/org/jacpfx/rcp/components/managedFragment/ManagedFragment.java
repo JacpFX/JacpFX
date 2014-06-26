@@ -50,7 +50,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
 /**
- * The ManagedFragment handles creation of managed dialog components. A
+ * The ManagedFragment handles creation of managed dialog component. A
  * managed Fragment is part of an UIComponent, it has always a UIComponent as a
  * parent element (normally the caller component), it has full access to DI
  * injection (services, etc.) and it can be used as managed node or JACPModal

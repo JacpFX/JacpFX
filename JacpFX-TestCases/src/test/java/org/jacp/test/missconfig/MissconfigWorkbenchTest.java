@@ -22,7 +22,7 @@ import static junit.framework.TestCase.assertNotNull;
  * User: Andy Moncsek
  * Date: 09.09.13
  * Time: 20:57
- * Tests if no perspectives are declared in workbench
+ * Tests if no perspective are declared in workbench
  */
 public class MissconfigWorkbenchTest {
 

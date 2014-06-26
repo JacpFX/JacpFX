@@ -44,7 +44,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
 
 /**
- * Background Worker to execute components handle method in separate thread and
+ * Background Worker to execute component handle method in separate thread and
  * to replace or add the component result node; While the handle method is
  * executed in an own thread the postHandle method is executed in application
  * main thread.
@@ -90,7 +90,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
                 } catch (final IllegalStateException e) {
                     if (e.getMessage().contains("Not on FX application thread")) {
                         t.getUncaughtExceptionHandler().uncaughtException(t, new UnsupportedOperationException(
-                                "Do not reuse Node components in handleAction method, use postHandleAction instead to verify that you change nodes in JavaFX main Thread:",
+                                "Do not reuse Node component in handleAction method, use postHandleAction instead to verify that you change nodes in JavaFX main Thread:",
                                 e));
                     }
                 } catch (InterruptedException e) {
@@ -252,7 +252,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
      *
      * @param component,        the component
      * @param newTargetLayout,  the new target layout id
-     * @param targetComponents, the target components provided by parent perspective
+     * @param targetComponents, the target component provided by parent perspective
      */
     private void executeLayoutTargetUpdate(final AFXComponent component,
                                            final String newTargetLayout, final Map<String, Node> targetComponents) {

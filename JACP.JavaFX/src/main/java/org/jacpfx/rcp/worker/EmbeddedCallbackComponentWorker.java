@@ -39,7 +39,7 @@ import org.jacpfx.rcp.util.WorkerUtil;
 import java.util.concurrent.BlockingQueue;
 
 /**
- * This class handles running stateful background components
+ * This class handles running stateful background component
  *
  * @author Andy Moncsek
  */
@@ -87,7 +87,7 @@ class EmbeddedCallbackComponentWorker
                 } catch (final IllegalStateException e) {
                     if (e.getMessage().contains("Not on FX application thread")) {
                         t.getUncaughtExceptionHandler().uncaughtException(t, new UnsupportedOperationException(
-                                "Do not reuse Node components in handleAction method, use postHandleAction instead to verify that you change nodes in JavaFX main Thread:",
+                                "Do not reuse Node component in handleAction method, use postHandleAction instead to verify that you change nodes in JavaFX main Thread:",
                                 e));
                     } else {
                         t.getUncaughtExceptionHandler().uncaughtException(t, e);

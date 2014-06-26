@@ -27,7 +27,7 @@ import org.jacpfx.api.message.DelegateDTO;
 import org.jacpfx.api.message.Message;
 
 /**
- * DTO interface to transfer components to desired target
+ * DTO interface to transfer component to desired target
  * 
  * @author Andy Moncsek
  * 

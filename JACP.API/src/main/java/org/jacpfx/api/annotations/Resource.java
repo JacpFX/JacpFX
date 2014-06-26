@@ -29,7 +29,7 @@ import java.lang.annotation.Target;
 
 /**
  * The Resource annotation allows to inject different resources in dialogs an
- * components like a parent component, resource bundles and session context.
+ * component like a parent component, resource bundles and session context.
  *
  * @author Andy Moncsek
  */

@@ -26,10 +26,10 @@ import java.util.Map;
 
 /**
  * Defines layout of a perspective and the container for included editors and
- * views (target components); for use in perspectives handle method.
+ * views (target component); for use in perspective handle method.
  *
  * @param <M> type of root component
- * @param <B> type of target components
+ * @param <B> type of target component
  * @author Andy Moncsek
  */
 public interface PerspectiveLayoutInterface<M, B> {
@@ -47,16 +47,16 @@ public interface PerspectiveLayoutInterface<M, B> {
      * Get the ' layoutwrapper' for perspective; a layout component is a
      * component which can contain UI subcomponents.
      *
-     * @return the toolkit root component where all other UI components are
+     * @return the toolkit root component where all other UI component are
      * included
      */
     M getRootComponent();
 
     /**
-     * Returns map of target components and ids key - id value - target
+     * Returns map of target component and ids key - id value - target
      * component.
      *
-     * @return a map with all target UI components
+     * @return a map with all target UI component
      */
     Map<String, B> getTargetLayoutComponents();
 
@@ -64,7 +64,7 @@ public interface PerspectiveLayoutInterface<M, B> {
      * Register a target component; a target component defines a wrapper where
      * editors and views can "live" in; you can define a target for each editor
      * or view component; create an root component, a complex layout an register
-     * all components where editors/views should displayed in.
+     * all component where editors/views should displayed in.
      *
      * @param id     the id
      * @param target the target

@@ -7,7 +7,7 @@ import java.util.ResourceBundle;
  * User: Andy Moncsek
  * Date: 27.06.13
  * Time: 21:12
- * The JacpContext interface gives access to components basic meta data as well as listeners and other services.
+ * The JacpContext interface gives access to component basic meta data as well as listeners and other services.
  *
  * @param <L> defines the listener type
  * @param <M> defines the basic message type
@@ -70,7 +70,7 @@ public interface JacpContext<L, M> {
     String getName();
 
     /**
-     * Returns the components resource bundle.
+     * Returns the component resource bundle.
      *
      * @return the defined resource bundle
      */
@@ -91,7 +91,7 @@ public interface JacpContext<L, M> {
     void setActive(final boolean active);
 
     /**
-     * Set component targetId which is the target of a background components return
+     * Set component targetId which is the target of a background component return
      * value; the return value will be handled like an average message and will
      * be delivered to targeted component.
      *

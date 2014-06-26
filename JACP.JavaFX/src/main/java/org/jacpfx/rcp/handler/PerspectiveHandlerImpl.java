@@ -65,7 +65,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Handles initialization and update of perspectives in a workbench.
+ * Handles initialization and update of perspective in a workbench.
  *
  * @author Andy Moncsek
  */
@@ -260,7 +260,7 @@ public class PerspectiveHandlerImpl implements
     }
 
     /**
-     * handle reassignment of components in perspective ui
+     * handle reassignment of component in perspective ui
      *
      * @param perspective, The current perspective
      * @param oldComp,     The old component Node
@@ -417,7 +417,7 @@ public class PerspectiveHandlerImpl implements
     }
 
     /**
-     * get perspectives ui root container
+     * get perspective ui root container
      *
      * @param layout, The perspective layout
      * @return the root Node
@@ -427,7 +427,7 @@ public class PerspectiveHandlerImpl implements
     }
 
     /**
-     * set all child components to invisible
+     * set all child component to invisible
      *
      * @param children, The list of children which should be set invisible
      */
@@ -438,7 +438,7 @@ public class PerspectiveHandlerImpl implements
     }
 
     /**
-     * set all child components to invisible
+     * set all child component to invisible
      *
      * @param perspective,         the current perspective
      * @param previousPerspective, the previous visible perspective

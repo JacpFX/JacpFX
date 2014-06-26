@@ -46,7 +46,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Handles initialization an reassignment of components in perspective.
+ * Handles initialization an reassignment of component in perspective.
  * 
  * @author Andy Moncsek
  * 

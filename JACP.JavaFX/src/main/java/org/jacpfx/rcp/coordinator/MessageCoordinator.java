@@ -107,13 +107,13 @@ public class MessageCoordinator extends ACoordinator implements
             return new MessageCoordinatorExecutionResult(targetId, message, MessageCoordinatorExecutionResult.State.HANDLE_CURRENT_PERSPECTIVE);
 
         }
-        // 2. check if it is an active component in registry, active components must have active perspectives
+        // 2. check if it is an active component in registry, active component must have active perspective
         final SubComponent<EventHandler<Event>, Event, Object> targetComponent = ComponentRegistry.findComponentByQualifiedId(parentId,targetId);
         if (targetComponent != null) {
             // found an active component
             return new MessageCoordinatorExecutionResult(targetComponent, message, MessageCoordinatorExecutionResult.State.HANDLE_ACTIVE);
         }
-        // 3. check if it is a perspective, all perspectives (even inactive ones are registerd)
+        // 3. check if it is a perspective, all perspective (even inactive ones are registerd)
         final Perspective<EventHandler<Event>, Event, Object> perspective = PerspectiveRegistry.findPerspectiveById(targetId);
         if (perspective != null) {
             // this is a perspective

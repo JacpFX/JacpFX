@@ -32,7 +32,7 @@ import java.util.concurrent.BlockingQueue;
 
 /**
  * This class represents the JACP FX2 Event listener... this class can be
- * assigned to components, it reacts on actions and notifies other components in
+ * assigned to component, it reacts on actions and notifies other component in
  * JACP
  * 
  * @author Andy Moncsek

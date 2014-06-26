@@ -58,8 +58,8 @@ import java.util.logging.Logger;
 
 /**
  * represents a basic javafx2 perspective that handles subcomponents,
- * perspectives are not handled in thread so avoid long running tasks in
- * perspectives.
+ * perspective are not handled in thread so avoid long running tasks in
+ * perspective.
  *
  * @author Andy Moncsek
  */
@@ -212,10 +212,10 @@ public abstract class AFXPerspective extends AComponent implements
     }
 
     /**
-     * Register components at componentHandler.
+     * Register component at componentHandler.
      *
-     * @param <M>         , a list of components extending ISubComponents
-     * @param components, a list of registered components
+     * @param <M>         , a list of component extending ISubComponents
+     * @param components, a list of registered component
      */
     private <M extends SubComponent<EventHandler<Event>, Event, Object>> void registerSubcomponents(
             final List<M> components) {

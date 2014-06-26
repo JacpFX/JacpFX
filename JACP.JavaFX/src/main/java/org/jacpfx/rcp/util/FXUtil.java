@@ -295,7 +295,7 @@ public class FXUtil {
      * @param bundle the ressource bundle
      * @param url    the fxml url
      * @param <T> the type of the bean
-     * @return The components root Node.
+     * @return The component root Node.
      */
     public static <T> Node loadFXMLandSetController(final T bean,
                                                     final ResourceBundle bundle, final URL url) {
@@ -310,7 +310,7 @@ public class FXUtil {
         } catch (IOException e) {
             throw new MissingResourceException(
                     "fxml file not found --  place in resource folder and reference like this: viewLocation = \"/myUIFile.fxml\"",
-                    url.getPath(), "");
+                    url.getPath(),e.getLocalizedMessage());
         }
     }
 
@@ -392,7 +392,7 @@ public class FXUtil {
      *
      * @param id the component id to look for
      * @param components the component list
-     * @param <P>  the concrete type of components
+     * @param <P>  the concrete type of component
      * @return  the component by id
      */
     public static <P extends Component<EventHandler<Event>, Object>> P getObserveableById(
@@ -410,7 +410,7 @@ public class FXUtil {
      *
      * @param id the component id to look for
      * @param components the component list
-     * @param <P>  the concrete type of components
+     * @param <P>  the concrete type of component
      * @return  the component by id
      */
     public static <P extends Component<EventHandler<Event>, Object>> List<P> getObserveableByParentId(
@@ -426,7 +426,7 @@ public class FXUtil {
      *
      * @param id the component id to look for
      * @param components the component list
-     * @param <P>  the concrete type of components
+     * @param <P>  the concrete type of component
      * @return  the component by id
      */
     public static <P extends Component<EventHandler<Event>, Object>> P getObserveableByQualifiedId(
@@ -442,7 +442,7 @@ public class FXUtil {
      * @param componentId the component id to look for
      * @param parentId the parentId
      * @param components the component list
-     * @param <P>  the concrete type of components
+     * @param <P>  the concrete type of component
      * @return  the component by id
      */
     public static <P extends Component<EventHandler<Event>, Object>> P getObserveableByQualifiedId(

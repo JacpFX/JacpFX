@@ -61,7 +61,7 @@ public abstract class AEmbeddedComponentWorker extends Thread {
     /**
      * find valid target component in perspective
      *
-     * @param targetComponents, the target components provided by the parent perspective
+     * @param targetComponents, the target component provided by the parent perspective
      * @param id,               a target id
      * @return returns a target node by id
      */
@@ -74,7 +74,7 @@ public abstract class AEmbeddedComponentWorker extends Thread {
      * removes old ui component of subcomponent form parent ui component
      *
      * @param parent,           the parent node
-     * @param currentContainer, a valid container which contains components root
+     * @param currentContainer, a valid container which contains component root
      */
     void handleOldComponentRemove(final Node parent,
                                   final Node currentContainer) {

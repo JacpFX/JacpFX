@@ -36,7 +36,7 @@ import java.util.ResourceBundle;
 
 /**
  * Represents a basic FX2 component to extend from, uses this abstract class to
- * create UI components.
+ * create UI component.
  * 
  * @author Andy Moncsek
  */

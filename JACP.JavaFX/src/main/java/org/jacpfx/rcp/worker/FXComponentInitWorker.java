@@ -47,7 +47,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
 
 /**
- * Background Worker to execute components; handle method to init component.
+ * Background Worker to execute component; handle method to init component.
  *
  * @author Andy Moncsek
  */
@@ -64,7 +64,7 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
      * @param targetComponents ; a map with all targets provided by perspective
      * @param component        ; the UI component to init
      * @param message           ; the init message
-     * @param componentDelegateQueue ; the delegate queue for components that should be moved to an other perspective
+     * @param componentDelegateQueue ; the delegate queue for component that should be moved to an other perspective
      */
     public FXComponentInitWorker(final Map<String, Node> targetComponents,
                                  final AFXComponent component,
@@ -78,7 +78,7 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
 
     /**
      * Run all methods that need to be invoked before worker thread start to
-     * run. Programmatic components runs PostConstruct; declarative components init
+     * run. Programmatic component runs PostConstruct; declarative component init
      * the FXML and set the value to root node.
      *
      * @throws InterruptedException , exception when thread was interrupted

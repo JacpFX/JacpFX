@@ -25,7 +25,7 @@ package org.jacpfx.api.component;
 import org.jacpfx.api.componentLayout.PerspectiveLayoutInterface;
 
 /**
- * This interface defines perspective components with visible ui.
+ * This interface defines perspective component with visible ui.
  *
  * @param <C> defines the base component where others extend from
  * @param <L> defines the message listener type

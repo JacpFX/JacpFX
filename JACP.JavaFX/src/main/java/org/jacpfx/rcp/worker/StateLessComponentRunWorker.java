@@ -104,7 +104,7 @@ public class StateLessComponentRunWorker
     }
 
 	/**
-	 * Handle shutdown of components.
+	 * Handle shutdown of component.
 	 * 
 	 * @param component, the component to shutdown
 	 * @param parent, the parent component

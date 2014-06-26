@@ -74,8 +74,8 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
- * represents the basic JavaFX2 workbench instance; handles perspectives and
- * components;
+ * represents the basic JavaFX2 workbench instance; handles perspective and
+ * component;
  *
  * @author Andy Moncsek, Patrick Symmangk
  */
@@ -238,8 +238,8 @@ public abstract class AFXWorkbench
                 .start();
         ((Thread) AFXWorkbench.this.messageDelegator)
                 .start();
-        // handle perspectives
-        AFXWorkbench.this.log("3.3: workbench init perspectives");
+        // handle perspective
+        AFXWorkbench.this.log("3.3: workbench init perspective");
         AFXWorkbench.this.initComponents(null);
     }
 

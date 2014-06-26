@@ -54,7 +54,7 @@ public class WorkbenchUtil {
      * Creates all perspective instances by annotated id's in @Workbench annotation
      *
      * @param annotation , the workbench annotation
-     * @return a list with all perspectives associated with a workbench
+     * @return a list with all perspective associated with a workbench
      */
     public List<Perspective<EventHandler<Event>, Event, Object>> createPerspectiveInstances(final Workbench annotation) {
         final Stream<String> componentIds = CommonUtil.getStringStreamFromArray(annotation.perspectives());
@@ -137,7 +137,7 @@ public class WorkbenchUtil {
         if (Injectable.class.isAssignableFrom(component.getClass())) {
             return Injectable.class.cast(component);
         } else {
-            throw new InvalidParameterException("Only Perspective components are allowed");
+            throw new InvalidParameterException("Only Perspective component are allowed");
         }
     }
 

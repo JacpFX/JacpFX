@@ -27,10 +27,10 @@ import javafx.scene.Node;
 
 
 /**
- * Configuration handler for perspective components, used in handle method for
+ * Configuration handler for perspective component, used in handle method for
  * configuration and registration of layout 'leaves' where subcomponents can
  * live in. Create your own complex layout, the root node is defined by FXML
- * definition. Mark your leaf nodes as privet @FXML components and register
+ * definition. Mark your leaf nodes as privet @FXML component and register
  * them.
  * 
  * @author Andy Moncsek

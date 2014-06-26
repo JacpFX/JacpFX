@@ -41,14 +41,14 @@ import java.util.List;
 public interface Base<L, A, M> {
 
     /**
-     * Get perspectives in workbench.
+     * Get perspective in workbench.
      *
-     * @return a list of all perspectives
+     * @return a list of all perspective
      */
     List<Perspective<L, A, M>> getPerspectives();
 
     /**
-     * Initialization sequence returns basic container to handle perspectives.
+     * Initialization sequence returns basic container to handle perspective.
      *
      * @param launcher for di container
      * @param root,    the UIToolkit root object
@@ -56,7 +56,7 @@ public interface Base<L, A, M> {
     void init(final Launcher<?> launcher, final Object root);
 
     /**
-     * Returns the components context object.
+     * Returns the component context object.
      *
      * @return the context object.
      */

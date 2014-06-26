@@ -165,7 +165,7 @@ public class StatelessComponentSchedulerImpl implements
     private void seekAndPutMessage(
             final StatelessCallabackComponent<EventHandler<Event>, Event, Object> baseComponent,
             final Message<Event, Object> message) {
-        // if max count reached, seek through components and add
+        // if max count reached, seek through component and add
         // message to queue of oldest component
         final SubComponent<EventHandler<Event>, Event, Object> comp = baseComponent
                 .getInstances().get(this.getSeekValue(baseComponent));

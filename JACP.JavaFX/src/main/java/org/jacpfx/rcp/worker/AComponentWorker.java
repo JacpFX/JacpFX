@@ -53,7 +53,7 @@ public abstract class AComponentWorker<T> extends Task<T> {
     /**
      * find valid target component in perspective
      *
-     * @param targetComponents, the target components provided by the parent perspective
+     * @param targetComponents, the target component provided by the parent perspective
      * @param id,               a target id
      * @return returns a target node by id
      */

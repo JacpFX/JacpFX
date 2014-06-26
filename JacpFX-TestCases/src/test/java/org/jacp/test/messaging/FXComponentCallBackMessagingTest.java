@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
  * User: Andy Moncsek
  * Date: 10.09.13
  * Time: 21:48
- * Tests messaging between callback components
+ * Tests messaging between callback component
  */
 public class FXComponentCallBackMessagingTest {
     static Thread t;

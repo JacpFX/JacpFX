@@ -69,7 +69,7 @@ public class ClassRegistry {
 
     private static Class checkAndGetClassSearch(final List<Class> result,final String id) {
         if(result.isEmpty()) throw new ComponentNotFoundException("following perspective or component id was not found: "+id);
-        if(result.size()>1) throw new NonUniqueComponentException("more than one component found for id "+id +" components: "+result);
+        if(result.size()>1) throw new NonUniqueComponentException("more than one component found for id "+id +" component: "+result);
         return result.get(0);
     }
 

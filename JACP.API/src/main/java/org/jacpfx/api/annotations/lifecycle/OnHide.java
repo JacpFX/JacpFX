@@ -35,7 +35,7 @@ import java.lang.annotation.Target;
  * User: Andy Moncsek
  * Date: 27.05.13
  * Time: 21:32
- * Marks component/perspective methods that will be executed when components disappear from visible area.
+ * Marks component/perspective methods that will be executed when component disappear from visible area.
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

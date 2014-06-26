@@ -25,7 +25,7 @@ import static junit.framework.TestCase.*;
  * User: Andy Moncsek
  * Date: 14.11.13
  * Time: 20:59
- * All Tests related to moving components between perspectives
+ * All Tests related to moving component between perspective
  */
 public class MoveComponentBetweenPerspective {
 

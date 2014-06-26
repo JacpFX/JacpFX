@@ -28,7 +28,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Marks on start methods in UI components; Usage use @PostConstruct on method level
+ * Marks on start methods in UI component; Usage use @PostConstruct on method level
  * and provide access to BaseLayout parameter.
  *
  * @author Andy Moncsek

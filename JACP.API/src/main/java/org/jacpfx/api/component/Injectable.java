@@ -30,7 +30,7 @@ package org.jacpfx.api.component;
  * User: Andy Moncsek
  * Date: 27.06.13
  * Time: 22:21
- * This interface marks components that can be injected. Typically this interface is the root for any subcomponent.
+ * This interface marks component that can be injected. Typically this interface is the root for any subcomponent.
  */
 public interface Injectable {
 }

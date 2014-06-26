@@ -92,7 +92,7 @@ public class PerspectiveUtil {
         if (Injectable.class.isAssignableFrom(component.getClass())) {
             return Injectable.class.cast(component);
         } else {
-            throw new InvalidParameterException("Only Injectable components are allowed");
+            throw new InvalidParameterException("Only Injectable component are allowed");
         }
     }
 
@@ -206,7 +206,7 @@ public class PerspectiveUtil {
     }
 
     /**
-     * Handle a callback components metadata.
+     * Handle a callback component metadata.
      * @param component, The target component.
      * @param callbackAnnotation, The callback annotation.
      */
@@ -235,7 +235,7 @@ public class PerspectiveUtil {
      * @param component, the component where the base attributes are set
      * @param id, the component id
      * @param active, is component active
-     * @param name , the components name
+     * @param name , the component name
      */
     private static void handleBaseAttributes(final SubComponent<EventHandler<Event>, Event, Object> component, final String id, final boolean active,
                                       final String name) {
@@ -268,7 +268,7 @@ public class PerspectiveUtil {
 
     /**
      * Set the targetLayout on context object, if none was set before.
-     * @param component The target components.
+     * @param component The target component.
      * @param value The target value.
      */
     private static void setInitialLayoutTarget(final SubComponent<EventHandler<Event>, Event, Object> component, String value) {

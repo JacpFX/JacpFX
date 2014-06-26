@@ -35,7 +35,7 @@ public interface ActionListener<A, M> {
     /**
      * Notify component when message fired.
      *
-     * @param action ;  the message fired by components
+     * @param action ;  the message fired by component
      */
     void notifyComponents(final Message<A, M> action);
 

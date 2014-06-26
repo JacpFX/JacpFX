@@ -80,7 +80,7 @@ public class WorkerUtil {
      * find valid target and add type specific new component. Handles Container,
      * ScrollPanes, Menus and Bar Entries from user
      *
-     * @param validContainer, a valid container where components root will be added
+     * @param validContainer, a valid container where component root will be added
      * @param component,      the component
      */
     public static void addComponentByType(
@@ -92,7 +92,7 @@ public class WorkerUtil {
     /**
      * enables component an add to container
      *
-     * @param validContainer , a valid container where components root will be added
+     * @param validContainer , a valid container where component root will be added
      * @param componentViewNode   , the component
      */
     private static void handleAdd(final Node validContainer, final Node componentViewNode) {
@@ -119,7 +119,7 @@ public class WorkerUtil {
     }
 
     /**
-     * delegate components handle return value to specified target
+     * delegate component handle return value to specified target
      *
      * @param comp,     the component
      * @param targetId, the message target id
@@ -156,7 +156,7 @@ public class WorkerUtil {
             potsHandleReturnValue = handleReturnValue;
         } else if (component.getType().equals(UIType.DECLARATIVE)) {
             throw new UnsupportedOperationException(
-                    "declarative components should not have a return value in postHandle method, otherwise you would overwrite the FXML root node.");
+                    "declarative component should not have a return value in postHandle method, otherwise you would overwrite the FXML root node.");
         }
         if (potsHandleReturnValue != null
                 && component.getType().equals(UIType.PROGRAMMATIC)) {

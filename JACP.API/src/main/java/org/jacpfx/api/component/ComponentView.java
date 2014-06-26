@@ -39,11 +39,11 @@ public interface ComponentView<C, A, M> extends ComponentHandle<C, A, M> {
      * To avoid toolkit specific threading issues the postHandle method always
      * called after the handle method. While the handle method is executed in a
      * separate thread the postHandle method is guaranteed to run in application
-     * main thread. It is mostly save to create new components outside the main
-     * thread in the handle method but when you like to recycle your components
+     * main thread. It is mostly save to create new component outside the main
+     * thread in the handle method but when you like to recycle your component
      * you should use the postHandle method. In the postHandle method you should
      * avoid long running tasks. Use it only to create or update your ui
-     * components.
+     * component.
      *
      * @param node    , the ui node
      * @param message ,  the trigger message

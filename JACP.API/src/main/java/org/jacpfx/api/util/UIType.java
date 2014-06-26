@@ -23,8 +23,8 @@
 package org.jacpfx.api.util;
 
 /**
- * To avoid definition of several interface/abstract class types of UI components this ENUM can
- * be used to distinguish components.
+ * To avoid definition of several interface/abstract class types of UI component this ENUM can
+ * be used to distinguish component.
  *
  * @author Andy Moncsek
  */

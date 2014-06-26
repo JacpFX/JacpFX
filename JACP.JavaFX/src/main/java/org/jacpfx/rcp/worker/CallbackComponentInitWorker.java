@@ -36,7 +36,7 @@ import org.jacpfx.rcp.util.WorkerUtil;
 import java.util.concurrent.BlockingQueue;
 
 /**
- * This class handles running stateful background components
+ * This class handles running stateful background component
  *
  * @author Andy Moncsek
  */

@@ -23,10 +23,10 @@
 package org.jacpfx.api.workbench;
 
 /**
- * Base component for an JACP UI application, handles perspectives and
- * containing components. A workbench is the root of all JACP perspectives an
- * component. You can have 1 workbench including (1-n) perspectives which can
- * include (1-n) components.
+ * Base component for an JACP UI application, handles perspective and
+ * containing component. A workbench is the root of all JACP perspective an
+ * component. You can have 1 workbench including (1-n) perspective which can
+ * include (1-n) component.
  *
  * @author Andy Moncsek
  */

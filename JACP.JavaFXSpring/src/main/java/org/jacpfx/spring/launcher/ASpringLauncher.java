@@ -60,7 +60,7 @@ public abstract class ASpringLauncher extends Application{
     protected void scanPackegesAndInitRegestry() {
         final String[] packages = getBasePackages();
         if (packages == null)
-            throw new InvalidParameterException("no  packes declared, declare all packages containing perspectives and components");
+            throw new InvalidParameterException("no  packes declared, declare all packages containing perspective and component");
         final ClassFinder finder = new ClassFinder();
         Stream.of(packages).parallel().forEach(p -> {
             try {
@@ -78,7 +78,7 @@ public abstract class ASpringLauncher extends Application{
     }
 
     /**
-     * Return all packages which contains components and perspectives that should be scanned. This is needed to find components/prespectives by id.
+     * Return all packages which contains component and perspective that should be scanned. This is needed to find component/prespectives by id.
      *
      * @return  an array of package names
      */

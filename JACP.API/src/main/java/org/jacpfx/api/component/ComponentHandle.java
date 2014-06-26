@@ -40,7 +40,7 @@ import org.jacpfx.api.message.Message;
  */
 public interface ComponentHandle<C, A, M> extends Injectable {
     /**
-     * Handles component when called. The handle method in sub components is
+     * Handles component when called. The handle method in sub component is
      * always executed in a separate thread;
      *
      * @param message , the triggering message

@@ -28,7 +28,7 @@ import javafx.scene.Node;
 
 
 /**
- * Configuration handler for perspective components, used in handle method for
+ * Configuration handler for perspective component, used in handle method for
  * configuration and registration of layout 'leaves' where subcomponents can
  * live in. Create your own complex layout, return the root node and register
  * parts of your layout that can handle subcomponents

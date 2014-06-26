@@ -32,8 +32,8 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * The most abstract component, used to define components as well as
- * perspectives
+ * The most abstract component, used to define component as well as
+ * perspective
  *
  * @author Andy Moncsek
  */
