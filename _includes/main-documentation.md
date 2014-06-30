@@ -340,6 +340,22 @@ public class PerspectiveTwo implements FXPerspective {
     </center>
 </BorderPane>
 ```
+
+### Register components ###
+Component-references are defined inside the @Perspective annotation. This defines the initial state of a perspective after startup; once the application is started, you can move components from one perspective to an other. 
+Component references are subjected to one simple rule: components are <b>ALWAYS unique per perspective</b>, you can't add the same component twice in one perspective but you can use one component in many perspectives. Each component is a singleton per perspective, this means the a second perspective will get a different component instance as the first perspective.
+#### Definition of components-references####
+<pre>
+@Perspective(id = BaseConfiguration.PERSPECTIVE_ONE, name = "PerspectiveOne",
+        <b>components = {ComponentIds.ONE,ComponentIds.TWO,ComponentIds.THREE},</b>
+        resourceBundleLocation = "bundles.languageBundle")
+public class PerspectiveOne implements FXPerspective {
+		...
+    }   
+</pre>
+
+<br/>
+
 ### Register render-targets ###
 Render-targets are areas in your perspective where component-views can be rendered. You can register any node of your perspective-view (except the root-node) to be a render-target. A child component of your perspective can now register itself to be rendered in this node.
 #### Definition of render-targets####
@@ -372,7 +388,7 @@ public class PerspectiveOne implements FXPerspective {
 <br/>
 
 ### The @Perspective annotation ###
-The @Perspective annotation provides necessary meta-informations for all classes implementing FXPerspective. Following attributes describes a JacpFX perspective:
+The @Perspective annotation provides necessary meta-informations for all classes implementing the FXPerspective interface. Following attributes describes a JacpFX perspective:
 
 - name (mandatory): The perspective name
 - id (mandatory): The perspective id
@@ -386,7 +402,8 @@ The @Perspective annotation provides necessary meta-informations for all classes
 While perspectives helping you to structure you application, components are more like "micro" applications or portlets. You can simply create master-detail views and reuse both parts (components) in different contextes. Basically JacpFX components are distinguished in UI- and NonUI-Components;
 UI-Components contain your complex UI (e.g Form) and Controls like "TextField" or "Button". NonUI-Components are ment to be services for long running tasks. All components in common is, that they have a “handle” method that is <b>running outside the FX application thread</b>, so the execution of this method will not block the rest of your UI.
 ### UI-Components ###
-The purpose of UI-Components is to create UI parts or views in JavaFX or FXML (similar to views or editors in other RCP frameworks). A UI-Component has to implement the "FXComponent" interface and represents a controller class which returns a view either in plain JavaFX or FXML. While the return value of JavaFX components is a JavaFX Node, which will than be included in the parent perspective, FXML Components pass the root-node of your FXML file directly to the parent perspective.
+The purpose of UI-Components is to create UI parts or views in plain JavaFX or FXML (similar to views or editors in other RCP frameworks). UI-Components must implement the "FXComponent" interface, they represent a controller class which returns a view either in plain JavaFX or FXML. 
+While the explicit return value of a JavaFX component is a (JavaFX) Node, which will be included in the parent perspective; FXML Components passes the root-node of their FXML file directly to the parent perspective.
 
 #### The FXComponent lifecycle ####
 
