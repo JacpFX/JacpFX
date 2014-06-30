@@ -220,7 +220,7 @@ A typical UI application has a root node and a large tree of components which re
 A perspective defines five lifecycle hooks:
 
 - The <b>"handlePerspective"</b> method must be overwritten and will be executed on each message the perspective is receiving.
-- <b>@PostConstruct:</b> A method annotated with @PostConstruct will be executed when a perspective will be activated, usually this happens on start 
+- <b>@PostConstruct:</b> A method annotated with @PostConstruct will be executed when a perspective was activated, usually this happens on start 
 - <b>@PreDestroy:</b> A method annotated with @PreDestroy will be executed when a perspective will be destroyed
 - <b>@OnShow:</b> A method annotated with @OnShow will be executed when an active perspective gets the focus. Only one perspective is visible in a workbench at the same time, when a perspective gets a message it will be focused and placed in the foreground.
 	- in this phase you can e.g. turn on toolbar buttons or start timer tasks
@@ -342,8 +342,8 @@ public class PerspectiveTwo implements FXPerspective {
 ```
 
 ### Register components ###
-Component-references are defined inside the @Perspective annotation. This defines the initial state of a perspective after startup; once the application is started, you can move components from one perspective to an other. 
-Component references are subjected to one simple rule: components are <b>ALWAYS unique per perspective</b>, you can't add the same component twice in one perspective but you can use one component in many perspectives. Each component is a singleton per perspective, this means the a second perspective will get a different component instance as the first perspective.
+Component-references are defined inside the @Perspective annotation. Once the application is started, you can move components from one perspective to an other. 
+Component references are subjected to one simple rule: components are <b>ALWAYS unique per Perspective</b>, you can't add the same Component twice in one perspective, but you can use one Component in many perspectives. Each Component is a singleton per Perspective and a second Perspective will get a different Component instance as the first Perspective.
 #### Definition of components-references####
 <pre>
 @Perspective(id = BaseConfiguration.PERSPECTIVE_ONE, name = "PerspectiveOne",
@@ -357,7 +357,7 @@ public class PerspectiveOne implements FXPerspective {
 <br/>
 
 ### Register render-targets ###
-Render-targets are areas in your perspective where component-views can be rendered. You can register any node of your perspective-view (except the root-node) to be a render-target. A child component of your perspective can now register itself to be rendered in this node.
+Render-targets are areas in your perspective where component-views can be rendered. You can register any node of your perspective-view to be a render-target. A child component of your perspective can now register itself to be rendered in this node.
 #### Definition of render-targets####
 <pre>
 @Perspective(id = BaseConfiguration.PERSPECTIVE_ONE, name = "PerspectiveOne",
@@ -402,15 +402,25 @@ The @Perspective annotation provides necessary meta-informations for all classes
 While perspectives helping you to structure you application, components are more like "micro" applications or portlets. You can simply create master-detail views and reuse both parts (components) in different contextes. Basically JacpFX components are distinguished in UI- and NonUI-Components;
 UI-Components contain your complex UI (e.g Form) and Controls like "TextField" or "Button". NonUI-Components are ment to be services for long running tasks. All components in common is, that they have a “handle” method that is <b>running outside the FX application thread</b>, so the execution of this method will not block the rest of your UI.
 ### UI-Components ###
-The purpose of UI-Components is, to create views in plain JavaFX or FXML (similar to views or editors in other RCP frameworks). UI-Components must implement the "FXComponent" interface, and act as controller class which returns a view either in plain JavaFX or FXML. 
+UI-Components must implement the "FXComponent" interface, and act as controller class which returns a view either in plain JavaFX or FXML. 
 While JavaFX-Components must return a (JavaFX) Node, FXML-Components passes the root-node of their FXML view directly to the parent perspective.
 
 #### The FXComponent lifecycle ####
-The lifecycle of each JacpFX Component-Type is triggered by messages. FXComponents 
+A FXComponent defines six lifecycle hooks:
+
+- The <b>"handle(...)"</b> method will be executed each time the component receives a message. This method runs <b>outside the FX Application Thread </b>! The return value of this method is a JavaFX Node which will be passed to the FX Application thread. In this phase you can create (not modify!) any new Nodes or execute long running tasks, without blocking the UI.
+- The <b>"postHandle(...)"</b> will be executed on the FX Application Thread, after the "handle" method was finished. 
+- <b>@PostConstruct:</b> A method annotated with @PostConstruct will be executed when a component was activated, usually this happens on start and before the "handle" method was executed in the FX Application Thread
+- <b>@PreDestroy:</b> A method annotated with @PreDestroy will be executed when a component will be destroyed. The method will be executed on FX Application Thread.
+
+
 
 #### The FXComponent interface ####
+
 The FXComponent interface defines following two methods to implement:
 
+- The <b>"handle(...)"</b> method must be overwritten and will be executed first, each time the component receives a message. This method will be executed <b>outside the FX Application Thread </b> inside an worker-thread. The return value of this method is a JavaFX Node which will be passed to the FX Application thread in the "postHandle" method. 
+- The <b>"postHandle(...)"</b> will be executed on the FX Application Thread after the "handle" method was finished. In this method you can modify any existing View-Nodes.
 #### Method-level annotations ####
 
 
