@@ -173,11 +173,6 @@ public class PerspectiveRegistry {
         return Arrays.binarySearch(componentIds, componentId) >= 0;
     }
 
-    public static boolean perspectiveContainsComponentInstance(final String parentId, final String componentId) {
-
-
-        return false;
-    }
 
     /**
      * Returns the a component by class.
