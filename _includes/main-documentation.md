@@ -402,10 +402,11 @@ The @Perspective annotation provides necessary meta-informations for all classes
 While perspectives helping you to structure you application, components are more like "micro" applications or portlets. You can simply create master-detail views and reuse both parts (components) in different contextes. Basically JacpFX components are distinguished in UI- and NonUI-Components;
 UI-Components contain your complex UI (e.g Form) and Controls like "TextField" or "Button". NonUI-Components are ment to be services for long running tasks. All components in common is, that they have a “handle” method that is <b>running outside the FX application thread</b>, so the execution of this method will not block the rest of your UI.
 ### UI-Components ###
-The purpose of UI-Components is to create UI parts or views in plain JavaFX or FXML (similar to views or editors in other RCP frameworks). UI-Components must implement the "FXComponent" interface, they represent a controller class which returns a view either in plain JavaFX or FXML. 
-While the explicit return value of a JavaFX component is a (JavaFX) Node, which will be included in the parent perspective; FXML Components passes the root-node of their FXML file directly to the parent perspective.
+The purpose of UI-Components is, to create views in plain JavaFX or FXML (similar to views or editors in other RCP frameworks). UI-Components must implement the "FXComponent" interface, and act as controller class which returns a view either in plain JavaFX or FXML. 
+While JavaFX-Components must return a (JavaFX) Node, FXML-Components passes the root-node of their FXML view directly to the parent perspective.
 
 #### The FXComponent lifecycle ####
+The lifecycle of each JacpFX Component-Type is triggered by messages. FXComponents 
 
 #### The FXComponent interface ####
 The FXComponent interface defines following two methods to implement:
