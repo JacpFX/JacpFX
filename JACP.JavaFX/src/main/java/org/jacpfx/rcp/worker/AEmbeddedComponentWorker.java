@@ -143,8 +143,8 @@ public abstract class AEmbeddedComponentWorker extends Thread {
      */
     void checkValidComponent(final SubComponent<EventHandler<Event>, Event, Object> component) {
         final ComponentHandle<?, Event, Object> handle = component.getComponent();
-        if (handle == null) throw new InvalidComponentMatch("Component is not initialized correctly");
         if (component == null || component.getContext() == null || component.getContext().getId() == null)
             throw new InvalidComponentMatch("Component is in invalid state while initialisation:" + handle.getClass()+" this can happen when component is in shutdown process");
+        if (handle == null) throw new InvalidComponentMatch("Component is not initialized correctly");
     }
 }
