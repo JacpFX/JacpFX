@@ -30,18 +30,37 @@ A JacpFX application consists of following components:
 * **[Stateful/Stateless service Components](#services)**, non UI service components for task execution and communication with external systems.
 
 ##Project structure##
-JacpFX projects have a typical maven (Java) project structure.
-###Dependencies###
+JacpFX projects have a typical maven project structure.
+<pre>
+root
+  |
+  src
+  | |
+  | main
+  |   |
+  |	  java
+  |	  |
+  |	resources
+  |	   |
+  |    bundles (Resource bundles)
+  |	   |
+  |	   fxml (FXML files)
+  |	   |
+  |	   styles (CSS files)
+  |
+  pom.xml  
+</pre>  
+
+##Dependencies##
 #### JacpFX.API ####
 #### JacpFX.JavaFX ####
 #### JacpFX.JavaFXControls ####
 #### JacpFX.JavaFXSpring ####
-##Configuration##
 <br/>
 
 ## <a name=ApplicationLauncher></a>ApplicationLauncher 
-The ApplicationLauncher is the entry point to bootstrap a JacpFX application. It contains the main method, the configuration for component scanning, the managed container configuration and the reference to the workbench class.
-JacpFX defines an Launcher interface which is currently using Spring as the managed container. A CDI implementation is planned, but not available yet. For the Spring implementation there are two abstract launcher implementations available:
+An ApplicationLauncher contains the main method, the component-scanning configuration, the managed container configuration and the reference to the workbench class.
+JacpFX defines a Launcher interface which can be implemented to work with different managed containers like Spring or Weld; Currently JacpFX uses Spring as the managed container, but a minimal Launcher without any dependencies is planned in the near future. For the Spring implementation there are two abstract Launcher implementations are available:
 
 - The AFXSpringXmlLauncher
 - The AFXSpringJavaConfigLauncher
@@ -51,12 +70,12 @@ JacpFX defines an Launcher interface which is currently using Spring as the mana
 <pre>
 public class ApplicationLauncher extends AFXSpringXmlLauncher {
 
-
+<b>
     @Override
     public String getXmlConfig() {
         return "main.xml";
     }
-
+</b>
     @Override
     protected Class<? extends FXWorkbench> getWorkbenchClass() {
         return JacpFXWorkbench.class;
@@ -88,12 +107,12 @@ public class ApplicationLauncher extends AFXSpringXmlLauncher {
 
 <pre>
 public class ApplicationLauncher extends AFXSpringJavaConfigLauncher {
-
+<b>
     @Override
     protected Class<?>[] getConfigClasses() {
         return new Class<?>[]{BaseConfiguration.class};
     }
-
+</b>
     @Override
     protected Class<? extends FXWorkbench> getWorkbenchClass() {
         return JacpFXWorkbench.class;
@@ -132,8 +151,8 @@ Define all packages to scan for components and perspectives. JacpFX uses compone
 This method gives you access to the JavaFX stage. You can e.g. define stylesheet for you application.
 
 ## <a name=workbench></a>Workbench ##
-The workbench is the root node of your client project, providing simple interfaces to configure the basic behavior of your client. Besides the application launcher, it is the only component where you can get direct access to the JavaFX "stage". 
-Furthermore a workbench logically groups all perspectives defined in the @workbench annotation.
+The Workbench is the root node of your client project, providing simple interfaces to configure the basic behavior of your client. Besides the application launcher, it is the only component where you can get direct access to the JavaFX "stage". 
+Furthermore a Workbench logically groups all perspectives defined in the @workbench annotation.
  
 ### Example workbench ###
 <br/>
@@ -160,7 +179,7 @@ public class JacpFXWorkbench implements FXWorkbench {
 </pre>
 <br/>
 
-The workbench interface defines two method:
+The Workbench interface defines two method:
 
 - handleInitialLayout
 - postHandle
@@ -453,6 +472,8 @@ The FXComponent interface defines following two methods to implement:
 ##annotations overview##
 
 ###class-level annotations###
+
+###method-level annotations###
 
 ###method-level annotations###
 
