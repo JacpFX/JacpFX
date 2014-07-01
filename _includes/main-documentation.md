@@ -414,6 +414,11 @@ A FXComponent defines six lifecycle hooks:
 - <b>@PreDestroy:</b> A method annotated with @PreDestroy will be executed when a component will be destroyed. The method will be executed on FX Application Thread.
 
 
+<br/>
+<div align="center">
+![UI component lifecycle](/img/JACP_UI-Component_Lifecycle.png)
+</div>
+<br/>
 
 #### The FXComponent interface ####
 
