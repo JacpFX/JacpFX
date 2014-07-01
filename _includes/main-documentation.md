@@ -406,12 +406,6 @@ UI-Components must implement the "FXComponent" interface, and act as controller 
 While JavaFX-Components must return a (JavaFX) Node, FXML-Components passes the root-node of their FXML view directly to the parent perspective.
 
 #### The FXComponent lifecycle ####
-A FXComponent defines six lifecycle hooks:
-
-- The <b>"handle(...)"</b> method will be executed each time the component receives a message. This method runs <b>outside the FX Application Thread </b>! The return value of this method is a JavaFX Node which will be passed to the FX Application thread. In this phase you can create (not modify!) any new Nodes or execute long running tasks, without blocking the UI.
-- The <b>"postHandle(...)"</b> will be executed on the FX Application Thread, after the "handle" method was finished. 
-- <b>@PostConstruct:</b> A method annotated with @PostConstruct will be executed when a component was activated, usually this happens on start and before the "handle" method was executed in the FX Application Thread
-- <b>@PreDestroy:</b> A method annotated with @PreDestroy will be executed when a component will be destroyed. The method will be executed on FX Application Thread.
 
 
 <br/>
@@ -424,12 +418,18 @@ A FXComponent defines six lifecycle hooks:
 
 The FXComponent interface defines following two methods to implement:
 
-- The <b>"handle(...)"</b> method must be overwritten and will be executed first, each time the component receives a message. This method will be executed <b>outside the FX Application Thread </b> inside an worker-thread. The return value of this method is a JavaFX Node which will be passed to the FX Application thread in the "postHandle" method. 
-- The <b>"postHandle(...)"</b> will be executed on the FX Application Thread after the "handle" method was finished. In this method you can modify any existing View-Nodes.
+- The <b>"handle(...)"</b> method must be overwritten and will be executed first, each time the component receives a message. This method will be executed <b>outside the FX Application Thread </b> inside an worker-thread. The return value of this method is a JavaFX Node which will be passed to the FX Application thread in the "postHandle" method. Unless you are not modify existing UI elements, you are free to create any new UI-components. You can use the handle method to create large and complex UI trees, but you should avoid modifications of existing Nodes (it will throw an UnsupportedOperationException exception). You are also free to return a null value and to create the View-element in the postHandle method.
+- The <b>"postHandle(...)"</b> will be executed on the FX Application Thread after the "handle" method was finished. In this method you can modify any existing View-Nodes; In case of FXML components you should not return any Node (it will throw an UnsupportedOperationException), here the associated FXML document is the Node that is passed to the target in corresponding perspective.
+
 #### Method-level annotations ####
+- <b>@PostConstruct:</b> A method annotated with @PostConstruct will be executed when a component was activated, usually this happens on start and before the "handle" method was executed in the FX Application Thread. The method signature can have no parameters, the FXComponentLayout layout parameter and/or the reference to the ResourceBundle resourceBundle. With the FXComponentLayout layout reference you can define Menu- and ToolBar-entries in your component.
+- <b>@PreDestroy:</b> A method annotated with @PreDestroy will be executed when a component will be destroyed. The method will be executed on FX Application Thread. The method signature can have no parameters, the FXComponentLayout layout parameter and/or the reference to the ResourceBundle resourceBundle. With the FXComponentLayout layout reference you can define Menu- and ToolBar-entries in your component.
 
 
-#### component lifecycle ###
+#### The @View class level annotation ###
+
+#### The @DeclarativeView class level annotation ###
+
 <br/>
 ### Callback Components ###
 <br/>
