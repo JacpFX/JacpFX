@@ -152,7 +152,7 @@ This method gives you access to the JavaFX stage. You can e.g. define stylesheet
 
 ## <a name=workbench></a>Workbench ##
 The Workbench is the root node of your client project, providing simple interfaces to configure the basic behavior of your client. Besides the application launcher, it is the only component where you can get direct access to the JavaFX "stage". 
-Furthermore a Workbench logically groups all perspectives defined in the @workbench annotation.
+Furthermore a Workbench logically groups all perspectives defined in the @Workbench annotation.
  
 ### Example workbench ###
 <br/>
@@ -420,6 +420,7 @@ The @Perspective annotation provides necessary meta-informations for all classes
 ## <a name=components></a>Components ##
 While perspectives helping you to structure you application, components are more like "micro" applications or portlets. You can simply create master-detail views and reuse both parts (components) in different contextes. Basically JacpFX components are distinguished in UI- and NonUI-Components;
 UI-Components contain your complex UI (e.g Form) and Controls like "TextField" or "Button". NonUI-Components are ment to be services for long running tasks. All components in common is, that they have a “handle” method that is <b>running outside the FX application thread</b>, so the execution of this method will not block the rest of your UI.
+
 ### UI-Components ###
 UI-Components must implement the "FXComponent" interface, and act as controller class which returns a view either in plain JavaFX or FXML. 
 While JavaFX-Components must return a (JavaFX) Node, FXML-Components passes the root-node of their FXML view directly to the parent perspective.
@@ -444,8 +445,59 @@ The FXComponent interface defines following two methods to implement:
 - <b>@PostConstruct:</b> A method annotated with @PostConstruct will be executed when a component was activated, usually this happens on start and before the "handle" method was executed in the FX Application Thread. The method signature can have no parameters, the FXComponentLayout layout parameter and/or the reference to the ResourceBundle resourceBundle. With the FXComponentLayout layout reference you can define Menu- and ToolBar-entries in your component.
 - <b>@PreDestroy:</b> A method annotated with @PreDestroy will be executed when a component will be destroyed. The method will be executed on FX Application Thread. The method signature can have no parameters, the FXComponentLayout layout parameter and/or the reference to the ResourceBundle resourceBundle. With the FXComponentLayout layout reference you can define Menu- and ToolBar-entries in your component.
 
+### FXComponent types ###
+FXComponent can be written either <b>programmatically</b> in plain JavaFX or <b>declarative</b>, with an FXML view.
 
 #### The @View class level annotation ###
+The @View annotation contains all meta data related to the JavaFX-Component implementing the FXComponent interface.
+
+- <b>"name"</b>, defines the Component name
+- <b>"id"</b>, defines an unique Component Id
+- <b>"active"</b>, defines the initial Component state. Inactive Components are activated on message.
+- <b>"initialTargetLayoutId"</b>, contains the render-target id defined in the parent perspective.
+- <b>"resourceBundleLocation" (optional)</b>, defines the resource bundle file
+- <b>"localeID"</b>,  the default locale Id (http://www.oracle.com/technetwork/java/javase/locales-137662.html)
+
+<br/>
+#### JavaFX-Component example ####
+The "postHandle" method of a JavaFX-Component must always return a JavaFX Node, representing the view of the component.
+<br/>
+<pre>
+@View(id = ComponentIds.COMPONENT__TWO,
+        name = "SimpleView",
+        active = true,
+        resourceBundleLocation = "bundles.languageBundle",
+        initialTargetLayoutId = PerspectiveIds.TARGET__CONTAINER_MAIN)
+public class ComponentTwo implements FXComponent {
+	private VBox pane;
+    @Override
+    public Node handle(final Message<Event, Object> message) {
+        // runs in worker thread
+        return null;
+    }
+    @Override
+    public Node postHandle(final Node arg0,
+                           final Message<Event, Object> message) {
+        // runs in FX application thread
+        return this.pane;
+    }
+	@PostConstruct
+    public void onStartComponent(final FXComponentLayout arg0,
+                                 final ResourceBundle resourceBundle) {
+       pane = createUI();
+	}
+	private VBox createUI() {
+        final VBox pane = new VBox();
+        HBox.setHgrow(pane, Priority.ALWAYS);
+        
+        final HBox top = new HBox();
+        final HBox bottom = new HBox();
+		...
+        pane.getChildren().addAll(top,bottom);
+        return pane;
+    }
+}
+</pre>
 
 #### The @DeclarativeView class level annotation ###
 
