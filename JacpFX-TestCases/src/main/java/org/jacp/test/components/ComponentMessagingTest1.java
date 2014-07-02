@@ -247,7 +247,7 @@ public class ComponentMessagingTest1 implements FXComponent {
             context.send("button14");
         });
         container.getChildren().addAll(label, group1, group2, button6, button7, group3, group4,button14);
-        this.log.info("run on start of ComponentMessagingTest1 " + this);
+        this.log.info("run on start of ComponentMessagingTest1 ... componentId:" + this.context.getId() + " parentId: "+this.context.getParentId()+"  this:"+this);
         waitButton4.countDown();
     }
 
