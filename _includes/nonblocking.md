@@ -11,7 +11,7 @@ In this stage you can execute any long running task or create new JavaFX nodes w
 <br/>
 JacpFX Callback-Components have no UI, and therefore no need to switch to the FX Application thread. Callback-Components can be used to outsource long running tasks, or to coordinate a message flow.
 <div align="center">
-![component-lifecycle](/img/AsyncModel_Service.png)
+![component-lifecycle](/img/JacpFX_Non-Blocking_UI_Abb2.png)
 </div>
 
 <br/><br/>

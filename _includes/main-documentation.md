@@ -486,10 +486,10 @@ public class ComponentTwo implements FXComponent {
                                  final ResourceBundle resourceBundle) {
        pane = createUI();
 	}
+	
 	private VBox createUI() {
         final VBox pane = new VBox();
         HBox.setHgrow(pane, Priority.ALWAYS);
-        
         final HBox top = new HBox();
         final HBox bottom = new HBox();
 		...
