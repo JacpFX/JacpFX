@@ -563,7 +563,7 @@ public class ComponentOne implements FXComponent {
 </VBox>
 ```
 ### Callback Components ###
-Callback Components are service-like Components which reacts on messages and returns an Object to the caller Component or any other target (Request/Response). By default the caller Component will be notified, if no return value is defined no message will be send.
+Callback Components are service-like Components which reacts on messages and returns an Object to the caller Component or any other target (Request/Response). By default the caller Component will be notified, if no return value is specified, no message will be send.
 <br/>
 
 #### The CallbackComponent interface ####
@@ -577,6 +577,16 @@ By default the return value of this method will generate a message to the caller
 - <b>@PostConstruct:</b> A method annotated with @PostConstruct will be executed when a Component was activated, and runs in a worker Thread. The method signature can have no parameters and/or the reference to the ResourceBundle resourceBundle. 
 - <b>@PreDestroy:</b> A method annotated with @PreDestroy will be executed when a component will be destroyed. The method will be executed in a worker Thread. The method signature can have no parameters,  and/or the reference to the ResourceBundle resourceBundle. 
 
+
+#### The @Component class level annotation ###
+The @Component annotation contains all meta data related to the Callback-Component implementing the CallbackComponent interface.
+
+- <b>"name"</b>, defines the Component name
+- <b>"id"</b>, defines an unique Component Id
+- <b>"active"</b>, defines the initial Component state. Inactive Components are activated on message.
+- <b>"resourceBundleLocation" (optional)</b>, defines the resource bundle file
+- <b>"localeID"</b>,  the default locale Id (http://www.oracle.com/technetwork/java/javase/locales-137662.html)
+<br/>
 
 ### CallbackComponent types ###
 CallbackComponents can be either <b>stateful</b> or <b>stateless</b>; with an FXML view.
@@ -594,6 +604,39 @@ In terms of JEE it is a "singleton per perspective" component; While JEE singlet
 </div>
 <br/>
 
+#### Stateful CallbackComponent example ####
+
+<pre>
+@Component(id = BasicConfig.STATEFUL_CALLBACK,
+        name = "statefulCallback",
+        active = true,
+        localeID = "en_US",
+        resourceBundleLocation = "bundles.languageBundle")
+public class StatefulCallback implements CallbackComponent {
+
+    @Resource
+    private Context context;
+    private int c = 0;
+    
+    @Override
+    public Object handle(final Message<Event, Object> message) {
+    	c = c++;
+        if(message.messageBodyEquals("ping")) return "pong";
+        return "ping";
+    }
+
+    @PreDestroy
+    public void onPreDestroyComponent() {
+    }
+
+    @PostConstruct
+    public void onPostConstructComponent(final ResourceBundle resourceBundle) {
+
+    }
+
+}
+</pre>
+<br/>
 #### Stateless CallbackComponent ####
 A stateless CallbackComponent must implement the CallbackComponent interface and contain the annotations @Component and @Stateless.
 Stateless Components are using instance-pooling for scaling, a CallbackComponent pool will be created for every Component per perspective.
@@ -606,7 +649,45 @@ Stateless Components are using instance-pooling for scaling, a CallbackComponent
 ![stateless component lifecycle](/img/JACP_Stateless-Component.png)
 </div>
 <br/>
+#### Stateful CallbackComponent example ####
 
+<pre>
+@Component(id = BasicConfig.STATELESS_CALLBACK,
+        name = "statelessCallback",
+        active = true,
+        localeID = "en_US",
+        resourceBundleLocation = "bundles.languageBundle"
+        )
+@Stateless
+public class StatelessCallback implements CallbackComponent {
+
+    @Resource
+    private Context context;
+
+    @Override
+    public Object handle(final Message<Event, Object> message) {
+        if(message.isMessageBodyTypeOf(File.class)){
+            File folder = message.getTypedMessageBody(File.class);
+            if(folder.isDirectory()) {
+                for(String file: folder.list()){
+                        System.out.println(file);
+                }
+             }
+        }
+        return " ";
+    }
+
+    @PreDestroy
+    public void onPreDestroyComponent() {
+    }
+
+    @PostConstruct
+    public void onPostConstructComponent(final ResourceBundle resourceBundle) {
+    }
+
+}
+</pre>
+<br/>
 
 ## <a name=fragments></a>Fragments
 <br/>
