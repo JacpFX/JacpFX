@@ -457,57 +457,13 @@ The @DeclarativeView annotation contains all meta data related to the FXML-Compo
 <br/>
 #### FXML-Component example ####
 The "postHandle" method of a FXML-Component must return NULL, as the root node of the FXML-file will be passed to the perspective. 
-<br/>
-<pre>
-@DeclarativeView(id = ComponentIds.COMPONENT_ONE,
-        name = "SimpleView",
-        active = true,
-        resourceBundleLocation = "bundles.languageBundle",
-        initialTargetLayoutId = PerspectiveIds.TARGET_CONTAINER_TOP,
-        <b>viewLocation = "/fxml/ComponentOne.fxml")</b>
-public class ComponentOne implements FXComponent {
-    @FXML
-    private VBox rootPane;    
-    @FXML
-    private HBox top;
-    @FXML
-    private HBox bottom;
 
-    @Override
-    public Node handle(final Message<Event, Object> message) {
-        // runs in worker thread
-        return null;
-    }
-
-    @Override
-    public Node postHandle(final Node arg0,
-                           final Message<Event, Object> message) {
-        // runs in FX application thread
-        return null;
-    }
-
-    @PostConstruct
-    public void onStartComponent(final FXComponentLayout arg0,
-                                 final ResourceBundle resourceBundle) {
-    }
-}
-</pre>
+<script src="https://gist.github.com/amoAHCP/b8151043d620d06d50ab.js"></script>
 <br/>
 
 ##### The ComponentOne.fxml file: #####
-```xml
-<VBox fx:id="rootPane" xmlns="http://javafx.com/javafx/8"
-      xmlns:fx="http://javafx.com/fxml/1" HBox.hgrow="ALWAYS">
-    <children>
-        <HBox fx:id="top">
-            ...
-        </HBox>
-        <HBox fx:id="bottom">
-            ...
-        </HBox>
-    </children>
-</VBox>
-```
+<script src="https://gist.github.com/amoAHCP/3b0a87adb19baea6effa.js"></script>
+<br/>
 ### Callback Components ###
 Callback Components are service-like Components which reacts on messages and returns an Object to the caller Component or any other target (Request/Response). By default the caller Component will be notified, if no return value is specified, no message will be send.
 <br/>
@@ -552,43 +508,14 @@ In terms of JEE it is a "singleton per perspective" component; While JEE singlet
 
 #### Stateful CallbackComponent example ####
 
-<pre>
-@Component(id = BasicConfig.STATEFUL_CALLBACK,
-        name = "statefulCallback",
-        active = true,
-        localeID = "en_US",
-        resourceBundleLocation = "bundles.languageBundle")
-public class StatefulCallback implements CallbackComponent {
-
-    @Resource
-    private Context context;
-    private int c = 0;
-    
-    @Override
-    public Object handle(final Message<Event, Object> message) {
-    	c = c++;
-        if(message.messageBodyEquals("ping")) return "pong";
-        return "ping";
-    }
-
-    @PreDestroy
-    public void onPreDestroyComponent() {
-    }
-
-    @PostConstruct
-    public void onPostConstructComponent(final ResourceBundle resourceBundle) {
-
-    }
-
-}
-</pre>
+<script src="https://gist.github.com/amoAHCP/f63986d02e6db76b24e3.js"></script>
 <br/>
+
 #### Stateless CallbackComponent ####
 A stateless CallbackComponent must implement the CallbackComponent interface and contain the annotations @Component and @Stateless.
 Stateless Components are using instance-pooling for scaling, a CallbackComponent pool will be created for every Component per perspective.
 
 #### Stateless CallbackComponent lifecycle ####
-
 
 <br/>
 <div align="center">
@@ -598,42 +525,7 @@ Stateless Components are using instance-pooling for scaling, a CallbackComponent
 <br/>
 #### Stateful CallbackComponent example ####
 
-<pre>
-@Component(id = BasicConfig.STATELESS_CALLBACK,
-        name = "statelessCallback",
-        active = true,
-        localeID = "en_US",
-        resourceBundleLocation = "bundles.languageBundle"
-        )
-@Stateless
-public class StatelessCallback implements CallbackComponent {
-
-    @Resource
-    private Context context;
-
-    @Override
-    public Object handle(final Message<Event, Object> message) {
-        if(message.isMessageBodyTypeOf(File.class)){
-            File folder = message.getTypedMessageBody(File.class);
-            if(folder.isDirectory()) {
-                for(String file: folder.list()){
-                        System.out.println(file);
-                }
-             }
-        }
-        return " ";
-    }
-
-    @PreDestroy
-    public void onPreDestroyComponent() {
-    }
-
-    @PostConstruct
-    public void onPostConstructComponent(final ResourceBundle resourceBundle) {
-    }
-
-}
-</pre>
+<script src="https://gist.github.com/amoAHCP/1d7e5fdd6e8c8ed8b2a4.js"></script>
 <br/>
 
 ## <a name=fragments></a>Fragments ##
@@ -655,73 +547,28 @@ The @Fragment annotation contains all meta data related to the JacpFX Fragment.
 A Fragments can either extend a JavaFX Node, or a POJO defining a FXML view.
 <br/>
 #### FXML Fragment example####
-<pre>
-@Fragment(id = BaseConfiguration.FRAGMENT_ONE,
-        viewLocation = "/fxml/FragmentOne.fxml",
-        resourceBundleLocation = "bundles.languageBundle",
-        localeID = "en_US",
-        scope = Scope.PROTOTYPE)
-public class FragmentOne {
-	@Resource
-	private Context context;
-	@Resource
-	private ResourceBundle bundle;
-	@FXML
-	private VBox rootPane;
-	
-	@FXML
-	protected void send() {
-	 context.send("hello world");
-	}
-	
-	public void doAnything() {
-	
-	}
-}
-</pre>
+<script src="https://gist.github.com/amoAHCP/7637efbad4bab3c672b6.js"></script>
 <br/>
 ##### The FragmentOne.fxml file: #####
-```xml
-<VBox fx:id="rootPane" xmlns="http://javafx.com/javafx/8"
-      xmlns:fx="http://javafx.com/fxml/1" HBox.hgrow="ALWAYS" style="-fx-background-color:#f5f5f5">
-    <children>
-        <HBox fx:id="top">
-            <children>
-                <Label text="Phone:"/>
-                <Button text="OK" onAction="#doAnything" />
-            </children>
-        </HBox>
- 		...
-    </children>
-</VBox>
-```
+<script src="https://gist.github.com/amoAHCP/85f8fc6f14e558a8ebc3.js"></script>
 <br/>
 #### JavaFX Fragment example####
-<pre>
-@Fragment(id = BaseConfiguration.FRAGMENT_TWO,
-        resourceBundleLocation = "bundles.languageBundle",
-        localeID = "en_US",
-        scope = Scope.PROTOTYPE)
-public class FragmentTwo extends VBox {
-	@Resource
-	private Context context;
-	@Resource
-	private ResourceBundle bundle;
-	
-    public FragmentTwo() {
-        HBox top = new HBox();
-        Label firstName = new Label("Phone:");
-        Button ok = new Button("OK");
-        
-        ok.setOnAction((event)->context.send("hello world"));
-
-        top.getChildren().addAll(firstName, ok);
-        this.getChildren().addAll(top);
-    }
-</pre>
+<script src="https://gist.github.com/amoAHCP/1633ecbbadb709cf7000.js"></script>
 <br/>
 ### Create a Fragment instance ###
-Fragments <b>never</b> instantiated directly, the only can be created in a Perspective or an UI-Component. To create a Fragment the Context interface provides the method: getManagedFragmentHandler(FragmentOne.class); and returns a ManagedFragmentHandler. The Handler provides access to the Controller (FragmentOne) and to the view (VBox).
+Fragments <b>never</b> instantiated directly, they can only be created in a Perspective or an UI-Component. To create a Fragment, the Context interface provides the method: getManagedFragmentHandler(FragmentOne.class); and returns a ManagedFragmentHandler. The Handler provides access to the Controller (FragmentOne) and to the view (VBox).
+Depending on the Fragments scope, the method call returns always the same instance or in case of "prototype" scope different one. 
+<br/>
+
+<script src="https://gist.github.com/amoAHCP/8336576900b69d467b83.js"></script>
+<br/>
+
+#### The ManagedFragmentHandler ####
+
+The ManagedFragmentHandler holds the reference to the Fragment instance and their view. 
+
+- <b>"getController()"</b> returns the an instance of your Fragment.
+- <b>"getFragmentNode()"</b> returns an JavaFX Node representing the view.
 
 ## <a name=messaging></a>JacpFX messaging##
 ### The message interface ###
