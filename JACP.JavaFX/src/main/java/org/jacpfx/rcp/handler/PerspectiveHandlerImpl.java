@@ -300,7 +300,7 @@ public class PerspectiveHandlerImpl implements
     private void executeOnShow(final Perspective<EventHandler<Event>, Event, Object> perspective, final Perspective<EventHandler<Event>, Event, Object> previousPerspective) {
         if (!perspective.equals(previousPerspective)) {
             final PerspectiveView<Node, EventHandler<Event>, Event, Object> perspectiveView = ((PerspectiveView<Node, EventHandler<Event>, Event, Object>) perspective);
-            final FXComponentLayout layout = new FXComponentLayout(this.getWorkbenchLayout(),perspective.getContext().getParentId(),perspective.getContext().getId());
+            final FXComponentLayout layout = new FXComponentLayout(this.getWorkbenchLayout(),null,perspective.getContext().getId());
             // execute OnShow
             FXUtil.invokeHandleMethodsByAnnotation(OnShow.class, perspective.getPerspective(), layout,
                     perspectiveView.getType().equals(UIType.DECLARATIVE) ? perspectiveView.getDocumentURL() : null, perspectiveView.getContext().getResourceBundle());
@@ -383,7 +383,7 @@ public class PerspectiveHandlerImpl implements
     }
 
     private void initFXComponentLayout(final JacpContextImpl context) {
-        context.setFXComponentLayout(new FXComponentLayout(this.getWorkbenchLayout(),context.getParentId(),context.getId()));
+        context.setFXComponentLayout(new FXComponentLayout(this.getWorkbenchLayout(),null,context.getId()));
     }
 
     private void handleDefaultPerspective(final AFXPerspective perspective) {
@@ -448,7 +448,7 @@ public class PerspectiveHandlerImpl implements
         hideChildren(children);
         if (previousPerspective != null && !previousPerspective.equals(perspective)) {
             final PerspectiveView<Node, EventHandler<Event>, Event, Object> perspectiveView = ((PerspectiveView<Node, EventHandler<Event>, Event, Object>) previousPerspective);
-            final FXComponentLayout layout = new FXComponentLayout(this.getWorkbenchLayout(),previousPerspective.getContext().getParentId(),previousPerspective.getContext().getId());
+            final FXComponentLayout layout = new FXComponentLayout(this.getWorkbenchLayout(),null,previousPerspective.getContext().getId());
             this.handleToolBarButtons(previousPerspective, false);
             this.handleToolBarButtons(perspective, true);
             FXUtil.invokeHandleMethodsByAnnotation(OnHide.class, previousPerspective.getPerspective(), layout,
