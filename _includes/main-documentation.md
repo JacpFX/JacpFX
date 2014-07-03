@@ -56,6 +56,9 @@ root
 #### JacpFX.JavaFX ####
 #### JacpFX.JavaFXControls ####
 #### JacpFX.JavaFXSpring ####
+#### Java8 ####
+#### JavaFX8 ####
+#### maven ####
 <br/>
 
 ## <a name=ApplicationLauncher></a>ApplicationLauncher 
