@@ -67,73 +67,15 @@ An ApplicationLauncher contains the main method, the component-scanning configur
 
 ### AFXSpringXmlLauncher example ###
 
-<pre>
-public class ApplicationLauncher extends AFXSpringXmlLauncher {
-
-<b>
-    @Override
-    public String getXmlConfig() {
-        return "main.xml";
-    }
-</b>
-    @Override
-    protected Class<? extends FXWorkbench> getWorkbenchClass() {
-        return JacpFXWorkbench.class;
-    }
-
-    @Override
-    protected String[] getBasePackages() {
-        return new String[]{"my.project.quickstart"};
-    }
-
-
-    public static void main(String[] args) {
-        Application.launch(args);
-    }
-
-    @Override
-    public void postInit(Stage stage) {
-	...
-    }
-
-}
-
-</pre>
+<script src="https://gist.github.com/amoAHCP/53959e5378c31ae5a72b.js"></script>
 
 > The "getXMLConfig()" methods returns the name of your spring configuration xml, which is located in resources folder.
 
 <br/>
 ### AFXSpringJavaConfigLauncher example ###
 
-<pre>
-public class ApplicationLauncher extends AFXSpringJavaConfigLauncher {
-<b>
-    @Override
-    protected Class<?>[] getConfigClasses() {
-        return new Class<?>[]{BaseConfiguration.class};
-    }
-</b>
-    @Override
-    protected Class<? extends FXWorkbench> getWorkbenchClass() {
-        return JacpFXWorkbench.class;
-    }
 
-    @Override
-    protected String[] getBasePackages() {
-        return new String[]{"my.project.quickstart"};
-    }
-
-
-    public static void main(String[] args) {
-        Application.launch(args);
-    }
-
-    @Override
-    public void postInit(Stage stage) {
-	...
-    }
-}
-</pre>
+<script src="https://gist.github.com/amoAHCP/51f4752d9a622f8366fc.js"></script>
 
 > The "getConfigClasses()" returns an array with all valid spring configuration classes (annotated with @Configuration)
 <br/>
@@ -222,7 +164,7 @@ To declare references to perspectives, simply add the perspective ID's in the "p
         }) </b>
 </pre>
 
-##<a name=perspective></a>Perspective##
+##<a name=perspective></a>Perspectives##
 
 A perspective defines the basic UI structure for your view and provides a container for components. 
 While a perspective is more like a template with placeholders (or a portal page), components are the detail views of your application (or the portlets).
@@ -281,13 +223,12 @@ public class PerspectiveOne implements FXPerspective {
                                    final ResourceBundle resourceBundle) {
                                    
        <b> // define the perspective view with JavaFX </b>  
-		BorderPane mainPane = new BorderPane();
-        LayoutUtil.GridPaneUtil.setFullGrow(ALWAYS, mainPane);
+		BorderPane rootPane = new BorderPane();
 
         SplitPane mainLayout = new SplitPane();
         mainLayout.setOrientation(Orientation.VERTICAL);
         mainLayout.setDividerPosition(0, 0.55f);
-        mainPane.setCenter(mainLayout);
+        rootPane.setCenter(mainLayout);
 
         HBox contentTop = new HBox();
         HBox contentBottom = new HBox();
@@ -295,7 +236,7 @@ public class PerspectiveOne implements FXPerspective {
         mainLayout.getItems().addAll(contentTop, contentBottom);
 		<b>
        // Register root component
-        perspectiveLayout.registerRootComponent(mainPane);
+        perspectiveLayout.registerRootComponent(rootPane);
         </b>
 		...
     }
@@ -304,6 +245,7 @@ public class PerspectiveOne implements FXPerspective {
     public void onTearDownPerspective(final FXComponentLayout arg0) { ... }
     
 </pre>
+<br/>
 #### Declarative Perspectives ####
 Declarative perspectives provides their view by defining a FXML file representing the view. The root node is always the root of your FXML and will be automatically registered.
 
@@ -319,7 +261,7 @@ public class PerspectiveTwo implements FXPerspective {
     @FXML
     private HBox contentBottom;
     @FXML
-    private BorderPane mainPane;
+    private BorderPane rootPane;
 
 
     @Override
@@ -342,11 +284,11 @@ public class PerspectiveTwo implements FXPerspective {
 }
 
 </pre>
-
+<br/>
 ####The FXML view:####
 
 ```xml
-<BorderPane id="mainPane"
+<BorderPane id="rootPane"
             xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <center>
         <SplitPane fx:id="mainLayout" dividerPositions="0.55" focusTraversable="true"
@@ -469,7 +411,7 @@ The "postHandle" method of a JavaFX-Component must always return a JavaFX Node, 
         resourceBundleLocation = "bundles.languageBundle",
         initialTargetLayoutId = PerspectiveIds.TARGET__CONTAINER_MAIN)
 public class ComponentTwo implements FXComponent {
-	private VBox mainPane;
+	private VBox rootPane;
     @Override
     public Node handle(final Message<Event, Object> message) {
         // runs in worker thread
@@ -479,25 +421,24 @@ public class ComponentTwo implements FXComponent {
     public Node postHandle(final Node arg0,
                            final Message<Event, Object> message) {
         // runs in FX application thread
-        return this.mainPane;
+        return this.rootPane;
     }
 	@PostConstruct
     public void onStartComponent(final FXComponentLayout arg0,
                                  final ResourceBundle resourceBundle) {
-       pane = createUI();
+       rootPane = createUI();
 	}
 	private VBox createUI() {
-        final VBox mainPane = new VBox();
-        HBox.setHgrow(mainPane, Priority.ALWAYS);
+        final VBox rootPane = new VBox();
         final HBox top = new HBox();
         final HBox bottom = new HBox();
-        mainPane.getChildren().addAll(top,bottom);
-        return mainPane;
+        rootPane.getChildren().addAll(top,bottom);
+        return rootPane;
     }
 }
 </pre>
-
-#### The @DeclarativeView class level annotation ###
+<br/><br/>
+#### The @DeclarativeView class level annotation ####
 The @DeclarativeView annotation contains all meta data related to the FXML-Component implementing the FXComponent interface.
 
 - <b>"name"</b>, defines the Component name
@@ -507,6 +448,9 @@ The @DeclarativeView annotation contains all meta data related to the FXML-Compo
 - <b>"initialTargetLayoutId"</b>, contains the render-target id defined in the parent perspective.
 - <b>"resourceBundleLocation" (optional)</b>, defines the resource bundle file
 - <b>"localeID"</b>,  the default locale Id (http://www.oracle.com/technetwork/java/javase/locales-137662.html)
+
+
+
 <br/>
 #### FXML-Component example ####
 The "postHandle" method of a FXML-Component must return NULL, as the root node of the FXML-file will be passed to the perspective. 
@@ -519,9 +463,8 @@ The "postHandle" method of a FXML-Component must return NULL, as the root node o
         initialTargetLayoutId = PerspectiveIds.TARGET_CONTAINER_TOP,
         <b>viewLocation = "/fxml/ComponentOne.fxml")</b>
 public class ComponentOne implements FXComponent {
-
     @FXML
-    private VBox mainPane;    
+    private VBox rootPane;    
     @FXML
     private HBox top;
     @FXML
@@ -550,7 +493,7 @@ public class ComponentOne implements FXComponent {
 
 ##### The ComponentOne.fxml file: #####
 ```xml
-<VBox fx:id="mainPane" xmlns="http://javafx.com/javafx/8"
+<VBox fx:id="rootPane" xmlns="http://javafx.com/javafx/8"
       xmlns:fx="http://javafx.com/fxml/1" HBox.hgrow="ALWAYS">
     <children>
         <HBox fx:id="top">
@@ -578,15 +521,15 @@ By default the return value of this method will generate a message to the caller
 - <b>@PreDestroy:</b> A method annotated with @PreDestroy will be executed when a component will be destroyed. The method will be executed in a worker Thread. The method signature can have no parameters,  and/or the reference to the ResourceBundle resourceBundle. 
 
 
-#### The @Component class level annotation ###
+#### The @Component class level annotation ####
 The @Component annotation contains all meta data related to the Callback-Component implementing the CallbackComponent interface.
 
 - <b>"name"</b>, defines the Component name
 - <b>"id"</b>, defines an unique Component Id
 - <b>"active"</b>, defines the initial Component state. Inactive Components are activated on message.
 - <b>"resourceBundleLocation" (optional)</b>, defines the resource bundle file
-- <b>"localeID"</b>,  the default locale Id (http://www.oracle.com/technetwork/java/javase/locales-137662.html)
-<br/>
+- <b>"localeID"</b>,  the default locale Id (http://www.oracle.com/technetwork/java/javase/locales-137662.html) <br/>
+
 
 ### CallbackComponent types ###
 CallbackComponents can be either <b>stateful</b> or <b>stateless</b>; with an FXML view.
@@ -648,6 +591,7 @@ Stateless Components are using instance-pooling for scaling, a CallbackComponent
 <div align="center">
 ![stateless component lifecycle](/img/JACP_Stateless-Component.png)
 </div>
+
 <br/>
 #### Stateful CallbackComponent example ####
 
@@ -689,10 +633,93 @@ public class StatelessCallback implements CallbackComponent {
 </pre>
 <br/>
 
-## <a name=fragments></a>Fragments
+## <a name=fragments></a>Fragments ##
+JacpFX-Fragments are small managed Components, that live in the Context of a Perspective or a Component. The purpose of a Fragment is to create a reusable custom control or a group of controls that has access to the parent Context, which allows the Fragment to send messages, access resources and to interact with the parent Component.
+A Fragment can either extent a JavaFX "Node" or declare a FXML view. The Fragment itself can not be a message-target, but his parent Component can access his Controller class and the view. 
 <br/>
-## <a name=services></a>Service components
+### The @Fragment class level annotation ###
+The @Fragment annotation contains all meta data related to the JacpFX Fragment.
+
+- <b>"id"</b>, defines an unique Fragment Id
+- <b>"viewLocation"</b>, defines the location the FXML file representing the view
+- <b>"resourceBundleLocation" (optional)</b>, defines the resource bundle file
+- <b>"localeID"</b>,  the default locale Id (http://www.oracle.com/technetwork/java/javase/locales-137662.html)
+- <b>"scope"</b>,  defines the scope of the Fragment (singleton/prototype). 
 <br/>
+
+
+### Fragment types ###
+A Fragments can either extend a JavaFX Node, or a POJO defining a FXML view.
+<br/>
+#### FXML Fragment example####
+<pre>
+@Fragment(id = BaseConfiguration.FRAGMENT_ONE,
+        viewLocation = "/fxml/FragmentOne.fxml",
+        resourceBundleLocation = "bundles.languageBundle",
+        localeID = "en_US",
+        scope = Scope.PROTOTYPE)
+public class FragmentOne {
+	@Resource
+	private Context context;
+	@Resource
+	private ResourceBundle bundle;
+	@FXML
+	private VBox rootPane;
+	
+	@FXML
+	protected void send() {
+	 context.send("hello world");
+	}
+	
+	public void doAnything() {
+	
+	}
+}
+</pre>
+<br/>
+##### The FragmentOne.fxml file: #####
+```xml
+<VBox fx:id="rootPane" xmlns="http://javafx.com/javafx/8"
+      xmlns:fx="http://javafx.com/fxml/1" HBox.hgrow="ALWAYS" style="-fx-background-color:#f5f5f5">
+    <children>
+        <HBox fx:id="top">
+            <children>
+                <Label text="Phone:"/>
+                <Button text="OK" onAction="#doAnything" />
+            </children>
+        </HBox>
+ 		...
+    </children>
+</VBox>
+```
+<br/>
+#### JavaFX Fragment example####
+<pre>
+@Fragment(id = BaseConfiguration.FRAGMENT_TWO,
+        resourceBundleLocation = "bundles.languageBundle",
+        localeID = "en_US",
+        scope = Scope.PROTOTYPE)
+public class FragmentTwo extends VBox {
+	@Resource
+	private Context context;
+	@Resource
+	private ResourceBundle bundle;
+	
+    public FragmentTwo() {
+        HBox top = new HBox();
+        Label firstName = new Label("Phone:");
+        Button ok = new Button("OK");
+        
+        ok.setOnAction((event)->context.send("hello world"));
+
+        top.getChildren().addAll(firstName, ok);
+        this.getChildren().addAll(top);
+    }
+</pre>
+<br/>
+### Create a Fragment instance ###
+Fragments <b>never</b> instantiated directly, the only can be created in a Perspective or an UI-Component. To create a Fragment the Context interface provides the method: getManagedFragmentHandler(FragmentOne.class); and returns a ManagedFragmentHandler. The Handler provides access to the Controller (FragmentOne) and to the view (VBox).
+
 ## <a name=messaging></a>JacpFX messaging##
 ### The message interface ###
 <br/>
@@ -705,6 +732,8 @@ public class StatelessCallback implements CallbackComponent {
 ##localisation and internationalisation##
 
 ##resources##
+
+##dependency injection##
 
 ##annotations overview##
 
