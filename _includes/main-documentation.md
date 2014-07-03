@@ -566,7 +566,19 @@ public class ComponentOne implements FXComponent {
 Callback Components are service-like Components which reacts on messages and returns an Object to the caller Component or any other target (Request/Response). By default the caller Component will be notified, if no return value is defined no message will be send.
 <br/>
 
-#### CallbackComponent types ####
+#### The CallbackComponent interface ####
+
+The CallbackComponent interface defines following two methods to implement:
+
+- The <b>"handle(...)"</b> method must be overwritten and will be executed, each time the Component receives a message. This method will be executed <b>outside the FX Application Thread </b> inside an worker-thread. 
+By default the return value of this method will generate a message to the caller Component to return the result. If no return value is specified, no result message will be send. If the return value should be redirected to an other Component you can use the Context.setReturnTarget("parent.targetId") to specify the target Component.
+
+#### Method-level annotations ####
+- <b>@PostConstruct:</b> A method annotated with @PostConstruct will be executed when a Component was activated, and runs in a worker Thread. The method signature can have no parameters and/or the reference to the ResourceBundle resourceBundle. 
+- <b>@PreDestroy:</b> A method annotated with @PreDestroy will be executed when a component will be destroyed. The method will be executed in a worker Thread. The method signature can have no parameters,  and/or the reference to the ResourceBundle resourceBundle. 
+
+
+### CallbackComponent types ###
 CallbackComponents can be either <b>stateful</b> or <b>stateless</b>; with an FXML view.
 
 #### Stateful CallbackComponent ####
@@ -581,6 +593,20 @@ In terms of JEE it is a "singleton per perspective" component; While JEE singlet
 ![stateful component lifecycle](/img/JACP_Stateful-Component.png)
 </div>
 <br/>
+
+#### Stateless CallbackComponent ####
+A stateless CallbackComponent must implement the CallbackComponent interface and contain the annotations @Component and @Stateless.
+Stateless Components are using instance-pooling for scaling, a CallbackComponent pool will be created for every Component per perspective.
+
+#### Stateless CallbackComponent lifecycle ####
+
+
+<br/>
+<div align="center">
+![stateless component lifecycle](/img/JACP_Stateless-Component.png)
+</div>
+<br/>
+
 
 ## <a name=fragments></a>Fragments
 <br/>
