@@ -101,27 +101,7 @@ Furthermore a Workbench logically groups all perspectives defined in the @Workbe
  
 ### Example workbench ###
 <br/>
-<pre>
-@Workbench(id = "id1", name = "workbench",
-        perspectives = {
-                BaseConfiguration.PERSPECTIVE_TWO,
-                BaseConfiguration.PERSPECTIVE_ONE
-        })
-public class JacpFXWorkbench implements FXWorkbench {
-    @Override
-    public void handleInitialLayout(final Message<Event, Object> action,
-                                    final WorkbenchLayout<Node> layout, final Stage stage) {
-        layout.setWorkbenchXYSize(1024, 768);
-        layout.registerToolBar(ToolbarPosition.NORTH);
-        layout.setStyle(StageStyle.DECORATED);
-        layout.setMenuEnabled(false);
-    }
-    @Override
-    public void postHandle(final FXComponentLayout layout) {
-    ...
-    }
-}
-</pre>
+<script src="https://gist.github.com/amoAHCP/2d5613384248caa6b4d2.js"></script>
 <br/>
 
 The Workbench interface defines two method:
@@ -159,13 +139,7 @@ To get detailled informations about toolbars, see **[Toolbars](#toolbars)**
 ### Declare references to perspectives ###
 To declare references to perspectives, simply add the perspective ID's in the "perspective" attribute located in the "@Workbench" annotation. The component scanning tries to find the corresponding perspective implementation in the classpath, so the implementations do not need to be located in the same project as the workbench, as long they are in the classpath.
 <br/>
-<pre>
-@Workbench(id = "id1", name = "workbench",
-      <b>  perspectives = {
-                BaseConfiguration.PERSPECTIVE_TWO,
-                BaseConfiguration.PERSPECTIVE_ONE
-        }) </b>
-</pre>
+<script src="https://gist.github.com/amoAHCP/f0217d935d55e81aa277.js"></script>
 
 ##<a name=perspective></a>Perspectives##
 
@@ -204,150 +178,29 @@ Perspectives can be written either <b>programmatically</b> in plain JavaFX or <b
 
 Programmatic perspectives declare their view in plain JavaFX. You can create any complex UI tree, but you have to register the root node of you UI tree which will than be added to the workbench.
 
-<pre>
-@Perspective(id = BaseConfiguration.PERSPECTIVE_ONE, name = "PerspectiveOne",
-        components = {...},
-        resourceBundleLocation = "bundles.languageBundle")
-public class PerspectiveOne implements FXPerspective {
-
-
-    @Override
-    public void handlePerspective(final Message<Event, Object> message,
-                                  final PerspectiveLayout perspectiveLayout) { ... }
-
-    @OnShow
-    public void onShow(final FXComponentLayout layout) { ... }
-    
-    @OnHide
-    public void onHide(final FXComponentLayout layout) { ... }
-
-    @PostConstruct
-    public void onStartPerspective(final PerspectiveLayout perspectiveLayout, final FXComponentLayout layout,
-                                   final ResourceBundle resourceBundle) {
-                                   
-       <b> // define the perspective view with JavaFX </b>  
-		BorderPane rootPane = new BorderPane();
-
-        SplitPane mainLayout = new SplitPane();
-        mainLayout.setOrientation(Orientation.VERTICAL);
-        mainLayout.setDividerPosition(0, 0.55f);
-        rootPane.setCenter(mainLayout);
-
-        HBox contentTop = new HBox();
-        HBox contentBottom = new HBox();
-
-        mainLayout.getItems().addAll(contentTop, contentBottom);
-		<b>
-       // Register root component
-        perspectiveLayout.registerRootComponent(rootPane);
-        </b>
-		...
-    }
-
-    @PreDestroy
-    public void onTearDownPerspective(final FXComponentLayout arg0) { ... }
-    
-</pre>
+<script src="https://gist.github.com/amoAHCP/5a07f9563f4c2b726763.js"></script>
 <br/>
 #### Declarative Perspectives ####
 Declarative perspectives provides their view by defining a FXML file representing the view. The root node is always the root of your FXML and will be automatically registered.
 
-<pre>
-@Perspective(id = PerspectiveIds.PERSPECTIVE_TWO, name = "PerspectiveTwo",
-        components = {},
-        <b>viewLocation = "/fxml/perspectiveOne.fxml",</b>
-        resourceBundleLocation = "bundles.languageBundle")
-public class PerspectiveTwo implements FXPerspective {
-
-    @FXML
-    private HBox contentTop;
-    @FXML
-    private HBox contentBottom;
-    @FXML
-    private BorderPane rootPane;
-
-
-    @Override
-    public void handlePerspective(final Message<Event, Object> message,
-                                  final PerspectiveLayout perspectiveLayout) { ... }
-
-    @OnShow
-    public void onShow(final FXComponentLayout layout) { ... }
-    
-    @OnHide
-    public void onHide(final FXComponentLayout layout) { ... }
-
-    @PostConstruct
-    public void onStartPerspective(final FXComponentLayout layout,
-                                   final ResourceBundle resourceBundle) { ... }
-
-    @PreDestroy
-    public void onTearDownPerspective(final FXComponentLayout arg0) { ... }
-
-}
-
-</pre>
+<script src="https://gist.github.com/amoAHCP/408d1e8b86388c5e5e5b.js"></script>
 <br/>
 ####The FXML view:####
 
-```xml
-<BorderPane id="rootPane"
-            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-    <center>
-        <SplitPane fx:id="mainLayout" dividerPositions="0.55" focusTraversable="true"
-                   orientation="VERTICAL" HBox.hgrow="ALWAYS">
-            <items>
-                <HBox fx:id="contentTop"/>
-                <HBox fx:id="contentBottom"/>
-            </items>
-        </SplitPane>
-    </center>
-</BorderPane>
-```
-
+<script src="https://gist.github.com/amoAHCP/a95003f8d2b84ad32802.js"></script>
+<br/>
 ### Register components ###
 Component-references are defined inside the @Perspective annotation. Once the application is started, you can move components from one perspective to an other. 
 Component references are subjected to one simple rule: components are <b>ALWAYS unique per Perspective</b>, you can't add the same Component twice in one perspective, but you can use one Component in many perspectives. Each Component is a singleton per Perspective and a second Perspective will get a different Component instance as the first Perspective.
 #### Definition of components-references####
-<pre>
-@Perspective(id = BaseConfiguration.PERSPECTIVE_ONE, name = "PerspectiveOne",
-        <b>components = {ComponentIds.ONE,ComponentIds.TWO,ComponentIds.THREE},</b>
-        resourceBundleLocation = "bundles.languageBundle")
-public class PerspectiveOne implements FXPerspective {
-		...
-    }   
-</pre>
+<script src="https://gist.github.com/amoAHCP/ee4ffe9c557841cf1066.js"></script>
 
 <br/>
 
 ### Register render-targets ###
 Render-targets are areas in your perspective where component-views can be rendered. You can register any node of your perspective-view to be a render-target. A child component of your perspective can now register itself to be rendered in this node.
 #### Definition of render-targets####
-<pre>
-@Perspective(id = BaseConfiguration.PERSPECTIVE_ONE, name = "PerspectiveOne",
-        components = {...},
-        resourceBundleLocation = "bundles.languageBundle")
-public class PerspectiveOne implements FXPerspective {
-   ...
-
-    @PostConstruct
-    public void onStartPerspective(final PerspectiveLayout perspectiveLayout, final FXComponentLayout layout,
-                                   final ResourceBundle resourceBundle) {                                  
-		...
-
-        HBox contentTop = new HBox();
-        HBox contentBottom = new HBox();
-
-        mainLayout.getItems().addAll(contentTop, contentBottom);
-		<b>
-       // register top menu
-        perspectiveLayout.registerTargetLayoutComponent(BaseConfiguration.TARGET_CONTAINER_TOP, contentTop);
-        // register bottom content
-        perspectiveLayout.registerTargetLayoutComponent(BaseConfiguration.TARGET_CONTAINER_MAIN, contentBottom);
-        </b>
-		...
-    }   
-</pre>
+<script src="https://gist.github.com/amoAHCP/a7c92f0951d75f7b94f8.js"></script>
 
 <br/>
 
@@ -406,41 +259,8 @@ The @View annotation contains all meta data related to the JavaFX-Component impl
 <br/>
 #### JavaFX-Component example ####
 The "postHandle" method of a JavaFX-Component must always return a JavaFX Node, representing the view of the component.
+<script src="https://gist.github.com/amoAHCP/b4f780fb5ed0bc1a7ccf.js"></script>
 <br/>
-<pre>
-@View(id = ComponentIds.COMPONENT__TWO,
-        name = "SimpleView",
-        active = true,
-        resourceBundleLocation = "bundles.languageBundle",
-        initialTargetLayoutId = PerspectiveIds.TARGET__CONTAINER_MAIN)
-public class ComponentTwo implements FXComponent {
-	private VBox rootPane;
-    @Override
-    public Node handle(final Message<Event, Object> message) {
-        // runs in worker thread
-        return null;
-    }
-    @Override
-    public Node postHandle(final Node arg0,
-                           final Message<Event, Object> message) {
-        // runs in FX application thread
-        return this.rootPane;
-    }
-	@PostConstruct
-    public void onStartComponent(final FXComponentLayout arg0,
-                                 final ResourceBundle resourceBundle) {
-       rootPane = createUI();
-	}
-	private VBox createUI() {
-        final VBox rootPane = new VBox();
-        final HBox top = new HBox();
-        final HBox bottom = new HBox();
-        rootPane.getChildren().addAll(top,bottom);
-        return rootPane;
-    }
-}
-</pre>
-<br/><br/>
 #### The @DeclarativeView class level annotation ####
 The @DeclarativeView annotation contains all meta data related to the FXML-Component implementing the FXComponent interface.
 
