@@ -18,14 +18,14 @@ context.send("message");
 > This can be interesting when you want to execute methods in a worker thread. (see non blocking UI)
 
 <br/>
-### sending a message to a specific component  ###
+### sending a message to a specific <i>Component</i>  ###
 <pre>
 context.send(ComponentIds.COMPONENT_ONE,"message");
 </pre> 
 <br/>
 
 ## Message lifecycle ##
-To handle a message, the JacpFX component interfaces defines two methods which will be called sequential:
+To handle a message, the JacpFX <i>Component</i> interfaces defines two methods which will be called sequential:
 
 <pre>
 public Node handle(final Message<Event, Object> message) {
@@ -44,7 +44,7 @@ public Node postHandle(final Node arg0,
     }
 </pre>
 
-While the "handle" method will be executed in a worker thread, the "postHandle" method is always executed on the FX application thread. For details about the component lifecycle see [the documentation about async execution](nonblocking.html)
+While the "handle" method will be executed in a worker thread, the "postHandle" method is always executed on the FX application thread. For details about the <i>Component</i> lifecycle see [the documentation about async execution](nonblocking.html)
 
 
 

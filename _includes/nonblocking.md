@@ -9,15 +9,15 @@ In this stage you can execute any long running task or create new JavaFX nodes w
 <br/>
 ##JacpFX Callback-Components##
 <br/>
-JacpFX Callback-Components have no UI, and therefore no need to switch to the FX Application thread. Callback-Components can be used to outsource long running tasks, or to coordinate a message flow.
+JacpFX Callback-Components have no UI, and therefore no need to switch to the FX Application thread. Callback-<i>Components</i> can be used to outsource long running tasks, or to coordinate a message flow.
 <div align="center">
 ![component-lifecycle](/img/JacpFX_Non-Blocking_UI_Abb2.png)
 </div>
 
 <br/><br/>
-A JacpFX Callback-Components can be either stateful or stateless.
+A JacpFX Callback-<i>Components</i> can be either stateful or stateless.
 
-## Stateful Callback-Component: ##
+## Stateful Callback-<i>Component</i>: ##
 <pre>
 @Component(id = ComponentIds.STATEFUL_CALLBACK, name = "statefulCallback", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
 public class StatefulCallback implements CallbackComponent {

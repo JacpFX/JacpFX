@@ -6,13 +6,13 @@
 
 * The root of a JacpFX application is always the workbench which defines an application window.
 
-* A workbench contains 1-n perspectives, each defining the layout of their view. A perspective defines his view either programmatically with JavaFX or by using a FXML file. In each perspective view you can register several UI nodes as a target (placeholder) for a component view. 
+* A workbench contains 1-n <i>Perspectives</i>, each defining the layout of their view. A perspective defines his view either programmatically with JavaFX or by using a FXML file. In each perspective view you can register several UI nodes as a target (placeholder) for a <i>Component</i> view. 
 
-* A perspective contains 0-n UI components. Each component registers for a specific target (defined in the parent perspective) where the component view will be rendered. A component can represent e.g. a complex form or any other complex UI part. Like any perspective you can define the view either in FXML or JavaFX.
+* A perspective contains 0-n UI <i>Components</i>. Each <i>Component</i> registers for a specific target (defined in the parent perspective) where the <i>Component</i> view will be rendered. A <i>Component</i> can represent e.g. a complex form or any other complex UI part. Like any perspective you can define the view either in FXML or JavaFX.
 
-* A component can contain 0-n ManagedFragments. A ManagedFragment is a reusable custom control which can be e.g a part of a complex form (the address part) and can also be reused in other components. Like all perspectives and components, a ManagedFragment can have a FXML or JavaFX view.
+* A <i>Component</i> can contain 0-n ManagedFragments. A ManagedFragment is a reusable custom control which can be e.g a part of a complex form (the address part) and can also be reused in other <i>Components</i>. Like all <i>Perspectives</i> and <i>Components</i>, a ManagedFragment can have a FXML or JavaFX view.
 
-> The following example demonstrates how to define a FXML and a JavaFX perspective, how to declare the target areas for component views and how to implement FXML and JavaFX components.
+> The following example demonstrates how to define a FXML and a JavaFX perspective, how to declare the target areas for <i>Component</i> views and how to implement FXML- and JavaFX-<i>Components</i>.
 
 <br/>
 <div align="center">
@@ -22,8 +22,8 @@
 
 
 ## Define the perspective view ##
-The first step is to create two perspectives having the same UI, one implemented with a FXML view and the other with a JavaFX view.
-### FXML perspective example ###
+The first step is to create two <i>FXPerspective(s)</i> having the same UI, one implemented with a FXML view and the other with a JavaFX view.
+### FXML-FXPerspective example ###
 <pre>
 @Perspective(id = BaseConfig.ID, name = "p1",components = {…},
         <b>viewLocation = "/fxml/ExamplePerspective.fxml")</b>
@@ -54,8 +54,8 @@ public class ExampleFXMLPerspective implements FXPerspective {
 </BorderPane>
 ```
 <br/>
-### JavaFX perspective example ###
-The code example below will produce exactly the same UI output like the FXML Perspective. You are free to mix FXML- and JavaFX-perspectives in one workbench. 
+### JavaFX-FXPerspective example ###
+The code example below will produce exactly the same UI output like the FXML-<i>FXPerspective</i>. You are free to mix FXML- and JavaFX-<i>FXPerspective(s)</i> in one workbench. 
 
 <pre>
 @Perspective(id = BaseConfig.ID, name = "p1",components = {…})
@@ -83,7 +83,7 @@ public class ExampleJavaFXPerspective implements FXPerspective {
     }
 }
 </pre>
-> Note: In case of JavaFX views you must register the root component of your view:
+> Note: In case of JavaFX views you must register the root <i>Component</i> of your view:
 
 ```java
 // Register root component
@@ -97,8 +97,8 @@ perspectiveLayout.registerRootComponent(mainPane);
 </div>
 
 <br/>
-## Define target areas for component rendering ##
-Both perspectives define a very basic SplitPane layout with a top- and a bottom-content area. The examples above defines a HBox for the top- and the bottom-area. Both nodes can be registered to be a target for components. 
+## Define target areas for <i>Component</i> rendering ##
+Both <i>FXPerspective(s)</i> define a very basic SplitPane layout with a top- and a bottom-content area. The examples above define a HBox for the top- and the bottom-area. Both Nodes can be registered to be a target for <i>Components</i>. 
 ### Register targets in the FXML perspective ###
 <pre>
 @Perspective(id = BaseConfig.ID, name = "p1",components = {…},
@@ -120,7 +120,7 @@ public class ExampleFXMLPerspective implements FXPerspective {
     }
 }
 </pre>
-### Register targets in the JacpFX perspective ###
+### Register targets in the JacpFX-<i>FXPerspective(s)</i> ###
 
 <pre>
 @Perspective(id = BaseConfig.ID, name = "p1",components = {…})
@@ -146,10 +146,10 @@ public class ExampleJavaFXPerspective implements FXPerspective {
 }
 </pre>
 <br/>
-## Define the component views ##
-Component views are detailed parts of your perspective view. Each perspective view can have many component views defined in FXML or programmatically.
+## Define the <i>FXComponent</i>-views ##
+<i>Component</i> views are the detailed parts of your perspective view. Each <i>FXPerspective</i>-view can have many <i>FXComponent</i>-views defined in FXML or programmatically.
 <br/>
-### FXML component example: ###
+### FXML-<i>FXComponent</i> example: ###
 <pre>
 @DeclarativeView(id = ComponentIds.COMPONENT_ONE,
         name = "SimpleView",
@@ -182,7 +182,7 @@ public class ComponentOne implements FXComponent {
 }
 
 </pre>
-> Note: the "initialTargetLayoutId" attribute registers the component view for a specific targetLayout defined in the parent perspective. The current FXML component will be registered for "TARGET_CONTAINER_TOP" in the parent perspective.   
+> Note: the "initialTargetLayoutId" attribute registers the <i>FXComponent</i>-view for a specific targetLayout defined in the parent perspective. The current FXML-<i>FXComponent</i> will be registered for "TARGET_CONTAINER_TOP" in the parent <i>FXPerspective</i>.   
 <br/>
 
 ### The ComponentOne.fxml file: ###
@@ -206,8 +206,8 @@ public class ComponentOne implements FXComponent {
     </children>
 </VBox>
 ```
-### JavaFX component example ###
-The following component example will produce the same UI output as the FXML example above.
+### JavaFX-<i>FXComponent</i> example ###
+The following <i>FXComponent</i> example will produce the same UI output as the FXML example above.
 <br/>
 <pre>
 @View(id = ComponentIds.COMPONENT_TWO,
@@ -255,7 +255,7 @@ public class ComponentTwo implements FXComponent {
     }
 }
 </pre>
-> The JavaFX component will be registered for "TARGET_CONTAINER_MAIN" in the parent perspective. The resulting application will show both (the FXML and the JavaFX component) in one perspective.
+> The JavaFX <i>FXComponent</i> will be registered for "TARGET_CONTAINER_MAIN" in the parent perspective. The resulting application will show both (the FXML and the JavaFX-<i>FXComponent</i>) in one <i>FXPerspective</i>.
 
 ### The resulting application ###
 <br/>
@@ -263,8 +263,8 @@ public class ComponentTwo implements FXComponent {
 ![basic perspective](/img/JacpFX_Structure_and_Composition_Abb3.png)
 </div>
 ## Managed fragments ##
-The next (optional) step is to create reusable controls, the so called "ManagedFragments". A ManagedFragment has access to the parent context (of the component or perspective), can use dependency injection like any other component and can be used to create parts of your view.
-Like any other component or perspective a ManagedFragment can define it's view either in JavaFX or FXML.
+The next (optional) step is to create reusable controls, the so called "ManagedFragments". A ManagedFragment has access to the parent context (of the <i>FXComponent</i> or <i>FXPerspective</i>), can use dependency injection like any other <i>FXComponent</i> and can be used to create parts of your view.
+Like any other <i>FXComponent</i> or perspective a ManagedFragment can define it's view either in JavaFX or FXML.
 ## The FXML ManagedFragment example ##
 
 <pre>
@@ -311,7 +311,7 @@ public class FragmentOne {
 ```
 
 ### The JavaFX ManagedFragment example ###
-The same UI can be also achieved using plain JavaFX. In this case a ManagedFragment extends a node / control.
+The same UI can be also achieved using plain JavaFX. In this case a ManagedFragment extends a Node / Control.
 <pre>
 @Fragment(id = ComponentIds.FRAGMENT_TWO,
         resourceBundleLocation = "bundles.languageBundle",
@@ -341,7 +341,7 @@ public class FragmentTwo extends VBox{
 </pre> 
 
 ### Creating a ManagedFragment instance ###
-ManagedFragments can be used in perspectives or components. To create a new instance the JacpFX Context provides a method to create a typed fragment handler. The following example will create a ManagedFragment in ComponentOne and include the fragment view to his component view.
+ManagedFragments can be used in <i>FXPerspectives</i> or <i>FXComponent</i>. To create a new fragment instance, the JacpFX-<i>Context</i> provides a method to create a typed fragment-handler. The following example will create a ManagedFragment in ComponentOne and include the fragment view to his <i>FXComponent</i>-view.
 <pre>
 @View(id = ComponentIds.COMPONENT_TWO,
         name = "SimpleView",
@@ -362,7 +362,7 @@ public class ComponentTwo implements FXComponent {
 }
 </pre>
 
-> Note: The same ManagedFragment class can be reused in any other component or perspective. Detailed documentation about context access and the scope of ManagedFragments can be found in the documentation section.
+> Note: The same ManagedFragment class can be reused in any other <i>FXComponent</i> or <i>FXPerspectives</i>. Detailed documentation about context access and the scope of ManagedFragments can be found in the documentation section.
 
 ### The final UI  ###
 <br/>

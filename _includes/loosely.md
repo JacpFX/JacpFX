@@ -1,6 +1,6 @@
 
 #Loosely coupled#
-A JacpFX application has a hierarchical structure composed of a workbench, perspective(s) and component(s). All references to perspectives and components handled by ID's inside the component-annotation of the parent component.
+A JacpFX application has a hierarchical structure composed of a workbench, perspective(s) and <i>Component</i>(s). All references to perspectives and <i>Components</i> handled by ID's inside the component-annotation of the parent component.
 <br/>
 <div align="center">
 ![loosely coupled](/img/JacpFX_Loosely_Coupled.png)
@@ -16,7 +16,7 @@ Example workbench annotation, referencing two perspectives:
         })</b>
 </pre> 
 <br/>
-Example perspective annotation, referencing two components:
+Example perspective annotation, referencing two <i>Components</i>:
 <br/>
 <pre>
 @Perspective(id = BaseConfiguration.PERSPECTIVE_ONE, name = "contactPerspective",
@@ -27,7 +27,7 @@ Example perspective annotation, referencing two components:
         resourceBundleLocation = "bundles.languageBundle")
 </pre>
 <br/>
-Perspectives and components are resolved by component scanning on application startup. To exchange a component-reference in a perspective, simply remove the "old" component ID and add the new ID.
+Perspectives and <i>Components</i> are resolved by component scanning on application startup. To exchange a component-reference in a perspective, simply remove the "old" component ID and add the new ID.
 <br/>
 ## Loosely coupled view rendering ##
 Perspectives are defining the layout structure of you view. You can define "render-targets" in your perspective by ID, to mark areas where component views should be rendered. Each component of a perspective can register to a specific "render-target", so the resulting view of a component will be included at that specific area. The "render-target" of a component can also be changed at runtime, so a component view can be moved from one area in perspective to an other.
@@ -53,7 +53,7 @@ public class ExampleFXMLPerspective implements FXPerspective {
 } 
 </pre>
 <br/>
-### Component example: ###
+### <i>Component</i> example: ###
 <pre>
 @DeclarativeView(id = ComponentIds.COMPONENT_ONE,
         name = "SimpleView",
