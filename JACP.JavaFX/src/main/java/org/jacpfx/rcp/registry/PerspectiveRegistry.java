@@ -37,6 +37,15 @@ public class PerspectiveRegistry {
     }
 
     /**
+     * returns the current visible perspective id.
+     *
+     * @return the current visible perspective id
+     */
+    public static String getCurrentVisiblePerspective() {
+        return currentVisiblePerspectiveId.get();
+    }
+
+    /**
      * Returns a unmodifiable list of all available perspective.
      *
      * @return a list of current registered perspective
