@@ -391,7 +391,7 @@ The <i>ManagedFragmentHandler</i> holds the reference to the <i>Fragment</i> ins
 - <b>"getFragmentNode()"</b> returns an JavaFX Node representing the view.
 
 ## <a name=messaging></a>JacpFX messaging##
-Messaging is an essential part of JacpFX that allows to communicate with all <i>FXPerspectives</i>/JacpFX <i>Components</i>, and to change their state.
+Messaging is an essential part of JacpFX that allows to communicate with all <i>FXPerspectives</i>/JacpFX <i>Components</i>, and to change their state. You can send an object to any <i>components</i> and start their specific lifecycle.
 <br/>
 <div align="center">
 ![message lifecycle](/img/JACP_ComponentMessage_View.png)
@@ -399,6 +399,12 @@ Messaging is an essential part of JacpFX that allows to communicate with all <i>
 <br/>
 
 ### The message interface ###
+The <i>Message</i> interface provides access to the message and contains methods for easy message checks. The interface contains following methods:
+
+<br/>
+### Send a message ###
+
+
 <br/>
 ### The JacpFX Context ###
 
