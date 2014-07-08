@@ -3,14 +3,16 @@ package org.jacp.test.lifecycle;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import org.apache.log4j.Logger;
 import org.jacp.test.AllTests;
-import org.jacp.test.components.ComponentHandleToolBarBetweenPerspectives2;
-import org.jacp.test.components.ComponentIds;
 import org.jacp.test.main.ApplicationLauncherHandleToolBarButtonsBetweenPerspectives;
-import org.jacp.test.perspectives.PerspectiveIds;
+import org.jacp.test.toolbar.components.ComponentHandleToolBarBetweenPerspectives2;
+import org.jacp.test.toolbar.perspectives.PerspectiveOneToolbarSwitchPerspectives;
+import org.jacp.test.toolbar.perspectives.PerspectiveTwoToolbarSwitchPerspectives;
 import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.rcp.workbench.AFXWorkbench;
+import org.jacpfx.rcp.workbench.GlobalMediator;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -23,13 +25,12 @@ import static junit.framework.TestCase.*;
 public class HandleToolBarButtonsBetweenPerspective {
 
     static Thread t;
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     @AfterClass
     public static void exitWorkBench() {
         Platform.exit();
         AllTests.resetApplication();
-
-
     }
 
     @BeforeClass
@@ -69,39 +70,67 @@ public class HandleToolBarButtonsBetweenPerspective {
 
     @Test
     public void testMoveToolBar() throws InterruptedException {
+        logger.info("...::: START TEST :::...");
         ApplicationLauncherHandleToolBarButtonsBetweenPerspectives launcher = ApplicationLauncherHandleToolBarButtonsBetweenPerspectives.instance[0];
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
         List<Perspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
+
         for (Perspective<EventHandler<Event>, Event, Object> p : perspectives) {
 
             assertTrue(p.getContext().isActive());
-            if (p.getContext().getId().equals(PerspectiveIds.PerspectiveToolbarOne)) {
+
+            if (PerspectiveOneToolbarSwitchPerspectives.ID.equals(p.getContext().getId())) {
                 List<SubComponent<EventHandler<Event>, Event, Object>> components = p.getSubcomponents();
                 assertFalse(components.isEmpty());
-
                 components.forEach(c -> assertTrue(c.getContext().isActive()));
             }
 
         }
 
-        int i = 0;
-        while (i < 1000) {
-            Perspective<EventHandler<Event>, Event, Object> p = this.getPerspectiveById(perspectives, ComponentHandleToolBarBetweenPerspectives2.currentId);
-            assertNotNull(p);
-            ComponentHandleToolBarBetweenPerspectives2.stopLatch = new CountDownLatch(1);
-            ComponentHandleToolBarBetweenPerspectives2.startLatch = new CountDownLatch(1);
-            ComponentHandleToolBarBetweenPerspectives2.switchTarget();
-            ComponentHandleToolBarBetweenPerspectives2.stopLatch.await();
-            ComponentHandleToolBarBetweenPerspectives2.startLatch.await();
-            Perspective<EventHandler<Event>, Event, Object> p1 = this.getPerspectiveById(perspectives, ComponentHandleToolBarBetweenPerspectives2.currentId);
-            assertNotNull(p1);
-            assertNotNull(getComponentById(p1.getSubcomponents(), ComponentIds.ComponentHandleToolBarBetweenPerspectives2));
-            i++;
-        }
+        Perspective<EventHandler<Event>, Event, Object> p = this.getPerspectiveById(perspectives, ComponentHandleToolBarBetweenPerspectives2.currentId);
+        assertNotNull(p);
+        // INITAL -> 6
+        assertEquals(6, GlobalMediator.getInstance().countVisibleButtons());
+        PerspectiveTwoToolbarSwitchPerspectives.switchLatch = new CountDownLatch(1);
+        PerspectiveOneToolbarSwitchPerspectives.switchPerspective();
+        PerspectiveTwoToolbarSwitchPerspectives.switchLatch.await();
+        Thread.sleep(200);
+
+        // SWITCH PERSPECTIVE --> 4
+        assertEquals(4, GlobalMediator.getInstance().countVisibleButtons());
+        PerspectiveOneToolbarSwitchPerspectives.switchLatch = new CountDownLatch(1);
+        PerspectiveTwoToolbarSwitchPerspectives.switchPerspective();
+        PerspectiveOneToolbarSwitchPerspectives.switchLatch.await();
+        Thread.sleep(200);
+
+        // BACK TO INITAL --> 6
+        assertEquals(6, GlobalMediator.getInstance().countVisibleButtons());
+        ComponentHandleToolBarBetweenPerspectives2.stopLatch = new CountDownLatch(1);
+        ComponentHandleToolBarBetweenPerspectives2.startLatch = new CountDownLatch(1);
+        ComponentHandleToolBarBetweenPerspectives2.switchTarget();
+        ComponentHandleToolBarBetweenPerspectives2.stopLatch.await();
+        ComponentHandleToolBarBetweenPerspectives2.startLatch.await();
+        Thread.sleep(200);
+
+        // MOVE COMPONENT --> 4
+        assertEquals(4, GlobalMediator.getInstance().countVisibleButtons());
+        PerspectiveTwoToolbarSwitchPerspectives.switchLatch = new CountDownLatch(1);
+        PerspectiveOneToolbarSwitchPerspectives.switchPerspective();
+        PerspectiveTwoToolbarSwitchPerspectives.switchLatch.await();
+        Thread.sleep(200);
+
+        // SWITCH PERSPECTIVE --> 6
+        assertEquals(6, GlobalMediator.getInstance().countVisibleButtons());
+
+        Perspective<EventHandler<Event>, Event, Object> p1 = this.getPerspectiveById(perspectives, ComponentHandleToolBarBetweenPerspectives2.currentId);
+        assertNotNull(p1);
+
+        assertNotNull(getComponentById(p1.getSubcomponents(), ComponentHandleToolBarBetweenPerspectives2.ID));
 
     }
+
 
 }

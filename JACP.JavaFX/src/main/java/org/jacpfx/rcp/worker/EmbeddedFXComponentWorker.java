@@ -200,7 +200,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
             }
             parentPerspective.unregisterComponent(component);
         }
-        TearDownHandler.shutDownFXComponent(component, layout);
+        TearDownHandler.shutDownFXComponent(component, parentId, layout);
     }
 
     private void clearTargetLayoutInPerspective(final Perspective<EventHandler<Event>, Event, Object> parentPerspective, final String currentTargetLayout) {

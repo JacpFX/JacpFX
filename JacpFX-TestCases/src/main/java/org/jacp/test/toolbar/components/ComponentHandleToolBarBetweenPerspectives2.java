@@ -23,28 +23,35 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.jacp.test.components;
+package org.jacp.test.toolbar.components;
 
 import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import org.jacp.test.components.ComponentIds;
 import org.jacp.test.main.ApplicationLauncherHandleToolBarButtonsBetweenPerspectives;
+import org.jacp.test.toolbar.base.HandleToolbarBase;
+import org.jacp.test.toolbar.perspectives.PerspectiveOneToolbarSwitchPerspectives;
+import org.jacp.test.util.MessageConstants;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.component.View;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
 import org.jacpfx.api.message.Message;
+import org.jacpfx.api.util.ToolbarPosition;
 import org.jacpfx.rcp.component.FXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
+import org.jacpfx.rcp.components.toolBar.JACPToolBar;
 import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.util.FXUtil;
 
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
-import static org.jacp.test.components.ComponentIds.ComponentHandleToolBarBetweenPerspectives2;
+import static org.jacp.test.util.MessageConstants.SWITCH_MESSAGE;
+
 
 /**
  * A simple JacpFX FXML UI component
@@ -52,20 +59,26 @@ import static org.jacp.test.components.ComponentIds.ComponentHandleToolBarBetwee
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@View(id = ComponentHandleToolBarBetweenPerspectives2, name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", initialTargetLayoutId = "content0")
-public class ComponentHandleToolBarBetweenPerspectives2 extends AHandleToolBarPerspective implements FXComponent {
+@View(id = ComponentHandleToolBarBetweenPerspectives2.ID,
+        name = "SimpleView",
+        active = true,
+        resourceBundleLocation = "bundles.languageBundle",
+        localeID = "en_US",
+        initialTargetLayoutId = "content0")
+public class ComponentHandleToolBarBetweenPerspectives2 extends HandleToolbarBase implements FXComponent {
 
-    private final Logger log = Logger.getLogger(ComponentHandleToolBarBetweenPerspectives2.class
-            .getName());
-
-    String current = "content0";
+    public static final String ID = ComponentIds.ComponentHandleToolBarBetweenPerspectives2;
+    @Resource
+    protected static Context context;
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
     Button button = new Button("move to next target");
     VBox container = new VBox();
     Label label = new Label();
 
-    @Resource
-    protected static Context context;
-
+    public static void
+    switchTarget() {
+        context.send(SWITCH_MESSAGE);
+    }
 
     @Override
     /**
@@ -86,14 +99,14 @@ public class ComponentHandleToolBarBetweenPerspectives2 extends AHandleToolBarPe
 
         switch (currentAction) {
             case FXUtil.MessageUtil.INIT:
-                button.setOnMouseClicked(context.getEventHandler("switch"));
-                button.setStyle("-fx-background-color: red");
+                button.setOnMouseClicked(context.getEventHandler(SWITCH_MESSAGE));
+                button.setStyle("-fx-background-color: green");
                 label.setText(" current Tagret: " + currentId);
                 container.getChildren().addAll(button, label);
                 ApplicationLauncherHandleToolBarButtonsBetweenPerspectives.latch.countDown();
-                break;
-            case MESSAGE_SWITCH:
-                currentId = (currentId.equals(PERSPECTIVE_ONE)) ? PERSPECTIVE_TWO : PERSPECTIVE_ONE;
+                return container;
+            case SWITCH_MESSAGE:
+                this.switchCurrentId();
                 context.setExecutionTarget(currentId);
                 break;
             default:
@@ -101,13 +114,8 @@ public class ComponentHandleToolBarBetweenPerspectives2 extends AHandleToolBarPe
         }
 
 
-        return container;
+        return null;
     }
-
-    public static void switchTarget() {
-        context.send(MESSAGE_SWITCH);
-    }
-
 
     @PostConstruct
     /**
@@ -115,12 +123,21 @@ public class ComponentHandleToolBarBetweenPerspectives2 extends AHandleToolBarPe
      * @param arg0
      * @param resourceBundle
      */
-    public void onStartComponent(final FXComponentLayout arg0,
+    public void onStartComponent(final FXComponentLayout fxComponentLayout,
                                  final ResourceBundle resourceBundle) {
-        this.log.info("run on start of " + ComponentHandleToolBarBetweenPerspectives2 + " " + this + " execution target: " + currentId);
+        this.logger.info("run on start of " + ComponentHandleToolBarBetweenPerspectives2.ID + " " + this + " execution target: " + currentId);
         button = new Button("move to next target");
         container = new VBox();
         label = new Label();
+
+        logger.info("..:: ADD BUTTONS FOR COMPONENT " + this.getClass().getName() + "::..");
+        //    BUTTON TO SWITCH TO ANOTHER PERSPECTIVE (id_pt_01)
+        final JACPToolBar toolbar = fxComponentLayout.getRegisteredToolBar(ToolbarPosition.NORTH);
+        final Button p1 = new Button("[" + ID + "]" + " COMP");
+        final Button p2 = new Button("[" + ID + "]" + " CLEAR");
+        p1.setOnMouseClicked((event) -> context.send(PerspectiveOneToolbarSwitchPerspectives.ID, MessageConstants.SHOW_MESSAGE));
+        toolbar.addAll(p1, p2);
+
         startLatch.countDown();
 
     }
@@ -131,7 +148,7 @@ public class ComponentHandleToolBarBetweenPerspectives2 extends AHandleToolBarPe
      * @param arg0
      */
     public void onTearDownComponent(final FXComponentLayout arg0) {
-        this.log.info("run on tear down of " + ComponentHandleToolBarBetweenPerspectives2    + " " + this);
+        this.logger.info("run on tear down of " + ComponentHandleToolBarBetweenPerspectives2.ID + " " + this);
         stopLatch.countDown();
     }
 

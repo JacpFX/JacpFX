@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2014
  *
  * [JACPModalDialog.java]
@@ -33,31 +33,34 @@ import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
-import static org.jacpfx.rcp.util.CSSUtil.CSSConstants.ID_ERROR_DIMMER;
+import static org.jacpfx.rcp.util.CSSUtil.CSSIdConstants.ID_ERROR_DIMMER;
+
 
 /**
  * The Class JACPModalDialog.
- * 
+ *
  * @author Patrick Symmangk
- * 
  */
 public class JACPModalDialog extends StackPane implements IModalMessageNode {
 
-    /** The maximum blur radius. */
+    /**
+     * The maximum blur radius.
+     */
     private static final double MAX_BLUR = 4.0;
-
-    /** The root. */
+    /**
+     * The root.
+     */
     private static Node root;
-
-    /** The instance. */
+    /**
+     * The instance.
+     */
     private static JACPModalDialog instance;
-
     private Timeline hideTimeline;
     private Timeline showTimeline;
 
     /**
      * Gets the single instance of JACPModalDialog.
-     * 
+     *
      * @return single instance of JACPModalDialog
      */
     public static JACPModalDialog getInstance() {
@@ -121,12 +124,13 @@ public class JACPModalDialog extends StackPane implements IModalMessageNode {
     }
 
     /**
-     *  Returns the timeline to hide dialog, should always called from a thread save block
+     * Returns the timeline to hide dialog, should always called from a thread save block
+     *
      * @return the hide timeline
      */
     private Timeline getHideTimeline() {
-        if(hideTimeline==null){
-            hideTimeline = new Timeline(new KeyFrame(Duration.millis(250), (t)-> {
+        if (hideTimeline == null) {
+            hideTimeline = new Timeline(new KeyFrame(Duration.millis(250), (t) -> {
                 JACPModalDialog.this.setCache(false);
                 JACPModalDialog.this.setVisible(false);
             }, new KeyValue(this.opacityProperty(), 0, Interpolator.EASE_BOTH)));
@@ -136,11 +140,12 @@ public class JACPModalDialog extends StackPane implements IModalMessageNode {
 
     /**
      * Returns the timeline to show dialog, should always called from a thread save block
-     * @return  the show timeline
+     *
+     * @return the show timeline
      */
     private Timeline getShowTimeline() {
-        if(showTimeline==null) {
-            showTimeline = new Timeline(new KeyFrame(Duration.millis(250), (t)->
+        if (showTimeline == null) {
+            showTimeline = new Timeline(new KeyFrame(Duration.millis(250), (t) ->
                     JACPModalDialog.this.setCache(false),
                     new KeyValue(this.opacityProperty(), 1, Interpolator.EASE_BOTH)));
         }

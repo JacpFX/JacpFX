@@ -62,4 +62,9 @@ public class PerspectiveIds {
     public static final String PerspectiveTwoMoveComponentsBetweenPerspectives = "id21";
     public static final String PerspectiveOneLifecycleAnnotationTest1 = "id01_x1";
     public static final String PerspectiveTwoLifecycleAnnotationTest1 = "id01_x2";
+
+    // =================== TOOLBAR TEST ===================
+    public static final String PerspectiveOneToolbarSwitchPerspectives = "id_pt_01";
+    public static final String PerspectiveTwoToolbarSwitchPerspectives = "id_pt_02";
+
 }

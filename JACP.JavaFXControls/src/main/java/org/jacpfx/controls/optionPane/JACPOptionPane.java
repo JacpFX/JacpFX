@@ -22,9 +22,6 @@
  ************************************************************************/
 package org.jacpfx.controls.optionPane;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -33,17 +30,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
-
 import org.jacpfx.rcp.components.modalDialog.JACPModalDialog;
 import org.jacpfx.rcp.util.CSSUtil;
 
-import static org.jacpfx.rcp.util.CSSUtil.CSSConstants;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.jacpfx.rcp.util.CSSUtil.CSSClassConstants.*;
+
 
 /**
  * The Class JACPoptionDialogV2.
@@ -53,65 +49,53 @@ import static org.jacpfx.rcp.util.CSSUtil.CSSConstants;
 public class JACPOptionPane extends VBox implements EventHandler<ActionEvent> {
 
     /**
+     * The BUTTO n_ size.
+     */
+    private final static int BUTTON_SIZE = 74;
+    /**
      * Drag offsets for window dragging.
      */
     private final String message;
-
     /**
      * The title.
      */
     private final String title;
-
     /**
      * The default button.
      */
     private JACPDialogButton defaultButton;
-
     /**
      * The ok button.
      */
     private Button okButton;
-
     /**
      * The cancel button.
      */
     private Button cancelButton;
-
     /**
      * The yes button.
      */
     private Button yesButton;
-
     /**
      * The no button.
      */
     private Button noButton;
-
     /**
      * The bottom bar.
      */
     private HBox bottomBar;
-
-    /**
-     * The BUTTO n_ size.
-     */
-    private final static int BUTTON_SIZE = 74;
-
     /**
      * The buttons.
      */
     private List<Button> buttons;
-
     /**
      * The top box.
      */
     private HBox topBox;
-
     /**
      * The auto hide.
      */
     private boolean autoHide = true;
-
     /**
      * Is there a default OK Button present?
      */
@@ -185,15 +169,14 @@ public class JACPOptionPane extends VBox implements EventHandler<ActionEvent> {
 
         /* ***** STYLES ***** */
 
-        CSSUtil.addCSSClass(CSSConstants.CLASS_JACP_OPTION_PANE, this);
-        CSSUtil.addCSSClass(CSSConstants.CLASS_JACP_OPTION_PANE_MESSAGE, explanation);
-        CSSUtil.addCSSClass(CSSConstants.CLASS_JACP_OPTION_PANE_CLOSE, defaultClose);
-        CSSUtil.addCSSClass(CSSConstants.CLASS_JACP_OPTION_PANE_TITLE, titleLabel);
+        CSSUtil.addCSSClass(CLASS_JACP_OPTION_PANE, this);
+        CSSUtil.addCSSClass(CLASS_JACP_OPTION_PANE_MESSAGE, explanation);
+        CSSUtil.addCSSClass(CLASS_JACP_OPTION_PANE_CLOSE, defaultClose);
+        CSSUtil.addCSSClass(CLASS_JACP_OPTION_PANE_TITLE, titleLabel);
     }
 
-
-    private void checkForDefaulfOKButton(){
-        if(this.okButton != null && this.defaultOKButton){
+    private void checkForDefaulfOKButton() {
+        if (this.okButton != null && this.defaultOKButton) {
             // there is a default OK-button present
             // delete the button, cause new buttons will be specified!
             this.defaultOKButton = false;
@@ -290,7 +273,7 @@ public class JACPOptionPane extends VBox implements EventHandler<ActionEvent> {
         }
         this.bottomBar.getChildren().add(but);
         this.buttons.add(but);
-        CSSUtil.addCSSClass(CSSConstants.CLASS_JACP_OPTION_PANE_BUTTON, but);
+        CSSUtil.addCSSClass(CLASS_JACP_OPTION_PANE_BUTTON, but);
         return but;
     }
 

@@ -20,7 +20,7 @@
  *
  *
  ************************************************************************/
-package org.jacp.test.workbench;
+package org.jacp.test.toolbar.workbench;
 
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -28,12 +28,16 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.jacp.test.main.ApplicationLauncher;
 import org.jacp.test.perspectives.PerspectiveIds;
+import org.jacp.test.toolbar.perspectives.PerspectiveOneToolbarSwitchPerspectives;
+import org.jacp.test.toolbar.perspectives.PerspectiveTwoToolbarSwitchPerspectives;
+import org.jacp.test.workbench.WorkbenchIds;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.componentLayout.WorkbenchLayout;
 import org.jacpfx.api.message.Message;
@@ -50,30 +54,44 @@ import org.jacpfx.rcp.workbench.FXWorkbench;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * A simple JacpFX workbench. Define basic UI settings like size, menus and
  * toolbars here.
  *
+ * WORKBENCH to hande Buttons in Toolbar between Perspective and Components-Switches
+ *
+ * @author <a href="mailto:pete.ahcp@gmail.com">Patrick Symmangk</a>
  */
-@org.jacpfx.api.annotations.workbench.Workbench(id = "id7", name = "workbench", perspectives = {PerspectiveIds.PerspectiveToolbarTwo, PerspectiveIds.PerspectiveToolbarOne})
+@org.jacpfx.api.annotations.workbench.Workbench(id = WorkbenchHandleToolBarButtonsBetweenPerspectives.ID,
+        name = "workbench",
+        perspectives = {PerspectiveTwoToolbarSwitchPerspectives.ID, PerspectiveOneToolbarSwitchPerspectives.ID})
 public class WorkbenchHandleToolBarButtonsBetweenPerspectives implements FXWorkbench {
-    private Stage stage;
+    // =================== CONSTANTS ===================
+    public final static String ID = WorkbenchIds.WorkbenchHandleToolBarButtonsBetweenPerspectives;
+    public static String currentPerspective = PerspectiveTwoToolbarSwitchPerspectives.ID;
     @Resource
     Context context;
+    private Stage stage;
 
     @Override
     public void handleInitialLayout(final Message<Event, Object> action,
-                                    final WorkbenchLayout<Node> layout, final Stage stage) {
+                                    final WorkbenchLayout<Node> layout,
+                                    final Stage stage) {
+
         layout.setWorkbenchXYSize(1024, 600);
         layout.setStyle(StageStyle.DECORATED);
         layout.setMenuEnabled(true);
-        layout.registerToolBar(ToolbarPosition.NORTH);
-        this.stage = stage;
+        layout.registerToolBars(ToolbarPosition.NORTH, ToolbarPosition.SOUTH);
 
+        this.stage = stage;
     }
 
     @Override
     public void postHandle(final FXComponentLayout layout) {
+
+        layout.getRegisteredToolBar(ToolbarPosition.NORTH).addToCenter(new Button("WORKBENCH"));
+
         final JACPMenuBar menu = layout.getMenu();
         final Menu menuFile = new Menu("File");
         final Menu menuTests = new Menu("Tests");
@@ -83,14 +101,12 @@ public class WorkbenchHandleToolBarButtonsBetweenPerspectives implements FXWorkb
         for (int i = 0; i < ApplicationLauncher.STYLES.length; i++) {
             menuStyles.getItems().add(getStyle(i));
         }
+
         menuTests.getItems().addAll(getTestMenuItems());
         menu.getMenus().addAll(menuFile, menuTests, menuStyles);
-
-
         // show windowButtons
         menu.registerWindowButtons();
     }
-
 
     private MenuItem getStyle(final int count) {
         final MenuItem itemHelp = new MenuItem(count == 0 ? "Light" : "Dark");
@@ -113,8 +129,7 @@ public class WorkbenchHandleToolBarButtonsBetweenPerspectives implements FXWorkb
             @Override
             public void handle(final ActionEvent arg0) {
                 // create a modal dialog
-                final JACPOptionPane dialog = JACPDialogUtil.createOptionPane(
-                        "Help", "Add some help text ");
+                final JACPOptionPane dialog = JACPDialogUtil.createOptionPane("Help", "Add some help text ");
                 dialog.setDefaultButton(JACPDialogButton.NO);
                 dialog.setDefaultCloseButtonOrientation(Pos.CENTER_RIGHT);
                 dialog.setOnYesAction(new EventHandler<ActionEvent>() {

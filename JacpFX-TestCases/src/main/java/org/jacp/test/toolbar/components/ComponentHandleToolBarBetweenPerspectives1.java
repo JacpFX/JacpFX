@@ -23,10 +23,12 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.jacp.test.components;
+package org.jacp.test.toolbar.components;
 
 import javafx.event.Event;
+import org.jacp.test.components.ComponentIds;
 import org.jacp.test.main.ApplicationLauncherHandleToolBarButtonsBetweenPerspectives;
+import org.jacp.test.toolbar.base.HandleToolbarBase;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.component.Component;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
@@ -40,7 +42,8 @@ import org.jacpfx.rcp.util.FXUtil;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
-import static org.jacp.test.components.ComponentIds.ComponentHandleToolBarBetweenPerspectives1;
+import static org.jacp.test.util.MessageConstants.SWITCH_MESSAGE;
+
 
 /**
  * A simple JacpFX FXML UI component
@@ -48,21 +51,22 @@ import static org.jacp.test.components.ComponentIds.ComponentHandleToolBarBetwee
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@Component(id = ComponentHandleToolBarBetweenPerspectives1, name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
-public class ComponentHandleToolBarBetweenPerspectives1 extends AHandleToolBarPerspective implements CallbackComponent {
+@Component(id = ComponentHandleToolBarBetweenPerspectives1.ID,
+        name = "SimpleView",
+        active = true,
+        resourceBundleLocation = "bundles.languageBundle",
+        localeID = "en_US")
+public class ComponentHandleToolBarBetweenPerspectives1 extends HandleToolbarBase implements CallbackComponent {
 
-    private final Logger log = Logger.getLogger(ComponentHandleToolBarBetweenPerspectives1.class
-            .getName());
+    public static final String ID = ComponentIds.ComponentHandleToolBarBetweenPerspectives1;
+    public static boolean ui = false;
     @Resource
     protected static Context context;
-
-
-    public static boolean ui = false;
+    private final Logger log = Logger.getLogger(ComponentHandleToolBarBetweenPerspectives1.class.getName());
 
     public static void switchTarget() {
-        context.send(MESSAGE_SWITCH);
+        context.send(ComponentHandleToolBarBetweenPerspectives1.ID, SWITCH_MESSAGE);
     }
-
 
     public static synchronized Context getContext() {
         return context;
@@ -78,9 +82,9 @@ public class ComponentHandleToolBarBetweenPerspectives1 extends AHandleToolBarPe
         switch (currentAction) {
             case FXUtil.MessageUtil.INIT:
                 ApplicationLauncherHandleToolBarButtonsBetweenPerspectives.latch.countDown();
-                return MESSAGE_MESSAGE;
-            case MESSAGE_SWITCH:
-                currentId = (currentId.equals(PERSPECTIVE_ONE)) ? PERSPECTIVE_TWO : PERSPECTIVE_ONE;
+                return SWITCH_MESSAGE;
+            case SWITCH_MESSAGE:
+                this.switchCurrentId();
                 context.setExecutionTarget(currentId);
                 return null;
             default:
@@ -99,7 +103,7 @@ public class ComponentHandleToolBarBetweenPerspectives1 extends AHandleToolBarPe
      */
     public void onStartComponent(final FXComponentLayout arg0,
                                  final ResourceBundle resourceBundle) {
-        this.log.info("run on start of "+ ComponentHandleToolBarBetweenPerspectives1 + " " + this + " target" + currentId);
+        this.log.info("run on start of " + ComponentHandleToolBarBetweenPerspectives1.ID + " " + this + " target" + currentId);
         startLatch.countDown();
     }
 
@@ -109,7 +113,7 @@ public class ComponentHandleToolBarBetweenPerspectives1 extends AHandleToolBarPe
      * @param arg0
      */
     public void onTearDownComponent(final FXComponentLayout arg0) {
-        this.log.info("run on tear down of " +ComponentHandleToolBarBetweenPerspectives1+ " " + this);
+        this.log.info("run on tear down of " + ComponentHandleToolBarBetweenPerspectives1.ID + " " + this);
         latch.countDown();
         stopLatch.countDown();
     }

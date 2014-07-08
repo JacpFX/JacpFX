@@ -38,6 +38,7 @@ import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.FXUtil;
 import org.jacpfx.rcp.util.TearDownHandler;
 import org.jacpfx.rcp.util.WorkerUtil;
+import org.jacpfx.rcp.workbench.GlobalMediator;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
@@ -61,9 +62,9 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
     /**
      * The workers constructor.
      *
-     * @param targetComponents ; a map with all targets provided by perspective
-     * @param component        ; the UI component to init
-     * @param message           ; the init message
+     * @param targetComponents       ; a map with all targets provided by perspective
+     * @param component              ; the UI component to init
+     * @param message                ; the init message
      * @param componentDelegateQueue ; the delegate queue for component that should be moved to an other perspective
      */
     public FXComponentInitWorker(final Map<String, Node> targetComponents,
@@ -120,6 +121,10 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
     private void runComponentOnStartupSequence(final AFXComponent component,
                                                final Object... param) {
         FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, component.getComponent(), param);
+        // show component Buttons
+        if (component.getParentId() != null && component.getParentId().equals(PerspectiveRegistry.getCurrentVisiblePerspective())) {
+            GlobalMediator.getInstance().handleToolBarButtons(component, component.getParentId(), true);
+        }
     }
 
     private void setComponentToActiveAndStarted(final AFXComponent component) {
@@ -156,7 +161,7 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
     }
 
     private boolean checkIfStartedAndValid(final AFXComponent componentToCheck) {
-       return componentToCheck.isStarted();
+        return componentToCheck.isStarted();
     }
 
     /**
@@ -174,8 +179,6 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
                 FXUtil.getCorrectLocale(localeID)));
 
     }
-
-
 
     /**
      * Handles "component add" in EDT must be called outside EDT.
@@ -217,7 +220,7 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
         final String parentId = component.getParentId();
         final Perspective<EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
         if (parentPerspctive != null) parentPerspctive.unregisterComponent(component);
-        TearDownHandler.shutDownFXComponent(component);
+        TearDownHandler.shutDownFXComponent(component, parentId);
         component.setStarted(false);
     }
 

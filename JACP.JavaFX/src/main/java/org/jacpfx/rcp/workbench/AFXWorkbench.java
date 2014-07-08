@@ -63,7 +63,6 @@ import org.jacpfx.rcp.perspective.AFXPerspective;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.*;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -84,14 +83,13 @@ public abstract class AFXWorkbench
         Base<EventHandler<Event>, Event, Object>,
         RootComponent<Perspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> {
 
-    private List<Perspective<EventHandler<Event>, Event, Object>> perspectives;
-
-    private ComponentHandler<Perspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
-    private Coordinator<EventHandler<Event>, Event, Object> messageCoordinator;
     private final ComponentDelegator<EventHandler<Event>, Event, Object> componentDelegator = new org.jacpfx.rcp.delegator.ComponentDelegator();
     private final MessageDelegator<EventHandler<Event>, Event, Object> messageDelegator = new MessageDelegatorImpl();
     private final WorkbenchLayout<Node> workbenchLayout = new FXWorkbenchLayout();
     private final Logger logger = Logger.getLogger(this.getClass().getName());
+    private List<Perspective<EventHandler<Event>, Event, Object>> perspectives;
+    private ComponentHandler<Perspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
+    private Coordinator<EventHandler<Event>, Event, Object> messageCoordinator;
     private Launcher<?> launcher;
     private Stage stage;
     private GridPane root;
@@ -131,8 +129,7 @@ public abstract class AFXWorkbench
         this.setBasicLayout(stage);
 
         handle.postHandle(new FXComponentLayout(this.getWorkbenchLayout()
-                .getMenu(), this.getWorkbenchLayout().getRegisteredToolBars(),
-                this.glassPane));
+                .getMenu(), this.glassPane));
     }
 
     private void registerTeardownActions() {
@@ -152,7 +149,6 @@ public abstract class AFXWorkbench
         this.messageDelegator.setPerspectiveHandler(this.componentHandler);
     }
 
-
     @Override
     /**
      * {@inheritDoc}
@@ -167,7 +163,6 @@ public abstract class AFXWorkbench
         FXUtil.performResourceInjection(this.handle, this.context);
         start(Stage.class.cast(root));
     }
-
 
     private Workbench getWorkbenchAnnotation() {
         return this.handle.getClass().getAnnotation(Workbench.class);
@@ -185,11 +180,7 @@ public abstract class AFXWorkbench
                 .filter(p -> p.getContext() != null && p.getContext().isActive())
                 .collect(Collectors.toList());
         if (!activeSequentialPerspectiveList.isEmpty()) {
-            final Collection<? extends Node> toolBarValues = this.workbenchLayout.getRegisteredToolBars().values();
-            toolBarValues.forEach(node->{
-                JACPToolBar toolBar = (JACPToolBar) node;
-                toolBar.showButtons(activeSequentialPerspectiveList.get(activeSequentialPerspectiveList.size() - 1));
-            });
+            GlobalMediator.getInstance().handleToolBarButtons(activeSequentialPerspectiveList.get(activeSequentialPerspectiveList.size() - 1), true);
         }
 
     }
@@ -243,7 +234,6 @@ public abstract class AFXWorkbench
         AFXWorkbench.this.initComponents(null);
     }
 
-
     @Override
     /**
      * {@inheritDoc}
@@ -287,7 +277,6 @@ public abstract class AFXWorkbench
         this.perspectives.clear();
     }
 
-
     /**
      * {@inheritDoc}
      */
@@ -300,7 +289,6 @@ public abstract class AFXWorkbench
         return this.componentHandler;
     }
 
-
     @Override
     /**
      * {@inheritDoc}
@@ -308,7 +296,6 @@ public abstract class AFXWorkbench
     public final List<Perspective<EventHandler<Event>, Event, Object>> getPerspectives() {
         return this.perspectives;
     }
-
 
     /**
      * set basic layout manager for workspace
@@ -343,7 +330,7 @@ public abstract class AFXWorkbench
         final int y = this.getWorkbenchLayout().getWorkbenchSize().getY();
 
         this.absoluteRoot.getChildren().add(this.baseLayoutPane);
-        this.absoluteRoot.setId(CSSUtil.CSSConstants.ID_ROOT);
+        this.absoluteRoot.setId(CSSUtil.CSSIdConstants.ID_ROOT);
         this.base.getChildren().add(absoluteRoot);
         LayoutUtil.GridPaneUtil.setFullGrow(Priority.ALWAYS, this.absoluteRoot);
         this.stage.setScene(new Scene(this.base, x, y));
@@ -356,11 +343,14 @@ public abstract class AFXWorkbench
 
     }
 
-    private void initGlobalMouseEvents(){
+    private void initGlobalMouseEvents() {
         // catch global clicks
         this.stage.getScene().addEventFilter(
                 MouseEvent.MOUSE_RELEASED,
-                (event) -> GlobalMediator.getInstance().hideAllHideables(event));
+                (event) -> {
+                    GlobalMediator.getInstance().hideAllHideables(event);
+
+                });
     }
 
     private void initMenuLayout() {
@@ -394,7 +384,7 @@ public abstract class AFXWorkbench
             // add root to the center
             toolbarPane.setCenter(this.root);
             toolbarPane.getStyleClass().add(
-                    CSSUtil.CSSConstants.CLASS_DARK_BORDER);
+                    CSSUtil.CSSClassConstants.CLASS_DARK_BORDER);
 
         } else {
             // no toolbars -> no special Layout needed
@@ -419,7 +409,7 @@ public abstract class AFXWorkbench
         // root is top most pane
         this.root = new GridPane();
         this.root.setCache(true);
-        this.root.setId(CSSUtil.CSSConstants.ID_ROOT_PANE);
+        this.root.setId(CSSUtil.CSSIdConstants.ID_ROOT_PANE);
 
     }
 

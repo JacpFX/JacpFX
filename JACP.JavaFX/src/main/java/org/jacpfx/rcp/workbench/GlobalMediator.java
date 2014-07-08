@@ -1,12 +1,19 @@
 package org.jacpfx.rcp.workbench;
 
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
+import org.jacpfx.api.component.Perspective;
+import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.component.ui.Hideable;
 import org.jacpfx.api.component.ui.HideableComponent;
+import org.jacpfx.api.util.ToolbarPosition;
+import org.jacpfx.rcp.components.toolBar.JACPToolBar;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Logger;
 
 /**
  * @author Patrick Symmangk (pete.jacp@gmail.com)
@@ -14,7 +21,10 @@ import java.util.List;
 public class GlobalMediator {
 
     private static GlobalMediator instance;
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
+    public String workbenchId;
     private List<Hideable> hideAbles = new ArrayList<>();
+    private Map<ToolbarPosition, JACPToolBar> toolbars = new HashMap<>();
 
     private GlobalMediator() {
         // Singleton
@@ -27,9 +37,31 @@ public class GlobalMediator {
         return instance;
     }
 
-
     public void registerHideAble(Hideable hideable) {
         this.hideAbles.add(hideable);
+    }
+
+    public void registerToolbar(final ToolbarPosition position, final JACPToolBar toolBar) {
+        this.toolbars.put(position, toolBar);
+    }
+
+    public Map<ToolbarPosition, JACPToolBar> getRegisteredToolBars(final String parentId, final String componentId) {
+        for (JACPToolBar toolBar : this.toolbars.values()) {
+            toolBar.setContext(parentId, componentId);
+        }
+        return Collections.unmodifiableMap(this.toolbars);
+    }
+
+    public JACPToolBar getRegisteredToolbar(final ToolbarPosition position, final String parentId, final String componentId) {
+        JACPToolBar toolBar = this.toolbars.get(position);
+        toolBar.setContext(parentId, componentId);
+        return toolBar;
+    }
+
+    public void clearToolbar(final SubComponent<EventHandler<Event>, Event, Object> subComponent, final String parentId) {
+        for (JACPToolBar toolBar : this.toolbars.values()) {
+            toolBar.clearRegions(subComponent, parentId);
+        }
     }
 
     /**
@@ -59,4 +91,49 @@ public class GlobalMediator {
         return node;
     }
 
+    public void handleToolBarButtons(final Perspective<EventHandler<Event>, Event, Object> perspective, final boolean visible) {
+        logger.info("handleToolBarButtons >" + perspective.getPerspective().getClass().getName() + "<");
+        // fetch all nodes from all registred toolbars
+        for (final Node node : this.toolbars.values()) {
+            // handle visible state
+            JACPToolBar toolBar = (JACPToolBar) node;
+            toolBar.setButtonsVisible(perspective, visible);
+
+        }
+    }
+
+    public void handleToolBarButtons(final SubComponent<EventHandler<Event>, Event, Object> subComponent, final String parentId, final boolean visible) {
+        logger.info("handleToolBarButtons >" + SubComponent.class.getName() + "<");
+        // fetch all nodes from all registred toolbars
+        for (final Node node : this.toolbars.values()) {
+            // handle visible state
+            JACPToolBar toolBar = (JACPToolBar) node;
+            toolBar.setButtonsVisible(subComponent, parentId, visible);
+        }
+    }
+
+    public void handleToolBarButtons(final FXWorkbench workbench, final boolean visible) {
+        logger.info("handleToolBarButtons >" + workbench.getClass().getName() + "<");
+        // fetch all nodes from all registred toolbars
+        for (final Node node : this.toolbars.values()) {
+            // handle visible state
+            JACPToolBar toolBar = (JACPToolBar) node;
+            toolBar.setWorkbenchButtonsVisible(visible);
+
+        }
+    }
+
+    public int countVisibleButtons() {
+        final AtomicInteger count = new AtomicInteger();
+        this.toolbars.values().forEach(toolbar -> count.getAndAdd(toolbar.countVisibleButtons()));
+        return count.get();
+    }
+
+    public String getWorkbenchId() {
+        return workbenchId;
+    }
+
+    public void setWorkbenchId(String workbenchId) {
+        this.workbenchId = workbenchId;
+    }
 }

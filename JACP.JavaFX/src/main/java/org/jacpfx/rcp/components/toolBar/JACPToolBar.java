@@ -34,17 +34,22 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.*;
+import org.jacpfx.api.annotations.component.Component;
+import org.jacpfx.api.annotations.component.DeclarativeView;
+import org.jacpfx.api.annotations.component.View;
 import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.SubComponent;
-import org.jacpfx.api.util.CustomSecurityManager;
 import org.jacpfx.rcp.util.CSSUtil;
+import org.jacpfx.rcp.util.FXUtil;
+import org.jacpfx.rcp.workbench.GlobalMediator;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static javafx.geometry.Orientation.HORIZONTAL;
 import static javafx.geometry.Orientation.VERTICAL;
-import static org.jacpfx.rcp.util.CSSUtil.CSSConstants.CLASS_JACP_TOOL_BAR;
+import static org.jacpfx.rcp.util.CSSUtil.CSSClassConstants.CLASS_JACP_TOOL_BAR;
 
 /**
  * The Class JACPToolBar.
@@ -53,30 +58,27 @@ import static org.jacpfx.rcp.util.CSSUtil.CSSConstants.CLASS_JACP_TOOL_BAR;
  */
 public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>, ListChangeListener<Node> {
 
-    private final static CustomSecurityManager customSecurityManager = new CustomSecurityManager();
-
-    private final Map<String, List<Region>> regionMap = new HashMap<>();
-
-    private final List<String> manualIds = new ArrayList<>();
-
-
     private static final int FIRST_PLACE = 0;
-
-
+    private final Map<String, List<Region>> regionMap = new HashMap<>();
+    private final List<String> manualIds = new ArrayList<>();
+    private String parentId;
+    private String componentId;
     /**
      * The horizontal tool bar.
      */
     private HBox horizontalToolBar;
-
     /**
      * The vertical tool bar.
      */
     private VBox verticalToolBar;
-
     /**
-     * stores the current toolbar containers
+     * stores the current toolbar containers [LEFT, CENTER, RIGHT]
      */
     private ConcurrentHashMap<JACPToolBarPosition, Pane> toolBarContainer;
+    /**
+     * Container for buttons.
+     */
+    private ConcurrentHashMap<JACPToolBarPosition, ConcurrentHashMap<String, Pane>> buttonContainer;
 
 
     /**
@@ -96,14 +98,12 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
         }
     }
 
-
     private void internalAdd(String id, final Region region) {
         this.addRegion(id, region, JACPToolBarPosition.START, false);
     }
 
-
     public void add(final Region region) {
-        this.internalAdd(customSecurityManager.getCallerClassName(), region);
+        this.internalAdd(this.getQualifiedId(), region);
     }
 
     /**
@@ -116,7 +116,6 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
         this.manualIds.add(id);
         this.internalAdd(id, region);
     }
-
 
     public void removeForId(String id) {
         final List<Region> tmp = this.getNodes(id);
@@ -133,9 +132,8 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
      * @param regions the regions to add
      */
     public void addAll(final Region... regions) {
-        this.internalAddAll(customSecurityManager.getCallerClassName(), regions);
+        this.internalAddAll(this.getQualifiedId(), regions);
     }
-
 
     /**
      * Add multiple regions to the toolbar.
@@ -150,13 +148,11 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
 
     }
 
-
     private void internalAddAll(String id, Region... regions) {
         for (final Region region : regions) {
             this.internalAdd(id, region);
         }
     }
-
 
     /**
      * Add multiple regions to the toolbar.
@@ -170,9 +166,8 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
      * @param regions the regions to add
      */
     public void addAllOnEnd(final Region... regions) {
-        this.internalAddAllOnEnd(customSecurityManager.getCallerClassName(), regions);
+        this.internalAddAllOnEnd(this.getQualifiedId(), regions);
     }
-
 
     /**
      * Add multiple regions to the toolbar.
@@ -189,13 +184,11 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
 
     }
 
-
     private void internalAddAllOnEnd(final String id, final Region... regions) {
         for (final Region region : regions) {
             this.internalAddOnEnd(id, region);
         }
     }
-
 
     /**
      * Add multiple regions to the toolbar.
@@ -207,7 +200,7 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
      * @param regions the regions to add
      */
     public void addAllToCenter(final Region... regions) {
-        this.internalAddAllToCenter(customSecurityManager.getCallerClassName(), regions);
+        this.internalAddAllToCenter(this.getQualifiedId(), regions);
     }
 
     /**
@@ -228,14 +221,14 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
         }
     }
 
-
     private void internalAddToCenter(String id, final Region region) {
         this.addRegion(id, region, JACPToolBarPosition.MIDDLE);
     }
 
     /**
      * Adds the on end.
-     * @param id an unique id
+     *
+     * @param id     an unique id
      * @param region the region
      */
     public void addToCenter(final String id, final Region region) {
@@ -249,9 +242,8 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
      * @param region the region
      */
     public void addToCenter(final Region region) {
-        this.internalAddToCenter(customSecurityManager.getCallerClassName(), region);
+        this.internalAddToCenter(this.getQualifiedId(), region);
     }
-
 
     private void internalAddOnEnd(String id, final Region region) {
         this.addRegion(id, region, JACPToolBarPosition.END);
@@ -259,7 +251,8 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
 
     /**
      * Adds the on end.
-     * @param id an unique id
+     *
+     * @param id     an unique id
      * @param region the region
      */
     public void addOnEnd(final String id, final Region region) {
@@ -273,9 +266,8 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
      * @param region the region
      */
     public void addOnEnd(final Region region) {
-        this.internalAddOnEnd(customSecurityManager.getCallerClassName(), region);
+        this.internalAddOnEnd(this.getQualifiedId(), region);
     }
-
 
     /**
      * Removes the.
@@ -289,6 +281,11 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
                         .removeAll(regions));
     }
 
+    public Map<JACPToolBarPosition, Pane> getToolBarContainer() {
+        Map<JACPToolBarPosition, Pane> buttons = new HashMap<>(this.toolBarContainer);
+        return Collections.unmodifiableMap(buttons);
+    }
+
     /**
      * hide Toolbar Buttons by a given Id
      *
@@ -297,7 +294,6 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
     public void hideButtons(final String id) {
         this.handleButtons(id, false);
     }
-
 
     /**
      * show Toolbar Buttons by a given Id
@@ -308,14 +304,12 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
         this.handleButtons(id, true);
     }
 
-
     private void handleButtons(final String id, final boolean visible) {
         for (final Region region : this.getInternalNodes(id)) {
             region.setVisible(visible);
             if (visible) {
                 region.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
                 this.setInsets(region);
-
             } else {
                 region.setMaxSize(0, 0);
                 region.setMinSize(0, 0);
@@ -324,30 +318,43 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
         }
     }
 
-
-    public void hideButtons(final Perspective<EventHandler<Event>, Event, Object> perspective) {
-        this.handleButtons(perspective.getPerspective().getClass().getName(), false);
-        for (final SubComponent<EventHandler<Event>, Event, Object> sub : perspective.getSubcomponents()) {
-            this.hideButtons(sub);
+    public void setButtonsVisible(final Perspective<EventHandler<Event>, Event, Object> perspective, boolean visible) {
+        if (visible && perspective == null) return;
+        org.jacpfx.api.annotations.perspective.Perspective persAnnotation = perspective.getPerspective().getClass().getAnnotation(org.jacpfx.api.annotations.perspective.Perspective.class);
+        this.handleButtons(persAnnotation.id(), visible);
+        if (perspective.getSubcomponents() != null) {
+            for (final SubComponent<EventHandler<Event>, Event, Object> sub : perspective.getSubcomponents()) {
+                this.setButtonsVisible(sub, persAnnotation.id(), visible);
+            }
         }
     }
 
-    public void hideButtons(final SubComponent<EventHandler<Event>, Event, Object> subcomponent) {
-        this.handleButtons(subcomponent.getComponent().getClass().getName(), false);
-    }
-
-    public void showButtons(final Perspective<EventHandler<Event>, Event, Object> perspective) {
-        if(perspective==null || perspective.getSubcomponents() == null) return;
-        this.handleButtons(perspective.getPerspective().getClass().getName(), true);
-        for (final SubComponent<EventHandler<Event>, Event, Object> sub : perspective.getSubcomponents()) {
-            this.showButtons(sub);
+    public void setButtonsVisible(final SubComponent<EventHandler<Event>, Event, Object> subcomponent, final String parentId, boolean visible) {
+        String componentId = extractComponentId(subcomponent);
+        if (componentId != null) {
+            this.handleButtons(FXUtil.getQualifiedComponentId(parentId, componentId), visible);
         }
+
     }
 
-    public void showButtons(final SubComponent<EventHandler<Event>, Event, Object> subcomponent) {
-        this.handleButtons(subcomponent.getComponent().getClass().getName(), true);
+    private String extractComponentId(final SubComponent<EventHandler<Event>, Event, Object> subcomponent) {
+        String componentId = null;
+        if (subcomponent.getComponent().getClass().isAnnotationPresent(View.class)) {
+            View comp = subcomponent.getComponent().getClass().getAnnotation(View.class);
+            componentId = comp.id();
+        } else if (subcomponent.getComponent().getClass().isAnnotationPresent(Component.class)) {
+            Component comp = subcomponent.getComponent().getClass().getAnnotation(Component.class);
+            componentId = comp.id();
+        } else if (subcomponent.getComponent().getClass().isAnnotationPresent(DeclarativeView.class)) {
+            DeclarativeView comp = subcomponent.getComponent().getClass().getAnnotation(DeclarativeView.class);
+            componentId = comp.id();
+        }
+        return componentId;
     }
 
+    public void setWorkbenchButtonsVisible(boolean visible) {
+        this.handleButtons(GlobalMediator.getInstance().getWorkbenchId(), visible);
+    }
 
     /*
      * (non-Javadoc)
@@ -365,7 +372,6 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
             this.initHorizontalToolBar();
         }
         this.unbind();
-
     }
 
     /*
@@ -404,7 +410,19 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
      */
     private void addRegion(final String id, final Region region, final JACPToolBarPosition position, boolean bind) {
         // regions are by default invisible and will be visible if the Perspective/Component etc. will be activated
-        this.toolBarContainer.get(position).getChildren().add(region);
+        Pane p = this.getButtonContainer(position, id);
+        if (p == null) {
+            p = this.getOrientation() == HORIZONTAL ? new HBox() : new VBox();
+            if (!this.buttonContainer.containsKey(position)) {
+                this.buttonContainer.put(position, new ConcurrentHashMap<>());
+            }
+            this.buttonContainer.get(position).put(id, p);
+            this.toolBarContainer.get(position).getChildren().add(p);
+        }
+
+        p.getChildren().add(region);
+
+        // "register" Region a.k.a. Button
         this.getInternalNodes(id).add(region);
         if (!this.manualIds.contains(id)) {
             this.handleButtons(id, false);
@@ -452,7 +470,6 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
         }
     }
 
-
     /*
         add Insets to the buttons as needed
      */
@@ -473,7 +490,6 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
             VBox.setMargin(region, new Insets(0));
         }
     }
-
 
     /**
      * /**
@@ -505,8 +521,8 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
         }
         // reset "cache"
         this.toolBarContainer = new ConcurrentHashMap<>();
+        this.buttonContainer = new ConcurrentHashMap<>();
     }
-
 
     /**
      * Inits the horizontal tool bar.
@@ -537,11 +553,10 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
         this.toolBarContainer.put(JACPToolBarPosition.END, rightButtons);
 
         HBox.setHgrow(centerButtons, Priority.ALWAYS);
-        CSSUtil.addCSSClass(CSSUtil.CSSConstants.CLASS_JACP_BUTTON_BAR, this, leftButtons, centerButtons, rightButtons);
+        CSSUtil.addCSSClass(CSSUtil.CSSClassConstants.CLASS_JACP_BUTTON_BAR, this, leftButtons, centerButtons, rightButtons);
         this.horizontalToolBar.getChildren().addAll(leftButtons, centerButtons, rightButtons);
         this.getItems().add(FIRST_PLACE, this.horizontalToolBar);
     }
-
 
     /**
      * Inits the vertical tool bar.
@@ -577,9 +592,62 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
         this.getItems().add(FIRST_PLACE, this.verticalToolBar);
     }
 
+    public void clearRegions(final SubComponent<EventHandler<Event>, Event, Object> subComponent, final String parentId) {
+        String componentId = extractComponentId(subComponent);
+        componentId = FXUtil.getQualifiedComponentId(parentId, componentId);
+        if (componentId != null) {
+            for (Map<String, Pane> regions : this.buttonContainer.values()) {
+                if (regions.containsKey(componentId)) {
+                    regions.get(componentId).getChildren().clear();
+                    this.getInternalNodes(componentId).clear();
+                }
+            }
+        }
+    }
+
+    public void setContext(final String parentId, final String componentId) {
+        this.parentId = parentId;
+        this.componentId = componentId;
+    }
+
+    private String getQualifiedId() {
+        // avoid NullPointer
+        if (this.parentId == null && this.componentId == null) {
+            String id = UUID.randomUUID().toString();
+            this.manualIds.add(id);
+            return id;
+
+        }
+
+        if (this.parentId == null || parentId.length() == 0 || parentId.equals(GlobalMediator.getInstance().getWorkbenchId())) {
+            // no parent -> Perspective
+            return this.componentId;
+        }
+        // parent -> perspective
+        return FXUtil.getQualifiedComponentId(this.parentId, this.componentId);
+    }
+
+    private Pane getButtonContainer(final JACPToolBarPosition position, final String id) {
+        Pane container = null;
+        Map<String, Pane> containerMap = this.buttonContainer.get(position);
+        if (containerMap != null) {
+            container = containerMap.get(id);
+        }
+        return container;
+    }
+
+    public int countVisibleButtons() {
+        final AtomicInteger count = new AtomicInteger();
+        this.regionMap.values().forEach(regionList -> regionList.forEach(region -> {
+            if (region.isVisible()) {
+                count.incrementAndGet();
+            }
+        }));
+        return count.get();
+    }
+
     private enum JACPToolBarPosition {
         START, MIDDLE, END;
     }
-
 
 }

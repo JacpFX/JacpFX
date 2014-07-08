@@ -153,7 +153,7 @@ public abstract class AFXPerspective extends AComponent implements
 
     private  FXComponentLayout getFXComponentLayoutInstance(final JacpContextImpl currentContext) {
         final FXComponentLayout currentLayout =      JacpContextImpl.class.cast(this.context).getComponentLayout();
-        return new FXComponentLayout(currentLayout.getMenu(),currentLayout.getRegisteredToolBars(),currentLayout.getGlassPane(),currentContext.getParentId(),currentContext.getId());
+        return new FXComponentLayout(currentLayout.getMenu(),currentLayout.getGlassPane(),currentContext.getParentId(),currentContext.getId());
 
     }
 

@@ -44,7 +44,7 @@ import org.jacpfx.rcp.workbench.GlobalMediator;
 import org.jacpfx.rcp.workbench.SceneUtil;
 
 import static org.jacpfx.rcp.components.toolBar.JACPOptionButtonOrientation.BOTTOM;
-import static org.jacpfx.rcp.util.CSSUtil.CSSConstants.*;
+import static org.jacpfx.rcp.util.CSSUtil.CSSClassConstants.*;
 
 /**
  * The Class JACPOptionButton.
@@ -55,26 +55,24 @@ import static org.jacpfx.rcp.util.CSSUtil.CSSConstants.*;
  */
 public class JACPHoverMenu extends Button implements Hideable {
 
+    // constants
+    private static final double NO_PADDING = 0.0;
+    private static final double ARROW_WIDTH = 10.0;
+    private static final double ARROW_HEIGHT = 5.0;
+    private static final Dimension2D ARROW_CENTER = new Dimension2D(ARROW_WIDTH / 2, ARROW_HEIGHT / 2);
+    private final Pane parent = new Pane();
     private Pane glassPane;
     private Pane arrow;
     // used for TOP and BOTTOM
     private VBox verticalHoverMenu = new HideableVBox(this);
     // used for LEFT and RIGHT
     private HBox horizontalHoverMenu = new HideableHBox(this);
-    private final Pane parent = new Pane();
     private Point2D translate;
     private JACPOptionButtonOrientation orientation;
-
     // properties
     private SimpleDoubleProperty padding = new SimpleDoubleProperty();
     private SimpleDoubleProperty buttonXLocation = new SimpleDoubleProperty();
     private SimpleDoubleProperty buttonYLocation = new SimpleDoubleProperty();
-
-    // constants
-    private static final double NO_PADDING = 0.0;
-    private static final double ARROW_WIDTH = 10.0;
-    private static final double ARROW_HEIGHT = 5.0;
-    private static final Dimension2D ARROW_CENTER = new Dimension2D(ARROW_WIDTH / 2, ARROW_HEIGHT / 2);
 
 
     /**
@@ -118,13 +116,11 @@ public class JACPHoverMenu extends Button implements Hideable {
         return this.parent;
     }
 
-
     private void initParent() {
         CSSUtil.addCSSClass(CLASS_JACP_OPTION_PANE_PARENT, this.parent);
         this.parent.setMaxHeight(Integer.MAX_VALUE);
         this.parent.setMaxWidth(Integer.MAX_VALUE);
     }
-
 
     private void initArrow() {
         this.arrow = new Pane();
@@ -165,21 +161,21 @@ public class JACPHoverMenu extends Button implements Hideable {
         switch (this.orientation) {
 
             case TOP:
-                CSSUtil.addCSSClass(CSS_BTM_ARROW_CLASS, arrow);
+                CSSUtil.addCSSClass(CLASS_HOVER_MENU_BTM_ARROW, arrow);
                 this.verticalHoverMenu.getChildren().setAll(this.parent, this.arrow);
 
                 // since the menu is on top we have to check the height, too!
                 this.verticalHoverMenu.heightProperty().addListener((observableValue, number, number2) -> {
                     // get location of the optionbutton - top left corner
                     this.translate = localToScene(getBoundsInLocal().getMinX(), getBoundsInLocal().getMinY());
-                    // menu will be cut at ththis.e left
+                    // menu will be cut at this.e left
                     this.buttonYLocation.set(this.translate.getY() - (this.verticalHoverMenu.getHeight()));
                 });
 
                 break;
 
             case BOTTOM:
-                CSSUtil.addCSSClass(CSS_TOP_ARROW_CLASS, this.arrow);
+                CSSUtil.addCSSClass(CLASS_HOVER_MENU_TOP_ARROW, this.arrow);
                 this.verticalHoverMenu.getChildren().setAll(this.arrow, this.parent);
                 break;
         }
@@ -219,51 +215,21 @@ public class JACPHoverMenu extends Button implements Hideable {
         this.buttonYLocation.set(this.translate.getY());
     }
 
-    /**
-     * ********************
-     * HORIZONTAL MENU   *
-     * *********************
-     */
+    // ===================  HORIZONTAL MENU  ===================
 
     private void initHorizontalLayout() {
         this.horizontalHoverMenu.boundsInLocalProperty().addListener(new RealignListener<>(orientation));
         switch (this.orientation) {
             case LEFT:
-                CSSUtil.addCSSClass(CSS_RGT_ARROW_CLASS, arrow);
+                CSSUtil.addCSSClass(CLASS_HOVER_MENU_RGT_ARROW, arrow);
                 this.horizontalHoverMenu.getChildren().setAll(parent, arrow);
                 break;
             case RIGHT:
-                CSSUtil.addCSSClass(CSS_LFT_ARROW_CLASS, arrow);
+                CSSUtil.addCSSClass(CLASS_HOVER_MENU_LFT_ARROW, arrow);
                 this.horizontalHoverMenu.getChildren().setAll(arrow, parent);
                 break;
         }
     }
-
-
-    private class RealignListener<T> implements ChangeListener<T> {
-
-        private JACPOptionButtonOrientation orientation;
-
-        private RealignListener(final JACPOptionButtonOrientation orientation) {
-            super();
-            this.orientation = orientation;
-        }
-
-        @Override
-        public void changed(ObservableValue<? extends T> observableValue, T t, T t2) {
-            switch (this.orientation) {
-                case TOP:
-                case BOTTOM:
-                    realignVerticalMenu();
-                    break;
-                case LEFT:
-                case RIGHT:
-                    realignHorizontalMenu();
-                    break;
-            }
-        }
-    }
-
 
     private void realignHorizontalMenu() {
 
@@ -295,7 +261,6 @@ public class JACPHoverMenu extends Button implements Hideable {
         this.buttonXLocation.set(this.translate.getX());
         this.buttonYLocation.set(this.translate.getY());
     }
-
 
     private void initLayout() {
 
@@ -353,6 +318,52 @@ public class JACPHoverMenu extends Button implements Hideable {
         });
     }
 
+    /**
+     * Hides the menu.
+     */
+    public void hideOptions() {
+        this.glassPane.setVisible(false);
+        this.verticalHoverMenu.setVisible(false);
+        this.horizontalHoverMenu.setVisible(false);
+    }
+
+    private double getHalfWidth() {
+        return getWidth() / 2;
+    }
+
+    private double getHalfHeight() {
+        return getHeight() / 2;
+    }
+
+    @Override
+    public void hide() {
+        this.hideOptions();
+    }
+
+    private class RealignListener<T> implements ChangeListener<T> {
+
+        private JACPOptionButtonOrientation orientation;
+
+        private RealignListener(final JACPOptionButtonOrientation orientation) {
+            super();
+            this.orientation = orientation;
+        }
+
+        @Override
+        public void changed(ObservableValue<? extends T> observableValue, T t, T t2) {
+            switch (this.orientation) {
+                case TOP:
+                case BOTTOM:
+                    realignVerticalMenu();
+                    break;
+                case LEFT:
+                case RIGHT:
+                    realignHorizontalMenu();
+                    break;
+            }
+        }
+    }
+
     private class HideableHBox extends HBox implements HideableComponent {
         private Hideable hideableParent;
 
@@ -377,28 +388,5 @@ public class JACPHoverMenu extends Button implements Hideable {
         public Hideable getHideableParent() {
             return hideableParent;
         }
-    }
-
-    /**
-     * Hides the menu.
-     */
-    public void hideOptions() {
-        this.glassPane.setVisible(false);
-        this.verticalHoverMenu.setVisible(false);
-        this.horizontalHoverMenu.setVisible(false);
-    }
-
-    private double getHalfWidth() {
-        return getWidth() / 2;
-    }
-
-    private double getHalfHeight() {
-        return getHeight() / 2;
-    }
-
-
-    @Override
-    public void hide() {
-        this.hideOptions();
     }
 }

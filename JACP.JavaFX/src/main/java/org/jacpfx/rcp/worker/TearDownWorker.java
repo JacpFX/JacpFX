@@ -26,6 +26,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.rcp.util.TearDownHandler;
+import org.jacpfx.rcp.workbench.GlobalMediator;
 
 import java.util.concurrent.Callable;
 

@@ -29,10 +29,9 @@ import org.jacpfx.api.util.ToolbarPosition;
 import org.jacpfx.api.util.Tupel;
 import org.jacpfx.rcp.components.menuBar.JACPMenuBar;
 import org.jacpfx.rcp.components.toolBar.JACPToolBar;
+import org.jacpfx.rcp.workbench.GlobalMediator;
 
-import java.util.Collections;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * defines basic layout of workbench; define if menus are enabled; declare tool
@@ -42,12 +41,12 @@ import java.util.TreeMap;
  */
 public class FXWorkbenchLayout implements WorkbenchLayout<Node> {
 
-    private boolean menueEnabled;
     private final Tupel<Integer, Integer> size = new Tupel<>();
-    private final Map<ToolbarPosition, JACPToolBar> registeredToolBars = new TreeMap<>();
+    private boolean menueEnabled;
     private JACPMenuBar menu;
     private Pane glassPane;
     private StageStyle style = StageStyle.DECORATED;
+    private String id;
 
     @Override
     public boolean isMenuEnabled() {
@@ -60,7 +59,7 @@ public class FXWorkbenchLayout implements WorkbenchLayout<Node> {
         if (enabled && this.menu == null) {
             this.menu = new JACPMenuBar();
             this.menu.setId("main-menu");
-            checkWindowButtons();
+            this.checkWindowButtons();
         }
     }
 
@@ -82,15 +81,27 @@ public class FXWorkbenchLayout implements WorkbenchLayout<Node> {
     }
 
     @Override
-    public void registerToolBars(final ToolbarPosition... positions){
-        for(ToolbarPosition pos : positions){
-            registerToolBar(pos);
+    public void registerToolBars(final ToolbarPosition... positions) {
+        for (ToolbarPosition pos : positions) {
+            this.registerToolBar(pos);
         }
     }
 
     @Override
     public void registerToolBar(final ToolbarPosition position) {
-        this.registeredToolBars.put(position, this.initToolBar(position));
+        JACPToolBar toolBar = this.initToolBar(position);
+        GlobalMediator.getInstance().registerToolbar(position, toolBar);
+    }
+
+    private void checkWindowButtons() {
+        if (this.menu != null && StageStyle.DECORATED.equals(style))
+            this.menu.deregisterWindowButtons();
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    @Override
+    public <S extends Enum> S getStyle() {
+        return (S) this.style;
     }
 
     @SuppressWarnings("rawtypes")
@@ -100,17 +111,6 @@ public class FXWorkbenchLayout implements WorkbenchLayout<Node> {
         checkWindowButtons();
     }
 
-    private void checkWindowButtons() {
-        if (this.menu != null && StageStyle.DECORATED.equals(style))
-            this.menu.deregisterWindowButtons();
-    }
-
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @Override
-    public <S extends Enum> S getStyle() {
-        return (S) this.style;
-    }
-
     @Override
     public JACPMenuBar getMenu() {
         return this.menu;
@@ -118,12 +118,17 @@ public class FXWorkbenchLayout implements WorkbenchLayout<Node> {
 
     @Override
     public JACPToolBar getRegisteredToolBar(final ToolbarPosition position) {
-        return this.registeredToolBars.get(position);
+        return GlobalMediator.getInstance().getRegisteredToolbar(position, null, this.getId());
     }
 
     @Override
     public Map<ToolbarPosition, JACPToolBar> getRegisteredToolBars() {
-        return Collections.unmodifiableMap(this.registeredToolBars);
+        return GlobalMediator.getInstance().getRegisteredToolBars(null, this.getId());
+    }
+
+    private String getId() {
+        return GlobalMediator.getInstance().getWorkbenchId();
+
     }
 
     @Override

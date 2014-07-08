@@ -1,5 +1,5 @@
 /************************************************************************
- * 
+ *
  * Copyright (C) 2010 - 2014
  *
  * [JACPMenuBar.java]
@@ -41,38 +41,47 @@ import org.jacpfx.rcp.util.TearDownHandler;
 
 /**
  * The Class JACPMenuBar.
- * 
+ *
  * @author Patrick Symmangk
- * 
  */
 public class JACPMenuBar extends HBox {
 
-    /** The left bar. */
+    /**
+     * The left bar.
+     */
     private ToolBar leftBar;
-
-    /** The right bar. */
+    /**
+     * The right bar.
+     */
     private ToolBar rightBar;
-
-    /** The main bar. */
+    /**
+     * The main bar.
+     */
     private MenuBar mainBar;
-
-    /** The last x. */
+    /**
+     * The last x.
+     */
     private double lastW;
     private double lastX;
-
-    /** The last y. */
+    /**
+     * The last y.
+     */
     private double lastH;
     private double lastY;
-
     private Stage stage;
-
     private Button minimize;
     private Button maximize;
     private Button close;
-
     private boolean maximized = false;
-
     private boolean unregistered = false;
+    /**
+     * The mouse drag offset x.
+     */
+    private double mouseDragOffsetX = 0;
+    /**
+     * The mouse drag offset y.
+     */
+    private double mouseDragOffsetY = 0;
 
     /**
      * Instantiates a new jACP menu bar.
@@ -114,9 +123,8 @@ public class JACPMenuBar extends HBox {
 
     /**
      * Clear background.
-     * 
-     * @param node
-     *            the node
+     *
+     * @param node the node
      */
     private void clearBackground(final Node... node) {
         if (node != null) {
@@ -128,9 +136,8 @@ public class JACPMenuBar extends HBox {
 
     /**
      * Bind.
-     * 
-     * @param bar
-     *            the bar
+     *
+     * @param bar the bar
      */
     private void bind(final ToolBar bar) {
         bar.maxHeightProperty().bind(this.mainBar.heightProperty());
@@ -139,7 +146,7 @@ public class JACPMenuBar extends HBox {
 
     /**
      * Gets the menus.
-     * 
+     *
      * @return the menus
      */
     public ObservableList<Menu> getMenus() {
@@ -148,11 +155,9 @@ public class JACPMenuBar extends HBox {
 
     /**
      * Adds the node.
-     * 
-     * @param orientation
-     *            the orientation
-     * @param node
-     *            the node
+     *
+     * @param orientation the orientation
+     * @param node        the node
      */
     void addNode(final JACPMenuBarButtonOrientation orientation, final Node... node) {
         if (JACPMenuBarButtonOrientation.LEFT.equals(orientation)) {
@@ -170,17 +175,10 @@ public class JACPMenuBar extends HBox {
         }
     }
 
-    /** The mouse drag offset x. */
-    private double mouseDragOffsetX = 0;
-
-    /** The mouse drag offset y. */
-    private double mouseDragOffsetY = 0;
-
     /**
      * Sets the menu drag enabled.
-     * 
-     * @param stage
-     *            the new menu drag enabled
+     *
+     * @param stage the new menu drag enabled
      */
     public void setMenuDragEnabled(final Stage stage) {
         this.stage = stage;
@@ -237,15 +235,15 @@ public class JACPMenuBar extends HBox {
             minimize = new Button("_");
             maximize = new Button("-");
             close = new Button("x");
-            minimize.getStyleClass().add(CSSUtil.CSSConstants.CLASS_WINDOW_BUTTONS);
-            maximize.getStyleClass().add(CSSUtil.CSSConstants.CLASS_WINDOW_BUTTONS);
-            close.getStyleClass().add(CSSUtil.CSSConstants.CLASS_WINDOW_BUTTONS);
-            minimize.setId(CSSUtil.CSSConstants.ID_WINDOW_MIN);
+            minimize.getStyleClass().add(CSSUtil.CSSClassConstants.CLASS_WINDOW_BUTTONS);
+            maximize.getStyleClass().add(CSSUtil.CSSClassConstants.CLASS_WINDOW_BUTTONS);
+            close.getStyleClass().add(CSSUtil.CSSClassConstants.CLASS_WINDOW_BUTTONS);
+            minimize.setId(CSSUtil.CSSIdConstants.ID_WINDOW_MIN);
             minimize.setOnAction(arg0 -> minimize());
 
-            maximize.setId(CSSUtil.CSSConstants.ID_WINDOW_MAX);
+            maximize.setId(CSSUtil.CSSIdConstants.ID_WINDOW_MAX);
             maximize.setOnAction(arg0 -> maximize());
-            close.setId(CSSUtil.CSSConstants.ID_WINDOW_CLOSE);
+            close.setId(CSSUtil.CSSIdConstants.ID_WINDOW_CLOSE);
             close.setOnAction(arg0 -> {
                 ShutdownThreadsHandler.shutdowAll();
                 TearDownHandler.handleGlobalTearDown();

@@ -28,6 +28,7 @@ import org.jacpfx.api.componentLayout.BaseLayout;
 import org.jacpfx.api.util.ToolbarPosition;
 import org.jacpfx.rcp.components.menuBar.JACPMenuBar;
 import org.jacpfx.rcp.components.toolBar.JACPToolBar;
+import org.jacpfx.rcp.workbench.GlobalMediator;
 
 import java.util.Collections;
 import java.util.Map;
@@ -40,45 +41,40 @@ import java.util.Map;
  * @author Andy Moncsek
  */
 public class FXComponentLayout implements BaseLayout<Node> {
-    private final Map<ToolbarPosition, JACPToolBar> registeredToolBars;
     private final JACPMenuBar menu;
     private final Pane glassPane;
     private final String parentId;
     private final String componentId;
 
     public FXComponentLayout(final JACPMenuBar menu,
-                             final Map<ToolbarPosition, JACPToolBar> registeredToolBars,
                              final Pane glassPane) {
-        this(menu,registeredToolBars,glassPane,null,null);
+        this(menu, glassPane, null, null);
 
 
     }
 
     public FXComponentLayout(final JACPMenuBar menu,
-                             final Map<ToolbarPosition, JACPToolBar> registeredToolBars,
                              final Pane glassPane,
                              final String parentId,
                              final String componentId) {
         this.menu = menu;
-        this.registeredToolBars = registeredToolBars;
         this.glassPane = glassPane;
         this.parentId = parentId;
         this.componentId = componentId;
     }
 
-    public FXComponentLayout(final FXWorkbenchLayout layout,final String parentId,final String componentId) {
-        this(layout.getMenu(), layout.getRegisteredToolBars(), layout
-                .getGlassPane(),parentId,componentId);
+    public FXComponentLayout(final FXWorkbenchLayout layout, final String parentId, final String componentId) {
+        this(layout.getMenu(), layout.getGlassPane(), parentId, componentId);
     }
 
     @Override
     public JACPToolBar getRegisteredToolBar(final ToolbarPosition position) {
-        return this.registeredToolBars.get(position);
+        return GlobalMediator.getInstance().getRegisteredToolbar(position, this.parentId, this.componentId);
     }
 
     @Override
     public Map<ToolbarPosition, JACPToolBar> getRegisteredToolBars() {
-        return Collections.unmodifiableMap(this.registeredToolBars);
+        return GlobalMediator.getInstance().getRegisteredToolBars(this.parentId, this.componentId);
     }
 
     @Override

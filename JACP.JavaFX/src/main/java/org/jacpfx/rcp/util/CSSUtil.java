@@ -23,63 +23,18 @@
 package org.jacpfx.rcp.util;
 
 import javafx.scene.Node;
+
 /**
  * The Class CSSUtil.
  *
  * @author Patrick Symmangk
- *
  */
 public class CSSUtil {
-
-    public interface CSSConstants {
-        // CLASSES
-        static final String CLASS_DARK_BORDER               = "dark-border";
-        static final String CLASS_WINDOW_BUTTONS            = "window-buttons";
-        static final String CLASS_JACP_TOOL_BAR             = "jacp-tool-bar";
-        static final String CLASS_JACP_BUTTON_BAR           = "jacp-button-bars";
-        static final String CLASS_JACP_BREAD_CUMB           = "jacp-bread-crumb";
-        static final String CLASS_JACP_BREAD_CRUMB_ITEM     = "jacp-bread-crumb-item";
-
-        /* ***** OptionPane ***** */
-
-        static final String CLASS_JACP_OPTION_PANE          = "jacp-option-pane";
-        static final String CLASS_JACP_OPTION_PANE_BUTTON   = "jacp-option-pane-button";
-        static final String CLASS_JACP_OPTION_PANE_PARENT   = "jacp-option-pane-parent";
-        static final String CLASS_JACP_OPTION_PANE_MESSAGE  = "jacp-option-pane-message";
-        static final String CLASS_JACP_OPTION_PANE_CLOSE    = "jacp-option-pane-close";
-        static final String CLASS_JACP_OPTION_PANE_TITLE    = "jacp-option-pane-title";
-
-        // HOVER MENU
-        static final String CSS_TOP_ARROW_CLASS             = "top-arrow";
-        static final String CSS_BTM_ARROW_CLASS             = "btm-arrow";
-        static final String CSS_LFT_ARROW_CLASS             = "lft-arrow";
-        static final String CSS_RGT_ARROW_CLASS             = "rgt-arrow";
-
-        // Button
-        static final String CLASS_HOVER_MENU_BUTTON         = "jacp-hovermenu-button";
-        static final String CLASS_HOVER_MENU_PANE           = "jacp-hovermenu-pane";
-
-
-        // IDS
-        static final String ID_WINDOW_MIN                   = "window-min";
-        static final String ID_WINDOW_MAX                   = "window-max";
-        static final String ID_WINDOW_CLOSE                 = "window-close";
-        static final String ID_ROOT                         = "root";
-        static final String ID_ROOT_PANE                    = "root-pane";
-        static final String ID_ERROR_DIMMER                 = "error-dimmer";
-    }
-
-
-    public interface GlobalValues {
-
-        public static final double SINGLE_PADDING = 20;
-
-    }
 
     /**
      * Sets the background color style to a given node.
      *
-     * @param node the node
+     * @param node  the node
      * @param color the color
      */
     public static void setBackgroundColor(Node node, String color) {
@@ -99,10 +54,10 @@ public class CSSUtil {
     }
 
     /**
-     * Adds the css class to one or more nodes. 
+     * Adds the css class to one or more nodes.
      *
      * @param className the class name
-     * @param nodes the nodes
+     * @param nodes     the nodes
      */
     public static void addCSSClass(final String className, Node... nodes) {
         for (final Node node : nodes) {
@@ -114,7 +69,7 @@ public class CSSUtil {
      * Removes a css class from one or more nodes.
      *
      * @param className the class name
-     * @param nodes the nodes
+     * @param nodes     the nodes
      */
     public static void removeCSSClass(final String className, Node... nodes) {
         for (final Node node : nodes) {
@@ -123,13 +78,55 @@ public class CSSUtil {
     }
 
     /**
-     * Removes all given css classes from one node. 
+     * Removes all given css classes from one node.
      *
-     * @param node the node
+     * @param node       the node
      * @param classNames the class names
      */
     public static void removeCSSClasses(Node node, String... classNames) {
         node.getStyleClass().remove(classNames);
+    }
+
+    public interface CSSClassConstants {
+        // CLASSES
+        String CLASS_DARK_BORDER                = "dark-border";
+        String CLASS_WINDOW_BUTTONS             = "window-buttons";
+        String CLASS_JACP_TOOL_BAR              = "jacp-tool-bar";
+        String CLASS_JACP_BUTTON_BAR            = "jacp-button-bars";
+        String CLASS_JACP_BREAD_CUMB            = "jacp-bread-crumb";
+        String CLASS_JACP_BREAD_CRUMB_ITEM      = "jacp-bread-crumb-item";
+        /* ***** OptionPane ***** */
+        String CLASS_JACP_OPTION_PANE           = "jacp-option-pane";
+        String CLASS_JACP_OPTION_PANE_BUTTON    = "jacp-option-pane-button";
+        String CLASS_JACP_OPTION_PANE_PARENT    = "jacp-option-pane-parent";
+        String CLASS_JACP_OPTION_PANE_MESSAGE   = "jacp-option-pane-message";
+        String CLASS_JACP_OPTION_PANE_CLOSE     = "jacp-option-pane-close";
+        String CLASS_JACP_OPTION_PANE_TITLE     = "jacp-option-pane-title";
+        // HOVER MENU
+        String CLASS_HOVER_MENU_TOP_ARROW       = "top-arrow";
+        String CLASS_HOVER_MENU_BTM_ARROW       = "btm-arrow";
+        String CLASS_HOVER_MENU_LFT_ARROW       = "lft-arrow";
+        String CLASS_HOVER_MENU_RGT_ARROW       = "rgt-arrow";
+        // Button
+        String CLASS_HOVER_MENU_BUTTON          = "jacp-hovermenu-button";
+        String CLASS_HOVER_MENU_PANE            = "jacp-hovermenu-pane";
+    }
+
+    public interface CSSIdConstants {
+        // JACP TOOL BAR
+        String ID_WINDOW_MIN                    = "window-min";
+        String ID_WINDOW_MAX                    = "window-max";
+        String ID_WINDOW_CLOSE                  = "window-close";
+        // ROOT Layout
+        String ID_ROOT                          = "root";
+        String ID_ROOT_PANE                     = "root-pane";
+        String ID_ERROR_DIMMER                  = "error-dimmer";
+    }
+
+    public interface GlobalValues {
+
+        public static final double SINGLE_PADDING = 20;
+
     }
 
 }
