@@ -425,19 +425,32 @@ JacpFX has a hierarchical Component schema where a <i>Workbench</i> is the root 
 - <b>send a message to a component: </b> context.send("perspective1.component1", new Person("John")) 
 <br/>
 
-
+### Message example ###
+<script src="https://gist.github.com/amoAHCP/0ebad3a7f73bcc27fbd0.js"></script>
 <br/>
-### The JacpFX Context ###
+## The JacpFX Context ##
 
 ##modal dialogs##
 
 ##toolbar and menubar##
 
 ##localisation and internationalisation##
+@Component, @DeclarativeView, @View and @Perspective annotation allow the declaration of a resource bundle and a default localeID. If no localeID is declared the system default is assumed. Set the relative resourceBundleLocation in URL (in resource) like "bundles.languageBundle" and create in resources/bundles a file languageBundle_en.properties for further informations on resource bundles see: http://docs.oracle.com/javase/7/docs/api/java/util/ResourceBundle.html. 
+<br/>To get access to the ResourceBundle use a @PostConstruct annotated method with a <i>ResourceBundle</i> parameter.
 
 ##resources##
+The default project layout provides following structure for resources:
+
+<b>src/main/resources:</b>
+
+- bundles: resource bundle files
+- fxml: all fxml files
+- images: application images
+- styles: css files
+<br/>
 
 ##dependency injection##
+Dependency injection is provided by the <i>Launcher</i> implementation which is currently is Spring. All <i>Perspectives</i> and <i>Components</i> are Spring managed beans and supports all injection capabilities of a Spring bean.
 
 ##annotations overview##
 
