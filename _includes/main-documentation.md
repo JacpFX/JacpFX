@@ -399,10 +399,31 @@ Messaging is an essential part of JacpFX that allows to communicate with all <i>
 <br/>
 
 ### The message interface ###
-The <i>Message</i> interface provides access to the message and contains methods for easy message checks. The interface contains following methods:
+The <i>Message</i> interface provides access to the message payload itself and contains methods for easy message checks. The interface contains following methods:
+
+- <b>"getMessageBody()"</b> returns the message payload
+- <b>"getSourceId()"</b> returns the caller id
+- <b>"getSourceEvent()"</b> returns the event source
+- <b>"getTargetId()"</b> returns the target id
+- <b>"isMessageBodyTypeOf(Class<T> clazz)"</b> checks if the message payload is type of the declared Class
+- <b>"getTypedMessageBody(Class<T> clazz)"</b> returns the typed message payload
+- <b>"messageBodyEquals(Object object)"</b> returns true if the payload equals to the declared Object
 
 <br/>
+
 ### Send a message ###
+The JacpFX <i>Context</i> provides methods to send messages to other <i>Components</i> and to the caller itself.
+
+- <b>"send(M message)"</b>, sends any Object to the caller component itself. The target and the source id is equal in this case. You may use this method to trigger asynchronous execution in the "handle(...)" method of your <i>Component</i>.
+- <b>"send(String targetId, M message)"</b>, sends any Object to the specified target
+<br/> 
+
+### Message addressing schema###
+JacpFX has a hierarchical Component schema where a <i>Workbench</i> is the root node and <i>Components<i/> are the leaf nodes. The <i>Workbench</i> can never be a message target itself but you may send messages from a <i>FXWorkbench</i> to any <i>Perspective</i>/<i>Component</i>. JacpFX has a simple "." (dot) separator to specify the exact target of your message.
+
+- <b>send a message to a perspective: </b> context.send("perspective1", new Person("John")) 
+- <b>send a message to a component: </b> context.send("perspective1.component1", new Person("John")) 
+<br/>
 
 
 <br/>
