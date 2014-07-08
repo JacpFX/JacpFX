@@ -129,7 +129,7 @@ public abstract class AFXWorkbench
         this.setBasicLayout(stage);
 
         handle.postHandle(new FXComponentLayout(this.getWorkbenchLayout()
-                .getMenu(), this.glassPane,this.context.getId(),null));
+                .getMenu(), this.glassPane));
     }
 
     private void registerTeardownActions() {
