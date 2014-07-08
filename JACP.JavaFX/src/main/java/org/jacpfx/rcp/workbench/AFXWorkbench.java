@@ -124,12 +124,12 @@ public abstract class AFXWorkbench
 
     private void initWorkbenchHandle(final Stage stage) {
         // init user defined workspace
-        handle.handleInitialLayout(new MessageImpl("TODO", "init"),
+        handle.handleInitialLayout(new MessageImpl(this.context.getId(), "init"),
                 this.getWorkbenchLayout(), stage);
         this.setBasicLayout(stage);
 
         handle.postHandle(new FXComponentLayout(this.getWorkbenchLayout()
-                .getMenu(), this.glassPane));
+                .getMenu(), this.glassPane,this.context.getId(),null));
     }
 
     private void registerTeardownActions() {
