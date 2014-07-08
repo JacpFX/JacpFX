@@ -430,7 +430,17 @@ JacpFX has a hierarchical Component schema where a <i>Workbench</i> is the root 
 <br/>
 ## The JacpFX Context ##
 The JacpFX <i>Context</i> provides methods to access to the metadata of any <i>Perspective</i>/<i>Component</i> and to several JacpFX functionality. To get a <i>org.jacpfx.rcp.context.Context</i> reference you must annotate a class member with this type. Following methods and metadata are provided by the <i>Context</i> interface:
-- <b> getId(), getParentId(), getName(), getResourceBundle(), isActive()</b>
+
+- <b> getId(), getParentId(), getName(), getResourceBundle(), isActive()</b>, the <i>Perspective</i>/<i>Component</i> metadata
+- <b> setActive(false)</b> deactivate a <i>Component</i> if a <i>Perspective</i> is deactivated all child <i>Components</i> are deactivated too
+- <b> setReturnTarget("componentId")</b>, only valid for <i>CallbackComponent</i>; set the return target for the "handle(...)" method
+- <b>setExecutionTarget("parentId")</b>, only valid for JacpFX <i>Components</i>; defines the parent <i>Perspective</i> by id. You may move <i>Components</i> from one <i>Perspective</i> to another.
+- <b>setTargetLayout("top")</b>, only valid for <i>FXComponents</i>; set a valid render target defined by the parent <i>Perspective</i>. You may move a <i>Component</i> view from one area in your view to another.
+- <b>getManagedFragmentHandler(Class<T> clazz)</b>, only valid for <i>FXComponents</i>; Creates a <i>ManagedFragment</b> by type and returns a <i>ManagedFragmentHandler</i> reference
+- <b>showModalDialog(Node node)</b>, only valid for <i>FXComponents</i> and <i>FXPerspectives</i>; show a JavaFX Node in the modal dialog pane of the Workbench
+- <b>hideModalDialog()</b>, only valid for <i>FXComponents</i> and <i>FXPerspectives</i>; hide the currently visible modal dialog
+- <b>invokeFXAndWait(Runnable r)</b>, only valid for <i>FXComponents</i> and <i>FXPerspectives</i>; invoke a Runnable on JavaFX Application Thread and wait for the execution
+
 ##modal dialogs##
 
 ##toolbar and menubar##
