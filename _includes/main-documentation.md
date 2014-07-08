@@ -429,14 +429,15 @@ JacpFX has a hierarchical Component schema where a <i>Workbench</i> is the root 
 <script src="https://gist.github.com/amoAHCP/0ebad3a7f73bcc27fbd0.js"></script>
 <br/>
 ## The JacpFX Context ##
-
+The JacpFX <i>Context</i> provides methods to access to the metadata of any <i>Perspective</i>/<i>Component</i> and to several JacpFX functionality. To get a <i>org.jacpfx.rcp.context.Context</i> reference you must annotate a class member with this type. Following methods and metadata are provided by the <i>Context</i> interface:
+- <b> getId(), getParentId(), getName(), getResourceBundle(), isActive()</b>
 ##modal dialogs##
 
 ##toolbar and menubar##
 
 ##localisation and internationalisation##
 @Component, @DeclarativeView, @View and @Perspective annotation allow the declaration of a resource bundle and a default localeID. If no localeID is declared the system default is assumed. Set the relative resourceBundleLocation in URL (in resource) like "bundles.languageBundle" and create in resources/bundles a file languageBundle_en.properties for further informations on resource bundles see: http://docs.oracle.com/javase/7/docs/api/java/util/ResourceBundle.html. 
-<br/>To get access to the ResourceBundle use a @PostConstruct annotated method with a <i>ResourceBundle</i> parameter.
+<br/>To get access to the ResourceBundle use a @PostConstruct annotated method with a <i>ResourceBundle</i> parameter or annotate a class member of type <i>ResourceBundle</i> with @Resource.
 
 ##resources##
 The default project layout provides following structure for resources:
@@ -457,6 +458,23 @@ Dependency injection is provided by the <i>Launcher</i> implementation which is 
 ###class-level annotations###
 
 ###method-level annotations###
+
+<b>@PostConstruct</b>
+Lifecycle annotation, a method annotated with <i>@PostConstruct</i> is executed on component startup (also when component is reactivated). It is applicable for all component types and perspectives. Annotated methods MUST NOT throw a checked exception. Following method signature is applicable:
+
+- method with no parameters
+- with FXComponentLayout layout
+- with FXComponentLayout layout, URL url (in case of FXML components)
+- with FXComponentLayout layout, URL url (in case of FXML components) , ResourceBundle resourceBundle
+<br/>
+
+<b>@PreDestroy</b>
+Lifecycle annotation, a method annotated with <i>@PreDestroy</i> is executed on component shutdown. It is applicable for all component types and perspectives. Annotated methods MUST NOT throw a checked exception. Following method signature is applicable:
+
+- method with no parameters
+- with FXComponentLayout layout
+- with FXComponentLayout layout, URL url (in case of FXML components)
+- with FXComponentLayout layout, URL url (in case of FXML components) , ResourceBundle resourceBundle
 
 ###error handler###
 
