@@ -330,30 +330,15 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
     }
 
     public void setButtonsVisible(final SubComponent<EventHandler<Event>, Event, Object> subcomponent, final String parentId, boolean visible) {
-        String componentId = extractComponentId(subcomponent);
+        String componentId = subcomponent.getContext().getId();
         if (componentId != null) {
             this.handleButtons(FXUtil.getQualifiedComponentId(parentId, componentId), visible);
         }
 
     }
 
-    private String extractComponentId(final SubComponent<EventHandler<Event>, Event, Object> subcomponent) {
-        String componentId = null;
-        if (subcomponent.getComponent().getClass().isAnnotationPresent(View.class)) {
-            View comp = subcomponent.getComponent().getClass().getAnnotation(View.class);
-            componentId = comp.id();
-        } else if (subcomponent.getComponent().getClass().isAnnotationPresent(Component.class)) {
-            Component comp = subcomponent.getComponent().getClass().getAnnotation(Component.class);
-            componentId = comp.id();
-        } else if (subcomponent.getComponent().getClass().isAnnotationPresent(DeclarativeView.class)) {
-            DeclarativeView comp = subcomponent.getComponent().getClass().getAnnotation(DeclarativeView.class);
-            componentId = comp.id();
-        }
-        return componentId;
-    }
-
-    public void setWorkbenchButtonsVisible(boolean visible) {
-        this.handleButtons(GlobalMediator.getInstance().getWorkbenchId(), visible);
+    public void setWorkbenchButtonsVisible(final String id, boolean visible) {
+        this.handleButtons(id, visible);
     }
 
     /*
@@ -593,7 +578,8 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
     }
 
     public void clearRegions(final SubComponent<EventHandler<Event>, Event, Object> subComponent, final String parentId) {
-        String componentId = extractComponentId(subComponent);
+        String componentId = subComponent.getContext().getId();
+        componentId = componentId == null ? this.extractComponentId(subComponent) : componentId;
         componentId = FXUtil.getQualifiedComponentId(parentId, componentId);
         if (componentId != null) {
             for (Map<String, Pane> regions : this.buttonContainer.values()) {
@@ -603,6 +589,21 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
                 }
             }
         }
+    }
+
+    private String extractComponentId(final SubComponent<EventHandler<Event>, Event, Object> subcomponent) {
+        String componentId = null;
+        if (subcomponent.getComponent().getClass().isAnnotationPresent(View.class)) {
+            View comp = subcomponent.getComponent().getClass().getAnnotation(View.class);
+            componentId = comp.id();
+        } else if (subcomponent.getComponent().getClass().isAnnotationPresent(Component.class)) {
+            Component comp = subcomponent.getComponent().getClass().getAnnotation(Component.class);
+            componentId = comp.id();
+        } else if (subcomponent.getComponent().getClass().isAnnotationPresent(DeclarativeView.class)) {
+            DeclarativeView comp = subcomponent.getComponent().getClass().getAnnotation(DeclarativeView.class);
+            componentId = comp.id();
+        }
+        return componentId;
     }
 
     public void setContext(final String parentId, final String componentId) {
