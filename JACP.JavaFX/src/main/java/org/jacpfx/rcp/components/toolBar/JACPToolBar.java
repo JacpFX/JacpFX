@@ -39,6 +39,7 @@ import org.jacpfx.api.annotations.component.DeclarativeView;
 import org.jacpfx.api.annotations.component.View;
 import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.SubComponent;
+import org.jacpfx.api.context.JacpContext;
 import org.jacpfx.rcp.util.CSSUtil;
 import org.jacpfx.rcp.util.FXUtil;
 import org.jacpfx.rcp.workbench.GlobalMediator;
@@ -54,7 +55,7 @@ import static org.jacpfx.rcp.util.CSSUtil.CSSClassConstants.CLASS_JACP_TOOL_BAR;
 /**
  * The Class JACPToolBar.
  *
- * @author: Patrick Symmangk (pete.jacp@gmail.com)
+ * @author Patrick Symmangk (pete.jacp@gmail.com)
  */
 public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>, ListChangeListener<Node> {
 
@@ -74,11 +75,11 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
     /**
      * stores the current toolbar containers [LEFT, CENTER, RIGHT]
      */
-    private ConcurrentHashMap<JACPToolBarPosition, Pane> toolBarContainer;
+    private Map<JACPToolBarPosition, Pane> toolBarContainer;
     /**
      * Container for buttons.
      */
-    private ConcurrentHashMap<JACPToolBarPosition, ConcurrentHashMap<String, Pane>> buttonContainer;
+    private Map<JACPToolBarPosition, ConcurrentHashMap<String, Pane>> buttonContainer;
 
 
     /**
@@ -274,7 +275,7 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
      *
      * @param regions the region
      */
-    public void remove(final Region... regions) {
+    void remove(final Region... regions) {
         this.toolBarContainer
                 .values()
                 .forEach(toolBarItem -> toolBarItem.getChildren()
@@ -282,8 +283,7 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
     }
 
     public Map<JACPToolBarPosition, Pane> getToolBarContainer() {
-        Map<JACPToolBarPosition, Pane> buttons = new HashMap<>(this.toolBarContainer);
-        return Collections.unmodifiableMap(buttons);
+        return Collections.unmodifiableMap(this.toolBarContainer);
     }
 
     /**
@@ -305,7 +305,8 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
     }
 
     private void handleButtons(final String id, final boolean visible) {
-        for (final Region region : this.getInternalNodes(id)) {
+        final List<Region> regions = this.getInternalNodes(id);
+        regions.forEach(region->{
             region.setVisible(visible);
             if (visible) {
                 region.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -315,7 +316,7 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
                 region.setMinSize(0, 0);
                 this.clearInsets(region);
             }
-        }
+        });
     }
 
     public void setButtonsVisible(final Perspective<EventHandler<Event>, Event, Object> perspective, boolean visible) {
@@ -323,14 +324,15 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
         org.jacpfx.api.annotations.perspective.Perspective persAnnotation = perspective.getPerspective().getClass().getAnnotation(org.jacpfx.api.annotations.perspective.Perspective.class);
         this.handleButtons(persAnnotation.id(), visible);
         if (perspective.getSubcomponents() != null) {
-            for (final SubComponent<EventHandler<Event>, Event, Object> sub : perspective.getSubcomponents()) {
-                this.setButtonsVisible(sub, persAnnotation.id(), visible);
-            }
+            perspective.getSubcomponents().forEach(sub->this.setButtonsVisible(sub, persAnnotation.id(), visible));
         }
     }
 
     public void setButtonsVisible(final SubComponent<EventHandler<Event>, Event, Object> subcomponent, final String parentId, boolean visible) {
-        String componentId = subcomponent.getContext().getId();
+        if(subcomponent== null) return;
+        final JacpContext<EventHandler<Event>, Object> context = subcomponent.getContext();
+        if(context == null) return;
+        final String componentId = context.getId();
         if (componentId != null) {
             this.handleButtons(FXUtil.getQualifiedComponentId(parentId, componentId), visible);
         }
@@ -459,8 +461,8 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
         add Insets to the buttons as needed
      */
     private void setInsets(final Region region) {
-        int INSET = 2;
-        int ZERO = 0;
+        double INSET = 2;
+        double ZERO = 0;
         if (this.getOrientation() == HORIZONTAL) {
             HBox.setMargin(region, new Insets(ZERO, INSET, ZERO, INSET));
         } else {
@@ -470,9 +472,9 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
 
     private void clearInsets(final Region region) {
         if (this.getOrientation() == HORIZONTAL) {
-            HBox.setMargin(region, new Insets(0));
+            HBox.setMargin(region, new Insets(0d));
         } else {
-            VBox.setMargin(region, new Insets(0));
+            VBox.setMargin(region, new Insets(0d));
         }
     }
 
@@ -577,9 +579,12 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
         this.getItems().add(FIRST_PLACE, this.verticalToolBar);
     }
 
-    public void clearRegions(final SubComponent<EventHandler<Event>, Event, Object> subComponent, final String parentId) {
-        String componentId = subComponent.getContext().getId();
-        componentId = componentId == null ? this.extractComponentId(subComponent) : componentId;
+    public void clearRegions(final SubComponent<EventHandler<Event>, Event, Object> subcomponent, final String parentId) {
+        if(subcomponent== null) return;
+        final JacpContext<EventHandler<Event>, Object> context = subcomponent.getContext();
+        if(context == null) return;
+        String componentId = context.getId();
+        componentId = componentId == null ? this.extractComponentId(subcomponent) : componentId;
         componentId = FXUtil.getQualifiedComponentId(parentId, componentId);
         if (componentId != null) {
             for (Map<String, Pane> regions : this.buttonContainer.values()) {
@@ -648,7 +653,7 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
     }
 
     private enum JACPToolBarPosition {
-        START, MIDDLE, END;
+        START, MIDDLE, END
     }
 
 }

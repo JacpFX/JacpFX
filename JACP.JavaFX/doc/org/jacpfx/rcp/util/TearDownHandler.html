@@ -49,8 +49,8 @@ var activeTableTab = "activeTableTab";
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../../../../org/jacpfx/rcp/util/ShutdownThreadsHandler.html" title="class in org.jacpfx.rcp.util"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li><a href="../../../../org/jacpfx/rcp/util/ThrowableWrapper.html" title="class in org.jacpfx.rcp.util"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
+<li><a href="../../../../org/jacpfx/rcp/util/ShutdownThreadsHandler.html" title="class in org.quickstart.rcp.util"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
+<li><a href="../../../../org/jacpfx/rcp/util/ThrowableWrapper.html" title="class in org.quickstart.rcp.util"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../../index.html?org/jacpfx/rcp/util/TearDownHandler.html" target="_top">Frames</a></li>
@@ -92,7 +92,7 @@ var activeTableTab = "activeTableTab";
 <!-- ========= END OF TOP NAVBAR ========= -->
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<div class="subTitle">org.jacpfx.rcp.util</div>
+<div class="subTitle">org.quickstart.rcp.util</div>
 <h2 title="Class TearDownHandler" class="title">Class TearDownHandler</h2>
 </div>
 <div class="contentContainer">
@@ -100,7 +100,7 @@ var activeTableTab = "activeTableTab";
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
-<li>org.jacpfx.rcp.util.TearDownHandler</li>
+<li>org.quickstart.rcp.util.TearDownHandler</li>
 </ul>
 </li>
 </ul>
@@ -177,12 +177,12 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>static void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/jacpfx/rcp/util/TearDownHandler.html#shutDownAsyncComponent-org.jacpfx.rcp.component.ASubComponent-java.lang.Object...-">shutDownAsyncComponent</a></span>(<a href="../../../../org/jacpfx/rcp/component/ASubComponent.html" title="class in org.jacpfx.rcp.component">ASubComponent</a>&nbsp;component,
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/jacpfx/rcp/util/TearDownHandler.html#shutDownAsyncComponent-org.jacpfx.rcp.component.ASubComponent-java.lang.Object...-">shutDownAsyncComponent</a></span>(<a href="../../../../org/jacpfx/rcp/component/ASubComponent.html" title="class in org.quickstart.rcp.component">ASubComponent</a>&nbsp;component,
                       java.lang.Object...&nbsp;params)</code>&nbsp;</td>
 </tr>
 <tr id="i5" class="rowColor">
 <td class="colFirst"><code>static void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/jacpfx/rcp/util/TearDownHandler.html#shutDownFXComponent-org.jacpfx.rcp.component.AFXComponent-java.lang.Object...-">shutDownFXComponent</a></span>(<a href="../../../../org/jacpfx/rcp/component/AFXComponent.html" title="class in org.jacpfx.rcp.component">AFXComponent</a>&nbsp;component,
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../org/jacpfx/rcp/util/TearDownHandler.html#shutDownFXComponent-org.jacpfx.rcp.component.AFXComponent-java.lang.Object...-">shutDownFXComponent</a></span>(<a href="../../../../org/jacpfx/rcp/component/AFXComponent.html" title="class in org.quickstart.rcp.component">AFXComponent</a>&nbsp;component,
                    java.lang.Object...&nbsp;params)</code>&nbsp;</td>
 </tr>
 </table>
@@ -230,7 +230,7 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>registerBase</h4>
-<pre>public static&nbsp;void&nbsp;registerBase(org.jacpfx.api.workbench.Base&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;rootWorkbench)</pre>
+<pre>public static&nbsp;void&nbsp;registerBase(org.quickstart.api.workbench.Base&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;rootWorkbench)</pre>
 <div class="block">Register the parent workbench, from here all perspectives and component
  should be reachable.</div>
 <dl>
@@ -257,7 +257,7 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>handleAsyncTearDown</h4>
 <pre>@SafeVarargs
-public static&nbsp;void&nbsp;handleAsyncTearDown(org.jacpfx.api.component.SubComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;...&nbsp;components)</pre>
+public static&nbsp;void&nbsp;handleAsyncTearDown(org.quickstart.api.component.SubComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;...&nbsp;components)</pre>
 <div class="block">executes all methods in ICallbackComponent, annotated with @OnTeardown
  outside application thread.</div>
 <dl>
@@ -272,7 +272,7 @@ public static&nbsp;void&nbsp;handleAsyncTearDown(org.jacpfx.api.component.SubCom
 <ul class="blockList">
 <li class="blockList">
 <h4>shutDownFXComponent</h4>
-<pre>public static&nbsp;void&nbsp;shutDownFXComponent(<a href="../../../../org/jacpfx/rcp/component/AFXComponent.html" title="class in org.jacpfx.rcp.component">AFXComponent</a>&nbsp;component,
+<pre>public static&nbsp;void&nbsp;shutDownFXComponent(<a href="../../../../org/jacpfx/rcp/component/AFXComponent.html" title="class in org.quickstart.rcp.component">AFXComponent</a>&nbsp;component,
                                        java.lang.Object...&nbsp;params)</pre>
 </li>
 </ul>
@@ -282,7 +282,7 @@ public static&nbsp;void&nbsp;handleAsyncTearDown(org.jacpfx.api.component.SubCom
 <ul class="blockList">
 <li class="blockList">
 <h4>shutDownAsyncComponent</h4>
-<pre>public static&nbsp;void&nbsp;shutDownAsyncComponent(<a href="../../../../org/jacpfx/rcp/component/ASubComponent.html" title="class in org.jacpfx.rcp.component">ASubComponent</a>&nbsp;component,
+<pre>public static&nbsp;void&nbsp;shutDownAsyncComponent(<a href="../../../../org/jacpfx/rcp/component/ASubComponent.html" title="class in org.quickstart.rcp.component">ASubComponent</a>&nbsp;component,
                                           java.lang.Object...&nbsp;params)</pre>
 </li>
 </ul>
@@ -292,7 +292,7 @@ public static&nbsp;void&nbsp;handleAsyncTearDown(org.jacpfx.api.component.SubCom
 <ul class="blockListLast">
 <li class="blockList">
 <h4>executePredestroy</h4>
-<pre>public static&nbsp;void&nbsp;executePredestroy(org.jacpfx.api.component.SubComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;component)</pre>
+<pre>public static&nbsp;void&nbsp;executePredestroy(org.quickstart.api.component.SubComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;component)</pre>
 </li>
 </ul>
 </li>
@@ -323,8 +323,8 @@ public static&nbsp;void&nbsp;handleAsyncTearDown(org.jacpfx.api.component.SubCom
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../../../../org/jacpfx/rcp/util/ShutdownThreadsHandler.html" title="class in org.jacpfx.rcp.util"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li><a href="../../../../org/jacpfx/rcp/util/ThrowableWrapper.html" title="class in org.jacpfx.rcp.util"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
+<li><a href="../../../../org/jacpfx/rcp/util/ShutdownThreadsHandler.html" title="class in org.quickstart.rcp.util"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
+<li><a href="../../../../org/jacpfx/rcp/util/ThrowableWrapper.html" title="class in org.quickstart.rcp.util"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../../index.html?org/jacpfx/rcp/util/TearDownHandler.html" target="_top">Frames</a></li>

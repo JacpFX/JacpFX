@@ -177,8 +177,8 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
                 this.shutDownComponent(component, layout, previousContainer, currentTargetLayout);
                 // restore target execution
                 component.getContext().setExecutionTarget(newExecutionTarget);
-                this.handlePerspectiveChange(this.componentDelegateQueue,
-                        component);
+                // handle target outside current perspective
+                WorkerUtil.changeComponentTarget(this.componentDelegateQueue, component);
             } else {
                 final String newTargetLayout = context.getTargetLayout();
                 this.removeOldComponentValue(component, previousContainer, currentTargetLayout, newTargetLayout);
@@ -260,8 +260,8 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
                 targetComponents, newTargetLayout);
         if (validContainer == null && component.getRoot() != null)
             throw new InvalidParameterException("no targetLayout for layoutID: " + newTargetLayout + " found");
-        this.handleLayoutTargetChange(component,
-                validContainer);
+        //Handle target change inside perspective.
+        WorkerUtil.addComponentByType(validContainer, component);
     }
 
     @Override

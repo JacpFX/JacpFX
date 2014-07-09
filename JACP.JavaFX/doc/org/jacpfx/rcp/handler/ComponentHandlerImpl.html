@@ -49,8 +49,8 @@ var activeTableTab = "activeTableTab";
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../../../../org/jacpfx/rcp/handler/AErrorDialogHandler.html" title="class in org.jacpfx.rcp.handler"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li><a href="../../../../org/jacpfx/rcp/handler/DefaultErrorDialogHandler.html" title="class in org.jacpfx.rcp.handler"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
+<li><a href="../../../../org/jacpfx/rcp/handler/AErrorDialogHandler.html" title="class in org.quickstart.rcp.handler"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
+<li><a href="../../../../org/jacpfx/rcp/handler/DefaultErrorDialogHandler.html" title="class in org.quickstart.rcp.handler"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../../index.html?org/jacpfx/rcp/handler/ComponentHandlerImpl.html" target="_top">Frames</a></li>
@@ -92,7 +92,7 @@ var activeTableTab = "activeTableTab";
 <!-- ========= END OF TOP NAVBAR ========= -->
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<div class="subTitle">org.jacpfx.rcp.handler</div>
+<div class="subTitle">org.quickstart.rcp.handler</div>
 <h2 title="Class ComponentHandlerImpl" class="title">Class ComponentHandlerImpl</h2>
 </div>
 <div class="contentContainer">
@@ -100,7 +100,7 @@ var activeTableTab = "activeTableTab";
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
-<li>org.jacpfx.rcp.handler.ComponentHandlerImpl</li>
+<li>org.quickstart.rcp.handler.ComponentHandlerImpl</li>
 </ul>
 </li>
 </ul>
@@ -109,7 +109,7 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <dl>
 <dt>All Implemented Interfaces:</dt>
-<dd>org.jacpfx.api.handler.ComponentHandler&lt;org.jacpfx.api.component.SubComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;,org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&gt;</dd>
+<dd>org.quickstart.api.handler.ComponentHandler&lt;org.quickstart.api.component.SubComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;,org.quickstart.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&gt;</dd>
 </dl>
 <hr>
 <br>
@@ -200,9 +200,9 @@ implements org.jacpfx.api.handler.ComponentHandler&lt;org.jacpfx.api.component.S
 <ul class="blockListLast">
 <li class="blockList">
 <h4>ComponentHandlerImpl</h4>
-<pre>public&nbsp;ComponentHandlerImpl(org.jacpfx.api.launcher.Launcher&lt;?&gt;&nbsp;launcher,
-                            org.jacpfx.api.componentLayout.PerspectiveLayoutInterface&lt;javafx.scene.Node,javafx.scene.Node&gt;&nbsp;perspectiveLayout,
-                            java.util.concurrent.BlockingQueue&lt;org.jacpfx.api.component.SubComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;componentDelegateQueue)</pre>
+<pre>public&nbsp;ComponentHandlerImpl(org.quickstart.api.launcher.Launcher&lt;?&gt;&nbsp;launcher,
+                            org.quickstart.api.componentLayout.PerspectiveLayoutInterface&lt;javafx.scene.Node,javafx.scene.Node&gt;&nbsp;perspectiveLayout,
+                            java.util.concurrent.BlockingQueue&lt;org.quickstart.api.component.SubComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&gt;&nbsp;componentDelegateQueue)</pre>
 </li>
 </ul>
 </li>
@@ -219,13 +219,13 @@ implements org.jacpfx.api.handler.ComponentHandler&lt;org.jacpfx.api.component.S
 <ul class="blockList">
 <li class="blockList">
 <h4>initComponent</h4>
-<pre>public final&nbsp;void&nbsp;initComponent(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action,
-                                org.jacpfx.api.component.SubComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;component)</pre>
-<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code>org.jacpfx.api.handler.ComponentHandler</code></span></div>
+<pre>public final&nbsp;void&nbsp;initComponent(org.quickstart.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action,
+                                org.quickstart.api.component.SubComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;component)</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code>org.quickstart.api.handler.ComponentHandler</code></span></div>
 <div class="block">Handles initialization of a single component.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>initComponent</code>&nbsp;in interface&nbsp;<code>org.jacpfx.api.handler.ComponentHandler&lt;org.jacpfx.api.component.SubComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;,org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&gt;</code></dd>
+<dd><code>initComponent</code>&nbsp;in interface&nbsp;<code>org.quickstart.api.handler.ComponentHandler&lt;org.quickstart.api.component.SubComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;,org.quickstart.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&gt;</code></dd>
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>action</code> - , the initial message</dd>
 </dl>
@@ -237,13 +237,13 @@ implements org.jacpfx.api.handler.ComponentHandler&lt;org.jacpfx.api.component.S
 <ul class="blockListLast">
 <li class="blockList">
 <h4>handleAndReplaceComponent</h4>
-<pre>public final&nbsp;void&nbsp;handleAndReplaceComponent(org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action,
-                                            org.jacpfx.api.component.SubComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;component)</pre>
-<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code>org.jacpfx.api.handler.ComponentHandler</code></span></div>
+<pre>public final&nbsp;void&nbsp;handleAndReplaceComponent(org.quickstart.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&nbsp;action,
+                                            org.quickstart.api.component.SubComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;&nbsp;component)</pre>
+<div class="block"><span class="descfrmTypeLabel">Description copied from interface:&nbsp;<code>org.quickstart.api.handler.ComponentHandler</code></span></div>
 <div class="block">Runs 'handle' method and replace of subcomponent in perspective.</div>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code>handleAndReplaceComponent</code>&nbsp;in interface&nbsp;<code>org.jacpfx.api.handler.ComponentHandler&lt;org.jacpfx.api.component.SubComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;,org.jacpfx.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&gt;</code></dd>
+<dd><code>handleAndReplaceComponent</code>&nbsp;in interface&nbsp;<code>org.quickstart.api.handler.ComponentHandler&lt;org.quickstart.api.component.SubComponent&lt;javafx.event.EventHandler&lt;javafx.event.Event&gt;,javafx.event.Event,java.lang.Object&gt;,org.quickstart.api.message.Message&lt;javafx.event.Event,java.lang.Object&gt;&gt;</code></dd>
 </dl>
 </li>
 </ul>
@@ -275,8 +275,8 @@ implements org.jacpfx.api.handler.ComponentHandler&lt;org.jacpfx.api.component.S
 </div>
 <div class="subNav">
 <ul class="navList">
-<li><a href="../../../../org/jacpfx/rcp/handler/AErrorDialogHandler.html" title="class in org.jacpfx.rcp.handler"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
-<li><a href="../../../../org/jacpfx/rcp/handler/DefaultErrorDialogHandler.html" title="class in org.jacpfx.rcp.handler"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
+<li><a href="../../../../org/jacpfx/rcp/handler/AErrorDialogHandler.html" title="class in org.quickstart.rcp.handler"><span class="typeNameLink">Prev&nbsp;Class</span></a></li>
+<li><a href="../../../../org/jacpfx/rcp/handler/DefaultErrorDialogHandler.html" title="class in org.quickstart.rcp.handler"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../../index.html?org/jacpfx/rcp/handler/ComponentHandlerImpl.html" target="_top">Frames</a></li>

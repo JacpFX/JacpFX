@@ -363,7 +363,7 @@ public class FXUtil {
      */
     public static String getQualifiedComponentId(final String parentId, final String componentId) {
         if(parentId==null) return componentId;
-        return  parentId.concat(PATTERN_GLOBAL).concat(componentId).toString();
+        return parentId.concat(PATTERN_GLOBAL).concat(componentId);
 
     }
 

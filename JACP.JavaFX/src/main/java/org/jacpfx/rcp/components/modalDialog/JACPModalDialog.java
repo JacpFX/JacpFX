@@ -76,16 +76,13 @@ public class JACPModalDialog extends StackPane implements IModalMessageNode {
      *
      * @param rootNode the root node
      */
-    public static void initDialog(final Node rootNode) {
-        synchronized (JACPModalDialog.class) {
-            if (JACPModalDialog.instance == null) {
-                JACPModalDialog.root = rootNode;
-                JACPModalDialog.instance = new JACPModalDialog();
-                JACPModalDialog.instance.setId(ID_ERROR_DIMMER);
-                final Button close = new Button("close");
-                close.setOnAction(arg -> JACPModalDialog.instance.setVisible(false));
-            }
-
+    public static synchronized void initDialog(final Node rootNode) {
+        if (JACPModalDialog.instance == null) {
+            JACPModalDialog.root = rootNode;
+            JACPModalDialog.instance = new JACPModalDialog();
+            JACPModalDialog.instance.setId(ID_ERROR_DIMMER);
+            final Button close = new Button("close");
+            close.setOnAction(arg -> JACPModalDialog.instance.setVisible(false));
         }
     }
 
@@ -94,33 +91,29 @@ public class JACPModalDialog extends StackPane implements IModalMessageNode {
      *
      * @param message the message
      */
-    public void showModalDialog(final Node message) {
-        synchronized (this) {
-            if (getHideTimeline().getStatus() == Status.RUNNING) {
-                getHideTimeline().stop();
-            }
-            this.getChildren().clear();
-            this.getChildren().add(message);
-            this.setOpacity(0);
-            this.setVisible(true);
-            this.setCache(true);
-            JACPModalDialog.root.setEffect(new GaussianBlur(this.MAX_BLUR));
-
-            this.getShowTimeline().play();
+    public synchronized void showModalDialog(final Node message) {
+        if (getHideTimeline().getStatus() == Status.RUNNING) {
+            getHideTimeline().stop();
         }
+        this.getChildren().clear();
+        this.getChildren().add(message);
+        this.setOpacity(0);
+        this.setVisible(true);
+        this.setCache(true);
+        JACPModalDialog.root.setEffect(new GaussianBlur(this.MAX_BLUR));
+
+        this.getShowTimeline().play();
     }
 
     /**
      * Hide any modal message that is shown.
      */
     @Override
-    public void hideModalDialog() {
-        synchronized (this) {
-            this.setCache(true);
-            this.getHideTimeline().play();
-            // "remove" effect.
-            JACPModalDialog.root.setEffect(null);
-        }
+    public synchronized void hideModalDialog() {
+        this.setCache(true);
+        this.getHideTimeline().play();
+        // "remove" effect.
+        JACPModalDialog.root.setEffect(null);
     }
 
     /**

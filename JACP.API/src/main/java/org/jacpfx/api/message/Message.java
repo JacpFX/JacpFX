@@ -37,23 +37,7 @@ public interface Message<A, M> extends Cloneable {
 
 
     /**
-     * Set message for target component.
-     *
-     * @param message ;  the message set to message
-     */
-    void setMessageBody(final M message);
-
-    /**
-     * Set message for a specified target component. the component.
-     *
-     * @param targetId ; the actions target id
-     * @param message  ;  the message set to message
-     */
-    @Deprecated
-    void addMessage(final String targetId, final M message);
-
-    /**
-     * Get the message message.
+     * Get the message payload.
      *
      * @return M returns the message object
      */

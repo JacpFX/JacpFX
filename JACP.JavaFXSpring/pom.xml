@@ -5,14 +5,14 @@
 	<parent>
 		<groupId>org.jacpfx</groupId>
 		<artifactId>jacpfx-parent</artifactId>
-        <version>2.0-RC3-SNAPSHOT</version>
+        <version>2.0-RC3</version>
 		<relativePath>../JACP</relativePath>
 	</parent>
 
 	<artifactId>jacpfx.JavaFXSpring</artifactId>
 	<packaging>jar</packaging>
 
-	<name>jacpfx.JavaFXSpring</name>
+	<name>quickstart.JavaFXSpring</name>
     <url>https://github.com/JacpFX/JacpFX</url>
     <licenses>
         <license>

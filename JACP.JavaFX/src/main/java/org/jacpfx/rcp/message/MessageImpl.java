@@ -62,17 +62,12 @@ public final class MessageImpl implements Message<Event, Object> {
 		this.setMessageBody(message);
 	}
 	
-	@Override
-	public void setMessageBody(final Object message) {
+
+	private void setMessageBody(final Object message) {
 		this.message = message;
 		this.target = this.target != null ? this.target : this.sourceId;
 	}
 
-	@Override
-	public void addMessage(final String targetId, final Object message) {
-		this.target = targetId;
-		this.message = message;
-	}
 
 	@Override
 	public Object getMessageBody() {

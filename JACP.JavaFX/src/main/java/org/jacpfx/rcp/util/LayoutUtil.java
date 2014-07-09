@@ -111,11 +111,9 @@ public class LayoutUtil {
          * @param nodes - the nodes to receive the margin
          */
         public static void setMargin(Insets insets, Collection<Node> nodes) {
-            for (Node node : nodes) {
-                if (node != null) {
-                    HBox.setMargin(node, insets);
-                }
-            }
+            nodes.stream().filter(node -> node != null).forEach(node -> {
+                HBox.setMargin(node, insets);
+            });
         }
 
     }
@@ -161,11 +159,9 @@ public class LayoutUtil {
          * @param nodes - the nodes to receive the margin
          */
         public static void setMargin(Insets insets, Collection<Node> nodes) {
-            for (Node node : nodes) {
-                if (node != null) {
-                    VBox.setMargin(node, insets);
-                }
-            }
+            nodes.stream().filter(node -> node != null).forEach(node -> {
+                VBox.setMargin(node, insets);
+            });
         }
     }
 

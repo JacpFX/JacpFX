@@ -22,6 +22,7 @@ import org.jacpfx.rcp.util.PerspectiveUtil;
 import java.util.concurrent.BlockingQueue;
 
 /**
+ * The Message Coordinator checks the message target and delegates the message for correct handling.
  * Created by Andy Moncsek on 09.12.13.
  */
 public class MessageCoordinator extends ACoordinator implements
@@ -86,7 +87,6 @@ public class MessageCoordinator extends ACoordinator implements
             this.delegateQueue.put(dto);
         } catch (InterruptedException e) {
             e.printStackTrace();
-            //TODO handle exception global
         }
     }
 

@@ -279,10 +279,8 @@ public class JacpContextImpl implements Context {
         final Thread t = Thread.currentThread();
         try {
             WorkerUtil.invokeOnFXThreadAndWait(r);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException | ExecutionException e) {
            t.getUncaughtExceptionHandler().uncaughtException(t,e);
-        } catch (ExecutionException e) {
-            t.getUncaughtExceptionHandler().uncaughtException(t,e);
         }
     }
 

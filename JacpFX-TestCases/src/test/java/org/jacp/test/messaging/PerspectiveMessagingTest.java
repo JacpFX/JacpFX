@@ -78,7 +78,7 @@ public class PerspectiveMessagingTest {
         warmUp();
         long start = System.currentTimeMillis();
         int i = 0;
-        while (i < 100) {
+        while (i < 1000) {
             executeMessaging();
             assertTrue(true);
             i++;

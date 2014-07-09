@@ -30,6 +30,7 @@ import javafx.scene.Node;
 import org.jacpfx.api.component.ComponentHandle;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.component.UIComponent;
+import org.jacpfx.api.context.JacpContext;
 import org.jacpfx.api.exceptions.InvalidComponentMatch;
 import org.jacpfx.rcp.component.AFXComponent;
 import org.jacpfx.rcp.util.FXUtil;
@@ -84,33 +85,6 @@ public abstract class AEmbeddedComponentWorker extends Thread {
     }
 
 
-    /**
-     * Handle target change inside perspective.
-     *
-     * @param component,      the component
-     * @param validContainer, a valid JavaFX Node
-     */
-    void handleLayoutTargetChange(
-            final UIComponent<Node, EventHandler<Event>, Event, Object> component,
-            final Node validContainer) {
-        WorkerUtil.addComponentByType(validContainer, component);
-    }
-
-    /**
-     * Handle target change to an other perspective. If target component not
-     * found in current perspective, move to an other perspective and run
-     * tear down.
-     *
-     * @param delegateQueue, the component delegate queue
-     * @param component,     a component
-     */
-    void handlePerspectiveChange(
-            final BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
-            final UIComponent<Node, EventHandler<Event>, Event, Object> component) {
-        // handle target outside current perspective
-        WorkerUtil.changeComponentTarget(delegateQueue, component);
-    }
-
     void log(final String message) {
         if (Logger.getLogger(AEmbeddedComponentWorker.class.getName()).isLoggable(
                 Level.FINE)) {
@@ -120,31 +94,16 @@ public abstract class AEmbeddedComponentWorker extends Thread {
     }
 
     /**
-     * Set desired caching to component
-     *
-     * @param cache,     cache enabled
-     * @param hint,      the cache hint
-     * @param component, the component
-     */
-    void setCacheHints(boolean cache, CacheHint hint, final AFXComponent component) {
-        final Node currentRoot = component.getRoot();
-        if (currentRoot == null) return;
-        final Node parentNode = currentRoot.getParent();
-        if (parentNode == null) return;
-        if (currentRoot.getParent().isCache() != cache)
-            currentRoot.getParent().setCache(cache);
-        if (!currentRoot.getParent().getCacheHint().equals(hint))
-            currentRoot.getParent().setCacheHint(CacheHint.SPEED);
-    }
-
-    /**
      * Checks if component is in correct state.
      * @param component
      */
     void checkValidComponent(final SubComponent<EventHandler<Event>, Event, Object> component) {
+        if (component == null)
+            throw new InvalidComponentMatch("Component is in invalid state while initialisation: this can happen when component is in shutdown process");
+        final JacpContext<EventHandler<Event>, Object> context = component.getContext();
+        if (context == null || context.getId() == null)
+            throw new InvalidComponentMatch("Component is in invalid state while initialisation: this can happen when component is in shutdown process");
         final ComponentHandle<?, Event, Object> handle = component.getComponent();
-        if (component == null || component.getContext() == null || component.getContext().getId() == null)
-            throw new InvalidComponentMatch("Component is in invalid state while initialisation:" + handle.getClass()+" this can happen when component is in shutdown process");
         if (handle == null) throw new InvalidComponentMatch("Component is not initialized correctly");
     }
 }
