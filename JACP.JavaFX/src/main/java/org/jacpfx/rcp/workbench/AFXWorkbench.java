@@ -124,12 +124,12 @@ public abstract class AFXWorkbench
 
     private void initWorkbenchHandle(final Stage stage) {
         // init user defined workspace
-        handle.handleInitialLayout(new MessageImpl(this.context.getId(), "init"),
+        this.handle.handleInitialLayout(new MessageImpl(this.context.getId(), "init"),
                 this.getWorkbenchLayout(), stage);
         this.setBasicLayout(stage);
 
-        handle.postHandle(new FXComponentLayout(this.getWorkbenchLayout()
-                .getMenu(), this.glassPane));
+        this.handle.postHandle(new FXComponentLayout(this.getWorkbenchLayout()
+                .getMenu(), this.glassPane, null, this.getContext().getId()));
     }
 
     private void registerTeardownActions() {
@@ -162,6 +162,8 @@ public abstract class AFXWorkbench
         this.context = new JacpContextImpl(annotation.id(), annotation.name(), this.messageCoordinator.getMessageQueue());
         FXUtil.performResourceInjection(this.handle, this.context);
         start(Stage.class.cast(root));
+        GlobalMediator.getInstance().handleWorkbenchToolBarButtons(annotation.id(), true);
+        logger.info("INIT");
     }
 
     private Workbench getWorkbenchAnnotation() {

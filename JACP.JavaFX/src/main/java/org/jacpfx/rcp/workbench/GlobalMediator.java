@@ -92,7 +92,6 @@ public class GlobalMediator {
     }
 
     public void handleToolBarButtons(final Perspective<EventHandler<Event>, Event, Object> perspective, final boolean visible) {
-        logger.info("handleToolBarButtons >" + perspective.getPerspective().getClass().getName() + "<");
         // fetch all nodes from all registred toolbars
         for (final Node node : this.toolbars.values()) {
             // handle visible state
@@ -103,7 +102,6 @@ public class GlobalMediator {
     }
 
     public void handleToolBarButtons(final SubComponent<EventHandler<Event>, Event, Object> subComponent, final String parentId, final boolean visible) {
-        logger.info("handleToolBarButtons >" + SubComponent.class.getName() + "<");
         // fetch all nodes from all registred toolbars
         for (final Node node : this.toolbars.values()) {
             // handle visible state
@@ -112,13 +110,12 @@ public class GlobalMediator {
         }
     }
 
-    public void handleToolBarButtons(final FXWorkbench workbench, final boolean visible) {
-        logger.info("handleToolBarButtons >" + workbench.getClass().getName() + "<");
+    public void handleWorkbenchToolBarButtons(final String id, final boolean visible) {
         // fetch all nodes from all registred toolbars
         for (final Node node : this.toolbars.values()) {
             // handle visible state
             JACPToolBar toolBar = (JACPToolBar) node;
-            toolBar.setWorkbenchButtonsVisible(visible);
+            toolBar.setWorkbenchButtonsVisible(id, visible);
 
         }
     }

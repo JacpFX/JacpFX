@@ -89,6 +89,7 @@ public class HandleToolBarButtonsBetweenPerspective {
             }
 
         }
+        int waitingTime = 50;
 
         Perspective<EventHandler<Event>, Event, Object> p = this.getPerspectiveById(perspectives, ComponentHandleToolBarBetweenPerspectives2.currentId);
         assertNotNull(p);
@@ -97,14 +98,14 @@ public class HandleToolBarButtonsBetweenPerspective {
         PerspectiveTwoToolbarSwitchPerspectives.switchLatch = new CountDownLatch(1);
         PerspectiveOneToolbarSwitchPerspectives.switchPerspective();
         PerspectiveTwoToolbarSwitchPerspectives.switchLatch.await();
-        Thread.sleep(200);
+        Thread.sleep(waitingTime);
 
         // SWITCH PERSPECTIVE --> 4
         assertEquals(4, GlobalMediator.getInstance().countVisibleButtons());
         PerspectiveOneToolbarSwitchPerspectives.switchLatch = new CountDownLatch(1);
         PerspectiveTwoToolbarSwitchPerspectives.switchPerspective();
         PerspectiveOneToolbarSwitchPerspectives.switchLatch.await();
-        Thread.sleep(200);
+        Thread.sleep(waitingTime);
 
         // BACK TO INITAL --> 6
         assertEquals(6, GlobalMediator.getInstance().countVisibleButtons());
@@ -113,14 +114,14 @@ public class HandleToolBarButtonsBetweenPerspective {
         ComponentHandleToolBarBetweenPerspectives2.switchTarget();
         ComponentHandleToolBarBetweenPerspectives2.stopLatch.await();
         ComponentHandleToolBarBetweenPerspectives2.startLatch.await();
-        Thread.sleep(200);
+        Thread.sleep(waitingTime);
 
         // MOVE COMPONENT --> 4
         assertEquals(4, GlobalMediator.getInstance().countVisibleButtons());
         PerspectiveTwoToolbarSwitchPerspectives.switchLatch = new CountDownLatch(1);
         PerspectiveOneToolbarSwitchPerspectives.switchPerspective();
         PerspectiveTwoToolbarSwitchPerspectives.switchLatch.await();
-        Thread.sleep(200);
+        Thread.sleep(waitingTime);
 
         // SWITCH PERSPECTIVE --> 6
         assertEquals(6, GlobalMediator.getInstance().countVisibleButtons());

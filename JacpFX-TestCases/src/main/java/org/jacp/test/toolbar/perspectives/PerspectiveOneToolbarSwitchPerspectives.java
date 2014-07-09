@@ -98,10 +98,6 @@ public class PerspectiveOneToolbarSwitchPerspectives extends HandleToolbarBase i
                 ApplicationLauncherHandleToolBarButtonsBetweenPerspectives.latch.countDown();
 
                 break;
-
-            case MessageConstants.SWITCH_MESSAGE:
-                switchLatch.countDown();
-                break;
         }
 
 
@@ -109,6 +105,7 @@ public class PerspectiveOneToolbarSwitchPerspectives extends HandleToolbarBase i
 
     @OnShow
     public void onShow(final FXComponentLayout layout) {
+        switchLatch.countDown();
     }
 
     @PostConstruct
