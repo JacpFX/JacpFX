@@ -55,8 +55,8 @@
  	$(document).ready(function(){
       $("h1,h2").each(function(i,item){
         var tag = $(item).get(0).localName;
-        $(item).attr("id","wow"+i);
-        $("#category").append('<li><a class="new'+tag+'" href="#wow'+i+'">'+$(this).text()+'</a></li>');
+        $(item).attr("id",$(this).text()+i);
+        $("#category").append('<li><a class="new'+tag+'" href="#'+$(this).text()+i+'">'+$(this).text()+'</a></li>');
         $(".newh2").css("margin-left",0);
         $(".newh3").css("margin-left",20);
         $(".newh4").css("margin-left",40);
@@ -68,7 +68,7 @@
 
 	<script type="text/javascript">
 	$(document).ready(function(){
-    $("body").scrollspy({target: "#side-nav", offset:200});
+    $("body").scrollspy({target: "#side-nav", offset:400});
 	});
     </script>
     

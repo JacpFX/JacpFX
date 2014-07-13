@@ -265,7 +265,8 @@ public class ComponentTwo implements FXComponent {
 ## Managed fragments ##
 The next (optional) step is to create reusable controls, the so called "ManagedFragments". A ManagedFragment has access to the parent context (of the <i>FXComponent</i> or <i>FXPerspective</i>), can use dependency injection like any other <i>FXComponent</i> and can be used to create parts of your view.
 Like any other <i>FXComponent</i> or perspective a ManagedFragment can define it's view either in JavaFX or FXML.
-## The FXML ManagedFragment example ##
+
+### The FXML ManagedFragment example ###
 
 <pre>
 @Fragment(id = ComponentIds.FRAGMENT_ONE,
