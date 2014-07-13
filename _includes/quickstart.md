@@ -1,5 +1,6 @@
 
 #JacpFX Quickstart#
+JacpFX projects are 
 
 ## JacpFX maven quickstart ##
 

@@ -11,6 +11,7 @@ html {
 }
 body {
   margin: 0;
+  position: relative;
 }
 article,
 aside,
@@ -189,35 +190,32 @@ td,
 th {
   padding: 0;
 }
-
- 
 /* Scroll-to-Top CSS Zeug */
 #toTop-right {
-    display:none;
-    text-decoration:none;
-    position:fixed;
-    bottom:28px;
-    right:20px;
-    outline:none;
+  display: none;
+  text-decoration: none;
+  position: fixed;
+  bottom: 15px;
+  right: 35px;
+  outline: none;
 }
 #toTop-left {
-    display:none;
-    text-decoration:none;
-    position:fixed;
-    bottom:20px;
-    left:20px;
-    outline:none;
+  display: none;
+  text-decoration: none;
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  outline: none;
 }
 #toTop-center {
-    display:none;
-    text-decoration:none;
-    position:fixed;
-    bottom:10px;
-    left:50%;
-    margin-left:-20px; /*Feintuning je nach Inhalt */
-    outline:none;
+  display: none;
+  text-decoration: none;
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  margin-left: -20px;
+  outline: none;
 }
-
 @media print {
   * {
     color: #000 !important;
@@ -366,8 +364,8 @@ img {
   border-radius: 50%;
 }
 hr {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 30px;
+  margin-bottom: 30px;
   border: 0;
   border-top: 2px solid #f8f8f8;
 }
@@ -476,12 +474,14 @@ h1,
 .h1 {
   font-family: 'Lato', sans-serif;
   font-size: 2.25em;
+  font-style: normal;
   color: #000000;
 }
 h2,
 .h2 {
   font-family: 'Lato', sans-serif;
   font-size: 1,8em;
+  font-style: bold;
 }
 h3,
 .h3 {
@@ -513,48 +513,48 @@ p {
     font-family: 'Lato', sans-serif;
     font-size: 21px;
     color: #777;
-	}
+  }
   h2 {
     font-family: 'Lato', sans-serif;
     font-size: 24px;
-	color: #357ebd;
-	}
+    color: #357ebd;
+  }
   .lead {
     font-size: 14px;
-	color: #aaaaaa;
-	}
+    color: #aaaaaa;
+  }
 }
 @media (min-width: 480px) {
   h1 {
     font-family: 'Lato', sans-serif;
     font-size: 32px;
     color: #777;
-	}
+  }
   h2 {
     font-family: 'Lato', sans-serif;
     font-size: 24px;
-	color: #357ebd;
-	}
+    color: #357ebd;
+  }
   .lead {
     font-size: 14px;
-	color: #aaaaaa;
-	}
+    color: #aaaaaa;
+  }
 }
 @media (min-width: 768px) {
   h1 {
     font-family: 'Lato', sans-serif;
     font-size: 32px;
     color: #777;
-	}
+  }
   h2 {
     font-family: 'Lato', sans-serif;
     font-size: 32px;
-	color: #357ebd;
-	}
+    color: #357ebd;
+  }
   .lead {
     font-size: 21px;
-	color: #aaaaaa;
-	}
+    color: #aaaaaa;
+  }
 }
 small,
 .small {
@@ -822,34 +822,34 @@ pre code {
   }
 }
 @media (min-width: 992px) {
-	h1 {
-	font-family: 'Lato', sans-serif;
+  h1 {
+    font-family: 'Lato', sans-serif;
     font-size: 32px;
-	color: #777;
-	}
-	h2 {
-	font-family: 'Lato', sans-serif;
+    color: #777;
+  }
+  h2 {
+    font-family: 'Lato', sans-serif;
     font-size: 32px;
-	color: #357ebd;
-	}
-	.container {
-	width: 970px;
-	}
+    color: #357ebd;
+  }
+  .container {
+    width: 970px;
+  }
 }
 @media (min-width: 1200px) {
-	h1 {
-	font-family: 'Lato', sans-serif;
+  h1 {
+    font-family: 'Lato', sans-serif;
     font-size: 32px;
-	color: #777;
-	}
-	h2 {
-	font-family: 'Lato', sans-serif;
+    color: #777;
+  }
+  h2 {
+    font-family: 'Lato', sans-serif;
     font-size: 32px;
-	color: #357ebd;
-	}
-	.container {
-	width: 1170px;
-	}
+    color: #357ebd;
+  }
+  .container {
+    width: 1170px;
+  }
 }
 .container-fluid {
   padding-right: 15px;
@@ -2268,7 +2268,7 @@ fieldset[disabled] .btn-default.active {
   color: #fff;
   background-color: #71A9D1;
   border-color: #357ebd;
-  background-image: linear-gradient(to bottom, rgb(0, 136, 204), rgb(0, 68, 204));
+  background-image: linear-gradient(to bottom, #0088cc, #0044cc);
 }
 .btn-primary:hover,
 .btn-primary:focus,
@@ -2348,18 +2348,18 @@ fieldset[disabled] .btn-success.active {
   background-color: #fff;
 }
 .btn-info {
-  color: #fff;
-  background-color: #5bc0de;
-  border-color: #46b8da;
+  color: #aaaaaa;
+  background-color: #f8f8f8;
+  border-color: #e7e7e7;
 }
 .btn-info:hover,
 .btn-info:focus,
 .btn-info:active,
 .btn-info.active,
 .open .dropdown-toggle.btn-info {
-  color: #fff;
-  background-color: #39b3d7;
-  border-color: #269abc;
+  color: #aaaaaa;
+  background-color: #e7e7e7;
+  border-color: #e7e7e7;
 }
 .btn-info:active,
 .btn-info.active,
@@ -2381,8 +2381,8 @@ fieldset[disabled] .btn-info:active,
 .btn-info.disabled.active,
 .btn-info[disabled].active,
 fieldset[disabled] .btn-info.active {
-  background-color: #5bc0de;
-  border-color: #46b8da;
+  background-color: #dddddd;
+  border-color: #dddddd;
 }
 .btn-info .badge {
   color: #5bc0de;
@@ -3289,28 +3289,6 @@ input[type="button"].btn-block {
   right: 0;
   left: auto;
 }
-.dropup .caret,
-.navbar-fixed-bottom .dropdown .caret {
-  content: "";
-  border-top: 0;
-  border-bottom: 4px solid;
-}
-.dropup .dropdown-menu,
-.navbar-fixed-bottom .dropdown .dropdown-menu {
-  top: auto;
-  bottom: 100%;
-  margin-bottom: 1px;
-}
-@media (min-width: 768px) {
-  .navbar-right .dropdown-menu {
-    right: 0;
-    left: auto;
-  }
-  .navbar-right .dropdown-menu-left {
-    right: auto;
-    left: 0;
-  }
-}
 .btn-group,
 .btn-group-vertical {
   position: relative;
@@ -3631,6 +3609,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   margin-left: -1px;
 }
 .nav {
+  font-size: 10pt;
   padding-left: 0;
   margin-bottom: 0;
   list-style: none;
@@ -3647,14 +3626,14 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav > li > a:hover,
 .nav > li > a:focus {
   text-decoration: none;
-  background-color: #eee;
+  background-color: #e7e7e7;
 }
 .nav > li.disabled > a {
-  color: #999;
+  color: #ff0000;
 }
 .nav > li.disabled > a:hover,
 .nav > li.disabled > a:focus {
-  color: #999;
+  color: #ff0000;
   text-decoration: none;
   cursor: not-allowed;
   background-color: transparent;
@@ -3662,7 +3641,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav .open > a,
 .nav .open > a:hover,
 .nav .open > a:focus {
-  background-color: #eee;
+  background-color: #e7e7e7;
   border-color: #71A9D1;
 }
 .nav .nav-divider {
@@ -3826,7 +3805,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   position: relative;
   min-height: 50px;
   margin-bottom: 20px;
-  margin-top: 20px;
+  margin-top: 30px;
   border: 0px solid transparent;
 }
 @media (min-width: 768px) {
@@ -4118,7 +4097,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   }
 }
 .navbar-default {
-  background-color: #f8f8f8;
+  background-color: #e7e7e7;
   border-color: #e7e7e7;
 }
 .navbar-default .navbar-brand {
@@ -4144,7 +4123,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .navbar-default .navbar-nav > .active > a:hover,
 .navbar-default .navbar-nav > .active > a:focus {
   color: #555;
-  background-color: #e7e7e7;
+  background-color: #f8f8f8;
 }
 .navbar-default .navbar-nav > .disabled > a,
 .navbar-default .navbar-nav > .disabled > a:hover,
@@ -4170,7 +4149,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .navbar-default .navbar-nav > .open > a:hover,
 .navbar-default .navbar-nav > .open > a:focus {
   color: #555;
-  background-color: #e7e7e7;
+  background-color: #f8f8f8;
 }
 @media (max-width: 767px) {
   .navbar-default .navbar-nav .open .dropdown-menu > li > a {
@@ -4961,12 +4940,12 @@ a.list-group-item-danger.active:focus {
   color: inherit;
 }
 .panel-footer {
-  padding: 10px 15px;
-  background-color: #f5f5f5;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  margin-bottom: 20px;
-  margin-top: 20px;
+  padding: 20px 30px;
+  background-color: #f8f8f8;
+  border: 0px solid #ddd;
+  border-radius: 0px;
+  margin-bottom: 60px;
+  margin-top: 30px;
 }
 .panel > .list-group {
   margin-bottom: 0;
@@ -5645,15 +5624,11 @@ button.close {
   opacity: .5;
 }
 .carousel-control.left {
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.0001) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#80000000', endColorstr='#00000000', GradientType=1);
   background-repeat: repeat-x;
 }
 .carousel-control.right {
   right: 0;
   left: auto;
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.0001) 0%, rgba(0, 0, 0, 0.1) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#80000000', GradientType=1);
   background-repeat: repeat-x;
 }
 .carousel-control:hover,
