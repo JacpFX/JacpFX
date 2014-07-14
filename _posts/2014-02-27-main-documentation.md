@@ -1,5 +1,5 @@
 ---
-layout: documentation
+layout: post
 title:  "JacpFX Documentation"
 date:   2014-02-27 21:27:27
 ---
