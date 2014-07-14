@@ -53,7 +53,7 @@
 	<script>hljs.initHighlightingOnLoad();</script>
 	<script type="text/javascript">
  	$(document).ready(function(){
-      $("h1,h2").each(function(i,item){
+      $("h2").each(function(i,item){
         var tag = $(item).get(0).localName;
         $(item).attr("id",$(this).text()+i);
         $("#category").append('<li><a class="new'+tag+'" href="#'+$(this).text()+i+'">'+$(this).text()+'</a></li>');

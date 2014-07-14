@@ -445,7 +445,7 @@ The JacpFX <i>Context</i> provides methods to access to the metadata of any <i>P
 
 ##toolbar and menubar##
 
-##localisation and internationalisation##
+##localisation##
 @Component, @DeclarativeView, @View and @Perspective annotation allow the declaration of a resource bundle and a default localeID. If no localeID is declared the system default is assumed. Set the relative resourceBundleLocation in URL (in resource) like "bundles.languageBundle" and create in resources/bundles a file languageBundle_en.properties for further informations on resource bundles see: http://docs.oracle.com/javase/7/docs/api/java/util/ResourceBundle.html. 
 <br/>To get access to the ResourceBundle use a @PostConstruct annotated method with a <i>ResourceBundle</i> parameter or annotate a class member of type <i>ResourceBundle</i> with @Resource.
 
