@@ -446,7 +446,11 @@ The JacpFX <i>Context</i> provides methods to access to the metadata of any <i>P
 ##toolbar and menubar##
 
 ##localisation##
+
 @Component, @DeclarativeView, @View and @Perspective annotation allow the declaration of a resource bundle and a default localeID. If no localeID is declared the system default is assumed. Set the relative resourceBundleLocation in URL (in resource) like "bundles.languageBundle" and create in resources/bundles a file languageBundle_en.properties for further informations on resource bundles see: http://docs.oracle.com/javase/7/docs/api/java/util/ResourceBundle.html. 
+
+<script src="https://gist.github.com/amoAHCP/553e9047fb68e083112f.js"></script>
+
 <br/>To get access to the ResourceBundle use a @PostConstruct annotated method with a <i>ResourceBundle</i> parameter or annotate a class member of type <i>ResourceBundle</i> with @Resource.
 
 ##resources##
@@ -459,6 +463,11 @@ The default project layout provides following structure for resources:
 - images: application images
 - styles: css files
 <br/>
+
+### assign a stylesheet ###
+Assuming you put your stylesheet to <i>src/main/resources/styles/mystyle.css</i>, you may assign the stylesheet in the application launcher. The <i>postInit</i> method gives you access to the JavaFX stage objects where you may ad the stylesheet like this:
+
+<script src="https://gist.github.com/amoAHCP/9d9d061965e247c56610.js"></script>
 
 ##dependency injection##
 Dependency injection is provided by the <i>Launcher</i> implementation which is currently is Spring. All <i>Perspectives</i> and <i>Components</i> are Spring managed beans and supports all injection capabilities of a Spring bean.

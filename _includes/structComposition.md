@@ -4,13 +4,13 @@
 
 > JacpFX can help you to define your application UI in various ways. It allows you to mix FXML and JavaFX easily. 
 
-* The root of a JacpFX application is always the workbench which defines an application window.
+* The root of a JacpFX application is always the <i>FXWorkbench</i> which defines an application window.
 
-* A workbench contains 1-n <i>Perspectives</i>, each defining the layout of their view. A perspective defines his view either programmatically with JavaFX or by using a FXML file. In each perspective view you can register several UI nodes as a target (placeholder) for a <i>Component</i> view. 
+* A workbench contains 1-n <i>FXPerspective(s)</i>, each defining the layout of their view. A perspective defines his view either programmatically with JavaFX or by using a FXML file. In each perspective view you can register several UI nodes as a target (placeholder) for a <i>FXComponent</i> view. 
 
-* A perspective contains 0-n UI <i>Components</i>. Each <i>Component</i> registers for a specific target (defined in the parent perspective) where the <i>Component</i> view will be rendered. A <i>Component</i> can represent e.g. a complex form or any other complex UI part. Like any perspective you can define the view either in FXML or JavaFX.
+* A perspective contains 0-n UI <i>FXComponent(s)</i>. Each <i>FXComponent</i> registers for a specific target (defined in the parent perspective) where it's view will be rendered. A <i>FXComponent</i> can represent e.g. a complex form or any other complex UI part. Like any perspective you can define the view either in FXML or JavaFX.
 
-* A <i>Component</i> can contain 0-n ManagedFragments. A ManagedFragment is a reusable custom control which can be e.g a part of a complex form (the address part) and can also be reused in other <i>Components</i>. Like all <i>Perspectives</i> and <i>Components</i>, a ManagedFragment can have a FXML or JavaFX view.
+* A <i>FXComponent</i> can contain 0-n <i>ManagedFragments</i>. A <i>ManagedFragment</i> is a reusable custom control which can be e.g a part of a complex form (the address part) and can also be reused in other <i>FXComponents</i>. Like all <i>FXPerspectives</i> and <i>FXComponents</i>, a <i>ManagedFragment</i> can have a FXML or JavaFX view.
 
 > The following example demonstrates how to define a FXML and a JavaFX perspective, how to declare the target areas for <i>Component</i> views and how to implement FXML- and JavaFX-<i>Components</i>.
 
@@ -97,7 +97,7 @@ perspectiveLayout.registerRootComponent(mainPane);
 </div>
 
 <br/>
-## Define target areas for <i>Component</i> rendering ##
+## <i>Component</i> rendering ##
 Both <i>FXPerspective(s)</i> define a very basic SplitPane layout with a top- and a bottom-content area. The examples above define a HBox for the top- and the bottom-area. Both Nodes can be registered to be a target for <i>Components</i>. 
 ### Register targets in the FXML perspective ###
 <pre>
@@ -146,7 +146,7 @@ public class ExampleJavaFXPerspective implements FXPerspective {
 }
 </pre>
 <br/>
-## Define the <i>FXComponent</i>-views ##
+## <i>FXComponent</i>-views ##
 <i>Component</i> views are the detailed parts of your perspective view. Each <i>FXPerspective</i>-view can have many <i>FXComponent</i>-views defined in FXML or programmatically.
 <br/>
 ### FXML-<i>FXComponent</i> example: ###
