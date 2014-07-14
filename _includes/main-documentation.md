@@ -495,6 +495,14 @@ Lifecycle annotation, a method annotated with <i>@PreDestroy</i> is executed on 
 - with FXComponentLayout layout, URL url (in case of FXML components)
 - with FXComponentLayout layout, URL url (in case of FXML components) , ResourceBundle resourceBundle
 
-###error handler###
+##error handler##
+An error handler catches all Exceptions occur in an JacpFX application and forwards it to an error dialog. JacpFX comes with a default implementation, but you may want to to overwrite it with your own implementation.
+To do so you need to extend the <i>AErrorDialogHandler</i> and to implement an error dialog.
+### example dialogHandler###
+<script src="https://gist.github.com/amoAHCP/f907e320553e7b331652.js"></script>
+<br/>
+The ErrorDialog must extend an JavaFX <i>Node</i> and should handle/display the StackTrace or an appropriate error message. <br/>
+To register the dialogHandler overwrite the <i>getErrorHandler()</i> method in the application launcher.
+
 
  
