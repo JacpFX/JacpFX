@@ -190,7 +190,7 @@ public class PerspectiveRegistry {
      * @return a perspective
      */
     public static Perspective<EventHandler<Event>, Event, Object> findPerspectiveByClass(final Class<?> clazz) {
-        final Optional<Perspective<EventHandler<Event>, Event, Object>> first = getAllPerspectives().parallelStream().filter(p -> p.getPerspective().getClass().isAssignableFrom(clazz)).findFirst();
+        final Optional<Perspective<EventHandler<Event>, Event, Object>> first = getAllPerspectives().stream().filter(p -> p.getPerspective().getClass().isAssignableFrom(clazz)).findFirst();
         return first.isPresent() ? first.get() : null;
     }
 
