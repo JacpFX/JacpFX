@@ -58,8 +58,7 @@ public class WorkbenchUtil {
      */
     public List<Perspective<EventHandler<Event>, Event, Object>> createPerspectiveInstances(final Workbench annotation) {
         final Stream<String> componentIds = CommonUtil.getStringStreamFromArray(annotation.perspectives());
-        final Stream<Injectable> perspectiveHandlerList = componentIds.parallel()
-                .sequential().map(this::mapToInjectable);
+        final Stream<Injectable> perspectiveHandlerList = componentIds.map(this::mapToInjectable);
         final List<Injectable> tmp = perspectiveHandlerList.collect(Collectors.toList());
         checkUniqueComponentReferences(tmp.stream());
         return tmp.stream().map(this::mapToPerspective).collect(Collectors.toList());

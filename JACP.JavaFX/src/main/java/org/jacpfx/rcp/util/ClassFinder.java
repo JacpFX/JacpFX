@@ -22,6 +22,11 @@ public class ClassFinder {
      */
     private static final String CLASSPATH = System.getProperty("java.class.path");
     private static final String OS = System.getProperty("os.name").toLowerCase();
+    private static final String CLASS_DOT=".";
+    private static final String CLASS_DOLLAR="$";
+    private static final String CLASS_FILE=".class";
+    private static final String CLASS_PROJECT_SEPERATOR="classes";
+    private static final int CLASS_PROJECT_SEPERATOR_LENGTH=8;
     /**
      * List with the jar files on the classpath
      */
@@ -61,7 +66,7 @@ public class ClassFinder {
     private List<Path> initClassPathDir() {
         final String[] cs = CLASSPATH.split(File.pathSeparator);
         final Stream<String> entries = Stream.of(cs);
-        return entries.parallel()
+        return entries
                 .map(s -> FileSystems.getDefault().getPath(s))
                 .filter(s -> Files.isDirectory(s, LinkOption.NOFOLLOW_LINKS)).collect(Collectors.toList());
 
@@ -91,7 +96,6 @@ public class ClassFinder {
         });
 
         final List<Class> result = exctractClasses(packageDir, files);
-        // result.removeAll(Collections.singleton(null));
         return result.toArray(new Class[result.size()]);
 
 
@@ -99,13 +103,14 @@ public class ClassFinder {
     }
 
     private List<Class> exctractClasses(final String packageDir, List<String> files) {
-
+        final String seperator= CLASS_PROJECT_SEPERATOR.concat(FILE_SEPERATOR);
         return files.parallelStream()
-                .map(dir -> dir.substring(dir.lastIndexOf(packageDir), dir.length()))
-                .map(subDir -> subDir.replace(File.separator, "."))
+                .map(dir -> dir.substring((dir.lastIndexOf(seperator)+CLASS_PROJECT_SEPERATOR_LENGTH), dir.length()))
+                .filter(classDir->classDir.contains(packageDir))
+                .map(subDir -> subDir.replace(File.separator, CLASS_DOT))
                 .map(className -> className.substring(0, className
-                        .lastIndexOf(".class")))
-                .filter(classFile -> !classFile.contains("$"))
+                        .lastIndexOf(CLASS_FILE)))
+                .filter(classFile -> !classFile.contains(CLASS_DOLLAR))
                 .map(cFile -> {
                     try {
                         return ClassLoader.getSystemClassLoader().loadClass(cFile);
@@ -114,7 +119,7 @@ public class ClassFinder {
                         return null;
                     }
                 })
-                .filter(clazz->clazz!=null)
+                .filter(clazz -> clazz != null)
                 .collect(Collectors.toList());
 
     }
@@ -128,11 +133,11 @@ public class ClassFinder {
      */
     private String convertPackege(String packageName) {
 
-        return packageName.replace(".", File.separator);
+        return packageName.replace(CLASS_DOT, File.separator);
     }
 
     private String convertPackageToRegex(String packageName){
-        return packageName.replace(".", FILE_SEPERATOR);
+        return packageName.replace(CLASS_DOT, FILE_SEPERATOR);
     }
 
     private class CollectingFileVisitor extends SimpleFileVisitor<Path>{
