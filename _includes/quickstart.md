@@ -31,6 +31,6 @@ The JacpFX quickstart archetype provides a simple JacpFX project containing a Wo
 Since JacpFX 2, Java 8 and JavaFX 8 is prerequisite.
 
 ### Create a project from quickstart archetype ###
-<pre>mvn archetype:generate  -DarchetypeGroupId=org.jacpfx  -DarchetypeArtifactId=JacpFX-simple-quickstart  -DarchetypeVersion=2.0-RC3</pre>
+<pre>mvn archetype:generate  -DarchetypeGroupId=org.jacpfx  -DarchetypeArtifactId=JacpFX-simple-quickstart  -DarchetypeVersion=2.0-RC4</pre>
 
 ## JacpFX from scratch ##
