@@ -5,13 +5,13 @@
 	<parent>
 		<groupId>org.jacpfx</groupId>
 		<artifactId>jacpfx-parent</artifactId>
-        <version>2.0-RC3</version>
+        <version>2.0-RC4-SNAPSHOT</version>
 		<relativePath>../JACP</relativePath>
 	</parent>
 	<artifactId>jacpfx.JavaFXControls</artifactId>
 	<packaging>jar</packaging>
 
-	<name>quickstart.JavaFXControls</name>
+	<name>jacpfx.JavaFXControls</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
