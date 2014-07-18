@@ -3,6 +3,9 @@ JacpFX
 
 Event bus, message passing and async execution are concepts, getting more and more popular for server side applications. JacpFX brings this approach to the client, combining JavaFX with an actor-like component model. It is an UI application framework based on JavaFX, supporting developers to structure an application with loosely coupled, reusable components. It frees you from the pitfalls of traditional multi-threaded programming helping you to separate the task execution from UI changes in you client application.
 
+### 18.07.2014 JacpFX RC4 is available in maven.central
+RC4 release was deployed on maven central. The target for the final release is Aug. 1, so we may release one more RC5 if necessary (hopefully not). We also released a beat for the new project page: http://jacpfx.org . Here you can find the documentation, tutorials and the new blog.
+
 ### 09.07.2014 JacpFX RC3 is available in maven.central
 To try out RC3 you can simply use the new (simple) maven archetype:
 <pre>
