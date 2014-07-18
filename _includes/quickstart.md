@@ -65,3 +65,21 @@ A JacpFX projects depends on following projects:
     <scope>compile</scope>
 </dependency>
 ```
+#### the JacpFX implementation ####
+```xml
+<dependency>
+    <groupId>org.jacpfx</groupId>
+    <artifactId>jacpfx.JavaFX</artifactId>
+    <version>${jacp.version}</version>
+    <scope>compile</scope>
+</dependency>
+```
+#### the JacpFX controls ####
+```xml
+<dependency>
+    <groupId>org.jacpfx</groupId>
+    <artifactId>jacpfx.JavaFX</artifactId>
+    <version>${jacp.version}</version>
+    <scope>compile</scope>
+</dependency>
+```
