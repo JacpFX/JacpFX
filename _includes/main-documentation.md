@@ -1,5 +1,5 @@
 
-#JacpFX Documentation --- WORK IN PROGRESS --- #
+# JacpFX Documentation --- WORK IN PROGRESS --- #
 This documentation pages give you detailed information about all parts of JacpFX, how to bootstrap a new JacpFX application and the general usage. You may want to read the [quick-start tutorial](documentation_quickstart.html) to start with a JacpFX project.
 ## What it is##
 JacpFX is an UI application framework based on JavaFX, supporting developers to structure an application with loosely coupled, reusable components. It frees you from the pitfalls of traditional multi-threaded programming helping you to separate the task execution from UI changes in your client application. JacpFX focusing on following goals to deliver best developer and user experience:
@@ -116,7 +116,7 @@ This method is the first one called on application startup. It allows you to do 
 - Message<Event,Object> action : the initial message, see **[JacpFX messaging](#messaging)**
 
 - WorkbenchLayout<Node> layout (the configuration handler to define the following application values): 
-	- layout.setWorkbenchXYSize(x,y) : define the initial workbench size
+	- layout.setWorkbenchXYSize(x,y) : the initial workbench size
 	- layout.registerToolBar(ToolbarPosition.NORTH): activate toolbars (NORTH, SOUTH, EAST, WEST)
 	- layout.setStyle(StageStyle.DECORATED): enable/disable window decoration 
 	- layout.setMenuEnabled(false): enable/disable application menues
@@ -146,7 +146,7 @@ To declare references to <i>Perspectives</i>, simply add the <i>Perspective</i> 
 A <i>FXPerspective</i> defines the basic UI structure for your view and provides a container for <i>Components</i>. 
 While a <i>FXPerspective</i> is more like a template with placeholders (or a portal page), <i>Components</i> are the detail views of your application (or the portlets).
 <br/>
-A typical UI application has a root node and a large tree of Nodes/Controls which represent the application UI. The leaf nodes of such a component tree are your user defined controles like Buttons, TextFields and so on.  A Perspective allows you to register JavaFX Nodes of your <i>FXPerspective</i> view, where <i>Component</i> views are rendered. Child <i>Components</i> in your <i>FXPerspective</i> can now registers themselves to be rendered in one of those targets.
+A typical UI application has a root node and a large tree of Nodes/Controls which represent the application UI. The leaf nodes of such a component tree are your user defined controls like Buttons, TextFields and so on.  A Perspective allows you to register JavaFX Nodes of your <i>FXPerspective</i> view, where <i>Component</i> views are rendered. Child <i>Components</i> in your <i>FXPerspective</i> can now registers themselves to be rendered in one of those targets.
 <br/>
 <div align="center">
 ![perspective node tree](/img/JACP_NodeTree_View.png)
@@ -191,7 +191,7 @@ Declarative <i>FXPerspectives</i> provides their view by defining a FXML file re
 <br/>
 ### Register <i>Components</i> ###
 <i>Component</i> references are defined inside the @Perspective annotation. Once the application is started you can move <i>Components</i> from one <i>Perspective</i> to another. 
-<i>Components</i> are subjected to one simple rule: They are <b>ALWAYS unique per <i>Perspective</i></b>. You can't add the same <i>Component</i> twice in one <i>FXPerspective</i>, but you can use one <i>Component</i> in many <i>FXPerspectives</i>. The same <i>Component</i> will be created in it's own instance per <i>FXPerspective</i>.
+<i>Components</i> are subjected to one simple rule: They are <b>ALWAYS unique per <i>Perspective</i></b>. You can't add the same <i>Component</i> twice in one <i>FXPerspective</i>, but you can use one <i>Component</i> in many <i>FXPerspectives</i>. The same <i>Component</i> will be created in its own instance per <i>FXPerspective</i>.
 #### Definition of <i>Component</i> references####
 <script src="https://gist.github.com/amoAHCP/ee4ffe9c557841cf1066.js"></script>
 
@@ -210,7 +210,7 @@ The @Perspective annotation provides necessary metadata for all classes implemen
 - name (mandatory): The <i>Perspective</i> name
 - id (mandatory): The <i>Perspective</i> id
 - components (mandatory): all referenced <i>Component</i> id's
-- active (optional): The state of the <i>Perspective</i>. The default value is "true". If the value is set to "false" the perspective will be activated when it receives the first message.
+- active (optional): The State of the <i>Perspective</i>. The default value is "true". If the value is set to "false" the perspective will be activated when it receives the first message.
 - viewLocation (optional): The path to the FXML file. If this attribute is set the <i>FXPerspective</i> will be handled as a declarative <i>Perspective</i>.
 - resourceBundleLocation (optional): The path to your resource bundle.
 - localeID (optional): The default locale, if not set the system default will be used.
@@ -236,7 +236,7 @@ While JavaFX <i>Components</i> must return a (JavaFX) Node, FXML-<i>Components</
 
 The FXComponent interface defines the following two methods:
 
-- The <b>"handle(...)"</b> method is executed first each time the <i>FXComponent</i> receives a message. This method will be executed <b>outside the FX Application Thread </b> an a worker-thread. The return value of this method is a JavaFX Node which will be passed to the FX Application thread from the "postHandle" method. Unless you not modify existing UI elements you are free to create any new UI elements. You can use the handle method to create large and complex UI trees, but you should avoid modifications of existing Nodes (it will throw an UnsupportedOperationException exception). You are also free to return a null value and to create the View-element in the postHandle method.
+- The <b>"handle(...)"</b> method is executed first each time the <i>FXComponent</i> receives a message. This method will be executed <b>outside the FX Application Thread </b> an worker-thread. The return value of this method is a JavaFX Node which will be passed to the FX Application thread from the "postHandle" method. Unless you not modify existing UI elements you are free to create any new UI elements. You can use the handle method to create large and complex UI trees, but you should avoid modifications of existing Nodes (it will throw an UnsupportedOperationException exception). You are also free to return a null value and to create the View-element in the postHandle method.
 - The <b>"postHandle(...)"</b> will be executed on the FX Application Thread after the "handle" method is finished. In this method you can modify any existing View Node. In case of FXML <i>Components</i> you should not return any Node (it will throw an UnsupportedOperationException). The associated FXML document is the Node that is passed to the target from the corresponding <i>FXPerspective</i>.
 
 #### Method-level annotations ####
@@ -350,7 +350,7 @@ Stateless <i>Components</i> are using instance-pooling for scaling, a CallbackCo
 
 ## <a name=fragments></a>Fragments ##
 JacpFX <i>Fragments</i> are small managed <i>Components</i>, that exist in the context of a <i>FXPerspective</i> or a <i>FXComponent</i>. The purpose of a <i>Fragment</i> is to create a reusable custom control or a group of controls that has access to the parent context. This allows the Fragment to send messages, access resources and to interact with the parent <i>FXComponent</i> or <i>FXPerspective</i>.
-A <i>Fragment</i> can either extent a JavaFX "Node" or declare a FXML view. The <i>Fragment</i> itself can not be a message target, but his parent <i>FXComponent</i> can access his Controller class and the view. 
+A <i>Fragment</i> can either extent a JavaFX "Node" or declare a FXML view. The <i>Fragment</i> itself cannot be a message target, but his parent <i>FXComponent</i> can access his Controller class and the view. 
 <br/>
 ### The @Fragment class level annotation ###
 The @Fragment annotation contains all metadata related to the JacpFX <i>Fragment</i>.
@@ -387,7 +387,7 @@ Depending on the <i>Fragment</i> scope, the method call returns always the same 
 
 The <i>ManagedFragmentHandler</i> holds the reference to the <i>Fragment</i> instance and their view. To create a <i>Fragment</i>, the JacpFX <i>Context</i> interface provides the method: <i>getManagedFragmentHandler(FragmentOne.class);</i> and returns a <i>ManagedFragmentHandler</i>. The Handler provides access to the controller (FragmentOne) and to the view (VBox).
 
-- <b>"getController()"</b> returns the an instance of your <i>Fragment</i>.
+- <b>"getController()"</b> returns the instance of your <i>Fragment</i>.
 - <b>"getFragmentNode()"</b> returns an JavaFX Node representing the view.
 
 ## <a name=messaging></a>JacpFX messaging##
@@ -496,7 +496,7 @@ Lifecycle annotation, a method annotated with <i>@PreDestroy</i> is executed on 
 - with FXComponentLayout layout, URL url (in case of FXML components) , ResourceBundle resourceBundle
 
 ##error handler##
-An error handler catches all Exceptions occur in an JacpFX application and forwards it to an error dialog. JacpFX comes with a default implementation, but you may want to to overwrite it with your own implementation.
+An error handler catches all Exceptions occur in an JacpFX application and forwards it to an error dialog. JacpFX comes with a default implementation, but you may want to overwrite it with your own implementation.
 To do so you need to extend the <i>AErrorDialogHandler</i> and to implement an error dialog.
 ### example dialogHandler###
 <script src="https://gist.github.com/amoAHCP/f907e320553e7b331652.js"></script>
@@ -506,3 +506,4 @@ To register the dialogHandler overwrite the <i>getErrorHandler()</i> method in t
 
 
  
+controls

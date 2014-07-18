@@ -42,3 +42,26 @@ After the compilation and packaging is finished you may go to the target folder 
 <br/>
 
 ## JacpFX from scratch ##
+The  goal of the following tutorial is to create a simple JacpFX application similar to the application created by the <i>simple-quickstart archetype</i>
+
+### create a simple java project ###
+To create a JacpFX application from scratch you may use a simple maven java project. To create on type:
+<pre>mvn archetype:create -DgroupId=your.simple.jacpfx.gid -DartifactId=your-simple-jacpfx-aid -DarchetypeArtifactId=men-archetype-quickstart</pre>
+
+### add folders and packages ###
+After the project was created go to <i>cd your-simple-jacpfx-aid/src/</i>, create a resources folder and following subfolders: <i>bundles, fxml, styles</i>
+<br/>
+After doing this go to the <i>src/main/java</i> folder and add <i>workbench, perspective, component, fragment, config, main</i>
+
+### add the JacpFX dependencies ###
+A JacpFX projects depends on following projects:
+
+#### the JacpFX API ####
+```xml
+<dependency>
+    <groupId>org.jacpfx</groupId>
+    <artifactId>jacpfx.API</artifactId>
+    <version>${jacp.version}</version>
+    <scope>compile</scope>
+</dependency>
+```
