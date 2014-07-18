@@ -33,4 +33,12 @@ Since JacpFX 2, Java 8 and JavaFX 8 is prerequisite.
 ### Create a project from quickstart archetype ###
 <pre>mvn archetype:generate  -DarchetypeGroupId=org.jacpfx  -DarchetypeArtifactId=JacpFX-simple-quickstart  -DarchetypeVersion=2.0-RC4</pre>
 
+
+To build the project go to project root and type: <pre>mvn packge</pre> 
+
+After the compilation and packaging is finished you may go to the target folder and execute the jar: 
+<pre>cd target && java -jar project-name-app.jar</pre>
+
+<br/>
+
 ## JacpFX from scratch ##
