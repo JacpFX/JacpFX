@@ -100,12 +100,20 @@ The application launcher contains the main method and some configurations to lau
 #### The Spring configuration ####
 <script src="https://gist.github.com/amoAHCP/191727abc7841fc1b2bc.js"></script>
 
-Simply put the BasicConfig class in the config packe created before. A best practice is to put all <i>Component</i> ids as static members to this configuration class and to user this members to reference a specific id.
+Simply put the BasicConfig class in the config packe created before. A best practice is to put all component and perspective ids as static members to this configuration class and to user this members to reference a specific id.
 <br/>
 #### The Application launcher ###
 The <i>ApplicationLauncher</i> contains the reference to the <i>FXWorkbench</i>, the Spring configuration file and the packages to scann for JacpFX components. Create an <i>ApplicationLauncher</i> class in the <i>main</i> package.
 <script src="https://gist.github.com/amoAHCP/85644f5c0aecb9f026e4.js"></script>
 
 ### The FXWorkbench ###
-The <i>FXWorkbench</i> is the „root node“ of your JacpFX application. The workbench creates the application window, defines references to perspective and contains some basic configurations like „initial window size“, toolbar definitions, menu definition. Create a <i>JacpFXWorkbench</i> in the <i>workbench</i> package.
+The <i>FXWorkbench</i> is the „root node“ of your JacpFX application. The workbench creates the application window, defines references to perspective and contains some basic configurations like the initial window size, toolbar definitions and menu definition. Create a <i>JacpFXWorkbench</i> in the <i>workbench</i> package.
 <script src="https://gist.github.com/amoAHCP/3623a326e8ff049f9700.js"></script>
+
+### The FXPerspective ###
+Next we create a simple JavaFX based <i>FXPerspective</i> called  <i>PerspectiveOne</i> in the <i>perspective</i> package. A perspective defines the basic layout of your view, contains references to components and declares render targets where components can render their view.
+<script src="https://gist.github.com/amoAHCP/018cf84d24baee12a4ea.js"></script>
+<i>PerspectiveOne</i> creates a simple view with a <i>SplitPane</i> which contains two <i>GridPanes</i>, both of them registered as a <i>FXComponent</i> render target.(TARGET_CONTAINER_LEFT, TARGET_CONTAINER_MAIN). A <i>FXComponent</i> can now registers itself to be rendered in one of those areas.
+
+### The FXComponent(s) ###
+
