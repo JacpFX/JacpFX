@@ -44,19 +44,19 @@ After the compilation and packaging is finished you may go to the target folder 
 ## JacpFX from scratch ##
 The  goal of the following tutorial is to create a simple JacpFX application similar to the application created by the <i>simple-quickstart archetype</i>
 
-### create a simple java project ###
+### Create a simple java project ###
 To create a JacpFX application from scratch you may use a simple maven java project. To create on type:
 <pre>mvn archetype:create -DgroupId=your.simple.jacpfx.gid -DartifactId=your-simple-jacpfx-aid -DarchetypeArtifactId=men-archetype-quickstart</pre>
 
-### add folders and packages ###
+### Add folders and packages ###
 After the project was created go to <i>cd your-simple-jacpfx-aid/src/</i>, create a resources folder and following subfolders: <i>bundles, fxml, styles</i>
 <br/>
-After doing this go to the <i>src/main/java</i> folder and add <i>workbench, perspective, component, fragment, config, main</i>
+After doing this go to the <i>src/main/java</i> folder, create a <i>quickstart</i> folder and add <i>workbench, perspective, component, fragment, config, main</i> folders.
 
-### add the JacpFX dependencies ###
+### Add the JacpFX dependencies ###
 A JacpFX projects depends on following projects:
 
-#### the JacpFX API ####
+#### The JacpFX API ####
 ```xml
 <dependency>
     <groupId>org.jacpfx</groupId>
@@ -65,7 +65,7 @@ A JacpFX projects depends on following projects:
     <scope>compile</scope>
 </dependency>
 ```
-#### the JacpFX implementation ####
+#### The JacpFX implementation ####
 ```xml
 <dependency>
     <groupId>org.jacpfx</groupId>
@@ -74,12 +74,38 @@ A JacpFX projects depends on following projects:
     <scope>compile</scope>
 </dependency>
 ```
-#### the JacpFX controls ####
+#### The JacpFX controls ####
 ```xml
 <dependency>
     <groupId>org.jacpfx</groupId>
-    <artifactId>jacpfx.JavaFX</artifactId>
+    <artifactId>jacpfx.JavaFXControls</artifactId>
     <version>${jacp.version}</version>
     <scope>compile</scope>
 </dependency>
 ```
+#### The JacpFX launcher ####
+The launcher project is responsible to launch all JacpFX components. Currently only a Spring launcher is available, so all JacpFX components are simple Spring beans, which means you may use any Spring functionality in you JacpFX application.
+
+```xml
+<dependency>
+    <groupId>org.jacpfx</groupId>
+    <artifactId>jacpfx.JavaFXSpring</artifactId>
+    <version>${jacp.version}</version>
+    <scope>compile</scope>
+</dependency>
+```
+### The application launcher ###
+The application launcher contains the main method and some configurations to launch a JacpFX application. Before we create one, we create a Spring configuration class which is needed for a Spring application launcher.
+
+#### The Spring configuration ####
+<script src="https://gist.github.com/amoAHCP/191727abc7841fc1b2bc.js"></script>
+
+Simply put the BasicConfig class in the config packe created before. A best practice is to put all <i>Component</i> ids as static members to this configuration class and to user this members to reference a specific id.
+<br/>
+#### The Application launcher ###
+The <i>ApplicationLauncher</i> contains the reference to the <i>FXWorkbench</i>, the Spring configuration file and the packages to scann for JacpFX components. Create an <i>ApplicationLauncher</i> class in the <i>main</i> package.
+<script src="https://gist.github.com/amoAHCP/85644f5c0aecb9f026e4.js"></script>
+
+### The FXWorkbench ###
+The <i>FXWorkbench</i> is the „root node“ of your JacpFX application. The workbench creates the application window, defines references to perspective and contains some basic configurations like „initial window size“, toolbar definitions, menu definition. Create a <i>JacpFXWorkbench</i> in the <i>workbench</i> package.
+<script src="https://gist.github.com/amoAHCP/3623a326e8ff049f9700.js"></script>
