@@ -116,4 +116,28 @@ Next we create a simple JavaFX based <i>FXPerspective</i> called  <i>Perspective
 <i>PerspectiveOne</i> creates a simple view with a <i>SplitPane</i> which contains two <i>GridPanes</i>, both of them registered as a <i>FXComponent</i> render target.(TARGET_CONTAINER_LEFT, TARGET_CONTAINER_MAIN). A <i>FXComponent</i> can now registers itself to be rendered in one of those areas.
 
 ### The FXComponent(s) ###
+Now we create two <i>FXComponent(s)</i>, one with a JavaFX view and the other with a FXML view. 
 
+#### The JavaFX FXComponent ####
+<script src="https://gist.github.com/amoAHCP/bda85e05ae6cf7a0b9a9.js"></script>
+
+> <i>ComponentLeft</i> registers itself to be rendered in <i>TARGET_CONTAINER_LEFT</i> defined in <i>PerspectiveOne</i>.
+
+#### The FXML FXComponent ####
+The next step is to create a fxml file in <i>/resources/fxml/myview.fxml</i> with the following contenc:
+
+##### The FXML file #####
+
+```xml
+<GridPane  hgap="10" vgap="10" minHeight="-Infinity" minWidth="-Infinity"
+          xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+
+    <children>
+
+        <TextArea fx:id="name" text="">
+
+        </TextArea>
+    </children>
+
+</GridPane>
+```
