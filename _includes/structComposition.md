@@ -1,5 +1,5 @@
 
-#Structuring and composition#
+# Structuring and composition #
 <br/>
 
 > JacpFX can help you to define your application UI in various ways. It allows you to mix FXML and JavaFX easily. 
@@ -33,7 +33,7 @@ public class ExampleFXMLPerspective implements FXPerspective {
 </pre>
 
 
-####The ExamplePerspective.fxml file:
+#### The ExamplePerspective.fxml file:
 
 ```xml
 <BorderPane id="mainPane"
