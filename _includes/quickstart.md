@@ -1,5 +1,5 @@
 
-#JacpFX Quickstart#
+# JacpFX Quickstart #
 JacpFX projects have a typical maven project structure.
 <pre>
 root
@@ -141,3 +141,11 @@ The next step is to create a fxml file in <i>/resources/fxml/myview.fxml</i> wit
 
 </GridPane>
 ```
+<br/>
+The corresponding FXController must not implement/return an JavaFX view, instead the root node of your FXML file will be passed as view.
+<br/>
+##### The FXML FXController #####
+<script src="https://gist.github.com/amoAHCP/43751243b35c3b316389.js"></script>
+
+<br/>
+Now we have created a minimal JacpFX application which you can execute by starting the <i>ApplicationLauncher</i> class in the main package. This small tutorial contains only basic examples to compose your application UI, for advanced topics like <i>messaging</i> feel free to read the **[documentation](documentation_main.html)** 
