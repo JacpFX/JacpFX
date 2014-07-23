@@ -25,7 +25,7 @@ root
 To start a new JacpFX project you may use a simple Java archetype or one of the JacpFX archetypes.
 
 ## JacpFX maven quickstart ##
-The JacpFX quickstart archetype provides a simple JacpFX project containing a Workspace, two <i>FXPerspective(s)</i> (FXML and JavaFX), two <i>FXComponent(s)</i> (FXML and JavaFX) and two <i>CallbackComponent(s)</i>.
+The JacpFX quickstart archetype provides a simple JacpFX project with one <i>FXWorbench</i>, two <i>FXPerspective(s)</i> (FXML and JavaFX), two <i>FXComponent(s)</i> (FXML and JavaFX) and two <i>CallbackComponent(s)</i>.
 
 ### Requirements ###
 Since JacpFX 2, Java 8 and JavaFX 8 is prerequisite.
@@ -45,16 +45,18 @@ After the compilation and packaging is finished you may go to the target folder 
 The  goal of the following tutorial is to create a simple JacpFX application similar to the application created by the <i>simple-quickstart archetype</i>
 
 ### Create a simple java project ###
-To create a JacpFX application from scratch you may use a simple maven java project. To create on type:
+To create a JacpFX application from scratch you may use a simple maven java project. To create one, type:
 <pre>mvn archetype:create -DgroupId=your.simple.jacpfx.gid -DartifactId=your-simple-jacpfx-aid -DarchetypeArtifactId=men-archetype-quickstart</pre>
 
 ### Add folders and packages ###
-After the project was created go to <i>cd your-simple-jacpfx-aid/src/</i>, create a resources folder and following subfolders: <i>bundles, fxml, styles</i>
+Create a resources folder and following subfolders: 
+<i>bundles, fxml, styles</i>
+in <i>your-simple-jacpfx-aid/src/</i>
 <br/>
-After doing this go to the <i>src/main/java</i> folder, create a <i>quickstart</i> folder and add <i>workbench, perspective, component, fragment, config, main</i> folders.
+When finished, go to <i>src/main/java</i>, create a <i>quickstart</i> folder and add <i>workbench, perspective, component, fragment, config, main</i> folders.
 
 ### Add the JacpFX dependencies ###
-A JacpFX projects depends on following projects:
+Add following JacpFX dependencies:
 
 #### The JacpFX API ####
 ```xml
@@ -65,6 +67,7 @@ A JacpFX projects depends on following projects:
     <scope>compile</scope>
 </dependency>
 ```
+
 #### The JacpFX implementation ####
 ```xml
 <dependency>
@@ -74,6 +77,7 @@ A JacpFX projects depends on following projects:
     <scope>compile</scope>
 </dependency>
 ```
+
 #### The JacpFX controls ####
 ```xml
 <dependency>
@@ -84,7 +88,7 @@ A JacpFX projects depends on following projects:
 </dependency>
 ```
 #### The JacpFX launcher ####
-The launcher project is responsible to launch all JacpFX components. Currently only a Spring launcher is available, so all JacpFX components are simple Spring beans, which means you may use any Spring functionality in you JacpFX application.
+The launcher project is responsible to create JacpFX component instances. Currently only a Spring launcher is available, so all JacpFX components are simple Spring beans, which means you may use any Spring functionality in you JacpFX application.
 
 ```xml
 <dependency>
@@ -94,26 +98,25 @@ The launcher project is responsible to launch all JacpFX components. Currently o
     <scope>compile</scope>
 </dependency>
 ```
-### The application launcher ###
-The application launcher contains the main method and some configurations to launch a JacpFX application. Before we create one, we create a Spring configuration class which is needed for a Spring application launcher.
 
-#### The Spring configuration ####
+### The Spring configuration ###
+To start the Spring container we need to create either a spring.xml or a spring configuration class like this:
 <script src="https://gist.github.com/amoAHCP/191727abc7841fc1b2bc.js"></script>
 
 Simply put the BasicConfig class in the config packe created before. A best practice is to put all component and perspective ids as static members to this configuration class and to user this members to reference a specific id.
 <br/>
-#### The Application launcher ###
-The <i>ApplicationLauncher</i> contains the reference to the <i>FXWorkbench</i>, the Spring configuration file and the packages to scann for JacpFX components. Create an <i>ApplicationLauncher</i> class in the <i>main</i> package.
+### The <i>ApplicationLauncher<i/> ###
+The <i>ApplicationLauncher</i> contains the main method, the reference to the <i>FXWorkbench</i> implementation, the Spring configuration file and the package names to scann for JacpFX components. Create an <i>ApplicationLauncher</i> class in the <i>main</i> package.
 <script src="https://gist.github.com/amoAHCP/85644f5c0aecb9f026e4.js"></script>
 
 ### The FXWorkbench ###
-The <i>FXWorkbench</i> is the „root node“ of your JacpFX application. The workbench creates the application window, defines references to perspective and contains some basic configurations like the initial window size, toolbar definitions and menu definition. Create a <i>JacpFXWorkbench</i> in the <i>workbench</i> package.
+The <i>FXWorkbench</i> is the „root node“ of your JacpFX application. A <i>FXWorkbench</i> creates an application window, defines references to <i>FXPerspective(s)</i> and contains some basic configurations like the initial window size, toolbar definitions and menu definition. Create a <i>JacpFXWorkbench</i> in the <i>workbench</i> package.
 <script src="https://gist.github.com/amoAHCP/3623a326e8ff049f9700.js"></script>
 
 ### The FXPerspective ###
-Next we create a simple JavaFX based <i>FXPerspective</i> called  <i>PerspectiveOne</i> in the <i>perspective</i> package. A perspective defines the basic layout of your view, contains references to components and declares render targets where components can render their view.
+Next we create a simple JavaFX based <i>FXPerspective</i> called  <i>PerspectiveOne</i> in the <i>perspective</i> package. A perspective defines the basic layout stucture of your view, contains references to <i>FXComponent(s)</i> and declares render targets where <i>FXComponent(s)</i> can render their view.
 <script src="https://gist.github.com/amoAHCP/018cf84d24baee12a4ea.js"></script>
-<i>PerspectiveOne</i> creates a simple view with a <i>SplitPane</i> which contains two <i>GridPanes</i>, both of them registered as a <i>FXComponent</i> render target.(TARGET_CONTAINER_LEFT, TARGET_CONTAINER_MAIN). A <i>FXComponent</i> can now registers itself to be rendered in one of those areas.
+<i>PerspectiveOne</i> creates a simple view with a <i>SplitPane</i> which contains two <i>GridPanes</i>, both of them registered as a <i>FXComponent</i> render target.(TARGET_CONTAINER_LEFT, TARGET_CONTAINER_MAIN). A <i>FXComponent</i> can now registers itself to be rendered (the view) in one of those areas.
 
 ### The FXComponent(s) ###
 Now we create two <i>FXComponent(s)</i>, one with a JavaFX view and the other with a FXML view. 
@@ -124,7 +127,7 @@ Now we create two <i>FXComponent(s)</i>, one with a JavaFX view and the other wi
 > <i>ComponentLeft</i> registers itself to be rendered in <i>TARGET_CONTAINER_LEFT</i> defined in <i>PerspectiveOne</i>.
 
 #### The FXML FXComponent ####
-The next step is to create a fxml file in <i>/resources/fxml/myview.fxml</i> with the following contenc:
+The next step is to create a <i>FXML</i> file in <i>/resources/fxml/myview.fxml</i> with the following content:
 
 ##### The FXML file #####
 
@@ -134,9 +137,8 @@ The next step is to create a fxml file in <i>/resources/fxml/myview.fxml</i> wit
 
     <children>
 
-        <TextArea fx:id="name" text="">
-
-        </TextArea>
+        <TextArea fx:id="name" text=""/>
+				<Button onAction="#sayHello" text="%hello" />
     </children>
 
 </GridPane>
