@@ -431,15 +431,15 @@ JacpFX has a hierarchical Component schema where a <i>Workbench</i> is the root 
 ## The JacpFX Context ##
 The JacpFX <i>Context</i> provides methods to access to the metadata of any <i>Perspective</i>/<i>Component</i> and to several JacpFX functionality. To get a <i>org.jacpfx.rcp.context.Context</i> reference you must annotate a class member with this type. Following methods and metadata are provided by the <i>Context</i> interface:
 
-- <b> getId(), getParentId(), getName(), getResourceBundle(), isActive()</b>, the <i>Perspective</i>/<i>Component</i> metadata
-- <b> setActive(false)</b> deactivate a <i>Component</i> if a <i>Perspective</i> is deactivated all child <i>Components</i> are deactivated too
-- <b> setReturnTarget("componentId")</b>, only valid for <i>CallbackComponent</i>; set the return target for the "handle(...)" method
-- <b>setExecutionTarget("parentId")</b>, only valid for JacpFX <i>Components</i>; defines the parent <i>Perspective</i> by id. You may move <i>Components</i> from one <i>Perspective</i> to another.
-- <b>setTargetLayout("top")</b>, only valid for <i>FXComponents</i>; set a valid render target defined by the parent <i>Perspective</i>. You may move a <i>Component</i> view from one area in your view to another.
-- <b>getManagedFragmentHandler(Class<T> clazz)</b>, only valid for <i>FXComponents</i>; Creates a <i>ManagedFragment</b> by type and returns a <i>ManagedFragmentHandler</i> reference
-- <b>showModalDialog(Node node)</b>, only valid for <i>FXComponents</i> and <i>FXPerspectives</i>; show a JavaFX Node in the modal dialog pane of the Workbench
-- <b>hideModalDialog()</b>, only valid for <i>FXComponents</i> and <i>FXPerspectives</i>; hide the currently visible modal dialog
-- <b>invokeFXAndWait(Runnable r)</b>, only valid for <i>FXComponents</i> and <i>FXPerspectives</i>; invoke a Runnable on JavaFX Application Thread and wait for the execution
+- <b> getId(), getParentId(), getName(), getResourceBundle(), isActive()</b>, <br/> the <i>Perspective</i>/<i>Component</i> metadata
+- <b> setActive(false)</b> <br/>deactivate a <i>Component</i> if a <i>Perspective</i> is deactivated all child <i>Components</i> are deactivated too
+- <b> setReturnTarget("componentId")</b>, <br/>only valid for <i>CallbackComponent</i>; set the return target for the "handle(...)" method
+- <b>setExecutionTarget("parentId")</b>, <br/>only valid for JacpFX <i>Components</i>; defines the parent <i>Perspective</i> by id. You may move <i>Components</i> from one <i>Perspective</i> to another.
+- <b>setTargetLayout("top")</b>, <br/>only valid for <i>FXComponents</i>; set a valid render target defined by the parent <i>Perspective</i>. You may move a <i>Component</i> view from one area in your view to another.
+- <b>getManagedFragmentHandler(Class<T> clazz)</b>, <br/>only valid for <i>FXComponents</i>; Creates a <i>ManagedFragment</b> by type and returns a <i>ManagedFragmentHandler</i> reference
+- <b>showModalDialog(Node node)</b>, <br/>only valid for <i>FXComponents</i> and <i>FXPerspectives</i>; show a JavaFX Node in the modal dialog pane of the Workbench
+- <b>hideModalDialog()</b>, <br/>only valid for <i>FXComponents</i> and <i>FXPerspectives</i>; hide the currently visible modal dialog
+- <b>invokeFXAndWait(Runnable r)</b>, <br/>only valid for <i>FXComponents</i> and <i>FXPerspectives</i>; invoke a Runnable on JavaFX Application Thread and wait for the execution
 
 ##modal dialogs##
 
@@ -505,5 +505,175 @@ The ErrorDialog must extend an JavaFX <i>Node</i> and should handle/display the 
 To register the dialogHandler overwrite the <i>getErrorHandler()</i> method in the application launcher.
 
 
- 
-controls
+##Modal Dialogs##
+
+###JacpFX OptionPane###
+
+JacpFX provides a default optionpane, which can be displayed as a modal dialog.<br/>
+The optionpane holds a title a message four buttons (Ok, Canel, Yes, No) closeButton<br/><br/>
+To create an optionpane, you can use the createOptionPane method of the JACPDialogUtil.
+While the title and the message will be taken as parameter of the create method, you can set the Eventhandlers for all four buttons individually. Every button has its own “setOnAction” method.
+
+- setOnOkAction(final EventHandler<ActionEvent> onOk)
+- setOnCancelAction(final EventHandler<ActionEvent> onCancel)
+- setOnYesAction(final EventHandler<ActionEvent> onYes)
+- setOnNoAction(final EventHandler<ActionEvent> onNo)
+
+By calling one of those four, the corresponding button will be added to the pane. There is no other way to add buttons to the default optionpane. One of your buttons can be choosen as default button. The default-button will have the focus, after the optionpane shows up.
+If the same “setOnAction” method will be called several times, only the last Eventhandler will be used. After clicking a button, the optionpane will hide automatically.
+Beside of the four buttons, there is also an option to show a close-button on the optionpane. That button will simply close the optionpane without triggering any other event or Eventhandler.
+The options for the close-button are:
+
+- orientation
+- visability
+
+<br/>
+<script src="https://gist.github.com/PETE-CH/7738bdd22ea996edf5b0.js"></script>
+<br/>
+Showing and hiding the optionpane is managed by the JACPModalDialog.
+To show a dialog you have to provide a Node, that should be displayed (e.g. JACPOptionPane or a Custom Node). Call <i>hideModalMessage()</i> will hide the dialog, which is currently shown.
+
+<br/>
+<script src="https://gist.github.com/PETE-CH/e7a080e336fcd156d13c.js"></script>
+<br/>
+
+Styling the JacpFX OptionPane
+The <i>JACPOptionPane</i> comes with a default theme, which can be overridden using a custom stylesheet. Every part of the pane has a corresponding css-class.
+
+<b>Attention:</b> The message part uses the JavaFX Text class. So ensure to use -fx-fill to apply a color to the message text. All other parts will use -fx-text-fill.
+With a custom stylesheet, using the mentioned classes, you’re able to style the option pane to your specific needs.
+
+
+
+##JACPToolBar##
+
+The <i>JACPToolbar</i> will help you to organize the buttons you’ll need for your application. Toolbars can be registed on any orientation of the application (NORTH, WEST, SOUTH, EAST)
+
+All Buttons will be added within a given context, which means, the toolbar knows which button belongs to which perspective, component or workbench. This allows the toolbar to show and hide your buttons as needed (eg. switching to another perspective).
+
+To manage the buttons by yourself, you can add buttons by providing an id. If you do so, the toolbar will not handle those buttons, which means, they will not disappear if you switch perspectives.
+###usage###
+JacpFX uses an extended Toolbar, which allows to add Buttons to either end or to the center.
+You can apply Regions (e.g. Buttons) to the JACPToolbar by using the methods:
+
+- add(Region region)
+- addAll(Region... region)
+- addToCenter(Region region)
+- addAllToCenter(Region... region)
+- addOnEnd(Region region)
+- addAllOnEnd(Region... region)
+
+To manage the context by yourself, all methods are also available with a second parameter (String id).
+
+- add(String id, Region region)
+- addAll(String id, Region... region)
+- addToCenter(String id, Region region)
+- addAllToCenter(String id, Region... region)
+- addOnEnd(String id, Region region)
+- addAllOnEnd(String id, Region... region)
+
+The end portion of a toolbar will be the right hand side, if the toolbar has a horizontal orientation, or the bottom end, if the toolbar is oriented vertically.
+
+Added nodes on the toolbar, can be removed by using the remove method. For self-managed buttons, you can also remove buttons for a given id.
+
+To self-manage your buttons, use the methods hideButtons(String id) and showButtons(String id)
+
+<br/>
+<div align="center">
+![JACP Standard Toolbar](/img/JacpFX_Std_Toolbar.JPG)
+</div>
+<br/>
+
+
+###styling###
+Due to the fact that the JACPToolbar only uses two style classes, where one of them is only for very special styling needs, the styling is pretty easy.
+The two classes for styling are:
+.jacp-tool-bar
+.jacp-button-bars (defines the container for the added nodes on either end)
+
+<br/>
+<div align="center">
+![JACP Toolbar](/img/JacpFX-ToolBar.png)
+</div>
+<br/>
+
+Every Node, you will add, has to be styled separately.
+After styling the JACPToolbar and the added nodes (buttons in this case) the Toolbar could look like this:
+
+<br/>
+<div align="center">
+![Styled Toolbar](/img/JacpFX_Styled_Toolbar.JPG)
+</div>
+<br/>
+
+
+
+
+##JACPMenuBar##
+The <i>JACPMenuBar</i> is registered to the Workbench. It is an extended MenuBar, which will take custom nodes, windowbuttons, and (of course) MenuItems.
+<br/>
+<br/>
+Just setup your menu within the postHandle-method of your workspace. Basically the menubar will work, as known from the JavaFXmenuBar, for adding MenuItems. Windowbuttons (minimize, resize, close) have to be registered if needed. The Buttons will only show up, if the Stage is set to <b>UNDECORATED</b>.
+<br/>
+For <b>MAC OS X</b> users: Hence to the option of using the system-menu on the very top of the screen, the stage will always be <b>DECORATED</b>, thus the buttons will never show up.
+<br/>
+<script src="https://gist.github.com/PETE-CH/1785db500de2265580a5.js"></script>
+<br/>
+<div align="center">
+![Standard Menubar](/img/JacpFX_Std_Menubar.JPG)
+</div>
+<br/>
+Using the <i>addNode(final JACPMenuBarButtonOrientation orientation, final Node... node)</i> method, you can add custom nodes to the menubar, either on the left- or right hand side.
+
+<br/>
+<div align="center">
+![Standard Menubar](/img/JacpFX_Std_Menubar_ext.JPG)
+</div>
+<br/>
+
+###styling###
+Since the JACPMenuBar uses a JavaFX MenuBar , for holding MenuItems , you can use the std. MenuBar classes for styling. The windowbuttons, are styled by using a set of classes and ids.
+
+<br/>
+<div align="center">
+![Menubar styling](/img/JacpFX_MenuBar.png)
+</div>
+<br/>
+
+Styles Windowbuttons can look like this.
+
+<br/>
+<div align="center">
+![Styled Menubar with windowbuttons](/img/JacpFX_Styled_Menubar_ext.JPG)
+</div>
+<br/>
+
+
+
+
+##Hovermenu##
+
+The <i>JACPHovermenu</i> is an extended button, which provides some a kind of dropdown portion to add more content (e.g. buttons, checkboxes etc.)
+
+The additional part (ContentPane) will hover above the UI. If you click on the button, the ContentPane shows up and disappears if a click outside the Hovermenu is detected.
+
+For the Hovermenu the ContentPane is a plain JavaFX - Pane, which allows you to add about
+anything to it.
+
+
+
+##OptionButton##
+
+The <i>JACPOptionButton</i> is an extended Hovermenu. It will take a single or a series of buttons, which are added to the ContentPane.
+
+The behavior is the same as known from the hovermenu. If the main button is clicked, the ContentPane and the Buttons are shown. The ContentPane will be hidden, if a click outside the ContentPane is detected.<br/>
+For a OptionButton, you can decide if the ContentPane will also disappear if a Button of the ContentPane is clicked. If you want that to happen, just set the hideOnAction parameter of the constructor to true.
+
+
+<br/>
+<div align="center">
+![JacOptionButton Example](/img/JacpFX-OptionButton.png)
+</div>
+<br/>
+
+
