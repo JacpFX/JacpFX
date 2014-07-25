@@ -653,7 +653,7 @@ Styles Windowbuttons can look like this.
 
 ##Hovermenu##
 
-The <i>JACPHovermenu</i> is an extended button, which provides some a kind of dropdown portion to add more content (e.g. buttons, checkboxes etc.)
+The <i>JACPHovermenu</i> is a extended button, which provides some a kind of dropdown portion to add more content (e.g. buttons, checkboxes etc.)
 
 The additional part (ContentPane) will hover above the UI. If you click on the button, the ContentPane shows up and disappears if a click outside the Hovermenu is detected.
 
@@ -664,7 +664,7 @@ anything to it.
 
 ##OptionButton##
 
-The <i>JACPOptionButton</i> is an extended Hovermenu. It will take a single or a series of buttons, which are added to the ContentPane.
+The <i>JACPOptionButton</i> is based on a Hovermenu. It will take a single or a series of buttons, which are added to the ContentPane.
 
 The behavior is the same as known from the hovermenu. If the main button is clicked, the ContentPane and the Buttons are shown. The ContentPane will be hidden, if a click outside the ContentPane is detected.<br/>
 For a OptionButton, you can decide if the ContentPane will also disappear if a Button of the ContentPane is clicked. If you want that to happen, just set the hideOnAction parameter of the constructor to true.
