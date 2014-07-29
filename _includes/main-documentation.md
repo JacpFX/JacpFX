@@ -1,5 +1,5 @@
 
-# JacpFX Documentation --- WORK IN PROGRESS --- #
+# JacpFX Documentation #
 This documentation pages give you detailed information about all parts of JacpFX, how to bootstrap a new JacpFX application and the general usage. You may want to read the [quick-start tutorial](documentation_quickstart.html) to start with a JacpFX project.
 ## What it is##
 JacpFX is an UI application framework based on JavaFX, supporting developers to structure an application with loosely coupled, reusable components. It frees you from the pitfalls of traditional multi-threaded programming helping you to separate the task execution from UI changes in your client application. JacpFX focusing on following goals to deliver best developer and user experience:
@@ -441,11 +441,8 @@ The JacpFX <i>Context</i> provides methods to access to the metadata of any <i>P
 - <b>hideModalDialog()</b>, <br/>only valid for <i>FXComponents</i> and <i>FXPerspectives</i>; hide the currently visible modal dialog
 - <b>invokeFXAndWait(Runnable r)</b>, <br/>only valid for <i>FXComponents</i> and <i>FXPerspectives</i>; invoke a Runnable on JavaFX Application Thread and wait for the execution
 
-##modal dialogs##
 
-##toolbar and menubar##
-
-##localisation##
+## Localisation ##
 
 @Component, @DeclarativeView, @View and @Perspective annotation allow the declaration of a resource bundle and a default localeID. If no localeID is declared the system default is assumed. Set the relative resourceBundleLocation in URL (in resource) like "bundles.languageBundle" and create in resources/bundles a file languageBundle_en.properties for further informations on resource bundles see: http://docs.oracle.com/javase/7/docs/api/java/util/ResourceBundle.html. 
 
@@ -453,7 +450,7 @@ The JacpFX <i>Context</i> provides methods to access to the metadata of any <i>P
 
 <br/>To get access to the ResourceBundle use a @PostConstruct annotated method with a <i>ResourceBundle</i> parameter or annotate a class member of type <i>ResourceBundle</i> with @Resource.
 
-##resources##
+## Resources ##
 The default project layout provides following structure for resources:
 
 <b>src/main/resources:</b>
@@ -464,50 +461,26 @@ The default project layout provides following structure for resources:
 - styles: css files
 <br/>
 
-### assign a stylesheet ###
+### Assign a stylesheet ###
 Assuming you put your stylesheet to <i>src/main/resources/styles/mystyle.css</i>, you may assign the stylesheet in the application launcher. The <i>postInit</i> method gives you access to the JavaFX stage objects where you may ad the stylesheet like this:
 
 <script src="https://gist.github.com/amoAHCP/9d9d061965e247c56610.js"></script>
 
-##dependency injection##
+## Dependency injection ##
 Dependency injection is provided by the <i>Launcher</i> implementation which is currently is Spring. All <i>Perspectives</i> and <i>Components</i> are Spring managed beans and supports all injection capabilities of a Spring bean.
 
-##annotations overview##
 
-###class-level annotations###
-
-###method-level annotations###
-
-<b>@PostConstruct</b>
-Lifecycle annotation, a method annotated with <i>@PostConstruct</i> is executed on component startup (also when component is reactivated). It is applicable for all component types and perspectives. Annotated methods MUST NOT throw a checked exception. Following method signature is applicable:
-
-- method with no parameters
-- with FXComponentLayout layout
-- with FXComponentLayout layout, URL url (in case of FXML components)
-- with FXComponentLayout layout, URL url (in case of FXML components) , ResourceBundle resourceBundle
-<br/>
-
-<b>@PreDestroy</b>
-Lifecycle annotation, a method annotated with <i>@PreDestroy</i> is executed on component shutdown. It is applicable for all component types and perspectives. Annotated methods MUST NOT throw a checked exception. Following method signature is applicable:
-
-- method with no parameters
-- with FXComponentLayout layout
-- with FXComponentLayout layout, URL url (in case of FXML components)
-- with FXComponentLayout layout, URL url (in case of FXML components) , ResourceBundle resourceBundle
-
-##error handler##
+## Error handler ##
 An error handler catches all Exceptions occur in an JacpFX application and forwards it to an error dialog. JacpFX comes with a default implementation, but you may want to overwrite it with your own implementation.
 To do so you need to extend the <i>AErrorDialogHandler</i> and to implement an error dialog.
-### example dialogHandler###
+### Example dialogHandler###
 <script src="https://gist.github.com/amoAHCP/f907e320553e7b331652.js"></script>
 <br/>
 The ErrorDialog must extend an JavaFX <i>Node</i> and should handle/display the StackTrace or an appropriate error message. <br/>
 To register the dialogHandler overwrite the <i>getErrorHandler()</i> method in the application launcher.
 
 
-##Modal Dialogs##
-
-###JacpFX OptionPane###
+### JacpFX OptionPane ###
 
 JacpFX provides a default optionpane, which can be displayed as a modal dialog.<br/>
 The optionpane holds a title a message four buttons (Ok, Canel, Yes, No) closeButton<br/><br/>
@@ -537,7 +510,7 @@ To show a dialog you have to provide a Node, that should be displayed (e.g. JACP
 <script src="https://gist.github.com/PETE-CH/e7a080e336fcd156d13c.js"></script>
 <br/>
 
-Styling the JacpFX OptionPane
+#### Styling the JacpFX OptionPane ####
 The <i>JACPOptionPane</i> comes with a default theme, which can be overridden using a custom stylesheet. Every part of the pane has a corresponding css-class.
 
 <b>Attention:</b> The message part uses the JavaFX Text class. So ensure to use -fx-fill to apply a color to the message text. All other parts will use -fx-text-fill.
@@ -545,7 +518,7 @@ With a custom stylesheet, using the mentioned classes, you’re able to style th
 
 
 
-##JACPToolBar##
+## JACPToolBar ##
 
 The <i>JACPToolbar</i> will help you to organize the buttons you’ll need for your application. Toolbars can be registed on any orientation of the application (NORTH, WEST, SOUTH, EAST)
 
@@ -585,7 +558,7 @@ To self-manage your buttons, use the methods hideButtons(String id) and showButt
 <br/>
 
 
-###styling###
+### Styling ###
 Due to the fact that the JACPToolbar only uses two style classes, where one of them is only for very special styling needs, the styling is pretty easy.
 The two classes for styling are:
 .jacp-tool-bar
@@ -609,7 +582,7 @@ After styling the JACPToolbar and the added nodes (buttons in this case) the Too
 
 
 
-##JACPMenuBar##
+## JACPMenuBar ##
 The <i>JACPMenuBar</i> is registered to the Workbench. It is an extended MenuBar, which will take custom nodes, windowbuttons, and (of course) MenuItems.
 <br/>
 <br/>
@@ -631,7 +604,7 @@ Using the <i>addNode(final JACPMenuBarButtonOrientation orientation, final Node.
 </div>
 <br/>
 
-###styling###
+### Styling ###
 Since the JACPMenuBar uses a JavaFX MenuBar , for holding MenuItems , you can use the std. MenuBar classes for styling. The windowbuttons, are styled by using a set of classes and ids.
 
 <br/>
@@ -651,7 +624,7 @@ Styles Windowbuttons can look like this.
 
 
 
-##Hovermenu##
+## Hovermenu ##
 
 The <i>JACPHovermenu</i> is a extended button, which provides some a kind of dropdown portion to add more content (e.g. buttons, checkboxes etc.)
 
@@ -662,7 +635,7 @@ anything to it.
 
 
 
-##OptionButton##
+## OptionButton ##
 
 The <i>JACPOptionButton</i> is based on a Hovermenu. It will take a single or a series of buttons, which are added to the ContentPane.
 
@@ -676,4 +649,119 @@ For a OptionButton, you can decide if the ContentPane will also disappear if a B
 </div>
 <br/>
 
+## Annotations overview ##
+
+### Class level annotations  ###
+<b>@View</b><br/>
+The <i>@View</i> annotation is used for components implementing the <i>FXComponent</i> interface and declaring a JavaFX based view. The return value of a components <i>postHandle</i> method will be placed in the defined render target of the parent <i>FXPerspective</i>. The annotation contains following attributes:
+
+- <b>"name"</b>, defines the <i>FXComponent</i> name
+- <b>"id"</b>, defines an unique <i>FXComponent</i> Id
+- <b>"active"</b>, defines the initial <i>FXComponent</i> state. Inactive <i>FXComponent</i> are activated on message.
+- <b>"initialTargetLayoutId"</b>, contains the render target id defined in the parent <i>FXPerspective</i>.
+- <b>"resourceBundleLocation" (optional)</b>, defines the resource bundle file
+- <b>"localeID"</b>,  the default locale Id (http://www.oracle.com/technetwork/java/javase/locales-137662.html)
+
+<br/>
+
+<b>@DeclarativeView</b><br/>
+The <i>@DeclarativeView</i> annotation is used for components implementing the <i>FXComponent</i> interface and declaring a FXML based view. The return value of a components <i>postHandle</i> must be null as the FXML root node will be placed in the defined render target of the parent <i>FXPerspective</i>. The annotation contains following attributes:
+
+- <b>"name"</b>, defines the <i>FXComponent</i> name
+- <b>"id"</b>, defines an unique <i>FXComponent</i> Id
+- <b>"viewLocation"</b>, defines the location the FXML file representing the view
+- <b>"active"</b>, defines the initial <i>FXComponent</i> state. Inactive <i>FXComponent</i> are activated on message.
+- <b>"initialTargetLayoutId"</b>, contains the render target id defined in the parent <i>FXPerspective</i>.
+- <b>"resourceBundleLocation" (optional)</b>, defines the resource bundle file
+- <b>"localeID"</b>,  the default locale Id (http://www.oracle.com/technetwork/java/javase/locales-137662.html)
+
+
+<br/>
+
+<b>@Component</b><br/>
+The <i>@Component</i> annotation contains all metadata related to the Callback-<i>Component</i> implementing the CallbackComponent interface.
+
+- <b>"name"</b>, defines the <i>Component</i> name
+- <b>"id"</b>, defines an unique <i>Component</i> Id
+- <b>"active"</b>, defines the initial <i>Component</i> state. Inactive <i>Components</i> are activated on message.
+- <b>"resourceBundleLocation" (optional)</b>, defines the resource bundle file
+- <b>"localeID"</b>,  the default locale Id (http://www.oracle.com/technetwork/java/javase/locales-137662.html) <br/>
+
+<br/>
+
+<b>@Perspective</b><br/>
+The <i>@Perspective</i> annotation provides necessary metadata for all classes implementing the <i>FXPerspective</i> interface. The following attributes describe a JacpFX <i>FXPerspective</i>:
+
+- name (mandatory): The <i>Perspective</i> name
+- id (mandatory): The <i>Perspective</i> id
+- components (mandatory): all referenced <i>Component</i> id's
+- active (optional): The State of the <i>Perspective</i>. The default value is "true". If the value is set to "false" the perspective will be activated when it receives the first message.
+- viewLocation (optional): The path to the FXML file. If this attribute is set the <i>FXPerspective</i> will be handled as a declarative <i>Perspective</i>.
+- resourceBundleLocation (optional): The path to your resource bundle.
+- localeID (optional): The default locale, if not set the system default will be used.
+
+<br/>
+
+<b>@Workbench</b><br/>
+The <i>@Workbench</i> annotation provides necessary metadata for all classes implementing the <i>FXWorkbench</i> interface. The following attributes describe a JacpFX <i>FXWorkbench</i>:
+
+- name (mandatory): The <i>Perspective</i> name
+- id (mandatory): The <i>Perspective</i> id
+- perspectives (mandatory): all <i>FXPerspective</i> ids referenced by the workbench
+
+<br/>
+
+<b>@Fragment</b><br/>
+The @Fragment annotation contains all metadata related to the JacpFX <i>Fragment</i>.
+
+- <b>"id"</b>, defines an unique <i>Fragment</i> Id
+- <b>"viewLocation"</b>, defines the location the FXML-file representing the view
+- <b>"resourceBundleLocation" (optional)</b>, defines the resource bundle file
+- <b>"localeID"</b>,  the default locale Id (http://www.oracle.com/technetwork/java/javase/locales-137662.html)
+- <b>"scope"</b>,  defines the scope of the <i>Fragment</i> (singleton/prototype). 
+<br/>
+
+
+### Method level annotations ###
+
+<b>@PostConstruct</b><br/>
+Lifecycle annotation, a method annotated with <i>@PostConstruct</i> is executed on component startup (also when component is reactivated). It is applicable for all component types and <i>FXPerspective(s)</i>. Annotated methods must not  throw a checked exception. Following method signature is applicable:
+
+- method with no parameters
+- with a <i>PerspectiveLayout</i> reference (in case of a <i>FXPerspective</i>),  contains the reference to the root <i>Node</i> and the target render nodes
+- with a <i>FXComponentLayout</i> reference (in case of components and perspectives), contains the reference to the application menu and the registered toolbars
+- with a <i>ResourceBundle</i> reference
+<br/>
+
+<b>@PreDestroy</b><br/>
+Lifecycle annotation, a method annotated with <i>@PreDestroy</i> is executed on component shutdown. It is applicable for all component types and <i>FXPerspective(s)</i>. Annotated methods must not throw a checked exception. Following method signature is applicable:
+
+- method with no parameters
+- with a <i>PerspectiveLayout</i> reference (in case of a <i>FXPerspective</i>),  contains the reference to the root <i>Node</i> and the target render nodes
+- with a <i>FXComponentLayout</i> reference (in case of components and perspectives), contains the reference to the application menu and the registered toolbars
+- with a <i>ResourceBundle</i> reference
+<br/>
+
+
+<b>@OnShow</b><br/>
+Lifecycle annotation, a method annotated with <i>@OnShow</i> is executed when a <i>FXPerspective</i> gets the focus. Usually this happens on perspective switch when a <i>FXPerspective</i> receives a message. Annotated methods must not throw a checked exception. Following method signature is applicable: 
+
+- method with no parameters
+- with a <i>PerspectiveLayout</i> reference (in case of a <i>FXPerspective</i>),  contains the reference to the root <i>Node</i> and the target render nodes
+- with a <i>FXComponentLayout</i> reference (in case of components and perspectives), contains the reference to the application menu and the registered toolbars
+- with a <i>ResourceBundle</i> reference
+<br/>
+
+<b>@OnHide</b><br/>
+Lifecycle annotation, a method annotated with <i>@OnHide</i> is executed when a <i>FXPerspective</i> looses the focus. Usually this happens on perspective switch when an other <i>FXPerspective</i> receives a message. Annotated methods must not throw a checked exception. Following method signature is applicable: 
+
+- method with no parameters
+- with a <i>PerspectiveLayout</i> reference (in case of a <i>FXPerspective</i>),  contains the reference to the root <i>Node</i> and the target render nodes
+- with a <i>FXComponentLayout</i> reference (in case of components and perspectives), contains the reference to the application menu and the registered toolbars
+- with a <i>ResourceBundle</i> reference
+<br/>
+
+### Type level annotations ###
+<b>@Resource</b><br/>
+The <i>@Resource</i> annotation can be applied to a member to get the reference to the JacpFX <i>Context</i> or the resource bundle.  
 

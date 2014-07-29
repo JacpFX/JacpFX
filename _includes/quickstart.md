@@ -30,8 +30,8 @@ The JacpFX quickstart archetype provides a simple JacpFX project with one <i>FXW
 ### Requirements ###
 Since JacpFX 2, Java 8 and JavaFX 8 is prerequisite.
 
-### Create a project from quickstart archetype ###
-<pre>mvn archetype:generate  -DarchetypeGroupId=org.jacpfx  -DarchetypeArtifactId=JacpFX-simple-quickstart  -DarchetypeVersion=2.0-RC4</pre>
+### Create a project from simple quickstart archetype ###
+<pre>mvn archetype:generate  -DarchetypeGroupId=org.jacpfx  -DarchetypeArtifactId=JacpFX-simple-quickstart  -DarchetypeVersion=2.0</pre>
 
 
 To build the project go to project root and type: <pre>mvn packge</pre> 
@@ -41,12 +41,17 @@ After the compilation and packaging is finished you may go to the target folder 
 
 <br/>
 
+### Create a project from empty quickstart archetype ###
+<pre>mvn archetype:generate  -DarchetypeGroupId=org.jacpfx  -DarchetypeArtifactId=JacpFX-empty-quickstart  -DarchetypeVersion=2.0</pre>
+This archetype creates the default project structure, an application launcher and a Spring configuration class.
+
+
 ## JacpFX from scratch ##
 The  goal of the following tutorial is to create a simple JacpFX application similar to the application created by the <i>simple-quickstart archetype</i>
 
 ### Create a simple java project ###
 To create a JacpFX application from scratch you may use a simple maven java project. To create one, type:
-<pre>mvn archetype:create -DgroupId=your.simple.jacpfx.gid -DartifactId=your-simple-jacpfx-aid -DarchetypeArtifactId=men-archetype-quickstart</pre>
+<pre>mvn archetype:create -DgroupId=your.simple.jacpfx.gid -DartifactId=your-simple-jacpfx-aid -DarchetypeArtifactId=maven-archetype-quickstart</pre>
 
 ### Add folders and packages ###
 Create a resources folder and following subfolders: 
@@ -114,7 +119,7 @@ The <i>FXWorkbench</i> is the „root node“ of your JacpFX application. A <i>F
 <script src="https://gist.github.com/amoAHCP/3623a326e8ff049f9700.js"></script>
 
 ### The FXPerspective ###
-Next we create a simple JavaFX based <i>FXPerspective</i> called  <i>PerspectiveOne</i> in the <i>perspective</i> package. A perspective defines the basic layout stucture of your view, contains references to <i>FXComponent(s)</i> and declares render targets where <i>FXComponent(s)</i> can render their view.
+Next we create a simple JavaFX based <i>FXPerspective</i> called  <i>PerspectiveOne</i> in the <i>perspective</i> package. A perspective defines the basic layout structure of your view, contains references to <i>FXComponent(s)</i> and declares render targets where <i>FXComponent(s)</i> can render their view.
 <script src="https://gist.github.com/amoAHCP/018cf84d24baee12a4ea.js"></script>
 <i>PerspectiveOne</i> creates a simple view with a <i>SplitPane</i> which contains two <i>GridPanes</i>, both of them registered as a <i>FXComponent</i> render target.(TARGET_CONTAINER_LEFT, TARGET_CONTAINER_MAIN). A <i>FXComponent</i> can now registers itself to be rendered (the view) in one of those areas.
 
