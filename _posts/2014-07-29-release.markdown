@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  „JacpFX 2 release“
-date:   2013-09-04 21:27:27
+date:   2014-07-29 21:27:27
 ---
 # JacpFX 2 release announcement #
 We are pleased to announced a new version of JacpFX. This version took quite a while to finish and brings a lot of changes and enhancements. 
