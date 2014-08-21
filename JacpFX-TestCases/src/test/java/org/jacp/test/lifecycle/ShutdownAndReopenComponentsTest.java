@@ -285,7 +285,7 @@ public class ShutdownAndReopenComponentsTest {
 
         }
         int i = 0;
-        while (i < 500) {
+        while (i < 100) {
 
             ComponentShutdownAndRestartComponentsTests1.startLatch = new CountDownLatch(1);
            // ComponentShutdownAndRestartComponentsTests1.stopLatch = new CountDownLatch(1);

@@ -8,6 +8,7 @@ import org.jacpfx.api.exceptions.ComponentNotFoundException;
 import org.jacpfx.api.handler.ComponentHandler;
 import org.jacpfx.api.message.DelegateDTO;
 import org.jacpfx.api.message.Message;
+import org.jacpfx.api.util.QueueSizes;
 import org.jacpfx.rcp.message.MessageImpl;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.ShutdownThreadsHandler;
@@ -27,7 +28,7 @@ public class MessageDelegatorImpl extends Thread implements
     private final Logger logger = Logger.getLogger(this.getClass().getName());
     private ComponentHandler<Perspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> perspectiveHandler;
     private final BlockingQueue<DelegateDTO<Event, Object>> messageDelegateQueue = new ArrayBlockingQueue<>(
-            10000);
+            QueueSizes.DELEGATOR_QUEUE_SIZE);
 
     public MessageDelegatorImpl() {
         super("MessageDelegatorImpl");

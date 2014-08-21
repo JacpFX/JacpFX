@@ -30,6 +30,7 @@ import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.handler.ComponentHandler;
 import org.jacpfx.api.message.Message;
+import org.jacpfx.api.util.QueueSizes;
 import org.jacpfx.rcp.context.JacpContextImpl;
 import org.jacpfx.rcp.message.MessageImpl;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
@@ -51,7 +52,7 @@ public class ComponentDelegator extends Thread implements
         org.jacpfx.api.delegator.ComponentDelegator<EventHandler<Event>, Event, Object> {
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	private final BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue = new ArrayBlockingQueue<>(
-			100);
+            QueueSizes.COMPONENT_DELEGATOR_QUEUE_SIZE);
 	private ComponentHandler<Perspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
 
 	public ComponentDelegator() {

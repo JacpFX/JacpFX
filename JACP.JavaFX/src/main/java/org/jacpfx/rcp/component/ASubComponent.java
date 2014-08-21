@@ -28,6 +28,7 @@ import org.jacpfx.api.component.ComponentHandle;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.context.JacpContext;
 import org.jacpfx.api.message.Message;
+import org.jacpfx.api.util.QueueSizes;
 import org.jacpfx.rcp.context.JacpContextImpl;
 import org.jacpfx.rcp.worker.AEmbeddedComponentWorker;
 
@@ -52,7 +53,7 @@ public abstract class ASubComponent extends AComponent implements
     private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     private final BlockingQueue<Message<Event, Object>> incomingMessage = new ArrayBlockingQueue<>(
-            100000);
+            QueueSizes.COMPONENT_QUEUE_SIZE);
 
 
     private volatile ComponentHandle<?, Event, Object> component;
