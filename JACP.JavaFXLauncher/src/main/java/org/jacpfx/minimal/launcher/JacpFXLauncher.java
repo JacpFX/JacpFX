@@ -28,10 +28,17 @@ package org.jacpfx.minimal.launcher;
 import org.jacpfx.api.fragment.Scope;
 import org.jacpfx.api.launcher.Launcher;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * Created by amo on 21.08.14.
  */
 public class JacpFXLauncher implements Launcher<ApplicationContext> {
+
+    private Map<String, Object> singletons = new ConcurrentHashMap<>();
+
+
     @Override
     public ApplicationContext getContext() {
         return null;
@@ -44,11 +51,30 @@ public class JacpFXLauncher implements Launcher<ApplicationContext> {
 
     @Override
     public <P> P getBean(String qualifier) {
-        return null;
+        return (P) singletons.get(qualifier);
+    }
+
+    private boolean contains(final String qualifier) {
+       return singletons.containsKey(qualifier);
     }
 
     @Override
-    public <P> P registerAndGetBean(Class<? extends P> type, String id, Scope scope) {
+    public <P> P registerAndGetBean(Class<? extends P> type, String qualifier, Scope scope) {
+        if (contains(qualifier))
+            return getBean(qualifier);
+        try {
+            final Object instance = type.newInstance();
+            if(scope.equals(Scope.SINGLETON)) {
+                singletons.put(qualifier,instance);
+            }
+            return (P) instance;
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+
         return null;
     }
 }
