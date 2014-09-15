@@ -45,7 +45,7 @@ public class ClassFinder {
     private static final String FILE_SEPERATOR;
 
     static {
-        FILE_SEPERATOR = isWindows() ? File.separator + File.separator : File.separator;
+        FILE_SEPERATOR = isWindows() ? File.separator+File.separator: File.separator;
     }
 
     private static boolean isWindows() {
@@ -165,7 +165,7 @@ public class ClassFinder {
     }
 
     private List<Class> exctractClasses(final String packageDir, List<String> files) {
-        final String seperator = CLASS_PROJECT_SEPERATOR.concat(FILE_SEPERATOR);
+        final String seperator = CLASS_PROJECT_SEPERATOR.concat(File.separator);
         return files.parallelStream()
                 .map(dir -> dir.substring((dir.lastIndexOf(seperator) + CLASS_PROJECT_SEPERATOR_LENGTH), dir.length()))
                 .filter(classDir -> classDir.contains(packageDir))
