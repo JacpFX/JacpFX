@@ -1,14 +1,17 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.jacpfx</groupId>
-        <artifactId>jacpfx-parent</artifactId>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.jacpfx</groupId>
+		<artifactId>jacpfx-parent</artifactId>
         <version>2.1-SNAPSHOT</version>
-        <relativePath>../JACP</relativePath>
-    </parent>
-    <artifactId>jacpfx.API</artifactId>
-    <packaging>jar</packaging>
-    <name>jacpfx.API</name>
+		<relativePath>../JACP</relativePath>
+	</parent>
+
+	<artifactId>jacpfx.JavaFXLauncher</artifactId>
+	<packaging>jar</packaging>
+
+	<name>jacpfx.JavaFXLauncher</name>
     <url>https://github.com/JacpFX/JacpFX</url>
     <licenses>
         <license>
@@ -17,20 +20,24 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-    <developers>
-        <developer>
-            <id>amo</id>
-            <name>Andy Moncsek</name>
-            <email>amo.ahcp@gmail.com</email>
-        </developer>
-        <developer>
-            <id>pete</id>
-            <name>Patrick Symmangk</name>
-            <email>pete.ahcp@gmail.com</email>
-        </developer>
-    </developers>
-    <build>
-        <plugins>
+	<developers>
+		<developer>
+			<id>amo</id>
+			<name>Andy Moncsek</name>
+			<email>amo.ahcp@gmail.com</email>
+		</developer>
+		<developer>
+			<id>pete</id>
+			<name>Patrick Symmangk</name>
+			<email>pete.ahcp@gmail.com</email>
+		</developer>
+	</developers>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<spring.version>4.0.6.RELEASE</spring.version>
+	</properties>
+	<build>
+		<plugins>
             <plugin>
                 <!-- create source jar -->
                 <groupId>org.apache.maven.plugins</groupId>
@@ -72,6 +79,29 @@
                     </execution>
                 </executions>
             </plugin>
-        </plugins>
-    </build>
+		</plugins>
+	</build>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.jacpfx</groupId>
+			<artifactId>jacpfx.API</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jacpfx</groupId>
+			<artifactId>jacpfx.JavaFX</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+	</dependencies>
 </project>
