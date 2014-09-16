@@ -269,9 +269,7 @@ public class PerspectiveHandlerImpl implements
         // hide all buttons of the previous perspective
         GlobalMediator.getInstance().handleToolBarButtons(previousPerspective, false);
         executeOnShow(perspective, previousPerspective);
-        children.clear();
-        children.add(newComp);
-        // replaceRootNodes(children, oldComp, newComp);
+        replaceRootNodes(children, oldComp, newComp);
         // show all buttons of the new perspective
         GlobalMediator.getInstance().handleToolBarButtons(perspective, true);
         newComp.setVisible(true);
@@ -279,8 +277,9 @@ public class PerspectiveHandlerImpl implements
     }
 
     private void replaceRootNodes(final ObservableList<Node> children, final Node oldComp, final Node newComp) {
-        if (!oldComp.equals(newComp)) {
-            children.remove(oldComp);
+        if(children.size()>1)children.clear();
+        if (!children.contains(newComp)){
+            children.clear();
             children.add(newComp);
         }
     }
@@ -320,7 +319,7 @@ public class PerspectiveHandlerImpl implements
             comp.setVisible(true);
             comp.setCache(true);
             final ObservableList<Node> children = this.root.getChildren();
-            this.hideChildren(children);
+            children.clear();
             GridPane.setConstraints(comp, 0, 0);
             children.add(comp);
         }
