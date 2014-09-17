@@ -55,7 +55,8 @@ root
 #### JacpFX.API ####
 #### JacpFX.JavaFX ####
 #### JacpFX.JavaFXControls ####
-#### JacpFX.JavaFXSpring ####
+#### JacpFX.JavaFXSpring (optional) ####
+#### JacpFX.JavaFXLauncher (optional) ####
 #### Java8 ####
 #### JavaFX8 ####
 #### maven ####
@@ -63,7 +64,7 @@ root
 
 ## <a name=ApplicationLauncher></a>ApplicationLauncher 
 An ApplicationLauncher contains the main method, the component-scanning configuration, the managed container configuration and a reference to the workbench class.
-<br/>JacpFX defines a Launcher interface which can be implemented to work with different managed containers like Spring or Weld. Currently Spring is used as the main container implementation, but a minimal Launcher without any dependencies is planned in the near future. For the Spring implementation two abstract Launcher implementations are available:
+<br/>JacpFX defines a Launcher interface which can be implemented to work with different managed containers like Spring or Weld. Currently Spring is used as the main container implementation, but you can use a minimal Launcher without any dependencies. For the Spring implementation two abstract Launcher implementations are available:
 
 - The <i>AFXSpringXmlLauncher</i>
 - The <i>AFXSpringJavaConfigLauncher</i>
@@ -81,6 +82,14 @@ An ApplicationLauncher contains the main method, the component-scanning configur
 <script src="https://gist.github.com/amoAHCP/51f4752d9a622f8366fc.js"></script>
 
 > The "getConfigClasses()" returns an array with all valid spring configuration classes (annotated with @Configuration)
+<br/>
+
+### JacpFXApplicationLauncher example ###
+
+
+<script src="https://gist.github.com/amoAHCP/4cb801f8c982bceadc03.js"></script>
+
+> This is an example for the usage of the „minimal launcher“ without any other dependencies. 
 <br/>
 
 ### Common applicationLauncher methods ###
