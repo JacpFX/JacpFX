@@ -37,6 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class JacpFXLauncher implements Launcher<ApplicationContext> {
 
     private Map<String, Object> singletons = new ConcurrentHashMap<>();
+    private Map<String,Class> prototypes = new ConcurrentHashMap<>();
 
 
     @Override
@@ -51,7 +52,21 @@ public class JacpFXLauncher implements Launcher<ApplicationContext> {
 
     @Override
     public <P> P getBean(String qualifier) {
-        return (P) singletons.get(qualifier);
+        if (contains(qualifier)){
+            return (P) singletons.get(qualifier);
+        } else if(prototypes.containsKey(qualifier)){
+            final Class type = prototypes.get(qualifier);
+            try {
+                final Object instance = type.newInstance();
+                return (P) instance;
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+        return null;
     }
 
     private boolean contains(final String qualifier) {
@@ -66,6 +81,8 @@ public class JacpFXLauncher implements Launcher<ApplicationContext> {
             final Object instance = type.newInstance();
             if(scope.equals(Scope.SINGLETON)) {
                 singletons.put(qualifier,instance);
+            } else {
+                if(!prototypes.containsKey(qualifier))prototypes.put(qualifier,type);
             }
             return (P) instance;
         } catch (InstantiationException e) {
