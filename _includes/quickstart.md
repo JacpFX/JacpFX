@@ -155,4 +155,8 @@ The corresponding FXController must not implement/return an JavaFX view, instead
 <script src="https://gist.github.com/amoAHCP/43751243b35c3b316389.js"></script>
 
 <br/>
+
+### Handling resource and fxml files ###
+All resource files are located in <i>src/main/resources</i>. The language bundle files are located in <i>src/main/resources/bundles</i>, with the above example <i>resourceBundleLocation = "bundles.languageBundle“</i> simply add a languageBundle_X.properties file, while X is your default locale (en, de, fr, whatever). If you want to use english by default add a languageBundle_en.properties file and set <i>localeID = "en"</i> in your <i>@View,@Perspective…</i> annotation.
+<br/><br/>
 Now we have created a minimal JacpFX application which you can execute by starting the <i>ApplicationLauncher</i> class in the main package. This small tutorial contains only basic examples to compose your application UI, for advanced topics like <i>messaging</i> feel free to read the **[documentation](documentation_main.html)** 
