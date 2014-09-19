@@ -31,7 +31,7 @@ The JacpFX quickstart archetype provides a simple JacpFX project with one <i>FXW
 Since JacpFX 2, Java 8 and JavaFX 8 is prerequisite.
 
 ### Create a project from simple quickstart archetype ###
-<pre>mvn archetype:generate  -DarchetypeGroupId=org.jacpfx  -DarchetypeArtifactId=JacpFX-simple-quickstart  -DarchetypeVersion=2.0.1</pre>
+<pre>mvn archetype:generate  -DarchetypeGroupId=org.jacpfx  -DarchetypeArtifactId=JacpFX-simple-quickstart  -DarchetypeVersion=2.0.2</pre>
 
 
 To build the project go to project root and type: <pre>mvn packge</pre> 
@@ -42,7 +42,7 @@ After the compilation and packaging is finished you may go to the target folder 
 <br/>
 
 ### Create a project from empty quickstart archetype ###
-<pre>mvn archetype:generate  -DarchetypeGroupId=org.jacpfx  -DarchetypeArtifactId=JacpFX-empty-quickstart  -DarchetypeVersion=2.0.1</pre>
+<pre>mvn archetype:generate  -DarchetypeGroupId=org.jacpfx  -DarchetypeArtifactId=JacpFX-empty-quickstart  -DarchetypeVersion=2.0.2</pre>
 This archetype creates the default project structure, an application launcher and a Spring configuration class.
 
 
