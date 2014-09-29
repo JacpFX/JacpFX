@@ -64,18 +64,6 @@ public class ComponentRegistry {
 
     }
 
-    /**
-     * Returns an active component by component id
-     *
-     * @param targetId the component id
-     * @return the requested component
-     */
-    public static SubComponent<EventHandler<Event>, Event, Object> findComponentById(
-            final String targetId) {
-        return FXUtil.getObserveableById(FXUtil.getTargetComponentId(targetId),
-                Collections.unmodifiableList(components));
-
-    }
 
     /**
      * Returns all component for a parent id
