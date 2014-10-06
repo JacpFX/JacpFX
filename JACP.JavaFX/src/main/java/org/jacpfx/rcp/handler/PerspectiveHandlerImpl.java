@@ -225,7 +225,6 @@ public class PerspectiveHandlerImpl implements
                                     final PerspectiveLayoutInterface<? extends Node, Node> layout) {
         final String targetLayout = JacpContextImpl.class.cast(component.getContext()).getTargetLayout();
         final Node validContainer = layout.getTargetLayoutComponents().get(targetLayout);
-        validContainer.setManaged(false);
         final ObservableList<Node> children = FXUtil.getChildren(validContainer);
         final Node currentRoot = component.getRoot();
         if (children == null || currentRoot == null) return;
@@ -235,7 +234,6 @@ public class PerspectiveHandlerImpl implements
         } else {
             bringRootToFront(index, children, currentRoot);
         }
-        validContainer.setManaged(true);
     }
 
 

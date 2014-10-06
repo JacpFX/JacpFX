@@ -29,6 +29,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.SubComponent;
+import org.jacpfx.api.context.JacpContext;
 import org.jacpfx.api.exceptions.NonUniqueComponentException;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.AFXComponent;
@@ -120,14 +121,15 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
         WorkerUtil.invokeOnFXThreadAndWait(() -> {
             // check if component was set to inactive, if so remove
             try {
-                final FXComponentLayout layout = JacpContextImpl.class.cast(component.getContext()).getComponentLayout();
+                final JacpContext context = component.getContext();
+                final FXComponentLayout layout = JacpContextImpl.class.cast(context).getComponentLayout();
                 // check if was not deactivated in handle method
-                if (component.getContext().isActive()) {
+                if (context.isActive()) {
                     WorkerUtil.executeComponentViewPostHandle(handleReturnValue, component,
                             action);
                 }
                 // check if was not deactivated in post handle method
-                if (component.getContext().isActive()) {
+                if (context.isActive()) {
                     EmbeddedFXComponentWorker.this.publishComponentValue(
                             component, targetComponents, layout,
                             previousContainer, currentTargetLayout, currentExecutionTarget);

@@ -45,6 +45,7 @@ public class JacpContextImpl implements Context {
      */
     private String id;
     private volatile String parentId;
+    private volatile String fullyQualifiedName;
     /**
      * will be set on init
      */
@@ -77,7 +78,7 @@ public class JacpContextImpl implements Context {
         final String callerClassName = customSecurityManager.getCallerClassName();
         if (AccessUtil.hasAccess(callerClassName, FXWorkbench.class))
             throw new IllegalStateException(" a FXWorkbench is no valid message target");
-        return new ActionListenerImpl(new MessageImpl(this.parentId.concat(FXUtil.PATTERN_GLOBAL).concat(this.id), message),
+        return new ActionListenerImpl(new MessageImpl(this.fullyQualifiedName, message),
                 this.globalMessageQueue);
     }
 
@@ -87,7 +88,7 @@ public class JacpContextImpl implements Context {
     @Override
     public final EventHandler<Event> getEventHandler(
             final String targetId, final Object message) {
-        return new ActionListenerImpl(new MessageImpl(this.parentId.concat(FXUtil.PATTERN_GLOBAL).concat(this.id), targetId, message, null),
+        return new ActionListenerImpl(new MessageImpl(this.fullyQualifiedName, targetId, message, null),
                 this.globalMessageQueue);
     }
 
@@ -97,8 +98,7 @@ public class JacpContextImpl implements Context {
     @Override
     public final void send(final String targetId, final Object message) {
         try {
-            final String sourceId = this.parentId!=null?this.parentId.concat(FXUtil.PATTERN_GLOBAL).concat(this.id):this.id;
-            this.globalMessageQueue.put(new MessageImpl(sourceId, targetId, message, null));
+            this.globalMessageQueue.put(new MessageImpl(this.fullyQualifiedName, targetId, message, null));
         } catch (InterruptedException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
@@ -113,8 +113,7 @@ public class JacpContextImpl implements Context {
         if (AccessUtil.hasAccess(callerClassName, FXWorkbench.class))
             throw new IllegalStateException(" a FXWorkbench is no valid message target");
         try {
-            final String fullyQualifiedId =this.parentId.concat(FXUtil.PATTERN_GLOBAL).concat(this.id);
-            this.globalMessageQueue.put(new MessageImpl(fullyQualifiedId,this.id, message, null));
+            this.globalMessageQueue.put(new MessageImpl(this.fullyQualifiedName,this.id, message, null));
 
         } catch (InterruptedException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -131,6 +130,7 @@ public class JacpContextImpl implements Context {
 
     public final void setId(final String id) {
         this.id = id;
+        this.fullyQualifiedName = id;
     }
 
     /**
@@ -143,6 +143,7 @@ public class JacpContextImpl implements Context {
 
     public final void setParentId(final String parentId) {
         this.parentId = parentId;
+        this.fullyQualifiedName = this.parentId.concat(FXUtil.PATTERN_GLOBAL).concat(this.id);
     }
 
     /**
