@@ -53,11 +53,12 @@
             </modules>
         </profile>
         <profile>
-            <id>javafx2</id>
+            <id>javafx</id>
             <modules>
                 <module>../JACP.API</module>
                 <module>../JACP.JavaFX</module>
                 <module>../JACP.JavaFXSpring</module>
+                <module>../JACP.JavaFXControls</module>
                 <module>../JACP.JavaFXLauncher</module>
             </modules>
         </profile>
