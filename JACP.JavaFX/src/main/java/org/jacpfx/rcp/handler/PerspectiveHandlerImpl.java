@@ -189,10 +189,13 @@ public class PerspectiveHandlerImpl implements
      */
     private void handlePerspectiveReassignment(final Perspective<EventHandler<Event>, Event, Object> perspective,
                                                final PerspectiveLayoutInterface<? extends Node, Node> perspectiveLayout, final Node componentOld) {
+        this.root.setCacheHint(CacheHint.SPEED);
         final Node componentNew = this.getLayoutComponentFromPerspectiveLayout(perspectiveLayout);
+        componentNew.setCache(true);
         this.reassignChild(perspective, componentOld, componentNew);
         // set already active editors to new component
         this.reassignSubcomponents(perspective, perspectiveLayout);
+        this.root.setCacheHint(CacheHint.DEFAULT);
     }
 
     /**
@@ -225,7 +228,6 @@ public class PerspectiveHandlerImpl implements
                                     final PerspectiveLayoutInterface<? extends Node, Node> layout) {
         final String targetLayout = JacpContextImpl.class.cast(component.getContext()).getTargetLayout();
         final Node validContainer = layout.getTargetLayoutComponents().get(targetLayout);
-        validContainer.setManaged(false);
         final ObservableList<Node> children = FXUtil.getChildren(validContainer);
         final Node currentRoot = component.getRoot();
         if (children == null || currentRoot == null) return;
@@ -235,9 +237,8 @@ public class PerspectiveHandlerImpl implements
         } else {
             bringRootToFront(index, children, currentRoot);
         }
-        validContainer.setManaged(true);
-    }
 
+    }
 
     private void bringRootToFront(int index, final ObservableList<Node> children, final Node root) {
         if (index != 0) {
@@ -273,13 +274,11 @@ public class PerspectiveHandlerImpl implements
         // show all buttons of the new perspective
         GlobalMediator.getInstance().handleToolBarButtons(perspective, true);
         newComp.setVisible(true);
-
     }
 
     private void replaceRootNodes(final ObservableList<Node> children, final Node oldComp, final Node newComp) {
-        if(children.size()>1)children.clear();
-        if (!children.contains(newComp)){
-            children.clear();
+        if (!oldComp.equals(newComp)) {
+            children.remove(oldComp);
             children.add(newComp);
         }
     }
@@ -319,7 +318,7 @@ public class PerspectiveHandlerImpl implements
             comp.setVisible(true);
             comp.setCache(true);
             final ObservableList<Node> children = this.root.getChildren();
-            children.clear();
+            this.hideChildren(children);
             GridPane.setConstraints(comp, 0, 0);
             children.add(comp);
         }
@@ -431,7 +430,7 @@ public class PerspectiveHandlerImpl implements
      * @param children,            JavaFX node children
      */
     private void hideChildrenAndExecuteOnHide(final Perspective<EventHandler<Event>, Event, Object> perspective, final Perspective<EventHandler<Event>, Event, Object> previousPerspective, final ObservableList<Node> children) {
-        // hideChildren(children);
+        hideChildren(children);
         if (previousPerspective != null && !previousPerspective.equals(perspective)) {
             final PerspectiveView<Node, EventHandler<Event>, Event, Object> perspectiveView = ((PerspectiveView<Node, EventHandler<Event>, Event, Object>) previousPerspective);
             final FXComponentLayout layout = new FXComponentLayout(this.getWorkbenchLayout(), null, previousPerspective.getContext().getId());

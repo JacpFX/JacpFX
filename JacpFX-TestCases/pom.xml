@@ -5,7 +5,7 @@
 
     <groupId>org.jacpfx.test</groupId>
 
-    <version>2.0.2</version>
+    <version>2.0</version>
 
     <artifactId>JacpFX-TestCases</artifactId>
     <packaging>jar</packaging>
