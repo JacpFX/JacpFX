@@ -1,7 +1,6 @@
 package org.jacp.test.messaging;
 
 import javafx.application.Platform;
-import junit.framework.Assert;
 import org.jacp.test.AllTests;
 import org.jacp.test.components.ComponentMessagingTest1Component1;
 import org.jacp.test.components.ComponentMessagingTest1Component2;
@@ -81,7 +80,7 @@ public class FXComponentMessagingTest {
     // after change windows: 53912ms with ui,   16962ms without ui
     // after change linux: 56105ms with ui ... 28301ms without ui
     // after change osx: 13961 with ui ... 10158 without ui
-    //macbook : 8100ms,7891,7550,7246 with ui ...   6131,6061,5907,5862 without ui
+    //macbook : 8100ms,7891,7550,7246,17399 with ui ...   6131,6061,5907,5862,5892 without ui
     public void testComponentMessaging() throws InterruptedException {
         warmUp();
         withUI();

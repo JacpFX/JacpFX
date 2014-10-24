@@ -30,8 +30,8 @@ import org.jacpfx.api.exceptions.NonUniqueComponentException;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.ASubComponent;
 import org.jacpfx.rcp.context.JacpContextImpl;
+import org.jacpfx.rcp.registry.ComponentRegistry;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
-import org.jacpfx.rcp.util.FXUtil;
 import org.jacpfx.rcp.util.ShutdownThreadsHandler;
 import org.jacpfx.rcp.util.TearDownHandler;
 import org.jacpfx.rcp.util.WorkerUtil;
@@ -127,7 +127,7 @@ class EmbeddedCallbackComponentWorker
         final JacpContextImpl context = JacpContextImpl.class.cast(comp.getContext());
         final String newExecutionTarget = context.getExecutionTarget();
         if (!newExecutionTarget.equals(currentExecutionTarget)) {
-            if (FXUtil.perspectiveContainsComponentInstance(newExecutionTarget, context.getId()))
+            if (ComponentRegistry.findComponentByQualifiedId(newExecutionTarget, context.getId())!=null)
                 throw new NonUniqueComponentException("perspective " + newExecutionTarget + " already contains a component with id: " + context.getId());
             if (!component.getContext().isActive())
                 throw new UnsupportedOperationException(

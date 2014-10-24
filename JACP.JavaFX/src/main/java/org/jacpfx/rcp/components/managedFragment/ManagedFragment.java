@@ -271,7 +271,7 @@ public class ManagedFragment {
     private SubComponent<EventHandler<Event>, Event, Object> findSubcomponentById(final Resource resource, final String parentId, final String componentId)  {
         final String userDefinedId = resource.parentId();
         if (userDefinedId.isEmpty()) {
-            return ComponentRegistry.findComponentByQualifiedId(parentId,componentId);
+            return ComponentRegistry.findComponentByQualifiedId(FXUtil.getQualifiedComponentId(parentId,componentId));
         } else {
             return ComponentRegistry.findComponentByQualifiedId(userDefinedId);
         }

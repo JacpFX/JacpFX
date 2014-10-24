@@ -36,6 +36,7 @@ import org.jacpfx.rcp.component.AFXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.componentLayout.PerspectiveLayout;
 import org.jacpfx.rcp.context.JacpContextImpl;
+import org.jacpfx.rcp.registry.ComponentRegistry;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.*;
 
@@ -174,7 +175,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
             final JacpContextImpl context = JacpContextImpl.class.cast(this.component.getContext());
             final String newExecutionTarget = context.getExecutionTarget();
             if (!currentExecutionTarget.equalsIgnoreCase(newExecutionTarget)) {
-                if (FXUtil.perspectiveContainsComponentInstance(newExecutionTarget, context.getId()))
+                if (ComponentRegistry.findComponentByQualifiedId(newExecutionTarget, context.getId())!=null)
                     throw new NonUniqueComponentException("perspective " + newExecutionTarget + " already contains a component with id: " + context.getId());
                 this.shutDownComponent(component, layout, previousContainer, currentTargetLayout);
                 // restore target execution

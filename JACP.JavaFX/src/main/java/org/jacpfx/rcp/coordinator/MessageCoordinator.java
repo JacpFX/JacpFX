@@ -108,7 +108,7 @@ public class MessageCoordinator extends ACoordinator implements
 
         }
         // 2. check if it is an active component in registry, active component must have active perspective
-        final SubComponent<EventHandler<Event>, Event, Object> targetComponent = ComponentRegistry.findComponentByQualifiedId(parentId,targetId);
+        final SubComponent<EventHandler<Event>, Event, Object> targetComponent = ComponentRegistry.findComponentByQualifiedId(FXUtil.getQualifiedComponentId(parentId,targetId));
         if (targetComponent != null) {
             // found an active component
             return new MessageCoordinatorExecutionResult(targetComponent, message, MessageCoordinatorExecutionResult.State.HANDLE_ACTIVE);
