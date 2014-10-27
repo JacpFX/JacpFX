@@ -26,11 +26,10 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import org.jacpfx.api.coordinator.Coordinator;
 import org.jacpfx.api.message.Message;
-import org.jacpfx.api.util.QueueSizes;
 import org.jacpfx.rcp.util.ShutdownThreadsHandler;
 
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.SynchronousQueue;
 import java.util.logging.Logger;
 
 /**
@@ -43,8 +42,7 @@ public abstract class ACoordinator extends Thread implements
         Coordinator<EventHandler<Event>, Event, Object> {
 
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
-	private final BlockingQueue<Message<Event, Object>> messages = new ArrayBlockingQueue<>(
-            QueueSizes.COORDINATOR_QUEUE_SIZE);
+	private final BlockingQueue<Message<Event, Object>> messages = new SynchronousQueue<>();
 
 	ACoordinator(String name) {
 		super(name);
