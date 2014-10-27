@@ -421,34 +421,21 @@ public class FXUtil {
     /**
      * Returns a component by full qualified id (like parentId.componentId) from a provided component list
      *
-     * @param id the component id to look for
+     * @param qualifiedId the component id to look for
      * @param components the component list
      * @param <P>  the concrete type of component
      * @return  the component by id
      */
     public static <P extends Component<EventHandler<Event>, Object>> P getObserveableByQualifiedId(
-            final String id, final List<P> components) {
-        final String parentId=  getTargetPerspectiveId(id);
-        final String componentId= getTargetComponentId(id);
-        return !parentId.equals(componentId) ? findObserveableByQualifiedId(id,components):getObserveableById(componentId,components);
-    }
-
-    /**
-     * Returns a component by full qualified id (like parentId.componentId) from a provided component list
-     *
-     * @param qualifiedId the qualifiedId
-     * @param components the component list
-     * @param <P>  the concrete type of component
-     * @return  the component by id
-     */
-    public static <P extends Component<EventHandler<Event>, Object>> P findObserveableByQualifiedId(
             final String qualifiedId, final List<P> components) {
         final Optional<P> filter = components.stream().
-                filter(comp -> comp.getContext().getParentId().equals(qualifiedId)).
+                filter(comp -> comp.getContext().getFullyQualifiedId().equals(qualifiedId)).
                 findFirst();
         if (filter.isPresent()) return filter.get();
         return null;
     }
+
+
 
     /**
      * Returns a component by full qualified id (like parentId.componentId) from a provided component list
@@ -461,12 +448,7 @@ public class FXUtil {
      */
     public static <P extends Component<EventHandler<Event>, Object>> P getObserveableByQualifiedId(
             final String parentId,final String componentId, final List<P> components) {
-        final Optional<P> filter = components.stream().
-                filter(comp -> comp.getContext().getId() != null && comp.getContext().getParentId()!=null).
-                filter(c -> c.getContext().getId().equals(componentId) && c.getContext().getParentId().equals(parentId)).
-                findFirst();
-        if (filter.isPresent()) return filter.get();
-        return null;
+        return getObserveableByQualifiedId(getQualifiedComponentId(parentId,componentId),components);
     }
 
 

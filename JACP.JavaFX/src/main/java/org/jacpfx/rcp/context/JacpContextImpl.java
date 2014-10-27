@@ -138,7 +138,7 @@ public class JacpContextImpl implements Context {
 
     public final void setId(final String id) {
         this.id = id;
-        this.fullyQualifiedId = id;
+        this.fullyQualifiedId = this.parentId!=null?this.parentId.concat(FXUtil.PATTERN_GLOBAL).concat(this.id):this.id;
     }
 
     /**
@@ -151,7 +151,7 @@ public class JacpContextImpl implements Context {
 
     public final void setParentId(final String parentId) {
         this.parentId = parentId;
-        this.fullyQualifiedId = this.parentId.concat(FXUtil.PATTERN_GLOBAL).concat(this.id);
+        this.fullyQualifiedId = this.id!=null?this.parentId.concat(FXUtil.PATTERN_GLOBAL).concat(this.id):this.parentId;
     }
 
     /**

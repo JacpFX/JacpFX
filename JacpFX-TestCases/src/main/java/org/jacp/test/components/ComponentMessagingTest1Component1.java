@@ -26,6 +26,7 @@
 package org.jacp.test.components;
 
 import javafx.event.Event;
+import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -89,8 +90,11 @@ public class ComponentMessagingTest1Component1 implements FXComponent {
 
             label.setText(" current Tagret: " + current);
             container.getChildren().addAll(label);
+            label.setCache(true);
+            label.setCacheHint(CacheHint.SPEED);
             ApplicationLauncherComponentMessaginTest1.latch.countDown();
         } else {
+
             if (counter.get() > 1) {
                 if (ui) {
                     label.setText(" current Counter: " + counter.decrementAndGet());
