@@ -18,18 +18,21 @@ import org.jacpfx.rcp.registry.ComponentRegistry;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.FXUtil;
 import org.jacpfx.rcp.util.PerspectiveUtil;
+import org.jacpfx.rcp.util.ShutdownThreadsHandler;
 
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.SynchronousQueue;
 
 /**
- * The Message Coordinator checks the message target and delegates the message for correct handling.
+ * The Message Coordinator checks the message target and delegates the message to component/perspective for correct handling.
  * Created by Andy Moncsek on 09.12.13.
  */
-public class MessageCoordinator extends ACoordinator implements
+public class MessageCoordinator extends Thread implements
         Coordinator<EventHandler<Event>, Event, Object> {
     private ComponentHandler<SubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
     private ComponentHandler<Perspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> perspectiveHandler;
     private BlockingQueue<DelegateDTO<Event, Object>> delegateQueue;
+    private final BlockingQueue<Message<Event, Object>> messages = new SynchronousQueue<>();
     private final String parentId;
     private final Launcher<?> launcher;
     private static final String seperator = ".";
@@ -37,8 +40,28 @@ public class MessageCoordinator extends ACoordinator implements
     public MessageCoordinator(final String parentId,
                               final Launcher<?> launcher) {
         super("MessageCoordinator");
+        ShutdownThreadsHandler.registerThread(this);
         this.parentId = parentId;
         this.launcher = launcher;
+    }
+
+
+    @Override
+    public final void run() {
+        while (!Thread.interrupted()) {
+            try {
+                final Message<Event, Object> message = this.messages.take();
+                this.handleMessage(message.getTargetId(), message);
+            } catch (Exception e) {
+                Thread.currentThread().getUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+            }
+        }
+    }
+
+
+    @Override
+    public BlockingQueue<Message<Event, Object>> getMessageQueue() {
+        return this.messages;
     }
 
     @Override
@@ -58,7 +81,7 @@ public class MessageCoordinator extends ACoordinator implements
                 delegateMessageToCorrectPerspective(result.getDto());
                 break;
             default:
-                throw new ComponentNotFoundException("no valid component found for id: "+targetId+" found");
+                throw new ComponentNotFoundException("no valid component found for id: " + targetId + " found");
         }
     }
 
@@ -71,7 +94,7 @@ public class MessageCoordinator extends ACoordinator implements
     }
 
     private void handleActive(final SubComponent<EventHandler<Event>, Event, Object> component, Message<Event, Object> message) {
-        this.componentHandler.handleAndReplaceComponent(message,component);
+        this.componentHandler.handleAndReplaceComponent(message, component);
     }
 
     private void handleInActive(final SubComponent<EventHandler<Event>, Event, Object> component, final Perspective<EventHandler<Event>, Event, Object> parentPerspective, Message<Event, Object> message) {
@@ -79,7 +102,7 @@ public class MessageCoordinator extends ACoordinator implements
         context.setActive(true);
         component.setStarted(true);
         parentPerspective.addComponent(component);
-        this.componentHandler.initComponent(message,component);
+        this.componentHandler.initComponent(message, component);
     }
 
     private void delegateMessageToCorrectPerspective(final DelegateDTOImpl dto) {
@@ -108,7 +131,7 @@ public class MessageCoordinator extends ACoordinator implements
 
         }
         // 2. check if it is an active component in registry, active component must have active perspective
-        final SubComponent<EventHandler<Event>, Event, Object> targetComponent = ComponentRegistry.findComponentByQualifiedId(FXUtil.getQualifiedComponentId(parentId,targetId));
+        final SubComponent<EventHandler<Event>, Event, Object> targetComponent = ComponentRegistry.findComponentByQualifiedId(FXUtil.getQualifiedComponentId(parentId, targetId));
         if (targetComponent != null) {
             // found an active component
             return new MessageCoordinatorExecutionResult(targetComponent, message, MessageCoordinatorExecutionResult.State.HANDLE_ACTIVE);
@@ -123,18 +146,19 @@ public class MessageCoordinator extends ACoordinator implements
         }
         // 4. check if it is an inactive component in perspective
         boolean exists = PerspectiveRegistry.perspectiveContainsComponentIdInAnnotation(this.parentId, targetId);
-        if(exists) {
+        if (exists) {
             // create global id
             final String globalTarget = this.parentId.concat(seperator).concat(targetId);
-            return createComponentInstanceAndRegister(globalTarget,message);
+            return createComponentInstanceAndRegister(globalTarget, message);
         }
         return new MessageCoordinatorExecutionResult(MessageCoordinatorExecutionResult.State.ERROR);
     }
 
     /**
      * Handles messages with fully qualified value like "parentId.componentId"
+     *
      * @param targetId the fully qualified id
-     * @param message the message
+     * @param message  the message
      * @return a MessageCoordinatorExecutionResult with values "HANDLE_ACTIVE" , "HANDLE_INACTIVE", "DELEGATE", or "ERROR"
      */
     private MessageCoordinatorExecutionResult handleGlobalComponentMessage(final String targetId, final Message<Event, Object> message) {
@@ -153,8 +177,8 @@ public class MessageCoordinator extends ACoordinator implements
      * Returns the target component by targetId specified in message.
      *
      * @param targetId the fully qualified id
-     * @param message the message
-     * @return  a MessageCoordinatorExecutionResult  with value "HANDLE_ACTIVE"  or "HANDLE_INACTIVE"
+     * @param message  the message
+     * @return a MessageCoordinatorExecutionResult  with value "HANDLE_ACTIVE"  or "HANDLE_INACTIVE"
      */
     private MessageCoordinatorExecutionResult getTargetComponentInCurrentPerspective(final String targetId,
                                                                                      final Message<Event, Object> message) {
@@ -164,17 +188,18 @@ public class MessageCoordinator extends ACoordinator implements
             return new MessageCoordinatorExecutionResult(component, message, MessageCoordinatorExecutionResult.State.HANDLE_ACTIVE);
         } else {
             // start inactive component
-            return createComponentInstanceAndRegister(targetId,message);
+            return createComponentInstanceAndRegister(targetId, message);
         }
     }
 
     /**
      * Creates a new component instance and registers it
+     *
      * @param targetId the fully qualified id
-     * @param message the message
-     * @return  a MessageCoordinatorExecutionResult  with value "HANDLE_INACTIVE"
+     * @param message  the message
+     * @return a MessageCoordinatorExecutionResult  with value "HANDLE_INACTIVE"
      */
-    private MessageCoordinatorExecutionResult createComponentInstanceAndRegister(final String targetId,final Message<Event, Object> message) {
+    private MessageCoordinatorExecutionResult createComponentInstanceAndRegister(final String targetId, final Message<Event, Object> message) {
         final SubComponent<EventHandler<Event>, Event, Object> component = PerspectiveUtil.getInstance(this.launcher).createSubcomponentById(targetId);
         if (component == null) throw new ComponentNotFoundException(
                 "invalid component id. Source: "
@@ -194,13 +219,13 @@ public class MessageCoordinator extends ACoordinator implements
 
 
     @Override
-    public <P extends Component<EventHandler<Event>,Object>> void setComponentHandler(ComponentHandler<P, Message<Event, Object>> handler) {
+    public <P extends Component<EventHandler<Event>, Object>> void setComponentHandler(ComponentHandler<P, Message<Event, Object>> handler) {
         this.componentHandler = (ComponentHandler<SubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>>) handler;
 
     }
 
     @Override
-    public <P extends Component<EventHandler<Event>,Object>> void setPerspectiveHandler(ComponentHandler<P, Message<Event, Object>> handler) {
+    public <P extends Component<EventHandler<Event>, Object>> void setPerspectiveHandler(ComponentHandler<P, Message<Event, Object>> handler) {
         this.perspectiveHandler = (ComponentHandler<Perspective<EventHandler<Event>, Event, Object>, Message<Event, Object>>) handler;
     }
 

@@ -56,6 +56,7 @@ import org.jacpfx.rcp.components.toolBar.JACPToolBar;
 import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.context.JacpContextImpl;
 import org.jacpfx.rcp.coordinator.MessageCoordinator;
+import org.jacpfx.rcp.delegator.ComponentDelegatorImpl;
 import org.jacpfx.rcp.delegator.MessageDelegatorImpl;
 import org.jacpfx.rcp.handler.PerspectiveHandlerImpl;
 import org.jacpfx.rcp.message.MessageImpl;
@@ -83,7 +84,7 @@ public abstract class AFXWorkbench
         Base<EventHandler<Event>, Event, Object>,
         RootComponent<Perspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> {
 
-    private final ComponentDelegator<EventHandler<Event>, Event, Object> componentDelegator = new org.jacpfx.rcp.delegator.ComponentDelegator();
+    private final ComponentDelegator<EventHandler<Event>, Event, Object> componentDelegator = new ComponentDelegatorImpl();
     private final MessageDelegator<EventHandler<Event>, Event, Object> messageDelegator = new MessageDelegatorImpl();
     private final WorkbenchLayout<Node> workbenchLayout = new FXWorkbenchLayout();
     private final Logger logger = Logger.getLogger(this.getClass().getName());

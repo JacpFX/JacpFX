@@ -48,14 +48,14 @@ import java.util.logging.Logger;
  * @author Andy Moncsek
  * 
  */
-public class ComponentDelegator extends Thread implements
+public class ComponentDelegatorImpl extends Thread implements
         org.jacpfx.api.delegator.ComponentDelegator<EventHandler<Event>, Event, Object> {
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	private final BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue = new ArrayBlockingQueue<>(
             QueueSizes.COMPONENT_DELEGATOR_QUEUE_SIZE);
 	private ComponentHandler<Perspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
 
-	public ComponentDelegator() {
+	public ComponentDelegatorImpl() {
 		super("ComponentDelegator");
 		ShutdownThreadsHandler.registerThread(this);
 	}
@@ -121,7 +121,7 @@ public class ComponentDelegator extends Thread implements
 			final P component, final Message<Event, Object> action) {
 		component.getContext().setActive(true);
         //noinspection unchecked
-        Platform.runLater(() -> ComponentDelegator.this.componentHandler
+        Platform.runLater(() -> ComponentDelegatorImpl.this.componentHandler
                 .initComponent(
                         action,
                         (Perspective<EventHandler<Event>, Event, Object>) component));

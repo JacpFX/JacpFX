@@ -39,7 +39,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
 /**
- * the AFXSubComponent is the basic component for all component
+ * the ASubComponent is the basic component for all components
  *
  * @author Andy Moncsek
  */
