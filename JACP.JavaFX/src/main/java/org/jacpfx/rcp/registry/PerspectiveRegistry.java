@@ -101,7 +101,7 @@ public class PerspectiveRegistry {
         return selectCorrectPerspective(current, allActive);
     }
 
-    private static Perspective<EventHandler<Event>, Event, Object> selectCorrectPerspective(final Perspective<EventHandler<Event>, Event, Object> current, final TreeSet<Perspective<EventHandler<Event>, Event, Object>> allActive) {
+    private static Perspective<EventHandler<Event>, Event, Object> selectCorrectPerspective(final Perspective<EventHandler<Event>, Event, Object> current, final NavigableSet<Perspective<EventHandler<Event>, Event, Object>> allActive) {
         Perspective<EventHandler<Event>, Event, Object> targetId = allActive.higher(current);
         if (targetId == null) targetId = allActive.lower(current);
         if (targetId == null) return null;

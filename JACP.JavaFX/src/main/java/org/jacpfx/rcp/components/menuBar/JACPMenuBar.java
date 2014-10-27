@@ -104,6 +104,7 @@ public class JACPMenuBar extends HBox {
         } else {
             this.leftBar.setMinWidth(0);
             this.rightBar.setMinWidth(0);
+            // TODO compute value
             this.mainBar.setPrefHeight(22);
             this.setAlignment(Pos.CENTER_LEFT);
             HBox.setHgrow(this.mainBar, Priority.ALWAYS);

@@ -64,7 +64,6 @@ import org.jacpfx.rcp.perspective.AFXPerspective;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.*;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -350,10 +349,7 @@ public abstract class AFXWorkbench
         // catch global clicks
         this.stage.getScene().addEventFilter(
                 MouseEvent.MOUSE_RELEASED,
-                (event) -> {
-                    GlobalMediator.getInstance().hideAllHideables(event);
-
-                });
+                (event) -> GlobalMediator.getInstance().hideAllHideables(event));
     }
 
     private void initMenuLayout() {
@@ -376,9 +372,8 @@ public abstract class AFXWorkbench
             final Map<ToolbarPosition, JACPToolBar> registeredToolbars = this
                     .getWorkbenchLayout().getRegisteredToolBars();
 
-            for (Iterator<Entry<ToolbarPosition, JACPToolBar>> iterator = registeredToolbars
-                    .entrySet().iterator(); iterator.hasNext(); ) {
-                Entry<ToolbarPosition, JACPToolBar> entry = iterator.next();
+            for (Entry<ToolbarPosition, JACPToolBar> entry : registeredToolbars
+                    .entrySet()) {
                 final ToolbarPosition position = entry.getKey();
                 final JACPToolBar toolBar = entry.getValue();
                 this.assignCorrectToolBarLayout(position, toolBar, toolbarPane);

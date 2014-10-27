@@ -155,7 +155,7 @@ public class ComponentHandlerImpl
 
 	private void log(final String message, final String name) {
 		if (this.logger.isLoggable(Level.FINE)) {
-			this.logger.fine(">> " + message+" "+name);
+			this.logger.fine(">> " + message+ ' ' +name);
 		}
 	}
 }

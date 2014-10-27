@@ -71,9 +71,7 @@ public class GlobalMediator {
      */
     public void hideAllHideables(MouseEvent event) {
         Node target = this.detectHideable((Node) event.getTarget());
-        this.hideAbles.stream().filter(hideable -> !hideable.equals(target)).forEach(hideable -> {
-            hideable.hide();
-        });
+        this.hideAbles.stream().filter(hideable -> !hideable.equals(target)).forEach(Hideable::hide);
     }
 
     //    Detect all hideables in Node Tree. A Parent might be a Hideable or Hideable Component, so those nodes shouldn't be hidden.

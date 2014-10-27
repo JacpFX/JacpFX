@@ -123,10 +123,7 @@ public class JACPOptionButton extends JACPHoverMenu {
     }
 
     private void addHideHandler(final Button option) {
-        option.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            // hide option when button was pressed
-            this.hideOptions();
-        });
+        option.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> this.hideOptions());
 
     }
 
