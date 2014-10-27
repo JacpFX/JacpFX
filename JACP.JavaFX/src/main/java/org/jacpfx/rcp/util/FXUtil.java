@@ -429,6 +429,7 @@ public class FXUtil {
     public static <P extends Component<EventHandler<Event>, Object>> P getObserveableByQualifiedId(
             final String qualifiedId, final List<P> components) {
         final Optional<P> filter = components.stream().
+                filter(c->c.getContext().getFullyQualifiedId()!=null).
                 filter(comp -> comp.getContext().getFullyQualifiedId().equals(qualifiedId)).
                 findFirst();
         if (filter.isPresent()) return filter.get();
