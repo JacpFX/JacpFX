@@ -23,6 +23,7 @@ JacpFX provides a simple archetype with two example perspectives (FXML + JavaFX 
 mvn archetype:generate  -DarchetypeGroupId=org.jacpfx  -DarchetypeArtifactId=JacpFX-simple-quickstart  -DarchetypeVersion=2.0.2
 ```
 To integrate the DataFX-flow plugin add following dependency to your pom:
+
 ```xml
         <dependency>
             <groupId>org.jacpfx</groupId>
@@ -33,6 +34,7 @@ To integrate the DataFX-flow plugin add following dependency to your pom:
 ```
 ## Create a simple Flow between two DataFX-flow controllers
 Now we create two DataFX-flow controllers, a WizardStartController and a Wizard1Controller. The Wizard1Controller will contain the JacpFX context and include a textfield, text input will be send via messages to a JacpFX component. The controller will look like this:
+
 ```java
 @FXMLController(value="/fxml/wizard1.fxml", title = "Wizard: Step 1")
 public class Wizard1Controller {
@@ -64,10 +66,10 @@ public class Wizard1Controller {
 		});
     }
 
-
 }
 
 ```
+
 
 ## Integrate the DataFX-flow into a JacpFX component
 To be able to inject a JacpFX context into a DataFX-flow controller I created a DataFX <i>Flow</i>-wrapper which additionally takes the ID of a JacpFX component who’s context should be injected. The usage of the DataFX <i>Flow</i> is exactly the same, so we create a <i>FlowHandler</i> and get the root node of the DataFX-flow when starting the <i>FlowHandler</i>. The root node can now be included to your JacpFX component view.
@@ -123,8 +125,10 @@ public class ComponentLeft implements FXComponent {
 }
 ```
 JacpFX and DataFX-flow needs Java 8 / JavaFX 8 to run, a packed jar you can download here: http://jacpfx.org/data/SimpleDataFX_JacpFX.jar , simply execute:
+
 ```bash
 java -jar SimpleDataFX_JacpFX.jar
+
 ```
 
 The source of this example application can be found here:
