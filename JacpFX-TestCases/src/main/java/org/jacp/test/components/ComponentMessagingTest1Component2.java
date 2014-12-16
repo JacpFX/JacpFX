@@ -100,12 +100,12 @@ public class ComponentMessagingTest1Component2 implements FXComponent {
                 } else {
                     counter.decrementAndGet();
                 }
-                context.send("id007", "message");
+                context.send("id13.id007", "message");
             } else {
                 System.out.println("Component id008: FINISH");
                 if (wait.getCount() > 0) wait.countDown();
                 if (ComponentMessagingTest1Component1.wait.getCount() > 0)
-                    context.send("id007", "message");
+                    context.send("id13.id007", "message");
 
             }
 

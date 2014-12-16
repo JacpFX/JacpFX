@@ -284,7 +284,7 @@ public class JacpContextImpl implements Context {
      * {@inheritDoc}
      */
     @Override
-    public void invokeFXAndWait(final Runnable r) {
+    public final void invokeFXAndWait(final Runnable r) {
         final Thread t = Thread.currentThread();
         try {
             WorkerUtil.invokeOnFXThreadAndWait(r);

@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import org.jacp.test.AllTests;
-import org.jacp.test.components.ComponentMoveComponentsBetweenPerspectives1;
 import org.jacp.test.components.ComponentMoveComponentsBetweenPerspectives2;
 import org.jacp.test.main.ApplicationLauncherMoveComponentsBetweenComponents;
 import org.jacpfx.api.component.Perspective;
@@ -12,7 +11,6 @@ import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.rcp.workbench.AFXWorkbench;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -121,38 +119,5 @@ public class MoveComponentBetweenPerspective {
 
     }
 
-    @Test
-    @Ignore
-    public void testMoveCallbackComponent() throws InterruptedException {
-        ApplicationLauncherMoveComponentsBetweenComponents launcher = ApplicationLauncherMoveComponentsBetweenComponents.instance[0];
-        AFXWorkbench workbench = launcher.getWorkbench();
-        assertNotNull(workbench);
-        List<Perspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
-        assertNotNull(perspectives);
-        assertFalse(perspectives.isEmpty());
-        ApplicationLauncherMoveComponentsBetweenComponents.latch= new CountDownLatch(1);
-        try {
-            ApplicationLauncherMoveComponentsBetweenComponents.handler = new Thread.UncaughtExceptionHandler() {
-                @Override
-                public void uncaughtException(Thread t, Throwable e) {
-                   // TestCase.assertTrue(e.getMessage().contains("no targetLayout for layoutID:"));
-                    ApplicationLauncherMoveComponentsBetweenComponents.latch.countDown();
-                   e.printStackTrace();
-                }
-            };
-            Thread.currentThread().setUncaughtExceptionHandler(ApplicationLauncherMoveComponentsBetweenComponents.handler);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
-        ApplicationLauncherMoveComponentsBetweenComponents.updateExceptionHandler();
 
-        Perspective<EventHandler<Event>, Event, Object> p = getPerspectiveById(perspectives, ComponentMoveComponentsBetweenPerspectives1.currentId);
-        assertNotNull(p);
-        assertNotNull(getComponentById(p.getSubcomponents(), "id0023"));
-        ComponentMoveComponentsBetweenPerspectives1.switchTarget();
-        ApplicationLauncherMoveComponentsBetweenComponents.latch.await();
-
-
-    }
 }
