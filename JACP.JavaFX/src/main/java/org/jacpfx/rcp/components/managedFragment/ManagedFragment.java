@@ -232,7 +232,7 @@ public class ManagedFragment {
                                                      final Field field, final Resource resource,
                                                      final String parentId, final String componentId) throws
             IllegalArgumentException, IllegalAccessException {
-        final Perspective<EventHandler<Event>, Event, Object> persp = findPerspective(resource, parentId,componentId);
+        final Perspective<Node, EventHandler<Event>, Event, Object> persp = findPerspective(resource, parentId,componentId);
         if (persp == null)
             throw new IllegalArgumentException("component could not be found for class name: "+componentId);
         field.setAccessible(true);
@@ -262,7 +262,7 @@ public class ManagedFragment {
             field.set(bean, comp.getContext());
             return;
         }
-        final Perspective<EventHandler<Event>, Event, Object> persp = findPerspective(resource, parentId, componentId);
+        final Perspective<Node, EventHandler<Event>, Event, Object> persp = findPerspective(resource, parentId, componentId);
         if (persp == null) throw new IllegalArgumentException("component could not be found: "+componentId);
         field.set(bean, persp.getContext());
 
@@ -279,7 +279,7 @@ public class ManagedFragment {
     }
 
 
-    private Perspective<EventHandler<Event>, Event, Object> findPerspective(final Resource resource, final String parentId, final String componentId){
+    private Perspective<Node, EventHandler<Event>, Event, Object> findPerspective(final Resource resource, final String parentId, final String componentId){
         // the user defined id
         final String userDefinedId = resource.parentId();
         if (userDefinedId.isEmpty()) {

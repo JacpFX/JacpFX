@@ -28,9 +28,8 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import org.jacpfx.api.annotations.perspective.Perspective;
 import org.jacpfx.api.component.Injectable;
-import org.jacpfx.api.component.PerspectiveView;
+import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.componentLayout.PerspectiveLayoutInterface;
 import org.jacpfx.api.context.JacpContext;
@@ -66,7 +65,7 @@ import java.util.logging.Logger;
  * @author Andy Moncsek
  */
 public abstract class AFXPerspective extends AComponent implements
-        PerspectiveView<Node, EventHandler<Event>, Event, Object>,
+        Perspective<Node, EventHandler<Event>, Event, Object>,
         Initializable {
     private final Logger logger = Logger.getLogger(this.getClass().getName());
     private ComponentHandler<SubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
@@ -122,8 +121,8 @@ public abstract class AFXPerspective extends AComponent implements
     private List<SubComponent<EventHandler<Event>, Event, Object>> createAllDeclaredSubcomponents() {
         final Injectable handler = this.perspective;
         if (handler == null) throw new IllegalArgumentException("No perspective annotatation found");
-        final Perspective perspectiveAnnotation = handler.getClass()
-                .getAnnotation(Perspective.class);
+        final org.jacpfx.api.annotations.perspective.Perspective  perspectiveAnnotation = handler.getClass()
+                .getAnnotation(org.jacpfx.api.annotations.perspective.Perspective.class);
         return PerspectiveUtil.getInstance(this.launcher).createSubcomponents(perspectiveAnnotation);
 
     }

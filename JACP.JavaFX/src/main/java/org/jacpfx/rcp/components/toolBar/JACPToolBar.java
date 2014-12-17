@@ -319,7 +319,7 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
         });
     }
 
-    public void setButtonsVisible(final Perspective<EventHandler<Event>, Event, Object> perspective, boolean visible) {
+    public void setButtonsVisible(final Perspective<Node, EventHandler<Event>, Event, Object> perspective, boolean visible) {
         if (visible && perspective == null) return;
         org.jacpfx.api.annotations.perspective.Perspective persAnnotation = perspective.getPerspective().getClass().getAnnotation(org.jacpfx.api.annotations.perspective.Perspective.class);
         this.handleButtons(persAnnotation.id(), visible);
@@ -587,7 +587,8 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
         componentId = componentId == null ? this.extractComponentId(subcomponent) : componentId;
         componentId = FXUtil.getQualifiedComponentId(parentId, componentId);
         if (componentId != null) {
-            for (Map<String, Pane> regions : this.buttonContainer.values()) {
+            for (Iterator<ConcurrentHashMap<String, Pane>> iterator = this.buttonContainer.values().iterator(); iterator.hasNext(); ) {
+                Map<String, Pane> regions = iterator.next();
                 if (regions.containsKey(componentId)) {
                     regions.get(componentId).getChildren().clear();
                     this.getInternalNodes(componentId).clear();

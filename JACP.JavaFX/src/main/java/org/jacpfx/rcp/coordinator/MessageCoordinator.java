@@ -3,6 +3,7 @@ package org.jacpfx.rcp.coordinator;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import org.jacpfx.api.component.Component;
 import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.SubComponent;
@@ -30,7 +31,7 @@ import java.util.concurrent.SynchronousQueue;
 public class MessageCoordinator extends Thread implements
         Coordinator<EventHandler<Event>, Event, Object> {
     private ComponentHandler<SubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
-    private ComponentHandler<Perspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> perspectiveHandler;
+    private ComponentHandler<Perspective<Node, EventHandler<Event>, Event, Object>, Message<Event, Object>> perspectiveHandler;
     private BlockingQueue<DelegateDTO<Event, Object>> delegateQueue;
     private final BlockingQueue<Message<Event, Object>> messages = new SynchronousQueue<>();
     private final String parentId;
@@ -86,7 +87,7 @@ public class MessageCoordinator extends Thread implements
     }
 
     private void handleCurrentPerspective(final String targetId, final Message<Event, Object> message) {
-        final Perspective<EventHandler<Event>, Event, Object> perspective = PerspectiveRegistry.findPerspectiveById(targetId);
+        final Perspective<Node, EventHandler<Event>, Event, Object> perspective = PerspectiveRegistry.findPerspectiveById(targetId);
         Platform.runLater(() -> this.perspectiveHandler
                 .handleAndReplaceComponent(
                         message, perspective) // End runnable
@@ -97,7 +98,7 @@ public class MessageCoordinator extends Thread implements
         this.componentHandler.handleAndReplaceComponent(message, component);
     }
 
-    private void handleInActive(final SubComponent<EventHandler<Event>, Event, Object> component, final Perspective<EventHandler<Event>, Event, Object> parentPerspective, Message<Event, Object> message) {
+    private void handleInActive(final SubComponent<EventHandler<Event>, Event, Object> component, final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspective, Message<Event, Object> message) {
         final JacpContext<EventHandler<Event>, Object> context = component.getContext();
         context.setActive(true);
         component.setStarted(true);
@@ -137,7 +138,7 @@ public class MessageCoordinator extends Thread implements
             return new MessageCoordinatorExecutionResult(targetComponent, message, MessageCoordinatorExecutionResult.State.HANDLE_ACTIVE);
         }
         // 3. check if it is a perspective, all perspective (even inactive ones are registerd)
-        final Perspective<EventHandler<Event>, Event, Object> perspective = PerspectiveRegistry.findPerspectiveById(targetId);
+        final Perspective<Node, EventHandler<Event>, Event, Object> perspective = PerspectiveRegistry.findPerspectiveById(targetId);
         if (perspective != null) {
             // this is a perspective
             // delegate message to perspective, mark in dto that it is a perspective
@@ -210,7 +211,7 @@ public class MessageCoordinator extends Thread implements
     }
 
     private MessageCoordinatorExecutionResult findParentPerspectiveAndRegisterComponent(final SubComponent<EventHandler<Event>, Event, Object> component, final Message<Event, Object> message, final String targetId) {
-        final Perspective<EventHandler<Event>, Event, Object> parentPerspective = PerspectiveRegistry.findPerspectiveById(FXUtil.getTargetPerspectiveId(targetId));
+        final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspective = PerspectiveRegistry.findPerspectiveById(FXUtil.getTargetPerspectiveId(targetId));
         if (parentPerspective == null)
             throw new ComponentNotFoundException("no valid perspective for component " + targetId + " found");
         parentPerspective.registerComponent(component);
@@ -226,7 +227,7 @@ public class MessageCoordinator extends Thread implements
 
     @Override
     public <P extends Component<EventHandler<Event>, Object>> void setPerspectiveHandler(ComponentHandler<P, Message<Event, Object>> handler) {
-        this.perspectiveHandler = (ComponentHandler<Perspective<EventHandler<Event>, Event, Object>, Message<Event, Object>>) handler;
+        this.perspectiveHandler = (ComponentHandler<Perspective<Node, EventHandler<Event>, Event, Object>, Message<Event, Object>>) handler;
     }
 
     @Override

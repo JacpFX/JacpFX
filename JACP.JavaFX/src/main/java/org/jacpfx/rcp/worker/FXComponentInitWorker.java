@@ -219,7 +219,7 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
     private void shutDownComponent(final AFXComponent component) {
         // unregister component
         final String parentId = component.getParentId();
-        final Perspective<EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
+        final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
         if (parentPerspctive != null) parentPerspctive.unregisterComponent(component);
         TearDownHandler.shutDownFXComponent(component, parentId);
         component.setStarted(false);

@@ -2,6 +2,7 @@ package org.jacpfx.rcp.delegator;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import org.jacpfx.api.component.Component;
 import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.exceptions.ComponentNotFoundException;
@@ -25,7 +26,7 @@ public class MessageDelegatorImpl extends Thread implements
         org.jacpfx.api.delegator.MessageDelegator<EventHandler<Event>, Event, Object> {
 
     private final Logger logger = Logger.getLogger(this.getClass().getName());
-    private ComponentHandler<Perspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> perspectiveHandler;
+    private ComponentHandler<Perspective<Node, EventHandler<Event>, Event, Object>, Message<Event, Object>> perspectiveHandler;
     private final BlockingQueue<DelegateDTO<Event, Object>> messageDelegateQueue = new SynchronousQueue<>();
 
     public MessageDelegatorImpl() {
@@ -54,18 +55,18 @@ public class MessageDelegatorImpl extends Thread implements
 
     private void handleCall(final String targetId,
                                      final Message<Event, Object> message) throws ExecutionException, InterruptedException {
-        final Perspective<EventHandler<Event>, Event, Object> perspective = PerspectiveRegistry.findPerspectiveById(targetId);
+        final Perspective<Node, EventHandler<Event>, Event, Object> perspective = PerspectiveRegistry.findPerspectiveById(targetId);
         if(perspective==null) throw new ComponentNotFoundException("no perspective for message : "+targetId+ " found");
         checkPerspectiveAndInit(perspective);
         perspective.getMessageQueue().put(message);
     }
 
-    private void checkPerspectiveAndInit(final Perspective<EventHandler<Event>, Event, Object> perspective) throws ExecutionException, InterruptedException {
+    private void checkPerspectiveAndInit(final Perspective<Node, EventHandler<Event>, Event, Object> perspective) throws ExecutionException, InterruptedException {
         if(perspective.getContext().isActive()) return;
         initPerspective(perspective);
     }
 
-    private void initPerspective(final Perspective<EventHandler<Event>, Event, Object> perspective) throws ExecutionException, InterruptedException {
+    private void initPerspective(final Perspective<Node, EventHandler<Event>, Event, Object> perspective) throws ExecutionException, InterruptedException {
         WorkerUtil.invokeOnFXThreadAndWait(()->this.perspectiveHandler.initComponent(new MessageImpl(perspective.getContext().getId(), perspective
                 .getContext().getId(), "init", null),perspective));
     }
@@ -78,6 +79,6 @@ public class MessageDelegatorImpl extends Thread implements
 
     @Override
     public <P extends Component<EventHandler<Event>, Object>> void setPerspectiveHandler(ComponentHandler<P, Message<Event, Object>> handler) {
-              this.perspectiveHandler = (ComponentHandler<Perspective<EventHandler<Event>, Event, Object>, Message<Event, Object>>) handler;
+              this.perspectiveHandler = (ComponentHandler<Perspective<Node, EventHandler<Event>, Event, Object>, Message<Event, Object>>) handler;
     }
 }

@@ -25,6 +25,7 @@ package org.jacpfx.rcp.delegator;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import org.jacpfx.api.component.Component;
 import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.SubComponent;
@@ -53,7 +54,7 @@ public class ComponentDelegatorImpl extends Thread implements
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
 	private final BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue = new ArrayBlockingQueue<>(
             QueueSizes.COMPONENT_DELEGATOR_QUEUE_SIZE);
-	private ComponentHandler<Perspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
+	private ComponentHandler<Perspective<Node, EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
 
 	public ComponentDelegatorImpl() {
 		super("ComponentDelegator");
@@ -79,7 +80,7 @@ public class ComponentDelegatorImpl extends Thread implements
 	private void delegateTargetChange(final String target,
 			final SubComponent<EventHandler<Event>, Event, Object> component) {
 		// find responsible perspective
-		final Perspective<EventHandler<Event>, Event, Object> responsiblePerspective = PerspectiveRegistry.findPerspectiveById(target);
+		final Perspective<Node, EventHandler<Event>, Event, Object> responsiblePerspective = PerspectiveRegistry.findPerspectiveById(target);
 		// find correct target in perspective
 		if (responsiblePerspective != null) {
 			this.handleTargetHit(responsiblePerspective, component);
@@ -97,7 +98,7 @@ public class ComponentDelegatorImpl extends Thread implements
 	 * @param component
 	 */
 	private void handleTargetHit(
-			final Perspective<EventHandler<Event>, Event, Object> responsiblePerspective,
+			final Perspective<Node, EventHandler<Event>, Event, Object> responsiblePerspective,
 			final SubComponent<EventHandler<Event>, Event, Object> component) {
         activateInactiveComponent(responsiblePerspective);
 		responsiblePerspective.registerComponent(component);
@@ -107,7 +108,7 @@ public class ComponentDelegatorImpl extends Thread implements
 	}
 
     private void activateInactiveComponent(
-            final Perspective<EventHandler<Event>, Event, Object> responsiblePerspective) {
+            final Perspective<Node, EventHandler<Event>, Event, Object> responsiblePerspective) {
         if (!responsiblePerspective.getContext().isActive()) {
             // 1. init perspective (do not register component before perspective
             // is active, otherwise component will be handled once again)
@@ -124,7 +125,7 @@ public class ComponentDelegatorImpl extends Thread implements
         Platform.runLater(() -> ComponentDelegatorImpl.this.componentHandler
                 .initComponent(
                         action,
-                        (Perspective<EventHandler<Event>, Event, Object>) component));
+                        (Perspective<Node, EventHandler<Event>, Event, Object>) component));
 	}
 
 	/**
@@ -139,7 +140,7 @@ public class ComponentDelegatorImpl extends Thread implements
 	@Override
 	public <P extends Component<EventHandler<Event>,  Object>> void setPerspectiveHandler(
             final ComponentHandler<P, Message<Event, Object>> handler) {
-		this.componentHandler = (ComponentHandler<Perspective<EventHandler<Event>, Event, Object>, Message<Event, Object>>) handler;
+		this.componentHandler = (ComponentHandler<Perspective<Node, EventHandler<Event>, Event, Object>, Message<Event, Object>>) handler;
 
 	}
 

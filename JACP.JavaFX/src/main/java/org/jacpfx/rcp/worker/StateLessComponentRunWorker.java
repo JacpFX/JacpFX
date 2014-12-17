@@ -24,6 +24,7 @@ package org.jacpfx.rcp.worker;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.StatelessCallabackComponent;
 import org.jacpfx.api.component.SubComponent;
@@ -113,7 +114,7 @@ public class StateLessComponentRunWorker
 			final SubComponent<EventHandler<Event>, Event, Object> component,
 			final StatelessCallabackComponent<EventHandler<Event>, Event, Object> parent) {
         final String parentId = parent.getParentId();
-        final Perspective<EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
+        final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
         if(parentPerspctive!=null)parentPerspctive.unregisterComponent(parent);
         TearDownHandler.shutDownAsyncComponent(ASubComponent.class.cast(parent));
 	}

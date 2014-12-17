@@ -206,7 +206,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
         final String parentId = component.getParentId();
         final Context context = Context.class.cast(component.getContext());
         final FXComponentLayout layout = context.getComponentLayout();
-        final Perspective<EventHandler<Event>, Event, Object> parentPerspective = PerspectiveRegistry.findPerspectiveById(parentId);
+        final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspective = PerspectiveRegistry.findPerspectiveById(parentId);
         if (parentPerspective != null) {
             // unregister component
             if (!this.removeComponentValue(previousContainer)) {
@@ -217,7 +217,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
         TearDownHandler.shutDownFXComponent(component, parentId, layout);
     }
 
-    private static void clearTargetLayoutInPerspective(final Perspective<EventHandler<Event>, Event, Object> parentPerspective, final String currentTargetLayout) {
+    private static void clearTargetLayoutInPerspective(final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspective, final String currentTargetLayout) {
         final PerspectiveLayout playout = PerspectiveUtil.getPerspectiveLayoutFromPerspective(parentPerspective);
         if (playout != null && currentTargetLayout != null) {
             final Node container = playout.getTargetLayoutComponents().get(currentTargetLayout);

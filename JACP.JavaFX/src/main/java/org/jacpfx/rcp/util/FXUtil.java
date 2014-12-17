@@ -235,7 +235,7 @@ public class FXUtil {
      * @param values
      * @return The instance
      */
-    private static Object findByClass(Class<?> key, Object[] values) {
+    private static Object findByClass(Class<?> key, Object... values) {
         if (key == null)
             return null;
         for (Object val : values) {

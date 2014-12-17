@@ -46,7 +46,8 @@ public class GlobalMediator {
     }
 
     public Map<ToolbarPosition, JACPToolBar> getRegisteredToolBars(final String parentId, final String componentId) {
-        for (JACPToolBar toolBar : this.toolbars.values()) {
+        for (Iterator<JACPToolBar> iterator = this.toolbars.values().iterator(); iterator.hasNext(); ) {
+            JACPToolBar toolBar = iterator.next();
             toolBar.setContext(parentId, componentId);
         }
         return Collections.unmodifiableMap(this.toolbars);
@@ -59,7 +60,8 @@ public class GlobalMediator {
     }
 
     public void clearToolbar(final SubComponent<EventHandler<Event>, Event, Object> subComponent, final String parentId) {
-        for (JACPToolBar toolBar : this.toolbars.values()) {
+        for (Iterator<JACPToolBar> iterator = this.toolbars.values().iterator(); iterator.hasNext(); ) {
+            JACPToolBar toolBar = iterator.next();
             toolBar.clearRegions(subComponent, parentId);
         }
     }
@@ -87,9 +89,10 @@ public class GlobalMediator {
         return node;
     }
 
-    public void handleToolBarButtons(final Perspective<EventHandler<Event>, Event, Object> perspective, final boolean visible) {
+    public void handleToolBarButtons(final Perspective<Node, EventHandler<Event>, Event, Object> perspective, final boolean visible) {
         // fetch all nodes from all registred toolbars
-        for (final Node node : this.toolbars.values()) {
+        for (Iterator<JACPToolBar> iterator = this.toolbars.values().iterator(); iterator.hasNext(); ) {
+            Node node = iterator.next();
             // handle visible state
             JACPToolBar toolBar = (JACPToolBar) node;
             toolBar.setButtonsVisible(perspective, visible);
@@ -99,7 +102,8 @@ public class GlobalMediator {
 
     public void handleToolBarButtons(final SubComponent<EventHandler<Event>, Event, Object> subComponent, final String parentId, final boolean visible) {
         // fetch all nodes from all registred toolbars
-        for (final Node node : this.toolbars.values()) {
+        for (Iterator<JACPToolBar> iterator = this.toolbars.values().iterator(); iterator.hasNext(); ) {
+            Node node = iterator.next();
             // handle visible state
             JACPToolBar toolBar = (JACPToolBar) node;
             toolBar.setButtonsVisible(subComponent, parentId, visible);
@@ -108,7 +112,8 @@ public class GlobalMediator {
 
     public void handleWorkbenchToolBarButtons(final String id, final boolean visible) {
         // fetch all nodes from all registred toolbars
-        for (final Node node : this.toolbars.values()) {
+        for (Iterator<JACPToolBar> iterator = this.toolbars.values().iterator(); iterator.hasNext(); ) {
+            Node node = iterator.next();
             // handle visible state
             JACPToolBar toolBar = (JACPToolBar) node;
             toolBar.setWorkbenchButtonsVisible(id, visible);

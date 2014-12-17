@@ -6,6 +6,7 @@ import javafx.scene.layout.*;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  *
@@ -162,7 +163,8 @@ public class LayoutUtil {
     }
 
     public static void hideAllChildren(Region parent){
-        for(Node node : parent.getChildrenUnmodifiable() ){
+        for (Iterator<Node> iterator = parent.getChildrenUnmodifiable().iterator(); iterator.hasNext(); ) {
+            Node node = iterator.next();
             node.setVisible(false);
         }
     }

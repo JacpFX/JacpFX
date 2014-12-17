@@ -64,6 +64,7 @@ import org.jacpfx.rcp.perspective.AFXPerspective;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.*;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -80,15 +81,15 @@ import java.util.stream.Collectors;
  */
 public abstract class AFXWorkbench
         implements
-        Base<EventHandler<Event>, Event, Object>,
-        RootComponent<Perspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> {
+        Base<Node,EventHandler<Event>, Event, Object>,
+        RootComponent<Perspective<Node, EventHandler<Event>, Event, Object>, Message<Event, Object>> {
 
     private final ComponentDelegator<EventHandler<Event>, Event, Object> componentDelegator = new ComponentDelegatorImpl();
     private final MessageDelegator<EventHandler<Event>, Event, Object> messageDelegator = new MessageDelegatorImpl();
     private final WorkbenchLayout<Node> workbenchLayout = new FXWorkbenchLayout();
     private final Logger logger = Logger.getLogger(this.getClass().getName());
-    private List<Perspective<EventHandler<Event>, Event, Object>> perspectives;
-    private ComponentHandler<Perspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
+    private List<Perspective<Node, EventHandler<Event>, Event, Object>> perspectives;
+    private ComponentHandler<Perspective<Node, EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
     private Coordinator<EventHandler<Event>, Event, Object> messageCoordinator;
     private Launcher<?> launcher;
     private Stage stage;
@@ -176,7 +177,7 @@ public abstract class AFXWorkbench
      */
     public final void initComponents(final Message<Event, Object> action) {
         this.perspectives.forEach(this::initPerspective);
-        final List<Perspective<EventHandler<Event>, Event, Object>> activeSequentialPerspectiveList = this.perspectives
+        final List<Perspective<Node, EventHandler<Event>, Event, Object>> activeSequentialPerspectiveList = this.perspectives
                 .stream()
                 .sequential()
                 .filter(p -> p.getContext() != null && p.getContext().isActive())
@@ -187,7 +188,7 @@ public abstract class AFXWorkbench
 
     }
 
-    private void initPerspective(Perspective<EventHandler<Event>, Event, Object> perspective) {
+    private void initPerspective(Perspective<Node, EventHandler<Event>, Event, Object> perspective) {
         this.registerComponent(perspective);
         this.log("3.4.1: register component: " + perspective.getContext().getName());
         final CountDownLatch waitForInit = new CountDownLatch(1);
@@ -241,7 +242,7 @@ public abstract class AFXWorkbench
      * {@inheritDoc}
      */
     public final void registerComponent(
-            final Perspective<EventHandler<Event>, Event, Object> perspective) {
+            final Perspective<Node, EventHandler<Event>, Event, Object> perspective) {
         final String perspectiveId = PerspectiveUtil.getPerspectiveIdFromAnnotation(perspective);
         final MessageCoordinator messageCoordinatorLocal = new MessageCoordinator(perspectiveId, this.launcher);
         messageCoordinatorLocal.setDelegateQueue(this.messageDelegator.getMessageDelegateQueue());
@@ -257,7 +258,7 @@ public abstract class AFXWorkbench
 
     @Override
     public final void addComponent(
-            final Perspective<EventHandler<Event>, Event, Object> perspective) {
+            final Perspective<Node, EventHandler<Event>, Event, Object> perspective) {
         PerspectiveRegistry.registerPerspective(perspective);
     }
 
@@ -267,7 +268,7 @@ public abstract class AFXWorkbench
      */
     // TODO remove this!!
     public final void unregisterComponent(
-            final Perspective<EventHandler<Event>, Event, Object> perspective) {
+            final Perspective<Node, EventHandler<Event>, Event, Object> perspective) {
         FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,
                 FXUtil.APERSPECTIVE_MQUEUE, null);
         PerspectiveRegistry.removePerspective(perspective);
@@ -287,7 +288,7 @@ public abstract class AFXWorkbench
     }
 
     @Override
-    public ComponentHandler<Perspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> getComponentHandler() {
+    public ComponentHandler<Perspective<Node, EventHandler<Event>, Event, Object>, Message<Event, Object>> getComponentHandler() {
         return this.componentHandler;
     }
 
@@ -295,7 +296,7 @@ public abstract class AFXWorkbench
     /**
      * {@inheritDoc}
      */
-    public final List<Perspective<EventHandler<Event>, Event, Object>> getPerspectives() {
+    public final List<Perspective<Node, EventHandler<Event>, Event, Object>> getPerspectives() {
         return this.perspectives;
     }
 
@@ -372,8 +373,9 @@ public abstract class AFXWorkbench
             final Map<ToolbarPosition, JACPToolBar> registeredToolbars = this
                     .getWorkbenchLayout().getRegisteredToolBars();
 
-            for (Entry<ToolbarPosition, JACPToolBar> entry : registeredToolbars
-                    .entrySet()) {
+            for (Iterator<Entry<ToolbarPosition, JACPToolBar>> iterator = registeredToolbars
+                    .entrySet().iterator(); iterator.hasNext(); ) {
+                Entry<ToolbarPosition, JACPToolBar> entry = iterator.next();
                 final ToolbarPosition position = entry.getKey();
                 final JACPToolBar toolBar = entry.getValue();
                 this.assignCorrectToolBarLayout(position, toolBar, toolbarPane);

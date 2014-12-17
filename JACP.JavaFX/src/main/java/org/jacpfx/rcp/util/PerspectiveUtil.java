@@ -2,6 +2,7 @@ package org.jacpfx.rcp.util;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import org.jacpfx.api.annotations.component.Component;
 import org.jacpfx.api.annotations.component.DeclarativeView;
 import org.jacpfx.api.annotations.component.Stateless;
@@ -101,7 +102,7 @@ public class PerspectiveUtil {
      * @param perspective the perspective instance
      * @return the perspective id from annotation
      */
-    public static String getPerspectiveIdFromAnnotation(final Perspective<EventHandler<Event>, Event, Object> perspective) {
+    public static String getPerspectiveIdFromAnnotation(final Perspective<Node, EventHandler<Event>, Event, Object> perspective) {
         final Injectable handler = perspective.getPerspective();
         final org.jacpfx.api.annotations.perspective.Perspective perspectiveAnnotation = handler.getClass()
                 .getAnnotation(org.jacpfx.api.annotations.perspective.Perspective.class);
@@ -283,7 +284,7 @@ public class PerspectiveUtil {
      * @param parentPerspective the parent perspective
      * @return the perspectiveLayout of this perspective
      */
-    public static PerspectiveLayout getPerspectiveLayoutFromPerspective(final Perspective<EventHandler<Event>, Event, Object> parentPerspective) {
+    public static PerspectiveLayout getPerspectiveLayoutFromPerspective(final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspective) {
         final EmbeddedFXPerspective embeddedPerspective = EmbeddedFXPerspective.class.cast(parentPerspective);
         return PerspectiveLayout.class.cast(embeddedPerspective.getIPerspectiveLayout());
     }

@@ -47,12 +47,10 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
         handler = new ExceptionHandler(dialogHandler);
     }
 
-    public static ExceptionHandler getInstance() {
-        synchronized (ExceptionHandler.class) {
-            if (handler == null)
-                throw new InvalidInitialisationException("you must call initExceptionHandler with a valid dialogHandler before ");
-            return handler;
-        }
+    public static synchronized ExceptionHandler getInstance() {
+        if (handler == null)
+            throw new InvalidInitialisationException("you must call initExceptionHandler with a valid dialogHandler before ");
+        return handler;
     }
 
     @Override

@@ -26,7 +26,6 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import org.jacpfx.api.component.Declarative;
 import org.jacpfx.api.component.UIComponent;
 import org.jacpfx.api.util.UIType;
 import org.jacpfx.rcp.context.InternalContext;
@@ -41,7 +40,7 @@ import java.util.ResourceBundle;
  * @author Andy Moncsek
  */
 public abstract class AFXComponent extends ASubComponent implements
-        UIComponent<Node, EventHandler<Event>, Event, Object>, Declarative,
+        UIComponent<Node, EventHandler<Event>, Event, Object>,
 		Initializable  {
 
 	private volatile Node root;
