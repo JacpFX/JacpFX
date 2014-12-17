@@ -24,6 +24,7 @@ package org.jacpfx.rcp.component;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import org.jacpfx.api.component.Component;
 import org.jacpfx.api.component.ComponentHandle;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.context.JacpContext;
@@ -35,6 +36,7 @@ import org.jacpfx.rcp.worker.AEmbeddedComponentWorker;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
@@ -43,7 +45,7 @@ import java.util.logging.Logger;
  *
  * @author Andy Moncsek
  */
-public abstract class ASubComponent extends AComponent implements
+public abstract class ASubComponent  implements
         SubComponent<EventHandler<Event>, Event, Object> {
 
     private volatile String parentId;
@@ -60,6 +62,12 @@ public abstract class ASubComponent extends AComponent implements
 
 
     private volatile AtomicReference<AEmbeddedComponentWorker> workerRef = new AtomicReference<>();
+
+    private volatile AtomicBoolean started =  new AtomicBoolean(false);
+    private String localeID = "";
+    private String resourceBundleLocation = "";
+    protected JacpContextImpl context;
+    protected volatile BlockingQueue<Message<Event, Object>> globalMessageQueue;
 
 
     /**
@@ -177,6 +185,82 @@ public abstract class ASubComponent extends AComponent implements
             worker.interrupt();
         }
         worker.cleanAfterInterrupt();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final boolean isStarted() {
+        return this.started.get();
+    }
+
+    @Override
+    public final void setStarted(boolean started) {
+        this.started.set(started);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final String getLocaleID() {
+        return localeID;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void setLocaleID(String localeID) {
+        this.localeID = localeID;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final String getResourceBundleLocation() {
+        return resourceBundleLocation;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void setResourceBundleLocation(String resourceBundleLocation) {
+        this.resourceBundleLocation = resourceBundleLocation;
+    }
+
+    @Override
+    /**
+     * {@inheritDoc}
+     */
+    public int compareTo(Component o) {
+        return this.getContext().getId().compareTo(o.getContext().getId());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ASubComponent that = (ASubComponent) o;
+
+        if (started.get() != that.started.get()) return false;
+        if (context != null ? !context.equals(that.context) : that.context != null) return false;
+        return !(globalMessageQueue != null ? !globalMessageQueue.equals(that.globalMessageQueue) : that.globalMessageQueue != null) && !(localeID != null ? !localeID.equals(that.localeID) : that.localeID != null) && !(resourceBundleLocation != null ? !resourceBundleLocation.equals(that.resourceBundleLocation) : that.resourceBundleLocation != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (started.get() ? 1 : 0);
+        result = 31 * result + (localeID != null ? localeID.hashCode() : 0);
+        result = 31 * result + (resourceBundleLocation != null ? resourceBundleLocation.hashCode() : 0);
+        result = 31 * result + (context != null ? context.hashCode() : 0);
+        result = 31 * result + (globalMessageQueue != null ? globalMessageQueue.hashCode() : 0);
+        return result;
     }
 
 }

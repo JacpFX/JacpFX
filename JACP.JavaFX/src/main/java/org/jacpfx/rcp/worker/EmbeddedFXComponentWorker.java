@@ -32,7 +32,7 @@ import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.context.JacpContext;
 import org.jacpfx.api.exceptions.NonUniqueComponentException;
 import org.jacpfx.api.message.Message;
-import org.jacpfx.rcp.component.AFXComponent;
+import org.jacpfx.rcp.component.EmbeddedFXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.componentLayout.PerspectiveLayout;
 import org.jacpfx.rcp.context.Context;
@@ -57,13 +57,13 @@ import java.util.concurrent.ExecutionException;
 class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
 
     private final Map<String, Node> targetComponents;
-    private final AFXComponent component;
+    private final EmbeddedFXComponent component;
     private final BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
 
     public EmbeddedFXComponentWorker(
             final Map<String, Node> targetComponents,
             final BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue,
-            final AFXComponent component) {
+            final EmbeddedFXComponent component) {
         super(component.getContext().getName());
         this.targetComponents = targetComponents;
         this.component = component;
@@ -85,7 +85,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
         }
     }
 
-    private void handleComponentExecution(final AFXComponent component, final Map<String, Node> targetComponents) {
+    private void handleComponentExecution(final EmbeddedFXComponent component, final Map<String, Node> targetComponents) {
         final Thread t = Thread.currentThread();
         try {
             final Message<Event, Object> myAction = component
@@ -119,7 +119,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
      *
      * @throws InterruptedException
      */
-    private void publish(final AFXComponent component,
+    private void publish(final EmbeddedFXComponent component,
                          final Message<Event, Object> action,
                          final Map<String, Node> targetComponents,
                          final Node handleReturnValue,
@@ -175,7 +175,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
      * @param currentExecutionTarget, the current executionTarget
      */
     @SuppressWarnings("FeatureEnvy")
-    private void publishComponentValue(final AFXComponent component,
+    private void publishComponentValue(final EmbeddedFXComponent component,
                                        final Map<String, Node> targetComponents,
                                        final Node previousContainer, final String currentTargetLayout, final String currentExecutionTarget) {
 
@@ -201,7 +201,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
         }
     }
 
-    private void shutDownComponent(final AFXComponent component, final Node previousContainer, final String currentTargetLayout) {
+    private void shutDownComponent(final EmbeddedFXComponent component, final Node previousContainer, final String currentTargetLayout) {
 
         final String parentId = component.getParentId();
         final Context context = Context.class.cast(component.getContext());
@@ -233,7 +233,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
     /**
      * add new component value to root node
      */
-    private void checkAndHandleLayoutTargetChange(final AFXComponent component,
+    private void checkAndHandleLayoutTargetChange(final EmbeddedFXComponent component,
                                                   final Node previousContainer, final String currentTargetLayout, final String newTargetLayout, final Map<String, Node> targetComponents) {
 
         final Node root = component.getRoot();
@@ -258,7 +258,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
      * @param newTargetLayout,  the new target layout id
      * @param targetComponents, the target component provided by parent perspective
      */
-    private void executeLayoutTargetUpdate(final AFXComponent component,
+    private void executeLayoutTargetUpdate(final EmbeddedFXComponent component,
                                            final String newTargetLayout, final Map<String, Node> targetComponents) {
         final Node validContainer = this.getValidContainerById(
                 targetComponents, newTargetLayout);

@@ -30,7 +30,7 @@ import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.componentLayout.PerspectiveLayoutInterface;
 import org.jacpfx.api.launcher.Launcher;
 import org.jacpfx.api.message.Message;
-import org.jacpfx.rcp.component.AFXComponent;
+import org.jacpfx.rcp.component.EmbeddedFXComponent;
 import org.jacpfx.rcp.component.AStatelessCallbackComponent;
 import org.jacpfx.rcp.component.ASubComponent;
 import org.jacpfx.rcp.scheduler.StatelessComponentSchedulerImpl;
@@ -117,11 +117,11 @@ public class ComponentHandlerImpl
 	 */
 	private void handleInit(final Message<Event, Object> action,
 			final SubComponent<EventHandler<Event>, Event, Object> component) {
-        if (AFXComponent.class.isAssignableFrom(component.getClass())) {
+        if (EmbeddedFXComponent.class.isAssignableFrom(component.getClass())) {
 			this.log("COMPONENT EXECUTE INIT:::" , component.getContext().getName());
 			this.fxInitExecutor.execute(new FXComponentInitWorker(
                     this.perspectiveLayout.getTargetLayoutComponents(),
-                    ((AFXComponent) component), action, this.componentDelegateQueue));
+                    ((EmbeddedFXComponent) component), action, this.componentDelegateQueue));
 			return;
 		}// if END
 		if (AStatelessCallbackComponent.class.isAssignableFrom(component.getClass())) {

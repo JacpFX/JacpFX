@@ -29,7 +29,7 @@
 09. Jan. 2013 - amo -  ASubComponent: mutex removed
 09. Jan. 2013 - amo -  FXComponentReplaceWorker: removed "synchronized" on component, removed global locking, use invokeOnFXThreadAndWait instead
 09. Jan. 2013 - amo -  FXComponentInitWorker: replaced all Platform.runLater call by invokeOnFXThreadAndWait, removed global lock, release calls
-09. Jan. 2013 - amo -  AFXComponentWorker: removed global lockQueue and add invokeOnFXThreadAndWait method, removed lock and release methods
+09. Jan. 2013 - amo -  EmbeddedFXComponentWorker: removed global lockQueue and add invokeOnFXThreadAndWait method, removed lock and release methods
 14. Dez. 2012 - amo -  TearDownHandler, update to support teardown of StatelessComponent instances
 13. Dez. 2012 - amo -  StateLessComponentRunWorker, finished shutdown of stateless components.
 13. Dez. 2012 - amo -  AStatelessCallbackComponent, set Executor service to volatile
@@ -48,26 +48,26 @@
 28. Aug. 2012 - amo -  Created  process to Shutdown all JacpFX correct; Created ShutdownUtil class; set name of JacpFX Threads
 26. Jun. 2012 - amo -  updated refresh behavior when switching between components
 31. Mai. 2012 - amo -  added resourceBundle and locale handling to declarative components
-30. Mai. 2012 - amo -  removed AFXMLComponent and add behavior to AFXComponent 
+30. Mai. 2012 - amo -  removed AFXMLComponent and add behavior to EmbeddedFXComponent
 29. Mai. 2012 - amo -  add checkable class that can be implemented by components where the state should not be changed after initilaisation; implemented FXML perspective handling. Add PerspectiveLayout abstract class to handle FXPerspectiveLayout and FXMLPerspectiveLayout.
 23. Mai. 2012 - amo -  switch to JavaFX 2.2
 21. Mai. 2012 - amo -  add missing source and target ID when throw exception if component was not found
 20. Mai. 2012 - amo -  Add support for FXML components, add FXMLReplace worker due to differences with FXComponents
 10. Apr. 2012 - amo -  OnStart annotation on Perspective level implemented... TODO: implement on Teardown in FXWorkbenchHandler !!
-10. Apr. 2012 - amo -  OnStart and OnTeardown annotations for Components implemented AFXComponent do not extend IEXtended component anymore (no need to implement onStart/OnTeardown) instead annotate methods 
+10. Apr. 2012 - amo -  OnStart and OnTeardown annotations for Components implemented EmbeddedFXComponent do not extend IEXtended component anymore (no need to implement onStart/OnTeardown) instead annotate methods
 09. Apr. 2012 - amo -  add annotation handling in workbench for perspectives
 08. Apr. 2012 - amo -  AFXPerspective extends from AComponent
-08. Apr. 2012 - amo -  AFXComponent extends from ASubComponent
+08. Apr. 2012 - amo -  EmbeddedFXComponent extends from ASubComponent
 08. Apr. 2012 - amo -  AComponent and ASubComponent extracted
 08. Apr. 2012 - amo -  Worker classes moved to worker package
 06. Apr. 2012 - amo -  fixed todo; find responsible component when no correct target found, try to scan all perspectives for correct rootPerspective,; this can be nessesary when subcomponent moves to an other perspective and a second component sends messages to this component
 04. Apr. 2012 - amo -  fixed bug with reassignment of components in perspective when switching between perspectives
 02. Apr. 2012 - amo -  updated to version number 1.05
 02. Apr. 2012 - amo -  renamed all *.javafx2.* packages to *.javafx.*
-01. Apr. 2012 - amo -  AFXComponent, AStatefulCallbackComponent and AStatelessCompnent extending AFXSubComponent
+01. Apr. 2012 - amo -  EmbeddedFXComponent, AStatefulCallbackComponent and AStatelessCompnent extending AFXSubComponent
 01. Apr. 2012 - amo -  AFXSubComponent added, the basic abstract component
 01. Apr. 2012 - amo -  AStateLessCallbackComponent renamed to AStatelessCallbackComponent
-01. Apr. 2012 - amo -  AFX2Component renamed to AFXComponent
+01. Apr. 2012 - amo -  AFX2Component renamed to EmbeddedFXComponent
 01. Apr. 2012 - amo -  AFXSubcomponent added, ACallbackComponent renamed to AStatefulCallbackComponent
 13. Mar. 2012 - amo -  reduce insance count in stateless components to avoid system overload
 10. Mar. 2012 - psy -  fixed missing content if no toolbars were defined 

@@ -203,7 +203,7 @@ public class PerspectiveUtil {
         setResourceBundleLocation(component, declarativeComponent.resourceBundleLocation());
         handleBaseAttributes(component, declarativeComponent.id(), declarativeComponent.active(),
                 declarativeComponent.name());
-        AFXComponent.class.cast(component).setViewLocation(declarativeComponent.viewLocation());
+        EmbeddedFXComponent.class.cast(component).setViewLocation(declarativeComponent.viewLocation());
     }
 
     /**

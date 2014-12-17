@@ -30,7 +30,7 @@ import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.StatelessCallabackComponent;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.workbench.Base;
-import org.jacpfx.rcp.component.AFXComponent;
+import org.jacpfx.rcp.component.EmbeddedFXComponent;
 import org.jacpfx.rcp.component.ASubComponent;
 import org.jacpfx.rcp.component.CallbackComponent;
 import org.jacpfx.rcp.registry.ComponentRegistry;
@@ -147,7 +147,7 @@ public class TearDownHandler {
 
     }
 
-    public static void shutDownFXComponent(final AFXComponent component, final String parentId, final Object... params) {
+    public static void shutDownFXComponent(final EmbeddedFXComponent component, final String parentId, final Object... params) {
         // run teardown
         FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
                 component.getComponent(), params);

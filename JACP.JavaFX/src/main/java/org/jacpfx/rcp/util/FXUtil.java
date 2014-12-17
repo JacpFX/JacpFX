@@ -51,7 +51,7 @@ import java.util.stream.Collectors;
  */
 public class FXUtil {
 
-    public static final String AFXCOMPONENT_ROOT = "root";
+    public static final String EmbeddedFXComponent_ROOT = "root";
     public static final String ACOMPONENT_ACTIVE = "active";
     public static final String ACOMPONENT_ID = "id";
     public static final String ACOMPONENT_NAME = "name";

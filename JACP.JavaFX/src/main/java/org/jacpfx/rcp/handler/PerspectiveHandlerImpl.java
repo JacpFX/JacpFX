@@ -41,7 +41,7 @@ import org.jacpfx.api.componentLayout.WorkbenchLayout;
 import org.jacpfx.api.launcher.Launcher;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.api.util.UIType;
-import org.jacpfx.rcp.component.AFXComponent;
+import org.jacpfx.rcp.component.EmbeddedFXComponent;
 import org.jacpfx.rcp.component.ASubComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.componentLayout.FXMLPerspectiveLayout;
@@ -129,8 +129,8 @@ public class PerspectiveHandlerImpl implements
     }
 
     private void shutDownComponent(final SubComponent<EventHandler<Event>, Event, Object> component) {
-        if (AFXComponent.class.isAssignableFrom(component.getClass())) {
-            TearDownHandler.shutDownFXComponent(AFXComponent.class.cast(component), component.getParentId());
+        if (EmbeddedFXComponent.class.isAssignableFrom(component.getClass())) {
+            TearDownHandler.shutDownFXComponent(EmbeddedFXComponent.class.cast(component), component.getParentId());
         } else {
             TearDownHandler.shutDownAsyncComponent(ASubComponent.class.cast(component));
         }
@@ -207,8 +207,8 @@ public class PerspectiveHandlerImpl implements
         if (subcomponents == null)
             return;
         subcomponents.forEach(subComp -> {
-            if (subComp instanceof AFXComponent && subComp.getContext().isActive()) {
-                final AFXComponent subComponent = (AFXComponent) subComp;
+            if (subComp instanceof EmbeddedFXComponent && subComp.getContext().isActive()) {
+                final EmbeddedFXComponent subComponent = (EmbeddedFXComponent) subComp;
                 this.addComponentByType(subComponent, layout);
             } // End outer if
         });

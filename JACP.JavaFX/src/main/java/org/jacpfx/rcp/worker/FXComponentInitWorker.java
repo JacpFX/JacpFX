@@ -31,7 +31,7 @@ import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.exceptions.AnnotationMissconfigurationException;
 import org.jacpfx.api.message.Message;
-import org.jacpfx.rcp.component.AFXComponent;
+import org.jacpfx.rcp.component.EmbeddedFXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.context.InternalContext;
@@ -53,10 +53,10 @@ import java.util.concurrent.ExecutionException;
  *
  * @author Andy Moncsek
  */
-public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
+public class FXComponentInitWorker extends AComponentWorker<EmbeddedFXComponent> {
 
     private final Map<String, Node> targetComponents;
-    private final AFXComponent component;
+    private final EmbeddedFXComponent component;
     private final Message<Event, Object> message;
     private final BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
 
@@ -69,7 +69,7 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
      * @param componentDelegateQueue ; the delegate queue for component that should be moved to an other perspective
      */
     public FXComponentInitWorker(final Map<String, Node> targetComponents,
-                                 final AFXComponent component,
+                                 final EmbeddedFXComponent component,
                                  final Message<Event, Object> message,
                                  final BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue) {
         this.targetComponents = targetComponents;
@@ -102,7 +102,7 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
         });
     }
 
-    private void runPreInitOnDeclarativeComponent(final AFXComponent component, final FXComponentLayout layout) {
+    private void runPreInitOnDeclarativeComponent(final EmbeddedFXComponent component, final FXComponentLayout layout) {
         final URL url = getClass().getResource(
                 component.getViewLocation());
         initLocalization(url, component);
@@ -119,7 +119,7 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
      * @param component, the component
      * @param param,     all parameters
      */
-    private void runComponentOnStartupSequence(final AFXComponent component,
+    private void runComponentOnStartupSequence(final EmbeddedFXComponent component,
                                                final Object... param) {
         FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, component.getComponent(), param);
         // show component Buttons
@@ -128,7 +128,7 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
         }
     }
 
-    private void setComponentToActiveAndStarted(final AFXComponent component) {
+    private void setComponentToActiveAndStarted(final EmbeddedFXComponent component) {
         component.getContext().setActive(true);
         component.setStarted(true);
     }
@@ -138,13 +138,13 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
      *
      * @param component, the component where to inject the context
      */
-    private void performContextInjection(final AFXComponent component) {
+    private void performContextInjection(final EmbeddedFXComponent component) {
         ComponentHandle<?, Event, Object> handler = component.getComponent();
         FXUtil.performResourceInjection(handler, component.getContext());
     }
 
     @Override
-    protected AFXComponent call() throws Exception {
+    protected EmbeddedFXComponent call() throws Exception {
         this.component.lock();
         checkValidComponent(this.component);
         runPreInitMethods();
@@ -161,7 +161,7 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
         return this.component;
     }
 
-    private boolean checkIfStartedAndValid(final AFXComponent componentToCheck) {
+    private boolean checkIfStartedAndValid(final EmbeddedFXComponent componentToCheck) {
         return componentToCheck.isStarted();
     }
 
@@ -171,7 +171,7 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
      * @param url,       the FXML url
      * @param component, the component
      */
-    private void initLocalization(final URL url, final AFXComponent component) {
+    private void initLocalization(final URL url, final EmbeddedFXComponent component) {
         final String bundleLocation = component.getResourceBundleLocation();
         if (bundleLocation.isEmpty())
             return;
@@ -190,7 +190,7 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
      * @throws InvocationTargetException
      */
     private void executePostHandleAndAddComponent(
-            final Node handleReturnValue, final AFXComponent myComponent,
+            final Node handleReturnValue, final EmbeddedFXComponent myComponent,
             final Message<Event, Object> myAction, final Map<String, Node> targetComponents) throws Exception {
         final Thread t = Thread.currentThread();
         WorkerUtil.invokeOnFXThreadAndWait(() -> {
@@ -216,7 +216,7 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
         });
     }
 
-    private void shutDownComponent(final AFXComponent component) {
+    private void shutDownComponent(final EmbeddedFXComponent component) {
         // unregister component
         final String parentId = component.getParentId();
         final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
