@@ -31,7 +31,7 @@ import org.jacpfx.api.component.ComponentHandle;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.exceptions.InvalidComponentMatch;
 import org.jacpfx.rcp.component.ASubComponent;
-import org.jacpfx.rcp.context.JacpContextImpl;
+import org.jacpfx.rcp.context.InternalContext;
 import org.jacpfx.rcp.util.FXUtil;
 
 import java.util.Map;
@@ -99,7 +99,7 @@ public abstract class AComponentWorker<T> extends Task<T> {
         if (bundleLocation.isEmpty())
             return;
         final String localeID = component.getLocaleID();
-        JacpContextImpl.class.cast(component.getContext()).setResourceBundle(ResourceBundle.getBundle(bundleLocation,
+        InternalContext.class.cast(component.getContext()).setResourceBundle(ResourceBundle.getBundle(bundleLocation,
                 FXUtil.getCorrectLocale(localeID)));
 
     }

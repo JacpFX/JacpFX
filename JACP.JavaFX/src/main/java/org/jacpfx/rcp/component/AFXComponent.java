@@ -29,7 +29,7 @@ import javafx.scene.Node;
 import org.jacpfx.api.component.Declarative;
 import org.jacpfx.api.component.UIComponent;
 import org.jacpfx.api.util.UIType;
-import org.jacpfx.rcp.context.JacpContextImpl;
+import org.jacpfx.rcp.context.InternalContext;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -99,7 +99,7 @@ public abstract class AFXComponent extends ASubComponent implements
 	@Override
 	public final void initialize(URL url, ResourceBundle resourceBundle) {
 		this.documentURL = url;
-        JacpContextImpl.class.cast(this.getContext()).setResourceBundle(resourceBundle);
+        InternalContext.class.cast(this.getContext()).setResourceBundle(resourceBundle);
 	}
 
 

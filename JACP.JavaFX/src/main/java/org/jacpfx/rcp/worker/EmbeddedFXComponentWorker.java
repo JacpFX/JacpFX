@@ -35,7 +35,8 @@ import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.AFXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.componentLayout.PerspectiveLayout;
-import org.jacpfx.rcp.context.JacpContextImpl;
+import org.jacpfx.rcp.context.Context;
+import org.jacpfx.rcp.context.InternalContext;
 import org.jacpfx.rcp.registry.ComponentRegistry;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.*;
@@ -90,7 +91,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
             final Message<Event, Object> myAction = component
                     .getNextIncomingMessage();
             final Node previousContainer = component.getRoot();
-            final JacpContextImpl contextImpl = JacpContextImpl.class.cast(component.getContext());
+            final InternalContext contextImpl = InternalContext.class.cast(component.getContext());
             final String currentTargetLayout = contextImpl.getTargetLayout();
             final String currentExecutionTarget = contextImpl.getExecutionTarget();
             // run code
@@ -179,11 +180,12 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
                                        final Node previousContainer, final String currentTargetLayout, final String currentExecutionTarget) {
 
         if (previousContainer != null) {
-            final JacpContextImpl context = JacpContextImpl.class.cast(component.getContext());
+            final String id = component.getContext().getId();
+            final InternalContext context = InternalContext.class.cast(component.getContext());
             final String newExecutionTarget = context.getExecutionTarget();
             if (!currentExecutionTarget.equalsIgnoreCase(newExecutionTarget)) {
-                if (ComponentRegistry.findComponentByQualifiedId(newExecutionTarget, context.getId()) != null)
-                    throw new NonUniqueComponentException("perspective " + newExecutionTarget + " already contains a component with id: " + context.getId());
+                if (ComponentRegistry.findComponentByQualifiedId(newExecutionTarget, id) != null)
+                    throw new NonUniqueComponentException("perspective " + newExecutionTarget + " already contains a component with id: " + id);
                 this.shutDownComponent(component, previousContainer, currentTargetLayout);
                 // restore target execution
                 final JacpContext contextTemp = component.getContext();
@@ -202,8 +204,8 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
     private void shutDownComponent(final AFXComponent component, final Node previousContainer, final String currentTargetLayout) {
 
         final String parentId = component.getParentId();
-        final JacpContextImpl context = JacpContextImpl.class.cast(component.getContext());
-        final FXComponentLayout layout = JacpContextImpl.class.cast(context).getComponentLayout();
+        final Context context = Context.class.cast(component.getContext());
+        final FXComponentLayout layout = context.getComponentLayout();
         final Perspective<EventHandler<Event>, Event, Object> parentPerspective = PerspectiveRegistry.findPerspectiveById(parentId);
         if (parentPerspective != null) {
             // unregister component

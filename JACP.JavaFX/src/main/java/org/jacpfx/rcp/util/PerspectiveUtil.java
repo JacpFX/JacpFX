@@ -12,7 +12,7 @@ import org.jacpfx.api.fragment.Scope;
 import org.jacpfx.api.launcher.Launcher;
 import org.jacpfx.rcp.component.*;
 import org.jacpfx.rcp.componentLayout.PerspectiveLayout;
-import org.jacpfx.rcp.context.JacpContextImpl;
+import org.jacpfx.rcp.context.InternalContext;
 import org.jacpfx.rcp.perspective.EmbeddedFXPerspective;
 import org.jacpfx.rcp.registry.ClassRegistry;
 
@@ -239,9 +239,10 @@ public class PerspectiveUtil {
      */
     private static void handleBaseAttributes(final SubComponent<EventHandler<Event>, Event, Object> component, final String id, final boolean active,
                                       final String name) {
-        if (id != null) JacpContextImpl.class.cast(component.getContext()).setId(id);
+        final InternalContext context = InternalContext.class.cast(component.getContext());
+        if (id != null) context.setId(id);
         component.getContext().setActive(active);
-        if (name != null) JacpContextImpl.class.cast(component.getContext()).setName(name);
+        if (name != null) context.setName(name);
     }
 
 
@@ -272,7 +273,7 @@ public class PerspectiveUtil {
      * @param value The target value.
      */
     private static void setInitialLayoutTarget(final SubComponent<EventHandler<Event>, Event, Object> component, String value) {
-        final String targetLayout = JacpContextImpl.class.cast(component.getContext()).getTargetLayout();
+        final String targetLayout = InternalContext.class.cast(component.getContext()).getTargetLayout();
         if (targetLayout==null)
             component.getContext().setTargetLayout(value);
     }

@@ -33,7 +33,8 @@ import org.jacpfx.api.exceptions.AnnotationMissconfigurationException;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.AFXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
-import org.jacpfx.rcp.context.JacpContextImpl;
+import org.jacpfx.rcp.context.Context;
+import org.jacpfx.rcp.context.InternalContext;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.FXUtil;
 import org.jacpfx.rcp.util.TearDownHandler;
@@ -87,7 +88,7 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
     private void runPreInitMethods() throws InterruptedException, ExecutionException {
         WorkerUtil.invokeOnFXThreadAndWait(() -> {
             setComponentToActiveAndStarted(component);
-            final FXComponentLayout layout = JacpContextImpl.class.cast(component.getContext()).getComponentLayout();
+            final FXComponentLayout layout = Context.class.cast(component.getContext()).getComponentLayout();
             switch (component.getType()) {
                 case DECLARATIVE:
                     runPreInitOnDeclarativeComponent(component, layout);
@@ -200,7 +201,7 @@ public class FXComponentInitWorker extends AComponentWorker<AFXComponent> {
                 t.getUncaughtExceptionHandler().uncaughtException(t, e);
             }
             if (component.getContext().isActive()) {
-                final String targetLayout = JacpContextImpl.class.cast(this.component.getContext()).getTargetLayout();
+                final String targetLayout = InternalContext.class.cast(this.component.getContext()).getTargetLayout();
                 final Node validContainer = this.getValidContainerById(targetComponents, targetLayout);
                 if (validContainer == null && myComponent.getRoot() != null)
                     throw new AnnotationMissconfigurationException("no targetLayout for layoutID: " + targetLayout + " found");

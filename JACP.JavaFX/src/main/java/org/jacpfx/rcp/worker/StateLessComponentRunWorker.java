@@ -29,7 +29,7 @@ import org.jacpfx.api.component.StatelessCallabackComponent;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.ASubComponent;
-import org.jacpfx.rcp.context.JacpContextImpl;
+import org.jacpfx.rcp.context.InternalContext;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.TearDownHandler;
 import org.jacpfx.rcp.util.WorkerUtil;
@@ -65,9 +65,9 @@ public class StateLessComponentRunWorker
 				while (this.component.hasIncomingMessage()) {
 					final Message<Event, Object> myAction = this.component
 							.getNextIncomingMessage();
-                    final JacpContextImpl context = JacpContextImpl.class.cast(this.component.getContext());
-                    context.setActive(true);
-                    context.setReturnTarget(myAction.getSourceId());
+                    final InternalContext context = InternalContext.class.cast(this.component.getContext());
+                    context.updateActiveState(true);
+                    context.updateReturnTarget(myAction.getSourceId());
                     final Object value = this.component.getComponent().handle(myAction);
                     final String targetId = context
                             .getReturnTargetAndClear();

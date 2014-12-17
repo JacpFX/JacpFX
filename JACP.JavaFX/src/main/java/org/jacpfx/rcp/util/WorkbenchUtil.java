@@ -6,12 +6,11 @@ import org.jacpfx.api.annotations.workbench.Workbench;
 import org.jacpfx.api.component.Declarative;
 import org.jacpfx.api.component.Injectable;
 import org.jacpfx.api.component.Perspective;
-import org.jacpfx.api.context.JacpContext;
 import org.jacpfx.api.exceptions.NonUniqueComponentException;
 import org.jacpfx.api.fragment.Scope;
 import org.jacpfx.api.launcher.Launcher;
 import org.jacpfx.api.util.UIType;
-import org.jacpfx.rcp.context.JacpContextImpl;
+import org.jacpfx.rcp.context.InternalContext;
 import org.jacpfx.rcp.perspective.EmbeddedFXPerspective;
 import org.jacpfx.rcp.registry.ClassRegistry;
 
@@ -154,7 +153,7 @@ public class WorkbenchUtil {
         if (perspectiveAnnotation == null) throw new IllegalArgumentException("no perspective annotation found");
         final String id = perspectiveAnnotation.id();
         if (id == null) throw new IllegalArgumentException("no perspective id set");
-        initContext(perspective.getContext(), parentId, id, perspectiveAnnotation.active(), perspectiveAnnotation.name());
+        initContext(InternalContext.class.cast(perspective.getContext()), parentId, id, perspectiveAnnotation.active(), perspectiveAnnotation.name());
         LOGGER.fine("register perspective with annotations : "
                 + perspectiveAnnotation.id());
         initDeclarativePerspectiveParts(perspective, perspectiveAnnotation);
@@ -212,11 +211,10 @@ public class WorkbenchUtil {
      * @param active,           the active state
      * @param name,             the component name
      */
-    private static void initContext(final JacpContext contextInterface, final String parentId, final String id, final boolean active, final String name) {
-        final JacpContextImpl context = JacpContextImpl.class.cast(contextInterface);
-        context.setParentId(parentId);
-        context.setId(id);
-        context.setActive(active);
-        context.setName(name);
+    private static void initContext(final InternalContext contextInterface, final String parentId, final String id, final boolean active, final String name) {
+        contextInterface.setParentId(parentId);
+        contextInterface.setId(id);
+        contextInterface.updateActiveState(active);
+        contextInterface.setName(name);
     }
 }

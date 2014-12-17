@@ -31,7 +31,7 @@ import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.handler.ComponentHandler;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.api.util.QueueSizes;
-import org.jacpfx.rcp.context.JacpContextImpl;
+import org.jacpfx.rcp.context.InternalContext;
 import org.jacpfx.rcp.message.MessageImpl;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.FXUtil;
@@ -65,7 +65,7 @@ public class ComponentDelegatorImpl extends Thread implements
 			try {
 				final SubComponent<EventHandler<Event>, Event, Object> component = this.componentDelegateQueue
 						.take();
-                final String targetId = JacpContextImpl.class.cast(component.getContext()).getExecutionTarget();
+                final String targetId = InternalContext.class.cast(component.getContext()).getExecutionTarget();
 				this.delegateTargetChange(targetId, component);
 
 			} catch (final InterruptedException e) {

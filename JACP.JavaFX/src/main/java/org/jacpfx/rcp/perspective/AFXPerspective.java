@@ -43,6 +43,8 @@ import org.jacpfx.api.util.UIType;
 import org.jacpfx.rcp.component.AComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.componentLayout.PerspectiveLayout;
+import org.jacpfx.rcp.context.Context;
+import org.jacpfx.rcp.context.InternalContext;
 import org.jacpfx.rcp.context.JacpContextImpl;
 import org.jacpfx.rcp.message.MessageImpl;
 import org.jacpfx.rcp.registry.ComponentRegistry;
@@ -151,8 +153,8 @@ public abstract class AFXPerspective extends AComponent implements
 
     }
 
-    private  FXComponentLayout getFXComponentLayoutInstance(final JacpContextImpl currentContext) {
-        final FXComponentLayout currentLayout =      JacpContextImpl.class.cast(this.context).getComponentLayout();
+    private  FXComponentLayout getFXComponentLayoutInstance(final Context currentContext) {
+        final FXComponentLayout currentLayout =      Context.class.cast(this.context).getComponentLayout();
         return new FXComponentLayout(currentLayout.getMenu(),currentLayout.getGlassPane(),currentContext.getParentId(),currentContext.getId());
 
     }
@@ -274,7 +276,7 @@ public abstract class AFXPerspective extends AComponent implements
     @Override
     public final void initialize(URL url, ResourceBundle resourceBundle) {
         this.documentURL = url;
-        JacpContextImpl.class.cast(context).setResourceBundle(resourceBundle);
+        InternalContext.class.cast(context).setResourceBundle(resourceBundle);
     }
 
     /**
