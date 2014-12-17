@@ -69,6 +69,12 @@ public class JacpContextImpl implements Context,InternalContext {
 
     }
 
+    public JacpContextImpl(final String parentId,final BlockingQueue<Message<Event, Object>> globalMessageQueue) {
+        this.globalMessageQueue = globalMessageQueue;
+        this.parentId = parentId;
+
+    }
+
     /**
      * {@inheritDoc}
      */

@@ -583,6 +583,7 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
         if(subcomponent== null) return;
         final JacpContext<EventHandler<Event>, Object> context = subcomponent.getContext();
         if(context == null) return;
+        // TODO migrate to fullyQualified id
         String componentId = context.getId();
         componentId = componentId == null ? this.extractComponentId(subcomponent) : componentId;
         componentId = FXUtil.getQualifiedComponentId(parentId, componentId);

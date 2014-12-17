@@ -30,6 +30,7 @@ import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.context.JacpContext;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.api.util.QueueSizes;
+import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.context.JacpContextImpl;
 import org.jacpfx.rcp.worker.AEmbeddedComponentWorker;
 
@@ -48,6 +49,7 @@ import java.util.logging.Logger;
 public abstract class ASubComponent  implements
         SubComponent<EventHandler<Event>, Event, Object> {
 
+    // TODO remove parentId from SubComponent ad provide access through context
     private volatile String parentId;
 
     private final Semaphore lock = new Semaphore(1);
@@ -66,7 +68,7 @@ public abstract class ASubComponent  implements
     private volatile AtomicBoolean started =  new AtomicBoolean(false);
     private String localeID = "";
     private String resourceBundleLocation = "";
-    protected JacpContextImpl context;
+    protected Context context;
     protected volatile BlockingQueue<Message<Event, Object>> globalMessageQueue;
 
 
@@ -78,7 +80,7 @@ public abstract class ASubComponent  implements
                               final BlockingQueue<Message<Event, Object>> messageQueue) {
         this.parentId = parentId;
         this.globalMessageQueue = messageQueue;
-        this.context = new JacpContextImpl(this.globalMessageQueue);
+        this.context = new JacpContextImpl(this.parentId,this.globalMessageQueue);
     }
 
 

@@ -192,10 +192,9 @@ public abstract class AFXPerspective implements
     @Override
     public final void registerComponent(
             final SubComponent<EventHandler<Event>, Event, Object> component) {
-        component.initEnv(this.getContext().getId(),
+        component.initEnv(this.context.getId(),
                 this.messageCoordinator.getMessageQueue());
         final JacpContextImpl currentContext = JacpContextImpl.class.cast(component.getContext());
-        currentContext.setParentId(this.context.getId());
         PerspectiveUtil.handleComponentMetaAnnotation(component);
         currentContext.setFXComponentLayout(getFXComponentLayoutInstance(currentContext));
         if (currentContext.isActive()) {
