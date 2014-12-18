@@ -49,26 +49,17 @@ import java.util.logging.Logger;
 public abstract class ASubComponent  implements
         SubComponent<EventHandler<Event>, Event, Object> {
 
-    // TODO remove parentId from SubComponent ad provide access through context
-    private volatile String parentId;
 
     private final Semaphore lock = new Semaphore(1);
-
-    private final Logger logger = Logger.getLogger(this.getClass().getName());
-
+    private final Logger componentLogger = Logger.getLogger(this.getClass().getName());
     private final BlockingQueue<Message<Event, Object>> incomingMessage = new ArrayBlockingQueue<>(
             QueueSizes.COMPONENT_QUEUE_SIZE);
-
-
     private volatile ComponentHandle<?, Event, Object> component;
-
-
-    private volatile AtomicReference<AEmbeddedComponentWorker> workerRef = new AtomicReference<>();
-
-    private volatile AtomicBoolean started =  new AtomicBoolean(false);
+    private final AtomicReference<AEmbeddedComponentWorker> workerRef = new AtomicReference<>();
+    private final AtomicBoolean started =  new AtomicBoolean(false);
     private String localeID = "";
     private String resourceBundleLocation = "";
-    protected Context context;
+    private Context context;
     protected volatile BlockingQueue<Message<Event, Object>> globalMessageQueue;
 
 
@@ -78,9 +69,8 @@ public abstract class ASubComponent  implements
     @Override
     public final void initEnv(final String parentId,
                               final BlockingQueue<Message<Event, Object>> messageQueue) {
-        this.parentId = parentId;
         this.globalMessageQueue = messageQueue;
-        this.context = new JacpContextImpl(this.parentId,this.globalMessageQueue);
+        this.context = new JacpContextImpl(parentId,this.globalMessageQueue);
     }
 
 
@@ -100,7 +90,7 @@ public abstract class ASubComponent  implements
         try {
             this.incomingMessage.put(action);
         } catch (final InterruptedException e) {
-            logger.info("massage put failed:");
+            this.componentLogger.info("massage put failed:");
             //TODO handle exception global
         }
 
@@ -119,7 +109,7 @@ public abstract class ASubComponent  implements
      */
     @Override
     public final boolean isBlocked() {
-        return lock.availablePermits() == 0;
+        return this.lock.availablePermits() == 0;
     }
 
     /**
@@ -128,9 +118,9 @@ public abstract class ASubComponent  implements
     @Override
     public final void lock() {
         try {
-            lock.acquire();
-        } catch (InterruptedException e) {
-            logger.info("lock interrupted.");
+            this.lock.acquire();
+        } catch (final InterruptedException e) {
+            this.componentLogger.info("lock interrupted.");
         }
     }
 
@@ -139,16 +129,9 @@ public abstract class ASubComponent  implements
      */
     @Override
     public final void release() {
-        lock.release();
+        this.lock.release();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final String getParentId() {
-        return this.parentId;
-    }
 
     /**
      * {@inheritDoc}
@@ -164,24 +147,24 @@ public abstract class ASubComponent  implements
     @SuppressWarnings("unchecked")
     @Override
     public final ComponentHandle<?, Event, Object> getComponent() {
-        return component;
+        return this.component;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <X extends ComponentHandle<?, Event, Object>> void setComponent(final X handle) {
+    public final <X extends ComponentHandle<?, Event, Object>> void setComponent(final X handle) {
         this.component = handle;
     }
 
-    public void initWorker(AEmbeddedComponentWorker worker) {
+    public final void initWorker(final AEmbeddedComponentWorker worker) {
         this.workerRef.set(worker);
         worker.start();
     }
 
-    public void interruptWorker() {
-        final AEmbeddedComponentWorker worker = workerRef.get();
+    public final void interruptWorker() {
+        final AEmbeddedComponentWorker worker = this.workerRef.get();
         if(worker==null)return;
         if(worker.isAlive()) {
             worker.interrupt();
@@ -198,7 +181,7 @@ public abstract class ASubComponent  implements
     }
 
     @Override
-    public final void setStarted(boolean started) {
+    public final void setStarted(final boolean started) {
         this.started.set(started);
     }
 
@@ -207,14 +190,14 @@ public abstract class ASubComponent  implements
      */
     @Override
     public final String getLocaleID() {
-        return localeID;
+        return this.localeID;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public final void setLocaleID(String localeID) {
+    public final void setLocaleID(final String localeID) {
         this.localeID = localeID;
     }
 
@@ -223,14 +206,14 @@ public abstract class ASubComponent  implements
      */
     @Override
     public final String getResourceBundleLocation() {
-        return resourceBundleLocation;
+        return this.resourceBundleLocation;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public final void setResourceBundleLocation(String resourceBundleLocation) {
+    public final void setResourceBundleLocation(final String resourceBundleLocation) {
         this.resourceBundleLocation = resourceBundleLocation;
     }
 
@@ -238,30 +221,30 @@ public abstract class ASubComponent  implements
     /**
      * {@inheritDoc}
      */
-    public int compareTo(Component o) {
+    public final int compareTo(final Component o) {
         return this.getContext().getId().compareTo(o.getContext().getId());
     }
 
     @Override
-    public boolean equals(Object o) {
+    public final boolean equals(final Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || this.getClass() != o.getClass()) return false;
 
-        ASubComponent that = (ASubComponent) o;
+        final ASubComponent that = (ASubComponent) o;
 
-        if (started.get() != that.started.get()) return false;
-        if (context != null ? !context.equals(that.context) : that.context != null) return false;
-        return !(globalMessageQueue != null ? !globalMessageQueue.equals(that.globalMessageQueue) : that.globalMessageQueue != null) && !(localeID != null ? !localeID.equals(that.localeID) : that.localeID != null) && !(resourceBundleLocation != null ? !resourceBundleLocation.equals(that.resourceBundleLocation) : that.resourceBundleLocation != null);
+        if (this.started.get() != that.started.get()) return false;
+        if (this.context != null ? !this.context.equals(that.context) : that.context != null) return false;
+        return !(this.globalMessageQueue != null ? !this.globalMessageQueue.equals(that.globalMessageQueue) : that.globalMessageQueue != null) && !(this.localeID != null ? !this.localeID.equals(that.localeID) : that.localeID != null) && !(this.resourceBundleLocation != null ? !this.resourceBundleLocation.equals(that.resourceBundleLocation) : that.resourceBundleLocation != null);
 
     }
 
     @Override
-    public int hashCode() {
-        int result = (started.get() ? 1 : 0);
-        result = 31 * result + (localeID != null ? localeID.hashCode() : 0);
-        result = 31 * result + (resourceBundleLocation != null ? resourceBundleLocation.hashCode() : 0);
-        result = 31 * result + (context != null ? context.hashCode() : 0);
-        result = 31 * result + (globalMessageQueue != null ? globalMessageQueue.hashCode() : 0);
+    public final int hashCode() {
+        int result = (this.started.get() ? 1 : 0);
+        result = 31 * result + (this.localeID != null ? this.localeID.hashCode() : 0);
+        result = 31 * result + (this.resourceBundleLocation != null ? this.resourceBundleLocation.hashCode() : 0);
+        result = 31 * result + (this.context != null ? this.context.hashCode() : 0);
+        result = 31 * result + (this.globalMessageQueue != null ? this.globalMessageQueue.hashCode() : 0);
         return result;
     }
 

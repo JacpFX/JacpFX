@@ -166,8 +166,8 @@ public class BasicInitialisationTests {
                 assertTrue(components.length == p.getSubcomponents().size());
                 List<SubComponent<EventHandler<Event>, Event, Object>> subcomponents = p.getSubcomponents();
                 for (SubComponent<EventHandler<Event>, Event, Object> c : subcomponents) {
-                    assertNotNull(c.getParentId());
-                    assertTrue(c.getParentId().equals(p.getContext().getId()));
+                    assertNotNull(c.getContext().getParentId());
+                    assertTrue(c.getContext().getParentId().equals(p.getContext().getId()));
                     JacpContext<EventHandler<Event>,Object> context = c.getContext();
                     assertNotNull(context.getParentId());
                     assertNotNull(context.getId());

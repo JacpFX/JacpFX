@@ -83,7 +83,7 @@ public abstract class AStatelessCallbackComponent extends ASubComponent
 			final ComponentHandle<Object,Event, Object> handler, final Context context) {
 
         final StatelessCallabackComponent<EventHandler<Event>, Event, Object> comp = new EmbeddedStatelessCallbackComponent(handler);
-        comp.initEnv(this.getParentId(), this.globalMessageQueue);
+        comp.initEnv(this.getContext().getParentId(), this.globalMessageQueue);
         initContextObject(comp,context);
 		return comp;
 	}

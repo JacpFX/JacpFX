@@ -25,14 +25,8 @@ package org.jacpfx.rcp.workbench;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.geometry.Orientation;
 import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.ToolBar;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import org.jacpfx.api.annotations.workbench.Workbench;
 import org.jacpfx.api.component.Injectable;
 import org.jacpfx.api.component.Perspective;
@@ -45,14 +39,10 @@ import org.jacpfx.api.delegator.MessageDelegator;
 import org.jacpfx.api.handler.ComponentHandler;
 import org.jacpfx.api.launcher.Launcher;
 import org.jacpfx.api.message.Message;
-import org.jacpfx.api.util.OS;
-import org.jacpfx.api.util.ToolbarPosition;
 import org.jacpfx.api.workbench.Base;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.componentLayout.FXWorkbenchLayout;
 import org.jacpfx.rcp.components.managedFragment.ManagedFragment;
-import org.jacpfx.rcp.components.modalDialog.JACPModalDialog;
-import org.jacpfx.rcp.components.toolBar.JACPToolBar;
 import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.context.JacpContextImpl;
 import org.jacpfx.rcp.coordinator.MessageCoordinator;
@@ -64,17 +54,14 @@ import org.jacpfx.rcp.perspective.AFXPerspective;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.*;
 
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
- * represents the basic JavaFX2 workbench instance; handles perspective and
+ * represents the basic JavaFX workbench instance; handles perspective and
  * component;
  *
  * @author Andy Moncsek, Patrick Symmangk
@@ -91,14 +78,9 @@ public abstract class AFXWorkbench
     private List<Perspective<Node, EventHandler<Event>, Event, Object>> perspectives;
     private ComponentHandler<Perspective<Node, EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
     private Coordinator<EventHandler<Event>, Event, Object> messageCoordinator;
+    private WorkbenchDecorator workbenchDecorator;
     private Launcher<?> launcher;
     private Stage stage;
-    private GridPane root;
-    private BorderPane baseLayoutPane;
-    private StackPane absoluteRoot;
-    private GridPane base;
-    private Pane glassPane;
-    private JACPModalDialog dimmer;
     private Context context;
     private FXWorkbench handle;
 
@@ -127,10 +109,11 @@ public abstract class AFXWorkbench
         // init user defined workspace
         this.handle.handleInitialLayout(new MessageImpl(this.context.getId(), "init"),
                 this.getWorkbenchLayout(), stage);
-        this.setBasicLayout(stage);
+        this.workbenchDecorator = new WorkbenchDecorator(this.getWorkbenchLayout());
+        this.workbenchDecorator.initBasicLayout(stage);
 
         this.handle.postHandle(new FXComponentLayout(this.getWorkbenchLayout()
-                .getMenu(), this.glassPane, null, this.getContext().getId()));
+                .getMenu(), this.workbenchDecorator.getGlassPane(), null, this.getContext().getId()));
     }
 
     private void registerTeardownActions() {
@@ -144,7 +127,7 @@ public abstract class AFXWorkbench
 
     private void initSubsystem() {
         this.componentHandler = new PerspectiveHandlerImpl(this.launcher,
-                this.workbenchLayout, this.root);
+                this.workbenchLayout, this.workbenchDecorator.getRoot());
         this.messageCoordinator.setPerspectiveHandler(this.componentHandler);
         this.componentDelegator.setPerspectiveHandler(this.componentHandler);
         this.messageDelegator.setPerspectiveHandler(this.componentHandler);
@@ -300,159 +283,7 @@ public abstract class AFXWorkbench
         return this.perspectives;
     }
 
-    /**
-     * set basic layout manager for workspace
-     *
-     * @param stage javafx.stage.Stage
-     */
 
-    // TODO: handle the custom decorator
-    private void setBasicLayout(final Stage stage) {
-        // the top most pane is a Stackpane
-        this.base = new GridPane();
-        this.absoluteRoot = new StackPane();
-        this.baseLayoutPane = new BorderPane();
-        this.stage = stage;
-
-        if (OS.MAC.equals(OS.getOS())) {
-            // OSX will always be DECORATED due to fullscreen option!
-            stage.initStyle(StageStyle.DECORATED);
-        } else {
-            stage.initStyle(this.getWorkbenchLayout().getStyle());
-        }
-
-        this.initBaseLayout();
-        this.initMenuLayout();
-        this.initToolbarLayout();
-        this.completeLayout();
-    }
-
-    private void completeLayout() {
-        // fetch current workbenchsize
-        final int x = this.getWorkbenchLayout().getWorkbenchSize().getX();
-        final int y = this.getWorkbenchLayout().getWorkbenchSize().getY();
-
-        this.absoluteRoot.getChildren().add(this.baseLayoutPane);
-        this.absoluteRoot.setId(CSSUtil.CSSIdConstants.ID_ROOT);
-        this.base.getChildren().add(absoluteRoot);
-        LayoutUtil.GridPaneUtil.setFullGrow(Priority.ALWAYS, this.absoluteRoot);
-        this.stage.setScene(new Scene(this.base, x, y));
-        this.initCSS(this.stage.getScene());
-        SceneUtil.setScene(this.stage.getScene());
-        this.absoluteRoot.getChildren().add(this.glassPane);
-        this.absoluteRoot.getChildren().add(this.dimmer);
-
-        this.initGlobalMouseEvents();
-
-    }
-
-    private void initGlobalMouseEvents() {
-        // catch global clicks
-        this.stage.getScene().addEventFilter(
-                MouseEvent.MOUSE_RELEASED,
-                (event) -> GlobalMediator.getInstance().hideAllHideables(event));
-    }
-
-    private void initMenuLayout() {
-        // add the menu if needed
-        if (this.getWorkbenchLayout().isMenuEnabled()) {
-            this.baseLayoutPane.setTop(this.getWorkbenchLayout().getMenu());
-            this.getWorkbenchLayout().getMenu().setMenuDragEnabled(stage);
-        }
-
-    }
-
-    private void initToolbarLayout() {
-        // add toolbars in a specific order
-        if (!this.getWorkbenchLayout().getRegisteredToolBars().isEmpty()) {
-
-            // add another Layer to hold all the toolbars
-            final BorderPane toolbarPane = new BorderPane();
-            this.baseLayoutPane.setCenter(toolbarPane);
-
-            final Map<ToolbarPosition, JACPToolBar> registeredToolbars = this
-                    .getWorkbenchLayout().getRegisteredToolBars();
-
-            for (Iterator<Entry<ToolbarPosition, JACPToolBar>> iterator = registeredToolbars
-                    .entrySet().iterator(); iterator.hasNext(); ) {
-                Entry<ToolbarPosition, JACPToolBar> entry = iterator.next();
-                final ToolbarPosition position = entry.getKey();
-                final JACPToolBar toolBar = entry.getValue();
-                this.assignCorrectToolBarLayout(position, toolBar, toolbarPane);
-            }
-
-            // add root to the center
-            toolbarPane.setCenter(this.root);
-            toolbarPane.getStyleClass().add(
-                    CSSUtil.CSSClassConstants.CLASS_DARK_BORDER);
-
-        } else {
-            // no toolbars -> no special Layout needed
-            this.baseLayoutPane.setCenter(this.root);
-        }
-
-    }
-
-    private void initCSS(final Scene scene) {
-        scene.getStylesheets().addAll(
-                AFXWorkbench.class.getResource("/styles/jacp-styles.css")
-                        .toExternalForm());
-    }
-
-    private void initBaseLayout() {
-        this.initRootPane();
-        this.initDimmer();
-        this.initGlassPane();
-    }
-
-    private void initRootPane() {
-        // root is top most pane
-        this.root = new GridPane();
-        this.root.setCache(true);
-        this.root.setId(CSSUtil.CSSIdConstants.ID_ROOT_PANE);
-
-    }
-
-    private void initDimmer() {
-        JACPModalDialog.initDialog(this.baseLayoutPane);
-        this.dimmer = JACPModalDialog.getInstance();
-        this.dimmer.setVisible(false);
-    }
-
-    private void initGlassPane() {
-        // Pane for custom elements added to the glasspane
-        this.glassPane = this.getWorkbenchLayout().getGlassPane();
-        this.glassPane.autosize();
-        this.glassPane.setVisible(false);
-        this.glassPane.setPrefSize(0, 0);
-    }
-
-    /**
-     * set toolBars to correct position
-     *
-     * @param position, The toolbar position
-     * @param bar,      the affected toolbar
-     * @param pane,     the root pane
-     */
-    private void assignCorrectToolBarLayout(final ToolbarPosition position,
-                                            final ToolBar bar, final BorderPane pane) {
-        switch (position) {
-            case NORTH:
-                pane.setTop(bar);
-                break;
-            case SOUTH:
-                pane.setBottom(bar);
-                break;
-            case EAST:
-                bar.setOrientation(Orientation.VERTICAL);
-                pane.setRight(bar);
-                break;
-            case WEST:
-                bar.setOrientation(Orientation.VERTICAL);
-                pane.setLeft(bar);
-                break;
-        }
-    }
 
     private void log(final String message) {
         if (this.logger.isLoggable(Level.FINE)) {

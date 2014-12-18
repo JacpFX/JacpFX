@@ -103,7 +103,7 @@ public class JACPModalDialog extends StackPane implements IModalMessageNode {
             this.setOpacity(0);
             this.setVisible(true);
             this.setCache(true);
-            JACPModalDialog.root.setEffect(new GaussianBlur(this.MAX_BLUR));
+            JACPModalDialog.root.setEffect(new GaussianBlur(MAX_BLUR));
 
             this.getShowTimeline().play();
         }

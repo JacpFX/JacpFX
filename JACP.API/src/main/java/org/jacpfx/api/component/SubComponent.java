@@ -77,12 +77,6 @@ public interface SubComponent<L, A, M> extends Component<L, M> {
      */
     void release();
 
-    /**
-     * returns the id of parent component
-     *
-     * @return the parent id
-     */
-    String getParentId();
 
     /**
      * Set parentId and global message queue to component

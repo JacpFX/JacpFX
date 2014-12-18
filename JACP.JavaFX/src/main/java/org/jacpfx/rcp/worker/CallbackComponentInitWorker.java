@@ -27,6 +27,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.SubComponent;
+import org.jacpfx.api.context.JacpContext;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.ASubComponent;
 import org.jacpfx.rcp.context.InternalContext;
@@ -79,9 +80,10 @@ public class CallbackComponentInitWorker
     }
 
     private void handleComponentShutdown(final SubComponent<EventHandler<Event>, Event, Object> component) {
-        if (!component.getContext().isActive()) {
+        final JacpContext<EventHandler<Event>, Object> context = component.getContext();
+        if (!context.isActive()) {
             component.setStarted(false);
-            final String parentId = component.getParentId();
+            final String parentId = context.getParentId();
             final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
             if(parentPerspctive!=null)parentPerspctive.unregisterComponent(component);
             TearDownHandler.shutDownAsyncComponent(ASubComponent.class.cast(component));

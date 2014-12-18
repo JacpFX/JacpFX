@@ -61,12 +61,12 @@ public class MessageCoordinator extends Thread implements
 
 
     @Override
-    public BlockingQueue<Message<Event, Object>> getMessageQueue() {
+    public final BlockingQueue<Message<Event, Object>> getMessageQueue() {
         return this.messages;
     }
 
     @Override
-    public void handleMessage(final String targetId, final Message<Event, Object> message) {
+    public final void handleMessage(final String targetId, final Message<Event, Object> message) {
         final MessageCoordinatorExecutionResult result = executeMessageHandling(targetId, message);
         switch (result.getState()) {
             case HANDLE_ACTIVE:
@@ -220,18 +220,18 @@ public class MessageCoordinator extends Thread implements
 
 
     @Override
-    public <P extends Component<EventHandler<Event>, Object>> void setComponentHandler(ComponentHandler<P, Message<Event, Object>> handler) {
+    public final <P extends Component<EventHandler<Event>, Object>> void setComponentHandler(ComponentHandler<P, Message<Event, Object>> handler) {
         this.componentHandler = (ComponentHandler<SubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>>) handler;
 
     }
 
     @Override
-    public <P extends Component<EventHandler<Event>, Object>> void setPerspectiveHandler(ComponentHandler<P, Message<Event, Object>> handler) {
+    public final <P extends Component<EventHandler<Event>, Object>> void setPerspectiveHandler(ComponentHandler<P, Message<Event, Object>> handler) {
         this.perspectiveHandler = (ComponentHandler<Perspective<Node, EventHandler<Event>, Event, Object>, Message<Event, Object>>) handler;
     }
 
     @Override
-    public void setDelegateQueue(BlockingQueue<DelegateDTO<Event, Object>> delegateQueue) {
+    public final void setDelegateQueue(BlockingQueue<DelegateDTO<Event, Object>> delegateQueue) {
         this.delegateQueue = delegateQueue;
     }
 }

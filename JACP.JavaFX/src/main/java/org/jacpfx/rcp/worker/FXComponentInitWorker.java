@@ -29,6 +29,7 @@ import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.component.ComponentHandle;
 import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.SubComponent;
+import org.jacpfx.api.context.JacpContext;
 import org.jacpfx.api.exceptions.AnnotationMissconfigurationException;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.EmbeddedFXComponent;
@@ -122,9 +123,10 @@ public class FXComponentInitWorker extends AComponentWorker<EmbeddedFXComponent>
     private void runComponentOnStartupSequence(final EmbeddedFXComponent component,
                                                final Object... param) {
         FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, component.getComponent(), param);
+        final JacpContext context = component.getContext();
         // show component Buttons
-        if (component.getParentId() != null && component.getParentId().equals(PerspectiveRegistry.getCurrentVisiblePerspective())) {
-            GlobalMediator.getInstance().handleToolBarButtons(component, component.getParentId(), true);
+        if (context.getParentId() != null && context.getParentId().equals(PerspectiveRegistry.getCurrentVisiblePerspective())) {
+            GlobalMediator.getInstance().handleToolBarButtons(component, context.getParentId(), true);
         }
     }
 
@@ -218,7 +220,8 @@ public class FXComponentInitWorker extends AComponentWorker<EmbeddedFXComponent>
 
     private void shutDownComponent(final EmbeddedFXComponent component) {
         // unregister component
-        final String parentId = component.getParentId();
+        final JacpContext context = component.getContext();
+        final String parentId = context.getParentId();
         final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
         if (parentPerspctive != null) parentPerspctive.unregisterComponent(component);
         TearDownHandler.shutDownFXComponent(component, parentId);

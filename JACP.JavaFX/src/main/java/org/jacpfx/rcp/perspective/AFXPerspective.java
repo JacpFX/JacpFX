@@ -71,7 +71,7 @@ public abstract class AFXPerspective implements
     private final Logger logger = Logger.getLogger(this.getClass().getName());
     private volatile AtomicBoolean started = new AtomicBoolean(false);
     private String resourceBundleLocation = "";
-    private JacpContextImpl context;
+    private JacpContext context;
     private volatile BlockingQueue<Message<Event, Object>> globalMessageQueue;
     private ComponentHandler<SubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
     private BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
@@ -85,7 +85,7 @@ public abstract class AFXPerspective implements
     private final Object lock = new Object();
     private Launcher<?> launcher;
 
-    Injectable perspective;
+    protected Injectable perspective;
 
 
     /**
@@ -156,7 +156,7 @@ public abstract class AFXPerspective implements
      * {@inheritDoc}
      */
     @Override
-    public void postInit(
+    public final void postInit(
             final ComponentHandler<SubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler) {
         // init component handler
         this.componentHandler = componentHandler;
@@ -183,7 +183,7 @@ public abstract class AFXPerspective implements
      * {@inheritDoc}
      */
     @Override
-    public void handlePerspective(final Message<Event, Object> action) {
+    public final void handlePerspective(final Message<Event, Object> action) {
         getFXPerspectiveHandler().handlePerspective(action,
                 (PerspectiveLayout) this.perspectiveLayout);
 
@@ -275,8 +275,8 @@ public abstract class AFXPerspective implements
     }
 
     @Override
-    public List<SubComponent<EventHandler<Event>, Event, Object>> getSubcomponents() {
-        return ComponentRegistry.findComponentsByParentId(this.getContext().getId());
+    public final List<SubComponent<EventHandler<Event>, Event, Object>> getSubcomponents() {
+        return ComponentRegistry.findComponentsByParentId(this.context.getId());
     }
 
     @Override
@@ -352,22 +352,22 @@ public abstract class AFXPerspective implements
      * {@inheritDoc}
      */
     @Override
-    public void setUIType(UIType type) {
+    public final void setUIType(UIType type) {
         this.type = type;
     }
 
 
-    FXPerspective getFXPerspectiveHandler() {
+    final FXPerspective getFXPerspectiveHandler() {
         return FXPerspective.class.cast(perspective);
     }
 
     @Override
-    public Injectable getPerspective() {
+    public final Injectable getPerspective() {
         return this.perspective;
     }
 
     @Override
-    public JacpContext getContext() {
+    public final JacpContext getContext() {
         return this.context;
     }
 
@@ -375,8 +375,8 @@ public abstract class AFXPerspective implements
     /**
      * {@inheritDoc}
      */
-    public int compareTo(Component o) {
-        return this.getContext().getId().compareTo(o.getContext().getId());
+    public final int compareTo(Component o) {
+        return this.context.getId().compareTo(o.getContext().getId());
     }
 
     @Override

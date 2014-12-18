@@ -86,7 +86,7 @@ public class PerspectiveHandlerImpl implements
     @Override
     public final void handleAndReplaceComponent(final Message<Event, Object> action,
                                                 final Perspective<Node, EventHandler<Event>, Event, Object> perspective) {
-        final PerspectiveLayoutInterface<? extends Node, Node> perspectiveLayout = ((AFXPerspective) perspective)
+        final PerspectiveLayoutInterface<? extends Node, Node> perspectiveLayout = perspective
                 .getIPerspectiveLayout();
         // backup old component
         final Node componentOld = this.getLayoutComponentFromPerspectiveLayout(perspectiveLayout);
@@ -130,7 +130,7 @@ public class PerspectiveHandlerImpl implements
 
     private void shutDownComponent(final SubComponent<EventHandler<Event>, Event, Object> component) {
         if (EmbeddedFXComponent.class.isAssignableFrom(component.getClass())) {
-            TearDownHandler.shutDownFXComponent(EmbeddedFXComponent.class.cast(component), component.getParentId());
+            TearDownHandler.shutDownFXComponent(EmbeddedFXComponent.class.cast(component), component.getContext().getParentId());
         } else {
             TearDownHandler.shutDownAsyncComponent(ASubComponent.class.cast(component));
         }
@@ -142,9 +142,9 @@ public class PerspectiveHandlerImpl implements
             final String possiblePerspectiveId = possiblePerspectiveToShow.getContext().getId();
             final String perspectiveIdBefore = PerspectiveRegistry.getAndSetCurrentVisiblePerspective(possiblePerspectiveToShow.getContext().getId());
             if (!possiblePerspectiveId.equals(perspectiveIdBefore)) {
-                final PerspectiveLayoutInterface<? extends Node, Node> perspectiveLayoutReplacementComponent = ((AFXPerspective) possiblePerspectiveToShow)
+                final PerspectiveLayoutInterface<? extends Node, Node> perspectiveLayoutReplacementComponent = possiblePerspectiveToShow
                         .getIPerspectiveLayout();
-                final Perspective<Node, EventHandler<Event>, Event, Object> Perspective = ((Perspective<Node, EventHandler<Event>, Event, Object>) possiblePerspectiveToShow);
+                final Perspective<Node, EventHandler<Event>, Event, Object> Perspective = possiblePerspectiveToShow;
                 // execute OnShow
                 FXUtil.invokeHandleMethodsByAnnotation(OnShow.class, possiblePerspectiveToShow.getPerspective(), perspectiveLayoutReplacementComponent,
                         Perspective.getType().equals(UIType.DECLARATIVE) ? Perspective.getDocumentURL() : null, possiblePerspectiveToShow.getContext().getResourceBundle());
@@ -172,7 +172,7 @@ public class PerspectiveHandlerImpl implements
 
             this.handlePerspectiveInitMethod(message, perspective);
             this.log("3.4.5: perspective init bar entries");
-            final PerspectiveLayoutInterface<? extends Node, Node> perspectiveLayout = ((AFXPerspective) perspective)
+            final PerspectiveLayoutInterface<? extends Node, Node> perspectiveLayout = perspective
                     .getIPerspectiveLayout();
             this.initPerspectiveUI(perspectiveLayout);
             PerspectiveRegistry.getAndSetCurrentVisiblePerspective(perspective.getContext().getId());
@@ -284,7 +284,7 @@ public class PerspectiveHandlerImpl implements
 
     private void executeOnShow(final Perspective<Node, EventHandler<Event>, Event, Object> perspective, final Perspective<Node, EventHandler<Event>, Event, Object> previousPerspective) {
         if (!perspective.equals(previousPerspective)) {
-            final Perspective<Node, EventHandler<Event>, Event, Object> Perspective = ((Perspective<Node, EventHandler<Event>, Event, Object>) perspective);
+            final Perspective<Node, EventHandler<Event>, Event, Object> Perspective = perspective;
             final FXComponentLayout layout = new FXComponentLayout(this.getWorkbenchLayout(), null, perspective.getContext().getId());
             // execute OnShow
             FXUtil.invokeHandleMethodsByAnnotation(OnShow.class, perspective.getPerspective(), layout,
@@ -344,7 +344,7 @@ public class PerspectiveHandlerImpl implements
             final InternalContext context = InternalContext.class.cast(perspective.getContext());
             initFXComponentLayout(context,perspective.getContext().getId());
 
-            final Perspective<Node, EventHandler<Event>, Event, Object> Perspective = ((Perspective<Node, EventHandler<Event>, Event, Object>) perspective);
+            final Perspective<Node, EventHandler<Event>, Event, Object> Perspective = perspective;
 
             handleUIPerspective(perspective, Perspective,Context.class.cast(perspective.getContext()).getComponentLayout());
 

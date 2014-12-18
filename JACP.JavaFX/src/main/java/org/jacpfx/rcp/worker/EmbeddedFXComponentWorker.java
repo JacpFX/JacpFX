@@ -203,8 +203,8 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
 
     private void shutDownComponent(final EmbeddedFXComponent component, final Node previousContainer, final String currentTargetLayout) {
 
-        final String parentId = component.getParentId();
         final Context context = Context.class.cast(component.getContext());
+        final String parentId = context.getParentId();
         final FXComponentLayout layout = context.getComponentLayout();
         final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspective = PerspectiveRegistry.findPerspectiveById(parentId);
         if (parentPerspective != null) {

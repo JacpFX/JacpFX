@@ -90,7 +90,7 @@ public class EmbeddedFXComponent extends ASubComponent implements
      */
     @Override
     public final URL getDocumentURL() {
-        if(type.equals(UIType.PROGRAMMATIC))throw new UnsupportedOperationException("Only supported when @Declarative annotation is used");
+        if(this.type.equals(UIType.PROGRAMMATIC))throw new UnsupportedOperationException("Only supported when @Declarative annotation is used");
         return documentURL;
     }
 
