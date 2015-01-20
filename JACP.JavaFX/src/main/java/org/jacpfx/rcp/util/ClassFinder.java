@@ -167,8 +167,8 @@ public class ClassFinder {
     private List<Class> exctractClasses(final String packageDir, List<String> files) {
         final String seperator = CLASS_PROJECT_SEPERATOR.concat(File.separator);
         return files.parallelStream()
-                .map(dir -> dir.substring((dir.lastIndexOf(seperator) + CLASS_PROJECT_SEPERATOR_LENGTH), dir.length()))
                 .filter(classDir -> classDir.contains(packageDir))
+                .map(dir -> dir.substring(dir.indexOf(packageDir)))
                 .map(subDir -> subDir.replace(File.separator, CLASS_DOT))
                 .map(className -> className.substring(0, className
                         .lastIndexOf(CLASS_FILE)))
