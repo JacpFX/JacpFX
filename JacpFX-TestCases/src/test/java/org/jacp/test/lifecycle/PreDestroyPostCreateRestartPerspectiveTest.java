@@ -3,11 +3,7 @@ package org.jacp.test.lifecycle;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import org.jacpfx.api.component.Perspective;
-import org.jacpfx.api.component.SubComponent;
-import org.jacpfx.api.component.Injectable;
-import org.jacpfx.rcp.component.AStatelessCallbackComponent;
-import org.jacpfx.rcp.workbench.AFXWorkbench;
+import javafx.scene.Node;
 import org.jacp.test.AllTests;
 import org.jacp.test.components.PredestroyTestComponentFour;
 import org.jacp.test.components.PredestroyTestComponentOne;
@@ -16,6 +12,11 @@ import org.jacp.test.components.PredestroyTestComponentTwo;
 import org.jacp.test.main.ApplicationPredestroyPerspectiveTest;
 import org.jacp.test.perspectives.PerspectiveOnePredestroyPerspectiveTest;
 import org.jacp.test.workbench.WorkbenchPredestroyPerspectiveTest;
+import org.jacpfx.api.component.Injectable;
+import org.jacpfx.api.component.Perspective;
+import org.jacpfx.api.component.SubComponent;
+import org.jacpfx.rcp.component.AStatelessCallbackComponent;
+import org.jacpfx.rcp.workbench.AFXWorkbench;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -23,9 +24,7 @@ import org.junit.Test;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertTrue;
+import static junit.framework.TestCase.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -88,11 +87,11 @@ public class PreDestroyPostCreateRestartPerspectiveTest {
         ApplicationPredestroyPerspectiveTest launcher = ApplicationPredestroyPerspectiveTest.instance[0];
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
-        List<Perspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        List<Perspective<Node, EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
 
-        for(Perspective<EventHandler<Event>, Event, Object> p:perspectives) {
+        for(Perspective<Node, EventHandler<Event>, Event, Object> p:perspectives) {
             Injectable handler = p.getPerspective();
             if(handler.getClass().isAssignableFrom(PerspectiveOnePredestroyPerspectiveTest.class)) {
                 assertTrue(p.getContext().isActive());
@@ -109,7 +108,7 @@ public class PreDestroyPostCreateRestartPerspectiveTest {
         ApplicationPredestroyPerspectiveTest launcher = ApplicationPredestroyPerspectiveTest.instance[0];
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
-        List<Perspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        List<Perspective<Node, EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         PerspectiveOnePredestroyPerspectiveTest.latch = new CountDownLatch(1);
         PredestroyTestComponentOne.latch = new CountDownLatch(1);
         PredestroyTestComponentTwo.latch = new CountDownLatch(1);
@@ -127,7 +126,7 @@ public class PreDestroyPostCreateRestartPerspectiveTest {
 
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
-        for(Perspective<EventHandler<Event>, Event, Object> p:perspectives) {
+        for(Perspective<Node, EventHandler<Event>, Event, Object> p:perspectives) {
             Injectable handler = p.getPerspective();
             if(handler.getClass().isAssignableFrom(PerspectiveOnePredestroyPerspectiveTest.class)) {
                 assertFalse(p.getContext().isActive());
@@ -144,7 +143,7 @@ public class PreDestroyPostCreateRestartPerspectiveTest {
         ApplicationPredestroyPerspectiveTest launcher = ApplicationPredestroyPerspectiveTest.instance[0];
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
-        List<Perspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        List<Perspective<Node, EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
 
@@ -165,7 +164,7 @@ public class PreDestroyPostCreateRestartPerspectiveTest {
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
 
-        for(Perspective<EventHandler<Event>, Event, Object> p:perspectives) {
+        for(Perspective<Node, EventHandler<Event>, Event, Object> p:perspectives) {
             Injectable handler = p.getPerspective();
             if(handler.getClass().isAssignableFrom(PerspectiveOnePredestroyPerspectiveTest.class)) {
                 assertTrue(p.getContext().isActive());
@@ -177,8 +176,8 @@ public class PreDestroyPostCreateRestartPerspectiveTest {
         }
     }
 
-    private static int getActiveAsyncCount(List<Perspective<EventHandler<Event>, Event, Object>> perspectives) {
-        for(Perspective<EventHandler<Event>, Event, Object> p:perspectives) {
+    private static int getActiveAsyncCount(List<Perspective<Node, EventHandler<Event>, Event, Object>> perspectives) {
+        for(Perspective<Node, EventHandler<Event>, Event, Object> p:perspectives) {
             Injectable handler = p.getPerspective();
             if(handler.getClass().isAssignableFrom(PerspectiveOnePredestroyPerspectiveTest.class)) {
 

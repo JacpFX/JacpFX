@@ -2,6 +2,7 @@ package org.jacpfx.rcp.coordinator;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.message.Message;
@@ -18,13 +19,13 @@ public class MessageCoordinatorExecutionResult {
     private final String targetId;
     private final Message<Event, Object> message;
     private final State state;
-    private final Perspective<EventHandler<Event>, Event, Object> parentPerspective;
+    private final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspective;
 
     public enum State {
         HANDLE_ACTIVE, HANDLE_INACTIVE, DELEGATE, HANDLE_CURRENT_PERSPECTIVE, ERROR
     }
 
-    private MessageCoordinatorExecutionResult(final SubComponent<EventHandler<Event>, Event, Object> targetComponent, final Perspective<EventHandler<Event>, Event, Object> parentPerspective, final DelegateDTOImpl dto, final String targetId, final Message<Event, Object> message, State state) {
+    private MessageCoordinatorExecutionResult(final SubComponent<EventHandler<Event>, Event, Object> targetComponent, final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspective, final DelegateDTOImpl dto, final String targetId, final Message<Event, Object> message, State state) {
         this.targetComponent = targetComponent;
         this.parentPerspective = parentPerspective;
         this.dto = dto;
@@ -37,7 +38,7 @@ public class MessageCoordinatorExecutionResult {
         this(targetComponent, null, null, null, message, state);
     }
 
-    public MessageCoordinatorExecutionResult(final SubComponent<EventHandler<Event>, Event, Object> targetComponent, final Perspective<EventHandler<Event>, Event, Object> parentPerspective, final Message<Event, Object> message, final State state) {
+    public MessageCoordinatorExecutionResult(final SubComponent<EventHandler<Event>, Event, Object> targetComponent, final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspective, final Message<Event, Object> message, final State state) {
         this(targetComponent, parentPerspective, null, null, message, state);
     }
 
@@ -73,5 +74,5 @@ public class MessageCoordinatorExecutionResult {
         return state;
     }
 
-    public Perspective<EventHandler<Event>, Event, Object> getParentPerspective() { return parentPerspective; }
+    public Perspective<Node, EventHandler<Event>, Event, Object> getParentPerspective() { return parentPerspective; }
 }

@@ -33,19 +33,20 @@ import java.util.List;
  * This Interface defines the basic root construct of an JACPFX application, it
  * has no dependencies to any UI
  *
+ * @param <C> defines the roote node type
  * @param <L> defines the message listener type
  * @param <A> defines the basic message type
  * @param <M> defines the basic message type
  * @author Andy Moncsek
  */
-public interface Base<L, A, M> {
+public interface Base<C,L, A, M> {
 
     /**
      * Get perspective in workbench.
      *
      * @return a list of all perspective
      */
-    List<Perspective<L, A, M>> getPerspectives();
+    List<Perspective<C,L, A, M>> getPerspectives();
 
     /**
      * Initialization sequence returns basic container to handle perspective.

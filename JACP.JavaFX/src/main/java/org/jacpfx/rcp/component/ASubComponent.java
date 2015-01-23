@@ -24,42 +24,43 @@ package org.jacpfx.rcp.component;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import org.jacpfx.api.component.Component;
 import org.jacpfx.api.component.ComponentHandle;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.context.JacpContext;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.api.util.QueueSizes;
+import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.context.JacpContextImpl;
 import org.jacpfx.rcp.worker.AEmbeddedComponentWorker;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
 /**
- * the AFXSubComponent is the basic component for all component
+ * the ASubComponent is the basic component for all components
  *
  * @author Andy Moncsek
  */
-public abstract class ASubComponent extends AComponent implements
+public abstract class ASubComponent  implements
         SubComponent<EventHandler<Event>, Event, Object> {
 
-    private volatile String parentId;
 
     private final Semaphore lock = new Semaphore(1);
-
-    private final Logger logger = Logger.getLogger(this.getClass().getName());
-
+    private final Logger componentLogger = Logger.getLogger(this.getClass().getName());
     private final BlockingQueue<Message<Event, Object>> incomingMessage = new ArrayBlockingQueue<>(
             QueueSizes.COMPONENT_QUEUE_SIZE);
-
-
     private volatile ComponentHandle<?, Event, Object> component;
-
-
-    private volatile AtomicReference<AEmbeddedComponentWorker> workerRef = new AtomicReference<>();
+    private final AtomicReference<AEmbeddedComponentWorker> workerRef = new AtomicReference<>();
+    private final AtomicBoolean started =  new AtomicBoolean(false);
+    private String localeID = "";
+    private String resourceBundleLocation = "";
+    private Context context;
+    protected volatile BlockingQueue<Message<Event, Object>> globalMessageQueue;
 
 
     /**
@@ -68,9 +69,8 @@ public abstract class ASubComponent extends AComponent implements
     @Override
     public final void initEnv(final String parentId,
                               final BlockingQueue<Message<Event, Object>> messageQueue) {
-        this.parentId = parentId;
         this.globalMessageQueue = messageQueue;
-        this.context = new JacpContextImpl(this.globalMessageQueue);
+        this.context = new JacpContextImpl(parentId,this.globalMessageQueue);
     }
 
 
@@ -90,7 +90,7 @@ public abstract class ASubComponent extends AComponent implements
         try {
             this.incomingMessage.put(action);
         } catch (final InterruptedException e) {
-            logger.info("massage put failed:");
+            this.componentLogger.info("massage put failed:");
             //TODO handle exception global
         }
 
@@ -109,7 +109,7 @@ public abstract class ASubComponent extends AComponent implements
      */
     @Override
     public final boolean isBlocked() {
-        return lock.availablePermits() == 0;
+        return this.lock.availablePermits() == 0;
     }
 
     /**
@@ -118,9 +118,9 @@ public abstract class ASubComponent extends AComponent implements
     @Override
     public final void lock() {
         try {
-            lock.acquire();
-        } catch (InterruptedException e) {
-            logger.info("lock interrupted.");
+            this.lock.acquire();
+        } catch (final InterruptedException e) {
+            this.componentLogger.info("lock interrupted.");
         }
     }
 
@@ -129,16 +129,9 @@ public abstract class ASubComponent extends AComponent implements
      */
     @Override
     public final void release() {
-        lock.release();
+        this.lock.release();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final String getParentId() {
-        return this.parentId;
-    }
 
     /**
      * {@inheritDoc}
@@ -154,29 +147,105 @@ public abstract class ASubComponent extends AComponent implements
     @SuppressWarnings("unchecked")
     @Override
     public final ComponentHandle<?, Event, Object> getComponent() {
-        return component;
+        return this.component;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public <X extends ComponentHandle<?, Event, Object>> void setComponent(final X handle) {
+    public final <X extends ComponentHandle<?, Event, Object>> void setComponent(final X handle) {
         this.component = handle;
     }
 
-    public void initWorker(AEmbeddedComponentWorker worker) {
+    public final void initWorker(final AEmbeddedComponentWorker worker) {
         this.workerRef.set(worker);
         worker.start();
     }
 
-    public void interruptWorker() {
-        final AEmbeddedComponentWorker worker = workerRef.get();
+    public final void interruptWorker() {
+        final AEmbeddedComponentWorker worker = this.workerRef.get();
         if(worker==null)return;
         if(worker.isAlive()) {
             worker.interrupt();
         }
         worker.cleanAfterInterrupt();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final boolean isStarted() {
+        return this.started.get();
+    }
+
+    @Override
+    public final void setStarted(final boolean started) {
+        this.started.set(started);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final String getLocaleID() {
+        return this.localeID;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void setLocaleID(final String localeID) {
+        this.localeID = localeID;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final String getResourceBundleLocation() {
+        return this.resourceBundleLocation;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void setResourceBundleLocation(final String resourceBundleLocation) {
+        this.resourceBundleLocation = resourceBundleLocation;
+    }
+
+    @Override
+    /**
+     * {@inheritDoc}
+     */
+    public final int compareTo(final Component o) {
+        return this.getContext().getId().compareTo(o.getContext().getId());
+    }
+
+    @Override
+    public final boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || this.getClass() != o.getClass()) return false;
+
+        final ASubComponent that = (ASubComponent) o;
+
+        if (this.started.get() != that.started.get()) return false;
+        if (this.context != null ? !this.context.equals(that.context) : that.context != null) return false;
+        return !(this.globalMessageQueue != null ? !this.globalMessageQueue.equals(that.globalMessageQueue) : that.globalMessageQueue != null) && !(this.localeID != null ? !this.localeID.equals(that.localeID) : that.localeID != null) && !(this.resourceBundleLocation != null ? !this.resourceBundleLocation.equals(that.resourceBundleLocation) : that.resourceBundleLocation != null);
+
+    }
+
+    @Override
+    public final int hashCode() {
+        int result = (this.started.get() ? 1 : 0);
+        result = 31 * result + (this.localeID != null ? this.localeID.hashCode() : 0);
+        result = 31 * result + (this.resourceBundleLocation != null ? this.resourceBundleLocation.hashCode() : 0);
+        result = 31 * result + (this.context != null ? this.context.hashCode() : 0);
+        result = 31 * result + (this.globalMessageQueue != null ? this.globalMessageQueue.hashCode() : 0);
+        return result;
     }
 
 }

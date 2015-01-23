@@ -11,7 +11,7 @@ import org.jacpfx.api.component.Injectable;
  */
 public class EmbeddedFXPerspective extends AFXPerspective {
 
-    public EmbeddedFXPerspective(Injectable perspective) {
+    public EmbeddedFXPerspective(final Injectable perspective) {
         this.perspective = perspective;
     }
 

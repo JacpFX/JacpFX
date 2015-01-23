@@ -22,6 +22,10 @@
  ************************************************************************/
 package org.jacpfx.api.component;
 
+import org.jacpfx.api.util.UIType;
+
+import java.net.URL;
+
 /**
  * Represents an basic UI component handled by a perspective. A UIComponent is
  * an // * visible UI component displayed in a defined area of perspective.
@@ -59,5 +63,42 @@ public interface UIComponent<C, L, A, M> extends SubComponent<L, A, M> {
         //noinspection unchecked
         return (X) this.getComponent();
     }
+
+    /**
+     * Contains the document url describing the UI.
+     *
+     * @return the document url
+     */
+    String getViewLocation();
+
+    /**
+     * Set the viewLocation location on component start.
+     *
+     * @param documentURL , the url of the FXML document
+     */
+    void setViewLocation(final String documentURL);
+
+    /**
+     * The document URL describing the UI.
+     *
+     * @return the document url
+     */
+    URL getDocumentURL();
+
+
+    /**
+     * Distinguish component types.
+     *
+     * @return the type of the component.
+     */
+    UIType getType();
+
+    /**
+     * Set the UI type to distinguish component types
+     *
+     * @param type, PROGRAMMATIC / DECLARATIVE type
+     */
+    void setUIType(final UIType type);
+
 
 }

@@ -26,20 +26,21 @@
 package org.jacp.test.components;
 
 import javafx.event.Event;
+import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import org.jacpfx.api.message.Message;
+import org.jacp.test.main.ApplicationLauncherComponentMessaginTest1;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.component.View;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.FXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.util.FXUtil;
-import org.jacp.test.main.ApplicationLauncherComponentMessaginTest1;
 
 import java.util.ResourceBundle;
 import java.util.concurrent.CountDownLatch;
@@ -89,20 +90,23 @@ public class ComponentMessagingTest1Component1 implements FXComponent {
 
             label.setText(" current Tagret: " + current);
             container.getChildren().addAll(label);
+            label.setCache(true);
+            label.setCacheHint(CacheHint.SPEED);
             ApplicationLauncherComponentMessaginTest1.latch.countDown();
         } else {
+
             if (counter.get() > 1) {
                 if (ui) {
                     label.setText(" current Counter: " + counter.decrementAndGet());
                 } else {
                     counter.decrementAndGet();
                 }
-                context.send("id008", "message");
+                context.send("id13.id008", "message");
             } else {
                 System.out.println("Component id007: FINISH");
                 if (wait.getCount() > 0) wait.countDown();
                 if (ComponentMessagingTest1Component2.wait.getCount() > 0)
-                    context.send("id008", "message");
+                    context.send("id13.id008", "message");
 
             }
 

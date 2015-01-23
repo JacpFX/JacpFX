@@ -2,6 +2,7 @@ package org.jacpfx.rcp.util;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import org.jacpfx.api.annotations.component.Component;
 import org.jacpfx.api.annotations.component.DeclarativeView;
 import org.jacpfx.api.annotations.component.Stateless;
@@ -12,7 +13,7 @@ import org.jacpfx.api.fragment.Scope;
 import org.jacpfx.api.launcher.Launcher;
 import org.jacpfx.rcp.component.*;
 import org.jacpfx.rcp.componentLayout.PerspectiveLayout;
-import org.jacpfx.rcp.context.JacpContextImpl;
+import org.jacpfx.rcp.context.InternalContext;
 import org.jacpfx.rcp.perspective.EmbeddedFXPerspective;
 import org.jacpfx.rcp.registry.ClassRegistry;
 
@@ -101,7 +102,7 @@ public class PerspectiveUtil {
      * @param perspective the perspective instance
      * @return the perspective id from annotation
      */
-    public static String getPerspectiveIdFromAnnotation(final Perspective<EventHandler<Event>, Event, Object> perspective) {
+    public static String getPerspectiveIdFromAnnotation(final Perspective<Node, EventHandler<Event>, Event, Object> perspective) {
         final Injectable handler = perspective.getPerspective();
         final org.jacpfx.api.annotations.perspective.Perspective perspectiveAnnotation = handler.getClass()
                 .getAnnotation(org.jacpfx.api.annotations.perspective.Perspective.class);
@@ -202,7 +203,7 @@ public class PerspectiveUtil {
         setResourceBundleLocation(component, declarativeComponent.resourceBundleLocation());
         handleBaseAttributes(component, declarativeComponent.id(), declarativeComponent.active(),
                 declarativeComponent.name());
-        AFXComponent.class.cast(component).setViewLocation(declarativeComponent.viewLocation());
+        EmbeddedFXComponent.class.cast(component).setViewLocation(declarativeComponent.viewLocation());
     }
 
     /**
@@ -239,9 +240,10 @@ public class PerspectiveUtil {
      */
     private static void handleBaseAttributes(final SubComponent<EventHandler<Event>, Event, Object> component, final String id, final boolean active,
                                       final String name) {
-        if (id != null) JacpContextImpl.class.cast(component.getContext()).setId(id);
+        final InternalContext context = InternalContext.class.cast(component.getContext());
+        if (id != null) context.setId(id);
         component.getContext().setActive(active);
-        if (name != null) JacpContextImpl.class.cast(component.getContext()).setName(name);
+        if (name != null) context.setName(name);
     }
 
 
@@ -272,7 +274,7 @@ public class PerspectiveUtil {
      * @param value The target value.
      */
     private static void setInitialLayoutTarget(final SubComponent<EventHandler<Event>, Event, Object> component, String value) {
-        final String targetLayout = JacpContextImpl.class.cast(component.getContext()).getTargetLayout();
+        final String targetLayout = InternalContext.class.cast(component.getContext()).getTargetLayout();
         if (targetLayout==null)
             component.getContext().setTargetLayout(value);
     }
@@ -282,7 +284,7 @@ public class PerspectiveUtil {
      * @param parentPerspective the parent perspective
      * @return the perspectiveLayout of this perspective
      */
-    public static PerspectiveLayout getPerspectiveLayoutFromPerspective(final Perspective<EventHandler<Event>, Event, Object> parentPerspective) {
+    public static PerspectiveLayout getPerspectiveLayoutFromPerspective(final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspective) {
         final EmbeddedFXPerspective embeddedPerspective = EmbeddedFXPerspective.class.cast(parentPerspective);
         return PerspectiveLayout.class.cast(embeddedPerspective.getIPerspectiveLayout());
     }

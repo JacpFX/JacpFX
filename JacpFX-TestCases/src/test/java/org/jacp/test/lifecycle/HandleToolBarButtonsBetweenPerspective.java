@@ -3,6 +3,7 @@ package org.jacp.test.lifecycle;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import org.apache.log4j.Logger;
 import org.jacp.test.AllTests;
 import org.jacp.test.main.ApplicationLauncherHandleToolBarButtonsBetweenPerspectives;
@@ -50,8 +51,8 @@ public class HandleToolBarButtonsBetweenPerspective {
         }
     }
 
-    private Perspective<EventHandler<Event>, Event, Object> getPerspectiveById(List<Perspective<EventHandler<Event>, Event, Object>> perspectives, String id) {
-        for (Perspective<EventHandler<Event>, Event, Object> p : perspectives) {
+    private Perspective<Node, EventHandler<Event>, Event, Object> getPerspectiveById(List<Perspective<Node, EventHandler<Event>, Event, Object>> perspectives, String id) {
+        for (Perspective<Node, EventHandler<Event>, Event, Object> p : perspectives) {
             if (p.getContext().getId().equals(id)) {
                 return p;
             }
@@ -74,11 +75,11 @@ public class HandleToolBarButtonsBetweenPerspective {
         ApplicationLauncherHandleToolBarButtonsBetweenPerspectives launcher = ApplicationLauncherHandleToolBarButtonsBetweenPerspectives.instance[0];
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
-        List<Perspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        List<Perspective<Node, EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
 
-        for (Perspective<EventHandler<Event>, Event, Object> p : perspectives) {
+        for (Perspective<Node, EventHandler<Event>, Event, Object> p : perspectives) {
 
             assertTrue(p.getContext().isActive());
 
@@ -91,7 +92,7 @@ public class HandleToolBarButtonsBetweenPerspective {
         }
         int waitingTime = 50;
 
-        Perspective<EventHandler<Event>, Event, Object> p = this.getPerspectiveById(perspectives, ComponentHandleToolBarBetweenPerspectives2.currentId);
+        Perspective<Node, EventHandler<Event>, Event, Object> p = this.getPerspectiveById(perspectives, ComponentHandleToolBarBetweenPerspectives2.currentId);
         assertNotNull(p);
         // INITAL -> 6
         assertEquals(6, GlobalMediator.getInstance().countVisibleButtons());
@@ -126,7 +127,7 @@ public class HandleToolBarButtonsBetweenPerspective {
         // SWITCH PERSPECTIVE --> 6
         assertEquals(6, GlobalMediator.getInstance().countVisibleButtons());
 
-        Perspective<EventHandler<Event>, Event, Object> p1 = this.getPerspectiveById(perspectives, ComponentHandleToolBarBetweenPerspectives2.currentId);
+        Perspective<Node, EventHandler<Event>, Event, Object> p1 = this.getPerspectiveById(perspectives, ComponentHandleToolBarBetweenPerspectives2.currentId);
         assertNotNull(p1);
 
         assertNotNull(getComponentById(p1.getSubcomponents(), ComponentHandleToolBarBetweenPerspectives2.ID));

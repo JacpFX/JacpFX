@@ -22,12 +22,15 @@
  ************************************************************************/
 package org.jacpfx.api.component;
 
+import org.jacpfx.api.componentLayout.PerspectiveLayoutInterface;
 import org.jacpfx.api.coordinator.Coordinator;
 import org.jacpfx.api.handler.ComponentHandler;
 import org.jacpfx.api.launcher.Launcher;
 import org.jacpfx.api.message.DelegateDTO;
 import org.jacpfx.api.message.Message;
+import org.jacpfx.api.util.UIType;
 
+import java.net.URL;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
@@ -42,7 +45,7 @@ import java.util.concurrent.BlockingQueue;
  * @param <M> defines the basic message type
  * @author Andy Moncsek
  */
-public interface Perspective<L, A, M> extends Component<L, M>,
+public interface Perspective<C,L, A, M> extends Component<L, M>,
         RootComponent<SubComponent<L, A, M>, Message<A, M>> {
 
     /**
@@ -110,5 +113,57 @@ public interface Perspective<L, A, M> extends Component<L, M>,
      * @return the perspective implementation.
      */
     Injectable getPerspective();
+
+    /**
+     * Returns layout dto.
+     *
+     * @return an PerspectiveLayoutInterface instance to define basic layout stuff for
+     * perspective
+     */
+    PerspectiveLayoutInterface<C, C> getIPerspectiveLayout();
+
+
+    /**
+     * Set the default perspective layout entity for the perspective.
+     *
+     * @param layout, The layout dto
+     */
+    void setIPerspectiveLayout(PerspectiveLayoutInterface<C, C> layout);
+
+    /**
+     * Contains the document url describing the UI.
+     *
+     * @return the document url
+     */
+    String getViewLocation();
+
+    /**
+     * Set the viewLocation location on component start.
+     *
+     * @param documentURL , the url of the FXML document
+     */
+    void setViewLocation(final String documentURL);
+
+    /**
+     * The document URL describing the UI.
+     *
+     * @return the document url
+     */
+    URL getDocumentURL();
+
+
+    /**
+     * Distinguish component types.
+     *
+     * @return the type of the component.
+     */
+    UIType getType();
+
+    /**
+     * Set the UI type to distinguish component types
+     *
+     * @param type, PROGRAMMATIC / DECLARATIVE type
+     */
+    void setUIType(final UIType type);
 
 }

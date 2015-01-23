@@ -25,19 +25,15 @@ package org.jacpfx.rcp.worker;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import org.jacpfx.api.component.ComponentHandle;
 import org.jacpfx.api.component.SubComponent;
-import org.jacpfx.api.component.UIComponent;
 import org.jacpfx.api.context.JacpContext;
 import org.jacpfx.api.exceptions.InvalidComponentMatch;
-import org.jacpfx.rcp.component.AFXComponent;
 import org.jacpfx.rcp.util.FXUtil;
 import org.jacpfx.rcp.util.WorkerUtil;
 
 import java.util.Map;
-import java.util.concurrent.BlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -95,15 +91,15 @@ public abstract class AEmbeddedComponentWorker extends Thread {
 
     /**
      * Checks if component is in correct state.
-     * @param component
+     * @param componentToCheck
      */
-    void checkValidComponent(final SubComponent<EventHandler<Event>, Event, Object> component) {
-        if (component == null)
+    void checkValidComponent(final SubComponent<EventHandler<Event>, Event, Object> componentToCheck) {
+        if (componentToCheck == null)
             throw new InvalidComponentMatch("Component is in invalid state while initialisation: this can happen when component is in shutdown process");
-        final JacpContext<EventHandler<Event>, Object> context = component.getContext();
+        final JacpContext<EventHandler<Event>, Object> context = componentToCheck.getContext();
         if (context == null || context.getId() == null)
             throw new InvalidComponentMatch("Component is in invalid state while initialisation: this can happen when component is in shutdown process");
-        final ComponentHandle<?, Event, Object> handle = component.getComponent();
+        final ComponentHandle<?, Event, Object> handle = componentToCheck.getComponent();
         if (handle == null) throw new InvalidComponentMatch("Component is not initialized correctly");
     }
 }

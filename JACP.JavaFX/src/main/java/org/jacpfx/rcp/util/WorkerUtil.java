@@ -9,7 +9,7 @@ import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.component.UIComponent;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.api.util.UIType;
-import org.jacpfx.rcp.component.AFXComponent;
+import org.jacpfx.rcp.component.EmbeddedFXComponent;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
@@ -148,7 +148,7 @@ public class WorkerUtil {
      * @throws java.lang.Exception when an Exception occures while execute {@link org.jacpfx.api.component.ComponentView#postHandle(Object, org.jacpfx.api.message.Message)}
      */
     public static void executeComponentViewPostHandle(final Node handleReturnValue,
-                                                            final AFXComponent component, final Message<Event, Object> message) throws Exception {
+                                                            final EmbeddedFXComponent component, final Message<Event, Object> message) throws Exception {
 
         Node potsHandleReturnValue = component.getComponentViewHandle().postHandle(handleReturnValue,
                 message);

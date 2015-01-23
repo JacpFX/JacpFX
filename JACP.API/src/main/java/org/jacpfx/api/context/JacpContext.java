@@ -63,6 +63,12 @@ public interface JacpContext<L, M> {
     String getParentId();
 
     /**
+     * Returns the fully qualified id like "parentId.componentId"
+     * @return The qualified Id
+     */
+    String getFullyQualifiedId();
+
+    /**
      * Returns the name of a component.
      *
      * @return the component name

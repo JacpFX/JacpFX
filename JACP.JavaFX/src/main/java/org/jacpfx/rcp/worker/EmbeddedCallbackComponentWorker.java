@@ -24,14 +24,16 @@ package org.jacpfx.rcp.worker;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.SubComponent;
+import org.jacpfx.api.context.JacpContext;
 import org.jacpfx.api.exceptions.NonUniqueComponentException;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.ASubComponent;
-import org.jacpfx.rcp.context.JacpContextImpl;
+import org.jacpfx.rcp.context.InternalContext;
+import org.jacpfx.rcp.registry.ComponentRegistry;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
-import org.jacpfx.rcp.util.FXUtil;
 import org.jacpfx.rcp.util.ShutdownThreadsHandler;
 import org.jacpfx.rcp.util.TearDownHandler;
 import org.jacpfx.rcp.util.WorkerUtil;
@@ -71,8 +73,8 @@ class EmbeddedCallbackComponentWorker
                     this.component.lock();
                     checkValidComponent(this.component);
                     wasExecuted = true;
-                    final JacpContextImpl context = JacpContextImpl.class.cast(this.component.getContext());
-                    context.setReturnTarget(myAction.getSourceId());
+                    final InternalContext context = InternalContext.class.cast(this.component.getContext());
+                    context.updateReturnTarget(myAction.getSourceId());
                     final String currentExecutionTarget = context.getExecutionTarget();
                     final Object value = this.component.getComponent().handle(myAction);
                     final String targetId = context
@@ -106,8 +108,9 @@ class EmbeddedCallbackComponentWorker
     private void handleComponentShutdown(final SubComponent<EventHandler<Event>, Event, Object> component) {
         if (!component.isBlocked()) component.lock();
         try {
-            final String parentId = component.getParentId();
-            final Perspective<EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
+            final JacpContext<EventHandler<Event>, Object> context = component.getContext();
+            final String parentId = context.getParentId();
+            final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
             if (parentPerspctive != null) parentPerspctive.unregisterComponent(component);
             TearDownHandler.shutDownAsyncComponent(ASubComponent.class.cast(component));
         } finally {
@@ -124,12 +127,12 @@ class EmbeddedCallbackComponentWorker
     private void checkAndHandleTargetChange(
             final SubComponent<EventHandler<Event>, Event, Object> comp,
             final String currentExecutionTarget) {
-        final JacpContextImpl context = JacpContextImpl.class.cast(comp.getContext());
+        final InternalContext context = InternalContext.class.cast(comp.getContext());
         final String newExecutionTarget = context.getExecutionTarget();
         if (!newExecutionTarget.equals(currentExecutionTarget)) {
-            if (FXUtil.perspectiveContainsComponentInstance(newExecutionTarget, context.getId()))
-                throw new NonUniqueComponentException("perspective " + newExecutionTarget + " already contains a component with id: " + context.getId());
-            if (!component.getContext().isActive())
+            if (ComponentRegistry.findComponentByQualifiedId(newExecutionTarget, comp.getContext().getId())!=null)
+                throw new NonUniqueComponentException("perspective " + newExecutionTarget + " already contains a component with id: " + comp.getContext().getId());
+            if (!comp.getContext().isActive())
                 throw new UnsupportedOperationException(
                         "CallbackComponent may be moved or set to inactive but not both");
             WorkerUtil.changeComponentTarget(this.delegateQueue, comp);

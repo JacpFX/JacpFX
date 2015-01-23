@@ -26,6 +26,7 @@
 package org.jacp.test.components;
 
 import javafx.event.Event;
+import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -89,6 +90,8 @@ public class ComponentMessagingTest1Component2 implements FXComponent {
 
             label.setText(" current Tagret: " + current);
             container.getChildren().addAll(label);
+            label.setCache(true);
+            label.setCacheHint(CacheHint.SPEED);
             ApplicationLauncherComponentMessaginTest1.latch.countDown();
         } else {
             if (counter.get() > 1) {
@@ -97,12 +100,12 @@ public class ComponentMessagingTest1Component2 implements FXComponent {
                 } else {
                     counter.decrementAndGet();
                 }
-                context.send("id007", "message");
+                context.send("id13.id007", "message");
             } else {
                 System.out.println("Component id008: FINISH");
                 if (wait.getCount() > 0) wait.countDown();
                 if (ComponentMessagingTest1Component1.wait.getCount() > 0)
-                    context.send("id007", "message");
+                    context.send("id13.id007", "message");
 
             }
 

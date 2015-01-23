@@ -29,7 +29,6 @@ import org.jacpfx.rcp.util.FXUtil;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -64,18 +63,6 @@ public class ComponentRegistry {
 
     }
 
-    /**
-     * Returns an active component by component id
-     *
-     * @param targetId the component id
-     * @return the requested component
-     */
-    public static SubComponent<EventHandler<Event>, Event, Object> findComponentById(
-            final String targetId) {
-        return FXUtil.getObserveableById(FXUtil.getTargetComponentId(targetId),
-                Collections.unmodifiableList(components));
-
-    }
 
     /**
      * Returns all component for a parent id
@@ -111,17 +98,7 @@ public class ComponentRegistry {
                 Collections.unmodifiableList(components));
 
     }
-    /**
-     * Returns the a component by class.
-     * @param clazz the component class to find
-     * @return the requested component instance
-     */
-    public static SubComponent<EventHandler<Event>, Event, Object> findComponentByClass(final Class<?> clazz) {
-        final Optional<SubComponent<EventHandler<Event>, Event, Object>> returnVal = Collections.unmodifiableList(components).stream().filter(c -> c.getComponent().getClass().isAssignableFrom(clazz)).findFirst();
-        if(returnVal.isPresent())return returnVal.get();
 
-        return null;
-    }
 
 
 }

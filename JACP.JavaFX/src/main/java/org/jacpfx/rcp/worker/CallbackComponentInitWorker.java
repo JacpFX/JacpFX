@@ -24,11 +24,13 @@ package org.jacpfx.rcp.worker;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.SubComponent;
+import org.jacpfx.api.context.JacpContext;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.ASubComponent;
-import org.jacpfx.rcp.context.JacpContextImpl;
+import org.jacpfx.rcp.context.InternalContext;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.TearDownHandler;
 import org.jacpfx.rcp.util.WorkerUtil;
@@ -62,8 +64,8 @@ public class CallbackComponentInitWorker
             checkValidComponent(this.component);
             runCallbackOnStartMethods(this.component);
             final Message<Event, Object> myAction = this.action;
-            final JacpContextImpl context = JacpContextImpl.class.cast(this.component.getContext());
-            context.setReturnTarget(myAction.getSourceId());
+            final InternalContext context = InternalContext.class.cast(this.component.getContext());
+            context.updateReturnTarget(myAction.getSourceId());
             final String currentExecutionTarget = context.getExecutionTarget();
             final Object value = this.component.getComponent().handle(myAction);
             final String targetId = context
@@ -78,10 +80,11 @@ public class CallbackComponentInitWorker
     }
 
     private void handleComponentShutdown(final SubComponent<EventHandler<Event>, Event, Object> component) {
-        if (!component.getContext().isActive()) {
+        final JacpContext<EventHandler<Event>, Object> context = component.getContext();
+        if (!context.isActive()) {
             component.setStarted(false);
-            final String parentId = component.getParentId();
-            final Perspective<EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
+            final String parentId = context.getParentId();
+            final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
             if(parentPerspctive!=null)parentPerspctive.unregisterComponent(component);
             TearDownHandler.shutDownAsyncComponent(ASubComponent.class.cast(component));
         }
@@ -97,7 +100,7 @@ public class CallbackComponentInitWorker
     private void checkAndHandleTargetChange(
             final SubComponent<EventHandler<Event>, Event, Object> comp,
             final String currentExecutionTarget) {
-        final String targetNew = JacpContextImpl.class.cast(comp.getContext()).getExecutionTarget();
+        final String targetNew = InternalContext.class.cast(comp.getContext()).getExecutionTarget();
         if (!targetNew.equals(currentExecutionTarget)) {
             if (!component.getContext().isActive())
                 throw new UnsupportedOperationException(

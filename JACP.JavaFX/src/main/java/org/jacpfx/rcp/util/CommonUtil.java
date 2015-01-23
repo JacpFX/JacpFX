@@ -17,7 +17,7 @@ class CommonUtil {
      * @param ids
      * @return
      */
-    public static Stream<String> getStringStreamFromArray(String[] ids) {
+    public static Stream<String> getStringStreamFromArray(String... ids) {
         return Stream.of(ids);
     }
 

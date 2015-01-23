@@ -30,7 +30,6 @@ import org.jacpfx.rcp.components.menuBar.JACPMenuBar;
 import org.jacpfx.rcp.components.toolBar.JACPToolBar;
 import org.jacpfx.rcp.workbench.GlobalMediator;
 
-import java.util.Collections;
 import java.util.Map;
 
 /**

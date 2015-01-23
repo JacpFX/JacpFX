@@ -6,6 +6,7 @@ import javafx.scene.layout.*;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  *
@@ -111,9 +112,7 @@ public class LayoutUtil {
          * @param nodes - the nodes to receive the margin
          */
         public static void setMargin(Insets insets, Collection<Node> nodes) {
-            nodes.stream().filter(node -> node != null).forEach(node -> {
-                HBox.setMargin(node, insets);
-            });
+            nodes.stream().filter(node -> node != null).forEach(node -> HBox.setMargin(node, insets));
         }
 
     }
@@ -159,14 +158,13 @@ public class LayoutUtil {
          * @param nodes - the nodes to receive the margin
          */
         public static void setMargin(Insets insets, Collection<Node> nodes) {
-            nodes.stream().filter(node -> node != null).forEach(node -> {
-                VBox.setMargin(node, insets);
-            });
+            nodes.stream().filter(node -> node != null).forEach(node -> VBox.setMargin(node, insets));
         }
     }
 
     public static void hideAllChildren(Region parent){
-        for(Node node : parent.getChildrenUnmodifiable() ){
+        for (Iterator<Node> iterator = parent.getChildrenUnmodifiable().iterator(); iterator.hasNext(); ) {
+            Node node = iterator.next();
             node.setVisible(false);
         }
     }

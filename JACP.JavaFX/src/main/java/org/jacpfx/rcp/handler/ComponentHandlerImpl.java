@@ -30,7 +30,7 @@ import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.componentLayout.PerspectiveLayoutInterface;
 import org.jacpfx.api.launcher.Launcher;
 import org.jacpfx.api.message.Message;
-import org.jacpfx.rcp.component.AFXComponent;
+import org.jacpfx.rcp.component.EmbeddedFXComponent;
 import org.jacpfx.rcp.component.AStatelessCallbackComponent;
 import org.jacpfx.rcp.component.ASubComponent;
 import org.jacpfx.rcp.scheduler.StatelessComponentSchedulerImpl;
@@ -86,14 +86,14 @@ public class ComponentHandlerImpl
 			final Message<Event, Object> action,
 			final SubComponent<EventHandler<Event>, Event, Object> component) {
         if (AStatelessCallbackComponent.class.isAssignableFrom(component.getClass())) {
-            this.log("RUN STATELESS COMPONENTS:::" + component.getContext().getName());
+            this.log("RUN STATELESS COMPONENTS:::" , component.getContext().getName());
             this.runStatelessCallbackComponent(
                     ((AStatelessCallbackComponent) component), action);
             return;
         }
         // all others
         this.putMessageToQueue(action,component);
-        this.log("DONE EXECUTE REPLACE:::" + component.getContext().getName());
+        this.log("DONE EXECUTE REPLACE:::" , component.getContext().getName());
 	}
 
 
@@ -117,23 +117,23 @@ public class ComponentHandlerImpl
 	 */
 	private void handleInit(final Message<Event, Object> action,
 			final SubComponent<EventHandler<Event>, Event, Object> component) {
-        if (AFXComponent.class.isAssignableFrom(component.getClass())) {
-			this.log("COMPONENT EXECUTE INIT:::" + component.getContext().getName());
+        if (EmbeddedFXComponent.class.isAssignableFrom(component.getClass())) {
+			this.log("COMPONENT EXECUTE INIT:::" , component.getContext().getName());
 			this.fxInitExecutor.execute(new FXComponentInitWorker(
                     this.perspectiveLayout.getTargetLayoutComponents(),
-                    ((AFXComponent) component), action, this.componentDelegateQueue));
+                    ((EmbeddedFXComponent) component), action, this.componentDelegateQueue));
 			return;
 		}// if END
 		if (AStatelessCallbackComponent.class.isAssignableFrom(component.getClass())) {
 			this.log("SATELESS BACKGROUND COMPONENT EXECUTE INIT:::"
-                    + component.getContext().getName());
+                    , component.getContext().getName());
             final AStatelessCallbackComponent asyncComponent = AStatelessCallbackComponent.class.cast(component);
 			this.runStatelessCallbackComponent(asyncComponent, action);
             return;
         }// else if END
         if (ASubComponent.class.isAssignableFrom(component.getClass())) {
             this.log("BACKGROUND COMPONENT EXECUTE INIT:::"
-                    + component.getContext().getName());
+                    , component.getContext().getName());
             this.callbackInitExecutor.execute(new CallbackComponentInitWorker(
                     this.componentDelegateQueue, ((ASubComponent) component), action));
         }// else if END
@@ -153,9 +153,9 @@ public class ComponentHandlerImpl
 		component.putIncomingMessage(action);
 	}
 
-	private void log(final String message) {
+	private void log(final String message, final String name) {
 		if (this.logger.isLoggable(Level.FINE)) {
-			this.logger.fine(">> " + message);
+			this.logger.fine(">> " + message+ ' ' +name);
 		}
 	}
 }

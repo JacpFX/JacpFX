@@ -3,17 +3,18 @@ package org.jacp.test.workbench;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
+import org.jacp.test.AllTests;
+import org.jacp.test.main.ApplicationLauncher;
+import org.jacpfx.api.component.Injectable;
 import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.context.JacpContext;
-import org.jacpfx.api.message.Message;
-import org.jacpfx.api.component.Injectable;
 import org.jacpfx.api.handler.ComponentHandler;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.registry.ClassRegistry;
 import org.jacpfx.rcp.workbench.AFXWorkbench;
 import org.jacpfx.rcp.workbench.FXWorkbench;
-import org.jacp.test.AllTests;
-import org.jacp.test.main.ApplicationLauncher;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -84,7 +85,7 @@ public class BasicInitialisationTests {
         assertNotNull(launcher);
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
-        ComponentHandler<Perspective<EventHandler<Event>, Event, Object>, Message<Event, Object>> handler = workbench.getComponentHandler();
+        ComponentHandler<Perspective<Node, EventHandler<Event>, Event, Object>, Message<Event, Object>> handler = workbench.getComponentHandler();
         assertNotNull(handler);
     }
 
@@ -126,11 +127,11 @@ public class BasicInitialisationTests {
         assertNotNull(launcher);
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
-        List<Perspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        List<Perspective<Node, EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
         assertTrue(getPerspectiveAnnotations().length == perspectives.size());
-        for (Perspective<EventHandler<Event>, Event, Object> p : perspectives) {
+        for (Perspective<Node, EventHandler<Event>, Event, Object> p : perspectives) {
             assertNotNull(p.getComponentHandler());
             assertNotNull(p.getContext());
             assertNotNull(p.getMessageQueue());
@@ -149,11 +150,11 @@ public class BasicInitialisationTests {
         assertNotNull(launcher);
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
-        List<Perspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        List<Perspective<Node, EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
         assertTrue(getPerspectiveAnnotations().length == perspectives.size());
-        for (Perspective<EventHandler<Event>, Event, Object> p : perspectives) {
+        for (Perspective<Node, EventHandler<Event>, Event, Object> p : perspectives) {
             Injectable handler = p.getPerspective();
             org.jacpfx.api.annotations.perspective.Perspective annotation = handler.getClass().getAnnotation(org.jacpfx.api.annotations.perspective.Perspective.class);
             String[] components = annotation.components();
@@ -165,8 +166,8 @@ public class BasicInitialisationTests {
                 assertTrue(components.length == p.getSubcomponents().size());
                 List<SubComponent<EventHandler<Event>, Event, Object>> subcomponents = p.getSubcomponents();
                 for (SubComponent<EventHandler<Event>, Event, Object> c : subcomponents) {
-                    assertNotNull(c.getParentId());
-                    assertTrue(c.getParentId().equals(p.getContext().getId()));
+                    assertNotNull(c.getContext().getParentId());
+                    assertTrue(c.getContext().getParentId().equals(p.getContext().getId()));
                     JacpContext<EventHandler<Event>,Object> context = c.getContext();
                     assertNotNull(context.getParentId());
                     assertNotNull(context.getId());

@@ -41,7 +41,7 @@ public final class ShutdownThreadsHandler{
 	private static final List<ExecutorService> registeredExecutors = new CopyOnWriteArrayList<>();
 	private static final Logger logger = Logger.getLogger("ShutdownThreadsHandler");
 	public static volatile AtomicBoolean APPLICATION_RUNNING = new AtomicBoolean(true);
-	public static final Long WAIT = Long.valueOf(1500L);
+	public static final Long WAIT = Long.valueOf(3500L);
 	/**
 	 * Register a Thread.
 	 * @param t the Thread to register
@@ -75,20 +75,16 @@ public final class ShutdownThreadsHandler{
 	 */
 	public static void shutdownThreads() {
 		APPLICATION_RUNNING.set(false);
-		for(final Thread t:registeredThreads) {
-            if(t.isAlive()){
-                logger.info("shutdown thread: "+t);
-                t.interrupt();
-            }
-		}
+		registeredThreads.stream().filter(t -> t.isAlive()).forEach(t -> {
+			logger.info("shutdown thread: " + t);
+			t.interrupt();
+		});
 	}
 	/**
 	 * Shutdown all registered Executors.
 	 */
 	public static void shutDownExecutors() {
-		for(final ExecutorService e: registeredExecutors) {
-			e.shutdown();
-		}
+		registeredExecutors.forEach(java.util.concurrent.ExecutorService::shutdown);
 	}
 	
 	/**
@@ -96,22 +92,14 @@ public final class ShutdownThreadsHandler{
 	 */
 	public static void shutdowAll() {
 		APPLICATION_RUNNING.set(false);
-		for(final Thread t:registeredThreads) {
-            if(t.isAlive()){
-                logger.info("shutdown thread: "+t);
-                t.interrupt();
-            }
-		}
-		for(final ExecutorService e: registeredExecutors) {
-			e.shutdown();
-		}
+		registeredThreads.stream().filter(t -> t.isAlive()).forEach(t -> {
+			logger.info("shutdown thread: " + t);
+			t.interrupt();
+		});
+		registeredExecutors.forEach(java.util.concurrent.ExecutorService::shutdown);
 		final Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
 		// force to interrupt all threads in waiting condition
-		for(final Thread t: threadSet) {
-			if(t.getName().contains(HandlerThreadFactory.PREFIX) && !t.isInterrupted()) {
-                t.interrupt();
-			}
-		}
+		threadSet.stream().filter(t -> t.getName().contains(HandlerThreadFactory.PREFIX) && !t.isInterrupted()).forEach(java.lang.Thread::interrupt);
 		
 	}
 }

@@ -3,13 +3,14 @@ package org.jacp.test.missconfig;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import org.jacpfx.api.component.Perspective;
-import org.jacpfx.api.component.Injectable;
-import org.jacpfx.api.context.JacpContext;
-import org.jacpfx.rcp.workbench.AFXWorkbench;
+import javafx.scene.Node;
 import org.jacp.test.AllTests;
 import org.jacp.test.main.ApplicationLauncherMissconfigComponents;
 import org.jacp.test.workbench.WorkbenchMissingComponents;
+import org.jacpfx.api.component.Injectable;
+import org.jacpfx.api.component.Perspective;
+import org.jacpfx.api.context.JacpContext;
+import org.jacpfx.rcp.workbench.AFXWorkbench;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -74,11 +75,11 @@ public class MissconfigPerspectiveTest {
         assertNotNull(launcher);
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
-        List<Perspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        List<Perspective<Node, EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
         assertTrue(getPerspectiveAnnotations().length == perspectives.size());
-        for (Perspective<EventHandler<Event>, Event, Object> p : perspectives) {
+        for (Perspective<Node, EventHandler<Event>, Event, Object> p : perspectives) {
             assertNotNull(p.getComponentHandler());
             assertNotNull(p.getContext());
             assertNotNull(p.getMessageQueue());
@@ -97,11 +98,11 @@ public class MissconfigPerspectiveTest {
         assertNotNull(launcher);
         AFXWorkbench workbench = launcher.getWorkbench();
         assertNotNull(workbench);
-        List<Perspective<EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
+        List<Perspective<Node, EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
         assertTrue(getPerspectiveAnnotations().length == perspectives.size());
-        for (Perspective<EventHandler<Event>, Event, Object> p : perspectives) {
+        for (Perspective<Node, EventHandler<Event>, Event, Object> p : perspectives) {
             assertNotNull(p.getComponentHandler());
             assertNotNull(p.getContext());
             assertNotNull(p.getMessageQueue());

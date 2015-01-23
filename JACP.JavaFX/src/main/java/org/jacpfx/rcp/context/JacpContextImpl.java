@@ -35,7 +35,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Time: 21:36
  * JACP context object provides functionality to component context and basic features.
  */
-public class JacpContextImpl implements Context {
+public class JacpContextImpl implements Context,InternalContext {
 
     private final static CustomSecurityManager customSecurityManager =
             new CustomSecurityManager();
@@ -45,6 +45,7 @@ public class JacpContextImpl implements Context {
      */
     private String id;
     private volatile String parentId;
+    private volatile String fullyQualifiedId;
     /**
      * will be set on init
      */
@@ -68,6 +69,12 @@ public class JacpContextImpl implements Context {
 
     }
 
+    public JacpContextImpl(final String parentId,final BlockingQueue<Message<Event, Object>> globalMessageQueue) {
+        this.globalMessageQueue = globalMessageQueue;
+        this.parentId = parentId;
+
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -77,7 +84,7 @@ public class JacpContextImpl implements Context {
         final String callerClassName = customSecurityManager.getCallerClassName();
         if (AccessUtil.hasAccess(callerClassName, FXWorkbench.class))
             throw new IllegalStateException(" a FXWorkbench is no valid message target");
-        return new ActionListenerImpl(new MessageImpl(this.parentId.concat(FXUtil.PATTERN_GLOBAL).concat(this.id), message),
+        return new ActionListenerImpl(new MessageImpl(this.fullyQualifiedId, message),
                 this.globalMessageQueue);
     }
 
@@ -87,7 +94,7 @@ public class JacpContextImpl implements Context {
     @Override
     public final EventHandler<Event> getEventHandler(
             final String targetId, final Object message) {
-        return new ActionListenerImpl(new MessageImpl(this.parentId.concat(FXUtil.PATTERN_GLOBAL).concat(this.id), targetId, message, null),
+        return new ActionListenerImpl(new MessageImpl(this.fullyQualifiedId, targetId, message, null),
                 this.globalMessageQueue);
     }
 
@@ -97,8 +104,7 @@ public class JacpContextImpl implements Context {
     @Override
     public final void send(final String targetId, final Object message) {
         try {
-            final String sourceId = this.parentId!=null?this.parentId.concat(FXUtil.PATTERN_GLOBAL).concat(this.id):this.id;
-            this.globalMessageQueue.put(new MessageImpl(sourceId, targetId, message, null));
+            this.globalMessageQueue.put(new MessageImpl(this.fullyQualifiedId, targetId, message, null));
         } catch (InterruptedException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
@@ -113,8 +119,7 @@ public class JacpContextImpl implements Context {
         if (AccessUtil.hasAccess(callerClassName, FXWorkbench.class))
             throw new IllegalStateException(" a FXWorkbench is no valid message target");
         try {
-            final String fullyQualifiedId =this.parentId.concat(FXUtil.PATTERN_GLOBAL).concat(this.id);
-            this.globalMessageQueue.put(new MessageImpl(fullyQualifiedId,this.id, message, null));
+            this.globalMessageQueue.put(new MessageImpl(this.fullyQualifiedId,this.id, message, null));
 
         } catch (InterruptedException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -129,8 +134,20 @@ public class JacpContextImpl implements Context {
         return this.id;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final String getFullyQualifiedId() {
+        return this.fullyQualifiedId;
+    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public final void setId(final String id) {
         this.id = id;
+        this.fullyQualifiedId = this.parentId!=null?this.parentId.concat(FXUtil.PATTERN_GLOBAL).concat(this.id):this.id;
     }
 
     /**
@@ -141,8 +158,13 @@ public class JacpContextImpl implements Context {
         return this.parentId;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public final void setParentId(final String parentId) {
         this.parentId = parentId;
+        this.fullyQualifiedId = this.id!=null?this.parentId.concat(FXUtil.PATTERN_GLOBAL).concat(this.id):this.parentId;
     }
 
     /**
@@ -152,7 +174,10 @@ public class JacpContextImpl implements Context {
     public String getName() {
         return this.name;
     }
-
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public final void setName(final String name) {
         this.name = name;
     }
@@ -165,6 +190,10 @@ public class JacpContextImpl implements Context {
         return this.resourceBundle;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setResourceBundle(ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
     }
@@ -189,6 +218,13 @@ public class JacpContextImpl implements Context {
      * {@inheritDoc}
      */
     @Override
+    public void updateActiveState(boolean active) {
+        this.setActive(active);
+    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public <T> ManagedFragmentHandler<T> getManagedFragmentHandler(final Class<T> clazz) {
         final String callerClassName = customSecurityManager.getCallerClassName();
         if (!AccessUtil.hasAccess(callerClassName, FXPerspective.class, FXComponent.class))
@@ -201,6 +237,9 @@ public class JacpContextImpl implements Context {
      */
     @Override
     public void showModalDialog(final Node node) {
+        final String callerClassName = customSecurityManager.getCallerClassName();
+        if (!AccessUtil.hasAccess(callerClassName, FXPerspective.class, FXComponent.class))
+            throw new IllegalStateException("modal dialogs are accessible from FXPerspective and FXComponent");
         JACPModalDialog.getInstance().showModalDialog(node);
     }
 
@@ -209,6 +248,9 @@ public class JacpContextImpl implements Context {
      */
     @Override
     public void hideModalDialog() {
+        final String callerClassName = customSecurityManager.getCallerClassName();
+        if (!AccessUtil.hasAccess(callerClassName, FXPerspective.class, FXComponent.class))
+            throw new IllegalStateException("modal dialogs are accessible from FXPerspective and FXComponent");
         JACPModalDialog.getInstance().hideModalDialog();
     }
 
@@ -220,6 +262,10 @@ public class JacpContextImpl implements Context {
         return this.layout;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void setFXComponentLayout(final FXComponentLayout layout) {
         this.layout = layout;
     }
@@ -231,6 +277,7 @@ public class JacpContextImpl implements Context {
      *
      * @return the target id
      */
+    @Override
     public final String getReturnTargetAndClear() {
         final String callerClassName = customSecurityManager.getCallerClassName();
         if (!AccessUtil.hasAccess(callerClassName, CallbackComponent.class, AComponentWorker.class, AEmbeddedComponentWorker.class))
@@ -251,6 +298,21 @@ public class JacpContextImpl implements Context {
         this.returnTarget = returnTargetId;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void updateReturnTarget(final String returnTargetId) throws IllegalStateException {
+        final String callerClassName = customSecurityManager.getCallerClassName();
+        if (!AccessUtil.hasAccess(callerClassName, CallbackComponent.class, AComponentWorker.class, AEmbeddedComponentWorker.class))
+            throw new IllegalStateException(" the return target can be set only in CallbackComponents");
+        this.returnTarget = returnTargetId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getExecutionTarget() {
         return this.executionTarget;
     }
@@ -275,7 +337,23 @@ public class JacpContextImpl implements Context {
      * {@inheritDoc}
      */
     @Override
-    public void invokeFXAndWait(final Runnable r) {
+    public void updateExecutionTarget(final String id) throws IllegalStateException {
+        final String callerClassName = customSecurityManager.getCallerClassName();
+        if (!AccessUtil.hasAccess(callerClassName, FXComponent.class, AStatelessCallbackComponent.class, AEmbeddedComponentWorker.class))
+            throw new IllegalStateException(" the execution target can be set only in FXComponents");
+
+        if (id == null) {
+            this.executionTarget = "";
+            return;
+        }
+        this.executionTarget = id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public final void invokeFXAndWait(final Runnable r) {
         final Thread t = Thread.currentThread();
         try {
             WorkerUtil.invokeOnFXThreadAndWait(r);
@@ -283,7 +361,10 @@ public class JacpContextImpl implements Context {
            t.getUncaughtExceptionHandler().uncaughtException(t,e);
         }
     }
-
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public final String getTargetLayout() {
         return this.targetLayout;
     }
