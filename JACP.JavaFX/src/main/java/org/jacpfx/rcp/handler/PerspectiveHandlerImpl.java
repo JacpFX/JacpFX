@@ -168,6 +168,7 @@ public class PerspectiveHandlerImpl implements
         final Thread t = Thread.currentThread();
         try {
             this.log("3.4.3: perspective handle init");
+
             FXUtil.performResourceInjection(perspective.getPerspective(), perspective.getContext());
 
             this.handlePerspectiveInitMethod(message, perspective);
@@ -175,13 +176,32 @@ public class PerspectiveHandlerImpl implements
             final PerspectiveLayoutInterface<? extends Node, Node> perspectiveLayout = perspective
                     .getIPerspectiveLayout();
             this.initPerspectiveUI(perspectiveLayout);
-            PerspectiveRegistry.getAndSetCurrentVisiblePerspective(perspective.getContext().getId());
+
+            final String currentPerspectiveId = perspective.getContext().getId();
+            final String previousPerspectiveId = PerspectiveRegistry.getAndSetCurrentVisiblePerspective(perspective.getContext().getId());
+
+            this.updateToolbarButtons(currentPerspectiveId,previousPerspectiveId);
+
             this.log("3.4.4: perspective init subcomponents");
             perspective.initComponents(message);
         } catch (Exception e) {
             t.getUncaughtExceptionHandler().uncaughtException(t, e);
         }
 
+    }
+
+
+    /**
+     * check if switch from active to inactive perspective
+     * @param currentPerspectiveId
+     * @param previousPerspectiveId
+     */
+    private void updateToolbarButtons(final String currentPerspectiveId,final String previousPerspectiveId) {
+        if(previousPerspectiveId!=null && !previousPerspectiveId.equals(currentPerspectiveId)){
+            final Perspective<Node, EventHandler<Event>, Event, Object> previousPerspective = PerspectiveRegistry.findPerspectiveById(previousPerspectiveId);
+            // hide all buttons of the previous perspective
+            GlobalMediator.getInstance().handleToolBarButtons(previousPerspective, false);
+        }
     }
 
     /**
