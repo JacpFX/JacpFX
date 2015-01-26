@@ -30,7 +30,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -44,7 +43,6 @@ import org.jacpfx.controls.optionPane.JACPDialogButton;
 import org.jacpfx.controls.optionPane.JACPDialogUtil;
 import org.jacpfx.controls.optionPane.JACPOptionPane;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
-import org.jacpfx.rcp.components.menuBar.JACPMenuBar;
 import org.jacpfx.rcp.components.modalDialog.JACPModalDialog;
 import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.workbench.FXWorkbench;
@@ -58,7 +56,12 @@ import java.util.List;
  *
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
-@org.jacpfx.api.annotations.workbench.Workbench(id = WorkbenchIds.WorkbenchTestSwitch, name = "workbench", perspectives = {PerspectiveIds.PerspectiveTestSwitchB,PerspectiveIds.PerspectiveTestSwitchA})
+@org.jacpfx.api.annotations.workbench.Workbench(id = WorkbenchIds.WorkbenchTestSwitch, name = "workbench",
+        perspectives = {
+                PerspectiveIds.PerspectiveTestSwitchB,
+                PerspectiveIds.PerspectiveTestSwitchA
+        }
+)
 public class WorkbenchTestSwitch implements FXWorkbench {
     private Stage stage;
     @Resource
@@ -77,7 +80,7 @@ public class WorkbenchTestSwitch implements FXWorkbench {
 
     @Override
     public void postHandle(final FXComponentLayout layout) {
-        final JACPMenuBar menu = layout.getMenu();
+       /* final JACPMenuBar menu = layout.getMenu();
         final Menu menuFile = new Menu("File");
         final Menu menuTests = new Menu("Tests");
         final Menu menuStyles = new Menu("Styles");
@@ -91,7 +94,7 @@ public class WorkbenchTestSwitch implements FXWorkbench {
 
 
         // show windowButtons
-        menu.registerWindowButtons();
+        menu.registerWindowButtons();*/
     }
 
 

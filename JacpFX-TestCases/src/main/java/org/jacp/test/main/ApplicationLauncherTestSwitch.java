@@ -49,14 +49,14 @@ public class ApplicationLauncherTestSwitch extends AFXSpringJavaConfigLauncher {
     private static final String[] STYLE_FILES = {"/styles/style_light.css", "/styles/style_dark.css"};
     /// binary style sheets created while deployment
     private static final String[] BINARY_FILES = {"/styles/style_light.bss", "/styles/style_dark.bss"};
-    public static CountDownLatch latch = new CountDownLatch(6);
-    public static volatile ApplicationLauncherTestSwitch[] instance = new ApplicationLauncherTestSwitch[1];
+   // public static CountDownLatch latch = new CountDownLatch(6);
+   // public static volatile ApplicationLauncherTestSwitch[] instance = new ApplicationLauncherTestSwitch[1];
 
     public ApplicationLauncherTestSwitch() {
     }
 
     public ApplicationLauncherTestSwitch(CountDownLatch latch) {
-        this.latch = latch;
+       // this.latch = latch;
     }
 
     @Override
@@ -90,15 +90,15 @@ public class ApplicationLauncherTestSwitch extends AFXSpringJavaConfigLauncher {
 
     @Override
     public void postInit(final Stage stage) {
-        initStyles();
+       // initStyles();
         stage.setMinHeight(580);
         stage.setMinWidth(800);
         final Scene scene = stage.getScene();
         stage.getIcons().add(new Image("images/icons/JACP_512_512.png"));
         // add style sheet
-        scene.getStylesheets().add(STYLES[0]);
-        instance[0] = this;
-        ApplicationLauncherTestSwitch.latch.countDown();
+       // scene.getStylesheets().add(STYLES[0]);
+        //instance[0] = this;
+        //ApplicationLauncherTestSwitch.latch.countDown();
     }
 
     private static void initStyles() {
