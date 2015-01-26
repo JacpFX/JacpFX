@@ -33,4 +33,5 @@ public class WorkbenchIds {
     public static final String WorkbenchDialogInPerspectiveTest ="id2";
     public static final String WorkbenchMessagingTest="id3";
     public static final String WorkbenchHandleToolBarButtonsBetweenPerspectives = "id7";
+    public static final String WorkbenchTestSwitch ="id8";
 }
