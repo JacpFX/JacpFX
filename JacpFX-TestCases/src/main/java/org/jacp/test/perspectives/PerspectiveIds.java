@@ -45,6 +45,7 @@ public class PerspectiveIds {
     public static final String PerspectiveMessagingTest3 = "id34";
     public static final String PerspectiveTestSwitchA = "id35";
     public static final String PerspectiveTestSwitchB = "id36";
+    public static final String PerspectiveTestSwitchC = "id39";
 
 
     public static final String PerspectiveMessagingTestP1 = "id10";

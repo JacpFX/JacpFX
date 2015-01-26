@@ -58,12 +58,12 @@ import java.util.ResourceBundle;
  * Time: 16:01
  * To change this template use File | Settings | File Templates.
  */
-@Perspective(id = PerspectiveIds.PerspectiveTestSwitchB, name = "contactPerspective",
+@Perspective(id = PerspectiveIds.PerspectiveTestSwitchC, name = "contactPerspective",
         components = {},
         viewLocation = "/fxml/perspectiveOne.fxml",
         resourceBundleLocation = "bundles.languageBundle",
         localeID = "en_US", active = false)
-public class PerspectiveTestSwitchB implements FXPerspective {
+public class PerspectiveTestSwitchC implements FXPerspective {
     @FXML
     private HBox content1;
     @FXML
@@ -98,12 +98,12 @@ public class PerspectiveTestSwitchB implements FXPerspective {
 
     @OnHide
     public void onHide(final FXComponentLayout layout) {
-        System.out.println(" on onHide PerspectiveTestSwitchB");
+        System.out.println(" on onHide PerspectiveTestSwitchC");
     }
 
     @OnShow
     public void onShow(final FXComponentLayout layout) {
-        System.out.println(" on onShow PerspectiveTestSwitchB");
+        System.out.println(" on onShow PerspectiveTestSwitchC");
     }
 
     @PostConstruct
@@ -114,10 +114,10 @@ public class PerspectiveTestSwitchB implements FXPerspective {
      */
     public void onStartPerspective(final FXComponentLayout layout,
                                    final ResourceBundle resourceBundle) {
-        System.out.println(" on start PerspectiveTestSwitchB");
+        System.out.println(" on start PerspectiveTestSwitchC");
         final JACPToolBar toolbar = layout.getRegisteredToolBar(ToolbarPosition.NORTH);
-        final Button p1 = new Button("Perspective C");
-        p1.setOnMouseClicked((event)->context.send(PerspectiveIds.PerspectiveTestSwitchC, "show"));
+        final Button p1 = new Button("Perspective A");
+        p1.setOnMouseClicked((event)->context.send(PerspectiveIds.PerspectiveTestSwitchA, "show"));
         toolbar.addAllOnEnd(p1);
     }
 

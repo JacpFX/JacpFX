@@ -42,7 +42,6 @@ import org.jacpfx.rcp.components.toolBar.JACPToolBar;
 import org.jacpfx.rcp.util.CSSUtil;
 import org.jacpfx.rcp.util.LayoutUtil;
 
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -134,14 +133,9 @@ public class WorkbenchDecorator {
 
             final Map<ToolbarPosition, JACPToolBar> registeredToolbars = this
                     .getWorkbenchLayout().getRegisteredToolBars();
-
-            for (Iterator<Map.Entry<ToolbarPosition, JACPToolBar>> iterator = registeredToolbars
-                    .entrySet().iterator(); iterator.hasNext(); ) {
-                Map.Entry<ToolbarPosition, JACPToolBar> entry = iterator.next();
-                final ToolbarPosition position = entry.getKey();
-                final JACPToolBar toolBar = entry.getValue();
-                this.assignCorrectToolBarLayout(position, toolBar, toolbarPane);
-            }
+            registeredToolbars
+                    .entrySet().forEach(entry->this.assignCorrectToolBarLayout(entry.getKey(),  entry.getValue(), toolbarPane)
+            );
 
             // add root to the center
             toolbarPane.setCenter(this.root);

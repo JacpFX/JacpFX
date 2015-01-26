@@ -58,6 +58,7 @@ import java.util.List;
  */
 @org.jacpfx.api.annotations.workbench.Workbench(id = WorkbenchIds.WorkbenchTestSwitch, name = "workbench",
         perspectives = {
+                PerspectiveIds.PerspectiveTestSwitchC,
                 PerspectiveIds.PerspectiveTestSwitchB,
                 PerspectiveIds.PerspectiveTestSwitchA
         }
