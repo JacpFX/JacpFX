@@ -41,8 +41,8 @@ import org.jacpfx.api.componentLayout.WorkbenchLayout;
 import org.jacpfx.api.launcher.Launcher;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.api.util.UIType;
-import org.jacpfx.rcp.component.EmbeddedFXComponent;
 import org.jacpfx.rcp.component.ASubComponent;
+import org.jacpfx.rcp.component.EmbeddedFXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.componentLayout.FXMLPerspectiveLayout;
 import org.jacpfx.rcp.componentLayout.FXPerspectiveLayout;
@@ -113,7 +113,6 @@ public class PerspectiveHandlerImpl implements
         // 1 only one Perspective which is deactivated:  remove...
         // 2 second active perspective available, current perspective is the one which is disabled: find the other perspective, handle OnShow, add not to workbench
         // 3 second perspective is available, other perspective is currently displayed: turn off the perspective
-
         FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class, perspective.getPerspective(), perspectiveLayout, Context.class.cast(perspective.getContext()).getComponentLayout(), perspective.getContext().getResourceBundle());
         removePerspectiveNodeFromWorkbench(perspectiveLayout, componentOld);
         displayNextPossiblePerspective(perspective);
@@ -209,8 +208,8 @@ public class PerspectiveHandlerImpl implements
      */
     private void handlePerspectiveReassignment(final Perspective<Node, EventHandler<Event>, Event, Object> perspective,
                                                final PerspectiveLayoutInterface<? extends Node, Node> perspectiveLayout, final Node componentOld) {
-        final Node componentNew = this.getLayoutComponentFromPerspectiveLayout(perspectiveLayout);
-        this.reassignChild(perspective, componentOld, componentNew);
+       // FIXME the reassignment should be avoid when calls to previous perspective is done
+        this.reassignChild(perspective, componentOld, getLayoutComponentFromPerspectiveLayout(perspectiveLayout));
         // set already active editors to new component
         this.reassignSubcomponents(perspective, perspectiveLayout);
     }

@@ -37,6 +37,7 @@ public class PerspectiveRegistry {
         return currentVisiblePerspectiveId.getAndSet(id);
     }
 
+
     /**
      * returns the current visible perspective id.
      *

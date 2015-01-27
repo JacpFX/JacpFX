@@ -248,9 +248,6 @@ public class JacpContextImpl implements Context,InternalContext {
      */
     @Override
     public void hideModalDialog() {
-        final String callerClassName = customSecurityManager.getCallerClassName();
-        if (!AccessUtil.hasAccess(callerClassName, FXPerspective.class, FXComponent.class))
-            throw new IllegalStateException("modal dialogs are accessible from FXPerspective and FXComponent");
         JACPModalDialog.getInstance().hideModalDialog();
     }
 
