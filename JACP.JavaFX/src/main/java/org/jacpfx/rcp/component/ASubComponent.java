@@ -29,13 +29,12 @@ import org.jacpfx.api.component.ComponentHandle;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.context.JacpContext;
 import org.jacpfx.api.message.Message;
-import org.jacpfx.api.util.QueueSizes;
 import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.context.JacpContextImpl;
 import org.jacpfx.rcp.worker.AEmbeddedComponentWorker;
 
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -52,8 +51,7 @@ public abstract class ASubComponent  implements
 
     private final Semaphore lock = new Semaphore(1);
     private final Logger componentLogger = Logger.getLogger(this.getClass().getName());
-    private final BlockingQueue<Message<Event, Object>> incomingMessage = new ArrayBlockingQueue<>(
-            QueueSizes.COMPONENT_QUEUE_SIZE);
+    private final BlockingQueue<Message<Event, Object>> incomingMessage = new LinkedBlockingQueue<>();
     private volatile ComponentHandle<?, Event, Object> component;
     private final AtomicReference<AEmbeddedComponentWorker> workerRef = new AtomicReference<>();
     private final AtomicBoolean started =  new AtomicBoolean(false);

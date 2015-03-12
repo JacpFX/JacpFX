@@ -109,7 +109,7 @@ public abstract class AFXWorkbench
         // init user defined workspace
         this.handle.handleInitialLayout(new MessageImpl(this.context.getId(), "init"),
                 this.getWorkbenchLayout(), stage);
-        this.workbenchDecorator = new WorkbenchDecorator(this.getWorkbenchLayout());
+        this.workbenchDecorator = new DefaultLegacyWorkbenchDecorator(this.getWorkbenchLayout());
         this.workbenchDecorator.initBasicLayout(stage);
 
         this.handle.postHandle(new FXComponentLayout(this.getWorkbenchLayout()

@@ -23,34 +23,29 @@
  * *********************************************************************
  */
 
-package org.jacpfx.rcp.workbench;
+package org.jacp.layoutTest;
 
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * Created by Andy Moncsek on 12.02.15.
- * The WorkbenchDecorator defines the basic Layout of a workbench window with the root naodes, menu and toolBars positions.
+ * Created by Andy Moncsek on 11.02.15.
  */
-public interface WorkbenchDecorator {
+public class LayoutTest extends Application {
+    public static void main(String[] args) {
+        launch(args);
+    }
+    @Override
+    public void start(Stage stage) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/layoutTest.fxml"));
 
-    /**
-     *
-     * Initialize the decorator
-     * @param stage
-     */
-    void initBasicLayout(Stage stage);
+        Scene scene = new Scene(root, 800,600);
 
-    /**
-     * retirn the Root node, this node is the parent for all perspectives
-     * @return  the root node
-     */
-    Pane getRoot();
-
-    /**
-     * Returns the glassPane which is needed to show dialogs
-     * @return the glassPane
-     */
-    Pane getGlassPane();
+        stage.setTitle("FXML Welcome");
+        stage.setScene(scene);
+        stage.show();
+    }
 }

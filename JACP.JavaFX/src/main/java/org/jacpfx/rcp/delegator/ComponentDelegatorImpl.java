@@ -31,15 +31,14 @@ import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.handler.ComponentHandler;
 import org.jacpfx.api.message.Message;
-import org.jacpfx.api.util.QueueSizes;
 import org.jacpfx.rcp.context.InternalContext;
 import org.jacpfx.rcp.message.MessageImpl;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.FXUtil;
 import org.jacpfx.rcp.util.ShutdownThreadsHandler;
 
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Logger;
 
 /**
@@ -52,8 +51,7 @@ import java.util.logging.Logger;
 public class ComponentDelegatorImpl extends Thread implements
         org.jacpfx.api.delegator.ComponentDelegator<EventHandler<Event>, Event, Object> {
 	private final Logger logger = Logger.getLogger(this.getClass().getName());
-	private final BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue = new ArrayBlockingQueue<>(
-            QueueSizes.COMPONENT_DELEGATOR_QUEUE_SIZE);
+	private final BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue = new LinkedBlockingQueue<>();
 	private ComponentHandler<Perspective<Node, EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
 
 	public ComponentDelegatorImpl() {

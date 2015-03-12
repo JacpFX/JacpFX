@@ -28,6 +28,7 @@ import javafx.event.EventHandler;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import org.jacpfx.api.annotations.lifecycle.OnHide;
 import org.jacpfx.api.annotations.lifecycle.OnShow;
@@ -73,11 +74,11 @@ public class PerspectiveHandlerImpl implements
     private final Logger logger = Logger.getLogger(this.getClass().getName());
     private final WorkbenchLayout<Node> workbenchLayout;
     private final Launcher<?> launcher;
-    private final GridPane root;
+    private final Pane root;
 
 
     public PerspectiveHandlerImpl(final Launcher<?> launcher, final WorkbenchLayout<Node> workbenchLayout,
-                                  final GridPane root) {
+                                  final Pane root) {
         this.workbenchLayout = workbenchLayout;
         this.root = root;
         this.launcher = launcher;

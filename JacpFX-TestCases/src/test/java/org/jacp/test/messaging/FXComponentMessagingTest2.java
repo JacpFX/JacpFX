@@ -28,8 +28,6 @@ package org.jacp.test.messaging;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import junit.framework.Assert;
-import junit.framework.TestCase;
-import org.jacp.doublePerspective.test.main.ApplicationLauncherDuplicateComponentTest;
 import org.jacp.test.AllTests;
 import org.jacp.test.components.*;
 import org.jacp.test.main.ApplicationLauncherMessagingTest;

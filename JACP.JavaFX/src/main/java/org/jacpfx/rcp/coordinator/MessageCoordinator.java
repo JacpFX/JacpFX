@@ -22,7 +22,7 @@ import org.jacpfx.rcp.util.PerspectiveUtil;
 import org.jacpfx.rcp.util.ShutdownThreadsHandler;
 
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * The Message Coordinator checks the message target and delegates the message to component/perspective for correct handling.
@@ -33,7 +33,7 @@ public class MessageCoordinator extends Thread implements
     private ComponentHandler<SubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
     private ComponentHandler<Perspective<Node, EventHandler<Event>, Event, Object>, Message<Event, Object>> perspectiveHandler;
     private BlockingQueue<DelegateDTO<Event, Object>> delegateQueue;
-    private final BlockingQueue<Message<Event, Object>> messages = new SynchronousQueue<>();
+    private final BlockingQueue<Message<Event, Object>> messages = new LinkedBlockingQueue<>();
     private final String parentId;
     private final Launcher<?> launcher;
     private static final String seperator = ".";
