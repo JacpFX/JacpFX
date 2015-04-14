@@ -25,8 +25,6 @@
 
 package org.jacpfx.rcp.workbench;
 
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.geometry.Orientation;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
@@ -61,11 +59,11 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
     private StackPane topPane;
     private StackPane menuPane;
 
-    private StackPane leftPane;
+    private StackPane rightPane;
 
 
     private StackPane bottomPane;
-    private StackPane rightPane;
+    private StackPane leftPane;
 
 
     private AnchorPane absoluteRoot;
@@ -76,8 +74,8 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
     double topHight = 0d;
     double menuHight = 0d;
     double bottomHight = 0d;
-    double leftHight = 0d;
-    double rightHight =0d;
+    double leftWidth = 0d;
+    double rightWidth =0d;
 
     public DefaultWorkbenchDecorator(WorkbenchLayout<Node> workbenchLayout) {
         this.workbenchLayout = workbenchLayout;
@@ -113,9 +111,11 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
         rootPane.setId(CSSUtil.CSSIdConstants.ID_ROOT_PANE);
 
 
-        rightPane = new StackPane();
-        rightPane.getStyleClass().add(
+
+        leftPane = new StackPane();
+        leftPane.getStyleClass().add(
                 CSSUtil.CSSClassConstants.CLASS_DARK_BORDER);
+        leftPane.setId("leftPane");
 
 
 
@@ -125,9 +125,10 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
                 CSSUtil.CSSClassConstants.CLASS_DARK_BORDER);
 
 
-        leftPane = new StackPane();
-        leftPane.getStyleClass().add(
+        rightPane = new StackPane();
+        rightPane.getStyleClass().add(
                 CSSUtil.CSSClassConstants.CLASS_DARK_BORDER);
+
 
 
         topPane = new StackPane();
@@ -137,7 +138,7 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
 
         menuPane = new StackPane();
 
-        absoluteRoot.getChildren().addAll(rightPane, rootPane, leftPane,menuPane,topPane,bottomPane) ;
+        absoluteRoot.getChildren().addAll(leftPane, rootPane, rightPane,menuPane,topPane,bottomPane) ;
 
         base.getChildren().add(absoluteRoot);
 
@@ -168,30 +169,28 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
 
     private void updateAnchorSizes() {
         AnchorPane.setBottomAnchor(rootPane, bottomHight);
-        AnchorPane.setRightAnchor(rootPane, rightHight);
-        AnchorPane.setLeftAnchor(rootPane,leftHight);
-        AnchorPane.setTopAnchor(rootPane, topHight+menuHight);
+        AnchorPane.setRightAnchor(rootPane, rightWidth);
+        AnchorPane.setLeftAnchor(rootPane, leftWidth);
+        AnchorPane.setTopAnchor(rootPane, topHight + menuHight);
 
 
-       // rightPane.setPrefWidth(rightHight);
-        AnchorPane.setBottomAnchor(rightPane, bottomHight);
-        AnchorPane.setRightAnchor(rightPane, 0.0d);
-        AnchorPane.setTopAnchor(rightPane, topHight+menuHight);
-
-        bottomPane.setLayoutX(0.0d);
-        bottomPane.setPrefHeight(bottomHight);
-        AnchorPane.setBottomAnchor(bottomPane, 0.0d);
-        AnchorPane.setLeftAnchor(bottomPane,0.0d);
-        AnchorPane.setRightAnchor(bottomPane,0.0d);
-
-      //  leftPane.setPrefWidth(leftHight);
         AnchorPane.setBottomAnchor(leftPane, bottomHight);
-        AnchorPane.setTopAnchor(leftPane, topHight+menuHight);
+        AnchorPane.setLeftAnchor(leftPane, 0.0d);
+        AnchorPane.setTopAnchor(leftPane, topHight + menuHight);
 
-      //  topPane.setPrefHeight(topHight);
+       // bottomPane.setLayoutX(0.0d);
+       // bottomPane.setPrefHeight(bottomHight);
+        AnchorPane.setBottomAnchor(bottomPane, 0.0d);
+        AnchorPane.setLeftAnchor(bottomPane, 0.0d);
+        AnchorPane.setRightAnchor(bottomPane, 0.0d);
+
+        AnchorPane.setBottomAnchor(rightPane, bottomHight);
+        AnchorPane.setTopAnchor(rightPane, topHight + menuHight);
+        AnchorPane.setRightAnchor(rightPane, 0.0d);
+
         AnchorPane.setRightAnchor(topPane, 0.0d);
         AnchorPane.setLeftAnchor(topPane, 0.0d);
-        AnchorPane.setTopAnchor(topPane,  menuHight);
+        AnchorPane.setTopAnchor(topPane, menuHight);
 
         AnchorPane.setRightAnchor(menuPane, 0.0d);
         AnchorPane.setLeftAnchor(menuPane, 0.0d);
@@ -218,7 +217,7 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
             final Map<ToolbarPosition, JACPToolBar> registeredToolbars =
                     getWorkbenchLayout().getRegisteredToolBars();
             registeredToolbars
-                    .entrySet().forEach(entry->assignCorrectToolBarLayout(entry.getKey(), entry.getValue(), Screen.getPrimary().getVisualBounds())
+                    .entrySet().forEach(entry->assignCorrectToolBarLayout(entry.getKey(), entry.getValue(), Screen.getPrimary().getBounds())
             );
 
 
@@ -264,37 +263,44 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
                 bar.setPrefWidth(this.getWorkbenchLayout().getWorkbenchSize().getX());
                 topPane.getChildren().add(bar);
                 topHight =   this.getWorkbenchLayout().getWorkbenchSize().getY()*TOOLBAR_HIGHT;
-                bar.setPrefHeight(topHight);
+                bar.heightProperty().addListener(observable -> {
+                    topHight =  bar.getHeight();
+                    updateAnchorSizes();
+                    System.out.println("CHANGE SIZE TOP: " + bar.getHeight());
+                });
                 break;
             case SOUTH:
                 bar.setPrefWidth(this.getWorkbenchLayout().getWorkbenchSize().getX());
                 bottomPane.getChildren().add(bar);
                 bottomHight =  this.getWorkbenchLayout().getWorkbenchSize().getY()*TOOLBAR_HIGHT;
-                bar.setPrefHeight(bottomHight);
+                bar.heightProperty().addListener(observable -> {
+                    bottomHight =  bar.getHeight();
+                    updateAnchorSizes();
+                    System.out.println("CHANGE SIZE SOUTH: " + bar.getHeight());
+                });
                 break;
             case EAST:
-                bar.setPrefWidth(this.getWorkbenchLayout().getWorkbenchSize().getY());
-                bar.setOrientation(Orientation.VERTICAL);
-                leftPane.getChildren().add(bar);
 
-                leftHight = this.getWorkbenchLayout().getWorkbenchSize().getX()*TOOLBAR_HIGHT;
-                break;
-            case WEST:
-                //bar.setPrefWidth(this.getWorkbenchLayout().getWorkbenchSize().getY());
+
                 bar.setOrientation(Orientation.VERTICAL);
-                //System.out.println("bar: "+bar.getWidth()+"  "+bar.getPrefWidth());
                 rightPane.getChildren().add(bar);
-                rightPane.widthProperty().addListener(new InvalidationListener() {
-
-                    @Override
-                    public void invalidated(Observable observable) {
-                        rightHight = rightPane.getWidth();
-                        updateAnchorSizes();
-                        System.out.println("CHANGE SIZE: "+ rightPane.getWidth());
-                    }
+                bar.widthProperty().addListener(observable -> {
+                    rightWidth = bar.getWidth();
+                    updateAnchorSizes();
+                    System.out.println("CHANGE SIZE WEST: " + bar.getWidth());
                 });
 
-                rightHight =  this.getWorkbenchLayout().getWorkbenchSize().getX()*TOOLBAR_HIGHT;
+                rightWidth =  this.getWorkbenchLayout().getWorkbenchSize().getX()*TOOLBAR_HIGHT;
+                break;
+            case WEST:
+                bar.setOrientation(Orientation.VERTICAL);
+                leftPane.getChildren().add(bar);
+                bar.widthProperty().addListener(observable -> {
+                    leftWidth = bar.getWidth();
+                    updateAnchorSizes();
+                    System.out.println("CHANGE SIZE EAST: " + bar.getWidth());
+                });
+                leftWidth = this.getWorkbenchLayout().getWorkbenchSize().getX()*TOOLBAR_HIGHT;
                 break;
         }
     }

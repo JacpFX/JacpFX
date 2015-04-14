@@ -306,8 +306,8 @@ public class FXUtil {
             return fxmlLoader.load();
         } catch (IOException e) {
             throw new MissingResourceException(
-                    "fxml file not found --  place in resource folder and reference like this: viewLocation = \"/myUIFile.fxml\"",
-                    url.getPath(),e.getLocalizedMessage());
+                    e.getCause()!=null?e.getCause().getLocalizedMessage():e.getLocalizedMessage(),
+                    url.getPath(),e.getCause()!=null?e.getCause().getMessage():e.getLocalizedMessage());
         }
     }
 
