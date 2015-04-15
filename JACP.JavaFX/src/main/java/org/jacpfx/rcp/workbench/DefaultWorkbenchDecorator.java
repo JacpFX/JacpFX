@@ -53,17 +53,15 @@ import java.util.Map;
  */
 public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
     public static double TOOLBAR_HIGHT = 0.033d;
-    private final WorkbenchLayout<Node> workbenchLayout ;
+    private final WorkbenchLayout<Node> workbenchLayout;
     private Stage stage;
     private StackPane rootPane;
-    private StackPane topPane;
     private StackPane menuPane;
 
-    private StackPane rightPane;
-
-
-    private StackPane bottomPane;
-    private StackPane leftPane;
+    private StackPane nortPane;
+    private StackPane southPane;
+    private StackPane eastPane;
+    private StackPane westPane;
 
 
     private AnchorPane absoluteRoot;
@@ -71,11 +69,11 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
     private Pane glassPane;
     private JACPModalDialog dimmer;
 
-    double topHight = 0d;
+    double northHight = 0d;
     double menuHight = 0d;
-    double bottomHight = 0d;
-    double leftWidth = 0d;
-    double rightWidth =0d;
+    double southHight = 0d;
+    double westWidth = 0d;
+    double rightWidth = 0d;
 
     public DefaultWorkbenchDecorator(WorkbenchLayout<Node> workbenchLayout) {
         this.workbenchLayout = workbenchLayout;
@@ -101,103 +99,106 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
             stage.initStyle(this.getWorkbenchLayout().getStyle());
         }
 
-        //absoluteRoot.setMaxWidth(Double.MAX_VALUE);
-       // absoluteRoot.setMaxHeight(Double.MAX_VALUE);
-       // absoluteRoot.setMinHeight(0);
-       // absoluteRoot.setMinWidth(0);
-
         rootPane = new StackPane();
         rootPane.setCache(true);
         rootPane.setId(CSSUtil.CSSIdConstants.ID_ROOT_PANE);
 
 
-
-        leftPane = new StackPane();
-        leftPane.getStyleClass().add(
+        westPane = new StackPane();
+        westPane.getStyleClass().add(
                 CSSUtil.CSSClassConstants.CLASS_DARK_BORDER);
-        leftPane.setId("leftPane");
+        westPane.setId("westPane");
+        manageNode(westPane, true, false);
 
 
-
-        //////////// bottom //////////////
-        bottomPane = new StackPane();
-        bottomPane.getStyleClass().add(
+        southPane = new StackPane();
+        southPane.getStyleClass().add(
                 CSSUtil.CSSClassConstants.CLASS_DARK_BORDER);
+        southPane.setId("southPane");
+        manageNode(southPane, true, false);
 
 
-        rightPane = new StackPane();
-        rightPane.getStyleClass().add(
+        eastPane = new StackPane();
+        eastPane.getStyleClass().add(
                 CSSUtil.CSSClassConstants.CLASS_DARK_BORDER);
+        eastPane.setId("eastPane");
+        manageNode(eastPane, true, false);
 
-
-
-        topPane = new StackPane();
-        topPane.getStyleClass().add(
+        nortPane = new StackPane();
+        nortPane.getStyleClass().add(
                 CSSUtil.CSSClassConstants.CLASS_DARK_BORDER);
+        nortPane.setId("nortPane");
+        manageNode(nortPane, true, false);
 
 
         menuPane = new StackPane();
 
-        absoluteRoot.getChildren().addAll(leftPane, rootPane, rightPane,menuPane,topPane,bottomPane) ;
+        absoluteRoot.getChildren().addAll(westPane, rootPane, eastPane, menuPane, nortPane, southPane);
 
         base.getChildren().add(absoluteRoot);
 
-        // fetch current workbenchsize
+        defineScene();
+        initMenu(stage);
+        initToolbarLayout();
+        initGlobalMouseEvents();
+        initDimmer();
+        initGlassPane();
+
+        base.getChildren().addAll(glassPane, dimmer);
+
+        updateAnchorSizes();
+
+    }
+
+    private void initMenu(Stage stage) {
+        if (getWorkbenchLayout().isMenuEnabled()) {
+            menuPane.getChildren().add(getWorkbenchLayout().getMenu());
+            getWorkbenchLayout().getMenu().setMenuDragEnabled(stage);
+            menuHight = getWorkbenchLayout().getMenu().getHeight();
+        }
+    }
+
+    private void defineScene() {
         final int x = getWorkbenchLayout().getWorkbenchSize().getX();
         final int y = getWorkbenchLayout().getWorkbenchSize().getY();
 
         this.stage.setScene(new Scene(this.base, x, y));
         initCSS(this.stage.getScene());
         SceneUtil.setScene(this.stage.getScene());
-
-        // add the menu if needed
-        if (getWorkbenchLayout().isMenuEnabled()) {
-            menuPane.getChildren().add(getWorkbenchLayout().getMenu());
-            getWorkbenchLayout().getMenu().setMenuDragEnabled(stage);
-            menuHight = getWorkbenchLayout().getMenu().getHeight();
-        }
-        initToolbarLayout();
-        initGlobalMouseEvents();
-        initDimmer();
-        initGlassPane();
-
-        base.getChildren().addAll(glassPane,dimmer);
-
-        updateAnchorSizes();
-
     }
 
     private void updateAnchorSizes() {
-        AnchorPane.setBottomAnchor(rootPane, bottomHight);
+        AnchorPane.setBottomAnchor(rootPane, southHight);
         AnchorPane.setRightAnchor(rootPane, rightWidth);
-        AnchorPane.setLeftAnchor(rootPane, leftWidth);
-        AnchorPane.setTopAnchor(rootPane, topHight + menuHight);
+        AnchorPane.setLeftAnchor(rootPane, westWidth);
+        AnchorPane.setTopAnchor(rootPane, northHight + menuHight);
 
+        //westPane.setPrefWidth(rightWidth);
+        AnchorPane.setBottomAnchor(westPane, southHight);
+        AnchorPane.setLeftAnchor(westPane, 0.0d);
+        AnchorPane.setTopAnchor(westPane, northHight + menuHight);
 
-        AnchorPane.setBottomAnchor(leftPane, bottomHight);
-        AnchorPane.setLeftAnchor(leftPane, 0.0d);
-        AnchorPane.setTopAnchor(leftPane, topHight + menuHight);
+        // southPane.setPrefHeight(southHight);
+        AnchorPane.setBottomAnchor(southPane, 0.0d);
+        AnchorPane.setLeftAnchor(southPane, 0.0d);
+        AnchorPane.setRightAnchor(southPane, 0.0d);
 
-       // bottomPane.setLayoutX(0.0d);
-       // bottomPane.setPrefHeight(bottomHight);
-        AnchorPane.setBottomAnchor(bottomPane, 0.0d);
-        AnchorPane.setLeftAnchor(bottomPane, 0.0d);
-        AnchorPane.setRightAnchor(bottomPane, 0.0d);
+        //  eastPane.setPrefWidth(rightWidth);
+        AnchorPane.setBottomAnchor(eastPane, southHight);
+        AnchorPane.setTopAnchor(eastPane, northHight + menuHight);
+        AnchorPane.setRightAnchor(eastPane, 0.0d);
 
-        AnchorPane.setBottomAnchor(rightPane, bottomHight);
-        AnchorPane.setTopAnchor(rightPane, topHight + menuHight);
-        AnchorPane.setRightAnchor(rightPane, 0.0d);
-
-        AnchorPane.setRightAnchor(topPane, 0.0d);
-        AnchorPane.setLeftAnchor(topPane, 0.0d);
-        AnchorPane.setTopAnchor(topPane, menuHight);
+        //   nortPane.setPrefHeight(northHight);
+        AnchorPane.setRightAnchor(nortPane, 0.0d);
+        AnchorPane.setLeftAnchor(nortPane, 0.0d);
+        AnchorPane.setTopAnchor(nortPane, menuHight);
 
         AnchorPane.setRightAnchor(menuPane, 0.0d);
         AnchorPane.setLeftAnchor(menuPane, 0.0d);
-        AnchorPane.setTopAnchor(menuPane,  0.0d);
+        AnchorPane.setTopAnchor(menuPane, 0.0d);
+
 
     }
-
 
 
     private void initGlobalMouseEvents() {
@@ -208,16 +209,14 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
     }
 
 
-
     private void initToolbarLayout() {
         // add toolbars in a specific order
         if (!this.getWorkbenchLayout().getRegisteredToolBars().isEmpty()) {
 
-
             final Map<ToolbarPosition, JACPToolBar> registeredToolbars =
                     getWorkbenchLayout().getRegisteredToolBars();
             registeredToolbars
-                    .entrySet().forEach(entry->assignCorrectToolBarLayout(entry.getKey(), entry.getValue(), Screen.getPrimary().getBounds())
+                    .entrySet().forEach(entry -> assignCorrectToolBarLayout(entry.getKey(), entry.getValue(), Screen.getPrimary().getBounds())
             );
 
 
@@ -232,11 +231,8 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
     }
 
 
-
-
-
     private void initDimmer() {
-        JACPModalDialog.initDialog(this.absoluteRoot);
+        JACPModalDialog.initDialog(absoluteRoot);
         dimmer = JACPModalDialog.getInstance();
         dimmer.setVisible(false);
     }
@@ -252,57 +248,84 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
     /**
      * set toolBars to correct position
      *
-     * @param position, The toolbar position
-     * @param bar,      the affected toolbar
-     * @param visualBounds,     the visual bounds
+     * @param position,     The toolbar position
+     * @param bar,          the affected toolbar
+     * @param visualBounds, the visual bounds
      */
     private void assignCorrectToolBarLayout(final ToolbarPosition position,
-                                            final ToolBar bar,final Rectangle2D visualBounds) {
+                                            final ToolBar bar, final Rectangle2D visualBounds) {
         switch (position) {
             case NORTH:
+                manageNode(nortPane, false, true);
                 bar.setPrefWidth(this.getWorkbenchLayout().getWorkbenchSize().getX());
-                topPane.getChildren().add(bar);
-                topHight =   this.getWorkbenchLayout().getWorkbenchSize().getY()*TOOLBAR_HIGHT;
-                bar.heightProperty().addListener(observable -> {
-                    topHight =  bar.getHeight();
-                    updateAnchorSizes();
-                    System.out.println("CHANGE SIZE TOP: " + bar.getHeight());
+                nortPane.getChildren().add(bar);
+                nortPane.heightProperty().addListener((observableValue, number, t1) -> {
+                    if (!number.equals(t1)) {
+                        northHight = t1.doubleValue();
+                        bar.setPrefHeight(northHight);
+                        updateAnchorSizes();
+                    }
                 });
+                northHight = this.getWorkbenchLayout().getWorkbenchSize().getY() * TOOLBAR_HIGHT;
+
                 break;
             case SOUTH:
+                manageNode(southPane, false, true);
                 bar.setPrefWidth(this.getWorkbenchLayout().getWorkbenchSize().getX());
-                bottomPane.getChildren().add(bar);
-                bottomHight =  this.getWorkbenchLayout().getWorkbenchSize().getY()*TOOLBAR_HIGHT;
-                bar.heightProperty().addListener(observable -> {
-                    bottomHight =  bar.getHeight();
-                    updateAnchorSizes();
-                    System.out.println("CHANGE SIZE SOUTH: " + bar.getHeight());
+                southPane.getChildren().add(bar);
+
+                southPane.heightProperty().addListener((observableValue, number, t1) -> {
+                    if (!number.equals(t1)) {
+                        southHight = t1.doubleValue();
+                        bar.setPrefHeight(southHight);
+                        updateAnchorSizes();
+                    }
                 });
+                southHight = this.getWorkbenchLayout().getWorkbenchSize().getY() * TOOLBAR_HIGHT;
+
+
                 break;
             case EAST:
-
-
+                manageNode(eastPane, false, true);
                 bar.setOrientation(Orientation.VERTICAL);
-                rightPane.getChildren().add(bar);
-                bar.widthProperty().addListener(observable -> {
-                    rightWidth = bar.getWidth();
-                    updateAnchorSizes();
-                    System.out.println("CHANGE SIZE WEST: " + bar.getWidth());
+
+                eastPane.getChildren().add(bar);
+
+                eastPane.widthProperty().addListener((observableValue, number, t1) -> {
+                    if (!number.equals(t1)) {
+                        rightWidth = eastPane.getWidth();
+                        bar.setMaxWidth(rightWidth);
+                        eastPane.setMaxWidth(rightWidth);
+                        updateAnchorSizes();
+                    }
                 });
 
-                rightWidth =  this.getWorkbenchLayout().getWorkbenchSize().getX()*TOOLBAR_HIGHT;
+
+                rightWidth = this.getWorkbenchLayout().getWorkbenchSize().getX() * TOOLBAR_HIGHT;
                 break;
             case WEST:
+                manageNode(westPane, false, true);
                 bar.setOrientation(Orientation.VERTICAL);
-                leftPane.getChildren().add(bar);
-                bar.widthProperty().addListener(observable -> {
-                    leftWidth = bar.getWidth();
-                    updateAnchorSizes();
-                    System.out.println("CHANGE SIZE EAST: " + bar.getWidth());
+
+                westPane.getChildren().add(bar);
+
+                westPane.widthProperty().addListener((observableValue, number, t1) -> {
+                    if (!number.equals(t1)) {
+                        westWidth = westPane.getWidth();
+                        bar.setMaxWidth(westWidth);
+                        westPane.setMaxWidth(westWidth);
+                        updateAnchorSizes();
+                    }
                 });
-                leftWidth = this.getWorkbenchLayout().getWorkbenchSize().getX()*TOOLBAR_HIGHT;
+
+                westWidth = this.getWorkbenchLayout().getWorkbenchSize().getX() * TOOLBAR_HIGHT;
                 break;
         }
+    }
+
+    private void manageNode(Node node, boolean disable, boolean managed) {
+        node.setDisable(disable);
+        node.setManaged(managed);
     }
 
     /**
