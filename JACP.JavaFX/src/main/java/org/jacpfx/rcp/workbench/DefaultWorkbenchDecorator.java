@@ -41,6 +41,7 @@ import org.jacpfx.api.componentLayout.WorkbenchLayout;
 import org.jacpfx.api.util.OS;
 import org.jacpfx.api.util.ToolbarPosition;
 import org.jacpfx.rcp.componentLayout.FXWorkbenchLayout;
+import org.jacpfx.rcp.components.menuBar.JACPMenuBar;
 import org.jacpfx.rcp.components.modalDialog.JACPModalDialog;
 import org.jacpfx.rcp.components.toolBar.JACPToolBar;
 import org.jacpfx.rcp.util.CSSUtil;
@@ -99,6 +100,7 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
             stage.initStyle(this.getWorkbenchLayout().getStyle());
         }
 
+
         rootPane = new StackPane();
         rootPane.setCache(true);
         rootPane.setId(CSSUtil.CSSIdConstants.ID_ROOT_PANE);
@@ -132,6 +134,7 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
 
 
         menuPane = new StackPane();
+        manageNode(menuPane, true, false);
 
         absoluteRoot.getChildren().addAll(westPane, rootPane, eastPane, menuPane, nortPane, southPane);
 
@@ -152,9 +155,18 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
 
     private void initMenu(Stage stage) {
         if (getWorkbenchLayout().isMenuEnabled()) {
-            menuPane.getChildren().add(getWorkbenchLayout().getMenu());
-            getWorkbenchLayout().getMenu().setMenuDragEnabled(stage);
-            menuHight = getWorkbenchLayout().getMenu().getHeight();
+            manageNode(menuPane, false, true);
+            final JACPMenuBar menu = getWorkbenchLayout().getMenu();
+            menuPane.getChildren().add(menu);
+            menu.setMenuDragEnabled(stage);
+            menuPane.heightProperty().addListener((observableValue, number, t1) -> {
+                if (!number.equals(t1)) {
+                    menuHight = t1.doubleValue();
+                    menu.setPrefHeight(menuHight);
+                    updateAnchorSizes();
+                }
+            });
+            menuHight = menu.getHeight();
         }
     }
 
@@ -211,8 +223,7 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
 
     private void initToolbarLayout() {
         // add toolbars in a specific order
-        if (!this.getWorkbenchLayout().getRegisteredToolBars().isEmpty()) {
-
+        if (!getWorkbenchLayout().getRegisteredToolBars().isEmpty()) {
             final Map<ToolbarPosition, JACPToolBar> registeredToolbars =
                     getWorkbenchLayout().getRegisteredToolBars();
             registeredToolbars

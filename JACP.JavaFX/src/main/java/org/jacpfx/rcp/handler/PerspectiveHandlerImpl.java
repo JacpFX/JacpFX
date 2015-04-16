@@ -102,7 +102,7 @@ public class PerspectiveHandlerImpl implements
 
     private void handleActivePerspective(final Perspective<Node, EventHandler<Event>, Event, Object> perspective, final PerspectiveLayoutInterface<? extends Node, Node> perspectiveLayout, final Node componentOld) {
         if (componentOld != null) {
-            this.handlePerspectiveReassignment(perspective, perspectiveLayout, componentOld);
+            this.handlePerspectiveReassignment(perspective, perspectiveLayout);
         } // End outer if
         else {
             this.initPerspectiveUI(perspectiveLayout);
@@ -148,7 +148,7 @@ public class PerspectiveHandlerImpl implements
                 // execute OnShow
                 FXUtil.invokeHandleMethodsByAnnotation(OnShow.class, possiblePerspectiveToShow.getPerspective(), perspectiveLayoutReplacementComponent,
                         Perspective.getType().equals(UIType.DECLARATIVE) ? Perspective.getDocumentURL() : null, possiblePerspectiveToShow.getContext().getResourceBundle());
-                this.handlePerspectiveReassignment(possiblePerspectiveToShow, perspectiveLayoutReplacementComponent, this.getLayoutComponentFromPerspectiveLayout(perspectiveLayoutReplacementComponent));
+                this.handlePerspectiveReassignment(possiblePerspectiveToShow, perspectiveLayoutReplacementComponent);
             }
 
         }
@@ -209,9 +209,9 @@ public class PerspectiveHandlerImpl implements
      * reassignment can only be done in FX main thread;
      */
     private void handlePerspectiveReassignment(final Perspective<Node, EventHandler<Event>, Event, Object> perspective,
-                                               final PerspectiveLayoutInterface<? extends Node, Node> perspectiveLayout, final Node componentOld) {
+                                               final PerspectiveLayoutInterface<? extends Node, Node> perspectiveLayout) {
         // FIXME the reassignment should be avoid when calls to previous perspective is done
-        this.reassignChild(perspective, componentOld, getLayoutComponentFromPerspectiveLayout(perspectiveLayout));
+        this.reassignChild(perspective,  getLayoutComponentFromPerspectiveLayout(perspectiveLayout));
         // set already active editors to new component
         this.reassignSubcomponents(perspective, perspectiveLayout);
     }
@@ -279,11 +279,10 @@ public class PerspectiveHandlerImpl implements
      * handle reassignment of component in perspective ui
      *
      * @param perspective, The current perspective
-     * @param oldComp,     The old component Node
      * @param newComp,     The new component Node
      */
-    private void reassignChild(final Perspective<Node, EventHandler<Event>, Event, Object> perspective, final Node oldComp, final Node newComp) {
-        runInCachedModeSpeed(this.root,() -> {
+    private void reassignChild(final Perspective<Node, EventHandler<Event>, Event, Object> perspective,  final Node newComp) {
+        runInCachedModeSpeed(this.root, () -> {
             final ObservableList<Node> children = this.root.getChildren();
             final Perspective<Node, EventHandler<Event>, Event, Object> previousPerspective = getPreviousPerspective(perspective);
 
@@ -291,7 +290,7 @@ public class PerspectiveHandlerImpl implements
             // hide all buttons of the previous perspective
             GlobalMediator.getInstance().handleToolBarButtons(previousPerspective, false);
             executeOnShow(perspective, previousPerspective);
-            replaceRootNodes(children, oldComp, newComp);
+            replaceRootNodes(children, newComp);
             // show all buttons of the new perspective
             GlobalMediator.getInstance().handleToolBarButtons(perspective, true);
             newComp.setVisible(true);
@@ -301,17 +300,15 @@ public class PerspectiveHandlerImpl implements
 
 
     private void runInCachedModeSpeed(final Node rootNode, final Runnable r) {
-        rootNode.setManaged(false);
         if (!rootNode.isCache()) rootNode.setCache(true);
         CacheHint hint = rootNode.getCacheHint();
         rootNode.setCacheHint(CacheHint.SPEED);
         r.run();
         rootNode.setCacheHint(hint);
-        rootNode.setManaged(true);
     }
 
-    private void replaceRootNodes(final ObservableList<Node> children, final Node oldComp, final Node newComp) {
-        children.set(0, newComp);
+    private void replaceRootNodes(final ObservableList<Node> children, final Node newComp) {
+        children.setAll(newComp);
     }
 
     private void executeOnShow(final Perspective<Node, EventHandler<Event>, Event, Object> perspective, final Perspective<Node, EventHandler<Event>, Event, Object> previousPerspective) {
