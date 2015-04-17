@@ -23,7 +23,7 @@
  * *********************************************************************
  */
 
-package org.jacpfx.rcp.workbench;
+package org.jacpfx.rcp.components.workbench;
 
 import javafx.geometry.Orientation;
 import javafx.geometry.Rectangle2D;
@@ -36,15 +36,15 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import org.jacpfx.api.componentLayout.WorkbenchLayout;
-import org.jacpfx.api.util.OS;
 import org.jacpfx.api.util.ToolbarPosition;
 import org.jacpfx.rcp.componentLayout.FXWorkbenchLayout;
 import org.jacpfx.rcp.components.menuBar.JACPMenuBar;
 import org.jacpfx.rcp.components.modalDialog.JACPModalDialog;
 import org.jacpfx.rcp.components.toolBar.JACPToolBar;
 import org.jacpfx.rcp.util.CSSUtil;
+import org.jacpfx.rcp.workbench.AFXWorkbench;
+import org.jacpfx.rcp.workbench.GlobalMediator;
 
 import java.util.Map;
 
@@ -54,7 +54,9 @@ import java.util.Map;
  */
 public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
     public static double TOOLBAR_HIGHT = 0.033d;
-    private final WorkbenchLayout<Node> workbenchLayout;
+
+
+    private WorkbenchLayout<Node> workbenchLayout;
     private Stage stage;
     private StackPane rootPane;
     private StackPane menuPane;
@@ -80,6 +82,9 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
         this.workbenchLayout = workbenchLayout;
     }
 
+    public DefaultWorkbenchDecorator() {
+    }
+
     /**
      * set basic layout manager for workspace
      *
@@ -93,12 +98,7 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
         absoluteRoot = new AnchorPane();
         this.stage = stage;
 
-        if (OS.MAC.equals(OS.getOS())) {
-            // OSX will always be DECORATED due to fullscreen option!
-            stage.initStyle(StageStyle.DECORATED);
-        } else {
-            stage.initStyle(this.getWorkbenchLayout().getStyle());
-        }
+
 
 
         rootPane = new StackPane();
@@ -153,7 +153,7 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
 
     }
 
-    private void initMenu(Stage stage) {
+    private void initMenu(final Stage stage) {
         if (getWorkbenchLayout().isMenuEnabled()) {
             manageNode(menuPane, false, true);
             final JACPMenuBar menu = getWorkbenchLayout().getMenu();
@@ -176,7 +176,6 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
 
         this.stage.setScene(new Scene(this.base, x, y));
         initCSS(this.stage.getScene());
-        SceneUtil.setScene(this.stage.getScene());
     }
 
     private void updateAnchorSizes() {
@@ -215,7 +214,7 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
 
     private void initGlobalMouseEvents() {
         // catch global clicks
-        this.stage.getScene().addEventFilter(
+        stage.getScene().addEventFilter(
                 MouseEvent.MOUSE_RELEASED,
                 (event) -> GlobalMediator.getInstance().hideAllHideables(event));
     }
@@ -343,16 +342,23 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
      * {@inheritDoc}
      */
     private FXWorkbenchLayout getWorkbenchLayout() {
-        return (FXWorkbenchLayout) this.workbenchLayout;
+        return (FXWorkbenchLayout) workbenchLayout;
+    }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setWorkbenchLayout(WorkbenchLayout<Node> workbenchLayout) {
+        this.workbenchLayout = workbenchLayout;
     }
 
     @Override
     public Pane getRoot() {
-        return this.rootPane;
+        return rootPane;
     }
 
     @Override
     public Pane getGlassPane() {
-        return this.glassPane;
+        return glassPane;
     }
 }

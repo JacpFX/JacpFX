@@ -29,6 +29,8 @@ import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 import org.jacpfx.api.handler.ErrorDialogHandler;
+import org.jacpfx.rcp.components.workbench.DefaultWorkbenchDecorator;
+import org.jacpfx.rcp.components.workbench.WorkbenchDecorator;
 import org.jacpfx.rcp.handler.DefaultErrorDialogHandler;
 import org.jacpfx.rcp.handler.ExceptionHandler;
 import org.jacpfx.rcp.registry.ClassRegistry;
@@ -93,9 +95,15 @@ public abstract class AMinimalLauncher extends Application {
     /**
      * Returns an ErrorDialog handler to display exceptions and errors in workspace. Overwrite this method if you need a customized handler.
      *
-     * @return an ErrorHandler instance
+     * @return an {@link org.jacpfx.api.handler.ErrorDialogHandler} instance
      */
     protected ErrorDialogHandler<Node> getErrorHandler() {
         return new DefaultErrorDialogHandler();
     }
+
+    /**
+     *  Return an instance of your WorkbenchDecorator, which defines the basic layout structure with toolbars and main content
+     * @return  returns an instance of a {@link org.jacpfx.rcp.components.workbench.WorkbenchDecorator}
+     */
+    protected WorkbenchDecorator getWorkbenchDecorator() {return new DefaultWorkbenchDecorator();}
 }

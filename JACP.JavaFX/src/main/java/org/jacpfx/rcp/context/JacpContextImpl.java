@@ -358,6 +358,13 @@ public class JacpContextImpl implements Context,InternalContext {
            t.getUncaughtExceptionHandler().uncaughtException(t,e);
         }
     }
+
+
+    public class AsyncHandler{
+
+
+    }
+
     /**
      * {@inheritDoc}
      */

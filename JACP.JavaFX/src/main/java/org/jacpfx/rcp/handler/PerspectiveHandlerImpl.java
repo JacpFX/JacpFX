@@ -346,9 +346,7 @@ public class PerspectiveHandlerImpl implements
             comp.setVisible(true);
             comp.setCache(true);
             final ObservableList<Node> children = this.root.getChildren();
-            children.clear();
-            GridPane.setConstraints(comp, 0, 0);
-            children.add(comp);
+            children.setAll(comp);
         }
     }
 

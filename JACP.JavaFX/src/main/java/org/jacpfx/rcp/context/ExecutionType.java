@@ -23,34 +23,11 @@
  * *********************************************************************
  */
 
-package org.jacpfx.rcp.workbench;
-
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
+package org.jacpfx.rcp.context;
 
 /**
- * Created by Andy Moncsek on 12.02.15.
- * The WorkbenchDecorator defines the basic Layout of a workbench window with the root naodes, menu and toolBars positions.
+ * Created by Andy Moncsek on 16.04.15.
  */
-public interface WorkbenchDecorator {
-
-    /**
-     *
-     * Initialize the decorator
-     * @param stage
-     */
-    void initBasicLayout(Stage stage);
-
-    /**
-     * retirn the Root node, this node is the parent for all perspectives
-     * @return  the root node
-     */
-    Pane getRoot();
-
-    /**
-     * Returns the glassPane which is needed to show dialogs
-     * @return the glassPane
-     */
-    Pane getGlassPane();
+public enum ExecutionType {
+    FX_THREAD, POOL
 }

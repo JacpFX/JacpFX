@@ -1,5 +1,7 @@
 package org.jacpfx.rcp.workbench;
 
+import org.jacpfx.rcp.components.workbench.WorkbenchDecorator;
+
 /**
  * Created with IntelliJ IDEA.
  * User: ady
@@ -9,8 +11,9 @@ package org.jacpfx.rcp.workbench;
  */
 public class EmbeddedFXWorkbench extends AFXWorkbench {
 
-    public EmbeddedFXWorkbench(final FXWorkbench handler){
+    public EmbeddedFXWorkbench(final FXWorkbench handler, final WorkbenchDecorator decorator){
         this.setComponentHandle(handler);
+        this.setWorkbenchDecorator(decorator);
     }
 
 }

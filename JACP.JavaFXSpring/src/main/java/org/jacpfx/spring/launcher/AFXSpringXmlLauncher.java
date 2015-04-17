@@ -7,7 +7,6 @@ import org.jacpfx.api.exceptions.AttributeNotFoundException;
 import org.jacpfx.api.exceptions.ComponentNotFoundException;
 import org.jacpfx.api.fragment.Scope;
 import org.jacpfx.api.launcher.Launcher;
-import org.jacpfx.rcp.handler.ExceptionHandler;
 import org.jacpfx.rcp.workbench.EmbeddedFXWorkbench;
 import org.jacpfx.rcp.workbench.FXWorkbench;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -51,7 +50,7 @@ public abstract class AFXSpringXmlLauncher extends ASpringLauncher {
         final String id = annotation.id();
         if (id.isEmpty()) throw new AttributeNotFoundException("no workbench id found for: " + workbenchHandler);
         final FXWorkbench handler = launcher.registerAndGetBean(workbenchHandler, id, Scope.SINGLETON);
-        return new EmbeddedFXWorkbench(handler);
+        return new EmbeddedFXWorkbench(handler,getWorkbenchDecorator());
     }
 
     public abstract String getXmlConfig();

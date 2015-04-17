@@ -27,6 +27,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.jacpfx.api.annotations.workbench.Workbench;
 import org.jacpfx.api.component.Injectable;
 import org.jacpfx.api.component.Perspective;
@@ -39,10 +40,12 @@ import org.jacpfx.api.delegator.MessageDelegator;
 import org.jacpfx.api.handler.ComponentHandler;
 import org.jacpfx.api.launcher.Launcher;
 import org.jacpfx.api.message.Message;
+import org.jacpfx.api.util.OS;
 import org.jacpfx.api.workbench.Base;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.componentLayout.FXWorkbenchLayout;
 import org.jacpfx.rcp.components.managedFragment.ManagedFragment;
+import org.jacpfx.rcp.components.workbench.WorkbenchDecorator;
 import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.context.JacpContextImpl;
 import org.jacpfx.rcp.coordinator.MessageCoordinator;
@@ -74,10 +77,13 @@ public abstract class AFXWorkbench
     private final ComponentDelegator<EventHandler<Event>, Event, Object> componentDelegator = new ComponentDelegatorImpl();
     private final MessageDelegator<EventHandler<Event>, Event, Object> messageDelegator = new MessageDelegatorImpl();
     private final WorkbenchLayout<Node> workbenchLayout = new FXWorkbenchLayout();
-    private final Logger logger = Logger.getLogger(this.getClass().getName());
+    private final Logger logger = Logger.getLogger(getClass().getName());
     private List<Perspective<Node, EventHandler<Event>, Event, Object>> perspectives;
     private ComponentHandler<Perspective<Node, EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
     private Coordinator<EventHandler<Event>, Event, Object> messageCoordinator;
+
+
+
     private WorkbenchDecorator workbenchDecorator;
     private Launcher<?> launcher;
     private Stage stage;
@@ -92,28 +98,38 @@ public abstract class AFXWorkbench
     private void start(final Stage stage) {
         this.stage = stage;
         DimensionUtil.init(stage);
-        this.registerTeardownActions();
-        this.log("1: init workbench");
+        registerTeardownActions();
+        log("1: init workbench");
 
         initWorkbenchHandle(stage);
 
-        this.log("3: handle initialisation sequence");
-        this.perspectives = WorkbenchUtil.getInstance(launcher).createPerspectiveInstances(getWorkbenchAnnotation());
+        log("3: handle initialisation sequence");
+        perspectives = WorkbenchUtil.getInstance(launcher).createPerspectiveInstances(getWorkbenchAnnotation());
         if (perspectives == null) return;
 
-        this.initSubsystem();
-        this.handleInitialisationSequence();
+        initSubsystem();
+        handleInitialisationSequence();
     }
 
     private void initWorkbenchHandle(final Stage stage) {
         // init user defined workspace
-        this.handle.handleInitialLayout(new MessageImpl(this.context.getId(), "init"),
-                this.getWorkbenchLayout(), stage);
-        this.workbenchDecorator = new DefaultWorkbenchDecorator(this.getWorkbenchLayout());
-        this.workbenchDecorator.initBasicLayout(stage);
+        handle.handleInitialLayout(new MessageImpl(context.getId(), "init"),
+                getWorkbenchLayout(), stage);
+        initWorkbenchDecorator(stage);
+        handle.postHandle(new FXComponentLayout(getWorkbenchLayout()
+                .getMenu(), workbenchDecorator.getGlassPane(), null, getContext().getId()));
+    }
 
-        this.handle.postHandle(new FXComponentLayout(this.getWorkbenchLayout()
-                .getMenu(), this.workbenchDecorator.getGlassPane(), null, this.getContext().getId()));
+    private void initWorkbenchDecorator(Stage stage) {
+        if (OS.MAC.equals(OS.getOS())) {
+            // OSX will always be DECORATED due to fullscreen option!
+            stage.initStyle(StageStyle.DECORATED);
+        } else {
+            stage.initStyle(this.getWorkbenchLayout().getStyle());
+        }
+        workbenchDecorator.setWorkbenchLayout(getWorkbenchLayout());
+        workbenchDecorator.initBasicLayout(stage);
+        SceneUtil.setScene(stage.getScene());
     }
 
     private void registerTeardownActions() {
@@ -126,11 +142,11 @@ public abstract class AFXWorkbench
     }
 
     private void initSubsystem() {
-        this.componentHandler = new PerspectiveHandlerImpl(this.launcher,
-                this.workbenchLayout, this.workbenchDecorator.getRoot());
-        this.messageCoordinator.setPerspectiveHandler(this.componentHandler);
-        this.componentDelegator.setPerspectiveHandler(this.componentHandler);
-        this.messageDelegator.setPerspectiveHandler(this.componentHandler);
+        componentHandler = new PerspectiveHandlerImpl(launcher,
+                workbenchLayout, workbenchDecorator.getRoot());
+        messageCoordinator.setPerspectiveHandler(componentHandler);
+        componentDelegator.setPerspectiveHandler(componentHandler);
+        messageDelegator.setPerspectiveHandler(componentHandler);
     }
 
     @Override
@@ -141,17 +157,17 @@ public abstract class AFXWorkbench
         this.launcher = launcher;
         ManagedFragment.initManagedFragment(launcher);
         final Workbench annotation = getWorkbenchAnnotation();
-        this.messageCoordinator = new MessageCoordinator(annotation.id(), this.launcher);
-        this.messageCoordinator.setDelegateQueue(this.messageDelegator.getMessageDelegateQueue());
-        this.context = new JacpContextImpl(annotation.id(), annotation.name(), this.messageCoordinator.getMessageQueue());
-        FXUtil.performResourceInjection(this.handle, this.context);
+        messageCoordinator = new MessageCoordinator(annotation.id(), launcher);
+        messageCoordinator.setDelegateQueue(messageDelegator.getMessageDelegateQueue());
+        context = new JacpContextImpl(annotation.id(), annotation.name(), messageCoordinator.getMessageQueue());
+        FXUtil.performResourceInjection(handle, context);
         start(Stage.class.cast(root));
         GlobalMediator.getInstance().handleWorkbenchToolBarButtons(annotation.id(), true);
         logger.info("INIT");
     }
 
     private Workbench getWorkbenchAnnotation() {
-        return this.handle.getClass().getAnnotation(Workbench.class);
+        return handle.getClass().getAnnotation(Workbench.class);
     }
 
     @Override
@@ -159,8 +175,8 @@ public abstract class AFXWorkbench
      * {@inheritDoc}
      */
     public final void initComponents(final Message<Event, Object> action) {
-        this.perspectives.forEach(this::initPerspective);
-        final List<Perspective<Node, EventHandler<Event>, Event, Object>> activeSequentialPerspectiveList = this.perspectives
+        perspectives.forEach(this::initPerspective);
+        final List<Perspective<Node, EventHandler<Event>, Event, Object>> activeSequentialPerspectiveList = perspectives
                 .stream()
                 .sequential()
                 .filter(p -> p.getContext() != null && p.getContext().isActive())
@@ -172,13 +188,13 @@ public abstract class AFXWorkbench
     }
 
     private void initPerspective(Perspective<Node, EventHandler<Event>, Event, Object> perspective) {
-        this.registerComponent(perspective);
-        this.log("3.4.1: register component: " + perspective.getContext().getName());
+        registerComponent(perspective);
+        log("3.4.1: register component: " + perspective.getContext().getName());
         final CountDownLatch waitForInit = new CountDownLatch(1);
-        this.log("3.4.2: init perspective");
+        log("3.4.2: init perspective");
         if (perspective.getContext().isActive()) {
             final Runnable r = () -> {
-                AFXWorkbench.this.componentHandler.initComponent(
+                componentHandler.initComponent(
                         new MessageImpl(perspective.getContext().getId(), perspective
                                 .getContext().getId(), "init", null), perspective);
                 waitForInit.countDown();
@@ -204,20 +220,20 @@ public abstract class AFXWorkbench
      * initialisation
      */
     private void handleInitialisationSequence() {
-        AFXWorkbench.this.stage.show();
+        stage.show();
         // start perspective Observer worker thread
         // TODO create status daemon which observes
         // thread component on
         // failure and restarts if needed!!
-        ((Thread) AFXWorkbench.this.messageCoordinator)
+        ((Thread) messageCoordinator)
                 .start();
-        ((Thread) AFXWorkbench.this.componentDelegator)
+        ((Thread) componentDelegator)
                 .start();
-        ((Thread) AFXWorkbench.this.messageDelegator)
+        ((Thread) messageDelegator)
                 .start();
         // handle perspective
-        AFXWorkbench.this.log("3.3: workbench init perspective");
-        AFXWorkbench.this.initComponents(null);
+        log("3.3: workbench init perspective");
+        initComponents(null);
     }
 
     @Override
@@ -227,15 +243,15 @@ public abstract class AFXWorkbench
     public final void registerComponent(
             final Perspective<Node, EventHandler<Event>, Event, Object> perspective) {
         final String perspectiveId = PerspectiveUtil.getPerspectiveIdFromAnnotation(perspective);
-        final MessageCoordinator messageCoordinatorLocal = new MessageCoordinator(perspectiveId, this.launcher);
-        messageCoordinatorLocal.setDelegateQueue(this.messageDelegator.getMessageDelegateQueue());
-        messageCoordinatorLocal.setPerspectiveHandler(this.componentHandler);
+        final MessageCoordinator messageCoordinatorLocal = new MessageCoordinator(perspectiveId, launcher);
+        messageCoordinatorLocal.setDelegateQueue(messageDelegator.getMessageDelegateQueue());
+        messageCoordinatorLocal.setPerspectiveHandler(componentHandler);
         // use compleatableFuture
-        perspective.init(this.componentDelegator.getComponentDelegateQueue(),
-                this.messageDelegator.getMessageDelegateQueue(),
-                messageCoordinatorLocal, this.launcher);
+        perspective.init(componentDelegator.getComponentDelegateQueue(),
+                messageDelegator.getMessageDelegateQueue(),
+                messageCoordinatorLocal, launcher);
         messageCoordinatorLocal.start();
-        WorkbenchUtil.handleMetaAnnotation(perspective, this.getWorkbenchAnnotation().id());
+        WorkbenchUtil.handleMetaAnnotation(perspective, getWorkbenchAnnotation().id());
         addComponent(perspective);
     }
 
@@ -259,20 +275,20 @@ public abstract class AFXWorkbench
 
     @Override
     public final void removeAllCompnents() {
-        this.perspectives.forEach(this::unregisterComponent);
-        this.perspectives.clear();
+        perspectives.forEach(this::unregisterComponent);
+        perspectives.clear();
     }
 
     /**
      * {@inheritDoc}
      */
     private FXWorkbenchLayout getWorkbenchLayout() {
-        return (FXWorkbenchLayout) this.workbenchLayout;
+        return (FXWorkbenchLayout) workbenchLayout;
     }
 
     @Override
     public ComponentHandler<Perspective<Node, EventHandler<Event>, Event, Object>, Message<Event, Object>> getComponentHandler() {
-        return this.componentHandler;
+        return componentHandler;
     }
 
     @Override
@@ -280,14 +296,14 @@ public abstract class AFXWorkbench
      * {@inheritDoc}
      */
     public final List<Perspective<Node, EventHandler<Event>, Event, Object>> getPerspectives() {
-        return this.perspectives;
+        return perspectives;
     }
 
 
 
     private void log(final String message) {
-        if (this.logger.isLoggable(Level.FINE)) {
-            this.logger.fine(">> " + message);
+        if (logger.isLoggable(Level.FINE)) {
+            logger.fine(">> " + message);
         }
     }
 
@@ -303,11 +319,19 @@ public abstract class AFXWorkbench
     @SuppressWarnings("unchecked")
     @Override
     public FXWorkbench getComponentHandle() {
-        return this.handle;
+        return handle;
     }
 
     @Override
     public <X extends Injectable> void setComponentHandle(X handle) {
         this.handle = (FXWorkbench) handle;
+    }
+
+    protected WorkbenchDecorator getWorkbenchDecorator() {
+        return this.workbenchDecorator;
+    }
+
+    protected void setWorkbenchDecorator(WorkbenchDecorator workbenchDecorator) {
+        this.workbenchDecorator = workbenchDecorator;
     }
 }

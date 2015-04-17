@@ -23,7 +23,7 @@
  * *********************************************************************
  */
 
-package org.jacpfx.rcp.workbench;
+package org.jacpfx.rcp.components.workbench;
 
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
@@ -32,15 +32,15 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import org.jacpfx.api.componentLayout.WorkbenchLayout;
-import org.jacpfx.api.util.OS;
 import org.jacpfx.api.util.ToolbarPosition;
 import org.jacpfx.rcp.componentLayout.FXWorkbenchLayout;
 import org.jacpfx.rcp.components.modalDialog.JACPModalDialog;
 import org.jacpfx.rcp.components.toolBar.JACPToolBar;
 import org.jacpfx.rcp.util.CSSUtil;
 import org.jacpfx.rcp.util.LayoutUtil;
+import org.jacpfx.rcp.workbench.AFXWorkbench;
+import org.jacpfx.rcp.workbench.GlobalMediator;
 
 import java.util.Map;
 
@@ -49,7 +49,7 @@ import java.util.Map;
  * Created by Andy Moncsek on 18.12.14.
  */
 public class DefaultLegacyWorkbenchDecorator implements WorkbenchDecorator {
-    private final WorkbenchLayout<Node> workbenchLayout ;
+    private WorkbenchLayout<Node> workbenchLayout ;
     private Stage stage;
     private GridPane root;
     private BorderPane baseLayoutPane;
@@ -62,6 +62,9 @@ public class DefaultLegacyWorkbenchDecorator implements WorkbenchDecorator {
 
     public DefaultLegacyWorkbenchDecorator(WorkbenchLayout<Node> workbenchLayout) {
         this.workbenchLayout = workbenchLayout;
+    }
+
+    public DefaultLegacyWorkbenchDecorator() {
     }
 
     /**
@@ -78,12 +81,6 @@ public class DefaultLegacyWorkbenchDecorator implements WorkbenchDecorator {
         this.baseLayoutPane = new BorderPane();
         this.stage = stage;
 
-        if (OS.MAC.equals(OS.getOS())) {
-            // OSX will always be DECORATED due to fullscreen option!
-            stage.initStyle(StageStyle.DECORATED);
-        } else {
-            stage.initStyle(this.getWorkbenchLayout().getStyle());
-        }
 
         this.initBaseLayout();
         this.initMenuLayout();
@@ -102,7 +99,7 @@ public class DefaultLegacyWorkbenchDecorator implements WorkbenchDecorator {
         LayoutUtil.GridPaneUtil.setFullGrow(Priority.ALWAYS, this.absoluteRoot);
         this.stage.setScene(new Scene(this.base, x, y));
         this.initCSS(this.stage.getScene());
-        SceneUtil.setScene(this.stage.getScene());
+
         this.absoluteRoot.getChildren().add(this.glassPane);
         this.absoluteRoot.getChildren().add(this.dimmer);
 
@@ -228,5 +225,13 @@ public class DefaultLegacyWorkbenchDecorator implements WorkbenchDecorator {
     @Override
     public Pane getGlassPane() {
         return this.glassPane;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setWorkbenchLayout(WorkbenchLayout<Node> workbenchLayout) {
+        this.workbenchLayout = workbenchLayout;
     }
 }
