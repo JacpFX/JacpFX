@@ -69,10 +69,10 @@ public abstract class AFXPerspective implements
         Perspective<Node, EventHandler<Event>, Event, Object>, Component<EventHandler<Event>, Object>,
         Initializable {
     private final Logger logger = Logger.getLogger(this.getClass().getName());
-    private volatile AtomicBoolean started = new AtomicBoolean(false);
+    private final AtomicBoolean started = new AtomicBoolean(false);
     private String resourceBundleLocation = "";
     private JacpContext context;
-    private volatile BlockingQueue<Message<Event, Object>> globalMessageQueue;
+    private BlockingQueue<Message<Event, Object>> globalMessageQueue;
     private ComponentHandler<SubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
     private BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
     private BlockingQueue<DelegateDTO<Event, Object>> messageDelegateQueue;

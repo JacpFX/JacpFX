@@ -40,7 +40,7 @@ public final class ShutdownThreadsHandler{
 	private static final List<Thread> registeredThreads = new CopyOnWriteArrayList<>();
 	private static final List<ExecutorService> registeredExecutors = new CopyOnWriteArrayList<>();
 	private static final Logger logger = Logger.getLogger("ShutdownThreadsHandler");
-	public static volatile AtomicBoolean APPLICATION_RUNNING = new AtomicBoolean(true);
+	public static final AtomicBoolean APPLICATION_RUNNING = new AtomicBoolean(true);
 	public static final Long WAIT = Long.valueOf(3500L);
 	/**
 	 * Register a Thread.

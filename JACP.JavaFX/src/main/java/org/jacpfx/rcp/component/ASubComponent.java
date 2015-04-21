@@ -37,7 +37,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
 /**
@@ -53,12 +52,12 @@ public abstract class ASubComponent  implements
     private final Logger componentLogger = Logger.getLogger(this.getClass().getName());
     private final BlockingQueue<Message<Event, Object>> incomingMessage = new LinkedBlockingQueue<>();
     private volatile ComponentHandle<?, Event, Object> component;
-    private final AtomicReference<AEmbeddedComponentWorker> workerRef = new AtomicReference<>();
+    private volatile AEmbeddedComponentWorker workerRef;
     private final AtomicBoolean started =  new AtomicBoolean(false);
     private String localeID = "";
     private String resourceBundleLocation = "";
     private Context context;
-    protected volatile BlockingQueue<Message<Event, Object>> globalMessageQueue;
+    protected BlockingQueue<Message<Event, Object>> globalMessageQueue;
 
 
     /**
@@ -157,17 +156,16 @@ public abstract class ASubComponent  implements
     }
 
     public final void initWorker(final AEmbeddedComponentWorker worker) {
-        this.workerRef.set(worker);
-        worker.start();
+        workerRef = worker;
+        workerRef.start();
     }
 
     public final void interruptWorker() {
-        final AEmbeddedComponentWorker worker = this.workerRef.get();
-        if(worker==null)return;
-        if(worker.isAlive()) {
-            worker.interrupt();
+        if(workerRef==null)return;
+        if(workerRef.isAlive()) {
+            workerRef.interrupt();
         }
-        worker.cleanAfterInterrupt();
+        workerRef.cleanAfterInterrupt();
     }
 
     /**

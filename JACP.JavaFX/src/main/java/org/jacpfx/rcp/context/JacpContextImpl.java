@@ -39,7 +39,7 @@ public class JacpContextImpl implements Context,InternalContext {
 
     private final static CustomSecurityManager customSecurityManager =
             new CustomSecurityManager();
-    private volatile BlockingQueue<Message<Event, Object>> globalMessageQueue;
+    private BlockingQueue<Message<Event, Object>> globalMessageQueue;
     /**
      * will be set on init
      */
@@ -55,7 +55,7 @@ public class JacpContextImpl implements Context,InternalContext {
     private volatile String executionTarget = "";
     private volatile FXComponentLayout layout;
     private volatile ResourceBundle resourceBundle;
-    private volatile AtomicBoolean active = new AtomicBoolean(false);
+    private final AtomicBoolean active = new AtomicBoolean(false);
 
     public JacpContextImpl(final String id, final String name, final BlockingQueue<Message<Event, Object>> globalMessageQueue) {
         this.id = id;
