@@ -25,7 +25,7 @@ package org.jacpfx.api.delegator;
 import org.jacpfx.api.coordinator.Delegator;
 import org.jacpfx.api.message.DelegateDTO;
 
-import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TransferQueue;
 
 /**
  * Defines an interface for a message delegator.
@@ -43,6 +43,6 @@ public interface MessageDelegator<L, A, M> extends Delegator<L, A, M> {
      *
      * @return the delegate queue
      */
-    BlockingQueue<DelegateDTO<A, M>> getMessageDelegateQueue();
+    TransferQueue<DelegateDTO<A, M>> getMessageDelegateQueue();
 
 }

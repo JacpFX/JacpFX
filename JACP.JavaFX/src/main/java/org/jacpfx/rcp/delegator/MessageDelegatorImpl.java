@@ -14,9 +14,7 @@ import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.ShutdownThreadsHandler;
 import org.jacpfx.rcp.util.WorkerUtil;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.*;
 import java.util.logging.Logger;
 
 /**
@@ -27,7 +25,7 @@ public class MessageDelegatorImpl extends Thread implements
 
     private final Logger logger = Logger.getLogger(this.getClass().getName());
     private ComponentHandler<Perspective<Node, EventHandler<Event>, Event, Object>, Message<Event, Object>> perspectiveHandler;
-    private final BlockingQueue<DelegateDTO<Event, Object>> messageDelegateQueue = new SynchronousQueue<>();
+    private final TransferQueue<DelegateDTO<Event, Object>> messageDelegateQueue = new LinkedTransferQueue<>();
 
     public MessageDelegatorImpl() {
         super("MessageDelegatorImpl");
@@ -73,7 +71,7 @@ public class MessageDelegatorImpl extends Thread implements
 
 
     @Override
-    public BlockingQueue<DelegateDTO<Event, Object>> getMessageDelegateQueue() {
+    public TransferQueue<DelegateDTO<Event, Object>> getMessageDelegateQueue() {
         return this.messageDelegateQueue;
     }
 

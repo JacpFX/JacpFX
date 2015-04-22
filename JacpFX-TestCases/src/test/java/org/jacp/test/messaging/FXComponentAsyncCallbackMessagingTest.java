@@ -83,7 +83,7 @@ public class FXComponentAsyncCallbackMessagingTest {
     @Test
     // 3300ms linux
     // 2047 ms osx
-    // 1550 macbook
+    // 1550,399 macbook
     public void testBurstMessaging() throws InterruptedException {
         long start = System.currentTimeMillis();
         AsyncCallbackComponentMessagingTest1Component1.wait = new CountDownLatch(1);

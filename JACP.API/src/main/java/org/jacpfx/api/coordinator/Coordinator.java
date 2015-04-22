@@ -28,6 +28,7 @@ import org.jacpfx.api.message.DelegateDTO;
 import org.jacpfx.api.message.Message;
 
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TransferQueue;
 
 /**
  * Defines a basic observer for component messages; handles the message and
@@ -79,6 +80,6 @@ public interface Coordinator<L, A, M> {
      *
      * @param delegateQueue, The delegate queue.
      */
-    void setDelegateQueue(final BlockingQueue<DelegateDTO<A, M>> delegateQueue);
+    void setDelegateQueue(final TransferQueue<DelegateDTO<A, M>> delegateQueue);
 
 }

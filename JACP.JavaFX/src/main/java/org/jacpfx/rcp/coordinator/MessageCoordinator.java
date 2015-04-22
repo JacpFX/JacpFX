@@ -23,6 +23,7 @@ import org.jacpfx.rcp.util.ShutdownThreadsHandler;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TransferQueue;
 
 /**
  * The Message Coordinator checks the message target and delegates the message to component/perspective for correct handling.
@@ -32,7 +33,7 @@ public class MessageCoordinator extends Thread implements
         Coordinator<EventHandler<Event>, Event, Object> {
     private ComponentHandler<SubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
     private ComponentHandler<Perspective<Node, EventHandler<Event>, Event, Object>, Message<Event, Object>> perspectiveHandler;
-    private BlockingQueue<DelegateDTO<Event, Object>> delegateQueue;
+    private TransferQueue<DelegateDTO<Event, Object>> delegateQueue;
     private final BlockingQueue<Message<Event, Object>> messages = new LinkedBlockingQueue<>();
     private final String parentId;
     private final Launcher<?> launcher;
@@ -111,7 +112,7 @@ public class MessageCoordinator extends Thread implements
 
     private void delegateMessageToCorrectPerspective(final DelegateDTOImpl dto) {
         try {
-            this.delegateQueue.put(dto);
+            this.delegateQueue.transfer(dto);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -234,7 +235,7 @@ public class MessageCoordinator extends Thread implements
     }
 
     @Override
-    public final void setDelegateQueue(BlockingQueue<DelegateDTO<Event, Object>> delegateQueue) {
+    public final void setDelegateQueue(TransferQueue<DelegateDTO<Event, Object>> delegateQueue) {
         this.delegateQueue = delegateQueue;
     }
 }
