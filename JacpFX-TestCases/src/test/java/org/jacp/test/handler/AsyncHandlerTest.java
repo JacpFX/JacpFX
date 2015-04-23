@@ -25,8 +25,16 @@
 
 package org.jacp.test.handler;
 
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import org.jacpfx.rcp.context.AsyncHandler;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+import org.testfx.framework.junit.ApplicationTest;
+import org.testfx.service.query.NodeQuery;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -37,11 +45,27 @@ import java.util.function.Consumer;
 /**
  * Created by Andy Moncsek on 17.04.15.
  */
-public class AsyncHandlerTest {
+public class AsyncHandlerTest extends ApplicationTest {
+
+    Pane mainPane = new Pane();
+
+    @Override
+    public void start(Stage stage) {
+        Scene scene = new Scene(mainPane, 800, 600);
+        stage.setScene(scene);
+        stage.show();
+    }
+
     private final static ExecutorService EXECUTOR = Executors.newCachedThreadPool();
+
+    @Before
+    public void onStart() {
+
+    }
 
     @Test
     public void basicHandlerTest() throws InterruptedException {
+
         AsyncHandler handler = AsyncHandler.getInstance();
         System.err.println("THREAD: " + Thread.currentThread());
         CountDownLatch latch1 = new CountDownLatch(1);
@@ -51,7 +75,7 @@ public class AsyncHandlerTest {
         CountDownLatch latch5 = new CountDownLatch(1);
         CountDownLatch latch6 = new CountDownLatch(1);
         CountDownLatch latch7 = new CountDownLatch(1);
-        handler.onExecutorThread(() -> {
+        handler.supplyOnExecutorThread(() -> {
             try {
                 System.out.println("THREAD POOL 1: " + Thread.currentThread());
                 TimeUnit.MILLISECONDS.sleep(2000);
@@ -59,9 +83,9 @@ public class AsyncHandlerTest {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            return "";
+            return "abc";
         });
-        handler.onFXThread(() -> {
+        handler.supplyOnFXThread(() -> {
                     try {
                         latch2.await();
                     } catch (InterruptedException e) {
@@ -72,7 +96,7 @@ public class AsyncHandlerTest {
                     return "hello";
                 }
         );
-        handler.onFXThread((Consumer) (value) -> {
+        handler.consumeOnFXThread((Consumer) (value) -> {
             System.out.println("THREAD FX2: " + Thread.currentThread());
             System.out.println("----" + value);
             try {
@@ -83,7 +107,7 @@ public class AsyncHandlerTest {
 
             latch4.countDown();
         });
-        handler.onExecutorThread(() -> {
+        handler.supplyOnExecutorThread(() -> {
             System.out.println("THREAD POOL 2: " + Thread.currentThread());
             try {
                 latch4.await();
@@ -102,11 +126,164 @@ public class AsyncHandlerTest {
             latch6.countDown();
             System.out.println("END:: " + value);
         });
-        latch1.countDown();
-        System.out.println("---------XXXXXXXXX");
 
-        latch1.await();
+
+        System.out.println("---------XXXXXXXXX------------------");
+
         latch6.await();
+        System.out.println("---------pass 1----------------------");
 
     }
+
+    @Test
+    public void executeHandlerTest() throws InterruptedException {
+        AsyncHandler<Object> handler = AsyncHandler.getInstance();
+        CountDownLatch latch5 = new CountDownLatch(1);
+        handler.supplyOnExecutorThread(() -> {
+            try {
+                System.out.println("-- THREAD SUPPLY POOL 1: " + Thread.currentThread());
+                TimeUnit.MILLISECONDS.sleep(2000);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "abc";
+        }).consumeOnFXThread((value) -> {
+            System.out.println("-- THREAD consume FX1: " + Thread.currentThread());
+            System.out.println("----" + value);
+
+
+        }).supplyOnFXThread(() -> {
+
+                    System.out.println("-- THREAD supply FX2: " + Thread.currentThread());
+
+                    return "hello";
+                }
+        ).consumeOnExecutorThread((val) -> {
+            System.out.println("-- THREAD CONSUME POOL 2: " + Thread.currentThread());
+
+
+        }).execute((cc) -> {
+            System.out.println("STOP");
+            latch5.countDown();
+        });
+
+
+        System.out.println("---------XXXXXXXXX------------------");
+
+        latch5.await();
+        System.out.println("---------pass 2----------------------");
+        Assert.assertTrue(true);
+    }
+
+    @Test
+    public void executeSupplierOnFXThread() throws InterruptedException {
+        AsyncHandler<Object> handler = AsyncHandler.getInstance();
+        CountDownLatch latch5 = new CountDownLatch(1);
+        handler.supplyOnExecutorThread(() -> {
+            try {
+                System.out.println("-- THREAD SUPPLY POOL 1: " + Thread.currentThread());
+                TimeUnit.MILLISECONDS.sleep(2000);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "abc";
+        }).consumeOnFXThread((value) -> {
+            System.out.println("-- THREAD consume FX1: " + Thread.currentThread());
+            System.out.println("----" + value);
+
+
+        }).supplyOnFXThread(() -> {
+
+                    System.out.println("-- THREAD supply FX2: " + Thread.currentThread());
+
+                    return new Button("ok");
+                }
+        ).consumeOnFXThread((val) -> {
+            System.out.println("-- THREAD CONSUME FX3 : " + Thread.currentThread() + "  val:" + val);
+
+
+        }).execute((cc) -> {
+            System.out.println("STOP");
+            latch5.countDown();
+        });
+
+
+        System.out.println("---------XXXXXXXXX------------------");
+
+        latch5.await();
+        System.out.println("---------pass 3----------------------");
+        Assert.assertTrue(true);
+    }
+
+    @Test
+    public void testAddNodes() throws InterruptedException {
+        AsyncHandler<Object> handler = AsyncHandler.getInstance();
+        CountDownLatch latch5 = new CountDownLatch(1);
+        handler.supplyOnExecutorThread(() -> {
+            try {
+                System.out.println("-- THREAD SUPPLY POOL 1: " + Thread.currentThread());
+                TimeUnit.MILLISECONDS.sleep(2000);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "abc";
+        }).consumeOnFXThread((value) -> {
+            System.out.println("-- THREAD consume FX1: " + Thread.currentThread());
+            System.out.println("----" + value);
+            Button b1 = new Button(value);
+            b1.setId(value);
+            mainPane.getChildren().add(b1);
+
+        }).supplyOnFXThread(() -> {
+
+                    System.out.println("-- THREAD supply FX2: " + Thread.currentThread());
+                    Button ok = new Button("ok");
+                    ok.setId("ok");
+                    return ok;
+                }
+        ).consumeOnFXThread((val) -> {
+            System.out.println("-- THREAD CONSUME FX3 : " + Thread.currentThread() + "  val:" + val);
+            mainPane.getChildren().add(val);
+
+        }).execute((cc) -> {
+            System.out.println("STOP");
+            latch5.countDown();
+        });
+
+
+        System.out.println("---------XXXXXXXXX------------------");
+
+        latch5.await();
+
+        NodeQuery button = lookup("#abc");
+        Assert.assertTrue(button.tryQueryFirst().isPresent());
+
+        NodeQuery button1 = lookup("#ok");
+        Assert.assertTrue(button1.tryQueryFirst().isPresent());
+
+        System.out.println("---------pass 4----------------------");
+        Assert.assertTrue(true);
+    }
+
+    @Test
+    public void testTypes() {
+
+        AsyncHandler<Object> handler = AsyncHandler.getInstance();
+        handler.
+                supplyOnExecutorThread(() -> new Integer(3)).
+                consumeOnExecutorThread((intVal) -> Assert.assertTrue(intVal.equals(new Integer(3)))).
+                supplyOnFXThread(() -> new String("abs")).
+                consumeOnFXThread(this::consume).
+                supplyOnFXThread(() -> new Integer(3)).execute();
+    }
+
+
+    private void consume(String myVal) {
+        Assert.assertTrue(myVal.equals(new String("abs")));
+    }
+
+
 }
