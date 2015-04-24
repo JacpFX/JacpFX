@@ -20,10 +20,18 @@ import java.util.stream.Collectors;
  * Contains registered classes found by scanning. This class should be thread save by convention. addClasses Method is performed ONCE while bootstrapping the application, while getClasses/Perspectives is called during initialisation of workbench and perspective.
  */
 public class ClassRegistry {
-    private static final List<Class>  allClasses = new CopyOnWriteArrayList<>();
+    private static final List<Class> allClasses = new CopyOnWriteArrayList<>();
+
+    /**
+     * in some cases (like unitTests) it may happen, that the ClassRegistry is invoked many times, do a cleanup before use to ensure old values are gone.
+     */
+    public static void clearAllClasses() {
+        allClasses.clear();
+    }
 
     /**
      * Add classes that were found while package scanning at application start up.
+     *
      * @param classes , the list of classes to add
      */
     public static void addClasses(final List<Class> classes) {
@@ -32,6 +40,7 @@ public class ClassRegistry {
 
     /**
      * Returns an un-modifiable  list of all classes.
+     *
      * @return an un-modifyable list of all registered classes
      */
     public static List<Class> getAllClasses() {
@@ -41,35 +50,41 @@ public class ClassRegistry {
 
     /**
      * Returns a component class by ID
+     *
      * @param id , the component id
      * @return The component class for requested id
      */
     public static Class getComponentClassById(final String id) {
-        if(id==null || id.isEmpty())   throw new ComponentNotFoundException("following component id was not found: "+id);
+        if (id == null || id.isEmpty())
+            throw new ComponentNotFoundException("following component id was not found: " + id);
         final List<Class> result = allClasses.stream()
                 .filter(ClassRegistry::checkForAnntotation)
-                .filter(component -> checkIdMatch(component,id))
+                .filter(component -> checkIdMatch(component, id))
                 .collect(Collectors.toList());
-        return checkAndGetClassSearch(result,id);
+        return checkAndGetClassSearch(result, id);
 
     }
 
     /**
      * Returns a perspective class by ID.
+     *
      * @param id the perspective id
      * @return The perspective class for requested id
      */
     public static Class getPerspectiveClassById(final String id) {
-        if(id==null || id.isEmpty())   throw new ComponentNotFoundException("following perspective id was not found: "+id);
+        if (id == null || id.isEmpty())
+            throw new ComponentNotFoundException("following perspective id was not found: " + id);
         final List<Class> result = allClasses.stream()
-                .filter(clazz->clazz.isAnnotationPresent(Perspective.class))
+                .filter(clazz -> clazz.isAnnotationPresent(Perspective.class))
                 .filter(component -> checkPerspectiveIdMatch(component, id)).collect(Collectors.toList());
-        return checkAndGetClassSearch(result,id);
+        return checkAndGetClassSearch(result, id);
     }
 
-    private static Class checkAndGetClassSearch(final List<Class> result,final String id) {
-        if(result.isEmpty()) throw new ComponentNotFoundException("following perspective or component id was not found: "+id);
-        if(result.size()>1) throw new NonUniqueComponentException("more than one component found for id "+id +" component: "+result);
+    private static Class checkAndGetClassSearch(final List<Class> result, final String id) {
+        if (result.isEmpty())
+            throw new ComponentNotFoundException("following perspective or component id was not found: " + id);
+        if (result.size() > 1)
+            throw new NonUniqueComponentException("more than one component found for id " + id + " component: " + result);
         return result.get(0);
     }
 
@@ -82,9 +97,11 @@ public class ClassRegistry {
     }
 
     private static String getIdFromAnnotation(final Class component) {
-        if(component.isAnnotationPresent(Component.class))return Component.class.cast(component.getAnnotation(Component.class)).id();
-        if(component.isAnnotationPresent(View.class))return View.class.cast(component.getAnnotation(View.class)).id();
-        if(component.isAnnotationPresent(DeclarativeView.class))return DeclarativeView.class.cast(component.getAnnotation(DeclarativeView.class)).id();
+        if (component.isAnnotationPresent(Component.class))
+            return Component.class.cast(component.getAnnotation(Component.class)).id();
+        if (component.isAnnotationPresent(View.class)) return View.class.cast(component.getAnnotation(View.class)).id();
+        if (component.isAnnotationPresent(DeclarativeView.class))
+            return DeclarativeView.class.cast(component.getAnnotation(DeclarativeView.class)).id();
         return "";
     }
 

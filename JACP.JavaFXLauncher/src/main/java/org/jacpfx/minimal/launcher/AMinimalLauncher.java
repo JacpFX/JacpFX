@@ -63,6 +63,7 @@ public abstract class AMinimalLauncher extends Application {
         if (packages == null)
             throw new InvalidParameterException("no  packes declared, declare all packages containing perspective and component");
         final ClassFinder finder = new ClassFinder();
+        ClassRegistry.clearAllClasses();
         Stream.of(packages).forEach(p -> {
             try {
                 ClassRegistry.addClasses(Arrays.asList(finder.getAll(p)));
