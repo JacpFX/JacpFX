@@ -27,7 +27,6 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import org.jacpfx.api.annotations.workbench.Workbench;
 import org.jacpfx.api.component.Injectable;
 import org.jacpfx.api.component.Perspective;
@@ -40,7 +39,6 @@ import org.jacpfx.api.delegator.MessageDelegator;
 import org.jacpfx.api.handler.ComponentHandler;
 import org.jacpfx.api.launcher.Launcher;
 import org.jacpfx.api.message.Message;
-import org.jacpfx.api.util.OS;
 import org.jacpfx.api.workbench.Base;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.componentLayout.FXWorkbenchLayout;
@@ -121,12 +119,6 @@ public abstract class AFXWorkbench
     }
 
     private void initWorkbenchDecorator(Stage stage) {
-        if (OS.MAC.equals(OS.getOS())) {
-            // OSX will always be DECORATED due to fullscreen option!
-            stage.initStyle(StageStyle.DECORATED);
-        } else {
-            stage.initStyle(this.getWorkbenchLayout().getStyle());
-        }
         workbenchDecorator.setWorkbenchLayout(getWorkbenchLayout());
         workbenchDecorator.initBasicLayout(stage);
         SceneUtil.setScene(stage.getScene());

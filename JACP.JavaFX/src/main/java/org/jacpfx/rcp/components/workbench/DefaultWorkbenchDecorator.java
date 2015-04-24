@@ -36,7 +36,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.jacpfx.api.componentLayout.WorkbenchLayout;
+import org.jacpfx.api.util.OS;
 import org.jacpfx.api.util.ToolbarPosition;
 import org.jacpfx.rcp.componentLayout.FXWorkbenchLayout;
 import org.jacpfx.rcp.components.menuBar.JACPMenuBar;
@@ -93,6 +95,7 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
 
     @Override
     public void initBasicLayout(final Stage stage) {
+        initStageStyle(stage);
         // the top most pane is a Stackpane
         base = new StackPane();
         absoluteRoot = new AnchorPane();
@@ -151,6 +154,15 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
 
         updateAnchorSizes();
 
+    }
+
+    protected void initStageStyle(final Stage stage) {
+        if (OS.MAC.equals(OS.getOS())) {
+            // OSX will always be DECORATED due to fullscreen option!
+            stage.initStyle(StageStyle.DECORATED);
+        } else {
+            stage.initStyle(getWorkbenchLayout().getStyle());
+        }
     }
 
     private void initMenu(final Stage stage) {
