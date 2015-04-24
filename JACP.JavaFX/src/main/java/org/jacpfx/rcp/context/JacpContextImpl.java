@@ -24,8 +24,8 @@ import org.jacpfx.rcp.worker.AComponentWorker;
 import org.jacpfx.rcp.worker.AEmbeddedComponentWorker;
 
 import java.util.ResourceBundle;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TransferQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -39,7 +39,7 @@ public class JacpContextImpl implements Context,InternalContext {
 
     private final static CustomSecurityManager customSecurityManager =
             new CustomSecurityManager();
-    private BlockingQueue<Message<Event, Object>> globalMessageQueue;
+    private TransferQueue<Message<Event, Object>> globalMessageQueue;
     /**
      * will be set on init
      */
@@ -57,19 +57,19 @@ public class JacpContextImpl implements Context,InternalContext {
     private volatile ResourceBundle resourceBundle;
     private final AtomicBoolean active = new AtomicBoolean(false);
 
-    public JacpContextImpl(final String id, final String name, final BlockingQueue<Message<Event, Object>> globalMessageQueue) {
+    public JacpContextImpl(final String id, final String name, final TransferQueue<Message<Event, Object>> globalMessageQueue) {
         this.id = id;
         this.name = name;
         this.globalMessageQueue = globalMessageQueue;
 
     }
 
-    public JacpContextImpl(final BlockingQueue<Message<Event, Object>> globalMessageQueue) {
+    public JacpContextImpl(final TransferQueue<Message<Event, Object>> globalMessageQueue) {
         this.globalMessageQueue = globalMessageQueue;
 
     }
 
-    public JacpContextImpl(final String parentId,final BlockingQueue<Message<Event, Object>> globalMessageQueue) {
+    public JacpContextImpl(final String parentId,final TransferQueue<Message<Event, Object>> globalMessageQueue) {
         this.globalMessageQueue = globalMessageQueue;
         this.parentId = parentId;
 
@@ -104,7 +104,7 @@ public class JacpContextImpl implements Context,InternalContext {
     @Override
     public final void send(final String targetId, final Object message) {
         try {
-            this.globalMessageQueue.put(new MessageImpl(this.fullyQualifiedId, targetId, message, null));
+            this.globalMessageQueue.transfer(new MessageImpl(this.fullyQualifiedId, targetId, message, null));
         } catch (InterruptedException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
@@ -119,7 +119,7 @@ public class JacpContextImpl implements Context,InternalContext {
         if (AccessUtil.hasAccess(callerClassName, FXWorkbench.class))
             throw new IllegalStateException(" a FXWorkbench is no valid message target");
         try {
-            this.globalMessageQueue.put(new MessageImpl(this.fullyQualifiedId,this.id, message, null));
+            this.globalMessageQueue.transfer(new MessageImpl(this.fullyQualifiedId,this.id, message, null));
 
         } catch (InterruptedException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.

@@ -54,6 +54,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TransferQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -72,7 +73,7 @@ public abstract class AFXPerspective implements
     private final AtomicBoolean started = new AtomicBoolean(false);
     private String resourceBundleLocation = "";
     private JacpContext context;
-    private BlockingQueue<Message<Event, Object>> globalMessageQueue;
+    private TransferQueue<Message<Event, Object>> globalMessageQueue;
     private ComponentHandler<SubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
     private BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
     private BlockingQueue<DelegateDTO<Event, Object>> messageDelegateQueue;
@@ -146,7 +147,7 @@ public abstract class AFXPerspective implements
         this.messageCoordinator = messageCoordinator;
         this.componentDelegateQueue = componentDelegateQueue;
         this.messageDelegateQueue = messageDelegateQueue;
-        this.globalMessageQueue = this.messageCoordinator.getMessageQueue();
+        this.globalMessageQueue = getMessageQueue();
         this.launcher = launcher;
         this.context = new JacpContextImpl(this.globalMessageQueue);
     }
@@ -193,7 +194,7 @@ public abstract class AFXPerspective implements
     public final void registerComponent(
             final SubComponent<EventHandler<Event>, Event, Object> component) {
         component.initEnv(this.context.getId(),
-                this.messageCoordinator.getMessageQueue());
+                getMessageQueue());
         final JacpContextImpl currentContext = JacpContextImpl.class.cast(component.getContext());
         PerspectiveUtil.handleComponentMetaAnnotation(component);
         currentContext.setFXComponentLayout(getFXComponentLayoutInstance(currentContext));
@@ -300,7 +301,7 @@ public abstract class AFXPerspective implements
     }
 
     @Override
-    public final BlockingQueue<Message<Event, Object>> getMessageQueue() {
+    public final TransferQueue<Message<Event, Object>> getMessageQueue() {
         return this.messageCoordinator.getMessageQueue();
 
     }

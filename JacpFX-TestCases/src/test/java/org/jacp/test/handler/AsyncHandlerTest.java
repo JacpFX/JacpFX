@@ -36,11 +36,13 @@ import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 import org.testfx.service.query.NodeQuery;
 
+import java.util.Collections;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * Created by Andy Moncsek on 17.04.15.
@@ -266,6 +268,7 @@ public class AsyncHandlerTest extends ApplicationTest {
 
         System.out.println("---------pass 4----------------------");
         Assert.assertTrue(true);
+        Collections.emptyList().stream().map(val->new Button(val.toString())).collect(Collectors.toList());
     }
 
     @Test

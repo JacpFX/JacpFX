@@ -21,8 +21,7 @@ import org.jacpfx.rcp.util.FXUtil;
 import org.jacpfx.rcp.util.PerspectiveUtil;
 import org.jacpfx.rcp.util.ShutdownThreadsHandler;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.LinkedTransferQueue;
 import java.util.concurrent.TransferQueue;
 
 /**
@@ -34,7 +33,7 @@ public class MessageCoordinator extends Thread implements
     private ComponentHandler<SubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
     private ComponentHandler<Perspective<Node, EventHandler<Event>, Event, Object>, Message<Event, Object>> perspectiveHandler;
     private TransferQueue<DelegateDTO<Event, Object>> delegateQueue;
-    private final BlockingQueue<Message<Event, Object>> messages = new LinkedBlockingQueue<>();
+    private final TransferQueue<Message<Event, Object>> messages = new LinkedTransferQueue<>();
     private final String parentId;
     private final Launcher<?> launcher;
     private static final String seperator = ".";
@@ -52,12 +51,13 @@ public class MessageCoordinator extends Thread implements
     public final void run() {
         while (!Thread.interrupted()) {
             try {
-                final Message<Event, Object> message = this.messages.take();
-                this.handleMessage(message.getTargetId(), message);
+                final Message<Event, Object> message = messages.take();
+                handleMessage(message.getTargetId(), message);
+                Thread.yield();
             } catch (InterruptedException e) {
                 // this can happen on application shutdown
                 break;
-            }catch (Exception e) {
+            } catch (Exception e) {
                 Thread.currentThread().getUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
             }
         }
@@ -65,7 +65,7 @@ public class MessageCoordinator extends Thread implements
 
 
     @Override
-    public final BlockingQueue<Message<Event, Object>> getMessageQueue() {
+    public final TransferQueue<Message<Event, Object>> getMessageQueue() {
         return this.messages;
     }
 

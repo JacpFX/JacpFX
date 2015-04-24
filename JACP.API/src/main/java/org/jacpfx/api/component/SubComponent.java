@@ -24,7 +24,7 @@ package org.jacpfx.api.component;
 
 import org.jacpfx.api.message.Message;
 
-import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TransferQueue;
 
 /**
  * Defines a subcomponent handled by a root component. A subcomponent is running
@@ -85,7 +85,7 @@ public interface SubComponent<L, A, M> extends Component<L, M> {
      * @param messageQueue, the message queue
      */
     void initEnv(final String parentId,
-                 final BlockingQueue<Message<A, M>> messageQueue);
+                 final TransferQueue<Message<A, M>> messageQueue);
 
 
     /**

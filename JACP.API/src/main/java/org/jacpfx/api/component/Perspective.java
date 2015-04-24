@@ -33,6 +33,7 @@ import org.jacpfx.api.util.UIType;
 import java.net.URL;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TransferQueue;
 
 /**
  * Defines a perspective, a perspective is a root component handled by an
@@ -105,7 +106,7 @@ public interface Perspective<C,L, A, M> extends Component<L, M>,
      *
      * @return message queue
      */
-    BlockingQueue<Message<A, M>> getMessageQueue();
+    TransferQueue<Message<A, M>> getMessageQueue();
 
     /**
      * Returns the injected perspective representation. This Injectable is the implementation of a perspective which includes all handle methods.

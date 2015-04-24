@@ -28,7 +28,7 @@ import org.jacpfx.api.message.ActionListener;
 import org.jacpfx.api.message.Message;
 
 import java.util.Objects;
-import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TransferQueue;
 
 /**
  * This class represents the JACP FX2 Event listener... this class can be
@@ -40,10 +40,10 @@ import java.util.concurrent.BlockingQueue;
 public class ActionListenerImpl<T extends Event> implements EventHandler<T>,
         ActionListener<Event, Object> {
 	private final Message<Event, Object> action;
-	private final BlockingQueue<Message<Event, Object>> globalMessageQueue;
+	private final TransferQueue<Message<Event, Object>> globalMessageQueue;
 
 	public ActionListenerImpl(final Message<Event, Object> action,
-                              final BlockingQueue<Message<Event, Object>> globalMessageQueue) {
+                              final TransferQueue<Message<Event, Object>> globalMessageQueue) {
 		this.action = action;
 		this.globalMessageQueue = globalMessageQueue;
 	}
@@ -52,7 +52,7 @@ public class ActionListenerImpl<T extends Event> implements EventHandler<T>,
 	public void notifyComponents(final Message<Event, Object> action) {
         Objects.requireNonNull(action,"message cannot be null");
         try {
-            this.globalMessageQueue.put(action);
+            this.globalMessageQueue.transfer(action);
         } catch (InterruptedException e) {
             e.printStackTrace();
             //TODO handle exception global

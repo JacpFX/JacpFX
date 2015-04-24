@@ -126,6 +126,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
                          final Node previousContainer, final String currentTargetLayout, final String currentExecutionTarget)
             throws InterruptedException, ExecutionException {
         final Thread t = Thread.currentThread();
+        Thread.yield();
         WorkerUtil.invokeOnFXThreadAndWait(() -> {
             // check if component was set to inactive, if so remove
             try {

@@ -97,6 +97,7 @@ class EmbeddedCallbackComponentWorker
                 } catch (Exception e) {
                     t.getUncaughtExceptionHandler().uncaughtException(t, e);
                 }
+                Thread.yield();
             }
             if (wasExecuted) handleComponentShutdown(this.component);
         } finally {

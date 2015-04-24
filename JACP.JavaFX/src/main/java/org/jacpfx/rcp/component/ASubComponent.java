@@ -36,6 +36,7 @@ import org.jacpfx.rcp.worker.AEmbeddedComponentWorker;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TransferQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
@@ -57,7 +58,7 @@ public abstract class ASubComponent  implements
     private String localeID = "";
     private String resourceBundleLocation = "";
     private Context context;
-    protected BlockingQueue<Message<Event, Object>> globalMessageQueue;
+    protected TransferQueue<Message<Event, Object>> globalMessageQueue;
 
 
     /**
@@ -65,7 +66,7 @@ public abstract class ASubComponent  implements
      */
     @Override
     public final void initEnv(final String parentId,
-                              final BlockingQueue<Message<Event, Object>> messageQueue) {
+                              final TransferQueue<Message<Event, Object>> messageQueue) {
         this.globalMessageQueue = messageQueue;
         this.context = new JacpContextImpl(parentId,this.globalMessageQueue);
     }

@@ -27,7 +27,6 @@ import org.jacpfx.api.handler.ComponentHandler;
 import org.jacpfx.api.message.DelegateDTO;
 import org.jacpfx.api.message.Message;
 
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TransferQueue;
 
 /**
@@ -54,7 +53,7 @@ public interface Coordinator<L, A, M> {
      *
      * @return the message queue
      */
-    BlockingQueue<Message<A, M>> getMessageQueue();
+    TransferQueue<Message<A, M>> getMessageQueue();
 
 
     /**
