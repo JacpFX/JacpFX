@@ -165,18 +165,21 @@ public class ClassFinder {
     }
 
     private List<Class> exctractClasses(final String packageDir, List<String> files) {
-        final String seperator = CLASS_PROJECT_SEPERATOR.concat(File.separator);
-        return files.parallelStream()
-                .map(dir -> dir.substring((dir.lastIndexOf(seperator) + CLASS_PROJECT_SEPERATOR_LENGTH), dir.length()))
-                .filter(classDir -> classDir.contains(packageDir))
-                .map(subDir -> subDir.replace(File.separator, CLASS_DOT))
-                .map(className -> className.substring(0, className
-                        .lastIndexOf(CLASS_FILE)))
+        return files.stream()
+                .map(Paths::get)
+                .map(path -> binDirs.stream()        // find the right classpath of file
+                        .filter(path::startsWith)
+                        .findFirst()
+                        .map(p -> p.relativize(path)))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .filter(path -> path.startsWith(packageDir))
+                .map(path -> path.toString().replace(File.separator, CLASS_DOT))
+                .map(className -> className.substring(0, className.lastIndexOf(CLASS_FILE)))
                 .filter(classFile -> !classFile.contains(CLASS_DOLLAR))
                 .map(this::loadClass)
                 .filter(clazz -> clazz != null)
                 .collect(Collectors.toList());
-
     }
 
     private Class<?> loadClass(String file) {
