@@ -40,6 +40,7 @@ import org.jacpfx.rcp.workbench.FXWorkbench;
 
 import java.security.InvalidParameterException;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -63,6 +64,8 @@ public abstract class ASpringLauncher extends Application{
         final String[] packages = getBasePackages();
         if (packages == null)
             throw new InvalidParameterException("no  packes declared, declare all packages containing perspective and component");
+        final Optional<String> emptyDeclaration = Stream.of(packages).filter(pack -> pack.isEmpty()).findFirst();
+        if (emptyDeclaration.isPresent()) throw new InvalidParameterException("no  empty declaration is allowed");
         final ClassFinder finder = new ClassFinder();
         ClassRegistry.clearAllClasses();
         Stream.of(packages).forEach(p -> {

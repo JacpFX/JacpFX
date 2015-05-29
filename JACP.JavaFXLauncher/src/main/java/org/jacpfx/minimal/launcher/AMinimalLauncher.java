@@ -40,6 +40,7 @@ import org.jacpfx.rcp.workbench.FXWorkbench;
 
 import java.security.InvalidParameterException;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -47,9 +48,6 @@ import java.util.stream.Stream;
  */
 public abstract class AMinimalLauncher extends Application {
     protected AFXWorkbench workbench;
-
-
-
 
 
     public AFXWorkbench getWorkbench() {
@@ -62,6 +60,8 @@ public abstract class AMinimalLauncher extends Application {
         final String[] packages = getBasePackages();
         if (packages == null)
             throw new InvalidParameterException("no  packes declared, declare all packages containing perspective and component");
+        final Optional<String> emptyDeclaration = Stream.of(packages).filter(pack -> pack.isEmpty()).findFirst();
+        if (emptyDeclaration.isPresent()) throw new InvalidParameterException("no  empty declaration is allowed");
         final ClassFinder finder = new ClassFinder();
         ClassRegistry.clearAllClasses();
         Stream.of(packages).forEach(p -> {
@@ -82,7 +82,7 @@ public abstract class AMinimalLauncher extends Application {
     /**
      * Return all packages which contains component and perspective that should be scanned. This is needed to find component/prespectives by id.
      *
-     * @return  an array of package names
+     * @return an array of package names
      */
     protected abstract String[] getBasePackages();
 
@@ -103,8 +103,11 @@ public abstract class AMinimalLauncher extends Application {
     }
 
     /**
-     *  Return an instance of your WorkbenchDecorator, which defines the basic layout structure with toolbars and main content
-     * @return  returns an instance of a {@link org.jacpfx.rcp.components.workbench.WorkbenchDecorator}
+     * Return an instance of your WorkbenchDecorator, which defines the basic layout structure with toolbars and main content
+     *
+     * @return returns an instance of a {@link org.jacpfx.rcp.components.workbench.WorkbenchDecorator}
      */
-    protected WorkbenchDecorator getWorkbenchDecorator() {return new DefaultWorkbenchDecorator();}
+    protected WorkbenchDecorator getWorkbenchDecorator() {
+        return new DefaultWorkbenchDecorator();
+    }
 }
