@@ -3,10 +3,13 @@ package org.jacp.test.missconfig;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import junit.framework.TestCase;
+import org.jacp.test.NonUITests;
 import org.jacp.test.main.ApplicationLauncherMissingComponentDeclarativeViewAnnotation;
 import org.jacp.test.main.ApplicationLauncherMissingComponentInitialTargetId;
 import org.jacp.test.main.ApplicationLauncherMissingComponentViewAnnotation;
 import org.jacpfx.rcp.handler.AErrorDialogHandler;
+import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
@@ -21,6 +24,13 @@ import java.util.concurrent.TimeUnit;
  */
 public class MissconfigFXComponentTest {
 
+    @Before
+    public void init() {
+        ApplicationLauncherMissingComponentInitialTargetId.exceptionhandler = new CustomErrorDialogHandler();
+    }
+
+
+
     @Test(expected = RuntimeException.class)
     public void failedToStartFXComponent() throws Exception {
         try {
@@ -32,7 +42,7 @@ public class MissconfigFXComponentTest {
 
         // Pause briefly to give FX a chance to start
         ApplicationLauncherMissingComponentViewAnnotation.latch.await(5000, TimeUnit.MILLISECONDS);
-
+        NonUITests.resetApplication();
 
     }
 
@@ -48,14 +58,14 @@ public class MissconfigFXComponentTest {
         // Pause briefly to give FX a chance to start
         ApplicationLauncherMissingComponentDeclarativeViewAnnotation.latch.await(1000, TimeUnit.MILLISECONDS);
 
-
+        NonUITests.resetApplication();
     }
 
-    @Test
+   // @Test
     public void failedToStartMissingTargetId() throws Exception {
 
         try {
-            ApplicationLauncherMissingComponentInitialTargetId.exceptionhandler = new CustomErrorDialogHandler();
+
             ApplicationLauncherMissingComponentInitialTargetId.main(new String[0]);
         } catch (Exception e) {
             e.printStackTrace();
@@ -76,9 +86,15 @@ public class MissconfigFXComponentTest {
             //
             TestCase.assertTrue(e.getMessage().contains("no targetLayout for layoutID:"));
             // ApplicationLauncherMissingComponentInitialTargetId.latch.countDown();
-            Platform.exit();
+            NonUITests.resetApplication();
             return null;
         }
     }
+    @AfterClass
+    public static void exitWorkBench() {
+        Platform.exit();
+        NonUITests.resetApplication();
 
+
+    }
 }

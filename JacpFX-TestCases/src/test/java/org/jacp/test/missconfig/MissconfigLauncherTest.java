@@ -1,10 +1,10 @@
 package org.jacp.test.missconfig;
 
 import javafx.application.Platform;
-import org.jacpfx.rcp.registry.ClassRegistry;
-import org.jacp.test.AllTests;
+import org.jacp.test.NonUITests;
 import org.jacp.test.main.ApplicationLauncherMissconfigWorkbench;
 import org.jacp.test.main.ApplicationLauncherMissconfigWorkbench2;
+import org.jacpfx.rcp.registry.ClassRegistry;
 import org.junit.AfterClass;
 import org.junit.Test;
 
@@ -34,11 +34,12 @@ public class MissconfigLauncherTest {
         // Pause briefly to give FX a chance to start
         try {
             latch.await();
-            Platform.exit();
-            AllTests.resetApplication();
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        NonUITests.resetApplication();
     }
 
     @Test(expected = RuntimeException.class)
@@ -52,11 +53,12 @@ public class MissconfigLauncherTest {
         // Pause briefly to give FX a chance to start
         try {
             latch.await();
-            Platform.exit();
-            AllTests.resetApplication();
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
+        NonUITests.resetApplication();
     }
 
     @Test(expected = InvalidParameterException.class)
@@ -65,11 +67,15 @@ public class MissconfigLauncherTest {
         launcher.startComponentScaning();
         assertNotNull(ClassRegistry.getAllClasses());
         assertTrue(ClassRegistry.getAllClasses().isEmpty());
-    }
 
+        NonUITests.resetApplication();
+    }
     @AfterClass
     public static void exitWorkBench() {
         Platform.exit();
-        AllTests.resetApplication();
+        NonUITests.resetApplication();
+
+
     }
+
 }

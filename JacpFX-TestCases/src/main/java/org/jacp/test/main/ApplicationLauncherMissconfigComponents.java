@@ -28,7 +28,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.jacpfx.rcp.workbench.FXWorkbench;
 import org.jacpfx.spring.launcher.AFXSpringXmlLauncher;
-import org.jacp.test.workbench.WorkbenchMissingComponents;
+import org.jacp.test.workbench.WorkbenchCheckComponentsAndPerspectives;
 
 import java.net.URL;
 import java.util.concurrent.CountDownLatch;
@@ -70,7 +70,7 @@ public class ApplicationLauncherMissconfigComponents extends AFXSpringXmlLaunche
 
     @Override
     protected Class<? extends FXWorkbench> getWorkbenchClass() {
-        return WorkbenchMissingComponents.class;
+        return WorkbenchCheckComponentsAndPerspectives.class;
     }
 
     @Override

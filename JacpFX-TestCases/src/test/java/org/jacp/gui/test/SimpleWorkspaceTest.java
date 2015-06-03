@@ -27,10 +27,9 @@ package org.jacp.gui.test;
 
 import javafx.application.Platform;
 import javafx.scene.Parent;
-import org.jacp.test.AllTests;
+import org.jacp.test.NonUITests;
 import org.jacp.test.main.ApplicationLauncher;
 import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.loadui.testfx.GuiTest;
@@ -46,7 +45,7 @@ public class SimpleWorkspaceTest extends GuiTest {
     @AfterClass
     public static void exitWorkBench() {
         Platform.exit();
-        AllTests.resetApplication();
+        NonUITests.resetApplication();
 
 
     }

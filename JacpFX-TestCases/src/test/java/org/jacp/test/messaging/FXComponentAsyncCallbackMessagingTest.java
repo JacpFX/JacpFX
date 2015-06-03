@@ -1,7 +1,7 @@
 package org.jacp.test.messaging;
 
 import javafx.application.Platform;
-import org.jacp.test.AllTests;
+import org.jacp.test.NonUITests;
 import org.jacp.test.components.AsyncCallbackComponentMessagingTest1Component1;
 import org.jacp.test.components.AsyncCallbackComponentMessagingTest1Component2;
 import org.jacp.test.main.ApplicationLauncherAsyncCallbackComponentMessaginTest1;
@@ -27,7 +27,7 @@ public class FXComponentAsyncCallbackMessagingTest {
     @AfterClass
     public static void exitWorkBench() {
         Platform.exit();
-        AllTests.resetApplication();
+        NonUITests.resetApplication();
 
 
     }

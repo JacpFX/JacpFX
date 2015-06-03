@@ -1,8 +1,7 @@
 package org.jacp.test.context;
 
 import javafx.application.Platform;
-import org.jacp.test.AllTests;
-import org.jacp.test.main.ApplicationLauncher;
+import org.jacp.test.NonUITests;
 import org.jacp.test.main.ApplicationLauncherContextTest;
 import org.jacp.test.perspectives.PerspectiveContextTest;
 import org.jacp.test.workbench.WorkbenchContextTest;
@@ -25,7 +24,7 @@ public class ContextObjectAccessTest {
     @AfterClass
     public static void exitWorkBench() {
         Platform.exit();
-        AllTests.resetApplication();
+        NonUITests.resetApplication();
 
 
     }

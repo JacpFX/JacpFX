@@ -1,6 +1,9 @@
 package org.jacp.test.missconfig;
 
+import javafx.application.Platform;
 import org.jacp.doublePerspective.test.main.ApplicationLauncher;
+import org.jacp.test.NonUITests;
+import org.junit.AfterClass;
 import org.junit.Test;
 
 import java.util.concurrent.TimeUnit;
@@ -25,6 +28,13 @@ public class MissconfigDuplicatePerspectiveIds {
 
         // Pause briefly to give FX a chance to start
         ApplicationLauncher.latch.await(5000, TimeUnit.MILLISECONDS);
+
+        NonUITests.resetApplication();
+    }
+    @AfterClass
+    public static void exitWorkBench() {
+        Platform.exit();
+        NonUITests.resetApplication();
 
 
     }

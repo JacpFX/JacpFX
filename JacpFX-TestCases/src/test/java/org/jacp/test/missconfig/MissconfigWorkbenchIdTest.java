@@ -1,13 +1,13 @@
 package org.jacp.test.missconfig;
 
 import javafx.application.Platform;
-import org.jacp.test.AllTests;
+import org.jacp.test.NonUITests;
 import org.jacp.test.main.ApplicationLauncherMissingWorkbenchId;
-import org.jacp.test.workbench.WorkbenchMissingPerspectives;
+import org.junit.AfterClass;
 import org.junit.Test;
 
 /**
- * Created with IntelliJ IDEA.
+ * This test checks the exception when no workbench id is set
  * User: Andy Moncsek
  * Date: 09.09.13
  * Time: 20:57
@@ -25,13 +25,15 @@ public class MissconfigWorkbenchIdTest {
             e.printStackTrace();
             throw e;
         }
-        Platform.setImplicitExit(true);
-        Platform.exit();
-        AllTests.resetApplication();
+
+        NonUITests.resetApplication();
     }
 
-    private String[] getPerspectiveAnnotations() {
-        org.jacpfx.api.annotations.workbench.Workbench annotations = WorkbenchMissingPerspectives.class.getAnnotation(org.jacpfx.api.annotations.workbench.Workbench.class);
-        return annotations.perspectives();
+    @AfterClass
+    public static void exitWorkBench() {
+        Platform.exit();
+        NonUITests.resetApplication();
+
+
     }
 }

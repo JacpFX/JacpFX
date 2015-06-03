@@ -4,7 +4,7 @@ import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import org.jacp.test.AllTests;
+import org.jacp.test.NonUITests;
 import org.jacp.test.components.ComponentShutdownAndRestartComponentsTests1;
 import org.jacp.test.components.ComponentShutdownAndRestartComponentsTests2;
 import org.jacp.test.components.ComponentShutdownAndRestartComponentsTests3;
@@ -37,7 +37,7 @@ public class ShutdownAndReopenComponentsTest {
     @AfterClass
     public static void exitWorkBench() {
         Platform.exit();
-        AllTests.resetApplication();
+        NonUITests.resetApplication();
 
 
     }

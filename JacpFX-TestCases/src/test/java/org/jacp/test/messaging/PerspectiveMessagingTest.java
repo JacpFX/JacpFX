@@ -1,11 +1,16 @@
 package org.jacp.test.messaging;
 
+import javafx.application.Application;
 import javafx.application.Platform;
-import org.jacp.test.AllTests;
+import javafx.stage.Stage;
+import org.jacp.launcher.TestFXJacpFXSpringLauncher;
+import org.jacp.test.NonUITests;
 import org.jacp.test.main.ApplicationLauncherPerspectiveMessaginTest;
 import org.jacp.test.perspectives.PerspectiveMessagingTestP1;
 import org.jacp.test.perspectives.PerspectiveMessagingTestP2;
 import org.jacp.test.perspectives.PerspectiveMessagingTestP3;
+import org.jacp.test.workbench.WorkbenchPerspectiveMessageTesting;
+import org.jacpfx.rcp.workbench.FXWorkbench;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -22,37 +27,40 @@ import static org.junit.Assert.assertTrue;
  * Time: 21:48
  * To change this template use File | Settings | File Templates.
  */
-public class PerspectiveMessagingTest {
-    static Thread t;
+public class PerspectiveMessagingTest extends TestFXJacpFXSpringLauncher {
 
-    @AfterClass
-    public static void exitWorkBench() {
-        Platform.exit();
-        AllTests.resetApplication();
+    @Override
+    public String getXmlConfig() {
+        return "main.xml";
+    }
 
+    /**
+     * @param args
+     */
+    public static void main(final String[] args) {
+        Application.launch(args);
+    }
+
+    @Override
+    protected Class<? extends FXWorkbench> getWorkbenchClass() {
+        return WorkbenchPerspectiveMessageTesting.class;
+    }
+
+    @Override
+    protected String[] getBasePackages() {
+        return new String[]{"org.jacp.test"};
+    }
+
+    @Override
+    public void postInit(final Stage stage) {
 
     }
 
-    @BeforeClass
-    public static void initWorkbench() {
+    /**
+     * @param args
+     */
 
 
-        t = new Thread("JavaFX Init Thread") {
-            public void run() {
-
-                ApplicationLauncherPerspectiveMessaginTest.main(new String[0]);
-
-            }
-        };
-        t.setDaemon(true);
-        t.start();
-        // Pause briefly to give FX a chance to start
-        try {
-            ApplicationLauncherPerspectiveMessaginTest.latch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 
     private void executeMessaging() throws InterruptedException {
         PerspectiveMessagingTestP1.wait = new CountDownLatch(1);

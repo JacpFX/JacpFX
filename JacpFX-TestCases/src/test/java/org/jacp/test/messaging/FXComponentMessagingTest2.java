@@ -28,7 +28,7 @@ package org.jacp.test.messaging;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import junit.framework.Assert;
-import org.jacp.test.AllTests;
+import org.jacp.test.NonUITests;
 import org.jacp.test.components.*;
 import org.jacp.test.main.ApplicationLauncherMessagingTest;
 import org.jacp.test.perspectives.PerspectiveComponentMessagingTest1;
@@ -56,7 +56,7 @@ public class FXComponentMessagingTest2 {
     @AfterClass
     public static void exitWorkBench() {
         Platform.exit();
-        AllTests.resetApplication();
+        NonUITests.resetApplication();
 
 
     }

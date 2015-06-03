@@ -22,14 +22,11 @@
  ************************************************************************/
 package org.jacp.test.main;
 
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import org.jacp.test.workbench.WorkbenchMissingID;
 import org.jacpfx.rcp.workbench.FXWorkbench;
 import org.jacpfx.spring.launcher.AFXSpringXmlLauncher;
-import org.jacp.test.workbench.WorkbenchMissingID;
 
-import java.net.URL;
 import java.util.concurrent.CountDownLatch;
 import java.util.logging.Logger;
 
@@ -42,9 +39,7 @@ public class ApplicationLauncherMissingWorkbenchId extends AFXSpringXmlLauncher 
     private static final Logger log = Logger.getLogger(ApplicationLauncherMissingWorkbenchId.class
             .getName());
     public static final String[] STYLES = new String[2];
-    private static final String[] STYLE_FILES = {"/styles/style_light.css", "/styles/style_dark.css"};
-    /// binary style sheets created while deployment
-    private static final String[] BINARY_FILES = {"/styles/style_light.bss", "/styles/style_dark.bss"};
+
     public static CountDownLatch latch = new CountDownLatch(1);
     public static volatile ApplicationLauncherMissingWorkbenchId[] instance = new ApplicationLauncherMissingWorkbenchId[1];
 
@@ -86,27 +81,11 @@ public class ApplicationLauncherMissingWorkbenchId extends AFXSpringXmlLauncher 
 
     @Override
     public void postInit(final Stage stage) {
-        initStyles();
-        stage.setMinHeight(580);
-        stage.setMinWidth(800);
-        final Scene scene = stage.getScene();
-        stage.getIcons().add(new Image("images/icons/JACP_512_512.png"));
-        // add style sheet
-        scene.getStylesheets().add(STYLES[0]);
+
         instance[0] = this;
         this.latch.countDown();
     }
 
-    private static void initStyles() {
-        for (int i = 0; i < 2; i++) {
-            URL res = ApplicationLauncherMissingWorkbenchId.class.getResource(BINARY_FILES[i]);
-            if (res == null)
-                res = ApplicationLauncherMissingWorkbenchId.class.getResource(STYLE_FILES[i]);
-            STYLES[i] = res.toExternalForm();
-            log.info("found: " + STYLES[i] + " stylesheet");
-        }
-
-    }
 
 
 }

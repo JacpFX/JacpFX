@@ -33,6 +33,7 @@ public class PerspectiveIds {
     public static final String PerspectiveOne = "id01";
     public static final String PerspectiveTestTwoA = "id02";
     public static final String PerspectiveTestTwoB = "id03";
+    public static final String PerspectiveMissingIdInPerspective ="id05";
     public static final String PerspectiveToolbarOne = "id38";
     public static final String PerspectiveToolbarTwo = "id37";
     public static final String PerspectiveAsyncCallbackComponentMessagingTest1 = "id15";
@@ -54,10 +55,9 @@ public class PerspectiveIds {
 
     public static final String PerspectiveMissingComponentDeclarativeViewAnnotation = "id08";
     public static final String PerspectiveMissingComponentInitialTargetId = "id09";
-    public static final String PerspectiveMissingComponents = "id04";
+    public static final String PerspectiveCheckComponentsAndPerspectives = "id04";
     public static final String PerspectiveMissingComponentsIds = "id06";
     public static final String PerspectiveMissingComponentViewAnnotation = "id07";
-    public static final String PerspectiveMissingIdInPerspective = "id30";
     public static final String PerspectiveOnePredestroyPerspectiveTest = "id17";
     public static final String PerspectiveTwoPredestroyPerspectiveTest = "id18";
     public static final String PerspectiveShutdownAndRestartComponents = "id19";

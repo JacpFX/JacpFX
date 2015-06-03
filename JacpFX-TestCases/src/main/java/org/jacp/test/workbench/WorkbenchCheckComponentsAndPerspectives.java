@@ -32,6 +32,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.jacp.test.perspectives.PerspectiveIds;
 import org.jacpfx.api.componentLayout.WorkbenchLayout;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.api.annotations.Resource;
@@ -55,8 +56,8 @@ import java.util.List;
  *
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
-@org.jacpfx.api.annotations.workbench.Workbench(id = "id1", name = "workbench", perspectives = {"id04"})
-public class WorkbenchMissingComponents implements FXWorkbench {
+@org.jacpfx.api.annotations.workbench.Workbench(id = "id1", name = "workbench", perspectives = {PerspectiveIds.PerspectiveCheckComponentsAndPerspectives})
+public class WorkbenchCheckComponentsAndPerspectives implements FXWorkbench {
     private Stage stage;
     @Resource
     Context context;
@@ -97,7 +98,7 @@ public class WorkbenchMissingComponents implements FXWorkbench {
         itemHelp.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(final ActionEvent arg0) {
-                final Scene scene = WorkbenchMissingComponents.this.stage.getScene();
+                final Scene scene = WorkbenchCheckComponentsAndPerspectives.this.stage.getScene();
                 // index 0 is always the default JACP style
                 scene.getStylesheets().remove(1);
                 scene.getStylesheets().add(ApplicationLauncher.STYLES[count]);

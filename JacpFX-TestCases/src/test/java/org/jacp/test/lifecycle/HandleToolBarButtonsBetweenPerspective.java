@@ -5,7 +5,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import org.apache.log4j.Logger;
-import org.jacp.test.AllTests;
+import org.jacp.test.NonUITests;
 import org.jacp.test.main.ApplicationLauncherHandleToolBarButtonsBetweenPerspectives;
 import org.jacp.test.toolbar.components.ComponentHandleToolBarBetweenPerspectives2;
 import org.jacp.test.toolbar.perspectives.PerspectiveOneToolbarSwitchPerspectives;
@@ -31,7 +31,7 @@ public class HandleToolBarButtonsBetweenPerspective {
     @AfterClass
     public static void exitWorkBench() {
         Platform.exit();
-        AllTests.resetApplication();
+        NonUITests.resetApplication();
     }
 
     @BeforeClass

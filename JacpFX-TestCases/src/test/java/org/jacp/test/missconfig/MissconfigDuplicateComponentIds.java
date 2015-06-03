@@ -4,7 +4,9 @@ import javafx.application.Platform;
 import javafx.scene.Node;
 import junit.framework.TestCase;
 import org.jacp.doublePerspective.test.main.ApplicationLauncherDuplicateComponentTest;
+import org.jacp.test.NonUITests;
 import org.jacpfx.rcp.handler.AErrorDialogHandler;
+import org.junit.AfterClass;
 import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
@@ -21,6 +23,7 @@ public class MissconfigDuplicateComponentIds {
     @Test
     public void failedToStartDuplicatePerspectives() throws Exception {
         try {
+
             ApplicationLauncherDuplicateComponentTest.latch = new CountDownLatch(1);
             ApplicationLauncherDuplicateComponentTest.exceptionhandler = new CustomErrorDialogHandler();
             ApplicationLauncherDuplicateComponentTest.main(new String[0]);
@@ -32,7 +35,7 @@ public class MissconfigDuplicateComponentIds {
         // Pause briefly to give FX a chance to start
         ApplicationLauncherDuplicateComponentTest.latch.await(5000, TimeUnit.MILLISECONDS);
 
-
+        NonUITests.resetApplication();
     }
 
     public class CustomErrorDialogHandler extends AErrorDialogHandler {
@@ -43,8 +46,15 @@ public class MissconfigDuplicateComponentIds {
             //
             TestCase.assertTrue(e.getMessage().contains("more than one component found for id"));
             ApplicationLauncherDuplicateComponentTest.latch.countDown();
-            Platform.exit();
+            NonUITests.resetApplication();
             return null;
         }
+    }
+    @AfterClass
+    public static void exitWorkBench() {
+        Platform.exit();
+        NonUITests.resetApplication();
+
+
     }
 }

@@ -4,7 +4,7 @@ import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import org.jacp.test.AllTests;
+import org.jacp.test.NonUITests;
 import org.jacp.test.components.PredestroyTestComponentFour;
 import org.jacp.test.components.PredestroyTestComponentOne;
 import org.jacp.test.components.PredestroyTestComponentThree;
@@ -39,7 +39,7 @@ public class PreDestroyPostCreateRestartPerspectiveTest {
     @AfterClass
     public static void exitWorkBench() {
         Platform.exit();
-        AllTests.resetApplication();
+        NonUITests.resetApplication();
 
 
     }

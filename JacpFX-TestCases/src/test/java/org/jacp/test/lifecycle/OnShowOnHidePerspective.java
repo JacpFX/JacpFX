@@ -1,7 +1,7 @@
 package org.jacp.test.lifecycle;
 
 import javafx.application.Platform;
-import org.jacp.test.AllTests;
+import org.jacp.test.NonUITests;
 import org.jacp.test.main.ApplicationPredestroyPerspectiveTest;
 import org.jacp.test.perspectives.PerspectiveOnePredestroyPerspectiveTest;
 import org.jacp.test.perspectives.PerspectiveTwoPredestroyPerspectiveTest;
@@ -28,7 +28,7 @@ public class OnShowOnHidePerspective {
     @AfterClass
     public static void exitWorkBench() {
         Platform.exit();
-        AllTests.resetApplication();
+        NonUITests.resetApplication();
 
 
     }

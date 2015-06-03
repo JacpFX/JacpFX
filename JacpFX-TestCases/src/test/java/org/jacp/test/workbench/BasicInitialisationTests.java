@@ -4,7 +4,7 @@ import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import org.jacp.test.AllTests;
+import org.jacp.test.NonUITests;
 import org.jacp.test.main.ApplicationLauncher;
 import org.jacpfx.api.component.Injectable;
 import org.jacpfx.api.component.Perspective;
@@ -38,7 +38,7 @@ public class BasicInitialisationTests {
     @AfterClass
     public static void exitWorkBench() {
         Platform.exit();
-        AllTests.resetApplication();
+        NonUITests.resetApplication();
 
 
     }

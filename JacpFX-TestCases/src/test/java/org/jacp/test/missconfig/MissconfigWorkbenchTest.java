@@ -4,13 +4,14 @@ import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import org.jacp.test.AllTests;
-import org.jacp.test.main.ApplicationLauncherMissingPerspectives;
+import javafx.stage.Stage;
+import org.jacp.launcher.TestFXJacpFXSpringLauncher;
+import org.jacp.test.NonUITests;
 import org.jacp.test.workbench.WorkbenchMissingPerspectives;
 import org.jacpfx.api.component.Perspective;
 import org.jacpfx.rcp.workbench.AFXWorkbench;
+import org.jacpfx.rcp.workbench.FXWorkbench;
 import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.List;
@@ -25,36 +26,30 @@ import static junit.framework.TestCase.assertNotNull;
  * Time: 20:57
  * Tests if no perspective are declared in workbench
  */
-public class MissconfigWorkbenchTest {
+public class MissconfigWorkbenchTest extends TestFXJacpFXSpringLauncher {
 
-    static Thread t;
 
-    @AfterClass
-    public static void exitWorkBench() {
-        Platform.exit();
-        AllTests.resetApplication();
+    @Override
+    protected Class<? extends FXWorkbench> getWorkbenchClass() {
+        return  WorkbenchMissingPerspectives.class;
     }
 
-    @BeforeClass
-    public static void initWorkbench() {
-
-
-        t = new Thread("JavaFX Init Thread") {
-            public void run() {
-
-                ApplicationLauncherMissingPerspectives.main(new String[0]);
-
-            }
-        };
-        t.setDaemon(true);
-        t.start();
-        // Pause briefly to give FX a chance to start
-        try {
-            ApplicationLauncherMissingPerspectives.latch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    @Override
+    protected String[] getBasePackages() {
+        return new String[]{"org.jacp.test"};
     }
+
+    @Override
+    protected void postInit(Stage stage) {
+        System.out.println("post init stage");
+    }
+
+    @Override
+    public String getXmlConfig() {
+        return  "main.xml";
+    }
+
+
 
     @Test
     public void noPerspectivesAnnotatedTest() {
@@ -62,9 +57,7 @@ public class MissconfigWorkbenchTest {
         assertNotNull(getPerspectiveAnnotations());
         assertTrue(getPerspectiveAnnotations().length == 0);
 
-        ApplicationLauncherMissingPerspectives launcher = ApplicationLauncherMissingPerspectives.instance[0];
-        assertNotNull(launcher);
-        AFXWorkbench workbench = launcher.getWorkbench();
+        AFXWorkbench workbench = getWorkbench();
         assertNotNull(workbench);
         List<Perspective<Node, EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
@@ -77,4 +70,12 @@ public class MissconfigWorkbenchTest {
         org.jacpfx.api.annotations.workbench.Workbench annotations = WorkbenchMissingPerspectives.class.getAnnotation(org.jacpfx.api.annotations.workbench.Workbench.class);
         return annotations.perspectives();
     }
+    @AfterClass
+    public static void exitWorkBench() {
+        Platform.exit();
+        NonUITests.resetApplication();
+
+
+    }
+
 }

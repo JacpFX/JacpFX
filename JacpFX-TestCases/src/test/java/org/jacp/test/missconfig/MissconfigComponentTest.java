@@ -3,8 +3,7 @@ package org.jacp.test.missconfig;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import junit.framework.TestCase;
-import org.jacp.doublePerspective.test.main.ApplicationLauncherDuplicateComponentTest;
-import org.jacp.test.AllTests;
+import org.jacp.test.NonUITests;
 import org.jacp.test.main.ApplicationLauncherMissingComponentIds;
 import org.jacp.test.workbench.WorkbenchMissingPerspectives;
 import org.jacpfx.rcp.handler.AErrorDialogHandler;
@@ -62,6 +61,6 @@ public class MissconfigComponentTest {
     @AfterClass
     public static void exitWorkBench() {
         Platform.exit();
-        AllTests.resetApplication();
+        NonUITests.resetApplication();
     }
 }

@@ -26,15 +26,13 @@
 package org.jacp.test.dialogs;
 
 import javafx.application.Platform;
-import org.jacp.test.AllTests;
+import org.jacp.test.NonUITests;
 import org.jacp.test.components.ComponentDialogInPerspective;
 import org.jacp.test.main.ApplicationLauncherDialogInPerspectiveTest;
 import org.jacp.test.perspectives.PerspectiveDialogInPerspectiveTest;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import java.util.concurrent.CountDownLatch;
 
 import static org.junit.Assert.assertTrue;
 
@@ -47,7 +45,7 @@ public class DialogInComponentTest {
     @AfterClass
     public static void exitWorkBench() {
         Platform.exit();
-        AllTests.resetApplication();
+        NonUITests.resetApplication();
     }
 
     @BeforeClass

@@ -26,7 +26,7 @@
 package org.jacp.test.dialogs;
 
 import javafx.application.Platform;
-import org.jacp.test.AllTests;
+import org.jacp.test.NonUITests;
 import org.jacp.test.components.ComponentDialogInPerspective;
 import org.jacp.test.main.ApplicationLauncherDialogInPerspectiveTest;
 import org.jacp.test.perspectives.PerspectiveDialogInPerspectiveTest;
@@ -45,7 +45,7 @@ public class DialogScopeTest {
         @AfterClass
         public static void exitWorkBench() {
             Platform.exit();
-            AllTests.resetApplication();
+            NonUITests.resetApplication();
         }
 
         @BeforeClass
