@@ -48,6 +48,7 @@ import static junit.framework.TestCase.assertNotNull;
  * Created by Andy Moncsek on 24.04.15.
  */
 public class CheckPerspectiveTest extends TestFXJacpFXSpringLauncher {
+
     @Override
     public String getXmlConfig() {
         return "main.xml";

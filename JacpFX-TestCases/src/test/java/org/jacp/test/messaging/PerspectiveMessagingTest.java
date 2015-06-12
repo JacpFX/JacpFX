@@ -56,6 +56,8 @@ public class PerspectiveMessagingTest extends TestFXJacpFXSpringLauncher {
 
     }
 
+
+
     /**
      * @param args
      */

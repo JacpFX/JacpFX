@@ -1,15 +1,15 @@
 package org.jacp.test.lifecycle;
 
-import javafx.application.Platform;
+import javafx.application.Application;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import org.jacp.test.NonUITests;
+import javafx.stage.Stage;
+import org.jacp.launcher.TestFXJacpFXSpringLauncher;
 import org.jacp.test.components.PredestroyTestComponentFour;
 import org.jacp.test.components.PredestroyTestComponentOne;
 import org.jacp.test.components.PredestroyTestComponentThree;
 import org.jacp.test.components.PredestroyTestComponentTwo;
-import org.jacp.test.main.ApplicationPredestroyPerspectiveTest;
 import org.jacp.test.perspectives.PerspectiveOnePredestroyPerspectiveTest;
 import org.jacp.test.workbench.WorkbenchPredestroyPerspectiveTest;
 import org.jacpfx.api.component.Injectable;
@@ -17,8 +17,7 @@ import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.rcp.component.AStatelessCallbackComponent;
 import org.jacpfx.rcp.workbench.AFXWorkbench;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.jacpfx.rcp.workbench.FXWorkbench;
 import org.junit.Test;
 
 import java.util.List;
@@ -33,42 +32,39 @@ import static junit.framework.TestCase.*;
  * Time: 21:19
  * To change this template use File | Settings | File Templates.
  */
-public class PreDestroyPostCreateRestartPerspectiveTest {
-    static Thread t;
+public class PreDestroyPostCreateRestartPerspectiveTest extends TestFXJacpFXSpringLauncher {
 
-    @AfterClass
-    public static void exitWorkBench() {
-        Platform.exit();
-        NonUITests.resetApplication();
 
+    @Override
+    public String getXmlConfig() {
+        return "main.xml";
+    }
+
+    /**
+     * @param args
+     */
+    public static void main(final String[] args) {
+        Application.launch(args);
+    }
+
+    @Override
+    protected Class<? extends FXWorkbench> getWorkbenchClass() {
+        return WorkbenchPredestroyPerspectiveTest.class;
+    }
+
+    @Override
+    protected String[] getBasePackages() {
+        return new String[]{"org.jacp.test"};
+    }
+
+    @Override
+    public void postInit(final Stage stage) {
 
     }
 
-    @BeforeClass
-    public static void initWorkbench() {
 
 
-        t = new Thread("JavaFX Init Thread") {
-            public void run() {
-
-                ApplicationPredestroyPerspectiveTest.main(new String[0]);
-
-            }
-        };
-        t.setDaemon(true);
-        t.start();
-        // Pause briefly to give FX a chance to start
-        try {
-            ApplicationPredestroyPerspectiveTest.latch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-
-
-    private static void fireMessagesAndCheck() throws InterruptedException {
+    private  void fireMessagesAndCheck() throws InterruptedException {
         PredestroyTestComponentOne.countdownlatch = new CountDownLatch(10000);
         PredestroyTestComponentTwo.countdownlatch = new CountDownLatch(10000);
         PredestroyTestComponentThree.countdownlatch = new CountDownLatch(10000);
@@ -84,8 +80,7 @@ public class PreDestroyPostCreateRestartPerspectiveTest {
         PredestroyTestComponentThree.countdownlatch.await();
 
         PredestroyTestComponentFour.countdownlatch.await();
-        ApplicationPredestroyPerspectiveTest launcher = ApplicationPredestroyPerspectiveTest.instance[0];
-        AFXWorkbench workbench = launcher.getWorkbench();
+        AFXWorkbench workbench = getWorkbench();
         assertNotNull(workbench);
         List<Perspective<Node, EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
@@ -104,9 +99,8 @@ public class PreDestroyPostCreateRestartPerspectiveTest {
 
     }
 
-    private static void stopComponentsAndCheck(boolean burst)throws InterruptedException {
-        ApplicationPredestroyPerspectiveTest launcher = ApplicationPredestroyPerspectiveTest.instance[0];
-        AFXWorkbench workbench = launcher.getWorkbench();
+    private  void stopComponentsAndCheck(boolean burst)throws InterruptedException {
+        AFXWorkbench workbench = getWorkbench();
         assertNotNull(workbench);
         List<Perspective<Node, EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         PerspectiveOnePredestroyPerspectiveTest.latch = new CountDownLatch(1);
@@ -139,9 +133,8 @@ public class PreDestroyPostCreateRestartPerspectiveTest {
         }
     }
 
-    private static void restartComponentsAndCheck() throws InterruptedException {
-        ApplicationPredestroyPerspectiveTest launcher = ApplicationPredestroyPerspectiveTest.instance[0];
-        AFXWorkbench workbench = launcher.getWorkbench();
+    private  void restartComponentsAndCheck() throws InterruptedException {
+        AFXWorkbench workbench = getWorkbench();
         assertNotNull(workbench);
         List<Perspective<Node, EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);

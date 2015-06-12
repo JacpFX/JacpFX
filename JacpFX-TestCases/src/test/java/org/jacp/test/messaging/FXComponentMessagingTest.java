@@ -1,13 +1,13 @@
 package org.jacp.test.messaging;
 
-import javafx.application.Platform;
-import org.jacp.test.NonUITests;
+import javafx.application.Application;
+import javafx.stage.Stage;
+import org.jacp.launcher.TestFXJacpFXSpringLauncher;
 import org.jacp.test.components.ComponentMessagingTest1Component1;
 import org.jacp.test.components.ComponentMessagingTest1Component2;
-import org.jacp.test.main.ApplicationLauncherComponentMessaginTest1;
 import org.jacp.test.perspectives.PerspectiveComponentMessagingTest1;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.jacp.test.workbench.WorkbenchComponentMessageTesting1;
+import org.jacpfx.rcp.workbench.FXWorkbench;
 import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
@@ -22,36 +22,34 @@ import static org.junit.Assert.assertTrue;
  * Time: 21:48
  * To change this template use File | Settings | File Templates.
  */
-public class FXComponentMessagingTest {
-    static Thread t;
-
-    @AfterClass
-    public static void exitWorkBench() {
-        Platform.exit();
-        NonUITests.resetApplication();
+public class FXComponentMessagingTest extends TestFXJacpFXSpringLauncher {
 
 
+    @Override
+    public String getXmlConfig() {
+        return "main.xml";
     }
 
-    @BeforeClass
-    public static void initWorkbench() {
+    /**
+     * @param args
+     */
+    public static void main(final String[] args) {
+        Application.launch(args);
+    }
 
+    @Override
+    protected Class<? extends FXWorkbench> getWorkbenchClass() {
+        return WorkbenchComponentMessageTesting1.class;
+    }
 
-        t = new Thread("JavaFX Init Thread") {
-            public void run() {
+    @Override
+    protected String[] getBasePackages() {
+        return new String[]{"org.jacp.test"};
+    }
 
-                ApplicationLauncherComponentMessaginTest1.main(new String[0]);
+    @Override
+    public void postInit(final Stage stage) {
 
-            }
-        };
-        t.setDaemon(true);
-        t.start();
-        // Pause briefly to give FX a chance to start
-        try {
-            ApplicationLauncherComponentMessaginTest1.latch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     private void executeMessaging() throws InterruptedException {
@@ -80,7 +78,7 @@ public class FXComponentMessagingTest {
     // after change windows: 53912ms with ui,   16962ms without ui
     // after change linux: 56105ms with ui ... 28301ms without ui
     // after change osx: 13961 with ui ... 10158 without ui
-    //macbook : 8100ms,7891,7550,7246,17399,17428,16880 with ui ...   6131,6061,5907,5862,5892,5778,5941,5764 without ui
+    //macbook : 8100ms,7891,7550,7246,17399,17428,16880,7418 with ui ...   6131,6061,5907,5862,5892,5778,5941,5764 without ui
     public void testComponentMessaging() throws InterruptedException {
         warmUp();
         withUI();

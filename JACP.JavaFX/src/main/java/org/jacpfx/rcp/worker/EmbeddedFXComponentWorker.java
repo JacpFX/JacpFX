@@ -216,6 +216,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
             parentPerspective.unregisterComponent(component);
         }
         TearDownHandler.shutDownFXComponent(component, parentId, layout);
+        System.out.println("SHUTDOWN: "+component.getContext().getId()+"  THREAD: "+Thread.currentThread());
     }
 
     private static void clearTargetLayoutInPerspective(final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspective, final String currentTargetLayout) {

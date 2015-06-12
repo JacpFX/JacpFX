@@ -48,6 +48,7 @@ import org.jacpfx.rcp.perspective.FXPerspective;
 import org.jacpfx.rcp.util.FXUtil.MessageUtil;
 
 import java.util.ResourceBundle;
+import java.util.concurrent.CountDownLatch;
 import java.util.logging.Logger;
 
 import static org.jacpfx.rcp.util.LayoutUtil.GridPaneUtil;
@@ -68,6 +69,7 @@ public class PerspectiveOneToolbarSwitchPerspectives extends HandleToolbarBase i
 
     // =================== CONSTANTS ===================
     public static final String ID = PerspectiveIds.PerspectiveOneToolbarSwitchPerspectives;
+    public static CountDownLatch start = new CountDownLatch(1);
     @Resource
     static Context context;
     private final Logger logger = Logger.getLogger(this.getClass().getName());
@@ -125,6 +127,7 @@ public class PerspectiveOneToolbarSwitchPerspectives extends HandleToolbarBase i
 
         toolbar.add(p1);
         toolbar.addOnEnd("globP2", globalP1);
+        start.countDown();
     }
 
     @PreDestroy

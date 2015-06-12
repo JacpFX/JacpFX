@@ -39,11 +39,14 @@ import org.jacpfx.rcp.components.workbench.WorkbenchDecorator;
 import org.jacpfx.rcp.handler.DefaultErrorDialogHandler;
 import org.jacpfx.rcp.handler.ExceptionHandler;
 import org.jacpfx.rcp.registry.ClassRegistry;
+import org.jacpfx.rcp.registry.ComponentRegistry;
+import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.ClassFinder;
 import org.jacpfx.rcp.workbench.AFXWorkbench;
 import org.jacpfx.rcp.workbench.EmbeddedFXWorkbench;
 import org.jacpfx.rcp.workbench.FXWorkbench;
 import org.jacpfx.spring.launcher.SpringXmlConfigLauncher;
+import org.junit.After;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.testfx.framework.junit.ApplicationTest;
 
@@ -57,6 +60,8 @@ import java.util.stream.Stream;
 public abstract class TestFXJacpFXSpringLauncher extends ApplicationTest {
 
     protected AFXWorkbench workbench;
+
+    protected Stage stage;
 
 
     public AFXWorkbench getWorkbench() {
@@ -121,6 +126,7 @@ public abstract class TestFXJacpFXSpringLauncher extends ApplicationTest {
     @SuppressWarnings("unchecked")
     @Override
     public void start(Stage stage) throws Exception {
+        this.stage = stage;
         initExceptionHandler();
         scanPackegesAndInitRegestry();
         final Launcher<ClassPathXmlApplicationContext> launcher = new SpringXmlConfigLauncher(getXmlConfig());
@@ -150,4 +156,13 @@ public abstract class TestFXJacpFXSpringLauncher extends ApplicationTest {
     }
 
     public abstract String getXmlConfig();
+
+    @After
+    public void after()
+            throws Exception {
+        ComponentRegistry.clearOnShitdown();
+        PerspectiveRegistry.clearOnShitdown();
+        internalAfter();
+
+    }
 }

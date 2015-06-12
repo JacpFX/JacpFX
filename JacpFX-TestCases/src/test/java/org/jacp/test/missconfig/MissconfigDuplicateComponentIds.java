@@ -1,16 +1,21 @@
 package org.jacp.test.missconfig;
 
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Node;
+import javafx.stage.Stage;
 import junit.framework.TestCase;
 import org.jacp.doublePerspective.test.main.ApplicationLauncherDuplicateComponentTest;
+import org.jacp.doublePerspective.test.workbench.WorkbenchDuplicateComponentsTest;
+import org.jacp.launcher.TestFXJacpFXSpringLauncher;
 import org.jacp.test.NonUITests;
+import org.jacpfx.api.handler.ErrorDialogHandler;
 import org.jacpfx.rcp.handler.AErrorDialogHandler;
+import org.jacpfx.rcp.workbench.FXWorkbench;
 import org.junit.AfterClass;
 import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,23 +24,49 @@ import java.util.concurrent.TimeUnit;
  * Time: 13:04
  * To change this template use File | Settings | File Templates.
  */
-public class MissconfigDuplicateComponentIds {
+public class MissconfigDuplicateComponentIds extends TestFXJacpFXSpringLauncher {
+
+
+    @Override
+    public String getXmlConfig() {
+        return "main.xml";
+    }
+
+    /**
+     * @param args
+     */
+    public static void main(final String[] args) {
+        Application.launch(args);
+    }
+
+    @Override
+    protected Class<? extends FXWorkbench> getWorkbenchClass() {
+        return WorkbenchDuplicateComponentsTest.class;
+    }
+
+    @Override
+    protected String[] getBasePackages() {
+        return new String[]{"org.jacp.doublePerspective.test"};
+    }
+
+    @Override
+    public void postInit(final Stage stage) {
+
+    }
+
     @Test
     public void failedToStartDuplicatePerspectives() throws Exception {
-        try {
 
-            ApplicationLauncherDuplicateComponentTest.latch = new CountDownLatch(1);
-            ApplicationLauncherDuplicateComponentTest.exceptionhandler = new CustomErrorDialogHandler();
-            ApplicationLauncherDuplicateComponentTest.main(new String[0]);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
+    }
 
-        // Pause briefly to give FX a chance to start
-        ApplicationLauncherDuplicateComponentTest.latch.await(5000, TimeUnit.MILLISECONDS);
-
-        NonUITests.resetApplication();
+    /**
+     * Returns an ErrorDialog handler to display exceptions and errors in workspace. Overwrite this method if you need a customized handler.
+     *
+     * @return
+     */
+    @Override
+    protected ErrorDialogHandler<Node> getErrorHandler() {
+        return new CustomErrorDialogHandler();
     }
 
     public class CustomErrorDialogHandler extends AErrorDialogHandler {
@@ -46,7 +77,6 @@ public class MissconfigDuplicateComponentIds {
             //
             TestCase.assertTrue(e.getMessage().contains("more than one component found for id"));
             ApplicationLauncherDuplicateComponentTest.latch.countDown();
-            NonUITests.resetApplication();
             return null;
         }
     }

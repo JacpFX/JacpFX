@@ -113,4 +113,5 @@ public class CheckComponentsTest extends TestFXJacpFXSpringLauncher {
         }
 
     }
+
 }

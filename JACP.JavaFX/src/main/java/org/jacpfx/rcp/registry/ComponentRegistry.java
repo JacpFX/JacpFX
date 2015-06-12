@@ -39,6 +39,15 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class ComponentRegistry {
     private static final List<SubComponent<EventHandler<Event>, Event, Object>> components = new CopyOnWriteArrayList<>();
+
+
+    /**
+     * clears registry on application shutdown
+     */
+    public static void clearOnShitdown() {
+        components.clear();
+    }
+
     /**
      * Registers a component.
      *

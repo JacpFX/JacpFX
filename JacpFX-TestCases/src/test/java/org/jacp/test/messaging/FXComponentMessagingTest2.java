@@ -25,23 +25,23 @@
 
 package org.jacp.test.messaging;
 
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Node;
+import javafx.stage.Stage;
 import junit.framework.Assert;
-import org.jacp.test.NonUITests;
-import org.jacp.test.components.*;
-import org.jacp.test.main.ApplicationLauncherMessagingTest;
-import org.jacp.test.perspectives.PerspectiveComponentMessagingTest1;
+import org.jacp.launcher.TestFXJacpFXSpringLauncher;
+import org.jacp.test.components.CallbackComponentMessagingTest1_1;
+import org.jacp.test.components.ComponentMessagingTest1;
+import org.jacp.test.components.ComponentMessagingTest2;
+import org.jacp.test.components.ComponentMessagingTest3;
+import org.jacp.test.workbench.WorkbenchMessagingTest;
 import org.jacpfx.rcp.handler.AErrorDialogHandler;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.jacpfx.rcp.workbench.FXWorkbench;
 import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
-
-import static junit.framework.TestCase.assertNotNull;
 
 /**
  * Created with IntelliJ IDEA.
@@ -50,59 +50,37 @@ import static junit.framework.TestCase.assertNotNull;
  * Time: 21:48
  * To change this template use File | Settings | File Templates.
  */
-public class FXComponentMessagingTest2 {
-    static Thread t;
+public class FXComponentMessagingTest2 extends TestFXJacpFXSpringLauncher {
 
-    @AfterClass
-    public static void exitWorkBench() {
-        Platform.exit();
-        NonUITests.resetApplication();
 
+
+    @Override
+    public String getXmlConfig() {
+        return "main.xml";
+    }
+
+    /**
+     * @param args
+     */
+    public static void main(final String[] args) {
+        Application.launch(args);
+    }
+
+    @Override
+    protected Class<? extends FXWorkbench> getWorkbenchClass() {
+        return WorkbenchMessagingTest.class;
+    }
+
+    @Override
+    protected String[] getBasePackages() {
+        return new String[]{"org.jacp.test"};
+    }
+
+    @Override
+    public void postInit(final Stage stage) {
 
     }
 
-    @BeforeClass
-    public static void initWorkbench() {
-
-
-        t = new Thread("JavaFX Init Thread") {
-            public void run() {
-                ApplicationLauncherMessagingTest.exceptionhandler = new CustomErrorDialogHandler();
-                ApplicationLauncherMessagingTest.main(new String[0]);
-
-            }
-        };
-        t.setDaemon(true);
-        t.start();
-        // Pause briefly to give FX a chance to start
-        try {
-            ApplicationLauncherMessagingTest.latch.await();
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void executeMessaging() throws InterruptedException {
-        ComponentMessagingTest1Component1.wait = new CountDownLatch(1);
-        ComponentMessagingTest1Component2.wait = new CountDownLatch(1);
-
-        ComponentMessagingTest1Component1.counter = new AtomicInteger(10000);
-        ComponentMessagingTest1Component2.counter = new AtomicInteger(10000);
-
-        PerspectiveComponentMessagingTest1.fireMessage();
-
-        ComponentMessagingTest1Component1.wait.await();
-        ComponentMessagingTest1Component2.wait.await();
-
-    }
-
-
-    @Test
-    public void A_checkApplicationLauncher() {
-        ApplicationLauncherMessagingTest launcher = ApplicationLauncherMessagingTest.instance[0];
-        assertNotNull(launcher);
-    }
 
     @Test
     public void B_checkLocalMessages() throws InterruptedException {

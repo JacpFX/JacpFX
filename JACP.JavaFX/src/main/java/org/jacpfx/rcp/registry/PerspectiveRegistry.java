@@ -27,6 +27,14 @@ public class PerspectiveRegistry {
                 return left;
             });
 
+
+    /**
+     * clears registry on application shutdown
+     */
+    public static void clearOnShitdown() {
+        perspectives.clear();
+    }
+
     /**
      * Set a new perspective id and returns the current id.
      *

@@ -1,21 +1,20 @@
 package org.jacp.test.lifecycle;
 
-import javafx.application.Platform;
+import javafx.application.Application;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import org.apache.log4j.Logger;
-import org.jacp.test.NonUITests;
-import org.jacp.test.main.ApplicationLauncherHandleToolBarButtonsBetweenPerspectives;
+import javafx.stage.Stage;
+import org.jacp.launcher.TestFXJacpFXSpringLauncher;
 import org.jacp.test.toolbar.components.ComponentHandleToolBarBetweenPerspectives2;
 import org.jacp.test.toolbar.perspectives.PerspectiveOneToolbarSwitchPerspectives;
 import org.jacp.test.toolbar.perspectives.PerspectiveTwoToolbarSwitchPerspectives;
+import org.jacp.test.toolbar.workbench.WorkbenchHandleToolBarButtonsBetweenPerspectives;
 import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.rcp.workbench.AFXWorkbench;
+import org.jacpfx.rcp.workbench.FXWorkbench;
 import org.jacpfx.rcp.workbench.GlobalMediator;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.List;
@@ -23,32 +22,34 @@ import java.util.concurrent.CountDownLatch;
 
 import static junit.framework.TestCase.*;
 
-public class HandleToolBarButtonsBetweenPerspective {
+public class HandleToolBarButtonsBetweenPerspective extends TestFXJacpFXSpringLauncher {
 
-    static Thread t;
-    private final Logger logger = Logger.getLogger(this.getClass().getName());
 
-    @AfterClass
-    public static void exitWorkBench() {
-        Platform.exit();
-        NonUITests.resetApplication();
+    @Override
+    public String getXmlConfig() {
+        return "main.xml";
     }
 
-    @BeforeClass
-    public static void initWorkbench() {
-        t = new Thread("JavaFX Init Thread") {
-            public void run() {
-                ApplicationLauncherHandleToolBarButtonsBetweenPerspectives.main(new String[0]);
-            }
-        };
-        t.setDaemon(true);
-        t.start();
-        // Pause briefly to give FX a chance to start
-        try {
-            ApplicationLauncherHandleToolBarButtonsBetweenPerspectives.latch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    /**
+     * @param args
+     */
+    public static void main(final String[] args) {
+        Application.launch(args);
+    }
+
+    @Override
+    protected Class<? extends FXWorkbench> getWorkbenchClass() {
+        return WorkbenchHandleToolBarButtonsBetweenPerspectives.class;
+    }
+
+    @Override
+    protected String[] getBasePackages() {
+        return new String[]{"org.jacp.test"};
+    }
+
+    @Override
+    public void postInit(final Stage stage) {
+
     }
 
     private Perspective<Node, EventHandler<Event>, Event, Object> getPerspectiveById(List<Perspective<Node, EventHandler<Event>, Event, Object>> perspectives, String id) {
@@ -71,9 +72,8 @@ public class HandleToolBarButtonsBetweenPerspective {
 
     @Test
     public void testMoveToolBar() throws InterruptedException {
-        logger.info("...::: START TEST :::...");
-        ApplicationLauncherHandleToolBarButtonsBetweenPerspectives launcher = ApplicationLauncherHandleToolBarButtonsBetweenPerspectives.instance[0];
-        AFXWorkbench workbench = launcher.getWorkbench();
+        //logger.info("...::: START TEST :::...");
+        AFXWorkbench workbench =  getWorkbench();
         assertNotNull(workbench);
         List<Perspective<Node, EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
@@ -90,10 +90,15 @@ public class HandleToolBarButtonsBetweenPerspective {
             }
 
         }
+
+        PerspectiveTwoToolbarSwitchPerspectives.start.await();
+        PerspectiveOneToolbarSwitchPerspectives.start.await();
+        ComponentHandleToolBarBetweenPerspectives2.startLatch.await();
         int waitingTime = 50;
 
         Perspective<Node, EventHandler<Event>, Event, Object> p = this.getPerspectiveById(perspectives, ComponentHandleToolBarBetweenPerspectives2.currentId);
         assertNotNull(p);
+        Thread.sleep(waitingTime);
         // INITAL -> 6
         assertEquals(6, GlobalMediator.getInstance().countVisibleButtons());
         PerspectiveTwoToolbarSwitchPerspectives.switchLatch = new CountDownLatch(1);

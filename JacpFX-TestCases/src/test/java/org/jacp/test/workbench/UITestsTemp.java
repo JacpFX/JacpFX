@@ -23,15 +23,10 @@
  * *********************************************************************
  */
 
-package org.jacp.test;
+package org.jacp.test.workbench;
 
-import org.jacp.test.component.CheckComponentsTest;
-import org.jacp.test.errordialog.DialogOnMissingComponentsTest;
-import org.jacp.test.handler.AsyncHandlerTest;
-import org.jacp.test.lifecycle.*;
-import org.jacp.test.messaging.*;
-import org.jacp.test.missconfig.MissconfigDuplicateComponentIds;
-import org.jacp.test.perspective.CheckPerspectiveTest;
+import org.jacp.test.lifecycle.ShutdownAndReopenComponentsTest;
+import org.jacp.test.lifecycle.ShutdownAndReopenComponentsTest2;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -40,12 +35,8 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        CheckPerspectiveTest.class,
-        CheckComponentsTest.class, PerspectiveMessagingTest.class, FXComponentMessagingTest2.class, FXComponentMessagingTest.class,
-        FXComponentCallBackMessagingTest.class, FXComponentAsyncCallbackMessagingTest.class,CallbackComponentToFXComponentMessagingTest.class,
-        ShutdownAndReopenComponentsTest.class,  ShutdownAndReopenComponentsTest2.class,PreDestroyPostCreateRestartPerspectiveTest.class,
-        MoveComponentBetweenPerspective.class, HandleToolBarButtonsBetweenPerspective.class,OnShowOnHidePerspective.class, AsyncHandlerTest.class, DialogOnMissingComponentsTest.class, MissconfigDuplicateComponentIds.class})
-public class UITests {
+        ShutdownAndReopenComponentsTest.class,  ShutdownAndReopenComponentsTest2.class})
+public class UITestsTemp {
         // ShutdownAndReopenComponentsTest3.class,
         //ShutdownAndReopenComponentsTest4.class, ShutdownAndReopenComponentsTest5.class, ShutdownAndReopenComponentsTest6.class,   OnShowOnHidePerspective.class,
         //

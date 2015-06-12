@@ -1,13 +1,13 @@
 package org.jacp.test.messaging;
 
-import javafx.application.Platform;
-import org.jacp.test.NonUITests;
+import javafx.application.Application;
+import javafx.stage.Stage;
+import org.jacp.launcher.TestFXJacpFXSpringLauncher;
 import org.jacp.test.components.CallbackComponentMessagingTest1Component1;
 import org.jacp.test.components.CallbackComponentMessagingTest1Component2;
-import org.jacp.test.main.ApplicationLauncherCallbackComponentMessaginTest1;
 import org.jacp.test.perspectives.PerspectiveCallbackComponentMessagingTest1;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.jacp.test.workbench.WorkbenchCallbackComponentMessageTesting1;
+import org.jacpfx.rcp.workbench.FXWorkbench;
 import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
@@ -22,37 +22,36 @@ import static org.junit.Assert.assertTrue;
  * Time: 21:48
  * Tests messaging between callback component
  */
-public class FXComponentCallBackMessagingTest {
-    static Thread t;
+public class FXComponentCallBackMessagingTest extends TestFXJacpFXSpringLauncher {
 
-    @AfterClass
-    public static void exitWorkBench() {
-        Platform.exit();
-        NonUITests.resetApplication();
 
+    @Override
+    public String getXmlConfig() {
+        return "main.xml";
+    }
+
+    /**
+     * @param args
+     */
+    public static void main(final String[] args) {
+        Application.launch(args);
+    }
+
+    @Override
+    protected Class<? extends FXWorkbench> getWorkbenchClass() {
+        return WorkbenchCallbackComponentMessageTesting1.class;
+    }
+
+    @Override
+    protected String[] getBasePackages() {
+        return new String[]{"org.jacp.test"};
+    }
+
+    @Override
+    public void postInit(final Stage stage) {
 
     }
 
-    @BeforeClass
-    public static void initWorkbench() {
-
-
-        t = new Thread("JavaFX Init Thread") {
-            public void run() {
-
-                ApplicationLauncherCallbackComponentMessaginTest1.main(new String[0]);
-
-            }
-        };
-        t.setDaemon(true);
-        t.start();
-        // Pause briefly to give FX a chance to start
-        try {
-            ApplicationLauncherCallbackComponentMessaginTest1.latch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 
     private void executeMessaging() throws InterruptedException {
         CallbackComponentMessagingTest1Component1.wait = new CountDownLatch(1);

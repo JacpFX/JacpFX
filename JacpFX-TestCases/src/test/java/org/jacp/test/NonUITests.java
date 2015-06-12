@@ -19,7 +19,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ MissconfigWorkbenchTest.class,
         MissconfigWorkbenchMissingIdInPerspective.class,
-        MissconfigDuplicateComponentIds.class,
         MissconfigWorkbenchIdTest.class,
         MissconfigLauncherTest.class,
         MissconfigFXComponentTest.class,

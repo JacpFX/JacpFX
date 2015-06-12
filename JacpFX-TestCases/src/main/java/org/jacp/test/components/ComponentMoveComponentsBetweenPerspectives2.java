@@ -107,7 +107,7 @@ public class ComponentMoveComponentsBetweenPerspectives2 implements FXComponent 
 
     }
 
-    public static void switchTarget() {
+    public void switchTarget() {
             context.send("switch");
     }
 

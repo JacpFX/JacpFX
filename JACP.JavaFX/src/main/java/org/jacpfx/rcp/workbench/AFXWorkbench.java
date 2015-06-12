@@ -52,6 +52,7 @@ import org.jacpfx.rcp.delegator.MessageDelegatorImpl;
 import org.jacpfx.rcp.handler.PerspectiveHandlerImpl;
 import org.jacpfx.rcp.message.MessageImpl;
 import org.jacpfx.rcp.perspective.AFXPerspective;
+import org.jacpfx.rcp.registry.ComponentRegistry;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.*;
 
@@ -131,6 +132,8 @@ public abstract class AFXWorkbench
             TearDownHandler.handleGlobalTearDown();
             Platform.exit();
         });
+        ComponentRegistry.clearOnShitdown();
+        PerspectiveRegistry.clearOnShitdown();
     }
 
     private void initSubsystem() {

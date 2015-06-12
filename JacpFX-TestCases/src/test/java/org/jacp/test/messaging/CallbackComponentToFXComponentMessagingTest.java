@@ -1,13 +1,13 @@
 package org.jacp.test.messaging;
 
-import javafx.application.Platform;
-import org.jacp.test.NonUITests;
+import javafx.application.Application;
+import javafx.stage.Stage;
+import org.jacp.launcher.TestFXJacpFXSpringLauncher;
 import org.jacp.test.components.ComponentToCallbackMessagingTest1Component1;
 import org.jacp.test.components.ComponentToCallbackMessagingTest1Component2;
-import org.jacp.test.main.ApplicationLauncherComponentToCallbackComponentMessaginTest1;
 import org.jacp.test.perspectives.PerspectiveComponentToCallbackComponentMessagingTest1;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.jacp.test.workbench.WorkbenchComponentToCallbackComponentMessageTesting1;
+import org.jacpfx.rcp.workbench.FXWorkbench;
 import org.junit.Test;
 
 import java.util.concurrent.CountDownLatch;
@@ -22,36 +22,34 @@ import static org.junit.Assert.assertTrue;
  * Time: 13:59
  * Messeging between UI and non UI component
  */
-public class CallbackComponentToFXComponentMessagingTest {
-    static Thread t;
-
-    @AfterClass
-    public static void exitWorkBench() {
-        Platform.exit();
-        NonUITests.resetApplication();
+public class CallbackComponentToFXComponentMessagingTest extends TestFXJacpFXSpringLauncher {
 
 
+    @Override
+    public String getXmlConfig() {
+        return "main.xml";
     }
 
-    @BeforeClass
-    public static void initWorkbench() {
+    /**
+     * @param args
+     */
+    public static void main(final String[] args) {
+        Application.launch(args);
+    }
 
+    @Override
+    protected Class<? extends FXWorkbench> getWorkbenchClass() {
+        return WorkbenchComponentToCallbackComponentMessageTesting1.class;
+    }
 
-        t = new Thread("JavaFX Init Thread") {
-            public void run() {
+    @Override
+    protected String[] getBasePackages() {
+        return new String[]{"org.jacp.test"};
+    }
 
-                ApplicationLauncherComponentToCallbackComponentMessaginTest1.main(new String[0]);
+    @Override
+    public void postInit(final Stage stage) {
 
-            }
-        };
-        t.setDaemon(true);
-        t.start();
-        // Pause briefly to give FX a chance to start
-        try {
-            ApplicationLauncherComponentToCallbackComponentMessaginTest1.latch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     private void executeMessaging() throws InterruptedException {

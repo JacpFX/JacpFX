@@ -73,6 +73,7 @@ public class PerspectiveTwoPredestroyPerspectiveTest implements FXPerspective {
     public static CountDownLatch latch = new CountDownLatch(1);
 
     public static CountDownLatch showLatch = new CountDownLatch(1);
+    public static CountDownLatch startLatch = new CountDownLatch(1);
 
     public static CountDownLatch hideLatch = new CountDownLatch(1);
 
@@ -161,6 +162,7 @@ public class PerspectiveTwoPredestroyPerspectiveTest implements FXPerspective {
     public void onStartPerspective(final PerspectiveLayout perspectiveLayout,final FXComponentLayout layout,
                                    final ResourceBundle resourceBundle) {
         System.out.println("on postConstruct p 18");
+        startLatch.countDown();
     }
 
     @PreDestroy
