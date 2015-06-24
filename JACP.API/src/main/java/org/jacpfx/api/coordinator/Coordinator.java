@@ -24,7 +24,6 @@ package org.jacpfx.api.coordinator;
 
 import org.jacpfx.api.component.Component;
 import org.jacpfx.api.handler.ComponentHandler;
-import org.jacpfx.api.message.DelegateDTO;
 import org.jacpfx.api.message.Message;
 
 import java.util.concurrent.TransferQueue;
@@ -74,11 +73,5 @@ public interface Coordinator<L, A, M> {
     <P extends Component<L, M>> void setPerspectiveHandler(
             final ComponentHandler<P, Message<A, M>> handler);
 
-    /**
-     * Set the delegate queue, which delegates messages to correct responsible perspective.
-     *
-     * @param delegateQueue, The delegate queue.
-     */
-    void setDelegateQueue(final TransferQueue<DelegateDTO<A, M>> delegateQueue);
 
 }

@@ -8,6 +8,7 @@ import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.component.ui.Hideable;
 import org.jacpfx.api.component.ui.HideableComponent;
+import org.jacpfx.api.context.JacpContext;
 import org.jacpfx.api.util.ToolbarPosition;
 import org.jacpfx.rcp.components.toolBar.JACPToolBar;
 
@@ -91,34 +92,24 @@ public class GlobalMediator {
 
     public void handleToolBarButtons(final Perspective<Node, EventHandler<Event>, Event, Object> perspective, final boolean visible) {
         // fetch all nodes from all registred toolbars
-        for (Iterator<JACPToolBar> iterator = this.toolbars.values().iterator(); iterator.hasNext(); ) {
-            Node node = iterator.next();
-            // handle visible state
-            JACPToolBar toolBar = (JACPToolBar) node;
-            toolBar.setButtonsVisible(perspective, visible);
-
-        }
+        if(perspective!=null && perspective.getPerspective()!=null)
+            this.toolbars.values().stream().map(node -> (JACPToolBar) node).forEach(toolBar->toolBar.setButtonsVisible(perspective, visible));
     }
 
     public void handleToolBarButtons(final SubComponent<EventHandler<Event>, Event, Object> subComponent, final String parentId, final boolean visible) {
         // fetch all nodes from all registred toolbars
-        for (Iterator<JACPToolBar> iterator = this.toolbars.values().iterator(); iterator.hasNext(); ) {
-            Node node = iterator.next();
-            // handle visible state
-            JACPToolBar toolBar = (JACPToolBar) node;
-            toolBar.setButtonsVisible(subComponent, parentId, visible);
+        if(subComponent!=null) {
+            final JacpContext<EventHandler<Event>, Object> context = subComponent.getContext();
+            final String componentId = context!=null?context.getId():null;
+            if(componentId!=null)
+                this.toolbars.values().stream().map(node -> (JACPToolBar) node).forEach(toolBar->toolBar.setButtonsVisible(subComponent, parentId, visible));
         }
+
     }
 
     public void handleWorkbenchToolBarButtons(final String id, final boolean visible) {
         // fetch all nodes from all registred toolbars
-        for (Iterator<JACPToolBar> iterator = this.toolbars.values().iterator(); iterator.hasNext(); ) {
-            Node node = iterator.next();
-            // handle visible state
-            JACPToolBar toolBar = (JACPToolBar) node;
-            toolBar.setWorkbenchButtonsVisible(id, visible);
-
-        }
+        this.toolbars.values().stream().map(node -> (JACPToolBar) node).forEach(toolBar->toolBar.setWorkbenchButtonsVisible(id, visible));
     }
 
     public int countVisibleButtons() {

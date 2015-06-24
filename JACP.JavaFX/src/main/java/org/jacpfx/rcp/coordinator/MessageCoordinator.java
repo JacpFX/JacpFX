@@ -32,7 +32,7 @@ public class MessageCoordinator extends Thread implements
         Coordinator<EventHandler<Event>, Event, Object> {
     private ComponentHandler<SubComponent<EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
     private ComponentHandler<Perspective<Node, EventHandler<Event>, Event, Object>, Message<Event, Object>> perspectiveHandler;
-    private TransferQueue<DelegateDTO<Event, Object>> delegateQueue;
+    private final TransferQueue<DelegateDTO<Event, Object>> delegateQueue;
     private final TransferQueue<Message<Event, Object>> messages = new LinkedTransferQueue<>();
     private final String parentId;
     private final Launcher<?> launcher;
@@ -40,10 +40,17 @@ public class MessageCoordinator extends Thread implements
 
     public MessageCoordinator(final String parentId,
                               final Launcher<?> launcher) {
+        this(parentId, launcher, null, null);
+    }
+
+    public MessageCoordinator(final String parentId,
+                              final Launcher<?> launcher, final TransferQueue<DelegateDTO<Event, Object>> delegateQueue, final ComponentHandler<Perspective<Node, EventHandler<Event>, Event, Object>, Message<Event, Object>> perspectiveHandler) {
         super("MessageCoordinator");
         ShutdownThreadsHandler.registerThread(this);
         this.parentId = parentId;
         this.launcher = launcher;
+        this.delegateQueue = delegateQueue;
+        this.perspectiveHandler = perspectiveHandler;
     }
 
 
@@ -111,10 +118,11 @@ public class MessageCoordinator extends Thread implements
     }
 
     private void delegateMessageToCorrectPerspective(final DelegateDTOImpl dto) {
+        final Thread t = Thread.currentThread();
         try {
             this.delegateQueue.transfer(dto);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            t.getUncaughtExceptionHandler().uncaughtException(t, e);
         }
     }
 
@@ -234,8 +242,64 @@ public class MessageCoordinator extends Thread implements
         this.perspectiveHandler = (ComponentHandler<Perspective<Node, EventHandler<Event>, Event, Object>, Message<Event, Object>>) handler;
     }
 
-    @Override
-    public final void setDelegateQueue(TransferQueue<DelegateDTO<Event, Object>> delegateQueue) {
-        this.delegateQueue = delegateQueue;
+
+    /**
+     * first builder interface for the parent id
+     */
+    public interface ParentIdBuilder {
+        /**
+         * add the parent id value
+         *
+         * @param parentId define the parent id of the coordinator
+         * @return the next builder LauncherBuilder
+         */
+        LauncherBuilder parentId(final String parentId);
+    }
+
+    /**
+     * second builder interface for the launcher
+     */
+    public interface LauncherBuilder {
+        /**
+         * add the launcher reference
+         *
+         * @param launcher the launcher instance
+         * @return the next builder DelegateQueueBuilder
+         */
+        DelegateQueueBuilder launcher(final Launcher<?> launcher);
+    }
+
+    /**
+     * third builder interface for the delegateQueue
+     */
+    public interface DelegateQueueBuilder {
+        /**
+         * add the delegate queue reference
+         *
+         * @param delegateQueue the delegate message queue reference
+         * @return the next builder HandlerBuilder
+         */
+        HandlerBuilder delegateQueue(final TransferQueue<DelegateDTO<Event, Object>> delegateQueue);
+    }
+
+    /**
+     * forth builder interface for the handler
+     */
+    public interface HandlerBuilder {
+        /**
+         * the last step which creates the Coordinator instance
+         *
+         * @param perspectiveHandler the perspective handler reference
+         * @return the MessageCoordinator instance
+         */
+        MessageCoordinator handler(final ComponentHandler<Perspective<Node, EventHandler<Event>, Event, Object>, Message<Event, Object>> perspectiveHandler);
+    }
+
+    /**
+     * Build the MessageCoordinator object
+     * @return the initial builder interface ParentIdBuilder
+     */
+    public static ParentIdBuilder build() {
+        return parentId -> launcher -> delegateQueue -> handler -> new MessageCoordinator(parentId, launcher, delegateQueue, handler);
     }
 }

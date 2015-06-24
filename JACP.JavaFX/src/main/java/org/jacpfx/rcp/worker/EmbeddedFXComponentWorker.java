@@ -206,6 +206,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
 
         final Context context = Context.class.cast(component.getContext());
         final String parentId = context.getParentId();
+        if(parentId==null) return;
         final FXComponentLayout layout = context.getComponentLayout();
         final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspective = PerspectiveRegistry.findPerspectiveById(parentId);
         if (parentPerspective != null) {
@@ -216,7 +217,6 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
             parentPerspective.unregisterComponent(component);
         }
         TearDownHandler.shutDownFXComponent(component, parentId, layout);
-        System.out.println("SHUTDOWN: "+component.getContext().getId()+"  THREAD: "+Thread.currentThread());
     }
 
     private static void clearTargetLayoutInPerspective(final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspective, final String currentTargetLayout) {

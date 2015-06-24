@@ -320,7 +320,6 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
     }
 
     public void setButtonsVisible(final Perspective<Node, EventHandler<Event>, Event, Object> perspective, boolean visible) {
-        if (visible && perspective == null) return;
         org.jacpfx.api.annotations.perspective.Perspective persAnnotation = perspective.getPerspective().getClass().getAnnotation(org.jacpfx.api.annotations.perspective.Perspective.class);
         this.handleButtons(persAnnotation.id(), visible);
         if (perspective.getSubcomponents() != null) {
@@ -329,14 +328,9 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
     }
 
     public void setButtonsVisible(final SubComponent<EventHandler<Event>, Event, Object> subcomponent, final String parentId, boolean visible) {
-        if(subcomponent== null) return;
         final JacpContext<EventHandler<Event>, Object> context = subcomponent.getContext();
-        if(context == null) return;
         final String componentId = context.getId();
-        if (componentId != null) {
-            this.handleButtons(FXUtil.getQualifiedComponentId(parentId, componentId), visible);
-        }
-
+        this.handleButtons(FXUtil.getQualifiedComponentId(parentId, componentId), visible);
     }
 
     public void setWorkbenchButtonsVisible(final String id, boolean visible) {

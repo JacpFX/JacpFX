@@ -1,5 +1,4 @@
 /************************************************************************
- *
  * Copyright (C) 2010 - 2014
  *
  * [AFX2Workbench.java]
@@ -8,17 +7,15 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at 
+ * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0 
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an "AS IS"
- * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either 
+ * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- *
- *
  ************************************************************************/
 package org.jacpfx.rcp.workbench;
 
@@ -70,7 +67,7 @@ import java.util.stream.Collectors;
  */
 public abstract class AFXWorkbench
         implements
-        Base<Node,EventHandler<Event>, Event, Object>,
+        Base<Node, EventHandler<Event>, Event, Object>,
         RootComponent<Perspective<Node, EventHandler<Event>, Event, Object>, Message<Event, Object>> {
 
     private final ComponentDelegator<EventHandler<Event>, Event, Object> componentDelegator = new ComponentDelegatorImpl();
@@ -80,7 +77,6 @@ public abstract class AFXWorkbench
     private List<Perspective<Node, EventHandler<Event>, Event, Object>> perspectives;
     private ComponentHandler<Perspective<Node, EventHandler<Event>, Event, Object>, Message<Event, Object>> componentHandler;
     private Coordinator<EventHandler<Event>, Event, Object> messageCoordinator;
-
 
 
     private WorkbenchDecorator workbenchDecorator;
@@ -152,8 +148,11 @@ public abstract class AFXWorkbench
         this.launcher = launcher;
         ManagedFragment.initManagedFragment(launcher);
         final Workbench annotation = getWorkbenchAnnotation();
-        messageCoordinator = new MessageCoordinator(annotation.id(), launcher);
-        messageCoordinator.setDelegateQueue(messageDelegator.getMessageDelegateQueue());
+        messageCoordinator = MessageCoordinator.build().
+                parentId(annotation.id()).
+                launcher(launcher).
+                delegateQueue(messageDelegator.getMessageDelegateQueue()).
+                handler(null);
         context = new JacpContextImpl(annotation.id(), annotation.name(), messageCoordinator.getMessageQueue());
         FXUtil.performResourceInjection(handle, context);
         start(Stage.class.cast(root));
@@ -173,7 +172,6 @@ public abstract class AFXWorkbench
         perspectives.forEach(this::initPerspective);
         final List<Perspective<Node, EventHandler<Event>, Event, Object>> activeSequentialPerspectiveList = perspectives
                 .stream()
-                .sequential()
                 .filter(p -> p.getContext() != null && p.getContext().isActive())
                 .collect(Collectors.toList());
         if (!activeSequentialPerspectiveList.isEmpty()) {
@@ -188,24 +186,31 @@ public abstract class AFXWorkbench
         final CountDownLatch waitForInit = new CountDownLatch(1);
         log("3.4.2: init perspective");
         if (perspective.getContext().isActive()) {
-            final Runnable r = () -> {
-                componentHandler.initComponent(
-                        new MessageImpl(perspective.getContext().getId(), perspective
-                                .getContext().getId(), "init", null), perspective);
+            executeOnFXThread(() -> {
+                componentHandler.initComponent(new MessageImpl(perspective.getContext().getId(), perspective
+                        .getContext().getId(), "init", null), perspective);
                 waitForInit.countDown();
-            };
-            if (Platform.isFxApplicationThread()) {
-                r.run();
-            } else {
-                Platform.runLater(r);
+            });
+            waitForPerspectiveInitialisation(waitForInit);
 
-            }
-            try {
-                // wait for possible async execution
-                waitForInit.await();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        }
+    }
+
+    private void waitForPerspectiveInitialisation(CountDownLatch waitForInit) {
+        final Thread t = Thread.currentThread();
+        try {
+            // wait for possible async execution
+            waitForInit.await();
+        } catch (InterruptedException e) {
+            t.getUncaughtExceptionHandler().uncaughtException(t, e);
+        }
+    }
+
+    private void executeOnFXThread(Runnable r) {
+        if (Platform.isFxApplicationThread()) {
+            r.run();
+        } else {
+            Platform.runLater(r);
 
         }
     }
@@ -238,9 +243,11 @@ public abstract class AFXWorkbench
     public final void registerComponent(
             final Perspective<Node, EventHandler<Event>, Event, Object> perspective) {
         final String perspectiveId = PerspectiveUtil.getPerspectiveIdFromAnnotation(perspective);
-        final MessageCoordinator messageCoordinatorLocal = new MessageCoordinator(perspectiveId, launcher);
-        messageCoordinatorLocal.setDelegateQueue(messageDelegator.getMessageDelegateQueue());
-        messageCoordinatorLocal.setPerspectiveHandler(componentHandler);
+        final MessageCoordinator messageCoordinatorLocal = MessageCoordinator.build().
+                parentId(perspectiveId).
+                launcher(launcher).
+                delegateQueue(messageDelegator.getMessageDelegateQueue()).
+                handler(componentHandler);
         // use compleatableFuture
         perspective.init(componentDelegator.getComponentDelegateQueue(),
                 messageDelegator.getMessageDelegateQueue(),
@@ -293,7 +300,6 @@ public abstract class AFXWorkbench
     public final List<Perspective<Node, EventHandler<Event>, Event, Object>> getPerspectives() {
         return perspectives;
     }
-
 
 
     private void log(final String message) {

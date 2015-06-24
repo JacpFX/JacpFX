@@ -52,7 +52,7 @@ import java.util.logging.Logger;
 public class TearDownHandler {
     private static final ExecutorService executor = Executors
             .newCachedThreadPool(new HandlerThreadFactory(
-                    "PerspectiveHandlerImpl:"));
+                    "TearDownHandler:"));
     private static Base<Node,EventHandler<Event>, Event, Object> rootWorkbench;
 
     /**
@@ -185,7 +185,8 @@ public class TearDownHandler {
         } else {
             try {
                 executor.submit(new TearDownWorker(component)).get();
-            } catch (InterruptedException | ExecutionException e) {
+            } catch (InterruptedException | RejectedExecutionException | ExecutionException e) {
+                // "hide" exception as this can happen on shutdown
                 e.printStackTrace();
             }
             component.interruptWorker();
