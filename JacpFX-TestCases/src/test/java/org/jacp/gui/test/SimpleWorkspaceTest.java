@@ -31,15 +31,13 @@ import org.jacp.test.NonUITests;
 import org.jacp.test.main.ApplicationLauncher;
 import org.junit.AfterClass;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.loadui.testfx.GuiTest;
-import org.loadui.testfx.categories.TestFX;
+
 
 /**
  * Created by amo on 28.01.14.
  */
-@Category(TestFX.class)
-public class SimpleWorkspaceTest extends GuiTest {
+
+public class SimpleWorkspaceTest{
     static Thread t;
 
     @AfterClass
@@ -50,7 +48,7 @@ public class SimpleWorkspaceTest extends GuiTest {
 
     }
 
-    @Override
+
     public void setupStage() {
         t = new Thread("JavaFX Init Thread") {
             public void run() {
@@ -70,7 +68,7 @@ public class SimpleWorkspaceTest extends GuiTest {
     }
 
 
-    @Override
+
     protected Parent getRootNode() {
         ApplicationLauncher launcher = ApplicationLauncher.instance[0];
         return null;

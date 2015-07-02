@@ -25,9 +25,8 @@
 
 package org.jacp.test;
 
-import org.jacp.test.component.CheckComponentsTest;
-import org.jacp.test.messaging.*;
-import org.jacp.test.perspective.CheckPerspectiveTest;
+import org.jacp.test.lifecycle.ShutdownAndReopenComponentsTest;
+import org.jacp.test.lifecycle.ShutdownAndReopenComponentsTest2;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -36,10 +35,8 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        CheckPerspectiveTest.class,
-        CheckComponentsTest.class, PerspectiveMessagingTest.class, FXComponentMessagingTest2.class, FXComponentMessagingTest.class,
-        FXComponentCallBackMessagingTest.class, FXComponentAsyncCallbackMessagingTest.class,CallbackComponentToFXComponentMessagingTest.class})
-public class UITests {
+        ShutdownAndReopenComponentsTest.class,  ShutdownAndReopenComponentsTest2.class})
+public class UITests3 {
         // ShutdownAndReopenComponentsTest3.class,
         //ShutdownAndReopenComponentsTest4.class, ShutdownAndReopenComponentsTest5.class, ShutdownAndReopenComponentsTest6.class,   OnShowOnHidePerspective.class,
         //

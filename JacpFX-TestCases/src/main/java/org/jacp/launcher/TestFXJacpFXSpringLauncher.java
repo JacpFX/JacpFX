@@ -65,7 +65,7 @@ public abstract class TestFXJacpFXSpringLauncher extends ApplicationTest {
 
 
     public AFXWorkbench getWorkbench() {
-        return this.workbench;
+        return workbench;
     }
 
     protected abstract Class<? extends FXWorkbench> getWorkbenchClass();
@@ -126,7 +126,7 @@ public abstract class TestFXJacpFXSpringLauncher extends ApplicationTest {
     @SuppressWarnings("unchecked")
     @Override
     public void start(Stage stage) throws Exception {
-        this.stage = stage;
+        stage = stage;
         initExceptionHandler();
         scanPackegesAndInitRegestry();
         final Launcher<ClassPathXmlApplicationContext> launcher = new SpringXmlConfigLauncher(getXmlConfig());
@@ -139,7 +139,7 @@ public abstract class TestFXJacpFXSpringLauncher extends ApplicationTest {
 
     private void initWorkbench(final Stage stage, final Launcher<ClassPathXmlApplicationContext> launcher, final Class<? extends FXWorkbench> workbenchHandler) {
         if (workbenchHandler.isAnnotationPresent(Workbench.class)) {
-            this.workbench = createWorkbench(launcher, workbenchHandler);
+            workbench = createWorkbench(launcher, workbenchHandler);
             workbench.init(launcher, stage);
             postInit(stage);
         } else {
@@ -160,6 +160,8 @@ public abstract class TestFXJacpFXSpringLauncher extends ApplicationTest {
     @After
     public void after()
             throws Exception {
+        //ShutdownThreadsHandler.shutdowAll();
+        //TearDownHandler.handleGlobalTearDown();
         ComponentRegistry.clearOnShitdown();
         PerspectiveRegistry.clearOnShitdown();
         internalAfter();

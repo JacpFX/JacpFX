@@ -181,7 +181,8 @@ public class ShutdownAndReopenComponentsTest extends TestFXJacpFXSpringLauncher 
         List<Perspective<Node, EventHandler<Event>, Event, Object>> perspectives = workbench.getPerspectives();
         assertNotNull(perspectives);
         assertFalse(perspectives.isEmpty());
-      //  testStopComponent();
+       // testStartComponent();
+       // testStopComponent();
         for (Perspective<Node, EventHandler<Event>, Event, Object> p : perspectives) {
 
             assertTrue(p.getContext().isActive());

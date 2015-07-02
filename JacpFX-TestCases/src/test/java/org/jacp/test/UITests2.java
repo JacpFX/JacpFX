@@ -25,9 +25,10 @@
 
 package org.jacp.test;
 
-import org.jacp.test.component.CheckComponentsTest;
-import org.jacp.test.messaging.*;
-import org.jacp.test.perspective.CheckPerspectiveTest;
+import org.jacp.test.errordialog.DialogOnMissingComponentsTest;
+import org.jacp.test.handler.AsyncHandlerTest;
+import org.jacp.test.lifecycle.*;
+import org.jacp.test.missconfig.MissconfigDuplicateComponentIds;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -36,10 +37,9 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        CheckPerspectiveTest.class,
-        CheckComponentsTest.class, PerspectiveMessagingTest.class, FXComponentMessagingTest2.class, FXComponentMessagingTest.class,
-        FXComponentCallBackMessagingTest.class, FXComponentAsyncCallbackMessagingTest.class,CallbackComponentToFXComponentMessagingTest.class})
-public class UITests {
+        PreDestroyPostCreateRestartPerspectiveTest.class,
+        MoveComponentBetweenPerspective.class, HandleToolBarButtonsBetweenPerspective.class,OnShowOnHidePerspective.class, AsyncHandlerTest.class, DialogOnMissingComponentsTest.class, MissconfigDuplicateComponentIds.class})
+public class UITests2 {
         // ShutdownAndReopenComponentsTest3.class,
         //ShutdownAndReopenComponentsTest4.class, ShutdownAndReopenComponentsTest5.class, ShutdownAndReopenComponentsTest6.class,   OnShowOnHidePerspective.class,
         //
