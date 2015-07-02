@@ -18,13 +18,11 @@ import org.jacpfx.rcp.perspective.FXPerspective;
 import org.jacpfx.rcp.util.AccessUtil;
 import org.jacpfx.rcp.util.FXUtil;
 import org.jacpfx.rcp.util.PerspectiveUtil;
-import org.jacpfx.rcp.util.WorkerUtil;
 import org.jacpfx.rcp.workbench.FXWorkbench;
 import org.jacpfx.rcp.worker.AComponentWorker;
 import org.jacpfx.rcp.worker.AEmbeddedComponentWorker;
 
 import java.util.ResourceBundle;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TransferQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -349,20 +347,8 @@ public class JacpContextImpl implements Context,InternalContext {
     /**
      * {@inheritDoc}
      */
-    @Override
-    public final void invokeFXAndWait(final Runnable r) {
-        final Thread t = Thread.currentThread();
-        try {
-            WorkerUtil.invokeOnFXThreadAndWait(r);
-        } catch (InterruptedException | ExecutionException e) {
-           t.getUncaughtExceptionHandler().uncaughtException(t,e);
-        }
-    }
-
-
-    public class AsyncHandler{
-
-
+    public AsyncHandler<?> asyncHandler() {
+        return AsyncHandler.getInstance();
     }
 
     /**

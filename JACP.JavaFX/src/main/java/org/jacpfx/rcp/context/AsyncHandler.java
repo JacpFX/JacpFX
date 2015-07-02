@@ -27,7 +27,6 @@ package org.jacpfx.rcp.context;
 
 import javafx.application.Platform;
 import org.jacpfx.rcp.util.WorkerUtil;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +45,7 @@ import java.util.function.Supplier;
 public class AsyncHandler<T> {
 
     private final static ExecutorService EXECUTOR = Executors.newCachedThreadPool();
+
 
     private List<ExecutionStep> steps;
 
@@ -96,8 +96,15 @@ public class AsyncHandler<T> {
         return addSupplier(supplier, ExecutionType.FX_THREAD);
     }
 
-    public <V> AsyncHandler<T> functionOnFXThread(Function<T, V> supplier) {
-        throw new NotImplementedException();
+    /**
+     * accepts an {@link java.util.function.Function} to be applyed on JavaFX application thread.
+     *
+     * @param function the function to execute
+     * @param <V>      the type of return
+     * @return {@link org.jacpfx.rcp.context.AsyncHandler}
+     */
+    public <V> AsyncHandler<V> functionOnFXThread(Function<T, V> function) {
+        return addUserFunction(function, ExecutionType.FX_THREAD);
     }
 
     /**
@@ -121,8 +128,15 @@ public class AsyncHandler<T> {
         return addSupplier(supplier, ExecutionType.POOL);
     }
 
-    public <V> AsyncHandler<T> functionOnExecutorThread(Function<T, V> supplier) {
-        throw new NotImplementedException();
+    /**
+     * accepts an {@link java.util.function.Function} to be applyed on worker  thread.
+     *
+     * @param function the function to execute
+     * @param <V>      the type of return
+     * @return {@link org.jacpfx.rcp.context.AsyncHandler}
+     */
+    public <V> AsyncHandler<V> functionOnExecutorThread(Function<T, V> function) {
+        return addUserFunction(function, ExecutionType.POOL);
     }
 
     /**
@@ -140,9 +154,7 @@ public class AsyncHandler<T> {
      * @param r the supplied runnable will be invoked on fx application thread when the chain has finished
      */
     public void execute(Runnable r) {
-        CompletableFuture<?> feature = executeChain();
-        // TODO ensure execution on FX thread
-        feature.thenRun(r);
+        executeChain().thenRun(() -> executeOnFXThread(r));
 
     }
 
@@ -152,26 +164,28 @@ public class AsyncHandler<T> {
      * @param r the supplied consumer will be invoked on fx application thread when the chain has finished, the input of the consumer is the last output of your execution chain
      */
     public void execute(Consumer<T> r) {
-        CompletableFuture<T> feature = executeChain();
-        // TODO ensure execution on FX thread
-        feature.thenAccept(r);
-
+        executeChain().thenAccept((value) -> executeOnFXThread(() -> r.accept(value)));
     }
 
     private CompletableFuture<T> executeChain() {
-        CompletableFuture<T> feature = CompletableFuture.supplyAsync(() -> null, EXECUTOR);
-        for (ExecutionStep step : steps) {
-            switch (step.getType()) {
-                case FX_THREAD:
-                    feature = feature.thenApply(step.getFunction());
-                    break;
-                case POOL:
-                    feature = feature.thenApplyAsync(step.getFunction());
-                    break;
-                default:
-            }
+        final ExecutionStep lastStep = steps.stream().reduce(null, (a, b) -> {
+            if (a == null)
+                return getExecutionStep(b, CompletableFuture.supplyAsync(() -> null, EXECUTOR));
+            return getExecutionStep(b, a.getFeature());
+        });
+        return lastStep.getFeature();
+
+    }
+
+    private ExecutionStep getExecutionStep(ExecutionStep b, CompletableFuture<T> f) {
+        switch (b.getType()) {
+            case FX_THREAD:
+                return new ExecutionStep(b.getFunction(), b.getType(), f.thenApply(b.getFunction()));
+            case POOL:
+                return new ExecutionStep(b.getFunction(), b.getType(), f.thenApplyAsync(b.getFunction()));
+            default:
+                return new ExecutionStep(b.getFunction(), b.getType(), f);
         }
-        return feature;
     }
 
 
@@ -205,6 +219,28 @@ public class AsyncHandler<T> {
         }, type);
     }
 
+    private <V> AsyncHandler<V> addUserFunction(Function<T, V> function, ExecutionType type) {
+        return addFunction((e) -> {
+            switch (type) {
+                case POOL:
+                    return function.apply(e);
+                case FX_THREAD:
+                    return invokeOnFXThread(function, e);
+            }
+            return null;
+        }, type);
+    }
+
+    private <V> AsyncHandler<V> addFunction(Function<T, V> function, ExecutionType type) {
+        return addStepp(new ExecutionStep<>(function, type));
+    }
+
+    private <V> AsyncHandler<V> addStepp(ExecutionStep<T, V> stepp) {
+        steps.add(stepp);
+        return new AsyncHandler<>(steps);
+    }
+
+
     private <V> V invokeOnFXThread(Supplier<V> supplier) {
         if (isFXThread()) {
             return supplier.get();
@@ -221,42 +257,44 @@ public class AsyncHandler<T> {
         }
     }
 
+    private <V> V invokeOnFXThread(Function<T, V> function, T e) {
+        if (isFXThread()) {
+            return function.apply(e);
+        } else {
+            return invokeOnApplicationThread(function, e);
+        }
+    }
+
     private boolean isFXThread() {
         return Platform.isFxApplicationThread();
     }
 
     private <V> V invokeOnApplicationThread(Supplier<V> supplier) {
         final AtomicReference<V> resultRef = new AtomicReference<>();
-        try {
-            WorkerUtil.invokeOnFXThreadAndWait(() -> resultRef.set(supplier.get()));
-        } catch (InterruptedException e1) {
-            // TODO add exception provider
-            e1.printStackTrace();
-        } catch (ExecutionException e1) {
-            e1.printStackTrace();
-        }
+        executeOnFXThread(() -> resultRef.set(supplier.get()));
+        return resultRef.get();
+    }
+
+    private <V> V invokeOnApplicationThread(Function<T, V> function, T e) {
+        final AtomicReference<V> resultRef = new AtomicReference<>();
+        executeOnFXThread(() -> resultRef.set(function.apply(e)));
         return resultRef.get();
     }
 
 
     private void invokeOnApplicationThread(Consumer<T> consumer, T e) {
+        executeOnFXThread(() -> consumer.accept(e));
+    }
+
+    private void executeOnFXThread(Runnable r) {
         try {
-            WorkerUtil.invokeOnFXThreadAndWait(() -> consumer.accept(e));
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();
-        } catch (ExecutionException e1) {
+            WorkerUtil.invokeOnFXThreadAndWait(r);
+        } catch (InterruptedException | ExecutionException e1) {
             e1.printStackTrace();
         }
     }
 
-    private <V> AsyncHandler<V> addFunction(Function<T, V> function, ExecutionType type) {
-        return addStepp(new ExecutionStep<>(function, type));
-    }
 
-    private <V> AsyncHandler<V> addStepp(ExecutionStep<T, V> stepp) {
-        steps.add(stepp);
-        return new AsyncHandler<>(steps);
-    }
 
 
 }

@@ -25,9 +25,11 @@
 
 package org.jacpfx.rcp.context;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
 /**
+ * Represents an execution step in the AsyncHandler
  * Created by Andy Moncsek on 16.04.15.
  */
 public class ExecutionStep<V, T> {
@@ -35,17 +37,40 @@ public class ExecutionStep<V, T> {
 
     private final Function<V, T> function;
     private final ExecutionType type;
+    private final CompletableFuture<T> feature;
 
-    public ExecutionStep(final Function<V, T> function,  final ExecutionType type) {
+    public ExecutionStep(final Function<V, T> function, final ExecutionType type, CompletableFuture<T> feature) {
         this.function = function;
         this.type = type;
+        this.feature = feature;
     }
 
+    public ExecutionStep(final Function<V, T> function, final ExecutionType type) {
+       this(function,type,null);
+    }
+
+    /**
+     * Returns the function to execute
+     * @return  @link{java.util.function.Function}
+     */
     public Function<V, T> getFunction() {
         return this.function;
     }
 
+    /**
+     * Returns the type (POOL or FX Thread)
+     * @return  @link{ExecutionType}
+     */
     public ExecutionType getType() {
         return this.type;
+    }
+
+
+    /**
+     * Returns the compleatable future for execution
+     * @return
+     */
+    public CompletableFuture<T> getFeature() {
+        return this.feature;
     }
 }

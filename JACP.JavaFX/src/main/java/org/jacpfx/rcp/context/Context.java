@@ -42,8 +42,8 @@ public interface Context extends JacpContext<EventHandler<Event>, Object> {
     FXComponentLayout getComponentLayout();
 
     /**
-     * Invoke a Runnable on FXApplication Thread and wait until it is finished (Platform.runLater won't wait)
-     * @param r, The Runnable
+     * The async handler allows to supply consumers, suppliers and function on worker thread and on FX thread
+     * @return  an {@see AsyncHandler} instance
      */
-    void invokeFXAndWait(final Runnable r);
+     AsyncHandler<?> asyncHandler();
 }
