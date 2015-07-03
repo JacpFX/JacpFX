@@ -143,6 +143,7 @@ public class FXUtil {
             final Object... value) {
         final Class<?> componentClass = component.getClass();
         final Method[] methods = componentClass.getMethods();
+        final Thread t = Thread.currentThread();
         for (final Method m : methods) {
             if (m.isAnnotationPresent(annotation)) {
                 try {
@@ -166,6 +167,8 @@ public class FXUtil {
                 } catch (final IllegalAccessException | InvocationTargetException e) {
                     Logger.getLogger(FXUtil.class.getName()).log(Level.SEVERE,
                             null, e);
+                    if(e.getCause()!=null)
+                        t.getUncaughtExceptionHandler().uncaughtException(t, e.getCause());
                 }
                 break;
             }
@@ -429,8 +432,7 @@ public class FXUtil {
     public static <P extends Component<EventHandler<Event>, Object>> P getObserveableByQualifiedId(
             final String qualifiedId, final List<P> components) {
         final Optional<P> filter = components.stream().
-                filter(c->c.getContext().getFullyQualifiedId()!=null).
-                filter(comp -> comp.getContext().getFullyQualifiedId().equals(qualifiedId)).
+                filter(comp -> comp.getContext().getFullyQualifiedId()!=null?comp.getContext().getFullyQualifiedId().equals(qualifiedId):false).
                 findFirst();
         if (filter.isPresent()) return filter.get();
         return null;

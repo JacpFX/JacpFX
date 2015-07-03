@@ -167,4 +167,17 @@ public interface Perspective<C,L, A, M> extends Component<L, M>,
      */
     void setUIType(final UIType type);
 
+    /**
+     * defines the position of an active perspective in workspace
+     * @param pos
+     * @param of
+     */
+    void updatePositions(int pos, int of);
+
+    /**
+     * Marks the last perspective to handle, this is the visible perspective after initialisation
+     * @return true if perspective is the last visible perspective while initialisation
+     */
+    boolean isLast();
+
 }

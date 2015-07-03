@@ -56,6 +56,7 @@ import java.util.ResourceBundle;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TransferQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -87,6 +88,9 @@ public abstract class AFXPerspective implements
     private Launcher<?> launcher;
 
     protected Injectable perspective;
+
+    private AtomicInteger pos =new AtomicInteger(-1);
+    private AtomicInteger of = new AtomicInteger(0);
 
 
     /**
@@ -378,6 +382,23 @@ public abstract class AFXPerspective implements
      */
     public final int compareTo(Component o) {
         return this.context.getId().compareTo(o.getContext().getId());
+    }
+
+    @Override
+    /**
+     * {@inheritDoc}
+     */
+    public void updatePositions(int pos, int of){
+        this.pos = new AtomicInteger(pos);
+        this.of = new AtomicInteger(of);
+    }
+
+    @Override
+    /**
+     * {@inheritDoc}
+     */
+    public  boolean isLast(){
+       return this.pos.get()==this.of.get();
     }
 
     @Override

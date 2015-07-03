@@ -54,10 +54,11 @@ import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
  * represents the basic JavaFX workbench instance; handles perspective and
@@ -169,19 +170,19 @@ public abstract class AFXWorkbench
      * {@inheritDoc}
      */
     public final void initComponents(final Message<Event, Object> action) {
-        perspectives.forEach(this::initPerspective);
-        final List<Perspective<Node, EventHandler<Event>, Event, Object>> activeSequentialPerspectiveList = perspectives
-                .stream()
-                .filter(p -> p.getContext() != null && p.getContext().isActive())
-                .collect(Collectors.toList());
-        if (!activeSequentialPerspectiveList.isEmpty()) {
-            GlobalMediator.getInstance().handleToolBarButtons(activeSequentialPerspectiveList.get(activeSequentialPerspectiveList.size() - 1), true);
-        }
+        final AtomicInteger counter = new AtomicInteger(0);
+        final AtomicInteger of = new AtomicInteger(perspectives.size());
+        perspectives.stream().peek(this::registerComponent).peek(persp->{
+            if(!persp.getContext().isActive())
+                    of.decrementAndGet();
+        }).peek(p-> p.updatePositions(counter.incrementAndGet(),of.get())).forEach(this::initPerspective);
+        final Optional<Perspective<Node, EventHandler<Event>, Event, Object>> lastPerspectiveToShow = perspectives.stream().filter(p -> p.isLast()).findFirst();
+        lastPerspectiveToShow.ifPresent(p-> GlobalMediator.getInstance().handleToolBarButtons(p,true));
+
 
     }
 
     private void initPerspective(Perspective<Node, EventHandler<Event>, Event, Object> perspective) {
-        registerComponent(perspective);
         log("3.4.1: register component: " + perspective.getContext().getName());
         final CountDownLatch waitForInit = new CountDownLatch(1);
         log("3.4.2: init perspective");
