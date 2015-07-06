@@ -1,5 +1,4 @@
 /************************************************************************
- *
  * Copyright (C) 2010 - 2014
  *
  * [FX2WorkbenchHandler.java]
@@ -8,17 +7,15 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at 
+ * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0 
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an "AS IS"
- * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either 
+ * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
  * express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
- *
- *
  ************************************************************************/
 package org.jacpfx.rcp.handler;
 
@@ -145,7 +142,7 @@ public class PerspectiveHandlerImpl implements
                         .getIPerspectiveLayout();
                 final FXComponentLayout layout = Context.class.cast(possiblePerspectiveToShow.getContext()).getComponentLayout();
                 // execute OnShow
-                onShow(possiblePerspectiveToShow,layout);
+                onShow(possiblePerspectiveToShow, layout);
                 this.handlePerspectiveReassignment(possiblePerspectiveToShow, perspectiveLayoutReplacementComponent);
             }
 
@@ -209,7 +206,7 @@ public class PerspectiveHandlerImpl implements
     private void handlePerspectiveReassignment(final Perspective<Node, EventHandler<Event>, Event, Object> perspective,
                                                final PerspectiveLayoutInterface<? extends Node, Node> perspectiveLayout) {
         // FIXME the reassignment should be avoid when calls to previous perspective is done
-        this.reassignChild(perspective,  getLayoutComponentFromPerspectiveLayout(perspectiveLayout));
+        this.reassignChild(perspective, getLayoutComponentFromPerspectiveLayout(perspectiveLayout));
         // set already active editors to new component
         this.reassignSubcomponents(perspective, perspectiveLayout);
     }
@@ -244,7 +241,7 @@ public class PerspectiveHandlerImpl implements
                                     final PerspectiveLayoutInterface<? extends Node, Node> layout) {
         final String targetLayout = InternalContext.class.cast(component.getContext()).getTargetLayout();
         final Node validContainer = layout.getTargetLayoutComponents().get(targetLayout);
-        runInCachedModeSpeed(validContainer,()-> {
+        runInCachedModeSpeed(validContainer, () -> {
             final ObservableList<Node> children = FXUtil.getChildren(validContainer);
             final Node currentRoot = component.getRoot();
             if (children == null || currentRoot == null) return;
@@ -279,19 +276,27 @@ public class PerspectiveHandlerImpl implements
      * @param perspective, The current perspective
      * @param newComp,     The new component Node
      */
-    private void reassignChild(final Perspective<Node, EventHandler<Event>, Event, Object> perspective,  final Node newComp) {
+    private void reassignChild(final Perspective<Node, EventHandler<Event>, Event, Object> perspective, final Node newComp) {
         runInCachedModeSpeed(this.root, () -> {
             final ObservableList<Node> children = this.root.getChildren();
             final Perspective<Node, EventHandler<Event>, Event, Object> previousPerspective = getPreviousPerspective(perspective);
+            if (previousPerspective != null && !previousPerspective.equals(perspective)) {
+                hideChildrenAndExecuteOnHide(perspective, previousPerspective, children);
+                // hide all buttons of the previous perspective
+                GlobalMediator.getInstance().handleToolBarButtons(previousPerspective, false);
+                executeOnShow(perspective, previousPerspective);
+                replaceRootNodes(children, newComp);
+                // show all buttons of the new perspective
+                GlobalMediator.getInstance().handleToolBarButtons(perspective, true);
+                newComp.setVisible(true);
+            } else {
+                GlobalMediator.getInstance().handleToolBarButtons(previousPerspective, false);
+                // show all buttons of the new perspective
+                GlobalMediator.getInstance().handleToolBarButtons(perspective, true);
+                newComp.setVisible(true);
+            }
 
-            hideChildrenAndExecuteOnHide(perspective, previousPerspective, children);
-            // hide all buttons of the previous perspective
-            GlobalMediator.getInstance().handleToolBarButtons(previousPerspective, false);
-            executeOnShow(perspective, previousPerspective);
-            replaceRootNodes(children, newComp);
-            // show all buttons of the new perspective
-            GlobalMediator.getInstance().handleToolBarButtons(perspective, true);
-            newComp.setVisible(true);
+
         });
 
     }
@@ -310,12 +315,10 @@ public class PerspectiveHandlerImpl implements
     }
 
     private void executeOnShow(final Perspective<Node, EventHandler<Event>, Event, Object> perspective, final Perspective<Node, EventHandler<Event>, Event, Object> previousPerspective) {
-        if (!perspective.equals(previousPerspective)) {
             final FXComponentLayout layout = Context.class.cast(perspective.getContext()).getComponentLayout();
             // execute OnShow
             onShow(perspective, layout);
 
-        }
     }
 
     private void onShow(Perspective<Node, EventHandler<Event>, Event, Object> perspective, FXComponentLayout layout) {
@@ -367,19 +370,19 @@ public class PerspectiveHandlerImpl implements
     }
 
     private void handlePerspective(final Perspective<Node, EventHandler<Event>, Event, Object> perspective) {
-            final InternalContext context = InternalContext.class.cast(perspective.getContext());
-            initFXComponentLayout(context, perspective.getContext().getId());
+        final InternalContext context = InternalContext.class.cast(perspective.getContext());
+        initFXComponentLayout(context, perspective.getContext().getId());
 
 
-            handleUIPerspective(perspective, Context.class.cast(perspective.getContext()).getComponentLayout());
+        handleUIPerspective(perspective, Context.class.cast(perspective.getContext()).getComponentLayout());
 
-            perspective.postInit(new ComponentHandlerImpl(this.launcher, perspective.getIPerspectiveLayout(), perspective
-                    .getComponentDelegateQueue()));
-            if(perspective.isLast()) {
-                // execute OnShow
-                final FXComponentLayout layout = Context.class.cast(perspective.getContext()).getComponentLayout();
-                onShow(perspective, layout);
-            }
+        perspective.postInit(new ComponentHandlerImpl(this.launcher, perspective.getIPerspectiveLayout(), perspective
+                .getComponentDelegateQueue()));
+        if (perspective.isLast()) {
+            // execute OnShow
+            final FXComponentLayout layout = Context.class.cast(perspective.getContext()).getComponentLayout();
+            onShow(perspective, layout);
+        }
     }
 
     private void handleUIPerspective(final Perspective<Node, EventHandler<Event>, Event, Object> perspective,
@@ -459,12 +462,10 @@ public class PerspectiveHandlerImpl implements
      */
     private void hideChildrenAndExecuteOnHide(final Perspective<Node, EventHandler<Event>, Event, Object> perspective, final Perspective<Node, EventHandler<Event>, Event, Object> previousPerspective, final ObservableList<Node> children) {
         // hideChildren(children);
-        if (previousPerspective != null && !previousPerspective.equals(perspective)) {
-            final FXComponentLayout layout = Context.class.cast(previousPerspective.getContext()).getComponentLayout();
-            FXUtil.invokeHandleMethodsByAnnotation(OnHide.class, previousPerspective.getPerspective(),previousPerspective.getIPerspectiveLayout(), layout,
-                    previousPerspective.getType().equals(UIType.DECLARATIVE) ? previousPerspective.getDocumentURL() : null, previousPerspective.getContext().getResourceBundle());
+        final FXComponentLayout layout = Context.class.cast(previousPerspective.getContext()).getComponentLayout();
+        FXUtil.invokeHandleMethodsByAnnotation(OnHide.class, previousPerspective.getPerspective(), previousPerspective.getIPerspectiveLayout(), layout,
+                previousPerspective.getType().equals(UIType.DECLARATIVE) ? previousPerspective.getDocumentURL() : null, previousPerspective.getContext().getResourceBundle());
 
-        }
 
     }
 
