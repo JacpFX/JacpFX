@@ -102,7 +102,7 @@ public class JacpContextImpl implements Context,InternalContext {
     @Override
     public final void send(final String targetId, final Object message) {
         try {
-            this.globalMessageQueue.transfer(new MessageImpl(this.fullyQualifiedId, targetId, message, null));
+            this.globalMessageQueue.put(new MessageImpl(this.fullyQualifiedId, targetId, message, null));
         } catch (InterruptedException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
