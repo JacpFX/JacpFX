@@ -389,8 +389,8 @@ public abstract class AFXPerspective implements
      * {@inheritDoc}
      */
     public void updatePositions(int pos, int of){
-        this.pos = new AtomicInteger(pos);
-        this.of = new AtomicInteger(of);
+        this.pos.set(pos);
+        this.of.set(of);
     }
 
     @Override

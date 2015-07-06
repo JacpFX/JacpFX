@@ -305,6 +305,7 @@ public class FXUtil {
         }
         fxmlLoader.setLocation(url);
         fxmlLoader.setController(bean);
+        final Thread t = Thread.currentThread();
         try {
             return fxmlLoader.load();
         } catch (IOException e) {

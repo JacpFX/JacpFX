@@ -65,6 +65,7 @@ public class MessageDelegatorImpl extends Thread implements
     }
 
     private void initPerspective(final Perspective<Node, EventHandler<Event>, Event, Object> perspective) throws ExecutionException, InterruptedException {
+        perspective.updatePositions(1,1);
         WorkerUtil.invokeOnFXThreadAndWait(()->this.perspectiveHandler.initComponent(new MessageImpl(perspective.getContext().getId(), perspective
                 .getContext().getId(), "init", null),perspective));
     }

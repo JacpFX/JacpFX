@@ -104,7 +104,14 @@ public class FXComponentInitWorker extends AComponentWorker<EmbeddedFXComponent>
         final URL url = getClass().getResource(
                 component.getViewLocation());
         initLocalization(url, component);
-        component.setRoot(FXUtil.loadFXMLandSetController(component.getComponent(), component.getContext().getResourceBundle(), url));
+
+        final Thread t = Thread.currentThread();
+        try {
+            component.setRoot(FXUtil.loadFXMLandSetController(component.getComponent(), component.getContext().getResourceBundle(), url));
+        } catch (IllegalStateException e) {
+            t.getUncaughtExceptionHandler().uncaughtException(t, e);
+        }
+
         performContextInjection(component);
         runComponentOnStartupSequence(component, layout,
                 component.getDocumentURL(),
