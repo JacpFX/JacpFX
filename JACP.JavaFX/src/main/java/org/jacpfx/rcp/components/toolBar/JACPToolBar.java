@@ -322,8 +322,9 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
     public void setButtonsVisible(final Perspective<Node, EventHandler<Event>, Event, Object> perspective, boolean visible) {
         org.jacpfx.api.annotations.perspective.Perspective persAnnotation = perspective.getPerspective().getClass().getAnnotation(org.jacpfx.api.annotations.perspective.Perspective.class);
         this.handleButtons(persAnnotation.id(), visible);
-        if (perspective.getSubcomponents() != null) {
-            perspective.getSubcomponents().forEach(sub->this.setButtonsVisible(sub, persAnnotation.id(), visible));
+        final List<SubComponent<EventHandler<Event>, Event, Object>> subcomponents = perspective.getSubcomponents();
+        if (subcomponents != null) {
+            subcomponents.forEach(sub -> setButtonsVisible(sub, persAnnotation.id(), visible));
         }
     }
 
@@ -422,13 +423,7 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
          *   get the Internal Regions to add some more Regions.
          */
     private List<Region> getInternalNodes(String id) {
-        if (this.regionMap.containsKey(id)) {
-            return this.regionMap.get(id);
-        }
-        List<Region> currentList = new ArrayList<>();
-        this.regionMap.put(id, currentList);
-
-        return currentList;
+        return regionMap.getOrDefault(id, new ArrayList<>());
     }
 
     /*
