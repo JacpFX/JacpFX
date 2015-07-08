@@ -25,26 +25,21 @@ package org.jacp.test.workbench;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.jacp.test.main.ApplicationLauncher;
+import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.componentLayout.WorkbenchLayout;
 import org.jacpfx.api.message.Message;
-import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.util.ToolbarPosition;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.components.menuBar.JACPMenuBar;
-import org.jacpfx.rcp.components.modalDialog.JACPModalDialog;
 import org.jacpfx.rcp.context.Context;
-import org.jacpfx.controls.optionPane.JACPDialogButton;
-import org.jacpfx.controls.optionPane.JACPDialogUtil;
-import org.jacpfx.controls.optionPane.JACPOptionPane;
 import org.jacpfx.rcp.workbench.FXWorkbench;
-import org.jacp.test.main.ApplicationLauncher;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +73,6 @@ public class WorkbenchPerspectiveMessageTesting implements FXWorkbench {
         final Menu menuFile = new Menu("File");
         final Menu menuTests = new Menu("Tests");
         final Menu menuStyles = new Menu("Styles");
-        menuFile.getItems().add(getHelpItem());
         // add style selection
         for (int i = 0; i < ApplicationLauncher.STYLES.length; i++) {
             menuStyles.getItems().add(getStyle(i));
@@ -107,47 +101,34 @@ public class WorkbenchPerspectiveMessageTesting implements FXWorkbench {
         return itemHelp;
     }
 
-    private MenuItem getHelpItem() {
-        final MenuItem itemHelp = new MenuItem("Help");
-        itemHelp.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(final ActionEvent arg0) {
-                // create a modal dialog
-                final JACPOptionPane dialog = JACPDialogUtil.createOptionPane(
-                        "Help", "Add some help text ");
-                dialog.setDefaultButton(JACPDialogButton.NO);
-                dialog.setDefaultCloseButtonOrientation(Pos.CENTER_RIGHT);
-                dialog.setOnYesAction(new EventHandler<ActionEvent>() {
 
-                    @Override
-                    public void handle(final ActionEvent arg0) {
-                        JACPModalDialog.getInstance().hideModalDialog();
-                    }
-                });
-                JACPModalDialog.getInstance().showModalDialog(dialog);
-
-            }
-        });
-        return itemHelp;
-    }
 
     private List<MenuItem> getTestMenuItems() {
         List<MenuItem> result = new ArrayList<>();
-        final MenuItem test1 = new MenuItem("Test1: layoutTargetSwitch");
+        final MenuItem test1 = new MenuItem("id10");
         test1.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(final ActionEvent arg0) {
                 // create a modal dialog
-                context.send("id01", "show");
+                context.send("id10", "message");
 
             }
         });
-        final MenuItem test2 = new MenuItem("Test2: executionTargetSwitch");
+        final MenuItem test2 = new MenuItem("id11");
         test2.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(final ActionEvent arg0) {
                 // create a modal dialog
-                context.send("id02", "show");
+                context.send("id11", "message");
+
+            }
+        });
+        final MenuItem test3 = new MenuItem("id12");
+        test3.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(final ActionEvent arg0) {
+                // create a modal dialog
+                context.send("id12", "message");
 
             }
         });
@@ -155,6 +136,7 @@ public class WorkbenchPerspectiveMessageTesting implements FXWorkbench {
 
         result.add(test1);
         result.add(test2);
+        result.add(test3);
         return result;
     }
 

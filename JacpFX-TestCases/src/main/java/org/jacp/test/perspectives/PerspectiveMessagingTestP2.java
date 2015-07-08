@@ -26,6 +26,7 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -127,6 +128,7 @@ public class PerspectiveMessagingTestP2 implements FXPerspective {
 
         content2 = new HBox();
         content3 = new HBox();
+        content3.getChildren().add(new Label("PerspectiveMessagingTestP2"));
         contentSplitPane.getItems().addAll(content2, content3);
         paneRight.getChildren().add(contentSplitPane);
         pane.setCenter(splitPane);

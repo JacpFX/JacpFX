@@ -162,9 +162,14 @@ public abstract class TestFXJacpFXSpringLauncher extends ApplicationTest {
             throws Exception {
         //ShutdownThreadsHandler.shutdowAll();
         //TearDownHandler.handleGlobalTearDown();
-        ComponentRegistry.clearOnShitdown();
-        PerspectiveRegistry.clearOnShitdown();
+
+        cleanup();
         internalAfter();
 
+    }
+
+    protected void cleanup(){
+        ComponentRegistry.clearOnShitdown();
+        PerspectiveRegistry.clearOnShitdown();
     }
 }

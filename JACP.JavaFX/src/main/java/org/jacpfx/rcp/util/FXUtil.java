@@ -183,12 +183,13 @@ public class FXUtil {
     public static void performResourceInjection(final Injectable handler,JacpContext<EventHandler<Event>, Object> context) {
         final Field[] fields = handler.getClass().getDeclaredFields();
         final List<Field> fieldList = Arrays.asList(fields);
+        final ResourceBundle resourceBundle = context.getResourceBundle();
         fieldList.stream().filter(f -> f.isAnnotationPresent(Resource.class)).forEach(f -> {
             // context injection
             if (f.getType().isAssignableFrom(context.getClass())) {
                 injectContext(handler, f, context);
-            } else if (context.getResourceBundle() != null && f.getType().isAssignableFrom(context.getResourceBundle().getClass())) {
-                injectResourceBundle(handler, f, context.getResourceBundle());
+            } else if (resourceBundle != null && f.getType().isAssignableFrom(ResourceBundle.class)) {
+                injectResourceBundle(handler, f, resourceBundle);
             }
 
         });

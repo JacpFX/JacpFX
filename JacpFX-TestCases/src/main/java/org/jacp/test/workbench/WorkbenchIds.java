@@ -30,6 +30,7 @@ package org.jacp.test.workbench;
  */
 public class WorkbenchIds {
     public static final String Workbench ="id1";
+    public static final String WorkbenchOnShowPerspective ="id9";
     public static final String WorkbenchDialogInPerspectiveTest ="id2";
     public static final String WorkbenchMessagingTest="id3";
     public static final String WorkbenchHandleToolBarButtonsBetweenPerspectives = "id7";

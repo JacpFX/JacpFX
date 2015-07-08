@@ -83,7 +83,7 @@ public class PerspectiveMessagingTest extends TestFXJacpFXSpringLauncher {
 
     @Test
     // default execution time was 54312 ms (linux) , macos 17826ms  // macos with 3 persp. and 300000 messages Execution time was 28494 ms.
-    // macbook with 300000 messages 21068ms,17321ms, 14394ms, 29476ms, 27745ms, 26380ms
+    // macbook with 300000 messages 21068ms,17321ms, 14394ms, 29476ms, 27745ms, 26380ms,23214 ms
     public void testPerspectiveMessaging() throws InterruptedException {
         warmUp();
         long start = System.currentTimeMillis();
@@ -97,5 +97,10 @@ public class PerspectiveMessagingTest extends TestFXJacpFXSpringLauncher {
         long end = System.currentTimeMillis();
 
         System.out.println("Execution time was " + (end - start) + " ms.");
+    }
+
+    @Override
+    protected  void cleanup(){
+
     }
 }

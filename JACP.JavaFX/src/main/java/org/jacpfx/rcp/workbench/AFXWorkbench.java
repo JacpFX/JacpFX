@@ -127,10 +127,11 @@ public abstract class AFXWorkbench
         stage.setOnCloseRequest(arg0 -> {
             ShutdownThreadsHandler.shutdowAll();
             TearDownHandler.handleGlobalTearDown();
+            ComponentRegistry.clearOnShitdown();
+            PerspectiveRegistry.clearOnShitdown();
             Platform.exit();
         });
-        ComponentRegistry.clearOnShitdown();
-        PerspectiveRegistry.clearOnShitdown();
+
     }
 
     private void initSubsystem() {

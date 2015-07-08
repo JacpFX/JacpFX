@@ -169,6 +169,7 @@ public class ShutdownAndReopenComponentsTest extends TestFXJacpFXSpringLauncher 
             // Thread.sleep(10);
             i++;
         }
+        Thread.sleep(1000);
         System.out.println("");
     }
     @Test
