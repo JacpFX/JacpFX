@@ -29,6 +29,7 @@ import javafx.event.Event;
 import org.jacp.test.components.ComponentIds;
 import org.jacp.test.main.ApplicationLauncherHandleToolBarButtonsBetweenPerspectives;
 import org.jacp.test.toolbar.base.HandleToolbarBase;
+import org.jacp.test.toolbar.perspectives.PerspectiveTwoToolbarSwitchPerspectives;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.component.Component;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
@@ -82,6 +83,7 @@ public class ComponentHandleToolBarBetweenPerspectives1 extends HandleToolbarBas
         switch (currentAction) {
             case FXUtil.MessageUtil.INIT:
                 ApplicationLauncherHandleToolBarButtonsBetweenPerspectives.latch.countDown();
+                PerspectiveTwoToolbarSwitchPerspectives.start.countDown();
                 return SWITCH_MESSAGE;
             case SWITCH_MESSAGE:
                 this.switchCurrentId();

@@ -130,7 +130,6 @@ public class AsyncHandlerTest extends ApplicationTest {
             System.out.println("END:: " + value);
         });
 
-
         System.out.println("---------XXXXXXXXX------------------");
 
         latch6.await();

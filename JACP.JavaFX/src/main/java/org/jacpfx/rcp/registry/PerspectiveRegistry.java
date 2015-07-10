@@ -144,15 +144,7 @@ public class PerspectiveRegistry {
                 getAllPerspectives());
     }
 
-    /**
-     * Searches the given component id in metadata of all perspective and returns the responsible perspective
-     *
-     * @param componentId the component id
-     * @return The parent perspective of given component id
-     */
-    public static Perspective<Node, EventHandler<Event>, Event, Object> findParentPerspectiveByComponentId(final String componentId) {
-        return findByComponentId(getAllPerspectives(), componentId);
-    }
+
 
     private static Perspective<Node, EventHandler<Event>, Event, Object> findByComponentId(List<Perspective<Node, EventHandler<Event>, Event, Object>> perspectives, final String componentId) {
         final Optional<Perspective<Node, EventHandler<Event>, Event, Object>> first = perspectives.stream()
@@ -193,15 +185,5 @@ public class PerspectiveRegistry {
     }
 
 
-    /**
-     * Returns the a component by class.
-     *
-     * @param clazz , a perspective class
-     * @return a perspective
-     */
-    public static Perspective<Node, EventHandler<Event>, Event, Object> findPerspectiveByClass(final Class<?> clazz) {
-        final Optional<Perspective<Node, EventHandler<Event>, Event, Object>> first = getAllPerspectives().stream().filter(p -> p.getPerspective().getClass().isAssignableFrom(clazz)).findFirst();
-        return first.isPresent() ? first.get() : null;
-    }
 
 }

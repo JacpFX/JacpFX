@@ -34,6 +34,7 @@ import org.jacp.test.components.ComponentIds;
 import org.jacp.test.main.ApplicationLauncherHandleToolBarButtonsBetweenPerspectives;
 import org.jacp.test.toolbar.base.HandleToolbarBase;
 import org.jacp.test.toolbar.perspectives.PerspectiveOneToolbarSwitchPerspectives;
+import org.jacp.test.toolbar.perspectives.PerspectiveTwoToolbarSwitchPerspectives;
 import org.jacp.test.util.MessageConstants;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.component.View;
@@ -104,6 +105,7 @@ public class ComponentHandleToolBarBetweenPerspectives2 extends HandleToolbarBas
                 label.setText(" current Tagret: " + currentId);
                 container.getChildren().addAll(button, label);
                 ApplicationLauncherHandleToolBarButtonsBetweenPerspectives.latch.countDown();
+                PerspectiveTwoToolbarSwitchPerspectives.start.countDown();
                 return container;
             case SWITCH_MESSAGE:
                 this.switchCurrentId();

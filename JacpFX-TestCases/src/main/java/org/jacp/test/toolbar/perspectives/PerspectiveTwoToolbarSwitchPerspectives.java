@@ -67,7 +67,7 @@ public class PerspectiveTwoToolbarSwitchPerspectives extends HandleToolbarBase i
 
     // =================== CONSTANTS ===================
     public static final String ID = PerspectiveIds.PerspectiveTwoToolbarSwitchPerspectives;
-    public static CountDownLatch start = new CountDownLatch(1);
+    public static CountDownLatch start = new CountDownLatch(3);
     @Resource
     static Context context;
     private final Logger logger = Logger.getLogger(this.getClass().getName());
