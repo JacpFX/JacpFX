@@ -29,8 +29,12 @@ package org.jacpfx.api.util;
  * Created by amo on 25.07.14.
  */
 public class QueueSizes {
-    public static int COORDINATOR_QUEUE_SIZE=1000000;
-    public static int DELEGATOR_QUEUE_SIZE=1000000;
-    public static int COMPONENT_DELEGATOR_QUEUE_SIZE=100;
-    public static int COMPONENT_QUEUE_SIZE=1000000;
+    public static final int COORDINATOR_QUEUE_SIZE=1000000;
+    public static final int DELEGATOR_QUEUE_SIZE=1000000;
+    public static final int COMPONENT_DELEGATOR_QUEUE_SIZE=100;
+    public static final int COMPONENT_QUEUE_SIZE=1000000;
+
+    private QueueSizes() {
+
+    }
 }

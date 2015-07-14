@@ -27,7 +27,7 @@ package org.jacpfx.api.message;
 /**
  * Represents an message used by specific listener. An message targets a component
  * and contains a message body; every target get a specific instance of an message
- * (clone) containing only his specific message body and message event.
+ * (cloneMessage) containing only his specific message body and message event.
  *
  * @param <M> defines the type of message
  * @param <A> defines the type of ActionEvent
@@ -61,9 +61,9 @@ public interface Message<A, M> extends Cloneable {
     /**
      * Clone message and containing event.
      *
-     * @return a clone of current message instance
+     * @return a cloneMessage of current message instance
      */
-    Message<A, M> clone();
+    Message<A, M> cloneMessage();
 
     /**
      * Returns message target id.

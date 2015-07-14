@@ -169,7 +169,7 @@ public abstract class TestFXJacpFXSpringLauncher extends ApplicationTest {
     }
 
     protected void cleanup(){
-        ComponentRegistry.clearOnShitdown();
-        PerspectiveRegistry.clearOnShitdown();
+        ComponentRegistry.clearOnShutdown();
+        PerspectiveRegistry.clearOnShutdown();
     }
 }

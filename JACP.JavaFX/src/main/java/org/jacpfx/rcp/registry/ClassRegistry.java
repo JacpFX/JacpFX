@@ -22,6 +22,10 @@ import java.util.stream.Collectors;
 public class ClassRegistry {
     private static final List<Class> allClasses = new CopyOnWriteArrayList<>();
 
+    private ClassRegistry(){
+
+    }
+
     /**
      * in some cases (like unitTests) it may happen, that the ClassRegistry is invoked many times, do a cleanup before use to ensure old values are gone.
      */

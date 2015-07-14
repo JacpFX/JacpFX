@@ -49,7 +49,7 @@ public interface StatelessComponentScheduler<L, A, M> {
     /**
      * Returns a new instance of managed state less component.
      *
-     * @param <T>        , the component to clone
+     * @param <T>        , the component to cloneMessage
      * @param <H>,       H is an ComponentHandle
      * @param component, the component that should be cloned
      * @param clazz,     the class of the component.

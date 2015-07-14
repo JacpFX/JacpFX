@@ -35,7 +35,6 @@ import org.jacpfx.api.exceptions.ManagedFragmentAnnotationMissingException;
 import org.jacpfx.api.exceptions.ManagedFragmentNotInitializedException;
 import org.jacpfx.api.fragment.Scope;
 import org.jacpfx.api.launcher.Launcher;
-import org.jacpfx.api.util.CustomSecurityManager;
 import org.jacpfx.rcp.component.FXComponent;
 import org.jacpfx.rcp.perspective.FXPerspective;
 import org.jacpfx.rcp.registry.ComponentRegistry;
@@ -75,9 +74,6 @@ public class ManagedFragment {
      */
     private static final Map<String, ManagedFragmentHandler<?>> cache = new ConcurrentHashMap<>();
 
-
-    private final static CustomSecurityManager customSecurityManager =
-            new CustomSecurityManager();
 
     /**
      * initialize the JACPManaged dialog.

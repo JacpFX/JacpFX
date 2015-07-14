@@ -51,8 +51,8 @@ public class WorkerUtil {
                     // prevent execution when application is closed
                     if (ShutdownThreadsHandler.APPLICATION_RUNNING.get())
                         runnable.run();
-                } catch (Throwable t) {
-                    throwableWrapper.t = t;
+                } catch (Exception e) {
+                    throwableWrapper.t = e.getCause();
                 } finally {
                     conditionReady.set(true);
                     condition.signal();

@@ -44,7 +44,7 @@ public class ComponentRegistry {
     /**
      * clears registry on application shutdown
      */
-    public static void clearOnShitdown() {
+    public static void clearOnShutdown() {
         components.clear();
     }
 

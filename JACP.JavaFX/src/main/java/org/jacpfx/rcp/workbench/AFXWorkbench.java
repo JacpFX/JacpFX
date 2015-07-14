@@ -127,8 +127,8 @@ public abstract class AFXWorkbench
         stage.setOnCloseRequest(arg0 -> {
             ShutdownThreadsHandler.shutdowAll();
             TearDownHandler.handleGlobalTearDown();
-            ComponentRegistry.clearOnShitdown();
-            PerspectiveRegistry.clearOnShitdown();
+            ComponentRegistry.clearOnShutdown();
+            PerspectiveRegistry.clearOnShutdown();
             Platform.exit();
         });
 
@@ -184,7 +184,7 @@ public abstract class AFXWorkbench
                 peek(p ->
                         p.updatePositions(counter.incrementAndGet(), of.get())).
                 peek(this::initActivePerspective).
-                filter(p -> p.isLast()).
+                filter(Perspective::isLast).
                 findFirst().
                 ifPresent(p -> GlobalMediator.getInstance().handleToolBarButtons(p, true));
 
@@ -204,7 +204,7 @@ public abstract class AFXWorkbench
         waitForPerspectiveInitialisation(waitForInit);
     }
 
-    private void waitForPerspectiveInitialisation(CountDownLatch waitForInit) {
+    private static void waitForPerspectiveInitialisation(CountDownLatch waitForInit) {
         final Thread t = Thread.currentThread();
         try {
             // wait for possible async execution
@@ -214,7 +214,7 @@ public abstract class AFXWorkbench
         }
     }
 
-    private void executeOnFXThread(Runnable r) {
+    private static void executeOnFXThread(Runnable r) {
         if (Platform.isFxApplicationThread()) {
             r.run();
         } else {

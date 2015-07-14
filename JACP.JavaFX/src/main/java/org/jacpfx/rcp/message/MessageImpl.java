@@ -85,7 +85,7 @@ public final class MessageImpl implements Message<Event, Object> {
 	}
 
 	@Override
-	public Message<Event, Object> clone() {
+	public Message<Event, Object> cloneMessage() {
 		return new MessageImpl(this.sourceId,this.target, this.message, this.event);
 	}
 

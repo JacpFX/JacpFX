@@ -287,10 +287,11 @@ public class AsyncHandler<T> {
     }
 
     private void executeOnFXThread(Runnable r) {
+         Thread t = Thread.currentThread();
         try {
             WorkerUtil.invokeOnFXThreadAndWait(r);
         } catch (InterruptedException | ExecutionException e1) {
-            e1.printStackTrace();
+            t.getUncaughtExceptionHandler().uncaughtException(t,e1);
         }
     }
 

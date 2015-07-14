@@ -8,7 +8,7 @@ package org.jacpfx.api.util;
 public enum OS {
     MAC("MAC"), UNIX("UNIX"), SOLARIS("SOLARIS"), WINDOWS("WINDOWS"), UNKNOWN(
             "UNKNOWN");
-    private static final String os = System.getProperty("os.name").toLowerCase();
+    private static final String osType = System.getProperty("os.name").toLowerCase();
     private final String name;
 
     private OS(String name) {
@@ -35,25 +35,25 @@ public enum OS {
 
     private static boolean isWindows() {
         // windows
-        return (os.contains("win"));
+        return osType.contains("win");
 
     }
 
     private static boolean isMac() {
         // Mac
-        return (os.contains("mac"));
+        return osType.contains("mac");
 
     }
 
     private static boolean isUnix() {
         // linux or unix
-        return (os.contains("nix") || os.contains("nux"));
+        return osType.contains("nix") || osType.contains("nux");
 
     }
 
     private static boolean isSolaris() {
         // Solaris
-        return (os.contains("sunos"));
+        return osType.contains("sunos");
 
     }
 }

@@ -28,10 +28,13 @@ public class PerspectiveRegistry {
             });
 
 
+    private PerspectiveRegistry() {
+
+    }
     /**
      * clears registry on application shutdown
      */
-    public static void clearOnShitdown() {
+    public static void clearOnShutdown() {
         perspectives.clear();
     }
 
@@ -145,7 +148,6 @@ public class PerspectiveRegistry {
     }
 
 
-
     private static Perspective<Node, EventHandler<Event>, Event, Object> findByComponentId(List<Perspective<Node, EventHandler<Event>, Event, Object>> perspectives, final String componentId) {
         final Optional<Perspective<Node, EventHandler<Event>, Event, Object>> first = perspectives.stream()
                 .filter(p -> {
@@ -158,7 +160,6 @@ public class PerspectiveRegistry {
 
         return first.isPresent() ? first.get() : null;
     }
-
 
 
     /**
@@ -183,7 +184,6 @@ public class PerspectiveRegistry {
         Arrays.sort(componentIds);
         return Arrays.binarySearch(componentIds, componentId) >= 0;
     }
-
 
 
 }
