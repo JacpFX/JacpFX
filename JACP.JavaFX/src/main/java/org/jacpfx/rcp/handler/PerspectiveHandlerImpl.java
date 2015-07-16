@@ -52,6 +52,7 @@ import org.jacpfx.rcp.message.MessageImpl;
 import org.jacpfx.rcp.perspective.AFXPerspective;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.FXUtil;
+import org.jacpfx.rcp.util.MessageLoggerService;
 import org.jacpfx.rcp.util.TearDownHandler;
 import org.jacpfx.rcp.workbench.GlobalMediator;
 
@@ -379,6 +380,7 @@ public class PerspectiveHandlerImpl implements
             // execute OnShow
             onShow(perspective);
         }
+        MessageLoggerService.getInstance().receive(action);
         if (FXUtil.getTargetPerspectiveId(action.getTargetId()).equals(perspective.getContext().getId())) {
             this.log("3.4.3.1: perspective handle with custom message");
             perspective.handlePerspective(action);

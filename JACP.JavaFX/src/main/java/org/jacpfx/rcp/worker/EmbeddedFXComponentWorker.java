@@ -90,6 +90,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
         try {
             final Message<Event, Object> myAction = component
                     .getNextIncomingMessage();
+            MessageLoggerService.getInstance().receive(myAction);
             final Node previousContainer = component.getRoot();
             final InternalContext contextImpl = InternalContext.class.cast(component.getContext());
             final String currentTargetLayout = contextImpl.getTargetLayout();

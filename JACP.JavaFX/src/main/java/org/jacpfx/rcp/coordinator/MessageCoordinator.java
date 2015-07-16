@@ -18,6 +18,7 @@ import org.jacpfx.rcp.delegator.DelegateDTOImpl;
 import org.jacpfx.rcp.registry.ComponentRegistry;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.FXUtil;
+import org.jacpfx.rcp.util.MessageLoggerService;
 import org.jacpfx.rcp.util.PerspectiveUtil;
 import org.jacpfx.rcp.util.ShutdownThreadsHandler;
 
@@ -79,17 +80,21 @@ public class MessageCoordinator extends Thread implements
     @Override
     public void handleMessage(final String targetId, final Message<Event, Object> message) {
         final MessageCoordinatorExecutionResult result = executeMessageHandling(targetId, message);
+        final Message<Event, Object> messageObject = result.getMessage();
         switch (result.getState()) {
             case HANDLE_ACTIVE:
-                handleActive(result.getTargetComponent(), result.getMessage());
+                MessageLoggerService.getInstance().handleActive(message);
+                handleActive(result.getTargetComponent(), messageObject);
                 break;
             case HANDLE_INACTIVE:
-                handleInActive(result.getTargetComponent(), result.getParentPerspective(), result.getMessage());
+                MessageLoggerService.getInstance().handleInactive(message);
+                handleInActive(result.getTargetComponent(), result.getParentPerspective(), messageObject);
                 break;
             case HANDLE_CURRENT_PERSPECTIVE:
-                handleCurrentPerspective(result.getTargetId(), result.getMessage());
+                handleCurrentPerspective(result.getTargetId(), message);
                 break;
             case DELEGATE:
+                MessageLoggerService.getInstance().delegate(message);
                 delegateMessageToCorrectPerspective(result.getDto());
                 break;
             default:

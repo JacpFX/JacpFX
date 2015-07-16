@@ -23,27 +23,10 @@
  * *********************************************************************
  */
 
-package org.jacpfx.api.message;
+package org.jacp.test.lifecycle;
 
 /**
- * SPI for Message tracking/persisting in JacpFX applications
- * Created by Andy Moncsek on 13.07.15.
+ * Created by Andy Moncsek on 15.07.15.
  */
-public interface MessageLogger {
-
-    /**
-     * Log message when send by any compinent/perspective/workbench
-     * @param m
-     */
-    void onSend(final Message m);
-
-    void handleActive(final Message m);
-
-    void handleInactive(final Message m);
-
-    void handleInCurrentPerspective(final Message m);
-
-    void delegate(final Message m);
-
-    void receive(final Message m);
+public class LoggerServiceTest {
 }

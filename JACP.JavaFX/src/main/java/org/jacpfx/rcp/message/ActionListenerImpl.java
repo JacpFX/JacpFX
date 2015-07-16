@@ -26,6 +26,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import org.jacpfx.api.message.ActionListener;
 import org.jacpfx.api.message.Message;
+import org.jacpfx.rcp.util.MessageLoggerService;
 
 import java.util.Objects;
 import java.util.concurrent.TransferQueue;
@@ -52,12 +53,17 @@ public class ActionListenerImpl<T extends Event> implements EventHandler<T>,
 	public void notifyComponents(final Message<Event, Object> action) {
         Objects.requireNonNull(action,"message cannot be null");
         try {
-            this.globalMessageQueue.transfer(action);
+			logAndPutMessage(action);
         } catch (InterruptedException e) {
             e.printStackTrace();
             //TODO handle exception global
         }
     }
+
+	private void logAndPutMessage(Message<Event, Object> m ) throws InterruptedException {
+		MessageLoggerService.getInstance().onSend(m);
+		this.globalMessageQueue.transfer(m);
+	}
 
 
 	@Override

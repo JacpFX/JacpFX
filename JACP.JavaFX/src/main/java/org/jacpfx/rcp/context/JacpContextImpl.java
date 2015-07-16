@@ -17,6 +17,7 @@ import org.jacpfx.rcp.message.MessageImpl;
 import org.jacpfx.rcp.perspective.FXPerspective;
 import org.jacpfx.rcp.util.AccessUtil;
 import org.jacpfx.rcp.util.FXUtil;
+import org.jacpfx.rcp.util.MessageLoggerService;
 import org.jacpfx.rcp.util.PerspectiveUtil;
 import org.jacpfx.rcp.workbench.FXWorkbench;
 import org.jacpfx.rcp.worker.AComponentWorker;
@@ -102,10 +103,15 @@ public class JacpContextImpl implements Context,InternalContext {
     @Override
     public final void send(final String targetId, final Object message) {
         try {
-            this.globalMessageQueue.put(new MessageImpl(this.fullyQualifiedId, targetId, message, null));
+            logAndPutMessage(new MessageImpl(this.fullyQualifiedId, targetId, message, null));
         } catch (InterruptedException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
+    }
+
+    private void logAndPutMessage(Message<Event, Object> m ) throws InterruptedException {
+        MessageLoggerService.getInstance().onSend(m);
+        this.globalMessageQueue.transfer(m);
     }
 
     /**
@@ -117,8 +123,7 @@ public class JacpContextImpl implements Context,InternalContext {
         if (AccessUtil.hasAccess(callerClassName, FXWorkbench.class))
             throw new IllegalStateException(" a FXWorkbench is no valid message target");
         try {
-            this.globalMessageQueue.transfer(new MessageImpl(this.fullyQualifiedId,this.id, message, null));
-
+            logAndPutMessage(new MessageImpl(this.fullyQualifiedId, this.id, message, null));
         } catch (InterruptedException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }

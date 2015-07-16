@@ -23,27 +23,42 @@
  * *********************************************************************
  */
 
-package org.jacpfx.api.message;
+package org.jacp.logger;
+
+import org.jacpfx.api.message.Message;
+import org.jacpfx.api.message.MessageLogger;
 
 /**
- * SPI for Message tracking/persisting in JacpFX applications
- * Created by Andy Moncsek on 13.07.15.
+ * Created by Andy Moncsek on 15.07.15.
  */
-public interface MessageLogger {
+public class CustomLogger implements MessageLogger {
+    @Override
+    public void onSend(Message m) {
+        System.out.println("onsend: "+m);
+    }
 
-    /**
-     * Log message when send by any compinent/perspective/workbench
-     * @param m
-     */
-    void onSend(final Message m);
+    @Override
+    public void handleActive(Message m) {
+       System.out.println("handleActive: "+m);
+    }
 
-    void handleActive(final Message m);
+    @Override
+    public void handleInactive(Message m) {
+        System.out.println("handleInactive: "+m);
+    }
 
-    void handleInactive(final Message m);
+    @Override
+    public void handleInCurrentPerspective(Message m) {
+        System.out.println("handleInCurrentPerspective: "+m);
+    }
 
-    void handleInCurrentPerspective(final Message m);
+    @Override
+    public void delegate(Message m) {
+        System.out.println("delegate: "+m);
+    }
 
-    void delegate(final Message m);
-
-    void receive(final Message m);
+    @Override
+    public void receive(Message m) {
+        System.out.println("receive: "+m);
+    }
 }

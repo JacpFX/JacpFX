@@ -34,6 +34,7 @@ import org.jacpfx.rcp.component.ASubComponent;
 import org.jacpfx.rcp.context.InternalContext;
 import org.jacpfx.rcp.registry.ComponentRegistry;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
+import org.jacpfx.rcp.util.MessageLoggerService;
 import org.jacpfx.rcp.util.ShutdownThreadsHandler;
 import org.jacpfx.rcp.util.TearDownHandler;
 import org.jacpfx.rcp.util.WorkerUtil;
@@ -71,6 +72,7 @@ class EmbeddedCallbackComponentWorker
                     final Message<Event, Object> myAction = this.component
                             .getNextIncomingMessage();
                     this.component.lock();
+                    MessageLoggerService.getInstance().receive(myAction);
                     checkValidComponent(this.component);
                     wasExecuted = true;
                     final InternalContext context = InternalContext.class.cast(this.component.getContext());
