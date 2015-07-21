@@ -193,24 +193,28 @@ public class ManagedFragment {
             final Resource resource = field.getAnnotation(Resource.class);
             if (resource != null) {
                 try {
-                    if (bundle != null && field.getType().isAssignableFrom(bundle.getClass())) {
-                        field.setAccessible(true);
-                        field.set(bean, bundle);
-                    } else if (FXComponent.class.isAssignableFrom(field.getType())) {
-                        handleParentComponentAnnotation(bean, field, resource,
-                                parentId,componentId);
-                    } else if (FXPerspective.class.isAssignableFrom(field.getType())) {
-                        handleParentPerspectiveAnnotation(bean, field, resource,
-                                parentId,componentId);
-                    } else if (JacpContext.class.isAssignableFrom(field.getType())) {
-                        handleParentComponentContextAnnotation(bean, field, resource,
-                                parentId,componentId);
-                    }
+                    initilizeResourceMembers(bean, bundle, parentId, componentId, field, resource);
                 } catch (IllegalAccessException e) {
-                    e.printStackTrace();  //Hide error in UI.
+                    Thread.currentThread().getUncaughtExceptionHandler().uncaughtException(Thread.currentThread(),e);  //Hide error in UI.
                 }
             }
         });
+    }
+
+    private <T> void initilizeResourceMembers(T bean, ResourceBundle bundle, String parentId, String componentId, Field field, Resource resource) throws IllegalAccessException {
+        if (bundle != null && field.getType().isAssignableFrom(bundle.getClass())) {
+            field.setAccessible(true);
+            field.set(bean, bundle);
+        } else if (FXComponent.class.isAssignableFrom(field.getType())) {
+            handleParentComponentAnnotation(bean, field, resource,
+                    parentId,componentId);
+        } else if (FXPerspective.class.isAssignableFrom(field.getType())) {
+            handleParentPerspectiveAnnotation(bean, field, resource,
+                    parentId,componentId);
+        } else if (JacpContext.class.isAssignableFrom(field.getType())) {
+            handleParentComponentContextAnnotation(bean, field, resource,
+                    parentId,componentId);
+        }
     }
 
     private <T> void handleParentComponentAnnotation(final T bean,

@@ -48,7 +48,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public abstract class AStatelessCallbackComponent extends ASubComponent
 		implements
         StatelessCallabackComponent<EventHandler<Event>, Event, Object> {
-	public static int MAX_INCTANCE_COUNT;
+	public static final int MAX_INCTANCE_COUNT = getNrOfProcessors()+1;
 
 
 
@@ -58,12 +58,13 @@ public abstract class AStatelessCallbackComponent extends ASubComponent
 
 	private final ExecutorService executor = Executors
 			.newFixedThreadPool(AStatelessCallbackComponent.MAX_INCTANCE_COUNT,new HandlerThreadFactory("AStatelessCallbackComponent:"));
-	static {
+
+
+	private static int getNrOfProcessors() {
 		final Runtime runtime = Runtime.getRuntime();
-		final int nrOfProcessors = runtime.availableProcessors();
-		AStatelessCallbackComponent.MAX_INCTANCE_COUNT = nrOfProcessors + 1;
+		return runtime.availableProcessors();
 	}
-	
+
 	public AStatelessCallbackComponent() {
 		ShutdownThreadsHandler.registerExecutor(executor);
 	}
