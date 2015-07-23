@@ -5,6 +5,7 @@ org.jacpfx.api.annotations.lifecycle
 org.jacpfx.api.annotations.perspective
 org.jacpfx.api.annotations.workbench
 org.jacpfx.api.component
+org.jacpfx.api.component.ui
 org.jacpfx.api.componentLayout
 org.jacpfx.api.context
 org.jacpfx.api.coordinator

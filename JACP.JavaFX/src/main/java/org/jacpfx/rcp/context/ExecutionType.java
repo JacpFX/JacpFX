@@ -3,7 +3,7 @@
  *
  *  Copyright (C) 2010 - 2015
  *
- *  [Component.java]
+ *  [ExecutionType.java]
  *  JACPFX Project (https://github.com/JacpFX/JacpFX/)
  *  All rights reserved.
  *

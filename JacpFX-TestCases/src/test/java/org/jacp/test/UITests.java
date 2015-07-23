@@ -37,8 +37,8 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
         CheckPerspectiveTest.class,
-        CheckComponentsTest.class, PerspectiveMessagingTest.class, FXComponentMessagingTest2.class, FXComponentMessagingTest.class,
-        FXComponentCallBackMessagingTest.class, FXComponentAsyncCallbackMessagingTest.class,CallbackComponentToFXComponentMessagingTest.class})
+        CheckComponentsTest.class, PerspectiveMessagingTest.class, FXComponentMessagingTest2.class, FXComponentBaseMessagingTest.class,
+        FXComponentBaseCallBackMessagingTest.class, FXComponentBaseAsyncCallbackMessagingTest.class,CallbackComponentToFXComponentBaseMessagingTest.class})
 public class UITests {
         // ShutdownAndReopenComponentsTest3.class,
         //ShutdownAndReopenComponentsTest4.class, ShutdownAndReopenComponentsTest5.class, ShutdownAndReopenComponentsTest6.class,   OnShowOnHidePerspective.class,

@@ -22,7 +22,7 @@ import static org.junit.Assert.assertTrue;
  * Time: 21:48
  * To change this template use File | Settings | File Templates.
  */
-public class FXComponentMessagingTest extends TestFXJacpFXSpringLauncher {
+public class FXComponentBaseMessagingTest extends TestFXJacpFXSpringLauncher {
 
 
     @Override

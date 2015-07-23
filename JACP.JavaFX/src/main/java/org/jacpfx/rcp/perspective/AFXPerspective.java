@@ -1,25 +1,27 @@
-/************************************************************************
+/*
+ * **********************************************************************
  *
- * Copyright (C) 2010 - 2014
+ *  Copyright (C) 2010 - 2015
  *
- * [AFX2Perspective.java]
- * JACPFX Project (https://github.com/JacpFX/JacpFX/)
- * All rights reserved.
+ *  [AFXPerspective.java]
+ *  JACPFX Project (https://github.com/JacpFX/JacpFX/)
+ *  All rights reserved.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at 
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0 
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an "AS IS"
- * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either 
- * express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an "AS IS"
+ *  BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *  express or implied. See the License for the specific language
+ *  governing permissions and limitations under the License.
  *
  *
- ************************************************************************/
+ * *********************************************************************
+ */
 
 package org.jacpfx.rcp.perspective;
 
@@ -28,7 +30,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import org.jacpfx.api.component.Component;
+import org.jacpfx.api.component.ComponentBase;
 import org.jacpfx.api.component.Injectable;
 import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.SubComponent;
@@ -68,7 +70,7 @@ import java.util.logging.Logger;
  * @author Andy Moncsek
  */
 public abstract class AFXPerspective implements
-        Perspective<Node, EventHandler<Event>, Event, Object>, Component<EventHandler<Event>, Object>,
+        Perspective<Node, EventHandler<Event>, Event, Object>, ComponentBase<EventHandler<Event>, Object>,
         Initializable {
     private final Logger logger = Logger.getLogger(this.getClass().getName());
     private final AtomicBoolean started = new AtomicBoolean(false);
@@ -380,7 +382,7 @@ public abstract class AFXPerspective implements
     /**
      * {@inheritDoc}
      */
-    public final int compareTo(Component o) {
+    public final int compareTo(ComponentBase o) {
         return this.context.getId().compareTo(o.getContext().getId());
     }
 

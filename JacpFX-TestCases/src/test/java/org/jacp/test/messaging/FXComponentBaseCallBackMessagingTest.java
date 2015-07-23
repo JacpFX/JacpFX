@@ -3,9 +3,10 @@ package org.jacp.test.messaging;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.jacp.launcher.TestFXJacpFXSpringLauncher;
-import org.jacp.test.components.AsyncCallbackComponentMessagingTest1Component1;
-import org.jacp.test.components.AsyncCallbackComponentMessagingTest1Component2;
-import org.jacp.test.workbench.WorkbenchAsyncCallbackComponentMessageTesting1;
+import org.jacp.test.components.CallbackComponentMessagingTest1Component1;
+import org.jacp.test.components.CallbackComponentMessagingTest1Component2;
+import org.jacp.test.perspectives.PerspectiveCallbackComponentMessagingTest1;
+import org.jacp.test.workbench.WorkbenchCallbackComponentMessageTesting1;
 import org.jacpfx.rcp.workbench.FXWorkbench;
 import org.junit.Test;
 
@@ -16,12 +17,12 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * Created with IntelliJ IDEA.
- * User: amo
+ * User: Andy Moncsek
  * Date: 10.09.13
- * Time: 21:49
- * To change this template use File | Settings | File Templates.
+ * Time: 21:48
+ * Tests messaging between callback component
  */
-public class FXComponentAsyncCallbackMessagingTest extends TestFXJacpFXSpringLauncher {
+public class FXComponentBaseCallBackMessagingTest extends TestFXJacpFXSpringLauncher {
 
 
     @Override
@@ -38,7 +39,7 @@ public class FXComponentAsyncCallbackMessagingTest extends TestFXJacpFXSpringLau
 
     @Override
     protected Class<? extends FXWorkbench> getWorkbenchClass() {
-        return WorkbenchAsyncCallbackComponentMessageTesting1.class;
+        return WorkbenchCallbackComponentMessageTesting1.class;
     }
 
     @Override
@@ -51,17 +52,18 @@ public class FXComponentAsyncCallbackMessagingTest extends TestFXJacpFXSpringLau
 
     }
 
+
     private void executeMessaging() throws InterruptedException {
-        AsyncCallbackComponentMessagingTest1Component1.wait = new CountDownLatch(1);
-        AsyncCallbackComponentMessagingTest1Component2.wait = new CountDownLatch(1);
+        CallbackComponentMessagingTest1Component1.wait = new CountDownLatch(1);
+        CallbackComponentMessagingTest1Component2.wait = new CountDownLatch(1);
 
-        AsyncCallbackComponentMessagingTest1Component1.counter = new AtomicInteger(10000);
-        AsyncCallbackComponentMessagingTest1Component2.counter = new AtomicInteger(10000);
+        CallbackComponentMessagingTest1Component1.counter = new AtomicInteger(10000);
+        CallbackComponentMessagingTest1Component2.counter = new AtomicInteger(10000);
 
-        AsyncCallbackComponentMessagingTest1Component1.fireMessage();
+        PerspectiveCallbackComponentMessagingTest1.fireMessage();
 
-        AsyncCallbackComponentMessagingTest1Component1.wait.await();
-        AsyncCallbackComponentMessagingTest1Component2.wait.await();
+        CallbackComponentMessagingTest1Component1.wait.await();
+        CallbackComponentMessagingTest1Component2.wait.await();
 
     }
 
@@ -70,29 +72,28 @@ public class FXComponentAsyncCallbackMessagingTest extends TestFXJacpFXSpringLau
     }
 
     @Test
-    // default Execution time was 10959 ms..  linux ...
-    //  5211 ms osx
-    // 3723ms macbook
+    // default Execution time was 6147 ms..  linux ...
+    // default Execution time 2302 ms OSX
+    // 2221ms macbook
     public void testComponentMessaging() throws InterruptedException {
         warmUp();
         withoutUI();
     }
 
     @Test
-    // 3300ms linux
-    // 2047 ms osx
-    // 1550,399 macbook
+    // 1805ms in linux
+    // 1049 ms in OSX
+    // 875 macbook
     public void testBurstMessaging() throws InterruptedException {
         long start = System.currentTimeMillis();
-        AsyncCallbackComponentMessagingTest1Component1.wait = new CountDownLatch(1);
-        AsyncCallbackComponentMessagingTest1Component2.wait = new CountDownLatch(1);
-        AsyncCallbackComponentMessagingTest1Component1.counter = new AtomicInteger(0);
-        AsyncCallbackComponentMessagingTest1Component2.counter = new AtomicInteger(200000);
-        AsyncCallbackComponentMessagingTest1Component2.MESSAGE = null;
-        AsyncCallbackComponentMessagingTest1Component1.fireBurst(200000);
+        CallbackComponentMessagingTest1Component1.wait = new CountDownLatch(1);
+        CallbackComponentMessagingTest1Component2.wait = new CountDownLatch(1);
+        CallbackComponentMessagingTest1Component1.counter = new AtomicInteger(0);
+        CallbackComponentMessagingTest1Component2.counter = new AtomicInteger(200000);
+        CallbackComponentMessagingTest1Component2.MESSAGE = null;
+        PerspectiveCallbackComponentMessagingTest1.fireBurst(200000);
 
-        //AsyncCallbackComponentMessagingTest1Component1.wait.await();
-        AsyncCallbackComponentMessagingTest1Component2.wait.await();
+        CallbackComponentMessagingTest1Component2.wait.await();
         long end = System.currentTimeMillis();
 
         System.out.println("Execution testBurstMessaging time was " + (end - start) + " ms.");

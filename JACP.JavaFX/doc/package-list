@@ -6,6 +6,7 @@ org.jacpfx.rcp.components.managedFragment
 org.jacpfx.rcp.components.menuBar
 org.jacpfx.rcp.components.modalDialog
 org.jacpfx.rcp.components.toolBar
+org.jacpfx.rcp.components.workbench
 org.jacpfx.rcp.context
 org.jacpfx.rcp.coordinator
 org.jacpfx.rcp.delegator

@@ -3,7 +3,7 @@
  *
  *  Copyright (C) 2010 - 2015
  *
- *  [Component.java]
+ *  [AsyncHandler.java]
  *  JACPFX Project (https://github.com/JacpFX/JacpFX/)
  *  All rights reserved.
  *
@@ -66,7 +66,7 @@ public class AsyncHandler<T> {
 
     /**
      * Returns an instace of async handler
-     *
+     * @param <T>, the type of return
      * @return org.jacpfx.rcp.context.AsyncHandler , the handler instance
      */
     public static <T> AsyncHandler getInstance() {

@@ -1,25 +1,27 @@
-/************************************************************************
+/*
+ * **********************************************************************
  *
- * Copyright (C) 2010 - 2014
+ *  Copyright (C) 2010 - 2015
  *
- * [FX2Util.java]
- * JACPFX Project (https://github.com/JacpFX/JacpFX/)
- * All rights reserved.
+ *  [FXUtil.java]
+ *  JACPFX Project (https://github.com/JacpFX/JacpFX/)
+ *  All rights reserved.
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at 
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0 
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an "AS IS"
- * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either 
- * express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an "AS IS"
+ *  BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *  express or implied. See the License for the specific language
+ *  governing permissions and limitations under the License.
  *
  *
- ************************************************************************/
+ * *********************************************************************
+ */
 package org.jacpfx.rcp.util;
 
 import javafx.collections.ObservableList;
@@ -29,7 +31,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import org.jacpfx.api.annotations.Resource;
-import org.jacpfx.api.component.Component;
+import org.jacpfx.api.component.ComponentBase;
 import org.jacpfx.api.component.Injectable;
 import org.jacpfx.api.context.JacpContext;
 
@@ -359,8 +361,8 @@ public class FXUtil {
 
     /**
      * Creates a full qualified component name like parentId.componentId
-     * @param parentId
-     * @param componentId
+     * @param parentId  the parent id
+     * @param componentId the component id
      * @return  The qualified componentId
      */
     public static String getQualifiedComponentId(final String parentId, final String componentId) {
@@ -397,7 +399,7 @@ public class FXUtil {
      * @param <P>  the concrete type of component
      * @return  the component by id
      */
-    public static <P extends Component<EventHandler<Event>, Object>> P getObserveableById(
+    public static <P extends ComponentBase<EventHandler<Event>, Object>> P getObserveableById(
             final String id, final List<P> components) {
         final Optional<P> filter = components.stream().
                 filter(comp -> comp.getContext().getId() != null).
@@ -415,7 +417,7 @@ public class FXUtil {
      * @param <P>  the concrete type of component
      * @return  the component by id
      */
-    public static <P extends Component<EventHandler<Event>, Object>> List<P> getObserveableByParentId(
+    public static <P extends ComponentBase<EventHandler<Event>, Object>> List<P> getObserveableByParentId(
             final String id, final List<P> components) {
         return components.stream().
                 filter(comp -> comp.getContext().getParentId() != null).
@@ -431,7 +433,7 @@ public class FXUtil {
      * @param <P>  the concrete type of component
      * @return  the component by id
      */
-    public static <P extends Component<EventHandler<Event>, Object>> P getObserveableByQualifiedId(
+    public static <P extends ComponentBase<EventHandler<Event>, Object>> P getObserveableByQualifiedId(
             final String qualifiedId, final List<P> components) {
         final Optional<P> filter = components.stream().
                 filter(comp -> comp.getContext().getFullyQualifiedId()!=null?comp.getContext().getFullyQualifiedId().equals(qualifiedId):false).
@@ -451,7 +453,7 @@ public class FXUtil {
      * @param <P>  the concrete type of component
      * @return  the component by id
      */
-    public static <P extends Component<EventHandler<Event>, Object>> P getObserveableByQualifiedId(
+    public static <P extends ComponentBase<EventHandler<Event>, Object>> P getObserveableByQualifiedId(
             final String parentId,final String componentId, final List<P> components) {
         return getObserveableByQualifiedId(getQualifiedComponentId(parentId,componentId),components);
     }

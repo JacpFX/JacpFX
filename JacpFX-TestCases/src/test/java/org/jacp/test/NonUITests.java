@@ -21,10 +21,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
         MissconfigWorkbenchMissingIdInPerspective.class,
         MissconfigWorkbenchIdTest.class,
         MissconfigLauncherTest.class,
-        MissconfigFXComponentTest.class,
+        MissconfigFXComponentBaseTest.class,
 
         MissconfigDuplicatePerspectiveIds.class,
-        MissconfigComponentTest.class})
+        MissconfigComponentBaseTest.class})
 public class NonUITests {
     // TODO do not use allTests due to problems with main thread.
     public static void resetApplication() {

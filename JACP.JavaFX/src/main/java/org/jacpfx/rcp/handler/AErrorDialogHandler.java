@@ -1,9 +1,9 @@
 /*
  * **********************************************************************
  *
- *  Copyright (C) 2010 - 2014
+ *  Copyright (C) 2010 - 2015
  *
- *  [Component.java]
+ *  [AErrorDialogHandler.java]
  *  JACPFX Project (https://github.com/JacpFX/JacpFX/)
  *  All rights reserved.
  *

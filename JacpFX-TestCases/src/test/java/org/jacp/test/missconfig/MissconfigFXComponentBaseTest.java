@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
  * Time: 20:58
  * To change this template use File | Settings | File Templates.
  */
-public class MissconfigFXComponentTest {
+public class MissconfigFXComponentBaseTest {
 
     @Before
     public void init() {

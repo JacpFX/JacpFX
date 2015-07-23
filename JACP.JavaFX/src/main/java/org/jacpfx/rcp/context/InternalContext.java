@@ -1,9 +1,9 @@
 /*
  * **********************************************************************
  *
- *  Copyright (C) 2010 - 2014
+ *  Copyright (C) 2010 - 2015
  *
- *  [Component.java]
+ *  [InternalContext.java]
  *  JACPFX Project (https://github.com/JacpFX/JacpFX/)
  *  All rights reserved.
  *
@@ -50,33 +50,33 @@ public interface InternalContext {
 
     /**
      * Set the FXComponentLayout
-     * @param layout
+     * @param layout, the fxcomponentLayout instance
      */
     void setFXComponentLayout(final FXComponentLayout layout);
 
     /**
      * Set the resource bundle
-     * @param resourceBundle
+     * @param resourceBundle, the resource bundle instance
      */
     void setResourceBundle(ResourceBundle resourceBundle);
 
 
     /**
      * Set the components name
-     * @param name
+     * @param name, the component name
      */
     void setName(final String name);
 
     /**
      * Set the parent id
-     * @param parentId
+     * @param parentId, the parent id
      */
     void setParentId(final String parentId);
 
 
     /**
      * Set the component id
-     * @param id
+     * @param id, the component id
      */
     void setId(final String id);
 

@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
  * Time: 20:58
  * Test if declared component ids in perspective are incorrect
  */
-public class MissconfigComponentTest {
+public class MissconfigComponentBaseTest {
     @Test(expected = RuntimeException.class)
     public void failedToStartComponents() throws Exception {
         try {

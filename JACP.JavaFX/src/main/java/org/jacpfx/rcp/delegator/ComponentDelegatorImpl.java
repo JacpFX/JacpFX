@@ -1,32 +1,34 @@
-/************************************************************************
- * 
- * Copyright (C) 2010 - 2014
+/*
+ * **********************************************************************
  *
- * [FX2ComponentDelegator.java]
- * JACPFX Project (https://github.com/JacpFX/JacpFX/)
- * All rights reserved.
+ *  Copyright (C) 2010 - 2015
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at 
+ *  [ComponentDelegatorImpl.java]
+ *  JACPFX Project (https://github.com/JacpFX/JacpFX/)
+ *  All rights reserved.
  *
- *     http://www.apache.org/licenses/LICENSE-2.0 
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an "AS IS"
- * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either 
- * express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an "AS IS"
+ *  BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *  express or implied. See the License for the specific language
+ *  governing permissions and limitations under the License.
  *
  *
- ************************************************************************/
+ * *********************************************************************
+ */
 package org.jacpfx.rcp.delegator;
 
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import org.jacpfx.api.component.Component;
+import org.jacpfx.api.component.ComponentBase;
 import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.handler.ComponentHandler;
@@ -116,7 +118,7 @@ public class ComponentDelegatorImpl extends Thread implements
         } // End if
     }
 
-	private <P extends Component<EventHandler<Event>,  Object>> void handleInActivePerspective(
+	private <P extends ComponentBase<EventHandler<Event>,  Object>> void handleInActivePerspective(
 			final P component, final Message<Event, Object> action) {
 		component.getContext().setActive(true);
         //noinspection unchecked
@@ -136,7 +138,7 @@ public class ComponentDelegatorImpl extends Thread implements
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <P extends Component<EventHandler<Event>,  Object>> void setPerspectiveHandler(
+	public <P extends ComponentBase<EventHandler<Event>,  Object>> void setPerspectiveHandler(
             final ComponentHandler<P, Message<Event, Object>> handler) {
 		this.componentHandler = (ComponentHandler<Perspective<Node, EventHandler<Event>, Event, Object>, Message<Event, Object>>) handler;
 

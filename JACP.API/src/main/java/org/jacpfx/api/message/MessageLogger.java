@@ -3,7 +3,7 @@
  *
  *  Copyright (C) 2010 - 2015
  *
- *  [Component.java]
+ *  [MessageLogger.java]
  *  JACPFX Project (https://github.com/JacpFX/JacpFX/)
  *  All rights reserved.
  *
@@ -33,17 +33,32 @@ public interface MessageLogger {
 
     /**
      * Log message when send by any compinent/perspective/workbench
-     * @param m
+     * @param m, the message
      */
     void onSend(final Message m);
-
+    /**
+     * Log message when found an active component
+     * @param m, the message
+     */
     void handleActive(final Message m);
-
+    /**
+     * Log message when found an inactive component
+     * @param m, the message
+     */
     void handleInactive(final Message m);
-
+    /**
+     * Log message when handle component in current perspective
+     * @param m, the message
+     */
     void handleInCurrentPerspective(final Message m);
-
+    /**
+     * Log message when message was delegate to an other perspective
+     * @param m, the message
+     */
     void delegate(final Message m);
-
+    /**
+     * Log message when the component is handled
+     * @param m, the message
+     */
     void receive(final Message m);
 }

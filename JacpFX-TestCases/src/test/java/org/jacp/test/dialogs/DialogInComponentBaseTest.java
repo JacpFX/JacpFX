@@ -39,7 +39,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by Andy Moncsek on 06.01.14.
  */
-public class DialogInComponentTest {
+public class DialogInComponentBaseTest {
     static Thread t;
 
     @AfterClass

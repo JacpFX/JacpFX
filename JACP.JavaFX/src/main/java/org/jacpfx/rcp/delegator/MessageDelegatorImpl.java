@@ -1,9 +1,34 @@
+/*
+ * **********************************************************************
+ *
+ *  Copyright (C) 2010 - 2015
+ *
+ *  [MessageDelegatorImpl.java]
+ *  JACPFX Project (https://github.com/JacpFX/JacpFX/)
+ *  All rights reserved.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an "AS IS"
+ *  BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *  express or implied. See the License for the specific language
+ *  governing permissions and limitations under the License.
+ *
+ *
+ * *********************************************************************
+ */
+
 package org.jacpfx.rcp.delegator;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import org.jacpfx.api.component.Component;
+import org.jacpfx.api.component.ComponentBase;
 import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.exceptions.ComponentNotFoundException;
 import org.jacpfx.api.handler.ComponentHandler;
@@ -14,7 +39,9 @@ import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.ShutdownThreadsHandler;
 import org.jacpfx.rcp.util.WorkerUtil;
 
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.LinkedTransferQueue;
+import java.util.concurrent.TransferQueue;
 import java.util.logging.Logger;
 
 /**
@@ -77,7 +104,7 @@ public class MessageDelegatorImpl extends Thread implements
     }
 
     @Override
-    public <P extends Component<EventHandler<Event>, Object>> void setPerspectiveHandler(ComponentHandler<P, Message<Event, Object>> handler) {
+    public <P extends ComponentBase<EventHandler<Event>, Object>> void setPerspectiveHandler(ComponentHandler<P, Message<Event, Object>> handler) {
               this.perspectiveHandler = (ComponentHandler<Perspective<Node, EventHandler<Event>, Event, Object>, Message<Event, Object>>) handler;
     }
 }

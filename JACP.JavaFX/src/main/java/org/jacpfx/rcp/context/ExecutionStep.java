@@ -3,7 +3,7 @@
  *
  *  Copyright (C) 2010 - 2015
  *
- *  [Component.java]
+ *  [ExecutionStep.java]
  *  JACPFX Project (https://github.com/JacpFX/JacpFX/)
  *  All rights reserved.
  *
@@ -51,7 +51,7 @@ public class ExecutionStep<V, T> {
 
     /**
      * Returns the function to execute
-     * @return  @link{java.util.function.Function}
+     * @return the @see{java.util.function.Function}
      */
     public Function<V, T> getFunction() {
         return this.function;
@@ -59,7 +59,7 @@ public class ExecutionStep<V, T> {
 
     /**
      * Returns the type (POOL or FX Thread)
-     * @return  @link{ExecutionType}
+     * @return  the @see{ExecutionType}
      */
     public ExecutionType getType() {
         return this.type;
@@ -68,7 +68,7 @@ public class ExecutionStep<V, T> {
 
     /**
      * Returns the compleatable future for execution
-     * @return
+     * @return the @see{CompletableFuture}
      */
     public CompletableFuture<T> getFeature() {
         return this.feature;

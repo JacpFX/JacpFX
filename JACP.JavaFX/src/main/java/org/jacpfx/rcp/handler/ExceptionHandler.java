@@ -1,7 +1,7 @@
 /*
  * **********************************************************************
  *
- *  Copyright (C) 2010 - 2014
+ *  Copyright (C) 2010 - 2015
  *
  *  [ExceptionHandler.java]
  *  JACPFX Project (https://github.com/JacpFX/JacpFX/)

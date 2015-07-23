@@ -1,25 +1,27 @@
-/************************************************************************
- * 
- * Copyright (C) 2010 - 2014
+/*
+ * **********************************************************************
  *
- * [FX2PerspectiveHandler.java]
- * JACPFX Project (https://github.com/JacpFX/JacpFX/)
- * All rights reserved.
+ *  Copyright (C) 2010 - 2015
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at 
+ *  [ComponentHandlerImpl.java]
+ *  JACPFX Project (https://github.com/JacpFX/JacpFX/)
+ *  All rights reserved.
  *
- *     http://www.apache.org/licenses/LICENSE-2.0 
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an "AS IS"
- * BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either 
- * express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing,
+ *  software distributed under the License is distributed on an "AS IS"
+ *  BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ *  express or implied. See the License for the specific language
+ *  governing permissions and limitations under the License.
  *
  *
- ************************************************************************/
+ * *********************************************************************
+ */
 package org.jacpfx.rcp.handler;
 
 import javafx.event.Event;
@@ -30,9 +32,9 @@ import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.componentLayout.PerspectiveLayoutInterface;
 import org.jacpfx.api.launcher.Launcher;
 import org.jacpfx.api.message.Message;
-import org.jacpfx.rcp.component.EmbeddedFXComponent;
 import org.jacpfx.rcp.component.AStatelessCallbackComponent;
 import org.jacpfx.rcp.component.ASubComponent;
+import org.jacpfx.rcp.component.EmbeddedFXComponent;
 import org.jacpfx.rcp.scheduler.StatelessComponentSchedulerImpl;
 import org.jacpfx.rcp.util.HandlerThreadFactory;
 import org.jacpfx.rcp.util.ShutdownThreadsHandler;

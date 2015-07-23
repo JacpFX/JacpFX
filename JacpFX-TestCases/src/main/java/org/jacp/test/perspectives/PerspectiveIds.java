@@ -51,6 +51,8 @@ public class PerspectiveIds {
     public static final String PerspectiveOnShowTest2 = "id41";
     public static final String PerspectiveOnShowTest3 = "id42";
     public static final String PerspectiveOnShowTest4 = "id43";
+    public static final String PerspectiveManagedFragmentMessage = "id44";
+    public static final String PerspectiveManagedFragmentMessage2 = "id45";
 
     public static final String PerspectiveMessagingTestP1 = "id10";
     public static final String PerspectiveMessagingTestP2 = "id11";

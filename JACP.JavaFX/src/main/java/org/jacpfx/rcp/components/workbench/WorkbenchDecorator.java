@@ -3,7 +3,7 @@
  *
  *  Copyright (C) 2010 - 2015
  *
- *  [Component.java]
+ *  [WorkbenchDecorator.java]
  *  JACPFX Project (https://github.com/JacpFX/JacpFX/)
  *  All rights reserved.
  *
@@ -39,7 +39,7 @@ public interface WorkbenchDecorator {
     /**
      *
      * Initialize the decorator
-     * @param stage
+     * @param stage, the JavaFX stage
      */
     void initBasicLayout(Stage stage);
 

@@ -22,7 +22,7 @@ import static org.junit.Assert.assertTrue;
  * Time: 13:59
  * Messeging between UI and non UI component
  */
-public class CallbackComponentToFXComponentMessagingTest extends TestFXJacpFXSpringLauncher {
+public class CallbackComponentToFXComponentBaseMessagingTest extends TestFXJacpFXSpringLauncher {
 
 
     @Override
