@@ -78,49 +78,7 @@ public class FXWorkerExceptionTest extends ApplicationTest {
     @Test
     public void basicHandlerTest() throws InterruptedException {
 
-        FXWorker handler = FXWorker.getInstance();
-        System.err.println("THREAD: " + Thread.currentThread());
-        CountDownLatch latch1 = new CountDownLatch(1);
-        CountDownLatch latch2 = new CountDownLatch(1);
-        CountDownLatch latch3 = new CountDownLatch(1);
-        CountDownLatch latch4 = new CountDownLatch(1);
-        CountDownLatch latch5 = new CountDownLatch(1);
-        CountDownLatch latch6 = new CountDownLatch(1);
-        CountDownLatch latch7 = new CountDownLatch(1);
-
-
-        handler.supplyOnFXThread(() -> {
-            try {
-                System.out.println("THREAD POOL 1: " + Thread.currentThread());
-                TimeUnit.MILLISECONDS.sleep(2000);
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            latch1.countDown();
-            String test = null;
-            test.toString(); // cause a nullpointer !!
-            return "abc";
-        }).onError((Function<Throwable, String>)o -> {
-            o.printStackTrace();
-            latch2.countDown();
-            return o.getMessage();
-        });
-        handler.execute();
-
-        System.out.println("---------XXXXXXXXX------------------");
-
-        latch1.await();
-        System.out.println("---------XXXXXXXXX------------------  1111");
-        latch2.await();
-        System.out.println("---------pass 1----------------------");
-
-    }
-
-    @Test
-    public void mutipleFXHandlerTest() throws InterruptedException {
-
-        FXWorker handler = FXWorker.getInstance();
+        FXWorker<?> handler = FXWorker.getInstance();
         System.err.println("THREAD: " + Thread.currentThread());
         CountDownLatch latch1 = new CountDownLatch(1);
         CountDownLatch latch2 = new CountDownLatch(1);
@@ -146,11 +104,7 @@ public class FXWorkerExceptionTest extends ApplicationTest {
         }).onError((Function<Throwable, String>) o -> {
             o.printStackTrace();
             latch2.countDown();
-            return "cde";
-        }).consumeOnFXThread((val) -> {
-            if (val.equals("cde")) {
-                latch3.countDown();
-            }
+            return o.getMessage();
         });
         handler.execute();
 
@@ -160,7 +114,80 @@ public class FXWorkerExceptionTest extends ApplicationTest {
         System.out.println("---------XXXXXXXXX------------------  1111");
         latch2.await();
         System.out.println("---------pass 1----------------------");
+
+    }
+
+    @Test
+    public void mutipleFXHandlerTest() throws InterruptedException {
+
+        FXWorker<?> handler = FXWorker.getInstance();
+        System.err.println("THREAD: " + Thread.currentThread());
+        CountDownLatch latch1 = new CountDownLatch(1);
+        CountDownLatch latch2 = new CountDownLatch(1);
+        CountDownLatch latch3 = new CountDownLatch(1);
+        CountDownLatch latch4 = new CountDownLatch(1);
+        CountDownLatch latch5 = new CountDownLatch(1);
+        CountDownLatch latch6 = new CountDownLatch(1);
+        CountDownLatch latch7 = new CountDownLatch(1);
+
+
+        handler.supplyOnFXThread(() -> {
+            try {
+                System.out.println("THREAD POOL 1: " + Thread.currentThread());
+                TimeUnit.MILLISECONDS.sleep(2000);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            latch1.countDown();
+            String test = null;
+            test.toString(); // cause a nullpointer !!
+            return "abc";
+        }).onError(o -> {
+            System.out.println("Error 1----------");
+           // o.printStackTrace();
+            latch2.countDown();
+            return "cde";
+        }).consumeOnFXThread((val) -> {
+            if (val.equalsIgnoreCase("cde")) {
+                latch3.countDown();
+            }
+        }).supplyOnFXThread(() -> {
+
+            return 1;
+
+        }).functionOnFXThread(val-> {
+            if(val==1){
+                latch4.countDown();
+            }
+            String test = null;
+            test.toString(); // cause a nullpointer !!
+            return 2;
+        }).onError(o-> {
+            System.out.println("Error 2----------");
+            //o.printStackTrace();
+            latch5.countDown();
+            return 3;
+        }).consumeOnFXThread(val-> {
+            if(val==3){
+                latch6.countDown();
+            }
+        }).execute();
+
+        System.out.println("---------XXXXXXXXX------------------");
+
+        latch1.await();
+        System.out.println("latch 1 --------------");
+        latch2.await();
+        System.out.println("latch 2 --------------");
         latch3.await();
+        System.out.println("latch 3 --------------");
+        latch4.await();
+        System.out.println("latch 4 --------------");
+        latch5.await();
+        System.out.println("latch 5 --------------");
+        latch6.await();
+        System.out.println("latch 6 --------------");
 
     }
 

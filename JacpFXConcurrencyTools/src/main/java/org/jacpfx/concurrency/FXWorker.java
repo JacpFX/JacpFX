@@ -104,8 +104,8 @@ public final class FXWorker<T> {
     public final <T> FXWorker<T> onError(final Function<Throwable, T> fnException){
 
          if(steps!=null & !steps.isEmpty()) {
-             final ExecutionStep executionStep = steps.get(0); // the last step which should get an exception handler
-             steps.set(0,new ExecutionStep(executionStep.getFunction(),executionStep.getType(),executionStep.getFeature(),fnException));
+             final ExecutionStep executionStep = steps.get(steps.size() - 1); // the last step which should get an exception handler
+             steps.set(steps.size() - 1,new ExecutionStep(executionStep.getFunction(),executionStep.getType(),executionStep.getFeature(),fnException));
          }
         return new FXWorker<>(steps);
 
@@ -220,25 +220,29 @@ public final class FXWorker<T> {
         try {
             return b.getFunction().apply(val);
         } catch (Exception e) {
-            // Check XF_Thread when needed
-            if (b.getFnException() != null) {
-
-                switch (b.getType()) {
-                    case FX_THREAD:
-                        return invokeExceptionHandlerOnFXThread(b, e);
-                    case POOL:
-                        return b.getFnException().apply(e);
-                    default:
-                        return b.getFnException().apply(e);
-                }
-
-            } else {
-                e.printStackTrace();
-            }
-
+            if (handleExceptionOnStepExecution(b, e)) return invokeExceptionHandler(b, e);
 
         }
         return null;
+    }
+
+    private boolean handleExceptionOnStepExecution(ExecutionStep b, Exception e) {
+        // Check XF_Thread when needed
+        if (b.getFnException() != null)
+            return true;
+        e.printStackTrace();
+        return false;
+    }
+
+    private Object invokeExceptionHandler(ExecutionStep b, Exception e) {
+        switch (b.getType()) {
+            case FX_THREAD:
+                return invokeExceptionHandlerOnFXThread(b, e);
+            case POOL:
+                return b.getFnException().apply(e);
+            default:
+                return b.getFnException().apply(e);
+        }
     }
 
     private Object invokeExceptionHandlerOnFXThread(ExecutionStep b, Exception e) {

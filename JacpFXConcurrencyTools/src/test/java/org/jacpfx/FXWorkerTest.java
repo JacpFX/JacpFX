@@ -323,7 +323,7 @@ public class FXWorkerTest extends ApplicationTest {
     }
 
     @Test
-    public void testExecuteOnWorkerThread3() throws InterruptedException {
+    public void testTypedExecuteOnWorkerThread3() throws InterruptedException {
         FXWorker<?> handler = FXWorker.getInstance();
         CountDownLatch latch5 = new CountDownLatch(1);
         Runnable r = () -> {
@@ -375,7 +375,7 @@ public class FXWorkerTest extends ApplicationTest {
 
 
     @Test
-    public void testExecuteFunctionOnWorkerThread() throws InterruptedException {
+    public void testExecuteTypedFunctionOnWorkerThread() throws InterruptedException {
         FXWorker<?> handler = FXWorker.getInstance();
         CountDownLatch latch5 = new CountDownLatch(1);
         Runnable r = () -> {
@@ -407,8 +407,8 @@ public class FXWorkerTest extends ApplicationTest {
             }).consumeOnFXThread((value) -> {
                 System.out.println("-- THREAD consume FX1: " + Thread.currentThread());
                 System.out.println("----" + value);
-                Button b1 = new Button(value+1);
-                b1.setId(value+1);
+                Button b1 = new Button(value + 1);
+                b1.setId(value + 1);
                 mainPane.getChildren().add(b1);
 
             }).supplyOnFXThread(() -> {
