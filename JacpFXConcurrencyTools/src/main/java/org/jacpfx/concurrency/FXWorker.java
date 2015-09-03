@@ -105,8 +105,7 @@ public final class FXWorker<T> {
 
          if(steps!=null & !steps.isEmpty()) {
              final ExecutionStep executionStep = steps.get(0); // the last step which should get an exception handler
-             final ExecutionStep updatedStep = new ExecutionStep(executionStep.getFunction(),executionStep.getType(),executionStep.getFeature(),fnException);
-             steps.set(0,updatedStep);
+             steps.set(0,new ExecutionStep(executionStep.getFunction(),executionStep.getType(),executionStep.getFeature(),fnException));
          }
         return new FXWorker<>(steps);
 
@@ -170,6 +169,7 @@ public final class FXWorker<T> {
      * @param r the supplied runnable will be invoked on fx application thread when the chain has finished
      */
     public final void execute(Runnable r) {
+        // TODO handle exception in execute
         executeChain().thenRun(() -> {
             try {
                 executeOnFXThread(r);
@@ -225,13 +225,7 @@ public final class FXWorker<T> {
 
                 switch (b.getType()) {
                     case FX_THREAD:
-                        final AtomicReference<Object> resultRef = new AtomicReference<>();
-                        try {
-                            executeOnFXThread(() -> resultRef.set(b.getFnException().apply(e.getCause())));
-                        } catch (ExecutionException e1) {
-                            e1.printStackTrace();
-                        }
-                        return resultRef.get();
+                        return invokeExceptionHandlerOnFXThread(b, e);
                     case POOL:
                         return b.getFnException().apply(e);
                     default:
@@ -245,6 +239,16 @@ public final class FXWorker<T> {
 
         }
         return null;
+    }
+
+    private Object invokeExceptionHandlerOnFXThread(ExecutionStep b, Exception e) {
+        final AtomicReference<Object> resultRef = new AtomicReference<>();
+        try {
+            executeOnFXThread(() -> resultRef.set(b.getFnException().apply(e.getCause())));
+        } catch (ExecutionException e1) {
+            e1.printStackTrace();
+        }
+        return resultRef.get();
     }
 
 
@@ -304,17 +308,6 @@ public final class FXWorker<T> {
         }, type);
     }
 
-    private <V> FXWorker<V> addUserFunction(Function<T, V> function, ExecutionType type, final Function<Throwable, V> fnException) {
-        return addFunction((e) -> {
-            switch (type) {
-                case POOL:
-                    return function.apply(e);
-                case FX_THREAD:
-                    return invokeOnFXThread(function, e);
-            }
-            return null;
-        }, type, fnException);
-    }
 
     private <V> FXWorker<V> addFunction(CheckedFunction<T, V> function, ExecutionType type) {
         return addStepp(new ExecutionStep<>(function, type));
@@ -417,8 +410,7 @@ public final class FXWorker<T> {
                     if (APPLICATION_RUNNING.get())
                         runnable.run();
                 } catch (Exception e) {
-                    final ThrowableWrapper throwableWrapper = new ThrowableWrapper(e);
-                    exchanger.set(throwableWrapper);
+                    exchanger.set(new ThrowableWrapper(e));
                 } finally {
                     conditionReady.set(true);
                     condition.signal();

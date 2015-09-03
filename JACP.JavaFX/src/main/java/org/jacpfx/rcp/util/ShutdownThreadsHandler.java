@@ -24,13 +24,13 @@
  */
 package org.jacpfx.rcp.util;
 
+import org.jacpfx.concurrency.FXWorker;
 import org.jacpfx.rcp.handler.ExceptionHandler;
 
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
 /**
@@ -42,8 +42,6 @@ public final class ShutdownThreadsHandler{
 	private static final List<Thread> registeredThreads = new CopyOnWriteArrayList<>();
 	private static final List<ExecutorService> registeredExecutors = new CopyOnWriteArrayList<>();
 	private static final Logger logger = Logger.getLogger("ShutdownThreadsHandler");
-	public static final AtomicBoolean APPLICATION_RUNNING = new AtomicBoolean(true);
-	public static final Long WAIT = Long.valueOf(3500L);
 	/**
 	 * Register a Thread.
 	 * @param t the Thread to register
@@ -76,7 +74,7 @@ public final class ShutdownThreadsHandler{
 	 * Shutdown all registered Threads.
 	 */
 	public static void shutdownThreads() {
-		APPLICATION_RUNNING.set(false);
+		FXWorker.APPLICATION_RUNNING.set(false);
 		registeredThreads.stream().filter(t -> t.isAlive()).forEach(t -> {
 			logger.info("shutdown thread: " + t);
 			t.interrupt();
@@ -93,7 +91,7 @@ public final class ShutdownThreadsHandler{
 	 * Shutdown registered Threads and Executors.
 	 */
 	public static void shutdowAll() {
-		APPLICATION_RUNNING.set(false);
+		FXWorker.APPLICATION_RUNNING.set(false);
 		registeredThreads.stream().filter(t -> t.isAlive()).forEach(t -> {
 			logger.info("shutdown thread: " + t);
 			t.interrupt();

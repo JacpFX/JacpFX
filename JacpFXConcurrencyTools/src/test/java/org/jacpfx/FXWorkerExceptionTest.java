@@ -117,6 +117,53 @@ public class FXWorkerExceptionTest extends ApplicationTest {
 
     }
 
+    @Test
+    public void mutipleFXHandlerTest() throws InterruptedException {
+
+        FXWorker handler = FXWorker.getInstance();
+        System.err.println("THREAD: " + Thread.currentThread());
+        CountDownLatch latch1 = new CountDownLatch(1);
+        CountDownLatch latch2 = new CountDownLatch(1);
+        CountDownLatch latch3 = new CountDownLatch(1);
+        CountDownLatch latch4 = new CountDownLatch(1);
+        CountDownLatch latch5 = new CountDownLatch(1);
+        CountDownLatch latch6 = new CountDownLatch(1);
+        CountDownLatch latch7 = new CountDownLatch(1);
+
+
+        handler.supplyOnFXThread(() -> {
+            try {
+                System.out.println("THREAD POOL 1: " + Thread.currentThread());
+                TimeUnit.MILLISECONDS.sleep(2000);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            latch1.countDown();
+            String test = null;
+            test.toString(); // cause a nullpointer !!
+            return "abc";
+        }).onError((Function<Throwable, String>) o -> {
+            o.printStackTrace();
+            latch2.countDown();
+            return "cde";
+        }).consumeOnFXThread((val) -> {
+            if (val.equals("cde")) {
+                latch3.countDown();
+            }
+        });
+        handler.execute();
+
+        System.out.println("---------XXXXXXXXX------------------");
+
+        latch1.await();
+        System.out.println("---------XXXXXXXXX------------------  1111");
+        latch2.await();
+        System.out.println("---------pass 1----------------------");
+        latch3.await();
+
+    }
+
 
     private void consume(String myVal) {
         Assert.assertTrue(myVal.equals(new String("abs")));

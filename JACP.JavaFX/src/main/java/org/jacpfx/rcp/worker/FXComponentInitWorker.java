@@ -34,6 +34,7 @@ import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.context.JacpContext;
 import org.jacpfx.api.exceptions.AnnotationMissconfigurationException;
 import org.jacpfx.api.message.Message;
+import org.jacpfx.concurrency.FXWorker;
 import org.jacpfx.rcp.component.EmbeddedFXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.context.Context;
@@ -89,7 +90,7 @@ public class FXComponentInitWorker extends AComponentWorker<EmbeddedFXComponent>
      * @throws InterruptedException , exception when thread was interrupted
      */
     private void runPreInitMethods() throws InterruptedException, ExecutionException {
-        WorkerUtil.invokeOnFXThreadAndWait(() -> {
+        FXWorker.invokeOnFXThreadAndWait(() -> {
             setComponentToActiveAndStarted(component);
             final FXComponentLayout layout = Context.class.cast(component.getContext()).getComponentLayout();
             switch (component.getType()) {
@@ -204,7 +205,7 @@ public class FXComponentInitWorker extends AComponentWorker<EmbeddedFXComponent>
             final Node handleReturnValue, final EmbeddedFXComponent myComponent,
             final Message<Event, Object> myAction, final Map<String, Node> targetComponents) throws Exception {
         final Thread t = Thread.currentThread();
-        WorkerUtil.invokeOnFXThreadAndWait(() -> {
+        FXWorker.invokeOnFXThreadAndWait(() -> {
             try {
                 WorkerUtil.executeComponentViewPostHandle(
                         handleReturnValue, myComponent, myAction);

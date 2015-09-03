@@ -29,6 +29,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import org.jacpfx.api.context.JacpContext;
+import org.jacpfx.concurrency.FXWorker;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.components.managedFragment.ManagedFragmentHandler;
 
@@ -70,5 +71,5 @@ public interface Context extends JacpContext<EventHandler<Event>, Object> {
      * The async handler allows to supply consumers, suppliers and function on worker thread and on FX thread
      * @return  an @see {AsyncHandler} instance
      */
-     AsyncHandler<?> asyncHandler();
+     FXWorker<?> worker();
 }
