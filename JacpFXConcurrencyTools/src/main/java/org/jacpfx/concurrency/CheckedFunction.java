@@ -3,7 +3,7 @@
  *
  *  Copyright (C) 2010 - 2015
  *
- *  [ExecutionType.java]
+ *  [CheckedFunction.java]
  *  JACPFX Project (https://github.com/JacpFX/JacpFX/)
  *  All rights reserved.
  *
@@ -23,11 +23,20 @@
  * *********************************************************************
  */
 
-package org.jacpfx.rcp.context;
+package org.jacpfx.concurrency;
 
 /**
- * Created by Andy Moncsek on 16.04.15.
+ * Created by Andy Moncsek on 03.09.15.
  */
-public enum ExecutionType {
-    FX_THREAD, POOL
+
+@FunctionalInterface
+public interface CheckedFunction<T, R> {
+
+    /**
+     * Applies this function to the given argument.
+     *
+     * @param t the function argument
+     * @return the function result
+     */
+    R apply(T t) throws Exception;
 }

@@ -3,7 +3,7 @@
  *
  *  Copyright (C) 2010 - 2015
  *
- *  [Component.java]
+ *  [FXWorkerTest.java]
  *  JACPFX Project (https://github.com/JacpFX/JacpFX/)
  *  All rights reserved.
  *
@@ -23,14 +23,14 @@
  * *********************************************************************
  */
 
-package org.jacp.test.handler;
+package org.jacpfx;
 
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import org.jacpfx.rcp.context.AsyncHandler;
+import org.jacpfx.concurrency.FXWorker;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,16 +39,14 @@ import org.testfx.service.query.NodeQuery;
 
 import java.util.Collections;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
- * Created by Andy Moncsek on 17.04.15.
+ * Created by Andy Moncsek on 02.09.15.
  */
-public class AsyncHandlerTest extends ApplicationTest {
+public class FXWorkerTest extends ApplicationTest {
 
     Pane mainPane = new Pane();
 
@@ -59,7 +57,6 @@ public class AsyncHandlerTest extends ApplicationTest {
         stage.show();
     }
 
-    private final static ExecutorService EXECUTOR = Executors.newCachedThreadPool();
 
     @Before
     public void onStart() {
@@ -69,7 +66,7 @@ public class AsyncHandlerTest extends ApplicationTest {
     @Test
     public void basicHandlerTest() throws InterruptedException {
 
-        AsyncHandler handler = AsyncHandler.getInstance();
+        FXWorker handler = FXWorker.getInstance();
         System.err.println("THREAD: " + Thread.currentThread());
         CountDownLatch latch1 = new CountDownLatch(1);
         CountDownLatch latch2 = new CountDownLatch(1);
@@ -139,7 +136,7 @@ public class AsyncHandlerTest extends ApplicationTest {
 
     @Test
     public void executeHandlerTest() throws InterruptedException {
-        AsyncHandler<Object> handler = AsyncHandler.getInstance();
+        FXWorker<Object> handler = FXWorker.getInstance();
         CountDownLatch latch5 = new CountDownLatch(1);
         handler.supplyOnExecutorThread(() -> {
             try {
@@ -180,7 +177,7 @@ public class AsyncHandlerTest extends ApplicationTest {
 
     @Test
     public void executeSupplierOnFXThread() throws InterruptedException {
-        AsyncHandler<Object> handler = AsyncHandler.getInstance();
+        FXWorker<Object> handler = FXWorker.getInstance();
         CountDownLatch latch5 = new CountDownLatch(1);
         handler.supplyOnExecutorThread(() -> {
             try {
@@ -221,7 +218,7 @@ public class AsyncHandlerTest extends ApplicationTest {
 
     @Test
     public void testAddNodes() throws InterruptedException {
-        AsyncHandler<Object> handler = AsyncHandler.getInstance();
+        FXWorker<Object> handler = FXWorker.getInstance();
         CountDownLatch latch5 = new CountDownLatch(1);
         handler.supplyOnExecutorThread(() -> {
             try {
@@ -274,7 +271,7 @@ public class AsyncHandlerTest extends ApplicationTest {
     @Test
     public void testTypes() {
 
-        AsyncHandler<Object> handler = AsyncHandler.getInstance();
+        FXWorker<Object> handler = FXWorker.getInstance();
         handler.
                 supplyOnExecutorThread(() -> new Integer(3)).
                 consumeOnExecutorThread((intVal) -> Assert.assertTrue(intVal.equals(new Integer(3)))).
@@ -287,7 +284,7 @@ public class AsyncHandlerTest extends ApplicationTest {
     public void testExecuteOnWorkerThread() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
         Runnable r = () -> {
-            AsyncHandler<Object> handler = AsyncHandler.getInstance();
+            FXWorker<Object> handler = FXWorker.getInstance();
             handler.
                     supplyOnExecutorThread(() -> new Integer(3)).
                     consumeOnExecutorThread((intVal) -> Assert.assertTrue(intVal.equals(new Integer(3)))).
@@ -308,7 +305,7 @@ public class AsyncHandlerTest extends ApplicationTest {
     public void testExecuteOnWorkerThread2() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
         Runnable r = () -> {
-            AsyncHandler<Object> handler = AsyncHandler.getInstance();
+            FXWorker<Object> handler = FXWorker.getInstance();
             handler.
                     supplyOnExecutorThread(() -> new Integer(3)).
                     consumeOnExecutorThread((intVal) -> Assert.assertTrue(intVal.equals(new Integer(3)))).
@@ -327,7 +324,7 @@ public class AsyncHandlerTest extends ApplicationTest {
 
     @Test
     public void testExecuteOnWorkerThread3() throws InterruptedException {
-        AsyncHandler<?> handler = AsyncHandler.getInstance();
+        FXWorker<?> handler = FXWorker.getInstance();
         CountDownLatch latch5 = new CountDownLatch(1);
         Runnable r = () -> {
             handler.supplyOnExecutorThread(() -> {
@@ -379,7 +376,7 @@ public class AsyncHandlerTest extends ApplicationTest {
 
     @Test
     public void testExecuteFunctionOnWorkerThread() throws InterruptedException {
-        AsyncHandler<?> handler = AsyncHandler.getInstance();
+        FXWorker<?> handler = FXWorker.getInstance();
         CountDownLatch latch5 = new CountDownLatch(1);
         Runnable r = () -> {
             handler.supplyOnExecutorThread(() -> {
