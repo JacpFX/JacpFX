@@ -444,6 +444,39 @@ public class FXWorkerTest extends ApplicationTest {
         Collections.emptyList().stream().map(val -> new Button(val.toString())).collect(Collectors.toList());
     }
 
+    @Test
+    public void testMutipleConsumerChain() throws InterruptedException {
+        FXWorker<?> handler = FXWorker.getInstance();
+        System.err.println("THREAD: " + Thread.currentThread());
+        CountDownLatch latch1 = new CountDownLatch(1);
+
+        handler
+                .supplyOnFXThread(() -> "hallo")
+                .consumeOnExecutorThread(val -> {
+                    System.out.println("1----" + val);
+                    Assert.assertNotNull(val);
+                })
+                .consumeOnFXThread(val -> {
+                    System.out.println("2----" + val);
+                    Assert.assertNull(val);
+                })
+                .functionOnExecutorThread(val -> {
+                    System.out.println("3----" + val);
+                    Assert.assertNull(val);
+                    return "abc";
+                })
+                .consumeOnFXThread(val -> {
+                    System.out.println("4----" + val);
+                    Assert.assertNotNull(val);
+                })
+                .consumeOnFXThread(val -> {
+                    System.out.println("5----" + val);
+                    Assert.assertNull(val);
+                })
+                .execute(() -> latch1.countDown());
+        latch1.await();
+    }
+
 
     private void consume(String myVal) {
         Assert.assertTrue(myVal.equals(new String("abs")));
