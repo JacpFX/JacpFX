@@ -79,7 +79,7 @@ public class FXWorkerExceptionTest extends ApplicationTest {
     @Test
     public void basicHandlerTest() throws InterruptedException {
 
-        FXWorker<?> handler = FXWorker.getInstance();
+        FXWorker<?> handler = FXWorker.instance();
         System.err.println("THREAD: " + Thread.currentThread());
         CountDownLatch latch1 = new CountDownLatch(1);
         CountDownLatch latch2 = new CountDownLatch(1);
@@ -104,7 +104,7 @@ public class FXWorkerExceptionTest extends ApplicationTest {
     @Test
     public void mutipleFXHandlerTest() throws InterruptedException {
 
-        FXWorker<?> handler = FXWorker.getInstance();
+        FXWorker<?> handler = FXWorker.instance();
         System.err.println("THREAD: " + Thread.currentThread());
         CountDownLatch latch1 = new CountDownLatch(1);
         CountDownLatch latch2 = new CountDownLatch(1);
@@ -145,7 +145,7 @@ public class FXWorkerExceptionTest extends ApplicationTest {
     @Test
     public void mutipleExecutorAndFXHandlerTest() throws InterruptedException {
 
-        FXWorker<?> handler = FXWorker.getInstance();
+        FXWorker<?> handler = FXWorker.instance();
         System.err.println("THREAD: " + Thread.currentThread());
         CountDownLatch latch1 = new CountDownLatch(1);
         CountDownLatch latch2 = new CountDownLatch(1);

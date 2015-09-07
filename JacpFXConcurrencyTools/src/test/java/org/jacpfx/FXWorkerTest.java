@@ -66,7 +66,7 @@ public class FXWorkerTest extends ApplicationTest {
     @Test
     public void basicHandlerTest() throws InterruptedException {
 
-        FXWorker handler = FXWorker.getInstance();
+        FXWorker handler = FXWorker.instance();
         System.err.println("THREAD: " + Thread.currentThread());
         CountDownLatch latch1 = new CountDownLatch(1);
         CountDownLatch latch2 = new CountDownLatch(1);
@@ -136,7 +136,7 @@ public class FXWorkerTest extends ApplicationTest {
 
     @Test
     public void executeHandlerTest() throws InterruptedException {
-        FXWorker<Object> handler = FXWorker.getInstance();
+        FXWorker<Object> handler = FXWorker.instance();
         CountDownLatch latch5 = new CountDownLatch(1);
         handler.supplyOnExecutorThread(() -> {
             try {
@@ -177,7 +177,7 @@ public class FXWorkerTest extends ApplicationTest {
 
     @Test
     public void executeSupplierOnFXThread() throws InterruptedException {
-        FXWorker<Object> handler = FXWorker.getInstance();
+        FXWorker<Object> handler = FXWorker.instance();
         CountDownLatch latch5 = new CountDownLatch(1);
         handler.supplyOnExecutorThread(() -> {
             try {
@@ -218,7 +218,7 @@ public class FXWorkerTest extends ApplicationTest {
 
     @Test
     public void testAddNodes() throws InterruptedException {
-        FXWorker<Object> handler = FXWorker.getInstance();
+        FXWorker<Object> handler = FXWorker.instance();
         CountDownLatch latch5 = new CountDownLatch(1);
         handler.supplyOnExecutorThread(() -> {
             try {
@@ -271,7 +271,7 @@ public class FXWorkerTest extends ApplicationTest {
     @Test
     public void testTypes() {
 
-        FXWorker<Object> handler = FXWorker.getInstance();
+        FXWorker<Object> handler = FXWorker.instance();
         handler.
                 supplyOnExecutorThread(() -> new Integer(3)).
                 consumeOnExecutorThread((intVal) -> Assert.assertTrue(intVal.equals(new Integer(3)))).
@@ -284,7 +284,7 @@ public class FXWorkerTest extends ApplicationTest {
     public void testExecuteOnWorkerThread() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
         Runnable r = () -> {
-            FXWorker<Object> handler = FXWorker.getInstance();
+            FXWorker<Object> handler = FXWorker.instance();
             handler.
                     supplyOnExecutorThread(() -> new Integer(3)).
                     consumeOnExecutorThread((intVal) -> Assert.assertTrue(intVal.equals(new Integer(3)))).
@@ -305,7 +305,7 @@ public class FXWorkerTest extends ApplicationTest {
     public void testExecuteOnWorkerThread2() throws InterruptedException {
         CountDownLatch latch = new CountDownLatch(1);
         Runnable r = () -> {
-            FXWorker<Object> handler = FXWorker.getInstance();
+            FXWorker<Object> handler = FXWorker.instance();
             handler.
                     supplyOnExecutorThread(() -> new Integer(3)).
                     consumeOnExecutorThread((intVal) -> Assert.assertTrue(intVal.equals(new Integer(3)))).
@@ -324,7 +324,7 @@ public class FXWorkerTest extends ApplicationTest {
 
     @Test
     public void testTypedExecuteOnWorkerThread3() throws InterruptedException {
-        FXWorker<?> handler = FXWorker.getInstance();
+        FXWorker<?> handler = FXWorker.instance();
         CountDownLatch latch5 = new CountDownLatch(1);
         Runnable r = () -> {
             handler.supplyOnExecutorThread(() -> {
@@ -376,7 +376,7 @@ public class FXWorkerTest extends ApplicationTest {
 
     @Test
     public void testExecuteTypedFunctionOnWorkerThread() throws InterruptedException {
-        FXWorker<?> handler = FXWorker.getInstance();
+        FXWorker<?> handler = FXWorker.instance();
         CountDownLatch latch5 = new CountDownLatch(1);
         Runnable r = () -> {
             handler.supplyOnExecutorThread(() -> {
@@ -446,7 +446,7 @@ public class FXWorkerTest extends ApplicationTest {
 
     @Test
     public void testMutipleConsumerChain() throws InterruptedException {
-        FXWorker<?> handler = FXWorker.getInstance();
+        FXWorker<?> handler = FXWorker.instance();
         System.err.println("THREAD: " + Thread.currentThread());
         CountDownLatch latch1 = new CountDownLatch(1);
 
