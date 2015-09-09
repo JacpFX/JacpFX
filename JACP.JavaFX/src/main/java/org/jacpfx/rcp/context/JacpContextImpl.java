@@ -376,7 +376,7 @@ public class JacpContextImpl implements Context,InternalContext {
      */
     @Override
     public FXWorker<?> worker() {
-        return FXWorker.getInstance();
+        return FXWorker.instance();
     }
 
     /**

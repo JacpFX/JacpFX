@@ -36,9 +36,14 @@ import java.util.stream.Stream;
  */
 class CommonUtil {
 
+    private CommonUtil() {
+
+    }
+
 
     /**
      * Returns a stream of strings from a string array
+     *
      * @param ids
      * @return
      */

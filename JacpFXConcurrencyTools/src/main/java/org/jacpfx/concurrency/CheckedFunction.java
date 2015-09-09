@@ -25,6 +25,8 @@
 
 package org.jacpfx.concurrency;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * Created by Andy Moncsek on 03.09.15.
  */
@@ -38,5 +40,5 @@ public interface CheckedFunction<T, R> {
      * @param t the function argument
      * @return the function result
      */
-    R apply(T t) throws Exception;
+    R apply(T t) throws ExecutionException;
 }
