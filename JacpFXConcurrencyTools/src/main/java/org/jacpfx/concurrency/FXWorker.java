@@ -26,9 +26,7 @@
 package org.jacpfx.concurrency;
 
 import javafx.application.Platform;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.ReadOnlyDoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +50,7 @@ public final class FXWorker<T> {
     public static final AtomicBoolean APPLICATION_RUNNING = new AtomicBoolean(true);
     private final static ExecutorService EXECUTOR = Executors.newCachedThreadPool();
     private final DoubleProperty progress;
+    private final StringProperty message;
 
 
     private final List<ExecutionStep> steps;
@@ -60,6 +59,7 @@ public final class FXWorker<T> {
     private FXWorker() {
         steps = new ArrayList<>();
         progress = new SimpleDoubleProperty(this, "progress", -1);
+        message = new SimpleStringProperty(this, "message", "");
     }
 
     /**
@@ -67,9 +67,10 @@ public final class FXWorker<T> {
      *
      * @param steps, all executen step
      */
-    private FXWorker(final List<ExecutionStep> steps, final DoubleProperty progress) {
+    private FXWorker(final List<ExecutionStep> steps, final DoubleProperty progress, final StringProperty message) {
         this.steps = steps;
         this.progress = progress;
+        this.message = message;
     }
 
 
@@ -114,13 +115,13 @@ public final class FXWorker<T> {
             // TODO create builder
             steps.set(steps.size() - 1, new ExecutionStep(executionStep.getFunction(), executionStep.getType(), executionStep.getFeature(), fnException, executionStep.getPos(), executionStep.getAmount()));
         }
-        return new FXWorker<>(steps, progress);
+        return new FXWorker<>(steps, progress, message);
 
     }
 
     public final <T> FXWorker<T> retry(final int amount) {
         // TODO implement
-        return new FXWorker<>(steps, progress);
+        return new FXWorker<>(steps, progress, message);
     }
 
     /**
@@ -181,7 +182,7 @@ public final class FXWorker<T> {
      * @param r the supplied runnable will be invoked on fx application thread when the chain has finished
      */
     public final void execute(final Runnable r) {
-        // TODO handle exception in execute
+        // TODO handle exception in execute method with speciffic error function
         executeChain().thenRun(() -> {
             try {
                 executeOnFXThread(r);
@@ -242,6 +243,7 @@ public final class FXWorker<T> {
 
     private void updateProgress(final ExecutionStep step) {
         Platform.runLater(() -> {
+            // TODO check if progress was updated manually
             if (step.getAmount() == step.getPos()) {
                 progress.set(1);
             } else {
@@ -281,7 +283,7 @@ public final class FXWorker<T> {
 
 
     private <V> FXWorker<V> addSupplier(final Supplier<V> supplier, final ExecutionType type) {
-        return addFunction((e) -> {
+        return addFunction((value) -> {
                     switch (type) {
                         case POOL:
                             return supplier.get();
@@ -297,13 +299,13 @@ public final class FXWorker<T> {
 
 
     private FXWorker<Void> addConsumer(final Consumer<T> consumer, final ExecutionType type) {
-        return addFunction((CheckedFunction<T, Void>) (e) -> {
+        return addFunction((CheckedFunction<T, Void>) (value) -> {
             switch (type) {
                 case POOL:
-                    consumer.accept(e);
+                    consumer.accept(value);
                     break;
                 case FX_THREAD:
-                    invokeOnFXThread(consumer, e);
+                    invokeOnFXThread(consumer, value);
                     break;
             }
             return null;
@@ -311,12 +313,12 @@ public final class FXWorker<T> {
     }
 
     private <V> FXWorker<V> addUserFunction(final Function<T, V> function, final ExecutionType type) {
-        return addFunction((e) -> {
+        return addFunction((value) -> {
             switch (type) {
                 case POOL:
-                    return function.apply(e);
+                    return function.apply(value);
                 case FX_THREAD:
-                    return invokeOnFXThread(function, e);
+                    return invokeOnFXThread(function, value);
             }
             return null;
         }, type);
@@ -330,7 +332,7 @@ public final class FXWorker<T> {
 
     private <V> FXWorker<V> addStepp(final ExecutionStep<T, V> stepp) {
         steps.add(stepp);
-        return new FXWorker<>(steps, progress);
+        return new FXWorker<>(steps, progress, message);
     }
 
 
@@ -342,19 +344,19 @@ public final class FXWorker<T> {
         }
     }
 
-    private void invokeOnFXThread(final Consumer<T> consumer, final T e) throws ExecutionException {
+    private void invokeOnFXThread(final Consumer<T> consumer, final T value) throws ExecutionException {
         if (isFXThread()) {
-            consumer.accept(e);
+            consumer.accept(value);
         } else {
-            invokeOnApplicationThread(consumer, e);
+            invokeOnApplicationThread(consumer, value);
         }
     }
 
-    private <V> V invokeOnFXThread(final Function<T, V> function, final T e) throws ExecutionException {
+    private <V> V invokeOnFXThread(final Function<T, V> function, final T value) throws ExecutionException {
         if (isFXThread()) {
-            return function.apply(e);
+            return function.apply(value);
         } else {
-            return invokeOnApplicationThread(function, e);
+            return invokeOnApplicationThread(function, value);
         }
     }
 
@@ -368,18 +370,19 @@ public final class FXWorker<T> {
         return resultRef.get();
     }
 
-    private <V> V invokeOnApplicationThread(final Function<T, V> function, final T e) throws ExecutionException {
+    private <V> V invokeOnApplicationThread(final Function<T, V> function, final T value) throws ExecutionException {
         final AtomicReference<V> resultRef = new AtomicReference<>();
-        executeOnFXThread(() -> resultRef.set(function.apply(e)));
+        executeOnFXThread(() -> resultRef.set(function.apply(value)));
         return resultRef.get();
     }
 
 
-    private void invokeOnApplicationThread(final Consumer<T> consumer, final T e) throws ExecutionException {
-        executeOnFXThread(() -> consumer.accept(e));
+    private void invokeOnApplicationThread(final Consumer<T> consumer, final T value) throws ExecutionException {
+        executeOnFXThread(() -> consumer.accept(value));
     }
 
     private void executeOnFXThread(final Runnable r) throws ExecutionException {
+        // TODO check if already running on FX application thread
         final Thread t = Thread.currentThread();
         try {
             invokeOnFXThreadAndWait(r);
@@ -395,6 +398,7 @@ public final class FXWorker<T> {
      * @param waitTime
      */
     public static void updateMaxWaitTime(Long waitTime) {
+        // TODO make it configureable for each step!!
         WAIT.set(waitTime);
     }
 
@@ -453,6 +457,24 @@ public final class FXWorker<T> {
     public final ReadOnlyDoubleProperty progressProperty() {
         checkThread();
         return progress;
+    }
+
+    public final void updateProgress(double progressValue) {
+        checkThread();
+        progress.set(progressValue);
+    }
+
+    public final String getMessage() {
+        return message.get();
+    }
+
+    public final ReadOnlyStringProperty messageProperty() {
+        return message;
+    }
+
+    public final void updateMessage(String messageValue) {
+        checkThread();
+        message.set(messageValue);
     }
 
     void checkThread() {
