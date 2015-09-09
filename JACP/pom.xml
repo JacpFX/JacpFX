@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.jacpfx</groupId>
     <artifactId>jacpfx-parent</artifactId>
-    <version>2.1-RC1</version>
+    <version>2.1-RC2</version>
     <packaging>pom</packaging>
     <name>jacpfx Project</name>
     <url>https://github.com/JacpFX/JacpFX</url>
@@ -153,7 +153,7 @@
                     <artifactId>maven-gpg-plugin</artifactId>
                     <version>1.4</version>
                     <configuration>
-                        <skip>true</skip>
+                        <skip>false</skip>
                     </configuration>
                 </plugin>
             </plugins>
