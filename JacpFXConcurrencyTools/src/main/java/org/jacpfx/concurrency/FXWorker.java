@@ -181,8 +181,8 @@ public final class FXWorker<T> {
     /**
      * the terminal execute method which starts the execution chain
      */
-    public final void execute() {
-        execute(() -> {
+    public final FXWorker<?> execute() {
+        return execute(() -> {
         });
 
     }
@@ -192,7 +192,7 @@ public final class FXWorker<T> {
      *
      * @param r the supplied runnable will be invoked on fx application thread when the chain has finished
      */
-    public final void execute(final Runnable r) {
+    public final FXWorker<?> execute(final Runnable r) {
         // TODO handle exception in execute method with speciffic error function
         executeChain().thenRun(() -> {
             try {
@@ -203,10 +203,10 @@ public final class FXWorker<T> {
         });
         cancel.addListener((observable, oldValue, newValue) -> {
             if (newValue) {
-               // TODO update message
+                // TODO update message
             }
         });
-
+        return this;
     }
 
     /**
@@ -214,7 +214,7 @@ public final class FXWorker<T> {
      *
      * @param r the supplied consumer will be invoked on fx application thread when the chain has finished, the input of the consumer is the last output of your execution chain
      */
-    public final void execute(final Consumer<T> r) {
+    public final FXWorker<?> execute(final Consumer<T> r) {
         executeChain().thenAccept((value) -> {
             try {
                 executeOnFXThread(() -> r.accept(value));
@@ -227,6 +227,8 @@ public final class FXWorker<T> {
                 // TODO update message
             }
         });
+
+        return this;
     }
 
     private CompletableFuture<T> executeChain() {
