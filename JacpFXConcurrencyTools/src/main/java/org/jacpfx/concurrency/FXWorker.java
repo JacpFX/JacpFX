@@ -48,9 +48,10 @@ public final class FXWorker<T> {
 
     public static final AtomicLong WAIT = new AtomicLong(3500L);
     public static final AtomicBoolean APPLICATION_RUNNING = new AtomicBoolean(true);
-    private final static ExecutorService EXECUTOR = Executors.newCachedThreadPool();
+    private final static ExecutorService EXECUTOR = Executors.newWorkStealingPool();
     private final DoubleProperty progress;
     private final StringProperty message;
+    private final BooleanProperty cancel;
 
 
     private final List<ExecutionStep> steps;
@@ -60,17 +61,20 @@ public final class FXWorker<T> {
         steps = new ArrayList<>();
         progress = new SimpleDoubleProperty(this, "progress", -1);
         message = new SimpleStringProperty(this, "message", "");
+        cancel = new SimpleBooleanProperty(this, "cancel", false);
     }
 
     /**
      * internal constructor for builder pattern
      *
      * @param steps, all executen step
+     * @param cancel
      */
-    private FXWorker(final List<ExecutionStep> steps, final DoubleProperty progress, final StringProperty message) {
+    private FXWorker(final List<ExecutionStep> steps, final DoubleProperty progress, final StringProperty message, final BooleanProperty cancel) {
         this.steps = steps;
         this.progress = progress;
         this.message = message;
+        this.cancel = cancel;
     }
 
 
@@ -115,13 +119,13 @@ public final class FXWorker<T> {
             // TODO create builder
             steps.set(steps.size() - 1, new ExecutionStep(executionStep.getFunction(), executionStep.getType(), executionStep.getFeature(), fnException, executionStep.getPos(), executionStep.getAmount()));
         }
-        return new FXWorker<>(steps, progress, message);
+        return new FXWorker<>(steps, progress, message, cancel);
 
     }
 
     public final <T> FXWorker<T> retry(final int amount) {
         // TODO implement
-        return new FXWorker<>(steps, progress, message);
+        return new FXWorker<>(steps, progress, message, cancel);
     }
 
     /**
@@ -168,6 +172,13 @@ public final class FXWorker<T> {
     }
 
     /**
+     * Cancel the current execution
+     */
+    public void cancel() {
+        cancel.setValue(true);
+    }
+
+    /**
      * the terminal execute method which starts the execution chain
      */
     public final void execute() {
@@ -190,6 +201,11 @@ public final class FXWorker<T> {
                 e.printStackTrace();
             }
         });
+        cancel.addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+               // TODO update message
+            }
+        });
 
     }
 
@@ -204,6 +220,11 @@ public final class FXWorker<T> {
                 executeOnFXThread(() -> r.accept(value));
             } catch (ExecutionException e) {
                 e.printStackTrace();
+            }
+        });
+        cancel.addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                // TODO update message
             }
         });
     }
@@ -231,6 +252,7 @@ public final class FXWorker<T> {
     }
 
     private Object applyFunction(final Object val, final ExecutionStep step) {
+        if (cancel.get()) return null;
         try {
             return step.getFunction().apply(val);
         } catch (Exception e) {
@@ -332,7 +354,7 @@ public final class FXWorker<T> {
 
     private <V> FXWorker<V> addStepp(final ExecutionStep<T, V> stepp) {
         steps.add(stepp);
-        return new FXWorker<>(steps, progress, message);
+        return new FXWorker<>(steps, progress, message, cancel);
     }
 
 
@@ -383,6 +405,7 @@ public final class FXWorker<T> {
 
     private void executeOnFXThread(final Runnable r) throws ExecutionException {
         // TODO check if already running on FX application thread
+        if (cancel.get()) return;
         final Thread t = Thread.currentThread();
         try {
             invokeOnFXThreadAndWait(r);
