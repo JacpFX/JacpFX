@@ -271,9 +271,16 @@ public final class FXWorker<T> {
             if (step.getAmount() == step.getPos()) {
                 progress.set(1);
             } else {
-                progress.set(step.getPos() / step.getAmount());
+                if (!isProgressManuallyUpdated(step)) {
+                    progress.set(step.getPos() / step.getAmount());
+                }
+
             }
         });
+    }
+
+    private boolean isProgressManuallyUpdated(ExecutionStep step) {
+        return step.getPos() > 1 && ((step.getPos() - 1) / step.getAmount()) != progress.get();
     }
 
     private boolean handleExceptionOnStepExecution(final ExecutionStep step, final Exception e) {
@@ -484,9 +491,13 @@ public final class FXWorker<T> {
         return progress;
     }
 
-    public final void updateProgress(double progressValue) {
-        checkThread();
-        progress.set(progressValue);
+    public final void updateProgress(final double progressValue) {
+        if (isFXThread()) {
+            progress.set(progressValue);
+        } else {
+            Platform.runLater(() -> progress.set(progressValue));
+        }
+
     }
 
     public final String getMessage() {
@@ -497,9 +508,13 @@ public final class FXWorker<T> {
         return message;
     }
 
-    public final void updateMessage(String messageValue) {
-        checkThread();
-        message.set(messageValue);
+    public final void updateMessage(final String messageValue) {
+
+        if (isFXThread()) {
+            message.set(messageValue);
+        } else {
+            Platform.runLater(() -> message.set(messageValue));
+        }
     }
 
     void checkThread() {
