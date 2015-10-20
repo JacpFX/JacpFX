@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>org.jacpfx</groupId>
 		<artifactId>jacpfx-parent</artifactId>
-        <version>3.0-RC1</version>
+        <version>3.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>jacpfx.JavaFXControls</artifactId>
 	<packaging>jar</packaging>

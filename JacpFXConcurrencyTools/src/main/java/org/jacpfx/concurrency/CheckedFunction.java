@@ -38,6 +38,7 @@ public interface CheckedFunction<T, R> {
      * Applies this function to the given argument.
      *
      * @param t the function argument
+     * @throws ExecutionException the Exception while runtime
      * @return the function result
      */
     R apply(T t) throws ExecutionException;

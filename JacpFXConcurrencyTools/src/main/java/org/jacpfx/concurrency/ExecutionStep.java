@@ -54,20 +54,20 @@ public class ExecutionStep<V, T> {
         this(function,type,feature,null,pos,amount);
     }
 
-    public ExecutionStep(final CheckedFunction<V, T> function, final ExecutionType type, CompletableFuture<T> feature,final Function<Throwable, T> fnException) {
+    public ExecutionStep(final CheckedFunction<V, T> function, final ExecutionType type, CompletableFuture<T> feature) {
         this(function,type,feature,null,0,0);
     }
-    public ExecutionStep(final CheckedFunction<V, T> function, final ExecutionType type, CompletableFuture<T> feature) {
-        this(function,type,feature,null);
+
+    public ExecutionStep(final CheckedFunction<V, T> function, final ExecutionType type, CompletableFuture<T> feature,final Function<Throwable, T> fnException) {
+        this(function,type,feature,fnException,0,0);
     }
+
 
     public ExecutionStep(final CheckedFunction<V, T> function, final ExecutionType type) {
        this(function,type,null,null);
     }
 
-    public ExecutionStep(final CheckedFunction<V, T> function, final ExecutionType type,final Function<Throwable,  T> fnException) {
-        this(function,type,null,fnException);
-    }
+
 
 
     /**

@@ -48,6 +48,7 @@ public final class FXWorker<T> {
 
     public static final AtomicLong WAIT = new AtomicLong(3500L);
     public static final AtomicBoolean APPLICATION_RUNNING = new AtomicBoolean(true);
+    public final AtomicBoolean PROGRESS_DIRTY = new AtomicBoolean(false);
     private final static ExecutorService EXECUTOR = Executors.newWorkStealingPool();
     private final DoubleProperty progress;
     private final StringProperty message;
@@ -180,6 +181,8 @@ public final class FXWorker<T> {
 
     /**
      * the terminal execute method which starts the execution chain
+     *
+     * @return {@link org.jacpfx.concurrency.FXWorker}
      */
     public final FXWorker<?> execute() {
         return execute(() -> {
@@ -191,6 +194,7 @@ public final class FXWorker<T> {
      * the terminal execute method which starts the execution chain.
      *
      * @param r the supplied runnable will be invoked on fx application thread when the chain has finished
+     * @return {@link org.jacpfx.concurrency.FXWorker}
      */
     public final FXWorker<?> execute(final Runnable r) {
         // TODO handle exception in execute method with speciffic error function
@@ -213,6 +217,7 @@ public final class FXWorker<T> {
      * the terminal execute method which starts the execution chain.
      *
      * @param r the supplied consumer will be invoked on fx application thread when the chain has finished, the input of the consumer is the last output of your execution chain
+     * @return {@link org.jacpfx.concurrency.FXWorker}
      */
     public final FXWorker<?> execute(final Consumer<T> r) {
         executeChain().thenAccept((value) -> {
@@ -232,6 +237,7 @@ public final class FXWorker<T> {
     }
 
     private CompletableFuture<T> executeChain() {
+        PROGRESS_DIRTY.set(false);
         final int amount = steps.size();
         final ExecutionStep lastStep = steps.stream().reduce(null, (a, b) -> {
             if (a == null)
@@ -245,42 +251,78 @@ public final class FXWorker<T> {
     private ExecutionStep getExecutionStep(final ExecutionStep step, final CompletableFuture<T> future, final int pos, final int amount) {
         switch (step.getType()) {
             case FX_THREAD:
-                return new ExecutionStep(step.getFunction(), step.getType(), future.thenApply((val) -> applyFunction(val, step)), pos, amount);
+                return new ExecutionStep(step.getFunction(), step.getType(), future.thenApply((val) -> applyFunction(val, step, pos, amount)), pos, amount);
             case POOL:
-                return new ExecutionStep(step.getFunction(), step.getType(), future.thenApplyAsync((val) -> applyFunction(val, step)));
+                return new ExecutionStep(step.getFunction(), step.getType(), future.thenApplyAsync((val) -> applyFunction(val, step, pos, amount)), pos, amount);
             default:
-                return new ExecutionStep(step.getFunction(), step.getType(), future);
+                return new ExecutionStep(step.getFunction(), step.getType(), future, pos, amount);
         }
     }
 
-    private Object applyFunction(final Object val, final ExecutionStep step) {
+    private Object applyFunction(final Object val, final ExecutionStep step, int pos, final int amount) {
         if (cancel.get()) return null;
         try {
             return step.getFunction().apply(val);
         } catch (Exception e) {
             if (handleExceptionOnStepExecution(step, e)) return invokeExceptionHandler(step, e);
         } finally {
-            updateProgress(step);
+            _updateProgress((double) pos, (double) amount);
         }
         return null;
     }
 
-    private void updateProgress(final ExecutionStep step) {
+    /**
+     * update progress of execution
+     * @param workDone the current amount of work done
+     * @param max the total amount
+     */
+    public void updateProgress(double workDone, double max) {
+
+        // Adjust Infinity / NaN to be -1 for both workDone and max.
+        if (Double.isInfinite(workDone) || Double.isNaN(workDone)) {
+            workDone = -1;
+        }
+
+        if (Double.isInfinite(max) || Double.isNaN(max)) {
+            max = -1;
+        }
+
+        if (workDone < 0) {
+            workDone = -1;
+        }
+
+        if (max < 0) {
+            max = -1;
+        }
+
+        // Clamp the workDone if necessary so as not to exceed max
+        if (workDone > max) {
+            workDone = max;
+        }
+        PROGRESS_DIRTY.set(true);
+        if (Platform.isFxApplicationThread()) {
+            progress.set(workDone / max);
+        } else {
+            final double wd = workDone;
+            final double mx = max;
+            Platform.runLater(() -> progress.set(wd / mx));
+        }
+    }
+
+    private void _updateProgress(final double pos, final double amount) {
         Platform.runLater(() -> {
-            // TODO check if progress was updated manually
-            if (step.getAmount() == step.getPos()) {
+            if (pos == amount) {
                 progress.set(1);
             } else {
-                if (!isProgressManuallyUpdated(step)) {
-                    progress.set(step.getPos() / step.getAmount());
+                if (!PROGRESS_DIRTY.get()) {
+                    progress.set(pos / amount);
                 }
-
             }
         });
     }
 
-    private boolean isProgressManuallyUpdated(ExecutionStep step) {
-        return step.getPos() > 1 && ((step.getPos() - 1) / step.getAmount()) != progress.get();
+    private boolean isProgressManuallyUpdated(int pos, final int amount) {
+        return pos > 1 && ((pos - 1) / amount) != progress.get();
     }
 
     private boolean handleExceptionOnStepExecution(final ExecutionStep step, final Exception e) {
@@ -427,7 +469,7 @@ public final class FXWorker<T> {
     /**
      * Update the max wait time a process can run on FXThread
      *
-     * @param waitTime
+     * @param waitTime the wait-time value
      */
     public static void updateMaxWaitTime(Long waitTime) {
         // TODO make it configureable for each step!!
@@ -492,6 +534,7 @@ public final class FXWorker<T> {
     }
 
     public final void updateProgress(final double progressValue) {
+        PROGRESS_DIRTY.set(true);
         if (isFXThread()) {
             progress.set(progressValue);
         } else {
