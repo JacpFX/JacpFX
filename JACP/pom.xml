@@ -74,6 +74,7 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.9</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -153,7 +154,7 @@
                     <artifactId>maven-gpg-plugin</artifactId>
                     <version>1.4</version>
                     <configuration>
-                        <skip>false</skip>
+                        <skip>true</skip>
                     </configuration>
                 </plugin>
             </plugins>
