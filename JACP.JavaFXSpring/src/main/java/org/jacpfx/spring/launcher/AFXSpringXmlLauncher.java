@@ -51,13 +51,12 @@ public abstract class AFXSpringXmlLauncher extends ASpringLauncher {
     @Override
     public void start(Stage stage) throws Exception {
         initExceptionHandler();
-        scanPackegesAndInitRegestry();
         final Launcher<ClassPathXmlApplicationContext> launcher = new SpringXmlConfigLauncher(getXmlConfig());
+        scanPackegesAndInitRegestry();
         final Class<? extends FXWorkbench> workbenchHandler = getWorkbenchClass();
         if (workbenchHandler == null) throw new ComponentNotFoundException("no FXWorkbench class defined");
         initWorkbench(stage, launcher, workbenchHandler);
     }
-
 
 
     private void initWorkbench(final Stage stage, final Launcher<ClassPathXmlApplicationContext> launcher, final Class<? extends FXWorkbench> workbenchHandler) {
@@ -75,7 +74,7 @@ public abstract class AFXSpringXmlLauncher extends ASpringLauncher {
         final String id = annotation.id();
         if (id.isEmpty()) throw new AttributeNotFoundException("no workbench id found for: " + workbenchHandler);
         final FXWorkbench handler = launcher.registerAndGetBean(workbenchHandler, id, Scope.SINGLETON);
-        return new EmbeddedFXWorkbench(handler,getWorkbenchDecorator());
+        return new EmbeddedFXWorkbench(handler, getWorkbenchDecorator());
     }
 
     public abstract String getXmlConfig();
