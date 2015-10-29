@@ -250,7 +250,6 @@ public class PerspectiveHandlerImpl implements
             final Perspective<Node, EventHandler<Event>, Event, Object> previousePerspective = previousePerspectiveId != null && !currentPerspectiveId.equals(previousePerspectiveId) ?
                     PerspectiveRegistry.findPerspectiveById(previousePerspectiveId != null ? previousePerspectiveId : "") : null;
 
-            FXUtil.performResourceInjection(perspective.getPerspective(), context);
             hidePreviousPerspective(previousePerspective);
             handlePerspectiveInitialization(perspective);
             handlePerspective(message, perspective);
@@ -396,12 +395,15 @@ public class PerspectiveHandlerImpl implements
     }
 
     private void handlePerspectiveInitialization(final Perspective<Node, EventHandler<Event>, Event, Object> perspective) {
-        final InternalContext context = InternalContext.class.cast(perspective.getContext());
-        final FXComponentLayout layout = initFXComponentLayout(context, perspective.getContext().getId());
+        final JacpContext<EventHandler<Event>, Object> context = perspective.getContext();
+        final InternalContext internalContext = InternalContext.class.cast(context);
+        final FXComponentLayout layout = initFXComponentLayout(internalContext, perspective.getContext().getId());
         handlePerspectiveLayout(perspective);
+        FXUtil.performResourceInjection(perspective.getPerspective(), context);
         postConstruct(perspective, layout, AFXPerspective.class.cast(perspective));
         perspective.postInit(new ComponentHandlerImpl(this.launcher, perspective.getIPerspectiveLayout(), perspective
                 .getComponentDelegateQueue()));
+
 
     }
 
