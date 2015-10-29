@@ -209,7 +209,7 @@ public class ClassFinder {
 
     private Class<?> loadClass(String file) {
         try {
-            return ClassLoader.getSystemClassLoader().loadClass(file);
+            return this.getClass().getClassLoader().loadClass(file);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
