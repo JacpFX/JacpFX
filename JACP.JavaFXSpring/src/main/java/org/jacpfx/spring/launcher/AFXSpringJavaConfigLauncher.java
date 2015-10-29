@@ -50,8 +50,8 @@ public abstract class AFXSpringJavaConfigLauncher extends ASpringLauncher {
     @Override
     public void start(Stage stage) throws Exception {
         initExceptionHandler();
-        scanPackegesAndInitRegestry();
         final Launcher<AnnotationConfigApplicationContext> launcher = new SpringJavaConfigLauncher(getConfigClasses());
+        scanPackegesAndInitRegestry();
         final Class<? extends FXWorkbench> workbenchHandler = getWorkbenchClass();
         if (workbenchHandler == null) throw new ComponentNotFoundException("no FXWorkbench class defined");
         initWorkbench(stage, launcher, workbenchHandler);
