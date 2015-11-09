@@ -104,15 +104,12 @@ public class PerspectiveHandlerImpl implements
     }
 
     /**
-     * check if switch from active to inactive perspective
+     * check if switch from active to inactive perspective, hide all buttons of the previous perspective
      *
      * @param previousePerspective
      */
-    private static void updateToolbarButtons(final Perspective<Node, EventHandler<Event>, Event, Object> previousePerspective) {
-        if (previousePerspective != null) {
-            // hide all buttons of the previous perspective
-            GlobalMediator.getInstance().handleToolBarButtons(previousePerspective, false);
-        }
+    private static void updateToolbarButtons(final Perspective<Node, EventHandler<Event>, Event, Object> previousePerspective, boolean visible) {
+        GlobalMediator.getInstance().handleToolBarButtons(previousePerspective, visible);
     }
 
     private static void bringRootToFront(final int index, final ObservableList<Node> children, final Node root) {
@@ -254,10 +251,10 @@ public class PerspectiveHandlerImpl implements
             handlePerspectiveInitialization(perspective);
             handlePerspective(message, perspective);
             initPerspectiveUI(perspective.getIPerspectiveLayout());
-            updateToolbarButtons(previousePerspective);
+            updateToolbarButtons(previousePerspective, false);
             this.log("3.4.4: perspective init subcomponents");
             perspective.initComponents(message);
-            GlobalMediator.getInstance().handleToolBarButtons(perspective, true);
+            updateToolbarButtons(previousePerspective, true);
         } catch (final Exception e) {
             t.getUncaughtExceptionHandler().uncaughtException(t, e);
         }
