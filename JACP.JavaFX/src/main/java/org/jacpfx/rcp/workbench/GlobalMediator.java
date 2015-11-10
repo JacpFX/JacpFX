@@ -38,7 +38,6 @@ import org.jacpfx.api.util.ToolbarPosition;
 import org.jacpfx.rcp.components.toolBar.JACPToolBar;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
 /**
@@ -138,9 +137,12 @@ public class GlobalMediator {
     }
 
     public int countVisibleButtons() {
-        final AtomicInteger count = new AtomicInteger();
-        this.toolbars.values().forEach(toolbar -> count.getAndAdd(toolbar.countVisibleButtons()));
-        return count.get();
+        final Optional<Integer> reduce = this.toolbars.
+                values().
+                stream().
+                map(toolbar -> toolbar.countVisibleButtons()).
+                reduce((a, b) -> a + b);
+        return reduce.get().intValue();
     }
 
     public String getWorkbenchId() {
