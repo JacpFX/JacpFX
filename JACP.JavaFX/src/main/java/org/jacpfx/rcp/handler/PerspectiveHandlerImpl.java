@@ -254,7 +254,7 @@ public class PerspectiveHandlerImpl implements
             updateToolbarButtons(previousePerspective, false);
             this.log("3.4.4: perspective init subcomponents");
             perspective.initComponents(message);
-            updateToolbarButtons(previousePerspective, true);
+            updateToolbarButtons(perspective, true);
         } catch (final Exception e) {
             t.getUncaughtExceptionHandler().uncaughtException(t, e);
         }
