@@ -39,9 +39,9 @@ public class ExecutionStep<V, T> {
     private final ExecutionType type;
     private final CompletableFuture<T> feature;
     private final Function<Throwable, T> fnException;
-    private int pos, amount;
+    private double pos, amount;
 
-    public ExecutionStep(final CheckedFunction<V, T> function, final ExecutionType type, CompletableFuture<T> feature,final Function<Throwable, T> fnException, int pos, int amount) {
+    public ExecutionStep(final CheckedFunction<V, T> function, final ExecutionType type, CompletableFuture<T> feature,final Function<Throwable, T> fnException, double pos, double amount) {
         this.function = function;
         this.type = type;
         this.feature = feature;
@@ -50,7 +50,7 @@ public class ExecutionStep<V, T> {
         this.amount = amount;
     }
 
-    public ExecutionStep(final CheckedFunction<V, T> function, final ExecutionType type, CompletableFuture<T> feature,int pos, int amount) {
+    public ExecutionStep(final CheckedFunction<V, T> function, final ExecutionType type, CompletableFuture<T> feature,double pos, double amount) {
         this(function,type,feature,null,pos,amount);
     }
 
@@ -107,7 +107,7 @@ public class ExecutionStep<V, T> {
      * The current position in execution step list
      * @return the current position in list
      */
-    public int getPos() {
+    public double getPos() {
         return this.pos;
     }
 
@@ -115,7 +115,7 @@ public class ExecutionStep<V, T> {
      * Get the total amount of execution steps
      * @return the total amount
      */
-    public int getAmount() {
+    public double getAmount() {
         return this.amount;
     }
 }

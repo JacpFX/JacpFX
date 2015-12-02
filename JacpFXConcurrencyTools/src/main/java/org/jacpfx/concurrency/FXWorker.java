@@ -27,6 +27,7 @@ package org.jacpfx.concurrency;
 
 import javafx.application.Platform;
 import javafx.beans.property.*;
+import javafx.concurrent.Worker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +45,7 @@ import java.util.function.Supplier;
 /**
  * Created by Andy Moncsek on 01.09.15.
  */
-public final class FXWorker<T> {
+public final class FXWorker<T> implements Worker<T>{
 
     public static final AtomicLong WAIT = new AtomicLong(3500L);
     public static final AtomicBoolean APPLICATION_RUNNING = new AtomicBoolean(true);
@@ -53,6 +54,9 @@ public final class FXWorker<T> {
     private final DoubleProperty progress;
     private final StringProperty message;
     private final BooleanProperty cancel;
+    private final ObjectProperty value;
+    private final ObjectProperty<Worker.State> state;
+    private final ObjectProperty<Throwable> exception;
 
 
     private final List<ExecutionStep> steps;
@@ -63,6 +67,9 @@ public final class FXWorker<T> {
         progress = new SimpleDoubleProperty(this, "progress", -1);
         message = new SimpleStringProperty(this, "message", "");
         cancel = new SimpleBooleanProperty(this, "cancel", false);
+        value = new SimpleObjectProperty(this, "value");
+        state = new SimpleObjectProperty<>(this, "state", Worker.State.READY);
+        exception = new SimpleObjectProperty<>(this, "exception");
     }
 
     /**
@@ -71,11 +78,14 @@ public final class FXWorker<T> {
      * @param steps, all executen step
      * @param cancel
      */
-    private FXWorker(final List<ExecutionStep> steps, final DoubleProperty progress, final StringProperty message, final BooleanProperty cancel) {
+    private FXWorker(final List<ExecutionStep> steps, final DoubleProperty progress, final StringProperty message, final BooleanProperty cancel, final ObjectProperty value, final ObjectProperty<Worker.State> state, final ObjectProperty<Throwable> exception) {
         this.steps = steps;
         this.progress = progress;
         this.message = message;
         this.cancel = cancel;
+        this.value = value;
+        this.state = state;
+        this.exception = exception;
     }
 
 
@@ -120,13 +130,13 @@ public final class FXWorker<T> {
             // TODO create builder
             steps.set(steps.size() - 1, new ExecutionStep(executionStep.getFunction(), executionStep.getType(), executionStep.getFeature(), fnException, executionStep.getPos(), executionStep.getAmount()));
         }
-        return new FXWorker<>(steps, progress, message, cancel);
+        return new FXWorker<>(steps, progress, message, cancel, value, state, exception);
 
     }
 
     public final <T> FXWorker<T> retry(final int amount) {
         // TODO implement
-        return new FXWorker<>(steps, progress, message, cancel);
+        return new FXWorker<>(steps, progress, message, cancel, value, state, exception);
     }
 
     /**
@@ -175,8 +185,10 @@ public final class FXWorker<T> {
     /**
      * Cancel the current execution
      */
-    public void cancel() {
+    @Override public boolean cancel() {
+        // TODO check correct implementation (@see Service)
         cancel.setValue(true);
+        return true;
     }
 
     /**
@@ -238,7 +250,7 @@ public final class FXWorker<T> {
 
     private CompletableFuture<T> executeChain() {
         PROGRESS_DIRTY.set(false);
-        final int amount = steps.size();
+        final double amount = steps.size();
         final ExecutionStep lastStep = steps.stream().reduce(null, (a, b) -> {
             if (a == null)
                 return getExecutionStep(b, CompletableFuture.supplyAsync(() -> null, EXECUTOR), 1, amount);
@@ -248,7 +260,7 @@ public final class FXWorker<T> {
 
     }
 
-    private ExecutionStep getExecutionStep(final ExecutionStep step, final CompletableFuture<T> future, final int pos, final int amount) {
+    private ExecutionStep getExecutionStep(final ExecutionStep step, final CompletableFuture<T> future, final double pos, final double amount) {
         switch (step.getType()) {
             case FX_THREAD:
                 return new ExecutionStep(step.getFunction(), step.getType(), future.thenApply((val) -> applyFunction(val, step, pos, amount)), pos, amount);
@@ -259,55 +271,19 @@ public final class FXWorker<T> {
         }
     }
 
-    private Object applyFunction(final Object val, final ExecutionStep step, int pos, final int amount) {
+    private Object applyFunction(final Object val, final ExecutionStep step, double pos, final double amount) {
         if (cancel.get()) return null;
         try {
             return step.getFunction().apply(val);
         } catch (Exception e) {
             if (handleExceptionOnStepExecution(step, e)) return invokeExceptionHandler(step, e);
         } finally {
-            _updateProgress((double) pos, (double) amount);
+            _updateProgress(pos, amount);
         }
         return null;
     }
 
-    /**
-     * update progress of execution
-     * @param workDone the current amount of work done
-     * @param max the total amount
-     */
-    public void updateProgress(double workDone, double max) {
 
-        // Adjust Infinity / NaN to be -1 for both workDone and max.
-        if (Double.isInfinite(workDone) || Double.isNaN(workDone)) {
-            workDone = -1;
-        }
-
-        if (Double.isInfinite(max) || Double.isNaN(max)) {
-            max = -1;
-        }
-
-        if (workDone < 0) {
-            workDone = -1;
-        }
-
-        if (max < 0) {
-            max = -1;
-        }
-
-        // Clamp the workDone if necessary so as not to exceed max
-        if (workDone > max) {
-            workDone = max;
-        }
-        PROGRESS_DIRTY.set(true);
-        if (Platform.isFxApplicationThread()) {
-            progress.set(workDone / max);
-        } else {
-            final double wd = workDone;
-            final double mx = max;
-            Platform.runLater(() -> progress.set(wd / mx));
-        }
-    }
 
     private void _updateProgress(final double pos, final double amount) {
         Platform.runLater(() -> {
@@ -321,9 +297,7 @@ public final class FXWorker<T> {
         });
     }
 
-    private boolean isProgressManuallyUpdated(int pos, final int amount) {
-        return pos > 1 && ((pos - 1) / amount) != progress.get();
-    }
+
 
     private boolean handleExceptionOnStepExecution(final ExecutionStep step, final Exception e) {
         // Check XF_Thread when needed
@@ -405,16 +379,12 @@ public final class FXWorker<T> {
 
     private <V> FXWorker<V> addStepp(final ExecutionStep<T, V> stepp) {
         steps.add(stepp);
-        return new FXWorker<>(steps, progress, message, cancel);
+        return new FXWorker<>(steps, progress, message, cancel, value, state, exception);
     }
 
 
     private <V> V invokeOnFXThread(final Supplier<V> supplier) throws ExecutionException {
-        if (isFXThread()) {
-            return supplier.get();
-        } else {
-            return invokeOnApplicationThread(supplier);
-        }
+        return isFXThread() ? supplier.get() : invokeOnApplicationThread(supplier);
     }
 
     private void invokeOnFXThread(final Consumer<T> consumer, final T value) throws ExecutionException {
@@ -426,11 +396,7 @@ public final class FXWorker<T> {
     }
 
     private <V> V invokeOnFXThread(final Function<T, V> function, final T value) throws ExecutionException {
-        if (isFXThread()) {
-            return function.apply(value);
-        } else {
-            return invokeOnApplicationThread(function, value);
-        }
+        return isFXThread() ? function.apply(value) : invokeOnApplicationThread(function, value);
     }
 
     private static boolean isFXThread() {
@@ -523,6 +489,56 @@ public final class FXWorker<T> {
         }
     }
 
+    @Override
+    public State getState() {
+        return null;
+    }
+
+    @Override
+    public ReadOnlyObjectProperty<State> stateProperty() {
+        return null;
+    }
+
+    @Override
+    public T getValue() {
+        return null;
+    }
+
+    @Override
+    public ReadOnlyObjectProperty<T> valueProperty() {
+        return null;
+    }
+
+    @Override
+    public Throwable getException() {
+        return null;
+    }
+
+    @Override
+    public ReadOnlyObjectProperty<Throwable> exceptionProperty() {
+        return null;
+    }
+
+    @Override
+    public double getWorkDone() {
+        return 0;
+    }
+
+    @Override
+    public ReadOnlyDoubleProperty workDoneProperty() {
+        return null;
+    }
+
+    @Override
+    public double getTotalWork() {
+        return 0;
+    }
+
+    @Override
+    public ReadOnlyDoubleProperty totalWorkProperty() {
+        return null;
+    }
+
     public final double getProgress() {
         checkThread();
         return progress.get();
@@ -531,6 +547,16 @@ public final class FXWorker<T> {
     public final ReadOnlyDoubleProperty progressProperty() {
         checkThread();
         return progress;
+    }
+
+    @Override
+    public boolean isRunning() {
+        return false;
+    }
+
+    @Override
+    public ReadOnlyBooleanProperty runningProperty() {
+        return null;
     }
 
     public final void updateProgress(final double progressValue) {
@@ -549,6 +575,16 @@ public final class FXWorker<T> {
 
     public final ReadOnlyStringProperty messageProperty() {
         return message;
+    }
+
+    @Override
+    public String getTitle() {
+        return null;
+    }
+
+    @Override
+    public ReadOnlyStringProperty titleProperty() {
+        return null;
     }
 
     public final void updateMessage(final String messageValue) {

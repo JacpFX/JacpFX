@@ -65,7 +65,6 @@ public class FXWorkerTest extends ApplicationTest {
 
     @Test
     public void basicHandlerTest() throws InterruptedException {
-
         FXWorker handler = FXWorker.instance();
         System.err.println("THREAD: " + Thread.currentThread());
         CountDownLatch latch1 = new CountDownLatch(1);

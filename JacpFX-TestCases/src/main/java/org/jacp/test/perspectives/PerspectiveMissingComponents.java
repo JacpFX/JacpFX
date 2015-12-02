@@ -27,6 +27,7 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.api.annotations.lifecycle.OnShow;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
@@ -59,6 +60,10 @@ public class PerspectiveMissingComponents implements FXPerspective {
     @FXML
     private HBox content3;
 
+
+    @Resource
+    private ResourceBundle  resourceBundle;
+
     @Override
     public void handlePerspective(final Message<Event, Object> action,
                                   final PerspectiveLayout perspectiveLayout) {
@@ -81,6 +86,10 @@ public class PerspectiveMissingComponents implements FXPerspective {
 
     }
 
+    public ResourceBundle getResourceBundle() {
+        return resourceBundle;
+    }
+
     @OnShow
     public void onShow(final FXComponentLayout layout) {
 
@@ -94,7 +103,7 @@ public class PerspectiveMissingComponents implements FXPerspective {
      */
     public void onStartPerspective(final FXComponentLayout layout,
                                    final ResourceBundle resourceBundle) {
-
+        System.out.println(">>>>");
     }
 
     @PreDestroy
@@ -108,3 +117,4 @@ public class PerspectiveMissingComponents implements FXPerspective {
     }
 
 }
+

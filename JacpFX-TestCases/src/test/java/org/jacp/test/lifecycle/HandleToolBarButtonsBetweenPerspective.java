@@ -94,11 +94,12 @@ public class HandleToolBarButtonsBetweenPerspective extends TestFXJacpFXSpringLa
         PerspectiveTwoToolbarSwitchPerspectives.start.await();
         PerspectiveOneToolbarSwitchPerspectives.start.await();
         ComponentHandleToolBarBetweenPerspectives2.startLatch.await();
-        int waitingTime = 90;
+        int waitingTime = 100;
 
-        Perspective<Node, EventHandler<Event>, Event, Object> p = this.getPerspectiveById(perspectives, ComponentHandleToolBarBetweenPerspectives2.currentId);
+        Perspective<Node, EventHandler<Event>, Event, Object> p = this.getPerspectiveById(perspectives, PerspectiveTwoToolbarSwitchPerspectives.ID);
         assertNotNull(p);
-        Thread.sleep(waitingTime);
+
+
         // INITAL -> 6
         assertEquals(6, GlobalMediator.getInstance().countVisibleButtons());
         PerspectiveTwoToolbarSwitchPerspectives.switchLatch = new CountDownLatch(1);
