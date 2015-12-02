@@ -62,7 +62,7 @@ import static org.jacpfx.rcp.util.LayoutUtil.GridPaneUtil;
         components = {""},
         viewLocation = "/fxml/perspectiveOne.fxml",
         resourceBundleLocation = "bundles.languageBundle",
-        localeID = "en_US")
+        localeID = "en_US", active = true)
 public class PerspectiveTwoToolbarSwitchPerspectives extends HandleToolbarBase implements FXPerspective {
 
     // =================== CONSTANTS ===================
