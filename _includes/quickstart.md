@@ -28,10 +28,10 @@ To start a new JacpFX project you may use a simple Java archetype or one of the 
 The JacpFX quickstart archetype provides a simple JacpFX project with one <i>FXWorbench</i>, two <i>FXPerspective(s)</i> (FXML and JavaFX), two <i>FXComponent(s)</i> (FXML and JavaFX) and two <i>CallbackComponent(s)</i>.
 
 ### Requirements ###
-Since JacpFX 2, Java 8 and JavaFX 8 is prerequisite.
+Since JacpFX 2, Java 8 and JavaFX 8 (u66) is prerequisite.
 
 ### Create a project from simple quickstart archetype ###
-<pre>mvn archetype:generate  -DarchetypeGroupId=org.jacpfx  -DarchetypeArtifactId=JacpFX-simple-quickstart  -DarchetypeVersion=2.0.2</pre>
+<pre>mvn archetype:generate  -DarchetypeGroupId=org.jacpfx  -DarchetypeArtifactId=JacpFX-simple-quickstart  -DarchetypeVersion=2.1</pre>
 
 
 To build the project go to project root and type: <pre>mvn packge</pre> 
@@ -40,10 +40,6 @@ After the compilation and packaging is finished you may go to the target folder 
 <pre>cd target && java -jar project-name-app.jar</pre>
 
 <br/>
-
-### Create a project from empty quickstart archetype ###
-<pre>mvn archetype:generate  -DarchetypeGroupId=org.jacpfx  -DarchetypeArtifactId=JacpFX-empty-quickstart  -DarchetypeVersion=2.0.2</pre>
-This archetype creates the default project structure, an application launcher and a Spring configuration class.
 
 
 ## JacpFX from scratch ##
@@ -93,12 +89,23 @@ Add following JacpFX dependencies:
 </dependency>
 ```
 #### The JacpFX launcher ####
-The launcher project is responsible to create JacpFX component instances. Currently only a Spring launcher is available, so all JacpFX components are simple Spring beans, which means you may use any Spring functionality in you JacpFX application.
+The launcher project is responsible for the JacpFX-component instance creation. Currently a Spring- and a Simple- launcher is available, so all JacpFX-components are either simple Spring beans or simple POJOs. While the Spring launcher gives you access to the whole Spring universe, the Simple launcher provides a fast startup time.
 
 ```xml
 <dependency>
     <groupId>org.jacpfx</groupId>
     <artifactId>jacpfx.JavaFXSpring</artifactId>
+    <version>${jacp.version}</version>
+    <scope>compile</scope>
+</dependency>
+```
+
+or
+
+```xml
+<dependency>
+    <groupId>org.jacpfx</groupId>
+    <artifactId>jacpfx.JavaFXLauncher</artifactId>
     <version>${jacp.version}</version>
     <scope>compile</scope>
 </dependency>
@@ -113,6 +120,9 @@ Simply put the BasicConfig class in the config packe created before. A best prac
 ### The <i>ApplicationLauncher<i/> ###
 The <i>ApplicationLauncher</i> contains the main method, the reference to the <i>FXWorkbench</i> implementation, the Spring configuration file and the package names to scann for JacpFX components. Create an <i>ApplicationLauncher</i> class in the <i>main</i> package.
 <script src="https://gist.github.com/amoAHCP/85644f5c0aecb9f026e4.js"></script>
+
+Alternatively you can create a simple JacpFXLauncher without any Spring dependencies and capabilities:
+<script src="https://gist.github.com/amoAHCP/164e7bfe0057fc583e40.js"></script>
 
 ### The FXWorkbench ###
 The <i>FXWorkbench</i> is the „root node“ of your JacpFX application. A <i>FXWorkbench</i> creates an application window, defines references to <i>FXPerspective(s)</i> and contains some basic configurations like the initial window size, toolbar definitions and menu definition. Create a <i>JacpFXWorkbench</i> in the <i>workbench</i> package.
