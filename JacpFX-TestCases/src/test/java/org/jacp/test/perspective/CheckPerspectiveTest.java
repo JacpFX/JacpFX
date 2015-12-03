@@ -31,6 +31,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 import org.jacp.launcher.TestFXJacpFXSpringLauncher;
+import org.jacp.test.perspectives.PerspectiveMissingComponents;
 import org.jacp.test.workbench.WorkbenchCheckComponentsAndPerspectives;
 import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.context.JacpContext;
@@ -104,6 +105,10 @@ public class CheckPerspectiveTest extends TestFXJacpFXSpringLauncher {
             assertNotNull(context.getId());
             assertNotNull(context.getName());
             assertNotNull(context.getResourceBundle());
+            if(p instanceof PerspectiveMissingComponents) {
+                assertNotNull(PerspectiveMissingComponents.class.cast(p).getResourceBundle());
+                assertTrue(PerspectiveMissingComponents.class.cast(p).getResourceBundle() == context.getResourceBundle());   // must be the same instance
+            }
         }
     }
 

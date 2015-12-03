@@ -40,6 +40,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -67,7 +68,7 @@ public class WorkerUtil {
         final Lock lock = new ReentrantLock();
         final Condition condition = lock.newCondition();
         final AtomicBoolean conditionReady = new AtomicBoolean(false);
-        final ThrowableWrapper throwableWrapper = new ThrowableWrapper();
+        final AtomicReference<ThrowableWrapper> exchanger = new AtomicReference<>();
         lock.lock();
         try {
             Platform.runLater(() -> {
@@ -77,7 +78,7 @@ public class WorkerUtil {
                     if (ShutdownThreadsHandler.APPLICATION_RUNNING.get())
                         runnable.run();
                 } catch (Exception e) {
-                    throwableWrapper.t = e.getCause();
+                    exchanger.set(new ThrowableWrapper(e));
                 } finally {
                     conditionReady.set(true);
                     condition.signal();
@@ -91,7 +92,9 @@ public class WorkerUtil {
                     && ShutdownThreadsHandler.APPLICATION_RUNNING.get())
                 condition.await(ShutdownThreadsHandler.WAIT,
                         TimeUnit.MILLISECONDS);
-            if (throwableWrapper.t != null) {
+
+            final ThrowableWrapper throwableWrapper = exchanger.get();
+            if (throwableWrapper != null) {
                 throw new ExecutionException(throwableWrapper.t);
             }
         } finally {

@@ -191,8 +191,13 @@ public abstract class AFXWorkbench
                 peek(this::initActivePerspective).
                 filter(Perspective::isLast).
                 findFirst().
-                ifPresent(p -> GlobalMediator.getInstance().handleToolBarButtons(p, true));
-
+                ifPresent(p -> {
+                    activePerspectives.remove(p);
+                    GlobalMediator.getInstance().handleToolBarButtons(p, true);
+                    // hide local buttons from other perspectives
+                    activePerspectives.
+                            forEach(persp -> GlobalMediator.getInstance().handleToolBarButtons(persp, false));
+                });
 
     }
 

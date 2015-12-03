@@ -35,4 +35,8 @@ package org.jacpfx.rcp.util;
  */
 public class ThrowableWrapper {
     public Throwable t;
+
+    public ThrowableWrapper(Throwable t) {
+        this.t = t;
+    }
 }

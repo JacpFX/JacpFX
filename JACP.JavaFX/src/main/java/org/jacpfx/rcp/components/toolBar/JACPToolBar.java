@@ -48,7 +48,6 @@ import org.jacpfx.rcp.workbench.GlobalMediator;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static javafx.geometry.Orientation.HORIZONTAL;
 import static javafx.geometry.Orientation.VERTICAL;
@@ -655,13 +654,13 @@ public class JACPToolBar extends ToolBar implements ChangeListener<Orientation>,
     }
 
     public int countVisibleButtons() {
-        final AtomicInteger count = new AtomicInteger();
-        this.regionMap.values().forEach(regionList -> regionList.forEach(region -> {
-            if (region.isVisible()) {
-                count.incrementAndGet();
-            }
-        }));
-        return count.get();
+        final long visibleButtons = this.regionMap.
+                values().
+                stream().
+                flatMap(regionList -> regionList.stream()).
+                filter(Region::isVisible).
+                count();
+        return Math.toIntExact(visibleButtons);
     }
 
     private enum JACPToolBarPosition {
