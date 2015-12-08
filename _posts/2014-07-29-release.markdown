@@ -1,10 +1,10 @@
 ---
 layout: post
-title:  „JacpFX 2 release“
+title:  JacpFX 2 release
 date:   2014-07-29 21:27:27
 ---
 # JacpFX 2 release announcement #
-We are pleased to announced a new version of JacpFX. This version took quite a while to finish and brings a lot of changes and enhancements. 
+We are pleased to announced a new version of JacpFX. This version took quite a while to finish and brings a lot of changes and enhancements.
 <br/>
 All component references in JacpFX  are now loosely coupled through IDs, so you can exchange components easily . To create components and perspectives you now must implement the corresponding interfaces instead of extending an abstract class. We introduced a JacpFX Context interface, so you can inject the context object to your perspectives/components and access methods for JacpFX messaging, dialog creation and many more. Also a new type of component was added: the so called ManagedFragment, which represents a managed UI control and can be reused in different components and perspectives.
 <br/>
@@ -13,6 +13,3 @@ As you may see we also created a new website with an extended documentation, qui
 <br/>
 <br/>
 To start with JacpFX you may want to look at the quickstart tutorials here:  [quickstart] (../../../documentation_quickstart.html)
-
-
-

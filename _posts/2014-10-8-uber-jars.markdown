@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  „Creating executables with Java 8 & maven
+title:  Creating executables with Java 8 U+0026 maven
 date:   2014-10-8 21:27:27
 ---
 # Creating executable Uber jar’s and native applications with Java 8 & maven
@@ -11,7 +11,7 @@ With the first release of JavaFX 2, Oracle introduced the javafxpackager tool, w
 The first step on your way to an executable uber jar is to build your project and to collect all dependencies in a folder or a fat jar. This folder/fat jar will be the input for the javapackager tool, which creates the executable part.
 <br/>
 ## Solution 1: the maven-dependency-plugin
-The maven-dependency-plugin contains the goal “unpack-dependencies”. We can use this goal to enhance the default “target/classes” folder with all the dependencies you need to run your application. We assume that the default maven build creates all classes of your project in the “target/classes” folder and the “unpack-dependencies” plugin copies all the project dependencies to this folder. The result is a valid input for the javapackager tool, which creates the executable. 
+The maven-dependency-plugin contains the goal “unpack-dependencies”. We can use this goal to enhance the default “target/classes” folder with all the dependencies you need to run your application. We assume that the default maven build creates all classes of your project in the “target/classes” folder and the “unpack-dependencies” plugin copies all the project dependencies to this folder. The result is a valid input for the javapackager tool, which creates the executable.
 
 <br/>
 <div align="center">
@@ -55,11 +55,3 @@ To build an executable uber jar following plugin configuration is needed:
 This configuration defines a main-class entry in the MANIFEST and merges all “META-INF/services/conf.files” together. The resulting executable jar file is now a valid input for the javapacker to create a native installer. The configuration to create a native installer with “exec-maven-plugin” and javapacker tool is exactly the same like in solution 1.
 <br/>
 I provided two example projects on github https://github.com/amoAHCP/mvnDemos where you can test both configurations. These are two simple projects with a main class starting a jetty webserver on port 8080, so the only dependency is jetty. Both solutions can be used for any type of java projects, even with Swing or JavaFX.
-
-
-
-
-
-
-
-	

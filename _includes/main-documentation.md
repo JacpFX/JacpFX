@@ -15,7 +15,8 @@ Like any other UI application framework JacpFX has a hierarchic component-struct
 
 <br/>
 <div align="center">
-![JacpFX Component structure](/img/JACP_Overview_v2.png)
+<img src="img/JACP_Overview_v2.png" class="img-responsive" style="position: center;" align="middle" alt="JacpFX Component structure">
+
 </div>
 <br/>
 
@@ -62,7 +63,7 @@ root
 #### maven ####
 <br/>
 
-## <a name=ApplicationLauncher></a>ApplicationLauncher 
+## <a name=ApplicationLauncher></a>ApplicationLauncher
 An ApplicationLauncher contains the main method, the component-scanning configuration, the managed container configuration and a reference to the workbench class.
 <br/>JacpFX defines a Launcher interface which can be implemented to work with different managed containers like Spring or Weld. Currently Spring is used as the main container implementation, but you can use a minimal Launcher without any dependencies. For the Spring implementation two abstract Launcher implementations are available:
 
@@ -89,7 +90,7 @@ An ApplicationLauncher contains the main method, the component-scanning configur
 
 <script src="https://gist.github.com/amoAHCP/4cb801f8c982bceadc03.js"></script>
 
-> This is an example for the usage of the „minimal launcher“ without any other dependencies. 
+> This is an example for the usage of the „minimal launcher“ without any other dependencies.
 <br/>
 
 ### Common applicationLauncher methods ###
@@ -105,9 +106,9 @@ Define all packages to scan for <i>Components</i> and <i>Perspectives</i>. JacpF
 This method gives you access to the JavaFX stage. You may define a stylesheet for your application.
 
 ## <a name=workbench></a>Workbench ##
-The Workbench is the root node of your client project. It provides a simple interface to configure the basic behavior of your client. Besides the application launcher, it is the only component where you can get direct access to the JavaFX "stage". 
+The Workbench is the root node of your client project. It provides a simple interface to configure the basic behavior of your client. Besides the application launcher, it is the only component where you can get direct access to the JavaFX "stage".
 Furthermore a Workbench logically groups all <i>Perspectives</i> defined by @Workbench annotations.
- 
+
 ### Example workbench ###
 <br/>
 <script src="https://gist.github.com/amoAHCP/2d5613384248caa6b4d2.js"></script>
@@ -124,12 +125,12 @@ This method is the first one called on application startup. It allows you to do 
 
 - Message<Event,Object> action : the initial message, see **[JacpFX messaging](#messaging)**
 
-- WorkbenchLayout<Node> layout (the configuration handler to define the following application values): 
+- WorkbenchLayout<Node> layout (the configuration handler to define the following application values):
 	- layout.setWorkbenchXYSize(x,y) : the initial workbench size
 	- layout.registerToolBar(ToolbarPosition.NORTH): activate toolbars (NORTH, SOUTH, EAST, WEST)
-	- layout.setStyle(StageStyle.DECORATED): enable/disable window decoration 
-	- layout.setMenuEnabled(false): enable/disable application menues
-	
+	- layout.setStyle(StageStyle.DECORATED): enable/disable window decoration
+	- layout.setMenuEnabled(false): enable/disable application menus
+
 - Stage: the JavaFX "Stage" object
 
 <br/>
@@ -152,13 +153,13 @@ To declare references to <i>Perspectives</i>, simply add the <i>Perspective</i> 
 
 ##<a name=perspective></a><i>FXPerspectives</i>##
 
-A <i>FXPerspective</i> defines the basic UI structure for your view and provides a container for <i>Components</i>. 
+A <i>FXPerspective</i> defines the basic UI structure for your view and provides a container for <i>Components</i>.
 While a <i>FXPerspective</i> is more like a template with placeholders (or a portal page), <i>Components</i> are the detail views of your application (or the portlets).
 <br/>
 A typical UI application has a root node and a large tree of Nodes/Controls which represent the application UI. The leaf nodes of such a component tree are your user defined controls like Buttons, TextFields and so on.  A Perspective allows you to register JavaFX Nodes of your <i>FXPerspective</i> view, where <i>Component</i> views are rendered. Child <i>Components</i> in your <i>FXPerspective</i> can now registers themselves to be rendered in one of those targets.
 <br/>
 <div align="center">
-![perspective node tree](/img/JACP_NodeTree_View.png)
+<img src="img/JACP_NodeTree_View.png" class="img-responsive" style="position: center;" align="middle" alt="perspective node tree">
 </div>
 <br/>
 
@@ -167,7 +168,7 @@ A typical UI application has a root node and a large tree of Nodes/Controls whic
 A <i>FXPerspective</i> defines five lifecycle hooks:
 
 - The <b>"handlePerspective"</b> method must be overwritten and will be executed on each message the <i>FXPerspective</i> is receiving.
-- <b>@PostConstruct:</b> A method annotated with @PostConstruct will be executed after a <i>FXPerspective</i> was activated, usually this happens on start 
+- <b>@PostConstruct:</b> A method annotated with @PostConstruct will be executed after a <i>FXPerspective</i> was activated, usually this happens on start
 - <b>@PreDestroy:</b> A method annotated with @PreDestroy will be executed before a <i>Perspective</i> is destroyed
 - <b>@OnShow:</b> A method annotated with @OnShow will be executed when an active <i>Perspective</i> gets the focus. Only one <i>FXPerspective</i> is visible in a workbench at the same time. When a <i>FXPerspective</i> gets a message it gets the focus and is placed to the foreground.
 	- in this phase you may turn on toolbar buttons or start timer tasks
@@ -176,13 +177,13 @@ A <i>FXPerspective</i> defines five lifecycle hooks:
 
 <br/>
 <div align="center">
-![perspective lifecycle](/img/JACP_Perspective_Lifecycle.png)
-</div>
+<img src="img/JACP_Perspective_Lifecycle.png" class="img-responsive" style="position: center;" align="middle" alt="perspective lifecycle">
+	</div>
 <br/>
 
 ### <i>FXPerspective</i> types ###
 <i>FXPerspective</i> can be implemented either <b>programmatically</b> in plain JavaFX or <b>declarative</b> with an FXML view.
-<br/> 
+<br/>
 #### Programmatic <i>FXPerspectives</i> ####
 
 Programmatic <i>FXPerspectives</i> declare their view in plain JavaFX. You can create any complex UI tree but you have to register the root Node of your UI tree which will then be added to the workbench.
@@ -199,7 +200,7 @@ Declarative <i>FXPerspectives</i> provides their view by defining a FXML file re
 <script src="https://gist.github.com/amoAHCP/a95003f8d2b84ad32802.js"></script>
 <br/>
 ### Register <i>Components</i> ###
-<i>Component</i> references are defined inside the @Perspective annotation. Once the application is started you can move <i>Components</i> from one <i>Perspective</i> to another. 
+<i>Component</i> references are defined inside the @Perspective annotation. Once the application is started you can move <i>Components</i> from one <i>Perspective</i> to another.
 <i>Components</i> are subjected to one simple rule: They are <b>ALWAYS unique per <i>Perspective</i></b>. You can't add the same <i>Component</i> twice in one <i>FXPerspective</i>, but you can use one <i>Component</i> in many <i>FXPerspectives</i>. The same <i>Component</i> will be created in its own instance per <i>FXPerspective</i>.
 #### Definition of <i>Component</i> references####
 <script src="https://gist.github.com/amoAHCP/ee4ffe9c557841cf1066.js"></script>
@@ -229,7 +230,7 @@ While <i>FXPerspectives</i> help you to structure your application, <i>Component
 UI <i>Components</i> may contain your complex UI (e.g Form) and Controls like "TextField" or "Button". NonUI <i>Components</i> are meant to be services for long running tasks or a connector to an external system. Common to all <i>Components</i>is that they have a “handle” method. That method will be run <b> outside the FX application thread</b> so the execution does not block the rest of your UI.
 
 ### UI-<i>Components</i> ###
-UI <i>Components</i> must implement the <i>"FXComponent"</i> interface. They act as controller class and return a view either in plain JavaFX or FXML. 
+UI <i>Components</i> must implement the <i>"FXComponent"</i> interface. They act as controller class and return a view either in plain JavaFX or FXML.
 While JavaFX <i>Components</i> must return a (JavaFX) Node, FXML-<i>Components</i> pass the root node of their FXML view directly to the parent <i>FXPerspective</i>.
 
 #### The FXComponent lifecycle ####
@@ -237,7 +238,7 @@ While JavaFX <i>Components</i> must return a (JavaFX) Node, FXML-<i>Components</
 
 <br/>
 <div align="center">
-![UI component lifecycle](/img/JACP_UI-Component_Lifecycle.png)
+<img src="img/JACP_UI-Component_Lifecycle.png" class="img-responsive" style="position: center;" align="middle" alt="UI component lifecycle">
 </div>
 <br/>
 
@@ -250,7 +251,7 @@ The FXComponent interface defines the following two methods:
 
 #### Method-level annotations ####
 - <b>@PostConstruct:</b> A method annotated with @PostConstruct will be executed when a <i>FXComponent</i> is activated. Usually this happens on start and before the "handle" method. @PostConstruct is executed in the FX Application Thread. The method signature may have no parameter, an FXComponentLayout parameter and/or a reference to the ResourceBundle. With the FXComponentLayout reference you can define Menu and ToolBar entries in your <i>FXComponent</i>.
-- <b>@PreDestroy:</b> A method annotated with @PreDestroy will be executed when a <i>FXComponent</i> is destroyed. The method will be executed inside the FX Application Thread. The method signature may have no parameters, the FXComponentLayout parameter and/or the reference to the ResourceBundle. 
+- <b>@PreDestroy:</b> A method annotated with @PreDestroy will be executed when a <i>FXComponent</i> is destroyed. The method will be executed inside the FX Application Thread. The method signature may have no parameters, the FXComponentLayout parameter and/or the reference to the ResourceBundle.
 
 ### FXComponent types ###
 FXComponent may be written either <b>programmatically</b> in plain JavaFX or <b>declarative</b>, with an FXML view.
@@ -285,7 +286,7 @@ The @DeclarativeView annotation contains all metadata related to the FXML-<i>Com
 
 <br/>
 #### FXML FXComponent example ####
-The "postHandle" method of a FXML <i>FXComponent</i> must return NULL, as the root node of the FXML-file will be passed to the <i>FXPerspective</i>. 
+The "postHandle" method of a FXML <i>FXComponent</i> must return NULL, as the root node of the FXML-file will be passed to the <i>FXPerspective</i>.
 
 <script src="https://gist.github.com/amoAHCP/b8151043d620d06d50ab.js"></script>
 <br/>
@@ -301,12 +302,12 @@ Callback <i>Components</i> are service like <i>Components</i> which react on mes
 
 The CallbackComponent interface defines the following two methods to implement:
 
-- The <b>"handle(...)"</b> method will be executed each time the <i>Component</i> receives a message. This method will be executed <b>outside the FX Application Thread </b> inside a worker thread. 
+- The <b>"handle(...)"</b> method will be executed each time the <i>Component</i> receives a message. This method will be executed <b>outside the FX Application Thread </b> inside a worker thread.
 By default the return value of this method will generate a message to the caller <i>Component</i> to return the result. If no return value is specified, no result message will be sent. If the return value should be redirected to another <i>Component</i> you can use "<i>Context.setReturnTarget("parent.targetId")</i>" to specify the target <i>Component</i>.
 
 #### Method-level annotations ####
-- <b>@PostConstruct:</b> A method annotated with @PostConstruct will be executed when a <i>Component</i> is activated, and runs in a worker Thread. The method signature may have no parameter and/or the reference to the ResourceBundle resourceBundle. 
-- <b>@PreDestroy:</b> A method annotated with @PreDestroy will be executed before a <i>Component</i> is be destroyed. The method will be executed in a worker Thread. The method signature may have no parameter and/or the reference to the ResourceBundle. 
+- <b>@PostConstruct:</b> A method annotated with @PostConstruct will be executed when a <i>Component</i> is activated, and runs in a worker Thread. The method signature may have no parameter and/or the reference to the ResourceBundle resourceBundle.
+- <b>@PreDestroy:</b> A method annotated with @PreDestroy will be executed before a <i>Component</i> is be destroyed. The method will be executed in a worker Thread. The method signature may have no parameter and/or the reference to the ResourceBundle.
 
 
 #### The @Component class level annotation ####
@@ -324,7 +325,7 @@ CallbackComponents can be <b>stateful</b> or <b>stateless</b>
 
 #### Stateful CallbackComponent ####
 A stateful CallbackComponent must implement the <i>CallbackComponent</i> interface and define the @Component annotation.
-In terms of JEE it is a "singleton per <i>Perspective</i>" <i>Component</i>. While JEE singletons must be synchronized (Container or Bean managed concurrency), JacpFX <i>Components</i> are never accessed directly (only trough messages) and must not be synchronized. The container puts all messages to a FIFO queue and is aware of correct message delivering (similar to a Message Driven Bean running on one thread). Like all JacpFX <i>Components</i> it has a handle method that is executed in a separate Thread (Worker Thread). Use this type of <i>Component</i> to handle long running tasks or service calls and when you need a conversational state. The result of your task will be sent to the message caller by default. This type of <i>Component</i> has one method you have to implement: 
+In terms of JEE it is a "singleton per <i>Perspective</i>" <i>Component</i>. While JEE singletons must be synchronized (Container or Bean managed concurrency), JacpFX <i>Components</i> are never accessed directly (only trough messages) and must not be synchronized. The container puts all messages to a FIFO queue and is aware of correct message delivering (similar to a Message Driven Bean running on one thread). Like all JacpFX <i>Components</i> it has a handle method that is executed in a separate Thread (Worker Thread). Use this type of <i>Component</i> to handle long running tasks or service calls and when you need a conversational state. The result of your task will be sent to the message caller by default. This type of <i>Component</i> has one method you have to implement:
 
 #### Stateful CallbackComponent lifecycle ####
 
@@ -359,7 +360,7 @@ Stateless <i>Components</i> are using instance-pooling for scaling, a CallbackCo
 
 ## <a name=fragments></a>Fragments ##
 JacpFX <i>Fragments</i> are small managed <i>Components</i>, that exist in the context of a <i>FXPerspective</i> or a <i>FXComponent</i>. The purpose of a <i>Fragment</i> is to create a reusable custom control or a group of controls that has access to the parent context. This allows the Fragment to send messages, access resources and to interact with the parent <i>FXComponent</i> or <i>FXPerspective</i>.
-A <i>Fragment</i> can either extent a JavaFX "Node" or declare a FXML view. The <i>Fragment</i> itself cannot be a message target, but his parent <i>FXComponent</i> can access his Controller class and the view. 
+A <i>Fragment</i> can either extent a JavaFX "Node" or declare a FXML view. The <i>Fragment</i> itself cannot be a message target, but his parent <i>FXComponent</i> can access his Controller class and the view.
 <br/>
 ### The @Fragment class level annotation ###
 The @Fragment annotation contains all metadata related to the JacpFX <i>Fragment</i>.
@@ -368,7 +369,7 @@ The @Fragment annotation contains all metadata related to the JacpFX <i>Fragment
 - <b>"viewLocation"</b>, defines the location the FXML-file representing the view
 - <b>"resourceBundleLocation" (optional)</b>, defines the resource bundle file
 - <b>"localeID"</b>,  the default locale Id (http://www.oracle.com/technetwork/java/javase/locales-137662.html)
-- <b>"scope"</b>,  defines the scope of the <i>Fragment</i> (singleton/prototype). 
+- <b>"scope"</b>,  defines the scope of the <i>Fragment</i> (singleton/prototype).
 <br/>
 
 
@@ -386,7 +387,7 @@ The @Fragment annotation contains all metadata related to the JacpFX <i>Fragment
 <br/>
 ### Create a Fragment instance ###
 <i>Fragments</i> <b>never</b> instantiated directly, they can only be created inside a <i>FXPerspective</i> or an <i>FXComponent</i>. To create a <i>Fragment</i>, the <i>Context</i> interface provides the method: <i>getManagedFragmentHandler(FragmentOne.class);</i> and returns a <i>ManagedFragmentHandler</i>. The Handler provides access to the controller (FragmentOne) and to the view (VBox).
-Depending on the <i>Fragment</i> scope, the method call returns always the same instance or in case of "prototype" scope, different one. 
+Depending on the <i>Fragment</i> scope, the method call returns always the same instance or in case of "prototype" scope, different one.
 <br/>
 
 <script src="https://gist.github.com/amoAHCP/8336576900b69d467b83.js"></script>
@@ -403,7 +404,7 @@ The <i>ManagedFragmentHandler</i> holds the reference to the <i>Fragment</i> ins
 Messaging is an essential part of JacpFX that allows to communicate with all <i>FXPerspectives</i>/JacpFX <i>Components</i>, and to change their state. You can send an object to any <i>components</i> and start their specific lifecycle.
 <br/>
 <div align="center">
-![message lifecycle](/img/JACP_ComponentMessage_View.png)
+<img src="img/JACP_ComponentMessage_View.png" class="img-responsive" style="position: center;" align="middle" alt="message lifecycle">
 </div>
 <br/>
 
@@ -425,13 +426,13 @@ The JacpFX <i>Context</i> provides methods to send messages to other <i>Componen
 
 - <b>"send(M message)"</b>, sends any Object to the caller component itself. The target and the source id is equal in this case. You may use this method to trigger asynchronous execution in the "handle(...)" method of your <i>Component</i>.
 - <b>"send(String targetId, M message)"</b>, sends any Object to the specified target
-<br/> 
+<br/>
 
 ### Message addressing schema###
 JacpFX has a hierarchical Component schema where a <i>Workbench</i> is the root node and <i>Components<i/> are the leaf nodes. The <i>Workbench</i> can never be a message target itself but you may send messages from a <i>FXWorkbench</i> to any <i>Perspective</i>/<i>Component</i>. JacpFX has a simple "." (dot) separator to specify the exact target of your message.
 
-- <b>send a message to a perspective: </b> context.send("perspective1", new Person("John")) 
-- <b>send a message to a component: </b> context.send("perspective1.component1", new Person("John")) 
+- <b>send a message to a perspective: </b> context.send("perspective1", new Person("John"))
+- <b>send a message to a component: </b> context.send("perspective1.component1", new Person("John"))
 <br/>
 
 ### Message example ###
@@ -453,7 +454,7 @@ The JacpFX <i>Context</i> provides methods to access to the metadata of any <i>P
 
 ## Localisation ##
 
-@Component, @DeclarativeView, @View and @Perspective annotation allow the declaration of a resource bundle and a default localeID. If no localeID is declared the system default is assumed. Set the relative resourceBundleLocation in URL (in resource) like "bundles.languageBundle" and create in resources/bundles a file languageBundle_en.properties for further informations on resource bundles see: http://docs.oracle.com/javase/7/docs/api/java/util/ResourceBundle.html. 
+@Component, @DeclarativeView, @View and @Perspective annotation allow the declaration of a resource bundle and a default localeID. If no localeID is declared the system default is assumed. Set the relative resourceBundleLocation in URL (in resource) like "bundles.languageBundle" and create in resources/bundles a file languageBundle_en.properties for further informations on resource bundles see: http://docs.oracle.com/javase/7/docs/api/java/util/ResourceBundle.html.
 
 <script src="https://gist.github.com/amoAHCP/553e9047fb68e083112f.js"></script>
 
@@ -492,7 +493,7 @@ To register the dialogHandler overwrite the <i>getErrorHandler()</i> method in t
 ### JacpFX OptionPane ###
 
 JacpFX provides a default optionpane, which can be displayed as a modal dialog.<br/>
-The optionpane holds a title a message four buttons (Ok, Canel, Yes, No) closeButton<br/><br/>
+The optionpane holds a title a message four buttons (Ok, Cancel, Yes, No) closeButton<br/><br/>
 To create an optionpane, you can use the createOptionPane method of the JACPDialogUtil.
 While the title and the message will be taken as parameter of the create method, you can set the Eventhandlers for all four buttons individually. Every button has its own “setOnAction” method.
 
@@ -501,7 +502,7 @@ While the title and the message will be taken as parameter of the create method,
 - setOnYesAction(final EventHandler<ActionEvent> onYes)
 - setOnNoAction(final EventHandler<ActionEvent> onNo)
 
-By calling one of those four, the corresponding button will be added to the pane. There is no other way to add buttons to the default optionpane. One of your buttons can be choosen as default button. The default-button will have the focus, after the optionpane shows up.
+By calling one of those four, the corresponding button will be added to the pane. There is no other way to add buttons to the default optionpane. One of your buttons can be chosen as default button. The default-button will have the focus, after the optionpane shows up.
 If the same “setOnAction” method will be called several times, only the last Eventhandler will be used. After clicking a button, the optionpane will hide automatically.
 Beside of the four buttons, there is also an option to show a close-button on the optionpane. That button will simply close the optionpane without triggering any other event or Eventhandler.
 The options for the close-button are:
@@ -529,7 +530,7 @@ With a custom stylesheet, using the mentioned classes, you’re able to style th
 
 ## JACPToolBar ##
 
-The <i>JACPToolbar</i> will help you to organize the buttons you’ll need for your application. Toolbars can be registed on any orientation of the application (NORTH, WEST, SOUTH, EAST)
+The <i>JACPToolbar</i> will help you to organize the buttons you’ll need for your application. Toolbars can be registered on any orientation of the application (NORTH, WEST, SOUTH, EAST)
 
 All Buttons will be added within a given context, which means, the toolbar knows which button belongs to which perspective, component or workbench. This allows the toolbar to show and hide your buttons as needed (eg. switching to another perspective).
 
@@ -562,7 +563,9 @@ To self-manage your buttons, use the methods hideButtons(String id) and showButt
 
 <br/>
 <div align="center">
-![JACP Standard Toolbar](/img/JacpFX_Std_Toolbar.JPG)
+
+<img src="img/JacpFX_Std_Toolbar.JPG" class="img-responsive" style="position: center;" align="middle" alt="simple toolbar">
+
 </div>
 <br/>
 
@@ -575,7 +578,9 @@ The two classes for styling are:
 
 <br/>
 <div align="center">
-![JACP Toolbar](/img/JacpFX-ToolBar.png)
+<img src="img/JacpFX-ToolBar.png" class="img-responsive" style="position: center;" align="middle" alt="toolbar">
+
+
 </div>
 <br/>
 
@@ -584,7 +589,8 @@ After styling the JACPToolbar and the added nodes (buttons in this case) the Too
 
 <br/>
 <div align="center">
-![Styled Toolbar](/img/JacpFX_Styled_Toolbar.JPG)
+<img src="img/JacpFX_Styled_Toolbar.JPG" class="img-responsive" style="position: center;" align="middle" alt="Styled Toolbar">
+
 </div>
 <br/>
 
@@ -602,14 +608,14 @@ For <b>MAC OS X</b> users: Hence to the option of using the system-menu on the v
 <script src="https://gist.github.com/PETE-CH/1785db500de2265580a5.js"></script>
 <br/>
 <div align="center">
-![Standard Menubar](/img/JacpFX_Std_Menubar.JPG)
+<img src="img/JacpFX_Std_Menubar.JPG" class="img-responsive" style="position: center;" align="middle" alt="Standard Menubar">
 </div>
 <br/>
 Using the <i>addNode(final JACPMenuBarButtonOrientation orientation, final Node... node)</i> method, you can add custom nodes to the menubar, either on the left- or right hand side.
 
 <br/>
 <div align="center">
-![Standard Menubar](/img/JacpFX_Std_Menubar_ext.JPG)
+<img src="img/JacpFX_Std_Menubar_ext.JPG" class="img-responsive" style="position: center;" align="middle" alt="Standard Menubar ext">
 </div>
 <br/>
 
@@ -618,7 +624,7 @@ Since the JACPMenuBar uses a JavaFX MenuBar , for holding MenuItems , you can us
 
 <br/>
 <div align="center">
-![Menubar styling](/img/JacpFX_MenuBar.png)
+<img src="img/JacpFX_MenuBar.png" class="img-responsive" style="position: center;" align="middle" alt="Menubar styling">
 </div>
 <br/>
 
@@ -626,7 +632,8 @@ Styles Windowbuttons can look like this.
 
 <br/>
 <div align="center">
-![Styled Menubar with windowbuttons](/img/JacpFX_Styled_Menubar_ext.JPG)
+<img src="img/JacpFX_Styled_Menubar_ext.JPG" class="img-responsive" style="position: center;" align="middle" alt="Styled Menubar with windowbuttons">
+
 </div>
 <br/>
 
@@ -727,7 +734,7 @@ The @Fragment annotation contains all metadata related to the JacpFX <i>Fragment
 - <b>"viewLocation"</b>, defines the location the FXML-file representing the view
 - <b>"resourceBundleLocation" (optional)</b>, defines the resource bundle file
 - <b>"localeID"</b>,  the default locale Id (http://www.oracle.com/technetwork/java/javase/locales-137662.html)
-- <b>"scope"</b>,  defines the scope of the <i>Fragment</i> (singleton/prototype). 
+- <b>"scope"</b>,  defines the scope of the <i>Fragment</i> (singleton/prototype).
 <br/>
 
 
@@ -753,7 +760,7 @@ Lifecycle annotation, a method annotated with <i>@PreDestroy</i> is executed on 
 
 
 <b>@OnShow</b><br/>
-Lifecycle annotation, a method annotated with <i>@OnShow</i> is executed when a <i>FXPerspective</i> gets the focus. Usually this happens on perspective switch when a <i>FXPerspective</i> receives a message. Annotated methods must not throw a checked exception. Following method signature is applicable: 
+Lifecycle annotation, a method annotated with <i>@OnShow</i> is executed when a <i>FXPerspective</i> gets the focus. Usually this happens on perspective switch when a <i>FXPerspective</i> receives a message. Annotated methods must not throw a checked exception. Following method signature is applicable:
 
 - method with no parameters
 - with a <i>PerspectiveLayout</i> reference (in case of a <i>FXPerspective</i>),  contains the reference to the root <i>Node</i> and the target render nodes
@@ -762,7 +769,7 @@ Lifecycle annotation, a method annotated with <i>@OnShow</i> is executed when a 
 <br/>
 
 <b>@OnHide</b><br/>
-Lifecycle annotation, a method annotated with <i>@OnHide</i> is executed when a <i>FXPerspective</i> looses the focus. Usually this happens on perspective switch when an other <i>FXPerspective</i> receives a message. Annotated methods must not throw a checked exception. Following method signature is applicable: 
+Lifecycle annotation, a method annotated with <i>@OnHide</i> is executed when a <i>FXPerspective</i> looses the focus. Usually this happens on perspective switch when an other <i>FXPerspective</i> receives a message. Annotated methods must not throw a checked exception. Following method signature is applicable:
 
 - method with no parameters
 - with a <i>PerspectiveLayout</i> reference (in case of a <i>FXPerspective</i>),  contains the reference to the root <i>Node</i> and the target render nodes
@@ -773,4 +780,3 @@ Lifecycle annotation, a method annotated with <i>@OnHide</i> is executed when a 
 ### Type level annotations ###
 <b>@Resource</b><br/>
 The <i>@Resource</i> annotation can be applied to a member to get the reference to the JacpFX <i>Context</i> or the resource bundle.  
-

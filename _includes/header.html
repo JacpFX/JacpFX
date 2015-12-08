@@ -2,34 +2,36 @@
 <html lang="en" style="" class="wf-lato-n4-active wf-active">
 
 <head>
-    <meta charset="utf-8">
-    <!-- disable iPhone inital scale -->
-    <meta name="viewport" content="width=device-width; initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta charset="utf-8">
+  <!-- disable iPhone inital scale -->
+  <meta name="viewport" content="width=device-width; initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <!-- Meta tags -->
-    <meta name="description" content="Event bus, message passing and async execution are concepts, getting more and more popular for server side applications. JacpFX brings this approach to the client, combining JavaFX with an actor-like component model. It is an UI application
-                    framework based on JavaFX, supporting developers to structure an application with loosely coupled, reusable components. It frees you from the pitfalls of traditional multi-threaded programming, helping you to separate the task execution
-                    from UI changes in you client application.">
-    <!-- Author -->
-    <meta name="author" content="https://plus.google.com/u/0/118016556688925645178/posts">
+  <!-- Meta tags -->
+  <meta name="description" content="Event bus, message passing and async execution are concepts, getting more and more popular for server side applications. JacpFX brings this approach to the client, combining JavaFX with an actor-like component model. It is an UI application framework based on JavaFX, supporting developers to structure an application with loosely coupled, reusable components. It frees you from the pitfalls of traditional multi-threaded programming, helping you to separate the task execution from UI changes in you client application.">
 
-    <!-- Keywords -->
-    <meta name="keywords" content="JacpFX, JavaFX, JacpFX Messaging, JacpFX local messages, JacpFX global messages, Modal Dialogs, JacpFX OptionPane, Styling the JacpFX OptionPane, JACPToolBar, JACPMenuBar, Non blocking UI, User Interface Application, Framework, Jacp, API, WCS, MVC, Rich Client, Javascript">
+  <!-- Author -->
+  <meta name="author" content="Steffen Walter" >
 
-    <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
+  <!-- Keywords -->
+  <meta name="keywords" content="JacpFX, JavaFX, JacpFX Messaging, JacpFX local messages, JacpFX global messages, Modal Dialogs, JacpFX OptionPane, Styling the JacpFX OptionPane, JACPToolBar, JACPMenuBar, Non blocking UI, User Interface Application, Framework, Jacp, API, WCS, MVC, Rich Client, Javascript">
 
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="/img/favicon.png">
-    <title>JacpFX Project - Java Asynchronous Client Platform</title>
+  <!-- Bootstrap core CSS -->
+  <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
+  <link href="css/timer.css" rel="stylesheet" type="text/css">
+  <link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700' rel='stylesheet' type='text/css'>
 
-    <!--[if lt IE 9]><script src="../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <!-- IE10-Anzeigefenster-Hack für Fehler auf Surface und Desktop-Windows-8 -->
-    <script id="twitter-wjs" async="" src="https://platform.twitter.com/widgets.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js" type="text/javascript" async=""></script>
-    <script src="/js/ie10-viewport-bug-workaround.js"></script>
-    <script src="/js/ie-emulation-modes-warning.js"></script>
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="img/favicon.gif">
+  <title>JacpFX Project - Java Asynchronous Client Platform</title>
+
+  <!--[if lt IE 9]><script src="../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+  <!-- IE10-Anzeigefenster-Hack für Fehler auf Surface und Desktop-Windows-8 -->
+  <script src="http://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js" type="text/javascript" async=""></script>
+  <script id="twitter-wjs" async="" src="https://platform.twitter.com/widgets.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js" type="text/javascript" async=""></script>
+  <script src="js/ie10-viewreport-bug-workaround.js"></script>
+  <script src="js/ie-emulation-modes-warning.js"></script>
 
     <!-- Unterstützung für Media Queries und HTML5-Elemente im Internet Explorer über HTML5 shim und Respond.js -->
     <!--[if lt IE 9]>
@@ -37,24 +39,8 @@
 	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
 
-    <script type="text/javascript">
-        WebFontConfig = {
-            google: { families: [ 'Lato::latin' ] }
-          };
-          (function() {
-            var wf = document.createElement('script');
-            wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
-              '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
-            wf.type = 'text/javascript';
-            wf.async = 'true';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(wf, s);
-          })();
-    </script>
-    
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato&amp;subset=latin">
-
 </head>
+
 <body data-twttr-rendered="true">
 
     <div class="container">
@@ -70,35 +56,38 @@
                         <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand" href="index.html">
-                        <img src="/img/JacpFX_Project_Switzerland_Logo.png" class="img-responsive" style="position: center;" align="middle" width="110" height="22">
+                        <img src="img/JacpFX_Project_Switzerland_Logo.png" class="img-responsive" style="position: center;" align="middle" width="110" height="22">
                     </a>
                 </div>
 
                 <!-- Alle Navigationslinks, Formulare und anderer Inhalt werden hier zusammengefasst und können dann ein- und ausgeblendet werden -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">Home</a>
-                        </li>
+                        <li class="active"><a href="#">Home</a></li>
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Documentation <span class="caret"></span></a>
+                            <a href="jacpfx_features.html" class="dropdown-toggle" data-toggle="dropdown">Features <span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="documentation_main.html">Documentation main</a></li>
-                                <li><a href="documentation_quickstart.html">Quickstart</a></li>
+                                <li><a href="structComposition.html">Structure & Composition</a></li>
+                                <li><a href="looselyCoupled.html">Loosely Coupled</a></li>
+                                <li><a href="messaging.html">JacpFX Messaging</a></li>
+                                <li><a href="nonblocking.html">Non-Blocking UI</a></li>
                             </ul>
                         </li>
-                         <li ><a href="blog.html">blog</a>
-                        </li>
+                        <li><a href="documentation_main.html">Documentation</a></li>
+                        <li><a href="documentation_quickstart.html">Tutorial</a></li>
+                        <li><a href="blog.html">Blog</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <a class="navbar-brand" href="http://ch.linkedin.com/pub/patrick-symmangk/94/30b/83" target="_blank">
-                            <img src="/img/JacpFX_Symbols_Blue_Linkedin.png" height="24px" width="24px" class="img-responsive" style="position: center;" align="middle">
+                        <a class="navbar-brand" href="https://ch.linkedin.com/in/andy-moncsek-0a580349" target="_blank">
+                            <img src="img/JacpFX_Symbols_Linkedin.png" height="24px" width="24px" class="img-responsive" style="position: center;" align="middle">
                         </a>
                         <a class="navbar-brand" href="https://twitter.com/AndyAHCP" target="_blank">
-                            <img src="/img/JacpFX_Symbols_Blue_Twitter.png" height="24px" width="24px" class="img-responsive" style="position: center;" align="middle">
+                            <img src="img/JacpFX_Symbols_Twitter.png" height="24px" width="24px" class="img-responsive" style="position: center;" align="middle">
                         </a>
                         <a class="navbar-brand" href="https://github.com/JacpFX" target="_blank">
-                            <img src="/img/JacpFX_Symbols_Blue_GitHub.png" height="24px" width="24px" class="img-responsive" style="position: center;" align="middle">
+                            <img src="img/JacpFX_Symbols_GitHub.png" height="24px" width="24px" class="img-responsive" style="position: center;" align="middle">
                         </a>
+
                     </ul>
                 </div>
                 <!-- /.navbar-collapse -->
@@ -106,52 +95,102 @@
             <!-- /.container-fluid -->
         </nav>
 
-        <!--Carousel-->
+    <!--Breadcrumb-->
+    <!--Breadcrumb-->
+    <ol class="breadcrumb">
+    <li class="active">Home</li>
+    </ol>
 
-        <div id="carousel1" class="carousel slide  hidden-xs" data-ride="carousel">
-            <ol class="carousel-indicators">
-                <li data-target="#carousel1" data-slide-to="0" class="active"></li>
-                <li data-target="#carousel1" data-slide-to="1"></li>
-                <li data-target="#carousel1" data-slide-to="2"></li>
-                <li data-target="#carousel1" data-slide-to="3"></li>
-            </ol>
-            <!-- Indicators -->
-            <!-- Wrapper for slides -->
-            <div class="carousel-inner">
+    <!--Carousel-->
+    <!--Carousel-->
+<section class="container">
+    <div class="row">
+        <!-- The carousel -->
+        <div id="transition-timer-carousel" class="carousel slide transition-timer-carousel" data-ride="carousel">
+			<!-- Indicators -->
+			<ol class="carousel-indicators">
+				<li data-target="#transition-timer-carousel" data-slide-to="0" class="active"></li>
+				<li data-target="#transition-timer-carousel" data-slide-to="1"></li>
+				<li data-target="#transition-timer-carousel" data-slide-to="2"></li>
+				<li data-target="#transition-timer-carousel" data-slide-to="3"></li>
+			</ol>
+
+			<!-- Wrapper for slides -->
+			<div class="carousel-inner">
+
                 <div class="item active">
-                    <img src="/img/JacpFX_Structure_and_Composition_Header.png" alt="Compose your applications with FXML and plain JavaFX">
-                    <div class="carousel-caption">
-                        <h3 class="hidden-sm hidden-xs">Compose your applications with FXML and plain JavaFX</h3> 
-                        <p></p>
-                    </div>
+                <table width="100%"><tr>
+                <td width="15%"></td>
+                <td width="70%" height="250px">
+                <h1 style="text-shadow: 2px 2px 8px #357ebd; color:#FFFFFF">An UI application framework based on JavaFX</h1>
+                <p class="hidden-xs" style="color:#FFFFFF;">
+
+   Event bus, message passing and async execution are concepts, getting more and more popular for server side applications. JacpFX brings this approach to the client, combining JavaFX with an actor-like component model. It is an UI application framework based on JavaFX, supporting developers to structure an application with loosely coupled, reusable components.
+                </p>
+                <p>
+                <a class="btn btn-lg btn-warning" href="documentation_main.html" role="button">Documentation</a>
+                </p>
+                <!-- <p align="left"><a class="btn btn-lg btn-info" href="#" role="button">Documentation »</a></p> -->
+                </td>
+                <td width="15%"></td>
+                </tr>
+                </table>
                 </div>
                 <div class="item">
-                    <img src="/img/JacpFX_Loosely_Coupled_Header.png" alt="JacpFX components are referenced by id">
-                    <div class="carousel-caption">
-                        <h3 class="hidden-xs hidden-sm">JacpFX components are referenced by id</h3> 
-                        <p></p>
-                    </div>
+                <table width="100%"><tr>
+                <td width="15%"></td>
+                <td width="70%" height="250px">
+                <h1 style="text-shadow: 2px 2px 8px #357ebd; color:#FFFFFF">About The JacpFX Features</h1>
+                <p class="hidden-xs" style="color:#FFFFFF;">
+                Looking for specific features, like structure and compositions, loosely coupled, non-blocking ui and jacpfx messaging. JacpFX focusing on following goals to deliver best developer and user experience. More about the features that can benefit JacpFX click the following button.
+                </p>
+                <p><a class="btn btn-lg btn-warning" href="features.html" role="button">Features in Detail</a></p>
+                </td>
+                <td width="15%"></td>
+                </tr>
+                </table>
                 </div>
                 <div class="item">
-                    <img src="/img/JacpFX_Messaging_Header.png" alt="Change components state through messages">
-                    <div class="carousel-caption">
-                        <h3 class="hidden-xs hidden-sm">Change components state through messages</h3> 
-                        <p></p>
-                    </div>
+                <table width="100%"><tr>
+                <td width="15%" ></td>
+                <td width="70%" height="250px">
+                <h1 style="text-shadow: 2px 2px 8px #357ebd; color:#FFFFFF">Read The Documentation</font></h1>
+                <p class="hidden-xs" style="color:#FFFFFF;">
+                The documentation give you detailed information about all parts of JacpFX, how to bootstrap a new JacpFX application and the general usage. Read more about the features and try these tutorials.
+                </p>
+                <p><a class="btn btn-lg btn-warning" href="documentation_main.html" role="button">Documentation</a></p>
+                </td>
+                <td width="15%"></td>
+                </tr>
+                </table>
                 </div>
                 <div class="item">
-                    <img src="/img/JacpFX_Non-Blocking_UI_Header.png" alt="Avoid pitfalls of traditional multi-threaded programming">
-                    <div class="carousel-caption">
-                        <h3 class="hidden-xs hidden-sm">Avoid pitfalls of traditional multi-threaded programming</h3> 
-                        <p></p>
-                    </div>
+                <table width="100%"><tr>
+                <td width="15%"></td>
+                <td width="70%" height="250px">
+                <h1 style="text-shadow: 2px 2px 8px #357ebd; color:#FFFFFF">Tutorials</font></h1>
+                <p class="hidden-xs" style="color:#FFFFFF;">
+                A tutorial is a method of transferring knowledge and may be used as a part of a learning process. This chapter explains how to control your JacpFX project application.
+                </p>
+                <p><a class="btn btn-lg btn-warning" href="documentation_quickstart.html" role="button">Try it</a></p>
+                </td>
+                <td width="15%"></td>
+                </tr>
+                </table>
                 </div>
             </div>
-            <!-- Controls -->
-            <a class="left carousel-control" href="#carousel1" data-slide="prev">
-                <span class="glyphicon glyphicon-chevron-left"></span> 
-            </a>
-            <a class="right carousel-control" href="#carousel1" data-slide="next">
-                <span class="glyphicon glyphicon-chevron-right"></span> 
-            </a>
-        </div>
+
+			<!-- Controls -->
+			<a class="left carousel-control" href="#transition-timer-carousel" data-slide="prev">
+				<span class="glyphicon glyphicon-chevron-left"></span>
+			</a>
+			<a class="right carousel-control" href="#transition-timer-carousel" data-slide="next">
+				<span class="glyphicon glyphicon-chevron-right"></span>
+			</a>
+
+            <!-- Timer "progress bar"
+            <hr class="transition-timer-carousel-progress-bar animate" />-->
+		</div>
+    </div>
+</section>
+<img class="img-responsive" alt="shadow" style="align: middle; margin-top: -12; width: 100%;" src="img/shadow.png">

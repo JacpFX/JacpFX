@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "JacpFX-DataFX a perfect match"
+title:  JacpFX-DataFX a perfect match
 date:   2014-11-03 21:27:27
 ---
 # JacpFX and DataFX-flows, a perfect match for JavaFX
@@ -11,7 +11,12 @@ Both projects developed independently, and while I developed a JacpFX applicatio
 
 At JavaOne I had the chance to spend a hour with Hendrik Ebbers (one of the DataFX committers) and to create a solution for this. The resulting JacpFX/DataFX-flow plugin allows you to inject the JacpFX context of a specific component to DataFX-flow controllers. It allows DataFX-flow controllers to communicate via the JacpFX message-bus with the rest of the JacpFX application. Beside this, the DataFX-flow controller gets access to resource-bundles and other methods/resources of the JacpFX component. <br/>
 
-![JacpFX/DataFX-flow](http://jacpfx.org/img/JacpFX_DataFX.png)
+
+<div align="center">
+<img src="http://jacpfx.org/img/JacpFX_DataFX.png" class="img-responsive" style="position: center;" align="middle" alt="JacpFX/DataFX-flow">
+
+</div>
+<br/>
 
 
 To demonstrate the usage of both frameworks I created a simple example application based on following steps:
