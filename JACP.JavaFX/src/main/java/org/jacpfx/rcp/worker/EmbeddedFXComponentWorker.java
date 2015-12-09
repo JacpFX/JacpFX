@@ -218,7 +218,6 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
             if (!this.removeComponentValue(previousContainer)) {
                 clearTargetLayoutInPerspective(parentPerspective, currentTargetLayout);
             }
-            parentPerspective.unregisterComponent(component);
         }
         TearDownHandler.shutDownFXComponent(component, parentId, layout);
     }

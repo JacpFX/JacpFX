@@ -151,12 +151,13 @@ public class TearDownHandler {
 
     public static void shutDownFXComponent(final EmbeddedFXComponent component, final String parentId, final Object... params) {
         // run teardown
+        ComponentRegistry.removeComponent(component);
         FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
                 component.getComponent(), params);
         GlobalMediator.getInstance().clearToolbar(component, parentId);
         component.interruptWorker();
         component.initEnv(null, null);
-        ComponentRegistry.removeComponent(component);
+
     }
 
     private static void awaitTermination(Set<Future<Boolean>> set) {
@@ -172,7 +173,9 @@ public class TearDownHandler {
     }
 
     public static void shutDownAsyncComponent(final ASubComponent component, final Object... params) {
+        component.setStarted(false);
         if (component instanceof StatelessCallabackComponent) {
+            ComponentRegistry.removeComponent(component);
             final Set<Future<Boolean>> set = new HashSet<>();
             final StatelessCallabackComponent<EventHandler<Event>, Event, Object> tmp = (StatelessCallabackComponent<EventHandler<Event>, Event, Object>) component;
             final List<SubComponent<EventHandler<Event>, Event, Object>> instances = tmp.getInstances();
@@ -183,8 +186,9 @@ public class TearDownHandler {
             awaitTermination(set);
             tmp.getExecutorService().shutdownNow();
             instances.clear();
-            ComponentRegistry.removeComponent(component);
+
         } else {
+            ComponentRegistry.removeComponent(component);
             try {
                 executor.submit(new TearDownWorker(component)).get();
             } catch (InterruptedException | RejectedExecutionException | ExecutionException e) {
@@ -193,7 +197,7 @@ public class TearDownHandler {
             }
             component.interruptWorker();
             component.initEnv(null, null);
-            ComponentRegistry.removeComponent(component);
+
         }
     }
 

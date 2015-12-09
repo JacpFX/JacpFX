@@ -280,23 +280,14 @@ public abstract class AFXWorkbench
         PerspectiveRegistry.registerPerspective(perspective);
     }
 
-    @Override
-    /**
-     * {@inheritDoc}
-     */
-    // TODO remove this!!
-    public final void unregisterComponent(
+
+    private  void unregisterComponent(
             final Perspective<Node, EventHandler<Event>, Event, Object> perspective) {
         FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,
                 FXUtil.APERSPECTIVE_MQUEUE, null);
         PerspectiveRegistry.removePerspective(perspective);
     }
 
-    @Override
-    public final void removeAllCompnents() {
-        perspectives.forEach(this::unregisterComponent);
-        perspectives.clear();
-    }
 
     /**
      * {@inheritDoc}

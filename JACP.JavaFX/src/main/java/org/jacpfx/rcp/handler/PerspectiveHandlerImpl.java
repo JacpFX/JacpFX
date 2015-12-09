@@ -90,9 +90,9 @@ public class PerspectiveHandlerImpl implements
     private static void shutDownAndClearComponents(final Perspective<Node, EventHandler<Event>, Event, Object> perspective) {
         final List<SubComponent<EventHandler<Event>, Event, Object>> componentsToShutdown = perspective.getSubcomponents();
         componentsToShutdown.stream()
+                .filter(component->component.getContext()!=null)
                 .filter(c -> c.getContext().isActive())
                 .forEach(PerspectiveHandlerImpl::shutDownComponent);
-        perspective.removeAllCompnents();
     }
 
     private static void shutDownComponent(final SubComponent<EventHandler<Event>, Event, Object> component) {

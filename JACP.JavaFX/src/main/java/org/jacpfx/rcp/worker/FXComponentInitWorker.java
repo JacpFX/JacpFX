@@ -233,7 +233,6 @@ public class FXComponentInitWorker extends AComponentWorker<EmbeddedFXComponent>
         final JacpContext context = component.getContext();
         final String parentId = context.getParentId();
         final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
-        if (parentPerspctive != null) parentPerspctive.unregisterComponent(component);
         TearDownHandler.shutDownFXComponent(component, parentId);
         component.setStarted(false);
     }

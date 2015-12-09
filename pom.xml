@@ -60,6 +60,7 @@
                 <module>JACP.JavaFX</module>
                 <module>JACP.JavaFXControls</module>
                 <module>JACP.JavaFXLauncher</module>
+                <module>JacpFXConcurrencyTools</module>
             </modules>
         </profile>
         <profile>
@@ -76,6 +77,12 @@
             <version>4.9</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.jacpfx</groupId>
+            <artifactId>JacpFXConcurrencyTools</artifactId>
+            <version>3.0-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
 
     <build>
