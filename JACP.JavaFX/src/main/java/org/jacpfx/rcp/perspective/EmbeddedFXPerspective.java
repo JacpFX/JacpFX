@@ -45,8 +45,4 @@ public class EmbeddedFXPerspective extends AFXPerspective {
         return this.getContext() != null ? this.getContext().getId() : this.perspective.toString();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        return super.equals(o);
-    }
 }

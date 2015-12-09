@@ -23,7 +23,7 @@
  * *********************************************************************
  */
 
-package org.jacpfx.rcp.context;
+package org.jacpfx.concurrency;
 
 /**
  * Created by Andy Moncsek on 16.04.15.

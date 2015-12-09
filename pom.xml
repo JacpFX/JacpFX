@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.jacpfx</groupId>
     <artifactId>jacpfx-parent</artifactId>
-    <version>2.1</version>
+    <version>3.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>jacpfx Project</name>
     <url>https://github.com/JacpFX/JacpFX</url>
@@ -45,27 +45,27 @@
         <profile>
             <id>all</id>
             <modules>
-                <module>../JACP.API</module>
-                <module>../JACP.JavaFX</module>
-                <module>../JACP.JavaFXSpring</module>
-                <module>../JACP.JavaFXControls</module>
-                <module>../JACP.JavaFXLauncher</module>
+                <module>JACP.API</module>
+                <module>JACP.JavaFX</module>
+                <module>JACP.JavaFXSpring</module>
+                <module>JACP.JavaFXControls</module>
+                <module>JACP.JavaFXLauncher</module>
+                <module>JacpFXConcurrencyTools</module>
             </modules>
         </profile>
         <profile>
             <id>javafx</id>
             <modules>
-                <module>../JACP.API</module>
-                <module>../JACP.JavaFX</module>
-                <module>../JACP.JavaFXSpring</module>
-                <module>../JACP.JavaFXControls</module>
-                <module>../JACP.JavaFXLauncher</module>
+                <module>JACP.API</module>
+                <module>JACP.JavaFX</module>
+                <module>JACP.JavaFXControls</module>
+                <module>JACP.JavaFXLauncher</module>
             </modules>
         </profile>
         <profile>
             <id>api</id>
             <modules>
-                <module>../JACP.API</module>
+                <module>JACP.API</module>
             </modules>
         </profile>
     </profiles>
@@ -97,6 +97,19 @@
                         <id>${artifactId}-sources</id>
                         <goals>
                             <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jdeps-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>jdkinternals</goal> <!-- verify main classes -->
+                            <goal>test-jdkinternals</goal> <!-- verify test classes -->
                         </goals>
                     </execution>
                 </executions>

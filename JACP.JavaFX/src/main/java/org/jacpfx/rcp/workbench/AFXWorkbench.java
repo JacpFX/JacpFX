@@ -198,7 +198,6 @@ public abstract class AFXWorkbench
                     activePerspectives.
                             forEach(persp -> GlobalMediator.getInstance().handleToolBarButtons(persp, false));
                 });
-
     }
 
 

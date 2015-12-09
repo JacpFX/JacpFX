@@ -402,7 +402,7 @@ public class FXUtil {
     public static <P extends ComponentBase<EventHandler<Event>, Object>> P getObserveableById(
             final String id, final List<P> components) {
         final Optional<P> filter = components.stream().
-                filter(nonNull->nonNull != null && nonNull.getContext() != null).
+                filter(nonNull -> nonNull != null && nonNull.getContext() != null).
                 filter(comp -> comp.getContext().getId() != null).
                 filter(c -> c.getContext().getId().equals(id)).
                 findFirst();
@@ -421,7 +421,7 @@ public class FXUtil {
     public static <P extends ComponentBase<EventHandler<Event>, Object>> List<P> getObserveableByParentId(
             final String id, final List<P> components) {
         return components.stream().
-                filter(nonNull->nonNull != null && nonNull.getContext() != null).
+                filter(nonNull -> nonNull != null && nonNull.getContext() != null).
                 filter(comp -> comp.getContext().getParentId() != null).
                 filter(c -> c.getContext().getParentId().equals(id)).
                 collect(Collectors.toList());
@@ -439,7 +439,7 @@ public class FXUtil {
             final String qualifiedId, final List<P> components) {
         final Optional<P> filter = components.stream().
                 filter(nonNull->nonNull != null && nonNull.getContext() != null).
-                filter(comp -> comp.getContext().getFullyQualifiedId() != null ? comp.getContext().getFullyQualifiedId().equals(qualifiedId):false).
+                filter(comp -> comp.getContext().getFullyQualifiedId() != null ?comp.getContext().getFullyQualifiedId().equals(qualifiedId):false).
                 findFirst();
         if (filter.isPresent()) return filter.get();
         return null;

@@ -25,7 +25,6 @@
 
 package org.jacpfx.rcp.util;
 
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -37,13 +36,6 @@ import org.jacpfx.api.util.UIType;
 import org.jacpfx.rcp.component.EmbeddedFXComponent;
 
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created with IntelliJ IDEA.
@@ -53,55 +45,6 @@ import java.util.concurrent.locks.ReentrantLock;
  * This util class contains methods needed in all types  of workers
  */
 public class WorkerUtil {
-
-    /**
-     * invokes a runnable on application thread and waits until execution is
-     * finished
-     *
-     * @param runnable, a runnable which will be invoked and wait until execution is finished
-     * @throws InterruptedException  when thread was interrupted on shutdown
-     * @throws java.util.concurrent.ExecutionException when an exception was thrown in a component
-     *
-     */
-    public static void invokeOnFXThreadAndWait(final Runnable runnable)
-            throws InterruptedException, ExecutionException {
-        final Lock lock = new ReentrantLock();
-        final Condition condition = lock.newCondition();
-        final AtomicBoolean conditionReady = new AtomicBoolean(false);
-        final AtomicReference<ThrowableWrapper> exchanger = new AtomicReference<>();
-        lock.lock();
-        try {
-            Platform.runLater(() -> {
-                lock.lock();
-                try {
-                    // prevent execution when application is closed
-                    if (ShutdownThreadsHandler.APPLICATION_RUNNING.get())
-                        runnable.run();
-                } catch (Exception e) {
-                    exchanger.set(new ThrowableWrapper(e));
-                } finally {
-                    conditionReady.set(true);
-                    condition.signal();
-                    lock.unlock();
-                }
-
-            });
-            // wait until execution is finished and check if application is
-            // still running to prevent wait
-            while (!conditionReady.get()
-                    && ShutdownThreadsHandler.APPLICATION_RUNNING.get())
-                condition.await(ShutdownThreadsHandler.WAIT,
-                        TimeUnit.MILLISECONDS);
-
-            final ThrowableWrapper throwableWrapper = exchanger.get();
-            if (throwableWrapper != null) {
-                throw new ExecutionException(throwableWrapper.t);
-            }
-        } finally {
-            lock.unlock();
-        }
-    }
-
 
 
     /**

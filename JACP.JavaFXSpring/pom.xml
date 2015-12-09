@@ -29,8 +29,7 @@
 	<parent>
 		<groupId>org.jacpfx</groupId>
 		<artifactId>jacpfx-parent</artifactId>
-        <version>2.1</version>
-		<relativePath>../JACP</relativePath>
+        <version>3.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>jacpfx.JavaFXSpring</artifactId>
@@ -59,7 +58,7 @@
 	</developers>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring.version>4.2.3.RELEASE</spring.version>
+		<spring.version>4.0.6.RELEASE</spring.version>
 	</properties>
 	<build>
 		<plugins>

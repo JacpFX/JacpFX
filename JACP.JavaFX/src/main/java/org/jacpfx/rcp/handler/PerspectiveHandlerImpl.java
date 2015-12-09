@@ -112,6 +112,7 @@ public class PerspectiveHandlerImpl implements
         GlobalMediator.getInstance().handleToolBarButtons(previousePerspective, visible);
     }
 
+
     private static void bringRootToFront(final int index, final ObservableList<Node> children, final Node root) {
         if (index != 0) {
             children.remove(index);
@@ -400,6 +401,7 @@ public class PerspectiveHandlerImpl implements
         postConstruct(perspective, layout, AFXPerspective.class.cast(perspective));
         perspective.postInit(new ComponentHandlerImpl(this.launcher, perspective.getIPerspectiveLayout(), perspective
                 .getComponentDelegateQueue()));
+
 
     }
 

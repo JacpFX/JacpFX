@@ -34,6 +34,7 @@ import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.context.JacpContext;
 import org.jacpfx.api.exceptions.NonUniqueComponentException;
 import org.jacpfx.api.message.Message;
+import org.jacpfx.concurrency.FXWorker;
 import org.jacpfx.rcp.component.EmbeddedFXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.componentLayout.PerspectiveLayout;
@@ -130,7 +131,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
             throws InterruptedException, ExecutionException {
         final Thread t = Thread.currentThread();
         Thread.yield();
-        WorkerUtil.invokeOnFXThreadAndWait(() -> {
+        FXWorker.invokeOnFXThreadAndWait(() -> {
             // check if component was set to inactive, if so remove
             try {
                 final JacpContext context = component.getContext();

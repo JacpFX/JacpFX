@@ -23,7 +23,7 @@
  * *********************************************************************
  */
 
-package org.jacpfx.rcp.context;
+package org.jacpfx.concurrency;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
@@ -35,25 +35,46 @@ import java.util.function.Function;
 public class ExecutionStep<V, T> {
 
 
-    private final Function<V, T> function;
+    private final CheckedFunction<V, T> function;
     private final ExecutionType type;
     private final CompletableFuture<T> feature;
+    private final Function<Throwable, T> fnException;
+    private double pos, amount;
 
-    public ExecutionStep(final Function<V, T> function, final ExecutionType type, CompletableFuture<T> feature) {
+    public ExecutionStep(final CheckedFunction<V, T> function, final ExecutionType type, CompletableFuture<T> feature,final Function<Throwable, T> fnException, double pos, double amount) {
         this.function = function;
         this.type = type;
         this.feature = feature;
+        this.fnException = fnException;
+        this.pos = pos;
+        this.amount = amount;
     }
 
-    public ExecutionStep(final Function<V, T> function, final ExecutionType type) {
-       this(function,type,null);
+    public ExecutionStep(final CheckedFunction<V, T> function, final ExecutionType type, CompletableFuture<T> feature,double pos, double amount) {
+        this(function,type,feature,null,pos,amount);
     }
+
+    public ExecutionStep(final CheckedFunction<V, T> function, final ExecutionType type, CompletableFuture<T> feature) {
+        this(function,type,feature,null,0,0);
+    }
+
+    public ExecutionStep(final CheckedFunction<V, T> function, final ExecutionType type, CompletableFuture<T> feature,final Function<Throwable, T> fnException) {
+        this(function,type,feature,fnException,0,0);
+    }
+
+
+    public ExecutionStep(final CheckedFunction<V, T> function, final ExecutionType type) {
+       this(function,type,null,null);
+    }
+
+
+
 
     /**
      * Returns the function to execute
      * @return the @see{java.util.function.Function}
      */
-    public Function<V, T> getFunction() {
+    public CheckedFunction<V, T> getFunction() {
         return this.function;
     }
 
@@ -72,5 +93,29 @@ public class ExecutionStep<V, T> {
      */
     public CompletableFuture<T> getFeature() {
         return this.feature;
+    }
+
+    /**
+     * Returns the exception handler
+     * @return  the @see{Function}
+     */
+    public Function<Throwable, T> getFnException() {
+        return this.fnException;
+    }
+
+    /**
+     * The current position in execution step list
+     * @return the current position in list
+     */
+    public double getPos() {
+        return this.pos;
+    }
+
+    /**
+     * Get the total amount of execution steps
+     * @return the total amount
+     */
+    public double getAmount() {
+        return this.amount;
     }
 }

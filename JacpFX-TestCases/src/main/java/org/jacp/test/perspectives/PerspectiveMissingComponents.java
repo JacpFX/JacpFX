@@ -61,7 +61,6 @@ public class PerspectiveMissingComponents implements FXPerspective {
     private HBox content3;
 
 
-
     @Resource
     private ResourceBundle  resourceBundle;
 
@@ -86,7 +85,6 @@ public class PerspectiveMissingComponents implements FXPerspective {
         }
 
     }
-
 
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
@@ -119,3 +117,4 @@ public class PerspectiveMissingComponents implements FXPerspective {
     }
 
 }
+

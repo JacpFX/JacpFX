@@ -34,10 +34,10 @@ import org.jacpfx.api.exceptions.ComponentNotFoundException;
 import org.jacpfx.api.handler.ComponentHandler;
 import org.jacpfx.api.message.DelegateDTO;
 import org.jacpfx.api.message.Message;
+import org.jacpfx.concurrency.FXWorker;
 import org.jacpfx.rcp.message.MessageImpl;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.ShutdownThreadsHandler;
-import org.jacpfx.rcp.util.WorkerUtil;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.LinkedTransferQueue;
@@ -93,8 +93,8 @@ public class MessageDelegatorImpl extends Thread implements
 
     private void initPerspective(final Perspective<Node, EventHandler<Event>, Event, Object> perspective) throws ExecutionException, InterruptedException {
         perspective.updatePositions(1,1);
-        WorkerUtil.invokeOnFXThreadAndWait(()->this.perspectiveHandler.initComponent(new MessageImpl(perspective.getContext().getId(), perspective
-                .getContext().getId(), "init", null),perspective));
+        FXWorker.invokeOnFXThreadAndWait(() -> this.perspectiveHandler.initComponent(new MessageImpl(perspective.getContext().getId(), perspective
+                .getContext().getId(), "init", null), perspective));
     }
 
 

@@ -30,6 +30,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.api.util.CustomSecurityManager;
+import org.jacpfx.concurrency.FXWorker;
 import org.jacpfx.rcp.component.AStatelessCallbackComponent;
 import org.jacpfx.rcp.component.CallbackComponent;
 import org.jacpfx.rcp.component.FXComponent;
@@ -373,8 +374,9 @@ public class JacpContextImpl implements Context,InternalContext {
     /**
      * {@inheritDoc}
      */
-    public AsyncHandler<?> asyncHandler() {
-        return AsyncHandler.getInstance();
+    @Override
+    public FXWorker<?> worker() {
+        return FXWorker.instance();
     }
 
     /**
