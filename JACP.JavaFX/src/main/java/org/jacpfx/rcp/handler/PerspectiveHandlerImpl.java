@@ -29,9 +29,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.CacheHint;
 import javafx.scene.Node;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
 import org.jacpfx.api.annotations.lifecycle.OnHide;
 import org.jacpfx.api.annotations.lifecycle.OnShow;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
@@ -63,6 +61,7 @@ import org.jacpfx.rcp.workbench.GlobalMediator;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -116,15 +115,11 @@ public class PerspectiveHandlerImpl implements
     private static void bringRootToFront(final int index, final ObservableList<Node> children, final Node root) {
         if (index != 0) {
             children.remove(index);
-            GridPane.setHgrow(root, Priority.ALWAYS);
-            GridPane.setVgrow(root, Priority.ALWAYS);
             children.set(0, root);
         }
     }
 
     private static void addNewRoot(final ObservableList<Node> children, final Node root) {
-        GridPane.setHgrow(root, Priority.ALWAYS);
-        GridPane.setVgrow(root, Priority.ALWAYS);
         children.add(root);
     }
 
@@ -211,20 +206,20 @@ public class PerspectiveHandlerImpl implements
     }
 
     private void displayNextPossiblePerspective(final Perspective<Node, EventHandler<Event>, Event, Object> current) {
-        final Perspective<Node, EventHandler<Event>, Event, Object> possiblePerspectiveToShow = PerspectiveRegistry.findNextActivePerspective(current);
-        if (possiblePerspectiveToShow != null) {
-            final String possiblePerspectiveId = possiblePerspectiveToShow.getContext().getId();
+        final Optional<Perspective<Node, EventHandler<Event>, Event, Object>> possiblePerspectiveToShow = PerspectiveRegistry.findNextActivePerspective(current);
+        possiblePerspectiveToShow.ifPresent(perspective-> {
+            final String possiblePerspectiveId = perspective.getContext().getId();
             final String previousPerspectiveId = current.getContext().getId();
             if (!possiblePerspectiveId.equals(previousPerspectiveId)) {
                 PerspectiveRegistry.getAndSetCurrentVisiblePerspective(possiblePerspectiveId);
-                final PerspectiveLayoutInterface<? extends Node, Node> perspectiveLayoutReplacementComponent = possiblePerspectiveToShow
+                final PerspectiveLayoutInterface<? extends Node, Node> perspectiveLayoutReplacementComponent = perspective
                         .getIPerspectiveLayout();
                 // execute OnShow
-                onShow(possiblePerspectiveToShow);
-                this.handlePerspectiveReassignment(possiblePerspectiveToShow, previousPerspectiveId, perspectiveLayoutReplacementComponent);
+                onShow(perspective);
+                handlePerspectiveReassignment(perspective, previousPerspectiveId, perspectiveLayoutReplacementComponent);
             }
+        });
 
-        }
     }
 
     private void removePerspectiveNodeFromWorkbench(final PerspectiveLayoutInterface<? extends Node, Node> perspectiveLayout, final Node componentOld) {

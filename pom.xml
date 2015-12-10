@@ -61,6 +61,7 @@
                 <module>JACP.JavaFXControls</module>
                 <module>JACP.JavaFXLauncher</module>
                 <module>JacpFXConcurrencyTools</module>
+                <module>JacpFX-TestCases</module>
             </modules>
         </profile>
         <profile>

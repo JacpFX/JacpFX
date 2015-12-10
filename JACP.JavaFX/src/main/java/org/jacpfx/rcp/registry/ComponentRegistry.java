@@ -31,6 +31,7 @@ import org.jacpfx.rcp.util.FXUtil;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -57,6 +58,7 @@ public class ComponentRegistry {
      */
     public static void registerComponent(
             final SubComponent<EventHandler<Event>, Event, Object> component) {
+        Objects.requireNonNull(component.getContext());
         componentsReg.putIfAbsent(component.getContext().getFullyQualifiedId(), component);
     }
 
@@ -67,6 +69,7 @@ public class ComponentRegistry {
      */
     public static void removeComponent(
             final SubComponent<EventHandler<Event>, Event, Object> component) {
+        Objects.requireNonNull(component.getContext());
         componentsReg.remove(component.getContext().getFullyQualifiedId());
     }
 
@@ -108,7 +111,7 @@ public class ComponentRegistry {
     public static SubComponent<EventHandler<Event>, Event, Object> findComponentByQualifiedId(
             final String parentId, final String componentId) {
 
-        return componentsReg.get(FXUtil.getQualifiedComponentId(parentId,componentId));
+        return findComponentByQualifiedId(FXUtil.getQualifiedComponentId(parentId,componentId));
 
     }
 
