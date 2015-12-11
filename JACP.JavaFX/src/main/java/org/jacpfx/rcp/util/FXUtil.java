@@ -67,8 +67,9 @@ public class FXUtil {
     public static final String IDECLARATIVECOMPONENT_BUNDLE_LOCATION = "resourceBundleLocation";
     public static final String AFXPERSPECTIVE_PERSPECTIVE_LAYOUT = "perspectiveLayout";
     private final static String PATTERN_LOCALE ="_";
-    private final static String PATTERN_SPLIT="\\.";
+    private final static char PATTERN_SPLIT='.';
     public final static String PATTERN_GLOBAL=".";
+    private final static int MAX_SPLIT=3;
 
 
     /**
@@ -339,8 +340,8 @@ public class FXUtil {
      * @return returns the first part of message id "parent.child"
      */
     public static String getParentFromId(final String messageId) {
-        final String[] targetId = FXUtil.getTargetId(messageId);
-        return targetId[0];
+        final char[][] targetId = FXUtil.getTargetId(messageId);
+        return new String(targetId[0]);
     }
 
     /**
@@ -351,8 +352,8 @@ public class FXUtil {
      */
     public static String getTargetComponentId(final String messageId) {
         if (!FXUtil.isLocalMessage(messageId)) {
-            final String[] targetId = FXUtil.getTargetId(messageId);
-            return targetId[1];
+            final char[][] targetId = FXUtil.getTargetId(messageId);
+            return new String(targetId[1]);
         }
         return messageId;
     }
@@ -376,7 +377,7 @@ public class FXUtil {
      * @return true when message is not seperated by a dot
      */
     public static boolean isLocalMessage(final String messageId) {
-        return !messageId.contains(PATTERN_GLOBAL);
+        return messageId.indexOf(PATTERN_GLOBAL) <= -1;
     }
 
     /**
@@ -385,8 +386,35 @@ public class FXUtil {
      * @param messageId the message id to analyze
      * @return  returns a string array of the message id
      */
-    private static String[] getTargetId(final String messageId) {
-        return messageId.split(PATTERN_SPLIT);
+    private static char[][] getTargetId(final String messageId) {
+        return split(messageId.toCharArray(),PATTERN_SPLIT);
+    }
+
+    private static char[][] split(final char[] s,
+                                                      final char splitChar) {
+        char[][] result = new char[MAX_SPLIT][];
+        final int length = s.length;
+        int offset = 0;
+        int count = 0;
+        int matchCount = 0;
+        for (int i = 0; i < length; i++) {
+            if (s[i] == splitChar) {
+                if (count > 0) {
+                    if (matchCount == MAX_SPLIT-1) return result;
+                    result[matchCount] = Arrays.copyOfRange(s, offset, offset + count);
+                    matchCount++;
+                }
+                offset = i + 1;
+                count = 0;
+            } else {
+                count++;
+            }
+        }
+        if (count > 0) {
+            if (matchCount == MAX_SPLIT-1) return result;
+            result[matchCount] = Arrays.copyOfRange(s, offset, offset + count);
+        }
+        return result;
     }
 
 
