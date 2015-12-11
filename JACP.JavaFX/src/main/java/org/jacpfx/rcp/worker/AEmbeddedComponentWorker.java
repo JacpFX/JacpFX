@@ -36,6 +36,7 @@ import org.jacpfx.rcp.util.FXUtil;
 import org.jacpfx.rcp.util.WorkerUtil;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -78,8 +79,10 @@ public abstract class AEmbeddedComponentWorker extends Thread {
     void handleOldComponentRemove(final Node parent,
                                   final Node currentContainer) {
         WorkerUtil.handleViewState(currentContainer, false);
-        final ObservableList<Node> children = FXUtil.getChildren(parent);
-        children.remove(currentContainer);
+        final Optional<ObservableList<Node>> children = FXUtil.getChildren(parent);
+        children.ifPresent(childList -> {
+            childList.remove(currentContainer);
+        });
     }
 
 

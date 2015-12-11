@@ -31,7 +31,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import org.jacpfx.api.annotations.Resource;
-import org.jacpfx.api.component.ComponentBase;
 import org.jacpfx.api.component.Injectable;
 import org.jacpfx.api.context.JacpContext;
 
@@ -88,7 +87,8 @@ public class FXUtil {
      * @return all children of that node
      */
     @SuppressWarnings("unchecked")
-    public static ObservableList<Node> getChildren(final Node node) {
+    public static Optional<ObservableList<Node>> getChildren(final Node node) {
+        if(node==null) return Optional.empty();
         if (node instanceof Parent) {
             final Parent tmp = (Parent) node;
             Method protectedChildrenMethod;
@@ -106,10 +106,10 @@ public class FXUtil {
                         null, ex);
             }
 
-            return returnValue;
+            return Optional.ofNullable(returnValue);
         }
 
-        return null;
+        return  Optional.empty();
 
     }
 
@@ -302,13 +302,11 @@ public class FXUtil {
      */
     public static <T> Node loadFXMLandSetController(final T bean,
                                                     final ResourceBundle bundle, final URL url) {
-        final FXMLLoader fxmlLoader = new FXMLLoader();
+        final FXMLLoader fxmlLoader = new FXMLLoader(url);
         if (bundle != null) {
             fxmlLoader.setResources(bundle);
         }
-        fxmlLoader.setLocation(url);
         fxmlLoader.setController(bean);
-        final Thread t = Thread.currentThread();
         try {
             return fxmlLoader.load();
         } catch (IOException e) {
@@ -389,76 +387,6 @@ public class FXUtil {
      */
     private static String[] getTargetId(final String messageId) {
         return messageId.split(PATTERN_SPLIT);
-    }
-
-    /**
-     * Returns a component by id from a provided component list
-     *
-     * @param id the component id to look for
-     * @param components the component list
-     * @param <P>  the concrete type of component
-     * @return  the component by id
-     */
-    public static <P extends ComponentBase<EventHandler<Event>, Object>> P getObserveableById(
-            final String id, final List<P> components) {
-        final Optional<P> filter = components.stream().
-                filter(nonNull -> nonNull != null && nonNull.getContext() != null).
-                filter(comp -> comp.getContext().getId() != null).
-                filter(c -> c.getContext().getId().equals(id)).
-                findFirst();
-        if (filter.isPresent()) return filter.get();
-        return null;
-    }
-
-    /**
-     * Returns a component by parent id from a provided component list
-     *
-     * @param id the component id to look for
-     * @param components the component list
-     * @param <P>  the concrete type of component
-     * @return  the component by id
-     */
-    public static <P extends ComponentBase<EventHandler<Event>, Object>> List<P> getObserveableByParentId(
-            final String id, final List<P> components) {
-        return components.stream().
-                filter(nonNull -> nonNull != null && nonNull.getContext() != null).
-                filter(comp -> comp.getContext().getParentId() != null).
-                filter(c -> c.getContext().getParentId().equals(id)).
-                collect(Collectors.toList());
-
-    }
-    /**
-     * Returns a component by full qualified id (like parentId.componentId) from a provided component list
-     *
-     * @param qualifiedId the component id to look for
-     * @param components the component list
-     * @param <P>  the concrete type of component
-     * @return  the component by id
-     */
-    public static <P extends ComponentBase<EventHandler<Event>, Object>> P getObserveableByQualifiedId(
-            final String qualifiedId, final List<P> components) {
-        final Optional<P> filter = components.stream().
-                filter(nonNull->nonNull != null && nonNull.getContext() != null).
-                filter(comp -> comp.getContext().getFullyQualifiedId() != null ?comp.getContext().getFullyQualifiedId().equals(qualifiedId):false).
-                findFirst();
-        if (filter.isPresent()) return filter.get();
-        return null;
-    }
-
-
-
-    /**
-     * Returns a component by full qualified id (like parentId.componentId) from a provided component list
-     *
-     * @param componentId the component id to look for
-     * @param parentId the parentId
-     * @param components the component list
-     * @param <P>  the concrete type of component
-     * @return  the component by id
-     */
-    public static <P extends ComponentBase<EventHandler<Event>, Object>> P getObserveableByQualifiedId(
-            final String parentId,final String componentId, final List<P> components) {
-        return getObserveableByQualifiedId(getQualifiedComponentId(parentId,componentId),components);
     }
 
 

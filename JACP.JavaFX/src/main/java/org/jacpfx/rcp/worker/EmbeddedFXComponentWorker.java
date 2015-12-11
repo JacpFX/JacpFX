@@ -210,7 +210,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
 
         final Context context = Context.class.cast(component.getContext());
         final String parentId = context.getParentId();
-        if(parentId==null) return;
+        if (parentId == null) return;
         final FXComponentLayout layout = context.getComponentLayout();
         final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspective = PerspectiveRegistry.findPerspectiveById(parentId);
         if (parentPerspective != null) {
@@ -227,8 +227,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
         if (playout != null && currentTargetLayout != null) {
             final Node container = playout.getTargetLayoutComponents().get(currentTargetLayout);
             if (container != null) {
-                final ObservableList<Node> children = FXUtil.getChildren(container);
-                children.clear();
+                FXUtil.getChildren(container).ifPresent(ObservableList::clear);
             }
 
         }

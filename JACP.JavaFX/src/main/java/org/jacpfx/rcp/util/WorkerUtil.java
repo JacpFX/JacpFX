@@ -35,6 +35,7 @@ import org.jacpfx.api.message.Message;
 import org.jacpfx.api.util.UIType;
 import org.jacpfx.rcp.component.EmbeddedFXComponent;
 
+import java.util.Optional;
 import java.util.concurrent.BlockingQueue;
 
 /**
@@ -63,15 +64,18 @@ public class WorkerUtil {
     /**
      * enables component an add to container
      *
-     * @param validContainer , a valid container where component root will be added
-     * @param componentViewNode   , the component
+     * @param validContainer    , a valid container where component root will be added
+     * @param componentViewNode , the component
      */
     private static void handleAdd(final Node validContainer, final Node componentViewNode) {
         if (componentViewNode != null) {
             handleViewState(componentViewNode, true);
-            final ObservableList<Node> children = FXUtil
+            final Optional<ObservableList<Node>> children = FXUtil
                     .getChildren(validContainer);
-            if(!children.contains(componentViewNode))children.add(componentViewNode);
+            children.ifPresent(childList -> {
+                if (!childList.contains(componentViewNode)) childList.add(componentViewNode);
+            });
+
         }
 
     }
@@ -80,7 +84,7 @@ public class WorkerUtil {
      * set visibility and enable/disable
      *
      * @param componentViewNode, a Node where to set the state
-     * @param state,        the boolean value of the state
+     * @param state,             the boolean value of the state
      */
     public static void handleViewState(final Node componentViewNode,
                                        final boolean state) {
@@ -103,7 +107,7 @@ public class WorkerUtil {
             final Message<Event, Object> action) {
         if (value != null && targetId != null
                 && !action.messageBodyEquals("init")) {
-            comp.getContext().send(targetId,value);
+            comp.getContext().send(targetId, value);
         }
     }
 
@@ -114,12 +118,12 @@ public class WorkerUtil {
      * component.
      *
      * @param handleReturnValue the UI return value after "handle(message)" {@link org.jacpfx.api.component.ComponentHandle#handle(org.jacpfx.api.message.Message)} was executed
-     * @param component, a component
-     * @param message,    the current message
+     * @param component,        a component
+     * @param message,          the current message
      * @throws java.lang.Exception when an Exception occures while execute {@link org.jacpfx.api.component.ComponentView#postHandle(Object, org.jacpfx.api.message.Message)}
      */
     public static void executeComponentViewPostHandle(final Node handleReturnValue,
-                                                            final EmbeddedFXComponent component, final Message<Event, Object> message) throws Exception {
+                                                      final EmbeddedFXComponent component, final Message<Event, Object> message) throws Exception {
 
         Node potsHandleReturnValue = component.getComponentViewHandle().postHandle(handleReturnValue,
                 message);
@@ -149,7 +153,7 @@ public class WorkerUtil {
         try {
             delegateQueue.put(component);
         } catch (InterruptedException e) {
-           t.getUncaughtExceptionHandler().uncaughtException(t,e);
+            t.getUncaughtExceptionHandler().uncaughtException(t, e);
         }
     }
 
@@ -160,7 +164,6 @@ public class WorkerUtil {
      * @param action,    the current message
      * @return a returned node from component execution {@link org.jacpfx.api.component.ComponentHandle#handle(org.jacpfx.api.message.Message)}
      * @throws java.lang.Exception when an Exception occures while execute {@link org.jacpfx.api.component.ComponentHandle#handle(org.jacpfx.api.message.Message)}
-
      */
     public static Node prepareAndRunHandleMethod(
             final UIComponent<Node, EventHandler<Event>, Event, Object> component,

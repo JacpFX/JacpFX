@@ -81,33 +81,35 @@ public class TearDownHandler {
                 .getPerspectives();
         if (perspectives == null) return;
         for (final Perspective<Node, EventHandler<Event>, Event, Object> perspective : perspectives) {
-            // TODO ... teardown perspective itself
-            final List<SubComponent<EventHandler<Event>, Event, Object>> subcomponents = perspective
-                    .getSubcomponents();
-            if (subcomponents != null) {
-                final List<SubComponent<EventHandler<Event>, Event, Object>> handleAsync = new ArrayList<>();
-                // TODO FIXME for teardow all parameters in PreDestroyed should be passed -- see init process
-                for (final SubComponent<EventHandler<Event>, Event, Object> component : subcomponents) {
-                    if (CallbackComponent.class.isAssignableFrom(component.getClass())) {
-                        handleAsync
-                                .add(component);
-                    } else {
-                        // run teardown in app thread
-                        FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
-                                component.getComponent());
-                    }
 
-                }
-                if (!handleAsync.isEmpty())
-                    handleAsyncTearDown(handleAsync);
-
-            }
+            teardownComponents(perspective.getSubcomponents());
 
             FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
                     perspective.getPerspective());
 
         }
         executor.shutdown();
+    }
+
+    private static void teardownComponents(List<SubComponent<EventHandler<Event>, Event, Object>> subcomponents) {
+        if (subcomponents != null) {
+            final List<SubComponent<EventHandler<Event>, Event, Object>> handleAsync = new ArrayList<>();
+            // TODO FIXME for teardow all parameters in PreDestroyed should be passed -- see init process
+            for (final SubComponent<EventHandler<Event>, Event, Object> component : subcomponents) {
+                if (CallbackComponent.class.isAssignableFrom(component.getClass())) {
+                    handleAsync
+                            .add(component);
+                } else {
+                    // run teardown in app thread
+                    FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
+                            component.getComponent());
+                }
+
+            }
+            if (!handleAsync.isEmpty())
+                handleAsyncTearDown(handleAsync);
+
+        }
     }
 
 
