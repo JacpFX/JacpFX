@@ -23,17 +23,20 @@
  * *********************************************************************
  */
 
-package org.jacp.test.workbench;
+package org.jacp.test.tryout.config;
+
+import org.jacp.test.components.ComponentIds;
+import org.jacp.test.perspectives.PerspectiveIds;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
 /**
- * Created by Andy Moncsek on 06.01.14.
+ * Created by Amdy Moncsek on 28.01.14.
  */
-public class WorkbenchIds {
-    public static final String Workbench ="id1";
-    public static final String WorkbenchOnShowPerspective ="id9";
-    public static final String WorkbenchDialogInPerspectiveTest ="id2";
-    public static final String WorkbenchMessagingTest="id3";
-    public static final String WorkbenchHandleToolBarButtonsBetweenPerspectives = "id7";
-    public static final String WorkbenchTestSwitch ="id8";
-    public static final String WorkbenchVersion3 ="id10";
+@Configuration
+@ComponentScan
+public class BasicConfig {
+    public static final String TARGET_CONTAINER_LEFT ="left";
+    public static final String TARGET_CONTAINER_RIGHT ="right";
+    public static final String RIGHT = PerspectiveIds.PerspectiveOneVersion3.concat(".").concat(ComponentIds.ComponentTwoVersion3);
 }
