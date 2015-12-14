@@ -58,7 +58,7 @@ import java.util.List;
  *
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
-@org.jacpfx.api.annotations.workbench.Workbench(id = WorkbenchIds.Workbench, name = "workbench", perspectives = {PerspectiveIds.PerspectiveManagedFragmentMessage2,PerspectiveIds.PerspectiveManagedFragmentMessage})
+@org.jacpfx.api.annotations.workbench.Workbench(id = WorkbenchIds.Workbench,perspectives = {PerspectiveIds.PerspectiveManagedFragmentMessage2,PerspectiveIds.PerspectiveManagedFragmentMessage})
 public class WorkbenchManagedFragmentMessage implements FXWorkbench {
     public static Stage stage;
     @Resource

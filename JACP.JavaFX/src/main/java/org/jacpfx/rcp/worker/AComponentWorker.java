@@ -84,7 +84,7 @@ public abstract class AComponentWorker<T> extends Task<T> {
      * @param component
      */
     void checkValidComponent(final ASubComponent component) {
-        if (component == null || component.getContext() == null || component.getContext().getId() == null || component.getContext().getName()==null)
+        if (component == null || component.getContext() == null || component.getContext().getId() == null)
             throw new InvalidComponentMatch("Component is in invalid state while initialisation:");
         final ComponentHandle<?, Event, Object> handle = component.getComponent();
         if (handle == null) throw new InvalidComponentMatch("Component is not initialized correctly");

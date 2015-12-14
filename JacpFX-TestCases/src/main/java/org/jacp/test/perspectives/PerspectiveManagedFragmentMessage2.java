@@ -55,7 +55,7 @@ import java.util.ResourceBundle;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@Perspective(id = PerspectiveIds.PerspectiveManagedFragmentMessage2, name = "contactPerspective",
+@Perspective(id = PerspectiveIds.PerspectiveManagedFragmentMessage2,
         components = {
                 ComponentIds.CallbackComponentManagedFragmentMessage},
         viewLocation = "/fxml/perspectiveOne.fxml",

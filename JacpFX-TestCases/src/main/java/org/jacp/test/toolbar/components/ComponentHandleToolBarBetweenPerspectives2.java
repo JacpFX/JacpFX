@@ -61,7 +61,6 @@ import static org.jacp.test.util.MessageConstants.SWITCH_MESSAGE;
  */
 
 @View(id = ComponentHandleToolBarBetweenPerspectives2.ID,
-        name = "SimpleView",
         active = true,
         resourceBundleLocation = "bundles.languageBundle",
         localeID = "en_US",

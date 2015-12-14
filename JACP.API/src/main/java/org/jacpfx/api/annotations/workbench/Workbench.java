@@ -41,12 +41,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Workbench {
-    /**
-     * The component name.
-     *
-     * @return The component name
-     */
-    String name();
 
     /**
      * The workbench id

@@ -67,7 +67,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
             final Map<String, Node> targetComponents,
             final BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue,
             final EmbeddedFXComponent component) {
-        super(component.getContext().getName());
+        super(component.getContext().getId());
         this.targetComponents = targetComponents;
         this.component = component;
         this.componentDelegateQueue = componentDelegateQueue;
@@ -247,7 +247,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
         } else if (root != null && !root.equals(previousContainer)) {
             // add new view
             this.log(" //1.1.1.1.4// handle new component insert: "
-                    + component.getContext().getName());
+                    + component.getContext().getId());
             removeComponentValue(previousContainer);
             WorkerUtil.handleViewState(root, true);
             executeLayoutTargetUpdate(component, newTargetLayout, targetComponents);

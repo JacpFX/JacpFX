@@ -59,7 +59,7 @@ import java.util.List;
  *
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
-@org.jacpfx.api.annotations.workbench.Workbench(id = WorkbenchIds.WorkbenchMessagingTest, name = "workbench", perspectives = {PerspectiveIds.PerspectiveMessagingTest3,PerspectiveIds.PerspectiveMessagingTest2,PerspectiveIds.PerspectiveMessagingTest})
+@org.jacpfx.api.annotations.workbench.Workbench(id = WorkbenchIds.WorkbenchMessagingTest,perspectives = {PerspectiveIds.PerspectiveMessagingTest3,PerspectiveIds.PerspectiveMessagingTest2,PerspectiveIds.PerspectiveMessagingTest})
 public class WorkbenchMessagingTest implements FXWorkbench {
     private Stage stage;
     @Resource

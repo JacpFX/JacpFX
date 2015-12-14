@@ -160,7 +160,7 @@ public class FXComponentInitWorker extends AComponentWorker<EmbeddedFXComponent>
         this.component.lock();
         checkValidComponent(this.component);
         runPreInitMethods();
-        final String name = this.component.getContext().getName();
+        final String name = this.component.getContext().getId();
         this.log("3.4.4.2.1: subcomponent handle init START: "
                 + name);
         final Node handleReturnValue = WorkerUtil.prepareAndRunHandleMethod(

@@ -64,7 +64,6 @@ import java.util.List;
  * @author <a href="mailto:pete.ahcp@gmail.com">Patrick Symmangk</a>
  */
 @org.jacpfx.api.annotations.workbench.Workbench(id = WorkbenchHandleToolBarButtonsBetweenPerspectives.ID,
-        name = "workbench",
         perspectives = {PerspectiveTwoToolbarSwitchPerspectives.ID, PerspectiveOneToolbarSwitchPerspectives.ID})
 public class WorkbenchHandleToolBarButtonsBetweenPerspectives implements FXWorkbench {
     // =================== CONSTANTS ===================

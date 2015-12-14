@@ -53,7 +53,7 @@ import java.util.logging.Logger;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@View(id = "id007", name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", initialTargetLayoutId = "content1")
+@View(id = "id007", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", initialTargetLayoutId = "content1")
 public class ComponentMessagingTest1Component1 implements FXComponent {
 
     private final Logger log = Logger.getLogger(ComponentMessagingTest1Component1.class

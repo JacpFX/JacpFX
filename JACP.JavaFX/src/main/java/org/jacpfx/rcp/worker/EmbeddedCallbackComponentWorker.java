@@ -53,7 +53,7 @@ class EmbeddedCallbackComponentWorker
     public EmbeddedCallbackComponentWorker(
             final BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
             final SubComponent<EventHandler<Event>, Event, Object> component) {
-        super(component.getContext().getName());
+        super(component.getContext().getId());
         this.component = component;
         this.delegateQueue = delegateQueue;
         ShutdownThreadsHandler.registerThread(this);

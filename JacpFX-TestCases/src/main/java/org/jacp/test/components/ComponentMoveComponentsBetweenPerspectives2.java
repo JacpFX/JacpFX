@@ -51,7 +51,7 @@ import java.util.logging.Logger;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@View(id = "id0024", name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", initialTargetLayoutId = "content0")
+@View(id = "id0024",  active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", initialTargetLayoutId = "content0")
 public class ComponentMoveComponentsBetweenPerspectives2 implements FXComponent {
 
     private final Logger log = Logger.getLogger(ComponentMoveComponentsBetweenPerspectives2.class

@@ -34,7 +34,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import org.jacp.test.components.ComponentIds;
-import org.jacp.test.main.ApplicationLauncher;
 import org.jacp.test.main.ApplicationLauncherMessagingTest;
 import org.jacpfx.api.annotations.lifecycle.OnShow;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
@@ -54,7 +53,7 @@ import java.util.ResourceBundle;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@Perspective(id = PerspectiveIds.PerspectiveMessagingTest2, name = "contactPerspective",
+@Perspective(id = PerspectiveIds.PerspectiveMessagingTest2,
         components = {
                 ComponentIds.ComponentMessagingTests3},
         viewLocation = "/fxml/perspectiveOne.fxml",

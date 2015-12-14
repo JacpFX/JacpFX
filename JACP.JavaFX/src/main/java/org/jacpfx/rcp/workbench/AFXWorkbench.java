@@ -160,7 +160,7 @@ public abstract class AFXWorkbench
                 launcher(launcher).
                 delegateQueue(messageDelegator.getMessageDelegateQueue()).
                 handler(null);
-        context = new JacpContextImpl(annotation.id(), annotation.name(), messageCoordinator.getMessageQueue());
+        context = new JacpContextImpl(annotation.id(), messageCoordinator.getMessageQueue());
         FXUtil.performResourceInjection(handle, context);
         start(Stage.class.cast(root));
         GlobalMediator.getInstance().handleWorkbenchToolBarButtons(annotation.id(), true);
@@ -202,7 +202,7 @@ public abstract class AFXWorkbench
 
 
     private void initActivePerspective(Perspective<Node, EventHandler<Event>, Event, Object> perspective) {
-        log("3.4.1: register component: " + perspective.getContext().getName());
+        log("3.4.1: register component: " + perspective.getContext().getId());
         final CountDownLatch waitForInit = new CountDownLatch(1);
         log("3.4.2: init perspective");
         executeOnFXThread(() -> {
