@@ -103,7 +103,6 @@ public class CheckPerspectiveTest extends TestFXJacpFXSpringLauncher {
             JacpContext<EventHandler<Event>, Object> context = p.getContext();
             assertNotNull(context.getParentId());
             assertNotNull(context.getId());
-            assertNotNull(context.getName());
             assertNotNull(context.getResourceBundle());
             if(p instanceof PerspectiveMissingComponents) {
                 assertNotNull(PerspectiveMissingComponents.class.cast(p).getResourceBundle());

@@ -26,16 +26,12 @@ package org.jacpfx.rcp.worker;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
-import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.SubComponent;
-import org.jacpfx.api.context.JacpContext;
 import org.jacpfx.api.exceptions.NonUniqueComponentException;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.ASubComponent;
 import org.jacpfx.rcp.context.InternalContext;
 import org.jacpfx.rcp.registry.ComponentRegistry;
-import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.MessageLoggerService;
 import org.jacpfx.rcp.util.ShutdownThreadsHandler;
 import org.jacpfx.rcp.util.TearDownHandler;
@@ -57,7 +53,7 @@ class EmbeddedCallbackComponentWorker
     public EmbeddedCallbackComponentWorker(
             final BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
             final SubComponent<EventHandler<Event>, Event, Object> component) {
-        super(component.getContext().getName());
+        super(component.getContext().getId());
         this.component = component;
         this.delegateQueue = delegateQueue;
         ShutdownThreadsHandler.registerThread(this);
@@ -113,10 +109,6 @@ class EmbeddedCallbackComponentWorker
     private void handleComponentShutdown(final SubComponent<EventHandler<Event>, Event, Object> component) {
         if (!component.isBlocked()) component.lock();
         try {
-            final JacpContext<EventHandler<Event>, Object> context = component.getContext();
-            final String parentId = context.getParentId();
-            final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
-            if (parentPerspctive != null) parentPerspctive.unregisterComponent(component);
             TearDownHandler.shutDownAsyncComponent(ASubComponent.class.cast(component));
         } finally {
             component.release();

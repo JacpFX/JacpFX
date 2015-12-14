@@ -60,7 +60,7 @@ import static org.jacpfx.rcp.util.LayoutUtil.GridPaneUtil;
  * @author <a href="mailto:pete.ahcp@gmail.com">Patrick Symmangk</a>
  */
 
-@Perspective(id = PerspectiveOneToolbarSwitchPerspectives.ID, name = "contactPerspective",
+@Perspective(id = PerspectiveOneToolbarSwitchPerspectives.ID,
         components = {ComponentHandleToolBarBetweenPerspectives1.ID, ComponentHandleToolBarBetweenPerspectives2.ID},
         viewLocation = "/fxml/perspectiveOne.fxml",
         resourceBundleLocation = "bundles.languageBundle",

@@ -51,7 +51,7 @@ import java.util.concurrent.CountDownLatch;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@Perspective(id = PerspectiveIds.PerspectiveOnShowTest4, name = "PerspectiveOnShowTest4",
+@Perspective(id = PerspectiveIds.PerspectiveOnShowTest4,
         components = {   },
         active = false,
         viewLocation = "/fxml/perspectiveOne.fxml",

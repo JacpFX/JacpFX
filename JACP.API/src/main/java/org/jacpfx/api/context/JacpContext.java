@@ -93,12 +93,6 @@ public interface JacpContext<L, M> {
      */
     String getFullyQualifiedId();
 
-    /**
-     * Returns the name of a component.
-     *
-     * @return the component name
-     */
-    String getName();
 
     /**
      * Returns the component resource bundle.

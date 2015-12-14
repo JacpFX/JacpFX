@@ -52,7 +52,7 @@ import java.util.logging.Logger;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@Component(id = "id011", name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
+@Component(id = "id011",  active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
 @Stateless
 public class AsyncCallbackComponentMessagingTest1Component1 implements CallbackComponent {
 

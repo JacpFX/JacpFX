@@ -55,7 +55,7 @@ import java.util.List;
  *
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
-@org.jacpfx.api.annotations.workbench.Workbench(id = "id1", name = "workbench", perspectives = {"id15"})
+@org.jacpfx.api.annotations.workbench.Workbench(id = "id1", perspectives = {"id15"})
 public class WorkbenchAsyncCallbackComponentMessageTesting1 implements FXWorkbench {
     private Stage stage;
     @Resource

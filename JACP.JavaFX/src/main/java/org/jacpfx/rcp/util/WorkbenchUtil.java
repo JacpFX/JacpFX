@@ -178,7 +178,7 @@ public class WorkbenchUtil {
         if (perspectiveAnnotation == null) throw new IllegalArgumentException("no perspective annotation found");
         final String id = perspectiveAnnotation.id();
         if (id == null) throw new IllegalArgumentException("no perspective id set");
-        initContext(InternalContext.class.cast(perspective.getContext()), parentId, id, perspectiveAnnotation.active(), perspectiveAnnotation.name());
+        initContext(InternalContext.class.cast(perspective.getContext()), parentId, id, perspectiveAnnotation.active());
         LOGGER.fine("register perspective with annotations : "
                 + perspectiveAnnotation.id());
         initDeclarativePerspectiveParts(perspective, perspectiveAnnotation);
@@ -233,12 +233,10 @@ public class WorkbenchUtil {
      * @param parentId,         the parent id
      * @param id,               the component id
      * @param active,           the active state
-     * @param name,             the component name
      */
-    private static void initContext(final InternalContext contextInterface, final String parentId, final String id, final boolean active, final String name) {
+    private static void initContext(final InternalContext contextInterface, final String parentId, final String id, final boolean active) {
         contextInterface.setParentId(parentId);
         contextInterface.setId(id);
         contextInterface.updateActiveState(active);
-        contextInterface.setName(name);
     }
 }

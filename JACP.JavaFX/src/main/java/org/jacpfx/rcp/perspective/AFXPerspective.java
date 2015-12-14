@@ -227,21 +227,6 @@ public abstract class AFXPerspective implements
 
 
     @Override
-    public final void unregisterComponent(
-            final SubComponent<EventHandler<Event>, Event, Object> component) {
-        synchronized (lock) {
-            this.log("unregister component: " + component.getContext().getId());
-            ComponentRegistry.removeComponent(component);
-            component.initEnv(null, null);
-        }
-    }
-
-    @Override
-    public final void removeAllCompnents() {
-
-    }
-
-    @Override
     public final void initComponents(final Message<Event, Object> action) {
         final String targetId = FXUtil.getTargetComponentId(action
                 .getTargetId());

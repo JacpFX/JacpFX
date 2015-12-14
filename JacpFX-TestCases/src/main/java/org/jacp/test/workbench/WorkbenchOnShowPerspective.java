@@ -43,7 +43,7 @@ import org.jacpfx.rcp.workbench.FXWorkbench;
  *
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
-@org.jacpfx.api.annotations.workbench.Workbench(id = WorkbenchIds.WorkbenchOnShowPerspective, name = "workbench", perspectives = {
+@org.jacpfx.api.annotations.workbench.Workbench(id = WorkbenchIds.WorkbenchOnShowPerspective, perspectives = {
         PerspectiveIds.PerspectiveOnShowTest4,
         PerspectiveIds.PerspectiveOnShowTest3,
         PerspectiveIds.PerspectiveOnShowTest2,

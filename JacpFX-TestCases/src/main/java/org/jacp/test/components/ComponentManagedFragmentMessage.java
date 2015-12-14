@@ -56,7 +56,7 @@ import java.util.stream.IntStream;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@View(id = ComponentIds.ComponentManagedFragmentMessage, name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", initialTargetLayoutId = "content1")
+@View(id = ComponentIds.ComponentManagedFragmentMessage,  active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", initialTargetLayoutId = "content1")
 public class ComponentManagedFragmentMessage implements FXComponent {
 
     private final Logger log = Logger.getLogger(ComponentManagedFragmentMessage.class

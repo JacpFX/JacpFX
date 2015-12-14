@@ -52,7 +52,7 @@ import java.util.logging.Logger;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@Component(id = "id019", name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
+@Component(id = "id019", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
 @Stateless
 public class PredestroyTestComponentFour implements CallbackComponent {
 

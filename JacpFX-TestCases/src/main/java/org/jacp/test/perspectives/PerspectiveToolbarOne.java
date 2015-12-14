@@ -31,7 +31,7 @@ import java.util.ResourceBundle;
  * Time: 16:01
  * To change this template use File | Settings | File Templates.
  */
-@Perspective(id = PerspectiveIds.PerspectiveToolbarOne, name = "toolBarOnePerspective",
+@Perspective(id = PerspectiveIds.PerspectiveToolbarOne,
         components = {ComponentIds.ComponentHandleToolBarBetweenPerspectives1},
         viewLocation = "/fxml/toolBarperspectiveOne.fxml",
         resourceBundleLocation = "bundles.languageBundle",

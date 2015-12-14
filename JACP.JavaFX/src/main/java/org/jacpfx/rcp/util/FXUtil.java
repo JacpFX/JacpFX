@@ -31,7 +31,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import org.jacpfx.api.annotations.Resource;
-import org.jacpfx.api.component.ComponentBase;
 import org.jacpfx.api.component.Injectable;
 import org.jacpfx.api.context.JacpContext;
 
@@ -68,8 +67,9 @@ public class FXUtil {
     public static final String IDECLARATIVECOMPONENT_BUNDLE_LOCATION = "resourceBundleLocation";
     public static final String AFXPERSPECTIVE_PERSPECTIVE_LAYOUT = "perspectiveLayout";
     private final static String PATTERN_LOCALE ="_";
-    private final static String PATTERN_SPLIT="\\.";
+    private final static char PATTERN_SPLIT='.';
     public final static String PATTERN_GLOBAL=".";
+    private final static int MAX_SPLIT=3;
 
 
     /**
@@ -88,7 +88,8 @@ public class FXUtil {
      * @return all children of that node
      */
     @SuppressWarnings("unchecked")
-    public static ObservableList<Node> getChildren(final Node node) {
+    public static Optional<ObservableList<Node>> getChildren(final Node node) {
+        if(node==null) return Optional.empty();
         if (node instanceof Parent) {
             final Parent tmp = (Parent) node;
             Method protectedChildrenMethod;
@@ -106,10 +107,10 @@ public class FXUtil {
                         null, ex);
             }
 
-            return returnValue;
+            return Optional.ofNullable(returnValue);
         }
 
-        return null;
+        return  Optional.empty();
 
     }
 
@@ -302,13 +303,11 @@ public class FXUtil {
      */
     public static <T> Node loadFXMLandSetController(final T bean,
                                                     final ResourceBundle bundle, final URL url) {
-        final FXMLLoader fxmlLoader = new FXMLLoader();
+        final FXMLLoader fxmlLoader = new FXMLLoader(url);
         if (bundle != null) {
             fxmlLoader.setResources(bundle);
         }
-        fxmlLoader.setLocation(url);
         fxmlLoader.setController(bean);
-        final Thread t = Thread.currentThread();
         try {
             return fxmlLoader.load();
         } catch (IOException e) {
@@ -341,8 +340,8 @@ public class FXUtil {
      * @return returns the first part of message id "parent.child"
      */
     public static String getParentFromId(final String messageId) {
-        final String[] targetId = FXUtil.getTargetId(messageId);
-        return targetId[0];
+        final char[][] targetId = FXUtil.getTargetId(messageId);
+        return new String(targetId[0]);
     }
 
     /**
@@ -353,8 +352,8 @@ public class FXUtil {
      */
     public static String getTargetComponentId(final String messageId) {
         if (!FXUtil.isLocalMessage(messageId)) {
-            final String[] targetId = FXUtil.getTargetId(messageId);
-            return targetId[1];
+            final char[][] targetId = FXUtil.getTargetId(messageId);
+            return new String(targetId[1]);
         }
         return messageId;
     }
@@ -378,7 +377,7 @@ public class FXUtil {
      * @return true when message is not seperated by a dot
      */
     public static boolean isLocalMessage(final String messageId) {
-        return !messageId.contains(PATTERN_GLOBAL);
+        return messageId.indexOf(PATTERN_GLOBAL) <= -1;
     }
 
     /**
@@ -387,78 +386,35 @@ public class FXUtil {
      * @param messageId the message id to analyze
      * @return  returns a string array of the message id
      */
-    private static String[] getTargetId(final String messageId) {
-        return messageId.split(PATTERN_SPLIT);
+    private static char[][] getTargetId(final String messageId) {
+        return split(messageId.toCharArray(),PATTERN_SPLIT);
     }
 
-    /**
-     * Returns a component by id from a provided component list
-     *
-     * @param id the component id to look for
-     * @param components the component list
-     * @param <P>  the concrete type of component
-     * @return  the component by id
-     */
-    public static <P extends ComponentBase<EventHandler<Event>, Object>> P getObserveableById(
-            final String id, final List<P> components) {
-        final Optional<P> filter = components.stream().
-                filter(nonNull -> nonNull != null && nonNull.getContext() != null).
-                filter(comp -> comp.getContext().getId() != null).
-                filter(c -> c.getContext().getId().equals(id)).
-                findFirst();
-        if (filter.isPresent()) return filter.get();
-        return null;
-    }
-
-    /**
-     * Returns a component by parent id from a provided component list
-     *
-     * @param id the component id to look for
-     * @param components the component list
-     * @param <P>  the concrete type of component
-     * @return  the component by id
-     */
-    public static <P extends ComponentBase<EventHandler<Event>, Object>> List<P> getObserveableByParentId(
-            final String id, final List<P> components) {
-        return components.stream().
-                filter(nonNull -> nonNull != null && nonNull.getContext() != null).
-                filter(comp -> comp.getContext().getParentId() != null).
-                filter(c -> c.getContext().getParentId().equals(id)).
-                collect(Collectors.toList());
-
-    }
-    /**
-     * Returns a component by full qualified id (like parentId.componentId) from a provided component list
-     *
-     * @param qualifiedId the component id to look for
-     * @param components the component list
-     * @param <P>  the concrete type of component
-     * @return  the component by id
-     */
-    public static <P extends ComponentBase<EventHandler<Event>, Object>> P getObserveableByQualifiedId(
-            final String qualifiedId, final List<P> components) {
-        final Optional<P> filter = components.stream().
-                filter(nonNull->nonNull != null && nonNull.getContext() != null).
-                filter(comp -> comp.getContext().getFullyQualifiedId() != null ?comp.getContext().getFullyQualifiedId().equals(qualifiedId):false).
-                findFirst();
-        if (filter.isPresent()) return filter.get();
-        return null;
-    }
-
-
-
-    /**
-     * Returns a component by full qualified id (like parentId.componentId) from a provided component list
-     *
-     * @param componentId the component id to look for
-     * @param parentId the parentId
-     * @param components the component list
-     * @param <P>  the concrete type of component
-     * @return  the component by id
-     */
-    public static <P extends ComponentBase<EventHandler<Event>, Object>> P getObserveableByQualifiedId(
-            final String parentId,final String componentId, final List<P> components) {
-        return getObserveableByQualifiedId(getQualifiedComponentId(parentId,componentId),components);
+    private static char[][] split(final char[] s,
+                                                      final char splitChar) {
+        char[][] result = new char[MAX_SPLIT][];
+        final int length = s.length;
+        int offset = 0;
+        int count = 0;
+        int matchCount = 0;
+        for (int i = 0; i < length; i++) {
+            if (s[i] == splitChar) {
+                if (count > 0) {
+                    if (matchCount == MAX_SPLIT-1) return result;
+                    result[matchCount] = Arrays.copyOfRange(s, offset, offset + count);
+                    matchCount++;
+                }
+                offset = i + 1;
+                count = 0;
+            } else {
+                count++;
+            }
+        }
+        if (count > 0) {
+            if (matchCount == MAX_SPLIT-1) return result;
+            result[matchCount] = Arrays.copyOfRange(s, offset, offset + count);
+        }
+        return result;
     }
 
 

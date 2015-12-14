@@ -54,7 +54,7 @@ import java.util.stream.IntStream;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@View(id = ComponentIds.ComponentMessagingTests1, name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", initialTargetLayoutId = "content1")
+@View(id = ComponentIds.ComponentMessagingTests1,  active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", initialTargetLayoutId = "content1")
 public class ComponentMessagingTest1 implements FXComponent {
 
     private final Logger log = Logger.getLogger(ComponentMessagingTest1.class

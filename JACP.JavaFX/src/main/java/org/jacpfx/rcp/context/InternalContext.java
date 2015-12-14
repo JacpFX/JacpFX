@@ -61,11 +61,6 @@ public interface InternalContext {
     void setResourceBundle(ResourceBundle resourceBundle);
 
 
-    /**
-     * Set the components name
-     * @param name, the component name
-     */
-    void setName(final String name);
 
     /**
      * Set the parent id

@@ -46,7 +46,7 @@ import java.util.ResourceBundle;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@Perspective(id = "id06", name = "contactPerspective",
+@Perspective(id = "id06",
         components = {"idxyz"},
         viewLocation = "/fxml/perspectiveOne.fxml",
         resourceBundleLocation = "bundles.languageBundle",

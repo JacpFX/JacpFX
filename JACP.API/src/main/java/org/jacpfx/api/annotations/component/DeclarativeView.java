@@ -41,12 +41,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DeclarativeView {
-    /**
-     * The component name.
-     *
-     * @return The component name
-     */
-    String name();
 
     /**
      * The component id.

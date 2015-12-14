@@ -38,9 +38,11 @@ import org.jacpfx.rcp.component.EmbeddedFXComponent;
 import org.jacpfx.rcp.registry.ComponentRegistry;
 import org.jacpfx.rcp.workbench.GlobalMediator;
 import org.jacpfx.rcp.worker.AComponentWorker;
-import org.jacpfx.rcp.worker.TearDownWorker;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -55,7 +57,7 @@ public class TearDownHandler {
     private static final ExecutorService executor = Executors
             .newCachedThreadPool(new HandlerThreadFactory(
                     "TearDownHandler:"));
-    private static Base<Node,EventHandler<Event>, Event, Object> rootWorkbench;
+    private static Base<Node, EventHandler<Event>, Event, Object> rootWorkbench;
 
     /**
      * Register the parent workbench, from here all perspective and component
@@ -64,7 +66,7 @@ public class TearDownHandler {
      * @param rootWorkbench, the root workbench
      */
     public static void registerBase(
-            Base<Node,EventHandler<Event>, Event, Object> rootWorkbench) {
+            Base<Node, EventHandler<Event>, Event, Object> rootWorkbench) {
         TearDownHandler.rootWorkbench = rootWorkbench;
     }
 
@@ -79,27 +81,8 @@ public class TearDownHandler {
                 .getPerspectives();
         if (perspectives == null) return;
         for (final Perspective<Node, EventHandler<Event>, Event, Object> perspective : perspectives) {
-            // TODO ... teardown perspective itself
-            final List<SubComponent<EventHandler<Event>, Event, Object>> subcomponents = perspective
-                    .getSubcomponents();
-            if (subcomponents != null) {
-                final List<SubComponent<EventHandler<Event>, Event, Object>> handleAsync = new ArrayList<>();
-                // TODO FIXME for teardow all parameters in PreDestroyed should be passed -- see init process
-                for (final SubComponent<EventHandler<Event>, Event, Object> component : subcomponents) {
-                    if (CallbackComponent.class.isAssignableFrom(component.getClass())) {
-                        handleAsync
-                                .add(component);
-                    } else {
-                        // run teardown in app thread
-                        FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
-                                component.getComponent());
-                    }
 
-                }
-                if (!handleAsync.isEmpty())
-                    handleAsyncTearDown(handleAsync);
-
-            }
+            teardownComponents(perspective.getSubcomponents());
 
             FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
                     perspective.getPerspective());
@@ -108,19 +91,27 @@ public class TearDownHandler {
         executor.shutdown();
     }
 
-    /**
-     * executes all methods in ICallbackComponent, annotated with @OnTeardown
-     * outside application thread.
-     *
-     * @param components, all component that should execute an async teardown
-     */
-    @SafeVarargs
-    public static void handleAsyncTearDown(
-            SubComponent<EventHandler<Event>, Event, Object>... components) {
-        final List<SubComponent<EventHandler<Event>, Event, Object>> handleAsync = new ArrayList<>();
-        Collections.addAll(handleAsync, components);
-        handleAsyncTearDown(handleAsync);
+    private static void teardownComponents(List<SubComponent<EventHandler<Event>, Event, Object>> subcomponents) {
+        if (subcomponents != null) {
+            final List<SubComponent<EventHandler<Event>, Event, Object>> handleAsync = new ArrayList<>();
+            // TODO FIXME for teardow all parameters in PreDestroyed should be passed -- see init process
+            for (final SubComponent<EventHandler<Event>, Event, Object> component : subcomponents) {
+                if (CallbackComponent.class.isAssignableFrom(component.getClass())) {
+                    handleAsync
+                            .add(component);
+                } else {
+                    // run teardown in app thread
+                    FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
+                            component.getComponent());
+                }
+
+            }
+            if (!handleAsync.isEmpty())
+                handleAsyncTearDown(handleAsync);
+
+        }
     }
+
 
     /**
      * executes all methods in ICallbackComponent, annotated with @OnTeardown
@@ -137,10 +128,16 @@ public class TearDownHandler {
                     final StatelessCallabackComponent<EventHandler<Event>, Event, Object> tmp = (StatelessCallabackComponent<EventHandler<Event>, Event, Object>) component;
                     final List<SubComponent<EventHandler<Event>, Event, Object>> instances = tmp.getInstances();
                     for (final SubComponent<EventHandler<Event>, Event, Object> instance : instances) {
-                        set.add(executor.submit(new TearDownWorker(instance)));
+                        set.add(executor.submit(() -> {
+                            executePredestroy(instance);
+                            return true;
+                        }));
                     }
                 }
-                set.add(executor.submit(new TearDownWorker(component)));
+                set.add(executor.submit(() -> {
+                    executePredestroy(component);
+                    return true;
+                }));
             }
             awaitTermination(set);
         } catch (RejectedExecutionException e) {
@@ -151,12 +148,13 @@ public class TearDownHandler {
 
     public static void shutDownFXComponent(final EmbeddedFXComponent component, final String parentId, final Object... params) {
         // run teardown
+        ComponentRegistry.removeComponent(component);
         FXUtil.invokeHandleMethodsByAnnotation(PreDestroy.class,
                 component.getComponent(), params);
         GlobalMediator.getInstance().clearToolbar(component, parentId);
         component.interruptWorker();
         component.initEnv(null, null);
-        ComponentRegistry.removeComponent(component);
+
     }
 
     private static void awaitTermination(Set<Future<Boolean>> set) {
@@ -172,28 +170,37 @@ public class TearDownHandler {
     }
 
     public static void shutDownAsyncComponent(final ASubComponent component, final Object... params) {
+        component.setStarted(false);
         if (component instanceof StatelessCallabackComponent) {
+            ComponentRegistry.removeComponent(component);
             final Set<Future<Boolean>> set = new HashSet<>();
             final StatelessCallabackComponent<EventHandler<Event>, Event, Object> tmp = (StatelessCallabackComponent<EventHandler<Event>, Event, Object>) component;
             final List<SubComponent<EventHandler<Event>, Event, Object>> instances = tmp.getInstances();
             for (final SubComponent<EventHandler<Event>, Event, Object> instance : instances) {
                 if (instance.isStarted())
-                    set.add(executor.submit(new TearDownWorker(instance)));
+                    set.add(executor.submit(() -> {
+                        executePredestroy(instance);
+                        return true;
+                    }));
             }
             awaitTermination(set);
             tmp.getExecutorService().shutdownNow();
             instances.clear();
-            ComponentRegistry.removeComponent(component);
+
         } else {
+            ComponentRegistry.removeComponent(component);
             try {
-                executor.submit(new TearDownWorker(component)).get();
+                executor.submit(() -> {
+                    executePredestroy(component);
+                    return true;
+                }).get();
             } catch (InterruptedException | RejectedExecutionException | ExecutionException e) {
                 // "hide" exception as this can happen on shutdown
                 e.printStackTrace();
             }
             component.interruptWorker();
             component.initEnv(null, null);
-            ComponentRegistry.removeComponent(component);
+
         }
     }
 

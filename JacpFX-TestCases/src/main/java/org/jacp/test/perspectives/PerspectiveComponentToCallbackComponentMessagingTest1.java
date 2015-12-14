@@ -53,7 +53,7 @@ import java.util.concurrent.CountDownLatch;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@Perspective(id = "id16", name = "contactPerspective",
+@Perspective(id = "id16",
         components = {"id013", "id014"},
         // viewLocation = "/fxml/perspectiveOne.fxml",
         resourceBundleLocation = "bundles.languageBundle",

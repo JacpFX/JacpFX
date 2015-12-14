@@ -29,7 +29,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import org.jacp.test.main.ApplicationLauncherComponentMessaginTest1;
 import org.jacp.test.main.ApplicationLauncherMessagingTest;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.component.View;
@@ -52,7 +51,7 @@ import java.util.logging.Logger;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@View(id = ComponentIds.ComponentMessagingTests3, name = "SimpleView", active = false, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", initialTargetLayoutId = "content2")
+@View(id = ComponentIds.ComponentMessagingTests3,  active = false, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", initialTargetLayoutId = "content2")
 public class ComponentMessagingTest3 implements FXComponent {
 
     private final Logger log = Logger.getLogger(ComponentMessagingTest3.class

@@ -51,7 +51,7 @@ import java.util.logging.Logger;
  *
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
-@Component(id = "id004", name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
+@Component(id = "id004", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
 public class ComponentMissingViewAnnotation implements FXComponent {
 
     private final Logger log = Logger.getLogger(ComponentMissingViewAnnotation.class

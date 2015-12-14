@@ -1,0 +1,13 @@
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.TextArea?>
+<GridPane  hgap="10" vgap="10" minHeight="-Infinity" minWidth="-Infinity"
+           xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+
+    <children>
+
+        <TextArea fx:id="name" text="" wrapText="true" maxHeight="Infinity" GridPane.halignment="CENTER" GridPane.valignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+
+        </TextArea>
+    </children>
+
+</GridPane>

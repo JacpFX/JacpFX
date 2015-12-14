@@ -67,7 +67,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
             final Map<String, Node> targetComponents,
             final BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue,
             final EmbeddedFXComponent component) {
-        super(component.getContext().getName());
+        super(component.getContext().getId());
         this.targetComponents = targetComponents;
         this.component = component;
         this.componentDelegateQueue = componentDelegateQueue;
@@ -210,7 +210,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
 
         final Context context = Context.class.cast(component.getContext());
         final String parentId = context.getParentId();
-        if(parentId==null) return;
+        if (parentId == null) return;
         final FXComponentLayout layout = context.getComponentLayout();
         final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspective = PerspectiveRegistry.findPerspectiveById(parentId);
         if (parentPerspective != null) {
@@ -218,7 +218,6 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
             if (!this.removeComponentValue(previousContainer)) {
                 clearTargetLayoutInPerspective(parentPerspective, currentTargetLayout);
             }
-            parentPerspective.unregisterComponent(component);
         }
         TearDownHandler.shutDownFXComponent(component, parentId, layout);
     }
@@ -228,8 +227,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
         if (playout != null && currentTargetLayout != null) {
             final Node container = playout.getTargetLayoutComponents().get(currentTargetLayout);
             if (container != null) {
-                final ObservableList<Node> children = FXUtil.getChildren(container);
-                children.clear();
+                FXUtil.getChildren(container).ifPresent(ObservableList::clear);
             }
 
         }
@@ -249,7 +247,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
         } else if (root != null && !root.equals(previousContainer)) {
             // add new view
             this.log(" //1.1.1.1.4// handle new component insert: "
-                    + component.getContext().getName());
+                    + component.getContext().getId());
             removeComponentValue(previousContainer);
             WorkerUtil.handleViewState(root, true);
             executeLayoutTargetUpdate(component, newTargetLayout, targetComponents);

@@ -55,7 +55,7 @@ import java.util.List;
  *
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
-@org.jacpfx.api.annotations.workbench.Workbench(id = "id1", name = "workbench", perspectives = {"id21", "id20"})
+@org.jacpfx.api.annotations.workbench.Workbench(id = "id1",  perspectives = {"id21", "id20"})
 public class WorkbenchMoveComponentsBetweenPerspectives implements FXWorkbench {
     private Stage stage;
     @Resource

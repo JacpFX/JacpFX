@@ -23,7 +23,6 @@
 package org.jacp.test.perspectives;
 
 import javafx.event.Event;
-import javafx.fxml.FXML;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.control.SplitPane;
@@ -31,18 +30,17 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import org.jacpfx.api.message.Message;
-import org.jacpfx.api.annotations.Resource;
+import org.jacp.test.main.ApplicationLauncherAsyncCallbackComponentMessaginTest1;
 import org.jacpfx.api.annotations.lifecycle.OnShow;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
 import org.jacpfx.api.annotations.perspective.Perspective;
-import org.jacpfx.rcp.componentLayout.PerspectiveLayout;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
+import org.jacpfx.rcp.componentLayout.PerspectiveLayout;
 import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.perspective.FXPerspective;
 import org.jacpfx.rcp.util.FXUtil.MessageUtil;
-import org.jacp.test.main.ApplicationLauncherAsyncCallbackComponentMessaginTest1;
 
 import java.util.ResourceBundle;
 import java.util.concurrent.CountDownLatch;
@@ -53,7 +51,7 @@ import java.util.concurrent.CountDownLatch;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@Perspective(id = PerspectiveIds.PerspectiveAsyncCallbackComponentMessagingTest1, name = "contactPerspective",
+@Perspective(id = PerspectiveIds.PerspectiveAsyncCallbackComponentMessagingTest1,
         components = {"id011", "id012"},
         // viewLocation = "/fxml/perspectiveOne.fxml",
         resourceBundleLocation = "bundles.languageBundle",

@@ -160,7 +160,7 @@ public class FXComponentInitWorker extends AComponentWorker<EmbeddedFXComponent>
         this.component.lock();
         checkValidComponent(this.component);
         runPreInitMethods();
-        final String name = this.component.getContext().getName();
+        final String name = this.component.getContext().getId();
         this.log("3.4.4.2.1: subcomponent handle init START: "
                 + name);
         final Node handleReturnValue = WorkerUtil.prepareAndRunHandleMethod(
@@ -233,7 +233,6 @@ public class FXComponentInitWorker extends AComponentWorker<EmbeddedFXComponent>
         final JacpContext context = component.getContext();
         final String parentId = context.getParentId();
         final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
-        if (parentPerspctive != null) parentPerspctive.unregisterComponent(component);
         TearDownHandler.shutDownFXComponent(component, parentId);
         component.setStarted(false);
     }

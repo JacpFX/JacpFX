@@ -25,10 +25,6 @@
 package org.jacp.test.components;
 
 import javafx.event.Event;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
-import org.jacp.test.main.ApplicationLauncherCallbackComponentMessaginTest1;
 import org.jacp.test.main.ApplicationLauncherMessagingTest;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.component.Component;
@@ -51,7 +47,7 @@ import java.util.logging.Logger;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@Component(id = ComponentIds.CallbackComponentMessagingTest1, name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
+@Component(id = ComponentIds.CallbackComponentMessagingTest1, active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
 public class CallbackComponentMessagingTest1 implements CallbackComponent {
 
     private final Logger log = Logger.getLogger(CallbackComponentMessagingTest1.class

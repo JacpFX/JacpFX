@@ -102,8 +102,6 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
         this.stage = stage;
 
 
-
-
         rootPane = new StackPane();
         rootPane.setCache(true);
         rootPane.setId(CSSUtil.CSSIdConstants.ID_ROOT_PANE);
@@ -238,7 +236,10 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
             final Map<ToolbarPosition, JACPToolBar> registeredToolbars =
                     getWorkbenchLayout().getRegisteredToolBars();
             registeredToolbars
-                    .entrySet().forEach(entry -> assignCorrectToolBarLayout(entry.getKey(), entry.getValue(), Screen.getPrimary().getBounds())
+                    .entrySet().forEach(entry -> {
+                        final Rectangle2D bounds = Screen.getPrimary().getBounds();
+                        assignCorrectToolBarLayout(entry.getKey(), entry.getValue(), bounds);
+                    }
             );
 
 
@@ -356,6 +357,7 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
     private FXWorkbenchLayout getWorkbenchLayout() {
         return (FXWorkbenchLayout) workbenchLayout;
     }
+
     /**
      * {@inheritDoc}
      */

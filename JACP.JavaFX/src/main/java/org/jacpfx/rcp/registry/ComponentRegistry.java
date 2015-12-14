@@ -29,25 +29,26 @@ import javafx.event.EventHandler;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.rcp.util.FXUtil;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
  * Global registry with references to all component.
  *
  * @author Andy Moncsek
- *
  */
 public class ComponentRegistry {
-    private static final List<SubComponent<EventHandler<Event>, Event, Object>> components = new CopyOnWriteArrayList<>();
+    private static final Map<String, SubComponent<EventHandler<Event>, Event, Object>> componentsReg = new ConcurrentHashMap<>();
 
 
     /**
      * clears registry on application shutdown
      */
     public static void clearOnShutdown() {
-        components.clear();
+        componentsReg.clear();
     }
 
     /**
@@ -57,9 +58,8 @@ public class ComponentRegistry {
      */
     public static void registerComponent(
             final SubComponent<EventHandler<Event>, Event, Object> component) {
-        if (!components.contains(component))
-            components.add(component);
-
+        Objects.requireNonNull(component.getContext());
+        componentsReg.putIfAbsent(component.getContext().getFullyQualifiedId(), component);
     }
 
     /**
@@ -69,46 +69,51 @@ public class ComponentRegistry {
      */
     public static void removeComponent(
             final SubComponent<EventHandler<Event>, Event, Object> component) {
-        if (components.contains(component))
-            components.remove(component);
-
+        Objects.requireNonNull(component.getContext());
+        componentsReg.remove(component.getContext().getFullyQualifiedId());
     }
 
 
     /**
      * Returns all component for a parent id
+     *
      * @param parentId the perspective id of the components to find
      * @return a list of @see {SubComponent}
      */
     public static List<SubComponent<EventHandler<Event>, Event, Object>> findComponentsByParentId(final String parentId) {
-            return FXUtil.getObserveableByParentId(parentId,Collections.unmodifiableList(components));
+
+        return componentsReg.values().stream().
+                filter(nonNull -> nonNull != null && nonNull.getContext() != null).
+                filter(comp -> comp.getContext().getParentId() != null).
+                filter(c -> c.getContext().getParentId().equals(parentId)).
+                collect(Collectors.toList());
     }
 
     /**
      * Find a component by qualified name like parentId.componentId
+     *
      * @param targetId the component id
      * @return The @see{SubComponent}
      */
-    public static  SubComponent<EventHandler<Event>, Event, Object> findComponentByQualifiedId(
+    public static SubComponent<EventHandler<Event>, Event, Object> findComponentByQualifiedId(
             final String targetId) {
-        return FXUtil.getObserveableByQualifiedId(targetId,
-                Collections.unmodifiableList(components));
+        return componentsReg.get(targetId);
 
     }
 
     /**
-     *   Find a component by parent and componentId
-     * @param parentId the parent id of the component
+     * Find a component by parent and componentId
+     *
+     * @param parentId    the parent id of the component
      * @param componentId the component id
-     * @return  The @see{SubComponent}
+     * @return The @see{SubComponent}
      */
-    public static  SubComponent<EventHandler<Event>, Event, Object> findComponentByQualifiedId(
+    public static SubComponent<EventHandler<Event>, Event, Object> findComponentByQualifiedId(
             final String parentId, final String componentId) {
-        return FXUtil.getObserveableByQualifiedId(parentId,componentId,
-                Collections.unmodifiableList(components));
+
+        return findComponentByQualifiedId(FXUtil.getQualifiedComponentId(parentId,componentId));
 
     }
-
 
 
 }

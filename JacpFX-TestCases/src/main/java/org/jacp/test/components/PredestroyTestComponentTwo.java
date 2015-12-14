@@ -52,7 +52,7 @@ import java.util.logging.Logger;
  *
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
-@View(id = "id017", name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", initialTargetLayoutId = "content1")
+@View(id = "id017",  active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", initialTargetLayoutId = "content1")
 public class PredestroyTestComponentTwo implements FXComponent {
 
     private final Logger log = Logger.getLogger(PredestroyTestComponentTwo.class

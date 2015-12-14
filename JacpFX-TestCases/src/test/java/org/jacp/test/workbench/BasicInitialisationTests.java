@@ -110,7 +110,6 @@ public class BasicInitialisationTests {
         assertNotNull(workbench);
         JacpContext<EventHandler<Event>, Object> context = workbench.getContext();
         assertNotNull(context);
-        assertNotNull(context.getName());
         assertNotNull(context.getId());
         // assertNotNull(context.getResourceBundle());
 
@@ -139,7 +138,6 @@ public class BasicInitialisationTests {
             JacpContext< EventHandler<Event>,Object> context = p.getContext();
             assertNotNull(context.getParentId());
             assertNotNull(context.getId());
-            assertNotNull(context.getName());
             assertNotNull(context.getResourceBundle());
         }
     }
@@ -171,7 +169,6 @@ public class BasicInitialisationTests {
                     JacpContext<EventHandler<Event>,Object> context = c.getContext();
                     assertNotNull(context.getParentId());
                     assertNotNull(context.getId());
-                    assertNotNull(context.getName());
                     assertNotNull(context.getResourceBundle());
                 }
             }
