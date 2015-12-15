@@ -79,7 +79,7 @@ public class FXComponentBaseMessagingTest extends TestFXJacpFXSpringLauncher {
     // after change linux: 56105ms with ui ... 28301ms without ui
     // after change osx: 13961 with ui ... 10158 without ui
     //macbook : 8100ms,7891,7550,7246,17399,17428,16880,7418,7361 with ui ...   6131,6061,5907,5862,5892,5778,5941,5764 without ui
-    //   9342ms,9063ms,8957ms,8998ms with ui ...  7517ms,7476ms without ui
+    //   9342ms,9063ms,8957ms,8998ms, 8756ms with ui ...  7517ms,7476ms,7278ms without ui
     public void testComponentMessaging() throws InterruptedException {
         warmUp();
         withUI();

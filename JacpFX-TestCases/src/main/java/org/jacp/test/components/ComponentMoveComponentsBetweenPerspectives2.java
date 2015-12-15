@@ -26,15 +26,17 @@
 package org.jacp.test.components;
 
 import javafx.event.Event;
+import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import org.jacp.test.main.ApplicationLauncherMoveComponentsBetweenComponents;
 import org.jacpfx.api.annotations.Resource;
-import org.jacpfx.api.annotations.component.View;
+import org.jacpfx.api.annotations.component.DeclarativeView;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
+import org.jacpfx.api.annotations.method.OnMessage;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.FXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
@@ -51,7 +53,7 @@ import java.util.logging.Logger;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@View(id = "id0024",  active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", initialTargetLayoutId = "content0")
+@DeclarativeView(id = "id0024",  active = true, resourceBundleLocation = "bundles.languageBundle", viewLocation = "/fxml/ComponentMessagingTests1Component2.fxml",localeID = "en_US", initialTargetLayoutId = "content0")
 public class ComponentMoveComponentsBetweenPerspectives2 implements FXComponent {
 
     private final Logger log = Logger.getLogger(ComponentMoveComponentsBetweenPerspectives2.class
@@ -59,7 +61,8 @@ public class ComponentMoveComponentsBetweenPerspectives2 implements FXComponent 
 
     String current = "content0";
     Button button = new Button("move to next target");
-    VBox container = new VBox();
+    @FXML
+    VBox container;
     Label label = new Label();
     public static CountDownLatch stopLatch = new CountDownLatch(1);
     public static CountDownLatch startLatch = new CountDownLatch(1);
@@ -84,27 +87,29 @@ public class ComponentMoveComponentsBetweenPerspectives2 implements FXComponent 
      */
     public Node postHandle(final Node arg0,
                            final Message<Event, Object> action) {
+
+        return null;
+
+    }
+    @OnMessage(String.class)
+    public void handleString(final Message<Event, Object> action) {
         if (action.messageBodyEquals("switch")) {
             if(currentId.equals("id20")) {
-              currentId="id21";
+                currentId="id21";
 
             } else {
                 currentId="id20";
             }
             context.setExecutionTarget(currentId);
-         //   System.out.println("::::"+"3");
-            return null;
+            //   System.out.println("::::"+"3");
         } else if(action.messageBodyEquals(FXUtil.MessageUtil.INIT)) {
             button.setOnMouseClicked(context.getEventHandler("switch"));
             button.setStyle("-fx-background-color: red");
             label.setText(" current Tagret: " + currentId);
             container.getChildren().addAll(button, label);
             ApplicationLauncherMoveComponentsBetweenComponents.latch.countDown();
-       //     System.out.println("::::"+"2");
-            return container;
+            //     System.out.println("::::"+"2");
         }
-        return null;
-
     }
 
     public void switchTarget() {
@@ -126,7 +131,6 @@ public class ComponentMoveComponentsBetweenPerspectives2 implements FXComponent 
                                  final ResourceBundle resourceBundle) {
         this.log.info("run on start of id0024 "+this+" execution target: "+currentId);
         button = new Button("move to next target");
-        container = new VBox();
         label = new Label();
         startLatch.countDown();
       //  System.out.println("::::"+"1");

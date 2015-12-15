@@ -26,7 +26,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import org.jacp.test.config.BasicConfig;
+import org.jacp.test.config.BasicConfigVersion3;
 import org.jacp.test.tryout.workbench.Workbench;
 import org.jacpfx.rcp.workbench.FXWorkbench;
 import org.jacpfx.spring.launcher.AFXSpringJavaConfigLauncher;
@@ -59,7 +59,7 @@ public class ApplicationLauncher extends AFXSpringJavaConfigLauncher {
 
     @Override
     public Class<?>[] getConfigClasses() {
-        return new Class<?>[]{BasicConfig.class};
+        return new Class<?>[]{BasicConfigVersion3.class};
     }
 
     /**

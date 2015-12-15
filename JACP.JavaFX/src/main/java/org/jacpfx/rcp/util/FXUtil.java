@@ -43,7 +43,6 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * Util class with helper methods
@@ -66,10 +65,10 @@ public class FXUtil {
     public static final String IDECLARATIVECOMPONENT_LOCALE = "localeID";
     public static final String IDECLARATIVECOMPONENT_BUNDLE_LOCATION = "resourceBundleLocation";
     public static final String AFXPERSPECTIVE_PERSPECTIVE_LAYOUT = "perspectiveLayout";
-    private final static String PATTERN_LOCALE ="_";
-    private final static char PATTERN_SPLIT='.';
-    public final static String PATTERN_GLOBAL=".";
-    private final static int MAX_SPLIT=3;
+    private final static String PATTERN_LOCALE = "_";
+    private final static char PATTERN_SPLIT = '.';
+    public final static String PATTERN_GLOBAL = ".";
+    private final static int MAX_SPLIT = 3;
 
 
     /**
@@ -89,7 +88,7 @@ public class FXUtil {
      */
     @SuppressWarnings("unchecked")
     public static Optional<ObservableList<Node>> getChildren(final Node node) {
-        if(node==null) return Optional.empty();
+        if (node == null) return Optional.empty();
         if (node instanceof Parent) {
             final Parent tmp = (Parent) node;
             Method protectedChildrenMethod;
@@ -110,16 +109,17 @@ public class FXUtil {
             return Optional.ofNullable(returnValue);
         }
 
-        return  Optional.empty();
+        return Optional.empty();
 
     }
 
     /**
      * Set a value to a private member on specified object
+     *
      * @param superClass , the class
-     * @param object , the Object with the private member to be set
-     * @param member , the name of the member
-     * @param value  , the vakue of the member
+     * @param object     , the Object with the private member to be set
+     * @param member     , the name of the member
+     * @param value      , the vakue of the member
      */
     public static void setPrivateMemberValue(final Class<?> superClass,
                                              final Object object, final String member, final Object value) {
@@ -170,7 +170,7 @@ public class FXUtil {
                 } catch (final IllegalAccessException | InvocationTargetException e) {
                     Logger.getLogger(FXUtil.class.getName()).log(Level.SEVERE,
                             null, e);
-                    if(e.getCause()!=null)
+                    if (e.getCause() != null)
                         t.getUncaughtExceptionHandler().uncaughtException(t, e.getCause());
                 }
                 break;
@@ -179,11 +179,47 @@ public class FXUtil {
     }
 
     /**
+     * find annotated method in component and pass value
+     *
+     * @param annotation , the annotation to find
+     * @param component  , the component with the annotated method
+     * @param value      , the values to pass to the annotated method
+     */
+    public static Object invokeMethod(
+            final Class annotation, Method method, final Object component,
+            final Object... value) {
+        final Thread t = Thread.currentThread();
+        final Object[] nonNullValues = value;
+        if (method.isAnnotationPresent(annotation)) {
+            try {
+                final Class<?>[] types = method.getParameterTypes();
+                if (types.length > 0) {
+                    return method.invoke(component, getValidParameterList(types, nonNullValues));
+                }
+
+                return method.invoke(component);
+
+            } catch (final IllegalArgumentException e) {
+                throw new UnsupportedOperationException(
+                        "use @PostConstruct and @PreDestroy either with paramter extending BaseLayout<Node> layout (like FXComponentLayout) or with no arguments  ",
+                        e.getCause());
+            } catch (final IllegalAccessException | InvocationTargetException e) {
+                Logger.getLogger(FXUtil.class.getName()).log(Level.SEVERE,
+                        null, e);
+                if (e.getCause() != null)
+                    t.getUncaughtExceptionHandler().uncaughtException(t, e.getCause());
+            }
+        }
+        return null;
+    }
+
+    /**
      * Injects all Resource memberc like Context
+     *
      * @param handler , the component where injection should be performed
      * @param context , the context object
      */
-    public static void performResourceInjection(final Injectable handler,JacpContext<EventHandler<Event>, Object> context) {
+    public static void performResourceInjection(final Injectable handler, JacpContext<EventHandler<Event>, Object> context) {
         final Field[] fields = handler.getClass().getDeclaredFields();
         final List<Field> fieldList = Arrays.asList(fields);
         final ResourceBundle resourceBundle = context.getResourceBundle();
@@ -199,12 +235,11 @@ public class FXUtil {
     }
 
     /**
-     *
-     * @param handler the component where injection should be performed
-     * @param f the field which should be injected
+     * @param handler  the component where injection should be performed
+     * @param f        the field which should be injected
      * @param context, the context object
      */
-    private static void injectContext(final Injectable handler,final Field f, final JacpContext context) {
+    private static void injectContext(final Injectable handler, final Field f, final JacpContext context) {
         f.setAccessible(true);
         try {
             f.set(handler, context);
@@ -215,11 +250,12 @@ public class FXUtil {
 
     /**
      * Injects the resource bundle to component
+     *
      * @param handler the component where injection should be performed
-     * @param f  the field which should be injected
+     * @param f       the field which should be injected
      * @param bundle  the bundle that sould be injected
      */
-    private static void injectResourceBundle(final Injectable handler,final Field f, final ResourceBundle bundle) {
+    private static void injectResourceBundle(final Injectable handler, final Field f, final ResourceBundle bundle) {
         f.setAccessible(true);
         try {
             f.set(handler, bundle);
@@ -230,14 +266,19 @@ public class FXUtil {
 
     private static Object[] getValidParameterList(final Class<?>[] types,
                                                   Object... value) {
-        final List<Object> resultList = Arrays.asList(types).
-                stream().map(t -> findByClass(t, value)).
-                collect(Collectors.toList());
-        return !resultList.isEmpty() ?resultList.toArray(new Object[resultList.size()]):new Object[types.length];
+
+        Object[] result = new Object[types.length];
+        int i = 0;
+        for (Class clazz : types) {
+            result[i] = findByClass(clazz, value);
+            i++;
+        }
+        return result;
     }
 
     /**
      * Returns an object instance by class
+     *
      * @param key
      * @param values
      * @return The instance
@@ -246,12 +287,9 @@ public class FXUtil {
         if (key == null)
             return null;
         for (Object val : values) {
-            if (val == null)
-                return null;
+            if (val == null) continue;
             final Class<?> clazz = val.getClass();
-            if (clazz == null)
-                return null;
-            if (clazz.getGenericSuperclass().equals(key) || clazz.equals(key))
+            if (key.isAssignableFrom(clazz) || clazz.isAssignableFrom(key))
                 return val;
         }
         return null;
@@ -259,8 +297,9 @@ public class FXUtil {
 
     /**
      * Returns the correct locale by String
+     *
      * @param localeID the locale id
-     * @return  The locale object
+     * @return The locale object
      */
     public static Locale getCorrectLocale(final String localeID) {
         final Locale locale = Locale.getDefault();
@@ -280,7 +319,7 @@ public class FXUtil {
      * Returns the resourceBundle
      *
      * @param resourceBundleLocation thge location of your resource bundle
-     * @param localeID  the locale id
+     * @param localeID               the locale id
      * @return The resouceBundle instance
      */
     public static ResourceBundle getBundle(String resourceBundleLocation,
@@ -298,7 +337,7 @@ public class FXUtil {
      * @param bean   the controller
      * @param bundle the ressource bundle
      * @param url    the fxml url
-     * @param <T> the type of the bean
+     * @param <T>    the type of the bean
      * @return The component root Node.
      */
     public static <T> Node loadFXMLandSetController(final T bean,
@@ -312,13 +351,10 @@ public class FXUtil {
             return fxmlLoader.load();
         } catch (IOException e) {
             throw new MissingResourceException(
-                    e.getCause()!=null?e.getCause().getLocalizedMessage():e.getLocalizedMessage(),
-                    url.getPath(),e.getCause()!=null?e.getCause().getMessage():e.getLocalizedMessage());
+                    e.getCause() != null ? e.getCause().getLocalizedMessage() : e.getLocalizedMessage(),
+                    url.getPath(), e.getCause() != null ? e.getCause().getMessage() : e.getLocalizedMessage());
         }
     }
-
-
-
 
 
     /**
@@ -336,6 +372,7 @@ public class FXUtil {
 
     /**
      * Returns the parent part of id ... parent.child
+     *
      * @param messageId the message id to analyze
      * @return returns the first part of message id "parent.child"
      */
@@ -348,7 +385,7 @@ public class FXUtil {
      * returns the message target component id
      *
      * @param messageId the message id to analyze
-     * @return  returns the component id
+     * @return returns the component id
      */
     public static String getTargetComponentId(final String messageId) {
         if (!FXUtil.isLocalMessage(messageId)) {
@@ -360,12 +397,13 @@ public class FXUtil {
 
     /**
      * Creates a full qualified component name like parentId.componentId
-     * @param parentId  the parent id
+     *
+     * @param parentId    the parent id
      * @param componentId the component id
-     * @return  The qualified componentId
+     * @return The qualified componentId
      */
     public static String getQualifiedComponentId(final String parentId, final String componentId) {
-        if(parentId==null) return componentId;
+        if (parentId == null) return componentId;
         return parentId.concat(PATTERN_GLOBAL).concat(componentId);
 
     }
@@ -384,14 +422,14 @@ public class FXUtil {
      * returns target message with perspective and component name as array
      *
      * @param messageId the message id to analyze
-     * @return  returns a string array of the message id
+     * @return returns a string array of the message id
      */
     private static char[][] getTargetId(final String messageId) {
-        return split(messageId.toCharArray(),PATTERN_SPLIT);
+        return split(messageId.toCharArray(), PATTERN_SPLIT);
     }
 
     private static char[][] split(final char[] s,
-                                                      final char splitChar) {
+                                  final char splitChar) {
         char[][] result = new char[MAX_SPLIT][];
         final int length = s.length;
         int offset = 0;
@@ -400,7 +438,7 @@ public class FXUtil {
         for (int i = 0; i < length; i++) {
             if (s[i] == splitChar) {
                 if (count > 0) {
-                    if (matchCount == MAX_SPLIT-1) return result;
+                    if (matchCount == MAX_SPLIT - 1) return result;
                     result[matchCount] = Arrays.copyOfRange(s, offset, offset + count);
                     matchCount++;
                 }
@@ -411,12 +449,11 @@ public class FXUtil {
             }
         }
         if (count > 0) {
-            if (matchCount == MAX_SPLIT-1) return result;
+            if (matchCount == MAX_SPLIT - 1) return result;
             result[matchCount] = Arrays.copyOfRange(s, offset, offset + count);
         }
         return result;
     }
-
 
 
 }

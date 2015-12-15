@@ -27,6 +27,7 @@ package org.jacp.test.tryout.component;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import org.jacp.test.components.ComponentIds;
 import org.jacp.test.tryout.config.BasicConfig;
@@ -34,6 +35,8 @@ import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.component.DeclarativeView;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
+import org.jacpfx.api.annotations.method.OnMessage;
+import org.jacpfx.api.annotations.method.OnMessageAsync;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.FXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
@@ -86,6 +89,25 @@ public class ComponentTwo implements FXComponent {
         }
         return null;
     }
+
+    @OnMessageAsync(String.class)
+    public Node handleAsyncString(final Message<Event, Object> message) {
+        System.out.println("ASYNC MESSAGE::: "+message.getTypedMessageBody(String.class)+" thread:"+Thread.currentThread());
+        return new Label("hello from async");
+    }
+
+    @OnMessage(String.class)
+    public void handleString(final Message<Event, Object> message,Label test) {
+        if(test!=null) {
+            System.out.println("MESSAGE::: "+message.getTypedMessageBody(String.class)+"  :: "+test.getText()+" thread:"+Thread.currentThread());
+        } else {
+            System.out.println("MESSAGE::: "+message.getTypedMessageBody(String.class)+" thread:"+Thread.currentThread());
+        }
+        System.out.println("MESSAGE---1::: "+message.getTypedMessageBody(String.class)+" thread:"+Thread.currentThread());
+        name.setText(message.getTypedMessageBody(String.class));
+    }
+
+
 
 
     @PostConstruct

@@ -29,14 +29,20 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import org.jacpfx.api.annotations.method.OnMessage;
+import org.jacpfx.api.annotations.method.OnMessageAsync;
+import org.jacpfx.api.component.ComponentView;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.component.UIComponent;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.api.util.UIType;
 import org.jacpfx.rcp.component.EmbeddedFXComponent;
 
+import java.lang.reflect.Method;
 import java.util.Optional;
 import java.util.concurrent.BlockingQueue;
+import java.util.function.BiConsumer;
+import java.util.stream.Stream;
 
 /**
  * Created with IntelliJ IDEA.
@@ -140,6 +146,25 @@ public class WorkerUtil {
     }
 
     /**
+     * Executes post handle method in application main thread. The result value
+     * of handle method (from worker thread) is Input for the postHandle Method.
+     * The return value or the handleReturnValue are the root node of this
+     * component.
+     *
+     * @param handleReturnValue the UI return value after "handle(message)" {@link org.jacpfx.api.component.ComponentHandle#handle(org.jacpfx.api.message.Message)} was executed
+     * @param component,        a component
+     * @param message,          the current message
+     * @throws java.lang.Exception when an Exception occures while execute {@link org.jacpfx.api.component.ComponentView#postHandle(Object, org.jacpfx.api.message.Message)}
+     */
+    public static void executeTypedComponentViewPostHandle(final Object handleReturnValue,
+                                                      final EmbeddedFXComponent component, final Message<Event, Object> message, final Method method) throws Exception {
+
+        final ComponentView<Node, Event, Object> componentViewHandle = component.getComponentViewHandle();
+        FXUtil.invokeMethod(OnMessage.class,method,componentViewHandle,handleReturnValue,message);
+
+    }
+
+    /**
      * Move component to new target in perspective.
      *
      * @param delegateQueue, the component delegate queue
@@ -169,6 +194,39 @@ public class WorkerUtil {
             final UIComponent<Node, EventHandler<Event>, Event, Object> component,
             final Message<Event, Object> action) throws Exception {
         return component.getComponentViewHandle().handle(action);
+    }
+
+    /**
+     * Runs the handle method of a componentView.
+     *
+     * @param component, the component
+     * @param message,    the current message
+     * @return a returned node from component execution {@link org.jacpfx.api.component.ComponentHandle#handle(org.jacpfx.api.message.Message)}
+     * @throws java.lang.Exception when an Exception occures while execute {@link org.jacpfx.api.component.ComponentHandle#handle(org.jacpfx.api.message.Message)}
+     */
+    public static Node prepareAndRunTypedHandleMethod(
+            final UIComponent<Node, EventHandler<Event>, Event, Object> component,
+            final Message<Event, Object> message, BiConsumer<Object,Method> runOnFXThread) throws Exception {
+
+        final ComponentView<Node, Event, Object> componentViewHandle = component.getComponentViewHandle();
+        final Optional<Method> asnc = Stream.of(componentViewHandle.getClass().getMethods()).filter(method -> method.isAnnotationPresent(OnMessageAsync.class)).filter(method1 -> message.getMessageBody().getClass().isAssignableFrom(method1.getAnnotation(OnMessageAsync.class).value())).findFirst();
+        final Optional<Method> sync = Stream.of(componentViewHandle.getClass().getMethods()).
+                filter(method -> method.isAnnotationPresent(OnMessage.class)).
+                filter(method1 -> message.getMessageBody().getClass().isAssignableFrom(method1.getAnnotation(OnMessage.class).value())).findFirst();
+        asnc.ifPresent(method -> {
+            final Object handleReturnValue = FXUtil.invokeMethod(OnMessageAsync.class,method,componentViewHandle,message);
+            sync.ifPresent(methodSync -> {
+                runOnFXThread.accept(handleReturnValue,methodSync);
+            });
+            System.out.println("invoke");
+        });
+        if(!asnc.isPresent()) {
+            sync.ifPresent(methodSync -> {
+                runOnFXThread.accept(null,methodSync);
+            });
+        }
+        System.out.println("handle");
+        return componentViewHandle.handle(message);
     }
 
 }

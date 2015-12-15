@@ -25,15 +25,17 @@
 package org.jacp.test.components;
 
 import javafx.event.Event;
+import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import org.jacp.test.main.ApplicationLauncherMessagingTest;
 import org.jacpfx.api.annotations.Resource;
-import org.jacpfx.api.annotations.component.View;
+import org.jacpfx.api.annotations.component.DeclarativeView;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
+import org.jacpfx.api.annotations.method.OnMessage;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.FXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
@@ -51,7 +53,7 @@ import java.util.logging.Logger;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@View(id = ComponentIds.ComponentMessagingTests3,  active = false, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", initialTargetLayoutId = "content2")
+@DeclarativeView(id = ComponentIds.ComponentMessagingTests3, active = false, viewLocation = "/fxml/ComponentMessagingTests1Component2.fxml", resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", initialTargetLayoutId = "content2")
 public class ComponentMessagingTest3 implements FXComponent {
 
     private final Logger log = Logger.getLogger(ComponentMessagingTest3.class
@@ -59,7 +61,8 @@ public class ComponentMessagingTest3 implements FXComponent {
 
     String current = "content0";
     Button button1 = new Button("deactivate");
-    VBox container = new VBox();
+    @FXML
+    VBox container;
     Label label = new Label();
     public static boolean ui = false;
 
@@ -68,8 +71,9 @@ public class ComponentMessagingTest3 implements FXComponent {
 
     public static AtomicInteger counter = new AtomicInteger(10000);
     public static CountDownLatch wait = new CountDownLatch(1);
-    public static String[] value =new String[1];
+    public static String[] value = new String[1];
     public static CountDownLatch waitButton1 = new CountDownLatch(1);
+
     @Override
     /**
      * The handleAction method always runs outside the main application thread. You can create new nodes, execute long running tasks but you are not allowed to manipulate existing nodes here.
@@ -85,25 +89,29 @@ public class ComponentMessagingTest3 implements FXComponent {
      */
     public Node postHandle(final Node arg0,
                            final Message<Event, Object> action) {
+
+
+        return null;
+    }
+
+    @OnMessage(String.class)
+    public void handleString(final Message<Event, Object> action) {
         if (action.messageBodyEquals(FXUtil.MessageUtil.INIT)) {
 
 
             ApplicationLauncherMessagingTest.latch.countDown();
-        }else if(action.messageBodyEquals("message5")) {
+        } else if (action.messageBodyEquals("message5")) {
             label.setText(action.getMessageBody().toString());
-            value[0]= action.getMessageBody().toString();
+            value[0] = action.getMessageBody().toString();
             waitButton1.countDown();
-        }else if(action.messageBodyEquals("deactivate")) {
-                  context.setActive(false);
-            value[0]= action.getMessageBody().toString();
-        }
-        else {
+        } else if (action.messageBodyEquals("deactivate")) {
+            context.setActive(false);
+            value[0] = action.getMessageBody().toString();
+        } else {
             label.setText(action.getMessageBody().toString());
 
         }
 
-
-        return container;
     }
 
 
@@ -115,14 +123,13 @@ public class ComponentMessagingTest3 implements FXComponent {
      */
     public void onStartComponent(final FXComponentLayout arg0,
                                  final ResourceBundle resourceBundle) {
-         button1 = new Button("deactivate");
-         container = new VBox();
-         label = new Label();
-        button1.setOnMouseClicked((event)->{
+        button1 = new Button("deactivate");
+        label = new Label();
+        button1.setOnMouseClicked((event) -> {
             context.send("deactivate");
         });
 
-        container.getChildren().addAll(label,button1);
+        container.getChildren().addAll(label, button1);
 
     }
 

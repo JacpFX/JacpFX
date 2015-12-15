@@ -25,6 +25,7 @@
 package org.jacp.test.components;
 
 import javafx.event.Event;
+import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -34,9 +35,11 @@ import org.jacp.test.dialogs.DialogManagedFragmentMessageTest;
 import org.jacp.test.main.ApplicationLauncherMessagingTest;
 import org.jacp.test.perspectives.PerspectiveIds;
 import org.jacpfx.api.annotations.Resource;
-import org.jacpfx.api.annotations.component.View;
+import org.jacpfx.api.annotations.component.DeclarativeView;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
+import org.jacpfx.api.annotations.method.OnMessage;
+import org.jacpfx.api.annotations.method.OnMessageAsync;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.FXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
@@ -56,7 +59,7 @@ import java.util.stream.IntStream;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@View(id = ComponentIds.ComponentManagedFragmentMessage,  active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", initialTargetLayoutId = "content1")
+@DeclarativeView(id = ComponentIds.ComponentManagedFragmentMessage, viewLocation ="/fxml/ComponentMessagingTests1Component2.fxml", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", initialTargetLayoutId = "content1")
 public class ComponentManagedFragmentMessage implements FXComponent {
 
     private final Logger log = Logger.getLogger(ComponentManagedFragmentMessage.class
@@ -65,7 +68,8 @@ public class ComponentManagedFragmentMessage implements FXComponent {
     String current = "content0";
     Button button1 = new Button("dialog");
 
-    VBox container = new VBox();
+    @FXML
+    VBox container ;
     Label label = new Label();
     public static boolean ui = false;
     public static String[] value = new String[1];
@@ -73,9 +77,6 @@ public class ComponentManagedFragmentMessage implements FXComponent {
     private Context context;
 
     public static AtomicInteger counter = new AtomicInteger(10000);
-    public static CountDownLatch waitButton1 = new CountDownLatch(1);
-    public static CountDownLatch waitButton2 = new CountDownLatch(1);
-    public static CountDownLatch waitButton3 = new CountDownLatch(1);
     public static CountDownLatch waitButton4 = new CountDownLatch(1);
 
     @Override
@@ -83,12 +84,17 @@ public class ComponentManagedFragmentMessage implements FXComponent {
      * The handleAction method always runs outside the main application thread. You can create new nodes, execute long running tasks but you are not allowed to manipulate existing nodes here.
      */
     public Node handle(final Message<Event, Object> action) {
-        if (action.messageBodyEquals("button10")) {
+
+        return null;
+    }
+
+    @OnMessageAsync(String.class)
+    public void handleAsyncString(final Message<Event, Object> message) {
+        if (message.messageBodyEquals("button10")) {
             IntStream.rangeClosed(1, 100).forEach(i -> context.send(ComponentIds.CallbackComponentMessagingTest2, "message9"));
-        } else if (action.messageBodyEquals("button11")) {
+        } else if (message.messageBodyEquals("button11")) {
             IntStream.rangeClosed(1, 100).forEach(i -> context.send(PerspectiveIds.PerspectiveMessagingTest.concat(".").concat(ComponentIds.CallbackComponentMessagingTest2), "message10"));
         }
-        return null;
     }
 
     @Override
@@ -97,13 +103,18 @@ public class ComponentManagedFragmentMessage implements FXComponent {
      */
     public Node postHandle(final Node arg0,
                            final Message<Event, Object> action) {
-        if (action.messageBodyEquals(FXUtil.MessageUtil.INIT)) {
+
+        return null;
+    }
+
+    @OnMessage(String.class)
+    public void handleString(final Message<Event, Object> message) {
+        if (message.messageBodyEquals(FXUtil.MessageUtil.INIT)) {
 
 
             ApplicationLauncherMessagingTest.latch.countDown();
         }
-        System.out.println("Component:: "+action.getMessageBody());
-        return container;
+        System.out.println("Component:: "+message.getMessageBody());
     }
 
 
@@ -117,7 +128,6 @@ public class ComponentManagedFragmentMessage implements FXComponent {
                                  final ResourceBundle resourceBundle) {
         button1 = new Button("dialog");
 
-        container = new VBox();
         label = new Label();
 
         HBox group1 = new HBox();
