@@ -61,6 +61,7 @@ public interface JacpContext<L, M> {
      * @param message, The message object.
      * @return an JavaFX event handler.
      */
+    @Deprecated
     L getEventHandler(final M message);
 
 
@@ -71,6 +72,7 @@ public interface JacpContext<L, M> {
      * @param targetId ; the targets component id.
      * @return an JavaFX event handler.
      */
+    @Deprecated
     L getEventHandler(final String targetId, final M message);
 
     /**

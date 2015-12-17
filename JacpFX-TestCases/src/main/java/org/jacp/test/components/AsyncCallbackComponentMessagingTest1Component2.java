@@ -97,6 +97,8 @@ public class AsyncCallbackComponentMessagingTest1Component2 implements CallbackC
     }
 
 
+
+
     @PostConstruct
     /**
      * The @OnStart annotation labels methods executed when the component switch from inactive to active state

@@ -32,16 +32,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import org.jacpfx.api.message.Message;
+import org.jacp.test.main.ApplicationLauncher;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.component.Component;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
+import org.jacpfx.api.annotations.method.OnMessageAsync;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.FXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.util.FXUtil;
-import org.jacp.test.main.ApplicationLauncher;
 
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
@@ -80,6 +81,11 @@ public class ComponentMissingViewAnnotation implements FXComponent {
      */
     public Node postHandle(final Node arg0,
                            final Message<Event, Object> action) {
+       return null;
+    }
+
+    @OnMessageAsync(String.class)
+    public Object onStringMessage(final Message<Event, Object> action) {
         if (!action.messageBodyEquals(FXUtil.MessageUtil.INIT)) {
             String number = current.replace("content", "");
             String value = current.replace(number, "").concat(String.valueOf((Integer.valueOf(number) + 1) % 3));

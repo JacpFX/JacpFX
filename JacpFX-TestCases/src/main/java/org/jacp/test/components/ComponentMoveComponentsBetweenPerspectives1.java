@@ -31,6 +31,7 @@ import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.component.Component;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
+import org.jacpfx.api.annotations.method.OnMessageAsync;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.AStatelessCallbackComponent;
 import org.jacpfx.rcp.component.CallbackComponent;
@@ -74,6 +75,11 @@ public class ComponentMoveComponentsBetweenPerspectives1 implements CallbackComp
      */
     public Object handle(final Message<Event, Object> action) {
         //System.err.println("Message id11 : "+message+"  :: "+this);
+        return null;
+    }
+
+    @OnMessageAsync(String.class)
+    public Object onStringMessage(final Message<Event, Object> action) {
         if (action.messageBodyEquals(FXUtil.MessageUtil.INIT)) {
             ApplicationLauncherMoveComponentsBetweenComponents.latch.countDown();
         } else if (action.messageBodyEquals("switch")) {

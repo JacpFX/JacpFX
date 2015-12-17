@@ -52,7 +52,6 @@ import java.security.InvalidParameterException;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
-import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -71,8 +70,6 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
     private final BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
     private final Map<Class, Method> syncMethodMap;
     private final Map<Class, Method> asyncMethodMap;
-    private final BiFunction<Class, Method, Boolean> filterByType = (clazz, method) -> clazz.isAssignableFrom(method.getAnnotation(OnMessage.class).value());
-    private final BiFunction<Class, Method, Boolean> filterAsyncByType = (clazz, method) -> clazz.isAssignableFrom(method.getAnnotation(OnMessageAsync.class).value());
 
     public EmbeddedFXComponentWorker(
             final Map<String, Node> targetComponents,
@@ -84,13 +81,17 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
         this.componentDelegateQueue = componentDelegateQueue;
         ShutdownThreadsHandler.registerThread(this);
         ComponentView<Node, Event, Object> handle = this.component.getComponentViewHandle();
-        syncMethodMap = Stream.of(handle.getClass().getMethods()).filter(method -> method.isAnnotationPresent(OnMessage.class)).collect(Collectors.toMap(method -> method.getAnnotation(OnMessage.class).value(), p -> p));
-        asyncMethodMap = Stream.of(handle.getClass().getMethods()).filter(method -> method.isAnnotationPresent(OnMessageAsync.class)).collect(Collectors.toMap(method -> method.getAnnotation(OnMessageAsync.class).value(), p -> p));
+        syncMethodMap = Stream.of(handle.getClass().getMethods()).
+                filter(method -> method.isAnnotationPresent(OnMessage.class)).
+                collect(Collectors.toMap(method -> method.getAnnotation(OnMessage.class).value(), p -> p));
+        asyncMethodMap = Stream.of(handle.getClass().getMethods()).
+                filter(method -> method.isAnnotationPresent(OnMessageAsync.class)).
+                collect(Collectors.toMap(method -> method.getAnnotation(OnMessageAsync.class).value(), p -> p));
 
         // TODO check for duplicate OnMessage methods
     }
 
-    @SuppressWarnings({"FeatureEnvy", "Annotation"})
+
     @Override
     public final void run() {
         try {
@@ -116,19 +117,9 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
             final String currentExecutionTarget = contextImpl.getExecutionTarget();
             final ComponentView<Node, Event, Object> componentViewHandle = component.getComponentViewHandle();
             final Class<?> messageType = message.getMessageBody().getClass();
-            Object value = null;
+            final Object value = handleAsyncMessage(message, componentViewHandle, messageType);
 
-            Method asyncMethod = asyncMethodMap.get(messageType);
-            if (asyncMethod != null) {
-                value = FXUtil.invokeMethod(OnMessageAsync.class, asyncMethod, componentViewHandle, message);
-            }
-
-            Method syncMethod = syncMethodMap.get(messageType);
-            if (syncMethod != null) {
-                publish(component, message, syncMethod, targetComponents,
-                        value, previousContainer,
-                        currentTargetLayout, currentExecutionTarget);
-            }
+            handleSyncMessage(component, targetComponents, message, previousContainer, currentTargetLayout, currentExecutionTarget, messageType, value);
 
         } catch (final IllegalStateException e) {
             if (e.getMessage().contains("Not on FX application thread")) {
@@ -141,6 +132,24 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
             t.getUncaughtExceptionHandler().uncaughtException(t, e);
         }
 
+    }
+
+    private void handleSyncMessage(EmbeddedFXComponent component, Map<String, Node> targetComponents, Message<Event, Object> message, Node previousContainer, String currentTargetLayout, String currentExecutionTarget, Class<?> messageType, Object value) throws InterruptedException, ExecutionException {
+        final Method syncMethod = syncMethodMap.get(messageType);
+        if (syncMethod != null) {
+            publish(component, message, syncMethod, targetComponents,
+                    value, previousContainer,
+                    currentTargetLayout, currentExecutionTarget);
+        }
+    }
+
+    private Object handleAsyncMessage(Message<Event, Object> message, Object componentHandle, Class<?> messageType) {
+        Object value = null;
+        final Method asyncMethod = asyncMethodMap.get(messageType);
+        if (asyncMethod != null) {
+            value = FXUtil.invokeMethod(OnMessageAsync.class, asyncMethod, componentHandle, message);
+        }
+        return value;
     }
 
     /**
@@ -251,9 +260,9 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
     }
 
     private static void clearTargetLayoutInPerspective(final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspective, final String currentTargetLayout) {
-        final PerspectiveLayout playout = PerspectiveUtil.getPerspectiveLayoutFromPerspective(parentPerspective);
-        if (playout != null && currentTargetLayout != null) {
-            final Node container = playout.getTargetLayoutComponents().get(currentTargetLayout);
+        final PerspectiveLayout perspectiveLayout = PerspectiveUtil.getPerspectiveLayoutFromPerspective(parentPerspective);
+        if (perspectiveLayout != null && currentTargetLayout != null) {
+            final Node container = perspectiveLayout.getTargetLayoutComponents().get(currentTargetLayout);
             if (container != null) {
                 FXUtil.getChildren(container).ifPresent(ObservableList::clear);
             }

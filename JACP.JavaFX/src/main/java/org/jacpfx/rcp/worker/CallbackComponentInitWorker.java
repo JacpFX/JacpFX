@@ -26,15 +26,22 @@ package org.jacpfx.rcp.worker;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import org.jacpfx.api.annotations.method.OnMessageAsync;
+import org.jacpfx.api.component.ComponentHandle;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.context.JacpContext;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.ASubComponent;
 import org.jacpfx.rcp.context.InternalContext;
+import org.jacpfx.rcp.util.FXUtil;
 import org.jacpfx.rcp.util.TearDownHandler;
 import org.jacpfx.rcp.util.WorkerUtil;
 
+import java.lang.reflect.Method;
+import java.util.Map;
 import java.util.concurrent.BlockingQueue;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * This class handles running stateful background component
@@ -47,13 +54,17 @@ public class CallbackComponentInitWorker
     private final ASubComponent component;
     private final BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> delegateQueue;
     private final Message<Event, Object> action;
-
+    private final Map<Class, Method> asyncMethodMap;
     public CallbackComponentInitWorker(
             final BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> delegateQueue,
             final ASubComponent component, final Message<Event, Object> action) {
         this.component = component;
         this.delegateQueue = delegateQueue;
         this.action = action;
+        final ComponentHandle<?, Event, Object> handle = component.getComponent();
+        asyncMethodMap = Stream.of(handle.getClass().getMethods()).
+                filter(method -> method.isAnnotationPresent(OnMessageAsync.class)).
+                collect(Collectors.toMap(method -> method.getAnnotation(OnMessageAsync.class).value(), p -> p));
     }
 
     @Override
@@ -66,7 +77,7 @@ public class CallbackComponentInitWorker
             final InternalContext context = InternalContext.class.cast(this.component.getContext());
             context.updateReturnTarget(myAction.getSourceId());
             final String currentExecutionTarget = context.getExecutionTarget();
-            final Object value = this.component.getComponent().handle(myAction);
+            final Object value = handleAsyncMessage(myAction,component.getComponent(),myAction.getMessageBody().getClass());//this.component.getComponent().handle(myAction);
             final String targetId = context
                     .getReturnTargetAndClear();
             WorkerUtil.delegateReturnValue(this.component, targetId, value,
@@ -76,6 +87,15 @@ public class CallbackComponentInitWorker
             this.component.initWorker(new EmbeddedCallbackComponentWorker( this.delegateQueue,this.component));
             handleComponentShutdown(this.component);
         return this.component;
+    }
+
+    private Object handleAsyncMessage(Message<Event, Object> message, Object componentHandle, Class<?> messageType) {
+        Object value = null;
+        final Method asyncMethod = asyncMethodMap.get(messageType);
+        if (asyncMethod != null) {
+            value = FXUtil.invokeMethod(OnMessageAsync.class, asyncMethod, componentHandle, message);
+        }
+        return value;
     }
 
     private void handleComponentShutdown(final SubComponent<EventHandler<Event>, Event, Object> component) {

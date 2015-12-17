@@ -100,7 +100,7 @@ public class PerspectiveUtil {
      * @return
      */
     private Stream<Injectable> getInjectAbles(final org.jacpfx.api.annotations.perspective.Perspective perspectiveAnnotation) {
-        final Stream<String> idStream = CommonUtil.getStringStreamFromArray(getComponentIds(perspectiveAnnotation));
+        final Stream<String> idStream = Stream.of(getComponentIds(perspectiveAnnotation));
         final String parentId = perspectiveAnnotation.id();
         return idStream.filter(id->!id.isEmpty()).map(id->mapToInjectAbleComponent(parentId,id));
     }

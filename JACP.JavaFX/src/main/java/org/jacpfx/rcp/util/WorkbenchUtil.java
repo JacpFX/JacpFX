@@ -81,7 +81,7 @@ public class WorkbenchUtil {
      * @return a list with all perspective associated with a workbench
      */
     public List<Perspective<Node, EventHandler<Event>, Event, Object>> createPerspectiveInstances(final Workbench annotation) {
-        final Stream<String> componentIds = CommonUtil.getStringStreamFromArray(annotation.perspectives());
+        final Stream<String> componentIds = Stream.of(annotation.perspectives());
         final Stream<Injectable> perspectiveHandlerList = componentIds.map(this::mapToInjectable);
         final List<Injectable> tmp = perspectiveHandlerList.collect(Collectors.toList());
         checkUniqueComponentReferences(tmp.stream());
@@ -131,11 +131,6 @@ public class WorkbenchUtil {
             return componentIds;
         }
 
-        public List<String> checkForCommon(final List<String> other) {
-            final List<String> l3 = new ArrayList<>(componentIds);
-            l3.retainAll(other);
-            return l3;
-        }
     }
 
     /**

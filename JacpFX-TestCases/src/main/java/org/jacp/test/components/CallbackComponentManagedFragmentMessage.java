@@ -29,6 +29,7 @@ import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.component.Component;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
+import org.jacpfx.api.annotations.method.OnMessageAsync;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.CallbackComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
@@ -61,11 +62,18 @@ public class CallbackComponentManagedFragmentMessage implements CallbackComponen
      * The handleAction method always runs outside the main application thread. You can create new nodes, execute long running tasks but you are not allowed to manipulate existing nodes here.
      */
     public Object handle(final Message<Event, Object> action) {
+        return null;
+    }
+
+    @OnMessageAsync(String.class)
+    public Object onStringMessage(final Message<Event, Object> action) {
         if (action.messageBodyEquals(FXUtil.MessageUtil.INIT)) {
         }
         System.out.println("Callback:: "+action.getMessageBody());
         return action.getMessageBody();
     }
+
+
 
     public static void fireMessage() {
         context.send("id14.id010", "message");
