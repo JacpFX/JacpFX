@@ -93,10 +93,6 @@ public class CallbackComponentMessagingTest1_1 implements CallbackComponent {
     }
 
 
-    public synchronized Context getContext() {
-        return context;
-    }
-
 
     @PostConstruct
     /**
