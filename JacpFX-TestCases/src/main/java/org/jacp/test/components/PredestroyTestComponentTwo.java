@@ -27,21 +27,23 @@ package org.jacp.test.components;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import org.jacpfx.api.message.Message;
+import org.jacp.test.main.ApplicationPredestroyPerspectiveTest;
 import org.jacpfx.api.annotations.Resource;
-import org.jacpfx.api.annotations.component.View;
+import org.jacpfx.api.annotations.component.DeclarativeView;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
+import org.jacpfx.api.annotations.method.OnMessage;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.FXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.util.FXUtil;
-import org.jacp.test.main.ApplicationPredestroyPerspectiveTest;
 
 import java.util.ResourceBundle;
 import java.util.concurrent.CountDownLatch;
@@ -52,7 +54,7 @@ import java.util.logging.Logger;
  *
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
-@View(id = "id017", name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", initialTargetLayoutId = "content1")
+@DeclarativeView(id = "id017",  active = true, resourceBundleLocation = "bundles.languageBundle",viewLocation = "/fxml/ComponentMessagingTests1Component2.fxml", localeID = "en_US", initialTargetLayoutId = "content1")
 public class PredestroyTestComponentTwo implements FXComponent {
 
     private final Logger log = Logger.getLogger(PredestroyTestComponentTwo.class
@@ -60,7 +62,8 @@ public class PredestroyTestComponentTwo implements FXComponent {
 
     String current = "";
     Button button = new Button("move");
-    VBox container = new VBox();
+    @FXML
+    VBox container;
     Label label = new Label();
 
     public static CountDownLatch latch = new CountDownLatch(1);
@@ -84,6 +87,12 @@ public class PredestroyTestComponentTwo implements FXComponent {
      */
     public Node postHandle(final Node arg0,
                            final Message<Event, Object> action) {
+
+        return null;
+    }
+
+    @OnMessage(String.class)
+    public void handleString(final Message<Event, Object> action) {
         current = context.getParentId();
         if (!action.messageBodyEquals(FXUtil.MessageUtil.INIT)) {
 
@@ -105,8 +114,6 @@ public class PredestroyTestComponentTwo implements FXComponent {
             container.getChildren().addAll(button, label);
             ApplicationPredestroyPerspectiveTest.latch.countDown();
         }
-
-        return container;
     }
 
 
@@ -121,7 +128,6 @@ public class PredestroyTestComponentTwo implements FXComponent {
 
         System.out.println("on postconstruct c 017");
         button =  new Button("move");
-        container = new VBox();
         label = new Label();
         startLatch.countDown();
     }

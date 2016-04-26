@@ -34,7 +34,7 @@ import java.util.List;
  * Time: 19:22
  * Test duplicate component id's
  */
-@org.jacpfx.api.annotations.workbench.Workbench(id = "id1", name = "workbench", perspectives = {"id03"})
+@org.jacpfx.api.annotations.workbench.Workbench(id = "id1",perspectives = {"id03"})
 public class WorkbenchDuplicateComponentsTest implements FXWorkbench {
     private Stage stage;
     @Resource

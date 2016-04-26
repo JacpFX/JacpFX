@@ -26,20 +26,22 @@
 package org.jacp.test.components;
 
 import javafx.event.Event;
+import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
-import org.jacpfx.api.message.Message;
+import org.jacp.test.main.ApplicationLauncherComponentToCallbackComponentMessaginTest1;
 import org.jacpfx.api.annotations.Resource;
-import org.jacpfx.api.annotations.component.View;
+import org.jacpfx.api.annotations.component.DeclarativeView;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
+import org.jacpfx.api.annotations.method.OnMessage;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.FXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.util.FXUtil;
-import org.jacp.test.main.ApplicationLauncherComponentToCallbackComponentMessaginTest1;
 
 import java.util.ResourceBundle;
 import java.util.concurrent.CountDownLatch;
@@ -52,7 +54,7 @@ import java.util.logging.Logger;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@View(id = "id013", name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", initialTargetLayoutId = "content1")
+@DeclarativeView(id = "id013",  active = true, resourceBundleLocation = "bundles.languageBundle",viewLocation = "/fxml/ComponentMessagingTests1Component2.fxml", localeID = "en_US", initialTargetLayoutId = "content1")
 public class ComponentToCallbackMessagingTest1Component1 implements FXComponent {
 
     private final Logger log = Logger.getLogger(ComponentToCallbackMessagingTest1Component1.class
@@ -60,7 +62,8 @@ public class ComponentToCallbackMessagingTest1Component1 implements FXComponent 
 
     String current = "content0";
     Button button = new Button("move to next target");
-    VBox container = new VBox();
+    @FXML
+    VBox container;
     Label label = new Label();
     public static boolean ui = false;
 
@@ -85,6 +88,14 @@ public class ComponentToCallbackMessagingTest1Component1 implements FXComponent 
      */
     public Node postHandle(final Node arg0,
                            final Message<Event, Object> action) {
+
+
+
+        return null;
+    }
+
+    @OnMessage(String.class)
+    public void handleString(final Message<Event, Object> action) {
         if (action.messageBodyEquals(FXUtil.MessageUtil.INIT)) {
 
             label.setText(" current Tagret: " + current);
@@ -107,9 +118,6 @@ public class ComponentToCallbackMessagingTest1Component1 implements FXComponent 
             }
 
         }
-
-
-        return container;
     }
 
 

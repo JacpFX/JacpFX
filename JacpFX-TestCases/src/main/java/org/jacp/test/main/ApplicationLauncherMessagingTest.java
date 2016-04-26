@@ -29,8 +29,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import org.jacp.test.config.BasicConfig;
-import org.jacp.test.workbench.Workbench;
+import org.jacp.test.config.BasicConfigVersion3;
 import org.jacp.test.workbench.WorkbenchMessagingTest;
 import org.jacpfx.api.handler.ErrorDialogHandler;
 import org.jacpfx.rcp.handler.AErrorDialogHandler;
@@ -66,7 +65,7 @@ public class ApplicationLauncherMessagingTest extends AFXSpringJavaConfigLaunche
 
     @Override
     public Class<?>[] getConfigClasses() {
-        return new Class<?>[]{BasicConfig.class};
+        return new Class<?>[]{BasicConfigVersion3.class};
     }
 
     /**

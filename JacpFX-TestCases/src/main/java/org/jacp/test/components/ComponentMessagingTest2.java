@@ -25,15 +25,17 @@
 package org.jacp.test.components;
 
 import javafx.event.Event;
+import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import org.jacp.test.main.ApplicationLauncherMessagingTest;
 import org.jacpfx.api.annotations.Resource;
-import org.jacpfx.api.annotations.component.View;
+import org.jacpfx.api.annotations.component.DeclarativeView;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
+import org.jacpfx.api.annotations.method.OnMessage;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.FXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
@@ -51,7 +53,7 @@ import java.util.logging.Logger;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@View(id = ComponentIds.ComponentMessagingTests2, name = "SimpleView", active = false, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", initialTargetLayoutId = "content2")
+@DeclarativeView(id = ComponentIds.ComponentMessagingTests2,active = false, viewLocation ="/fxml/ComponentMessagingTests1Component2.fxml", resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", initialTargetLayoutId = "content2")
 public class ComponentMessagingTest2 implements FXComponent {
 
     private final Logger log = Logger.getLogger(ComponentMessagingTest2.class
@@ -59,7 +61,8 @@ public class ComponentMessagingTest2 implements FXComponent {
 
     String current = "content0";
     Button button1 = new Button("deactivate");
-    VBox container = new VBox();
+    @FXML
+    VBox container ;
     Label label = new Label();
     public static boolean ui = false;
 
@@ -89,6 +92,12 @@ public class ComponentMessagingTest2 implements FXComponent {
      */
     public Node postHandle(final Node arg0,
                            final Message<Event, Object> action) {
+
+
+        return null;
+    }
+    @OnMessage(String.class)
+    public void handleString(final Message<Event, Object> action) {
         if (action.messageBodyEquals(FXUtil.MessageUtil.INIT)) {
             ApplicationLauncherMessagingTest.latch.countDown();
         } else if (action.messageBodyEquals("stop")) {
@@ -111,8 +120,6 @@ public class ComponentMessagingTest2 implements FXComponent {
 
         }
 
-
-        return container;
     }
 
 
@@ -125,7 +132,6 @@ public class ComponentMessagingTest2 implements FXComponent {
     public void onStartComponent(final FXComponentLayout arg0,
                                  final ResourceBundle resourceBundle) {
         button1 = new Button("stop");
-        container = new VBox();
         label = new Label();
         button1.setOnMouseClicked((event) -> {
             context.send("stop");

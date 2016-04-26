@@ -29,6 +29,9 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import org.jacpfx.api.annotations.method.OnMessage;
+import org.jacpfx.api.annotations.method.OnMessageAsync;
+import org.jacpfx.api.component.ComponentView;
 import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.context.JacpContext;
@@ -44,10 +47,13 @@ import org.jacpfx.rcp.registry.ComponentRegistry;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
 import org.jacpfx.rcp.util.*;
 
+import java.lang.reflect.Method;
 import java.security.InvalidParameterException;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Background Worker to execute component handle method in separate thread and
@@ -62,19 +68,30 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
     private final Map<String, Node> targetComponents;
     private final EmbeddedFXComponent component;
     private final BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue;
+    private final Map<Class, Method> syncMethodMap;
+    private final Map<Class, Method> asyncMethodMap;
 
     public EmbeddedFXComponentWorker(
             final Map<String, Node> targetComponents,
             final BlockingQueue<SubComponent<EventHandler<Event>, Event, Object>> componentDelegateQueue,
             final EmbeddedFXComponent component) {
-        super(component.getContext().getName());
+        super(component.getContext().getId());
         this.targetComponents = targetComponents;
         this.component = component;
         this.componentDelegateQueue = componentDelegateQueue;
         ShutdownThreadsHandler.registerThread(this);
+        ComponentView<Node, Event, Object> handle = this.component.getComponentViewHandle();
+        syncMethodMap = Stream.of(handle.getClass().getMethods()).
+                filter(method -> method.isAnnotationPresent(OnMessage.class)).
+                collect(Collectors.toMap(method -> method.getAnnotation(OnMessage.class).value(), p -> p));
+        asyncMethodMap = Stream.of(handle.getClass().getMethods()).
+                filter(method -> method.isAnnotationPresent(OnMessageAsync.class)).
+                collect(Collectors.toMap(method -> method.getAnnotation(OnMessageAsync.class).value(), p -> p));
+
+        // TODO check for duplicate OnMessage methods
     }
 
-    @SuppressWarnings({"FeatureEnvy", "Annotation"})
+
     @Override
     public final void run() {
         try {
@@ -91,19 +108,19 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
     private void handleComponentExecution(final EmbeddedFXComponent component, final Map<String, Node> targetComponents) {
         final Thread t = Thread.currentThread();
         try {
-            final Message<Event, Object> myAction = component
+            final Message<Event, Object> message = component
                     .getNextIncomingMessage();
-            MessageLoggerService.getInstance().receive(myAction);
+            MessageLoggerService.getInstance().receive(message);
             final Node previousContainer = component.getRoot();
             final InternalContext contextImpl = InternalContext.class.cast(component.getContext());
             final String currentTargetLayout = contextImpl.getTargetLayout();
             final String currentExecutionTarget = contextImpl.getExecutionTarget();
-            // run code
-            final Node handleReturnValue = WorkerUtil.prepareAndRunHandleMethod(
-                    component, myAction);
-            this.publish(component, myAction, targetComponents,
-                    handleReturnValue, previousContainer,
-                    currentTargetLayout, currentExecutionTarget);
+            final ComponentView<Node, Event, Object> componentViewHandle = component.getComponentViewHandle();
+            final Class<?> messageType = message.getMessageBody().getClass();
+            final Object value = handleAsyncMessage(message, componentViewHandle, messageType);
+
+            handleSyncMessage(component, targetComponents, message, previousContainer, currentTargetLayout, currentExecutionTarget, messageType, value);
+
         } catch (final IllegalStateException e) {
             if (e.getMessage().contains("Not on FX application thread")) {
                 t.getUncaughtExceptionHandler().uncaughtException(t, new UnsupportedOperationException(
@@ -117,6 +134,23 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
 
     }
 
+    private void handleSyncMessage(EmbeddedFXComponent component, Map<String, Node> targetComponents, Message<Event, Object> message, Node previousContainer, String currentTargetLayout, String currentExecutionTarget, Class<?> messageType, Object value) throws InterruptedException, ExecutionException {
+        final Method syncMethod = syncMethodMap.get(messageType);
+        if (syncMethod != null) {
+            publish(component, message, syncMethod, targetComponents,
+                    value, previousContainer,
+                    currentTargetLayout, currentExecutionTarget);
+        }
+    }
+
+    private Object handleAsyncMessage(Message<Event, Object> message, Object componentHandle, Class<?> messageType) {
+        Object value = null;
+        final Method asyncMethod = asyncMethodMap.get(messageType);
+        if (asyncMethod != null) {
+            value = FXUtil.invokeMethod(OnMessageAsync.class, asyncMethod, componentHandle, message);
+        }
+        return value;
+    }
 
     /**
      * publish handle result in application main thread
@@ -124,13 +158,13 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
      * @throws InterruptedException
      */
     private void publish(final EmbeddedFXComponent component,
-                         final Message<Event, Object> action,
+                         final Message<Event, Object> message,
+                         final Method method,
                          final Map<String, Node> targetComponents,
-                         final Node handleReturnValue,
+                         final Object handleReturnValue,
                          final Node previousContainer, final String currentTargetLayout, final String currentExecutionTarget)
             throws InterruptedException, ExecutionException {
         final Thread t = Thread.currentThread();
-        Thread.yield();
         FXWorker.invokeOnFXThreadAndWait(() -> {
             // check if component was set to inactive, if so remove
             try {
@@ -138,8 +172,8 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
 
                 // check if was not deactivated in handle method
                 if (context.isActive()) {
-                    WorkerUtil.executeComponentViewPostHandle(handleReturnValue, component,
-                            action);
+                    WorkerUtil.executeTypedComponentViewPostHandle(handleReturnValue, component,
+                            message, method);
                 }
                 // check if was not deactivated in post handle method
                 if (context.isActive()) {
@@ -179,7 +213,6 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
      * @param currentTargetLayout,    the previous targetLayout
      * @param currentExecutionTarget, the current executionTarget
      */
-    @SuppressWarnings("FeatureEnvy")
     private void publishComponentValue(final EmbeddedFXComponent component,
                                        final Map<String, Node> targetComponents,
                                        final Node previousContainer, final String currentTargetLayout, final String currentExecutionTarget) {
@@ -189,14 +222,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
             final InternalContext context = InternalContext.class.cast(component.getContext());
             final String newExecutionTarget = context.getExecutionTarget();
             if (!currentExecutionTarget.equalsIgnoreCase(newExecutionTarget)) {
-                if (ComponentRegistry.findComponentByQualifiedId(newExecutionTarget, id) != null)
-                    throw new NonUniqueComponentException("perspective " + newExecutionTarget + " already contains a component with id: " + id);
-                this.shutDownComponent(component, previousContainer, currentTargetLayout);
-                // restore target execution
-                final JacpContext contextTemp = component.getContext();
-                contextTemp.setExecutionTarget(newExecutionTarget);
-                // handle target outside current perspective
-                WorkerUtil.changeComponentTarget(this.componentDelegateQueue, component);
+                handleTargetChange(component, previousContainer, currentTargetLayout, id, newExecutionTarget);
             } else {
                 final String newTargetLayout = context.getTargetLayout();
                 this.checkAndHandleLayoutTargetChange(component, previousContainer,
@@ -206,11 +232,22 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
         }
     }
 
+    private void handleTargetChange(EmbeddedFXComponent component, Node previousContainer, String currentTargetLayout, String id, String newExecutionTarget) {
+        if (ComponentRegistry.findComponentByQualifiedId(newExecutionTarget, id) != null)
+            throw new NonUniqueComponentException("perspective " + newExecutionTarget + " already contains a component with id: " + id);
+        this.shutDownComponent(component, previousContainer, currentTargetLayout);
+        // restore target execution
+        final JacpContext contextTemp = component.getContext();
+        contextTemp.setExecutionTarget(newExecutionTarget);
+        // handle target outside current perspective
+        WorkerUtil.changeComponentTarget(this.componentDelegateQueue, component);
+    }
+
     private void shutDownComponent(final EmbeddedFXComponent component, final Node previousContainer, final String currentTargetLayout) {
 
         final Context context = Context.class.cast(component.getContext());
         final String parentId = context.getParentId();
-        if(parentId==null) return;
+        if (parentId == null) return;
         final FXComponentLayout layout = context.getComponentLayout();
         final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspective = PerspectiveRegistry.findPerspectiveById(parentId);
         if (parentPerspective != null) {
@@ -218,18 +255,16 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
             if (!this.removeComponentValue(previousContainer)) {
                 clearTargetLayoutInPerspective(parentPerspective, currentTargetLayout);
             }
-            parentPerspective.unregisterComponent(component);
         }
         TearDownHandler.shutDownFXComponent(component, parentId, layout);
     }
 
     private static void clearTargetLayoutInPerspective(final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspective, final String currentTargetLayout) {
-        final PerspectiveLayout playout = PerspectiveUtil.getPerspectiveLayoutFromPerspective(parentPerspective);
-        if (playout != null && currentTargetLayout != null) {
-            final Node container = playout.getTargetLayoutComponents().get(currentTargetLayout);
+        final PerspectiveLayout perspectiveLayout = PerspectiveUtil.getPerspectiveLayoutFromPerspective(parentPerspective);
+        if (perspectiveLayout != null && currentTargetLayout != null) {
+            final Node container = perspectiveLayout.getTargetLayoutComponents().get(currentTargetLayout);
             if (container != null) {
-                final ObservableList<Node> children = FXUtil.getChildren(container);
-                children.clear();
+                FXUtil.getChildren(container).ifPresent(ObservableList::clear);
             }
 
         }
@@ -242,16 +277,8 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
     private void checkAndHandleLayoutTargetChange(final EmbeddedFXComponent component,
                                                   final Node previousContainer, final String currentTargetLayout, final String newTargetLayout, final Map<String, Node> targetComponents) {
 
-        final Node root = component.getRoot();
         if (!currentTargetLayout.equals(newTargetLayout)) {
             removeComponentValue(previousContainer);
-            executeLayoutTargetUpdate(component, newTargetLayout, targetComponents);
-        } else if (root != null && !root.equals(previousContainer)) {
-            // add new view
-            this.log(" //1.1.1.1.4// handle new component insert: "
-                    + component.getContext().getName());
-            removeComponentValue(previousContainer);
-            WorkerUtil.handleViewState(root, true);
             executeLayoutTargetUpdate(component, newTargetLayout, targetComponents);
         }
 

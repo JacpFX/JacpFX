@@ -58,11 +58,11 @@ import static org.jacpfx.rcp.util.LayoutUtil.GridPaneUtil;
  * @author <a href="mailto:pete.ahcp@gmail.com">Patrick Symmangk</a>s
  */
 
-@Perspective(id = PerspectiveTwoToolbarSwitchPerspectives.ID, name = "contactPerspective",
+@Perspective(id = PerspectiveTwoToolbarSwitchPerspectives.ID,
         components = {""},
         viewLocation = "/fxml/perspectiveOne.fxml",
         resourceBundleLocation = "bundles.languageBundle",
-        localeID = "en_US", active = true)
+        localeID = "en_US")
 public class PerspectiveTwoToolbarSwitchPerspectives extends HandleToolbarBase implements FXPerspective {
 
     // =================== CONSTANTS ===================

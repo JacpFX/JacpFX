@@ -64,4 +64,6 @@ public class ComponentIds {
     public static final String CallbackComponentMessagingTest2       ="id039";
     public static final String ComponentManagedFragmentMessage       ="id040";
     public static final String CallbackComponentManagedFragmentMessage       ="id041";
+    public static final String ComponentOneVersion3                     ="id042";
+    public static final String ComponentTwoVersion3                     ="id043";
 }

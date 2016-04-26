@@ -26,15 +26,10 @@ package org.jacp.test.perspectives;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.geometry.Orientation;
-import javafx.scene.Node;
-import javafx.scene.control.SplitPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import org.jacp.test.components.ComponentIds;
-import org.jacp.test.main.ApplicationLauncher;
 import org.jacp.test.main.ApplicationLauncherMessagingTest;
 import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.lifecycle.OnShow;
@@ -56,7 +51,7 @@ import java.util.ResourceBundle;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@Perspective(id = PerspectiveIds.PerspectiveMessagingTest3, name = "contactPerspective",
+@Perspective(id = PerspectiveIds.PerspectiveMessagingTest3,
         components = {
                 ComponentIds.ComponentMessagingTests1,ComponentIds.ComponentMessagingTests2 ,ComponentIds.CallbackComponentMessagingTest1_1,ComponentIds.CallbackComponentMessagingTest2
                 },

@@ -31,6 +31,7 @@ import org.jacpfx.api.annotations.component.Component;
 import org.jacpfx.api.annotations.component.Stateless;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
+import org.jacpfx.api.annotations.method.OnMessageAsync;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.CallbackComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
@@ -48,7 +49,7 @@ import java.util.logging.Logger;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@Component(id = ComponentIds.CallbackComponentMessagingTest2, name = "SimpleView", active = false, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
+@Component(id = ComponentIds.CallbackComponentMessagingTest2, active = false, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US")
 @Stateless
 public class CallbackComponentMessagingTest2 implements CallbackComponent {
 
@@ -72,6 +73,11 @@ public class CallbackComponentMessagingTest2 implements CallbackComponent {
      * The handleAction method always runs outside the main application thread. You can create new nodes, execute long running tasks but you are not allowed to manipulate existing nodes here.
      */
     public Object handle(final Message<Event, Object> action) {
+        return null;
+    }
+
+    @OnMessageAsync(String.class)
+    public Object onStringMessage(final Message<Event, Object> action) {
         if (action.messageBodyEquals(FXUtil.MessageUtil.INIT)) {
             ApplicationLauncherMessagingTest.latch.countDown();
         } else if (action.messageBodyEquals("stop")) {

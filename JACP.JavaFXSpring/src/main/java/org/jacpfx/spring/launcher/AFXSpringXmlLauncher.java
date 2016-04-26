@@ -59,6 +59,7 @@ public abstract class AFXSpringXmlLauncher extends ASpringLauncher {
     }
 
 
+
     private void initWorkbench(final Stage stage, final Launcher<ClassPathXmlApplicationContext> launcher, final Class<? extends FXWorkbench> workbenchHandler) {
         if (workbenchHandler.isAnnotationPresent(Workbench.class)) {
             this.workbench = createWorkbench(launcher, workbenchHandler);
@@ -74,7 +75,7 @@ public abstract class AFXSpringXmlLauncher extends ASpringLauncher {
         final String id = annotation.id();
         if (id.isEmpty()) throw new AttributeNotFoundException("no workbench id found for: " + workbenchHandler);
         final FXWorkbench handler = launcher.registerAndGetBean(workbenchHandler, id, Scope.SINGLETON);
-        return new EmbeddedFXWorkbench(handler, getWorkbenchDecorator());
+        return new EmbeddedFXWorkbench(handler,getWorkbenchDecorator());
     }
 
     public abstract String getXmlConfig();

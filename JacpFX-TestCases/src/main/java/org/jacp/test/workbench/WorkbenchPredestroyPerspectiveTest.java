@@ -56,7 +56,7 @@ import java.util.List;
  *
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
-@org.jacpfx.api.annotations.workbench.Workbench(id = "id1", name = "workbench", perspectives = {"id17","id18"})
+@org.jacpfx.api.annotations.workbench.Workbench(id = "id1",  perspectives = {"id17","id18"})
 public class WorkbenchPredestroyPerspectiveTest implements FXWorkbench {
     private Stage stage;
     @Resource

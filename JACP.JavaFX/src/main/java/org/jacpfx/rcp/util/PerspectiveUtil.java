@@ -100,7 +100,7 @@ public class PerspectiveUtil {
      * @return
      */
     private Stream<Injectable> getInjectAbles(final org.jacpfx.api.annotations.perspective.Perspective perspectiveAnnotation) {
-        final Stream<String> idStream = CommonUtil.getStringStreamFromArray(getComponentIds(perspectiveAnnotation));
+        final Stream<String> idStream = Stream.of(getComponentIds(perspectiveAnnotation));
         final String parentId = perspectiveAnnotation.id();
         return idStream.filter(id->!id.isEmpty()).map(id->mapToInjectAbleComponent(parentId,id));
     }
@@ -226,8 +226,7 @@ public class PerspectiveUtil {
         setInitialLayoutTarget(component, declarativeComponent.initialTargetLayoutId());
         setLocale(component, declarativeComponent.localeID());
         setResourceBundleLocation(component, declarativeComponent.resourceBundleLocation());
-        handleBaseAttributes(component, declarativeComponent.id(), declarativeComponent.active(),
-                declarativeComponent.name());
+        handleBaseAttributes(component, declarativeComponent.id(), declarativeComponent.active());
         EmbeddedFXComponent.class.cast(component).setViewLocation(declarativeComponent.viewLocation());
     }
 
@@ -237,8 +236,7 @@ public class PerspectiveUtil {
      * @param callbackAnnotation, The callback annotation.
      */
     private static void handleCallbackAnnotation(final SubComponent<EventHandler<Event>, Event, Object> component, final Component callbackAnnotation) {
-        handleBaseAttributes(component, callbackAnnotation.id(), callbackAnnotation.active(),
-                callbackAnnotation.name());
+        handleBaseAttributes(component, callbackAnnotation.id(), callbackAnnotation.active());
     }
 
     /**
@@ -247,8 +245,7 @@ public class PerspectiveUtil {
      * @param viewComponent, The @View annotation.
      */
     private static void handleViewComponentAnnotation(final SubComponent<EventHandler<Event>, Event, Object> component,final View viewComponent) {
-        handleBaseAttributes(component, viewComponent.id(), viewComponent.active(),
-                viewComponent.name());
+        handleBaseAttributes(component, viewComponent.id(), viewComponent.active());
         setInitialLayoutTarget(component, viewComponent.initialTargetLayoutId());
         setLocale(component, viewComponent.localeID());
         setResourceBundleLocation(component, viewComponent.resourceBundleLocation());
@@ -261,14 +258,11 @@ public class PerspectiveUtil {
      * @param component, the component where the base attributes are set
      * @param id, the component id
      * @param active, is component active
-     * @param name , the component name
      */
-    private static void handleBaseAttributes(final SubComponent<EventHandler<Event>, Event, Object> component, final String id, final boolean active,
-                                      final String name) {
+    private static void handleBaseAttributes(final SubComponent<EventHandler<Event>, Event, Object> component, final String id, final boolean active) {
         final InternalContext context = InternalContext.class.cast(component.getContext());
         if (id != null) context.setId(id);
         component.getContext().setActive(active);
-        if (name != null) context.setName(name);
     }
 
 

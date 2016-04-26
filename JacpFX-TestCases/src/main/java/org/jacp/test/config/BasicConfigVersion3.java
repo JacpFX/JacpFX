@@ -1,9 +1,9 @@
 /*
  * **********************************************************************
  *
- *  Copyright (C) 2010 - 2015
+ *  Copyright (C) 2010 - 2014
  *
- *  [CommonUtil.java]
+ *  [Component.java]
  *  JACPFX Project (https://github.com/JacpFX/JacpFX/)
  *  All rights reserved.
  *
@@ -23,32 +23,15 @@
  * *********************************************************************
  */
 
-package org.jacpfx.rcp.util;
+package org.jacp.test.config;
 
-import java.util.stream.Stream;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Andy Moncsek
- * Date: 20.09.13
- * Time: 15:37
- * All common util methods
+ * Created by Amdy Moncsek on 28.01.14.
  */
-class CommonUtil {
-
-    private CommonUtil() {
-
-    }
-
-
-    /**
-     * Returns a stream of strings from a string array
-     *
-     * @param ids
-     * @return
-     */
-    public static Stream<String> getStringStreamFromArray(String... ids) {
-        return Stream.of(ids);
-    }
-
+@Configuration
+@ComponentScan
+public class BasicConfigVersion3 {
 }

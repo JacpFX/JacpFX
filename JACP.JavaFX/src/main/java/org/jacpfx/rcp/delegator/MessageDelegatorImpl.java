@@ -37,6 +37,7 @@ import org.jacpfx.api.message.Message;
 import org.jacpfx.concurrency.FXWorker;
 import org.jacpfx.rcp.message.MessageImpl;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
+import org.jacpfx.rcp.util.FXUtil;
 import org.jacpfx.rcp.util.ShutdownThreadsHandler;
 
 import java.util.concurrent.ExecutionException;
@@ -80,7 +81,7 @@ public class MessageDelegatorImpl extends Thread implements
 
     private void handleCall(final String targetId,
                                      final Message<Event, Object> message) throws ExecutionException, InterruptedException {
-        final Perspective<Node, EventHandler<Event>, Event, Object> perspective = PerspectiveRegistry.findPerspectiveById(targetId);
+        final Perspective<Node, EventHandler<Event>, Event, Object> perspective = PerspectiveRegistry.findPerspectiveById(FXUtil.getTargetPerspectiveId(targetId));
         if(perspective==null) throw new ComponentNotFoundException("no perspective for message : "+targetId+ " found");
         checkPerspectiveAndInit(perspective);
         perspective.getMessageQueue().put(message);

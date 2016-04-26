@@ -74,7 +74,6 @@ public class JacpContextImpl implements Context,InternalContext {
     /**
      * will be set on init
      */
-    private String name;
     private volatile String returnTarget;
     private volatile String targetLayout;
     private volatile String executionTarget = "";
@@ -82,12 +81,6 @@ public class JacpContextImpl implements Context,InternalContext {
     private volatile ResourceBundle resourceBundle;
     private final AtomicBoolean active = new AtomicBoolean(false);
 
-    public JacpContextImpl(final String id, final String name, final TransferQueue<Message<Event, Object>> globalMessageQueue) {
-        this.id = id;
-        this.name = name;
-        this.globalMessageQueue = globalMessageQueue;
-
-    }
 
     public JacpContextImpl(final TransferQueue<Message<Event, Object>> globalMessageQueue) {
         this.globalMessageQueue = globalMessageQueue;
@@ -192,20 +185,7 @@ public class JacpContextImpl implements Context,InternalContext {
         this.fullyQualifiedId = this.id!=null?this.parentId.concat(FXUtil.PATTERN_GLOBAL).concat(this.id):this.parentId;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getName() {
-        return this.name;
-    }
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public final void setName(final String name) {
-        this.name = name;
-    }
+
 
     /**
      * {@inheritDoc}
@@ -413,7 +393,6 @@ public class JacpContextImpl implements Context,InternalContext {
             return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (layout != null ? !layout.equals(that.layout) : that.layout != null) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (parentId != null ? !parentId.equals(that.parentId) : that.parentId != null) return false;
         if (resourceBundle != null ? !resourceBundle.equals(that.resourceBundle) : that.resourceBundle != null)
             return false;
@@ -427,7 +406,6 @@ public class JacpContextImpl implements Context,InternalContext {
         int result = globalMessageQueue != null ? globalMessageQueue.hashCode() : 0;
         result = 31 * result + (id != null ? id.hashCode() : 0);
         result = 31 * result + (parentId != null ? parentId.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (returnTarget != null ? returnTarget.hashCode() : 0);
         result = 31 * result + (targetLayout != null ? targetLayout.hashCode() : 0);
         result = 31 * result + (executionTarget != null ? executionTarget.hashCode() : 0);

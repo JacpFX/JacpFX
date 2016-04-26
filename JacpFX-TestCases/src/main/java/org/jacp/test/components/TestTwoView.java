@@ -27,21 +27,23 @@ package org.jacp.test.components;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import org.jacpfx.api.message.Message;
+import org.jacp.test.main.ApplicationLauncher;
 import org.jacpfx.api.annotations.Resource;
-import org.jacpfx.api.annotations.component.View;
+import org.jacpfx.api.annotations.component.DeclarativeView;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
+import org.jacpfx.api.annotations.method.OnMessage;
+import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.FXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
 import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.util.FXUtil;
-import org.jacp.test.main.ApplicationLauncher;
 
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
@@ -51,7 +53,7 @@ import java.util.logging.Logger;
  *
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
-@View(id = "id003", name = "SimpleView", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", initialTargetLayoutId = "content1")
+@DeclarativeView(id = "id003", active = true, resourceBundleLocation = "bundles.languageBundle", localeID = "en_US", viewLocation = "/fxml/ComponentMessagingTests1Component2.fxml",initialTargetLayoutId = "content1")
 public class TestTwoView implements FXComponent {
 
     private final Logger log = Logger.getLogger(TestTwoView.class
@@ -59,7 +61,8 @@ public class TestTwoView implements FXComponent {
 
     String current = "";
     Button button = new Button("move");
-    VBox container = new VBox();
+    @FXML
+    VBox container;
     Label label = new Label();
 
     @Resource
@@ -80,6 +83,12 @@ public class TestTwoView implements FXComponent {
      */
     public Node postHandle(final Node arg0,
                            final Message<Event, Object> action) {
+
+        return null;
+    }
+
+    @OnMessage(String.class)
+    public void handleString(final Message<Event, Object> action) {
         current = context.getParentId();
         if (!action.messageBodyEquals(FXUtil.MessageUtil.INIT)) {
 
@@ -102,8 +111,6 @@ public class TestTwoView implements FXComponent {
             container.getChildren().addAll(button, label);
             ApplicationLauncher.latch.countDown();
         }
-
-        return container;
     }
 
 
@@ -117,7 +124,6 @@ public class TestTwoView implements FXComponent {
                                  final ResourceBundle resourceBundle) {
 
         System.out.println("START TWO");
-        container = new VBox();
     }
 
     @PreDestroy

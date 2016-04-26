@@ -52,18 +52,7 @@ public interface RootComponent<T, A> {
      */
     void addComponent(final T component);
 
-    /**
-     * Unregister component from current perspective.
-     *
-     * @param component, the component to unregister.
-     */
-    void unregisterComponent(final T component);
 
-
-    /**
-     * Remove all component when perspective is shut down.
-     */
-    void removeAllCompnents();
 
     /**
      * Handles initialization of subcomponents.

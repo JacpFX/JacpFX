@@ -32,7 +32,7 @@ import org.jacpfx.api.component.Perspective;
 import org.jacpfx.rcp.util.FXUtil;
 
 import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collector;
 
@@ -44,7 +44,7 @@ import java.util.stream.Collector;
  * Global registry with references to all perspective
  */
 public class PerspectiveRegistry {
-    private static final List<Perspective<Node, EventHandler<Event>, Event, Object>> perspectives = new CopyOnWriteArrayList<>();
+    private static final Map<String, Perspective<Node, EventHandler<Event>, Event, Object>> perspectiveReg = new ConcurrentHashMap<>();
     private static final AtomicReference<String> currentVisiblePerspectiveId = new AtomicReference<>();
     private static final Collector<Perspective<Node, EventHandler<Event>, Event, Object>, ?, TreeSet<Perspective<Node, EventHandler<Event>, Event, Object>>> collector = Collector.of(TreeSet::new, TreeSet::add,
             (left, right) -> {
@@ -56,11 +56,13 @@ public class PerspectiveRegistry {
     private PerspectiveRegistry() {
 
     }
+
     /**
      * clears registry on application shutdown
      */
     public static void clearOnShutdown() {
-        perspectives.clear();
+        perspectiveReg.clear();
+        ;
     }
 
     /**
@@ -83,14 +85,6 @@ public class PerspectiveRegistry {
         return currentVisiblePerspectiveId.get();
     }
 
-    /**
-     * Returns a unmodifiable list of all available perspective.
-     *
-     * @return a list of current registered perspective
-     */
-    private static List<Perspective<Node, EventHandler<Event>, Event, Object>> getAllPerspectives() {
-        return Collections.unmodifiableList(perspectives);
-    }
 
 
     /**
@@ -100,8 +94,8 @@ public class PerspectiveRegistry {
      */
     public static void registerPerspective(
             final Perspective<Node, EventHandler<Event>, Event, Object> perspective) {
-        if (!perspectives.contains(perspective))
-            perspectives.add(perspective);
+        Objects.requireNonNull(perspective.getContext());
+        perspectiveReg.putIfAbsent(perspective.getContext().getId(), perspective);
     }
 
     /**
@@ -111,8 +105,8 @@ public class PerspectiveRegistry {
      */
     public static void removePerspective(
             final Perspective<Node, EventHandler<Event>, Event, Object> perspective) {
-        if (perspectives.contains(perspective))
-            perspectives.remove(perspective);
+        Objects.requireNonNull(perspective.getContext());
+        perspectiveReg.remove(perspective.getContext().getId());
     }
 
     /**
@@ -121,8 +115,8 @@ public class PerspectiveRegistry {
      * @param current the current active perspective
      * @return the next active perspective
      */
-    public static Perspective<Node, EventHandler<Event>, Event, Object> findNextActivePerspective(final Perspective<Node, EventHandler<Event>, Event, Object> current) {
-        return getNextValidPerspective(getAllPerspectives(), current);
+    public static Optional<Perspective<Node, EventHandler<Event>, Event, Object>> findNextActivePerspective(final Perspective<Node, EventHandler<Event>, Event, Object> current) {
+        return Optional.ofNullable(getNextValidPerspective(perspectiveReg.values(), current));
     }
 
     /**
@@ -132,7 +126,7 @@ public class PerspectiveRegistry {
      * @param current, the current perspective
      * @return the next valid perspective
      */
-    private static Perspective<Node, EventHandler<Event>, Event, Object> getNextValidPerspective(final List<Perspective<Node, EventHandler<Event>, Event, Object>> p, final Perspective<Node, EventHandler<Event>, Event, Object> current) {
+    private static Perspective<Node, EventHandler<Event>, Event, Object> getNextValidPerspective(final Collection<Perspective<Node, EventHandler<Event>, Event, Object>> p, final Perspective<Node, EventHandler<Event>, Event, Object> current) {
         final TreeSet<Perspective<Node, EventHandler<Event>, Event, Object>> allActive = p.stream()
                 .filter(active -> active.getContext().isActive() || active.equals(current))
                 .collect(collector);
@@ -155,8 +149,7 @@ public class PerspectiveRegistry {
      */
     public static Perspective<Node, EventHandler<Event>, Event, Object> findPerspectiveById(
             final String targetId) {
-        return FXUtil.getObserveableById(FXUtil.getTargetPerspectiveId(targetId),
-                getAllPerspectives());
+        return perspectiveReg.get(targetId);
     }
 
     /**
@@ -168,22 +161,7 @@ public class PerspectiveRegistry {
      */
     public static Perspective<Node, EventHandler<Event>, Event, Object> findPerspectiveById(
             final String parentId, final String componentId) {
-        return FXUtil.getObserveableByQualifiedId(parentId, componentId,
-                getAllPerspectives());
-    }
-
-
-    private static Perspective<Node, EventHandler<Event>, Event, Object> findByComponentId(List<Perspective<Node, EventHandler<Event>, Event, Object>> perspectives, final String componentId) {
-        final Optional<Perspective<Node, EventHandler<Event>, Event, Object>> first = perspectives.stream()
-                .filter(p -> {
-                    final Class perspectiveClass = p.getPerspective().getClass();
-                    if (!perspectiveClass.isAnnotationPresent(org.jacpfx.api.annotations.perspective.Perspective.class))
-                        return false;
-                    final org.jacpfx.api.annotations.perspective.Perspective annotation = (org.jacpfx.api.annotations.perspective.Perspective) perspectiveClass.getAnnotation(org.jacpfx.api.annotations.perspective.Perspective.class);
-                    return containsComponentInAnnotation(annotation, componentId);
-                }).findFirst();
-
-        return first.isPresent() ? first.get() : null;
+        return findPerspectiveById(FXUtil.getQualifiedComponentId(parentId,componentId));
     }
 
 

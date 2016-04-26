@@ -88,14 +88,14 @@ public class ComponentHandlerImpl
 			final Message<Event, Object> action,
 			final SubComponent<EventHandler<Event>, Event, Object> component) {
         if (AStatelessCallbackComponent.class.isAssignableFrom(component.getClass())) {
-            this.log("RUN STATELESS COMPONENTS:::" , component.getContext().getName());
+            this.log("RUN STATELESS COMPONENTS:::" , component.getContext().getId());
             this.runStatelessCallbackComponent(
                     ((AStatelessCallbackComponent) component), action);
             return;
         }
         // all others
         this.putMessageToQueue(action,component);
-        this.log("DONE EXECUTE REPLACE:::" , component.getContext().getName());
+        this.log("DONE EXECUTE REPLACE:::" , component.getContext().getId());
 	}
 
 
@@ -120,7 +120,7 @@ public class ComponentHandlerImpl
 	private void handleInit(final Message<Event, Object> action,
 			final SubComponent<EventHandler<Event>, Event, Object> component) {
         if (EmbeddedFXComponent.class.isAssignableFrom(component.getClass())) {
-			this.log("COMPONENT EXECUTE INIT:::" , component.getContext().getName());
+			this.log("COMPONENT EXECUTE INIT:::" , component.getContext().getId());
 			this.fxInitExecutor.execute(new FXComponentInitWorker(
                     this.perspectiveLayout.getTargetLayoutComponents(),
                     ((EmbeddedFXComponent) component), action, this.componentDelegateQueue));
@@ -128,14 +128,14 @@ public class ComponentHandlerImpl
 		}// if END
 		if (AStatelessCallbackComponent.class.isAssignableFrom(component.getClass())) {
 			this.log("SATELESS BACKGROUND COMPONENT EXECUTE INIT:::"
-                    , component.getContext().getName());
+                    , component.getContext().getId());
             final AStatelessCallbackComponent asyncComponent = AStatelessCallbackComponent.class.cast(component);
 			this.runStatelessCallbackComponent(asyncComponent, action);
             return;
         }// else if END
         if (ASubComponent.class.isAssignableFrom(component.getClass())) {
             this.log("BACKGROUND COMPONENT EXECUTE INIT:::"
-                    , component.getContext().getName());
+                    , component.getContext().getId());
             this.callbackInitExecutor.execute(new CallbackComponentInitWorker(
                     this.componentDelegateQueue, ((ASubComponent) component), action));
         }// else if END

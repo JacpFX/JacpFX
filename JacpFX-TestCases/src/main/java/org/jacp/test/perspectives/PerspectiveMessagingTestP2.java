@@ -55,7 +55,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@Perspective(id = "id11", name = "contactPerspective",
+@Perspective(id = "id11",
         components = {},
         // viewLocation = "/fxml/perspectiveOne.fxml",
         resourceBundleLocation = "bundles.languageBundle",

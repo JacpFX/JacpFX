@@ -56,7 +56,7 @@ import java.util.List;
  *
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
-@org.jacpfx.api.annotations.workbench.Workbench(id = "id10", name = "workbench", perspectives = {PerspectiveIds.PerspectiveMissingIdInPerspective})
+@org.jacpfx.api.annotations.workbench.Workbench(id = "id10",  perspectives = {PerspectiveIds.PerspectiveMissingIdInPerspective})
 public class WorkbenchMissingIdInPerspective implements FXWorkbench {
     private Stage stage;
     @Resource

@@ -102,7 +102,6 @@ public class CheckComponentsTest extends TestFXJacpFXSpringLauncher {
             JacpContext<EventHandler<Event>, Object> context = p.getContext();
             assertNotNull(context.getParentId());
             assertNotNull(context.getId());
-            assertNotNull(context.getName());
             assertNotNull(context.getResourceBundle());
             Injectable handler = p.getPerspective();
             org.jacpfx.api.annotations.perspective.Perspective annotation = handler.getClass().getAnnotation(org.jacpfx.api.annotations.perspective.Perspective.class);

@@ -56,7 +56,7 @@ import java.util.List;
  *
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
-@org.jacpfx.api.annotations.workbench.Workbench(id = WorkbenchIds.WorkbenchTestSwitch, name = "workbench",
+@org.jacpfx.api.annotations.workbench.Workbench(id = WorkbenchIds.WorkbenchTestSwitch,
         perspectives = {
                 PerspectiveIds.PerspectiveTestSwitchC,
                 PerspectiveIds.PerspectiveTestSwitchB,

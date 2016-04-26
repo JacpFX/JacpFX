@@ -26,7 +26,7 @@ import java.util.ResourceBundle;
 /**
  * @author: Patrick Symmangk (pete.jacp@gmail.com)
  */
-@Perspective(id = PerspectiveIds.PerspectiveToolbarTwo, name = "toolBarTwoPerspective",
+@Perspective(id = PerspectiveIds.PerspectiveToolbarTwo,
         components = {ComponentIds.ComponentHandleToolBarBetweenPerspectives2},
         viewLocation = "/fxml/toolBarperspectiveTwo.fxml",
         resourceBundleLocation = "bundles.languageBundle",

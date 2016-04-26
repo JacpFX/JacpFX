@@ -26,6 +26,7 @@
 package org.jacp.test.toolbar.components;
 
 import javafx.event.Event;
+import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -37,9 +38,10 @@ import org.jacp.test.toolbar.perspectives.PerspectiveOneToolbarSwitchPerspective
 import org.jacp.test.toolbar.perspectives.PerspectiveTwoToolbarSwitchPerspectives;
 import org.jacp.test.util.MessageConstants;
 import org.jacpfx.api.annotations.Resource;
-import org.jacpfx.api.annotations.component.View;
+import org.jacpfx.api.annotations.component.DeclarativeView;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
+import org.jacpfx.api.annotations.method.OnMessage;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.api.util.ToolbarPosition;
 import org.jacpfx.rcp.component.FXComponent;
@@ -60,9 +62,9 @@ import static org.jacp.test.util.MessageConstants.SWITCH_MESSAGE;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@View(id = ComponentHandleToolBarBetweenPerspectives2.ID,
-        name = "SimpleView",
+@DeclarativeView(id = ComponentHandleToolBarBetweenPerspectives2.ID,
         active = true,
+        viewLocation = "/fxml/ComponentMessagingTests1Component2.fxml",
         resourceBundleLocation = "bundles.languageBundle",
         localeID = "en_US",
         initialTargetLayoutId = "content0")
@@ -73,7 +75,8 @@ public class ComponentHandleToolBarBetweenPerspectives2 extends HandleToolbarBas
     protected static Context context;
     private final Logger logger = Logger.getLogger(this.getClass().getName());
     Button button = new Button("move to next target");
-    VBox container = new VBox();
+    @FXML
+    VBox container;
     Label label = new Label();
 
     public static void
@@ -96,7 +99,15 @@ public class ComponentHandleToolBarBetweenPerspectives2 extends HandleToolbarBas
     public Node postHandle(final Node arg0,
                            final Message<Event, Object> action) {
 
-        String currentAction = (String) action.getMessageBody();
+
+
+
+        return null;
+    }
+
+    @OnMessage(String.class)
+    public void handleString(final Message<Event, Object> message) {
+        String currentAction = (String) message.getMessageBody();
 
         switch (currentAction) {
             case FXUtil.MessageUtil.INIT:
@@ -106,7 +117,7 @@ public class ComponentHandleToolBarBetweenPerspectives2 extends HandleToolbarBas
                 container.getChildren().addAll(button, label);
                 ApplicationLauncherHandleToolBarButtonsBetweenPerspectives.latch.countDown();
                 PerspectiveTwoToolbarSwitchPerspectives.start.countDown();
-                return container;
+                break;
             case SWITCH_MESSAGE:
                 this.switchCurrentId();
                 context.setExecutionTarget(currentId);
@@ -114,9 +125,6 @@ public class ComponentHandleToolBarBetweenPerspectives2 extends HandleToolbarBas
             default:
                 break;
         }
-
-
-        return null;
     }
 
     @PostConstruct
@@ -129,7 +137,6 @@ public class ComponentHandleToolBarBetweenPerspectives2 extends HandleToolbarBas
                                  final ResourceBundle resourceBundle) {
         this.logger.info("run on start of " + ComponentHandleToolBarBetweenPerspectives2.ID + " " + this + " execution target: " + currentId);
         button = new Button("move to next target");
-        container = new VBox();
         label = new Label();
 
         logger.info("..:: ADD BUTTONS FOR COMPONENT " + this.getClass().getName() + "::..");

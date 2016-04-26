@@ -61,6 +61,7 @@ public interface JacpContext<L, M> {
      * @param message, The message object.
      * @return an JavaFX event handler.
      */
+    @Deprecated
     L getEventHandler(final M message);
 
 
@@ -71,6 +72,7 @@ public interface JacpContext<L, M> {
      * @param targetId ; the targets component id.
      * @return an JavaFX event handler.
      */
+    @Deprecated
     L getEventHandler(final String targetId, final M message);
 
     /**
@@ -93,12 +95,6 @@ public interface JacpContext<L, M> {
      */
     String getFullyQualifiedId();
 
-    /**
-     * Returns the name of a component.
-     *
-     * @return the component name
-     */
-    String getName();
 
     /**
      * Returns the component resource bundle.

@@ -28,7 +28,10 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
+import org.jacpfx.api.annotations.method.OnMessage;
+import org.jacpfx.api.annotations.method.OnMessageAsync;
 import org.jacpfx.api.component.ComponentHandle;
+import org.jacpfx.api.component.ComponentView;
 import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.context.JacpContext;
@@ -46,11 +49,14 @@ import org.jacpfx.rcp.util.WorkerUtil;
 import org.jacpfx.rcp.workbench.GlobalMediator;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Stream;
 
 /**
  * Background Worker to execute component; handle method to init component.
@@ -160,13 +166,25 @@ public class FXComponentInitWorker extends AComponentWorker<EmbeddedFXComponent>
         this.component.lock();
         checkValidComponent(this.component);
         runPreInitMethods();
-        final String name = this.component.getContext().getName();
+        final String name = this.component.getContext().getId();
         this.log("3.4.4.2.1: subcomponent handle init START: "
                 + name);
-        final Node handleReturnValue = WorkerUtil.prepareAndRunHandleMethod(
-                this.component, this.message);
-        this.executePostHandleAndAddComponent(handleReturnValue,
-                this.component, this.message, this.targetComponents);
+        final ComponentView<Node, Event, Object> componentViewHandle = component.getComponentViewHandle();
+        final Class<?> messageType = message.getMessageBody().getClass();
+        final Optional<Method> async = Stream.of(componentViewHandle.getClass().getMethods()).filter(method -> method.isAnnotationPresent(OnMessageAsync.class)).filter(method -> messageType.isAssignableFrom(method.getAnnotation(OnMessageAsync.class).value())).findFirst();
+        Object value = null;
+        if (async.isPresent()) {
+            Method asyncMethod = async.get();
+            value = FXUtil.invokeMethod(OnMessageAsync.class, asyncMethod, componentViewHandle, message);
+        }
+        final Optional<Method> sync = Stream.of(componentViewHandle.getClass().getMethods()).filter(method -> method.isAnnotationPresent(OnMessage.class)).filter(method -> messageType.isAssignableFrom(method.getAnnotation(OnMessage.class).value())).findFirst();
+        Method syncMethod = null;
+        if (sync.isPresent()) {
+            syncMethod = sync.get();
+
+        }
+        this.executePostHandleAndAddComponent(value,
+                this.component, syncMethod, this.message, this.targetComponents);
         // check if component was shutdown
         if (!checkIfStartedAndValid(component)) return this.component;
         this.component.initWorker(new EmbeddedFXComponentWorker(this.targetComponents, this.componentDelegateQueue, this.component));
@@ -202,13 +220,15 @@ public class FXComponentInitWorker extends AComponentWorker<EmbeddedFXComponent>
      * @throws InvocationTargetException
      */
     private void executePostHandleAndAddComponent(
-            final Node handleReturnValue, final EmbeddedFXComponent myComponent,
-            final Message<Event, Object> myAction, final Map<String, Node> targetComponents) throws Exception {
+            final Object handleReturnValue, final EmbeddedFXComponent myComponent, Method syncMethod,
+            final Message<Event, Object> message, final Map<String, Node> targetComponents) throws Exception {
         final Thread t = Thread.currentThread();
         FXWorker.invokeOnFXThreadAndWait(() -> {
             try {
-                WorkerUtil.executeComponentViewPostHandle(
-                        handleReturnValue, myComponent, myAction);
+                final ComponentView<Node, Event, Object> componentViewHandle = myComponent.getComponentViewHandle();
+                if (syncMethod != null)
+                    FXUtil.invokeMethod(OnMessage.class, syncMethod, componentViewHandle, message, handleReturnValue);
+
             } catch (Exception e) {
                 t.getUncaughtExceptionHandler().uncaughtException(t, e);
             }
@@ -233,7 +253,6 @@ public class FXComponentInitWorker extends AComponentWorker<EmbeddedFXComponent>
         final JacpContext context = component.getContext();
         final String parentId = context.getParentId();
         final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
-        if (parentPerspctive != null) parentPerspctive.unregisterComponent(component);
         TearDownHandler.shutDownFXComponent(component, parentId);
         component.setStarted(false);
     }

@@ -96,7 +96,6 @@ public abstract class AStatelessCallbackComponent extends ASubComponent
         InternalContext currentContext = InternalContext.class.cast(comp.getContext());
         currentContext.setId(context.getId());
         currentContext.setParentId(context.getParentId());
-        currentContext.setName(context.getName());
         currentContext.updateExecutionTarget(InternalContext.class.cast(context).getExecutionTarget());
     }
 

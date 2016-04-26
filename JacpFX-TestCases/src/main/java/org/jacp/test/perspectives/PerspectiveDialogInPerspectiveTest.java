@@ -54,7 +54,7 @@ import java.util.ResourceBundle;
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
 
-@Perspective(id = PerspectiveIds.PerspectiveDialogInPerspectiveTest, name = "contactPerspective",
+@Perspective(id = PerspectiveIds.PerspectiveDialogInPerspectiveTest,
         components = {
                 ComponentIds.ComponentDialogInPerspective},
         viewLocation = "/fxml/perspectiveOne.fxml",

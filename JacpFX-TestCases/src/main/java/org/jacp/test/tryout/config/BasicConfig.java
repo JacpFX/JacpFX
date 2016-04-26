@@ -23,8 +23,10 @@
  * *********************************************************************
  */
 
-package org.jacp.test.config;
+package org.jacp.test.tryout.config;
 
+import org.jacp.test.components.ComponentIds;
+import org.jacp.test.perspectives.PerspectiveIds;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -34,4 +36,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan
 public class BasicConfig {
+    public static final String TARGET_CONTAINER_LEFT ="left";
+    public static final String TARGET_CONTAINER_RIGHT ="right";
+    public static final String RIGHT = PerspectiveIds.PerspectiveOneVersion3.concat(".").concat(ComponentIds.ComponentTwoVersion3);
 }

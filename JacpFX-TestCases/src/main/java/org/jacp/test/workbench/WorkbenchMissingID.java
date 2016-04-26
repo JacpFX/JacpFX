@@ -55,7 +55,7 @@ import java.util.List;
  *
  * @author <a href="mailto:amo.ahcp@gmail.com"> Andy Moncsek</a>
  */
-@org.jacpfx.api.annotations.workbench.Workbench(id = "", name = "workbench", perspectives = {})
+@org.jacpfx.api.annotations.workbench.Workbench(id = "", perspectives = {})
 public class WorkbenchMissingID implements FXWorkbench {
     private Stage stage;
     @Resource

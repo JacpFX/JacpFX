@@ -35,7 +35,6 @@ import org.jacpfx.rcp.component.FXComponent;
  * Created by amo on 21.08.14.
  */
 @DeclarativeView(id = "",
-        name = "CanvasComponent",
         active = true,
         resourceBundleLocation = "bundles.languageBundle",
         localeID = "en_US",
