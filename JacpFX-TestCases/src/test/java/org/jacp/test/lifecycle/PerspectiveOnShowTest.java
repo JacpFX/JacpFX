@@ -106,7 +106,6 @@ public class PerspectiveOnShowTest extends TestFXJacpFXSpringLauncher {
         PerspectiveOnShowTest1.postconstruct.await();
         PerspectiveOnShowTest1.onShow.await();
         o1testStartP2();
-        o2testStopP1();
         o3testStartP1();
         o4testMessageP1P2();
     }
@@ -122,23 +121,10 @@ public class PerspectiveOnShowTest extends TestFXJacpFXSpringLauncher {
 
     }
 
-    // TODO check following P2 sends stop message to P1
-    // P2 executes onHide, P1 executes OnShow, Predestroy... now the next possible perspective must be shown and OnShow executed
-    public void o2testStopP1() throws InterruptedException {
-        PerspectiveOnShowTest2.onHide = new CountDownLatch(1);
-        PerspectiveOnShowTest1.onShow = new CountDownLatch(1);
-        PerspectiveOnShowTest2.onShow = new CountDownLatch(1);
-        PerspectiveOnShowTest1.predestroy = new CountDownLatch(1);
-        PerspectiveOnShowTest2.send(PerspectiveIds.PerspectiveOnShowTest1,"stop");
-        PerspectiveOnShowTest2.onHide.await();
-        PerspectiveOnShowTest1.onShow.await();
-        PerspectiveOnShowTest1.predestroy.await();
-        PerspectiveOnShowTest2.onShow.await();
-    }
+
     public void o3testStartP1() throws InterruptedException {
         PerspectiveOnShowTest2.onHide = new CountDownLatch(1);
         PerspectiveOnShowTest1.onShow = new CountDownLatch(1);
-        PerspectiveOnShowTest1.predestroy = new CountDownLatch(1);
         PerspectiveOnShowTest1.postconstruct = new CountDownLatch(1);
         PerspectiveOnShowTest2.send(PerspectiveIds.PerspectiveOnShowTest1,"start");
         PerspectiveOnShowTest2.onHide.await();

@@ -124,9 +124,6 @@ public class FXComponentMessagingTest2 extends TestFXJacpFXSpringLauncher {
                 ComponentMessagingTest2.waitButton1.await();
                 Assert.assertTrue(ComponentMessagingTest2.value[0].equals("message3"));
 
-                org.jacp.test.perspectives.PerspectiveMessagingTest.StopComponent2InP1();
-                ComponentMessagingTest2.waitButton4.await();
-                Assert.assertTrue(ComponentMessagingTest2.value[0].equals("stop"));
 
 
                 org.jacp.test.perspectives.PerspectiveMessagingTest.ClickButtonFive();
@@ -135,9 +132,7 @@ public class FXComponentMessagingTest2 extends TestFXJacpFXSpringLauncher {
 
                 ComponentMessagingTest2.waitButton4 = new CountDownLatch(1);
 
-                org.jacp.test.perspectives.PerspectiveMessagingTest.StopComponent2InP1();
-                ComponentMessagingTest2.waitButton4.await();
-                Assert.assertTrue(ComponentMessagingTest2.value[0].equals("stop"));
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -158,9 +153,6 @@ public class FXComponentMessagingTest2 extends TestFXJacpFXSpringLauncher {
                 CallbackComponentMessagingTest1_1.wait1.await();
                 Assert.assertTrue(CallbackComponentMessagingTest1_1.value[0].equals("message7"));
 
-                org.jacp.test.perspectives.PerspectiveMessagingTest.StopCallbackInP1();
-                CallbackComponentMessagingTest1_1.wait3.await();
-                Assert.assertTrue(CallbackComponentMessagingTest1_1.value[0].equals("stop"));
 
                 org.jacp.test.perspectives.PerspectiveMessagingTest.ClickButtonNine();
                 CallbackComponentMessagingTest1_1.wait2.await();

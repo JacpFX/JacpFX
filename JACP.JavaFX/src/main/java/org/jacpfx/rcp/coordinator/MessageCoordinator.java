@@ -42,10 +42,7 @@ import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.delegator.DelegateDTOImpl;
 import org.jacpfx.rcp.registry.ComponentRegistry;
 import org.jacpfx.rcp.registry.PerspectiveRegistry;
-import org.jacpfx.rcp.util.FXUtil;
-import org.jacpfx.rcp.util.MessageLoggerService;
-import org.jacpfx.rcp.util.PerspectiveUtil;
-import org.jacpfx.rcp.util.ShutdownThreadsHandler;
+import org.jacpfx.rcp.util.*;
 
 import java.util.concurrent.LinkedTransferQueue;
 import java.util.concurrent.TransferQueue;
@@ -141,8 +138,7 @@ public class MessageCoordinator extends Thread implements
 
     private void handleInActive(final SubComponent<EventHandler<Event>, Event, Object> component, final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspective, Message<Event, Object> message) {
         final JacpContext<EventHandler<Event>, Object> context = component.getContext();
-        context.setActive(true);
-        component.setStarted(true);
+        ComponentUtil.activateComponent(component);
         parentPerspective.addComponent(component);
         this.componentHandler.initComponent(message, component);
     }

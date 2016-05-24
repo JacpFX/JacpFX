@@ -29,7 +29,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.method.OnMessage;
-import org.jacpfx.api.annotations.method.OnMessageAsync;
+import org.jacpfx.api.annotations.method.OnAsyncMessage;
 import org.jacpfx.api.component.ComponentHandle;
 import org.jacpfx.api.component.ComponentView;
 import org.jacpfx.api.component.Perspective;
@@ -147,8 +147,8 @@ public class FXComponentInitWorker extends AComponentWorker<EmbeddedFXComponent>
     }
 
     private void setComponentToActiveAndStarted(final EmbeddedFXComponent component) {
-        component.getContext().setActive(true);
         component.setStarted(true);
+        InternalContext.class.cast(component.getContext()).updateActiveState(true);
     }
 
     /**
@@ -171,11 +171,11 @@ public class FXComponentInitWorker extends AComponentWorker<EmbeddedFXComponent>
                 + name);
         final ComponentView<Node, Event, Object> componentViewHandle = component.getComponentViewHandle();
         final Class<?> messageType = message.getMessageBody().getClass();
-        final Optional<Method> async = Stream.of(componentViewHandle.getClass().getMethods()).filter(method -> method.isAnnotationPresent(OnMessageAsync.class)).filter(method -> messageType.isAssignableFrom(method.getAnnotation(OnMessageAsync.class).value())).findFirst();
+        final Optional<Method> async = Stream.of(componentViewHandle.getClass().getMethods()).filter(method -> method.isAnnotationPresent(OnAsyncMessage.class)).filter(method -> messageType.isAssignableFrom(method.getAnnotation(OnAsyncMessage.class).value())).findFirst();
         Object value = null;
         if (async.isPresent()) {
             Method asyncMethod = async.get();
-            value = FXUtil.invokeMethod(OnMessageAsync.class, asyncMethod, componentViewHandle, message);
+            value = FXUtil.invokeMethod(OnAsyncMessage.class, asyncMethod, componentViewHandle, message);
         }
         final Optional<Method> sync = Stream.of(componentViewHandle.getClass().getMethods()).filter(method -> method.isAnnotationPresent(OnMessage.class)).filter(method -> messageType.isAssignableFrom(method.getAnnotation(OnMessage.class).value())).findFirst();
         Method syncMethod = null;

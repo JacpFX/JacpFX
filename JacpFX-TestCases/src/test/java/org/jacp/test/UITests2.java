@@ -36,7 +36,6 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        PreDestroyPostCreateRestartPerspectiveTest.class,
         MoveComponentBetweenPerspective.class, HandleToolBarButtonsBetweenPerspective.class,OnShowOnHidePerspective.class,  DialogOnMissingComponentsTest.class, MissconfigDuplicateComponentIds.class})
 public class UITests2 {
         // ShutdownAndReopenComponentsTest3.class,

@@ -100,10 +100,7 @@ public class ComponentMessagingTest2 implements FXComponent {
     public void handleString(final Message<Event, Object> action) {
         if (action.messageBodyEquals(FXUtil.MessageUtil.INIT)) {
             ApplicationLauncherMessagingTest.latch.countDown();
-        } else if (action.messageBodyEquals("stop")) {
-            context.setActive(false);
-            value[0] = action.getMessageBody().toString();
-        } else if (action.messageBodyEquals("message3")) {
+        }  else if (action.messageBodyEquals("message3")) {
             label.setText(action.getMessageBody().toString());
             value[0] = action.getMessageBody().toString();
             waitButton1.countDown();

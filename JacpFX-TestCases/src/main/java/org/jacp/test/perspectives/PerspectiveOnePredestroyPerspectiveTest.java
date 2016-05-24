@@ -85,10 +85,7 @@ public class PerspectiveOnePredestroyPerspectiveTest implements FXPerspective {
 
             ApplicationPredestroyPerspectiveTest.latch.countDown();
         }
-        else if (action.messageBodyEquals("stop")) {
-            System.err.println("STOP MESSAGE P17");
-            context.setActive(false);
-        }
+
         else if (action.messageBodyEquals("show")) {
             System.err.println("SHOW MESSAGE P17");
 

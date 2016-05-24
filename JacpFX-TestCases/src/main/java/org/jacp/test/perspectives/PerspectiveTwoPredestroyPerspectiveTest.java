@@ -97,9 +97,6 @@ public class PerspectiveTwoPredestroyPerspectiveTest implements FXPerspective {
             perspectiveLayout.registerTargetLayoutComponent("content2",
                     this.content3);
             ApplicationPredestroyPerspectiveTest.latch.countDown();
-        } else if (action.messageBodyEquals("stop")) {
-            System.err.println("STOP MESSAGE p18");
-            context.setActive(false);
         }  else if (action.messageBodyEquals("show")) {
             System.err.println("SHOW MESSAGE P18");
             perspectiveLayout.registerRootComponent(createRoot());

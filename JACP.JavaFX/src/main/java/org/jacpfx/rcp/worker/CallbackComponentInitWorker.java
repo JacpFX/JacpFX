@@ -26,7 +26,7 @@ package org.jacpfx.rcp.worker;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import org.jacpfx.api.annotations.method.OnMessageAsync;
+import org.jacpfx.api.annotations.method.OnAsyncMessage;
 import org.jacpfx.api.component.ComponentHandle;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.context.JacpContext;
@@ -63,8 +63,8 @@ public class CallbackComponentInitWorker
         this.action = action;
         final ComponentHandle<?, Event, Object> handle = component.getComponent();
         asyncMethodMap = Stream.of(handle.getClass().getMethods()).
-                filter(method -> method.isAnnotationPresent(OnMessageAsync.class)).
-                collect(Collectors.toMap(method -> method.getAnnotation(OnMessageAsync.class).value(), p -> p));
+                filter(method -> method.isAnnotationPresent(OnAsyncMessage.class)).
+                collect(Collectors.toMap(method -> method.getAnnotation(OnAsyncMessage.class).value(), p -> p));
     }
 
     @Override
@@ -93,7 +93,7 @@ public class CallbackComponentInitWorker
         Object value = null;
         final Method asyncMethod = asyncMethodMap.get(messageType);
         if (asyncMethod != null) {
-            value = FXUtil.invokeMethod(OnMessageAsync.class, asyncMethod, componentHandle, message);
+            value = FXUtil.invokeMethod(OnAsyncMessage.class, asyncMethod, componentHandle, message);
         }
         return value;
     }

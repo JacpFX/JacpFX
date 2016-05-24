@@ -30,7 +30,7 @@ import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.component.Component;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
-import org.jacpfx.api.annotations.method.OnMessageAsync;
+import org.jacpfx.api.annotations.method.OnAsyncMessage;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.CallbackComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
@@ -74,14 +74,10 @@ public class CallbackComponentMessagingTest1_1 implements CallbackComponent {
         return null;
     }
 
-    @OnMessageAsync(String.class)
+    @OnAsyncMessage(String.class)
     public Object onStringMessage(final Message<Event, Object> action) {
         if (action.messageBodyEquals(FXUtil.MessageUtil.INIT)) {
             ApplicationLauncherMessagingTest.latch.countDown();
-        } else if (action.messageBodyEquals("stop")) {
-            context.setActive(false);
-            value[0]= action.getMessageBody().toString();
-
         } else if (action.messageBodyEquals("message7")) {
             value[0]= action.getMessageBody().toString();
             wait1.countDown();

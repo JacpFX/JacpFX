@@ -211,20 +211,13 @@ public class JacpContextImpl implements Context,InternalContext {
         return this.active.get();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setActive(boolean active) {
-        this.active.set(active);
-    }
 
     /**
      * {@inheritDoc}
      */
     @Override
     public void updateActiveState(boolean active) {
-        this.setActive(active);
+        this.active.set(active);
     }
     /**
      * {@inheritDoc}

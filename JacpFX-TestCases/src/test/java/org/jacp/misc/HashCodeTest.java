@@ -27,10 +27,35 @@ package org.jacp.misc;
 
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 /**
  * Created by Andy Moncsek on 18.12.14.
  */
 public class HashCodeTest {
+    private static final int LIMIT = 900_000;
+    private void fillAndSearch() {
+        Person person = null;
+        Map<Class, String> map = new HashMap<>();
+        for (int i=0;i<LIMIT;i++) {
+            UUID randomUUID = UUID.randomUUID();
+            person = new Person("fn", "ln", randomUUID);
+            map.put(person.getClass(), "comment" + i);
+
+        }
+        long start = System.currentTimeMillis();
+        for (int i=0;i<LIMIT;i++) {
+        map.get(person.getClass());
+        }
+        long stop = System.currentTimeMillis();
+        System.out.println(stop-start+" millis");
+    }
+    @Test
+    public void testHashCodes() {
+        fillAndSearch();
+    }
 
     @Test
     public void testSimpleHashCode() {
