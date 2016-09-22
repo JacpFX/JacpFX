@@ -15,7 +15,9 @@ import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.rcp.workbench.AFXWorkbench;
 import org.jacpfx.rcp.workbench.FXWorkbench;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -29,6 +31,7 @@ import static junit.framework.TestCase.*;
  * Time: 21:37
  * To change this template use File | Settings | File Templates.
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ShutdownAndReopenComponentsTest extends TestFXJacpFXSpringLauncher {
 
 
@@ -174,7 +177,7 @@ public class ShutdownAndReopenComponentsTest extends TestFXJacpFXSpringLauncher 
     }
     @Test
     public void test5() throws InterruptedException {
-
+        Thread.sleep(1000);
         // Component is shut down
 
         AFXWorkbench workbench = getWorkbench();
@@ -184,6 +187,7 @@ public class ShutdownAndReopenComponentsTest extends TestFXJacpFXSpringLauncher 
         assertFalse(perspectives.isEmpty());
        // testStartComponent();
        // testStopComponent();
+
         for (Perspective<Node, EventHandler<Event>, Event, Object> p : perspectives) {
 
             assertTrue(p.getContext().isActive());
