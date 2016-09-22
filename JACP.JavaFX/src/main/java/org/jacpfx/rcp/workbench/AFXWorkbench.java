@@ -288,8 +288,8 @@ public abstract class AFXWorkbench
     // TODO remove this!!
     public final void unregisterComponent(
             final Perspective<Node, EventHandler<Event>, Event, Object> perspective) {
-        FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,
-                FXUtil.APERSPECTIVE_MQUEUE, null);
+        FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,FXUtil.APERSPECTIVE_MQUEUE, null);
+        FXUtil.setPrivateMemberValue(AFXPerspective.class, perspective,FXUtil.APERSPECTIVE_CQUEUE, null);
         PerspectiveRegistry.removePerspective(perspective);
     }
 

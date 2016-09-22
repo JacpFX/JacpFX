@@ -115,8 +115,10 @@ class EmbeddedCallbackComponentWorker
         try {
             final JacpContext<EventHandler<Event>, Object> context = component.getContext();
             final String parentId = context.getParentId();
-            final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
-            if (parentPerspctive != null) parentPerspctive.unregisterComponent(component);
+            if(parentId!=null) {
+                final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspctive = PerspectiveRegistry.findPerspectiveById(parentId);
+                if (parentPerspctive != null) parentPerspctive.unregisterComponent(component);
+            }
             TearDownHandler.shutDownAsyncComponent(ASubComponent.class.cast(component));
         } finally {
             component.release();

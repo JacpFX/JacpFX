@@ -60,7 +60,8 @@ public class FXUtil {
     public static final String ACOMPONENT_EXTARGET = "executionTarget";
     public static final String ACOMPONENT_BLOCKED = "blocked";
     public static final String ACOMPONENT_STARTED = "started";
-    public static final String APERSPECTIVE_MQUEUE = "messageQueue";
+    public static final String APERSPECTIVE_MQUEUE = "messageDelegateQueue";
+    public static final String APERSPECTIVE_CQUEUE = "componentDelegateQueue";
     public static final String IDECLARATIVECOMPONENT_VIEW_LOCATION = "viewLocation";
     public static final String IDECLARATIVECOMPONENT_TYPE = "type";
     public static final String IDECLARATIVECOMPONENT_DOCUMENT_URL = "documentURL";
