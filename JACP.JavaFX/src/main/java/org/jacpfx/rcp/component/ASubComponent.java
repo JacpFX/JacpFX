@@ -33,6 +33,7 @@ import org.jacpfx.api.context.JacpContext;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.context.Context;
 import org.jacpfx.rcp.context.JacpContextImpl;
+import org.jacpfx.rcp.message.MessageImpl;
 import org.jacpfx.rcp.worker.AEmbeddedComponentWorker;
 
 import java.util.concurrent.BlockingQueue;
@@ -47,7 +48,7 @@ import java.util.logging.Logger;
  *
  * @author Andy Moncsek
  */
-public abstract class ASubComponent  implements
+public abstract class ASubComponent implements
         SubComponent<EventHandler<Event>, Event, Object> {
 
 
@@ -56,7 +57,7 @@ public abstract class ASubComponent  implements
     private final BlockingQueue<Message<Event, Object>> incomingMessage = new LinkedBlockingQueue<>();
     private volatile ComponentHandle<?, Event, Object> component;
     private volatile AEmbeddedComponentWorker workerRef;
-    private final AtomicBoolean started =  new AtomicBoolean(false);
+    private final AtomicBoolean started = new AtomicBoolean(false);
     private String localeID = "";
     private String resourceBundleLocation = "";
     private Context context;
@@ -70,7 +71,7 @@ public abstract class ASubComponent  implements
     public final void initEnv(final String parentId,
                               final TransferQueue<Message<Event, Object>> messageQueue) {
         this.globalMessageQueue = messageQueue;
-        this.context = new JacpContextImpl(parentId,this.globalMessageQueue);
+        this.context = new JacpContextImpl(parentId, this.globalMessageQueue);
     }
 
 
@@ -100,7 +101,7 @@ public abstract class ASubComponent  implements
      * {@inheritDoc}
      */
     @Override
-    public final Message<Event, Object> getNextIncomingMessage()throws InterruptedException{
+    public final Message<Event, Object> getNextIncomingMessage() throws InterruptedException {
         return this.incomingMessage.take();
     }
 
@@ -164,11 +165,12 @@ public abstract class ASubComponent  implements
     }
 
     public final void interruptWorker() {
-        if(workerRef==null)return;
-        if(workerRef.isAlive()) {
+        if (workerRef == null) return;
+        if (workerRef.isAlive()) {
             workerRef.interrupt();
         }
         workerRef.cleanAfterInterrupt();
+        workerRef = null;
     }
 
     /**

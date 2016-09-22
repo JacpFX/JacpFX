@@ -90,6 +90,7 @@ class EmbeddedCallbackComponentWorker
                     this.component.release();
                     if (!component.getContext().isActive()) break;
                 } catch (InterruptedException e) {
+                    if(!t.isInterrupted())t.interrupt();
                 } catch (final IllegalStateException e) {
                     if (e.getMessage().contains("Not on FX application thread")) {
                         t.getUncaughtExceptionHandler().uncaughtException(t, new UnsupportedOperationException(
@@ -101,7 +102,6 @@ class EmbeddedCallbackComponentWorker
                 } catch (Exception e) {
                     t.getUncaughtExceptionHandler().uncaughtException(t, e);
                 }
-                Thread.yield();
             }
             if (wasExecuted) handleComponentShutdown(this.component);
         } finally {

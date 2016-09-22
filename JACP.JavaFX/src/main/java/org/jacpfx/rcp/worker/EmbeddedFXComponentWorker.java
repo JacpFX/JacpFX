@@ -78,7 +78,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
     public final void run() {
         try {
             this.component.lock();
-            while (!Thread.interrupted()) {
+            while (!Thread.currentThread().interrupted()) {
                 handleComponentExecution(this.component, this.targetComponents);
             }
             this.component.release();
@@ -90,17 +90,17 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
     private void handleComponentExecution(final EmbeddedFXComponent component, final Map<String, Node> targetComponents) {
         final Thread t = Thread.currentThread();
         try {
-            final Message<Event, Object> myAction = component
+            final Message<Event, Object> message = component
                     .getNextIncomingMessage();
-            MessageLoggerService.getInstance().receive(myAction);
+            MessageLoggerService.getInstance().receive(message);
             final Node previousContainer = component.getRoot();
             final InternalContext contextImpl = InternalContext.class.cast(component.getContext());
             final String currentTargetLayout = contextImpl.getTargetLayout();
             final String currentExecutionTarget = contextImpl.getExecutionTarget();
             // run code
             final Node handleReturnValue = WorkerUtil.prepareAndRunHandleMethod(
-                    component, myAction);
-            this.publish(component, myAction, targetComponents,
+                    component, message);
+            this.publish(component, message, targetComponents,
                     handleReturnValue, previousContainer,
                     currentTargetLayout, currentExecutionTarget);
         } catch (final IllegalStateException e) {
@@ -110,6 +110,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
                         e));
             }
         } catch (InterruptedException e) {
+            if(!t.isInterrupted())t.interrupt();
         } catch (Exception e) {
             t.getUncaughtExceptionHandler().uncaughtException(t, e);
         }
@@ -129,7 +130,6 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
                          final Node previousContainer, final String currentTargetLayout, final String currentExecutionTarget)
             throws InterruptedException, ExecutionException {
         final Thread t = Thread.currentThread();
-        Thread.yield();
         WorkerUtil.invokeOnFXThreadAndWait(() -> {
             // check if component was set to inactive, if so remove
             try {
@@ -209,7 +209,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
 
         final Context context = Context.class.cast(component.getContext());
         final String parentId = context.getParentId();
-        if(parentId==null) return;
+        if (parentId == null) return;
         final FXComponentLayout layout = context.getComponentLayout();
         final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspective = PerspectiveRegistry.findPerspectiveById(parentId);
         if (parentPerspective != null) {

@@ -86,7 +86,6 @@ public class MessageCoordinator extends Thread implements
             try {
                 final Message<Event, Object> message = messages.take();
                 handleMessage(message.getTargetId(), message);
-                Thread.yield();
             } catch (InterruptedException e) {
                 // this can happen on application shutdown
                 break;
