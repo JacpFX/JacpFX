@@ -30,7 +30,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import org.jacpfx.api.annotations.method.OnMessage;
-import org.jacpfx.api.annotations.method.OnMessageAsync;
+import org.jacpfx.api.annotations.method.OnAsyncMessage;
 import org.jacpfx.api.component.ComponentView;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.component.UIComponent;
@@ -209,12 +209,12 @@ public class WorkerUtil {
             final Message<Event, Object> message, BiConsumer<Object,Method> runOnFXThread) throws Exception {
 
         final ComponentView<Node, Event, Object> componentViewHandle = component.getComponentViewHandle();
-        final Optional<Method> asnc = Stream.of(componentViewHandle.getClass().getMethods()).filter(method -> method.isAnnotationPresent(OnMessageAsync.class)).filter(method1 -> message.getMessageBody().getClass().isAssignableFrom(method1.getAnnotation(OnMessageAsync.class).value())).findFirst();
+        final Optional<Method> asnc = Stream.of(componentViewHandle.getClass().getMethods()).filter(method -> method.isAnnotationPresent(OnAsyncMessage.class)).filter(method1 -> message.getMessageBody().getClass().isAssignableFrom(method1.getAnnotation(OnAsyncMessage.class).value())).findFirst();
         final Optional<Method> sync = Stream.of(componentViewHandle.getClass().getMethods()).
                 filter(method -> method.isAnnotationPresent(OnMessage.class)).
                 filter(method1 -> message.getMessageBody().getClass().isAssignableFrom(method1.getAnnotation(OnMessage.class).value())).findFirst();
         asnc.ifPresent(method -> {
-            final Object handleReturnValue = FXUtil.invokeMethod(OnMessageAsync.class,method,componentViewHandle,message);
+            final Object handleReturnValue = FXUtil.invokeMethod(OnAsyncMessage.class,method,componentViewHandle,message);
             sync.ifPresent(methodSync -> {
                 runOnFXThread.accept(handleReturnValue,methodSync);
             });

@@ -38,7 +38,7 @@ import org.jacpfx.api.annotations.component.DeclarativeView;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
 import org.jacpfx.api.annotations.method.OnMessage;
-import org.jacpfx.api.annotations.method.OnMessageAsync;
+import org.jacpfx.api.annotations.method.OnAsyncMessage;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.FXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
@@ -101,7 +101,7 @@ public class ComponentMessagingTest1 implements FXComponent {
         return null;
     }
 
-    @OnMessageAsync(String.class)
+    @OnAsyncMessage(String.class)
     public void handleAsyncString(final Message<Event, Object> message) {
         if (message.messageBodyEquals("button10")) {
             IntStream.rangeClosed(1, 100).forEach(i -> context.send(ComponentIds.CallbackComponentMessagingTest2, "message9"));

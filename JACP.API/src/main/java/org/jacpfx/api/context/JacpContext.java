@@ -110,12 +110,6 @@ public interface JacpContext<L, M> {
      */
     boolean isActive();
 
-    /**
-     * Set default active state of component.
-     *
-     * @param active ; the component active state.
-     */
-    void setActive(final boolean active);
 
     /**
      * Set component targetId which is the target of a background component return
@@ -131,6 +125,7 @@ public interface JacpContext<L, M> {
      *
      * @param id, the id of the parent perspective where the component should be executed in.
      */
+    @Deprecated
     void setExecutionTarget(final String id) throws IllegalStateException;
 
     /**

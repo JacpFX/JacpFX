@@ -34,6 +34,7 @@ import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.exceptions.InvalidComponentMatch;
 import org.jacpfx.rcp.component.ASubComponent;
 import org.jacpfx.rcp.context.InternalContext;
+import org.jacpfx.rcp.util.ComponentUtil;
 import org.jacpfx.rcp.util.FXUtil;
 
 import java.util.Map;
@@ -71,16 +72,15 @@ public abstract class AComponentWorker<T> extends Task<T> {
      */
     void runCallbackOnStartMethods(
             final SubComponent<EventHandler<Event>, Event, Object> component) {
-            component.setStarted(true);
-            component.getContext().setActive(true);
-            initLocalization(component);
-            handleContextInjection(component);
-            FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, component.getComponent());
-
+        ComponentUtil.activateComponent(component);
+        initLocalization(component);
+        handleContextInjection(component);
+        FXUtil.invokeHandleMethodsByAnnotation(PostConstruct.class, component.getComponent());
     }
 
     /**
      * Checks if component is in correct state.
+     *
      * @param component
      */
     void checkValidComponent(final ASubComponent component) {

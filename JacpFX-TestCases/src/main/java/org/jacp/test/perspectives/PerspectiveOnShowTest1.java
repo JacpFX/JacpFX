@@ -58,7 +58,6 @@ import java.util.concurrent.CountDownLatch;
         localeID = "en_US")
 public class PerspectiveOnShowTest1 implements FXPerspective {
     public static CountDownLatch postconstruct = new CountDownLatch(1);
-    public static CountDownLatch predestroy = new CountDownLatch(1);
     public static CountDownLatch onShow = new CountDownLatch(1);
     public static CountDownLatch onHide = new CountDownLatch(1);
     @FXML
@@ -74,9 +73,6 @@ public class PerspectiveOnShowTest1 implements FXPerspective {
     @Override
     public void handlePerspective(final Message<Event, Object> action,
                                   final PerspectiveLayout perspectiveLayout) {
-                if(action.messageBodyEquals("stop")){
-                    context.setActive(false);
-                }
 
     }
 
@@ -130,7 +126,6 @@ public class PerspectiveOnShowTest1 implements FXPerspective {
      */
     public void onTearDownPerspective(final FXComponentLayout arg0) {
         // remove toolbars and menu entries when close perspective
-        predestroy.countDown();
     }
 
 

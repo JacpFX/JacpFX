@@ -223,17 +223,7 @@ public class PerspectiveMessagingTest implements FXPerspective {
 
     }
 
-    public static void StopComponent2InP3() {
-        context.send(PerspectiveIds.PerspectiveMessagingTest3.concat(".").concat(ComponentIds.ComponentMessagingTests2), "stop");
-    }
 
-    public static void StopComponent2InP1() {
-        context.send(PerspectiveIds.PerspectiveMessagingTest.concat(".").concat(ComponentIds.ComponentMessagingTests2), "stop");
-    }
-
-    public static void StopCallbackInP1() {
-        context.send(PerspectiveIds.PerspectiveMessagingTest.concat(".").concat(ComponentIds.CallbackComponentMessagingTest1_1), "stop");
-    }
 
     public static void MoveC1FromP1ToP2() {
         context.send(PerspectiveIds.PerspectiveMessagingTest.concat(".").concat(ComponentIds.ComponentMessagingTests1), "button14");

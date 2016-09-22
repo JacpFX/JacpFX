@@ -34,7 +34,7 @@ import org.jacpfx.api.annotations.Resource;
 import org.jacpfx.api.annotations.component.Component;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
-import org.jacpfx.api.annotations.method.OnMessageAsync;
+import org.jacpfx.api.annotations.method.OnAsyncMessage;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.CallbackComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
@@ -82,7 +82,7 @@ public class ComponentHandleToolBarBetweenPerspectives1 extends HandleToolbarBas
 
     }
 
-    @OnMessageAsync(String.class)
+    @OnAsyncMessage(String.class)
     public Object onStringMessage(final Message<Event, Object> action) {
         String currentAction = (String) action.getMessageBody();
 

@@ -36,7 +36,7 @@ import org.jacpfx.api.annotations.component.DeclarativeView;
 import org.jacpfx.api.annotations.lifecycle.PostConstruct;
 import org.jacpfx.api.annotations.lifecycle.PreDestroy;
 import org.jacpfx.api.annotations.method.OnMessage;
-import org.jacpfx.api.annotations.method.OnMessageAsync;
+import org.jacpfx.api.annotations.method.OnAsyncMessage;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.rcp.component.FXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
@@ -90,7 +90,7 @@ public class ComponentTwo implements FXComponent {
         return null;
     }
 
-    @OnMessageAsync(String.class)
+    @OnAsyncMessage(String.class)
     public Node handleAsyncString(final Message<Event, Object> message) {
         System.out.println("ASYNC MESSAGE::: "+message.getTypedMessageBody(String.class)+" thread:"+Thread.currentThread());
         return new Label("hello from async");

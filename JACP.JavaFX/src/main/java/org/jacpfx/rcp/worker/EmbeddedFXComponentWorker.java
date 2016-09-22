@@ -29,8 +29,8 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import org.jacpfx.api.annotations.method.OnAsyncMessage;
 import org.jacpfx.api.annotations.method.OnMessage;
-import org.jacpfx.api.annotations.method.OnMessageAsync;
 import org.jacpfx.api.component.ComponentView;
 import org.jacpfx.api.component.Perspective;
 import org.jacpfx.api.component.SubComponent;
@@ -85,8 +85,8 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
                 filter(method -> method.isAnnotationPresent(OnMessage.class)).
                 collect(Collectors.toMap(method -> method.getAnnotation(OnMessage.class).value(), p -> p));
         asyncMethodMap = Stream.of(handle.getClass().getMethods()).
-                filter(method -> method.isAnnotationPresent(OnMessageAsync.class)).
-                collect(Collectors.toMap(method -> method.getAnnotation(OnMessageAsync.class).value(), p -> p));
+                filter(method -> method.isAnnotationPresent(OnAsyncMessage.class)).
+                collect(Collectors.toMap(method -> method.getAnnotation(OnAsyncMessage.class).value(), p -> p));
 
         // TODO check for duplicate OnMessage methods
     }
@@ -147,7 +147,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
         Object value = null;
         final Method asyncMethod = asyncMethodMap.get(messageType);
         if (asyncMethod != null) {
-            value = FXUtil.invokeMethod(OnMessageAsync.class, asyncMethod, componentHandle, message);
+            value = FXUtil.invokeMethod(OnAsyncMessage.class, asyncMethod, componentHandle, message);
         }
         return value;
     }
@@ -168,21 +168,13 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
         FXWorker.invokeOnFXThreadAndWait(() -> {
             // check if component was set to inactive, if so remove
             try {
-                final JacpContext context = component.getContext();
+                WorkerUtil.executeTypedComponentViewPostHandle(handleReturnValue, component,
+                        message, method);
 
-                // check if was not deactivated in handle method
-                if (context.isActive()) {
-                    WorkerUtil.executeTypedComponentViewPostHandle(handleReturnValue, component,
-                            message, method);
-                }
-                // check if was not deactivated in post handle method
-                if (context.isActive()) {
-                    EmbeddedFXComponentWorker.this.publishComponentValue(
-                            component, targetComponents,
-                            previousContainer, currentTargetLayout, currentExecutionTarget);
-                } else {
-                    shutDownComponent(component, previousContainer, currentTargetLayout);
-                }
+                EmbeddedFXComponentWorker.this.publishComponentValue(
+                        component, targetComponents,
+                        previousContainer, currentTargetLayout, currentExecutionTarget);
+
 
             } catch (Exception e) {
                 t.getUncaughtExceptionHandler().uncaughtException(t, e);

@@ -104,9 +104,6 @@ public class ComponentMessagingTest3 implements FXComponent {
             label.setText(action.getMessageBody().toString());
             value[0] = action.getMessageBody().toString();
             waitButton1.countDown();
-        } else if (action.messageBodyEquals("deactivate")) {
-            context.setActive(false);
-            value[0] = action.getMessageBody().toString();
         } else {
             label.setText(action.getMessageBody().toString());
 

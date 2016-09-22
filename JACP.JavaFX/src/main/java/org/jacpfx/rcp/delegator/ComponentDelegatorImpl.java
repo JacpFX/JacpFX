@@ -120,7 +120,7 @@ public class ComponentDelegatorImpl extends Thread implements
 
 	private <P extends ComponentBase<EventHandler<Event>,  Object>> void handleInActivePerspective(
 			final P component, final Message<Event, Object> action) {
-		component.getContext().setActive(true);
+		InternalContext.class.cast(component.getContext()).updateActiveState(true);
         //noinspection unchecked
         Platform.runLater(() -> ComponentDelegatorImpl.this.componentHandler
                 .initComponent(

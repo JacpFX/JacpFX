@@ -262,7 +262,7 @@ public class PerspectiveUtil {
     private static void handleBaseAttributes(final SubComponent<EventHandler<Event>, Event, Object> component, final String id, final boolean active) {
         final InternalContext context = InternalContext.class.cast(component.getContext());
         if (id != null) context.setId(id);
-        component.getContext().setActive(active);
+        context.updateActiveState(active);
     }
 
 
