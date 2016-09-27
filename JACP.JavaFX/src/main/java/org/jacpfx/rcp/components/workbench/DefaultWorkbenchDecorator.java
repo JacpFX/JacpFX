@@ -40,6 +40,7 @@ import javafx.stage.StageStyle;
 import org.jacpfx.api.componentLayout.WorkbenchLayout;
 import org.jacpfx.api.util.OS;
 import org.jacpfx.api.util.ToolbarPosition;
+import org.jacpfx.api.util.Tupel;
 import org.jacpfx.rcp.componentLayout.FXWorkbenchLayout;
 import org.jacpfx.rcp.components.menuBar.JACPMenuBar;
 import org.jacpfx.rcp.components.modalDialog.JACPModalDialog;
@@ -49,6 +50,7 @@ import org.jacpfx.rcp.workbench.AFXWorkbench;
 import org.jacpfx.rcp.workbench.GlobalMediator;
 
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Contains all classes and UI elements needed to decorate the workbench
@@ -183,8 +185,9 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
     }
 
     private void defineScene() {
-        final int x = getWorkbenchLayout().getWorkbenchSize().getX();
-        final int y = getWorkbenchLayout().getWorkbenchSize().getY();
+        Tupel<Integer, Integer> workbenchSize = getWorkbenchLayout().getWorkbenchSize();
+        final Integer x = Optional.ofNullable(workbenchSize.getX()).orElse(Double.valueOf(Screen.getPrimary().getVisualBounds().getWidth()).intValue());
+        final Integer y = Optional.ofNullable(workbenchSize.getY()).orElse(Double.valueOf(Screen.getPrimary().getVisualBounds().getHeight()).intValue());
 
         this.stage.setScene(new Scene(this.base, x, y));
         initCSS(this.stage.getScene());
@@ -279,7 +282,7 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
         switch (position) {
             case NORTH:
                 manageNode(nortPane, false, true);
-                bar.setPrefWidth(this.getWorkbenchLayout().getWorkbenchSize().getX());
+                bar.setPrefWidth(Optional.ofNullable(this.getWorkbenchLayout().getWorkbenchSize().getX()).orElse(Double.valueOf(Screen.getPrimary().getVisualBounds().getWidth()).intValue()));
                 nortPane.getChildren().add(bar);
                 nortPane.heightProperty().addListener((observableValue, number, t1) -> {
                     if (!number.equals(t1)) {
@@ -288,12 +291,12 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
                         updateAnchorSizes();
                     }
                 });
-                northHight = this.getWorkbenchLayout().getWorkbenchSize().getY() * TOOLBAR_HIGHT;
+                northHight = Optional.ofNullable(this.getWorkbenchLayout().getWorkbenchSize().getY()).orElse(Double.valueOf(Screen.getPrimary().getVisualBounds().getHeight()).intValue()) * TOOLBAR_HIGHT;
 
                 break;
             case SOUTH:
                 manageNode(southPane, false, true);
-                bar.setPrefWidth(this.getWorkbenchLayout().getWorkbenchSize().getX());
+                bar.setPrefWidth(Optional.ofNullable(this.getWorkbenchLayout().getWorkbenchSize().getX()).orElse(Double.valueOf(Screen.getPrimary().getVisualBounds().getWidth()).intValue()));
                 southPane.getChildren().add(bar);
 
                 southPane.heightProperty().addListener((observableValue, number, t1) -> {
@@ -303,7 +306,7 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
                         updateAnchorSizes();
                     }
                 });
-                southHight = this.getWorkbenchLayout().getWorkbenchSize().getY() * TOOLBAR_HIGHT;
+                southHight = Optional.ofNullable(this.getWorkbenchLayout().getWorkbenchSize().getY()).orElse(Double.valueOf(Screen.getPrimary().getVisualBounds().getHeight()).intValue()) * TOOLBAR_HIGHT;
 
 
                 break;
@@ -323,7 +326,7 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
                 });
 
 
-                rightWidth = this.getWorkbenchLayout().getWorkbenchSize().getX() * TOOLBAR_HIGHT;
+                rightWidth = Optional.ofNullable(this.getWorkbenchLayout().getWorkbenchSize().getX()).orElse(Double.valueOf(Screen.getPrimary().getVisualBounds().getWidth()).intValue()) * TOOLBAR_HIGHT;
                 break;
             case WEST:
                 manageNode(westPane, false, true);
@@ -340,7 +343,7 @@ public class DefaultWorkbenchDecorator implements WorkbenchDecorator {
                     }
                 });
 
-                westWidth = this.getWorkbenchLayout().getWorkbenchSize().getX() * TOOLBAR_HIGHT;
+                westWidth = Optional.ofNullable(this.getWorkbenchLayout().getWorkbenchSize().getX()).orElse(Double.valueOf(Screen.getPrimary().getVisualBounds().getWidth()).intValue()) * TOOLBAR_HIGHT;
                 break;
         }
     }
