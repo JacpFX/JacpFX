@@ -108,8 +108,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
     private void handleComponentExecution(final EmbeddedFXComponent component, final Map<String, Node> targetComponents) {
         final Thread t = Thread.currentThread();
         try {
-            final Message<Event, Object> message = component
-                    .getNextIncomingMessage();
+            final Message<Event, Object> message = component.getNextIncomingMessage();
             MessageLoggerService.getInstance().receive(message);
             final Node previousContainer = component.getRoot();
             final InternalContext contextImpl = InternalContext.class.cast(component.getContext());
@@ -117,6 +116,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
             final String currentExecutionTarget = contextImpl.getExecutionTarget();
             final ComponentView<Node, Event, Object> componentViewHandle = component.getComponentViewHandle();
             final Class<?> messageType = message.getMessageBody().getClass();
+
             final Object value = handleAsyncMessage(message, componentViewHandle, messageType);
 
             handleSyncMessage(component, targetComponents, message, previousContainer, currentTargetLayout, currentExecutionTarget, messageType, value);
@@ -128,6 +128,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
                         e));
             }
         } catch (InterruptedException e) {
+            if(!t.isInterrupted())t.interrupt();
         } catch (Exception e) {
             t.getUncaughtExceptionHandler().uncaughtException(t, e);
         }
