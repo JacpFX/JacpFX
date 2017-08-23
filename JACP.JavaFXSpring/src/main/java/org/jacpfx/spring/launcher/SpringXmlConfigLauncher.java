@@ -36,7 +36,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
- * The SpringLaucher class resolves the spring.xml file and handles access to
+ * The SpringLaucher class resolves the basic.xml file and handles access to
  * beans
  *
  * @author Andy Moncsek
