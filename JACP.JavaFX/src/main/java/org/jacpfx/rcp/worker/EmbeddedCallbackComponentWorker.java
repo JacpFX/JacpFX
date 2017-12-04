@@ -85,7 +85,6 @@ class EmbeddedCallbackComponentWorker
                     context.updateReturnTarget(myAction.getSourceId());
                     final String currentExecutionTarget = context.getExecutionTarget();
 
-
                     final Object value = handleAsyncMessage(myAction,this.component.getComponent(),myAction.getMessageBody().getClass());
 
 
@@ -119,11 +118,14 @@ class EmbeddedCallbackComponentWorker
 
     }
 
-    private Object handleAsyncMessage(Message<Event, Object> message, Object componentHandle, Class<?> messageType) {
+    private Object handleAsyncMessage(Message<Event, Object> message,  ComponentHandle<?, Event, Object> componentHandle, Class<?> messageType)
+        throws Exception {
         Object value = null;
         final Method asyncMethod = asyncMethodMap.get(messageType);
         if (asyncMethod != null) {
             value = FXUtil.invokeMethod(OnAsyncMessage.class, asyncMethod, componentHandle, message);
+        } else {
+            value =  componentHandle.handle(message);
         }
         return value;
     }

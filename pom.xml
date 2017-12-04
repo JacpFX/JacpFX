@@ -39,7 +39,7 @@
         <connection>scm:git:git@github.com:JacpFX/JacpFX.git</connection>
         <developerConnection>scm:git:git@github.com:JacpFX/JacpFX.git</developerConnection>
         <url>git@github.com:JacpFX/JacpFX.git</url>
-        <tag>jacpfx-parent-2.1</tag>
+        <tag>jacpfx-parent-3.0</tag>
   </scm>
 
     <profiles>

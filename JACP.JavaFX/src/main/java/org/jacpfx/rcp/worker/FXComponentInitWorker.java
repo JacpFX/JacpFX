@@ -37,6 +37,7 @@ import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.context.JacpContext;
 import org.jacpfx.api.exceptions.AnnotationMissconfigurationException;
 import org.jacpfx.api.message.Message;
+import org.jacpfx.api.util.UIType;
 import org.jacpfx.concurrency.FXWorker;
 import org.jacpfx.rcp.component.EmbeddedFXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
@@ -164,6 +165,7 @@ public class FXComponentInitWorker extends AComponentWorker<EmbeddedFXComponent>
     @Override
     protected EmbeddedFXComponent call() throws Exception {
         this.component.lock();
+
         checkValidComponent(this.component);
         runPreInitMethods();
         final String name = this.component.getContext().getId();
@@ -172,10 +174,12 @@ public class FXComponentInitWorker extends AComponentWorker<EmbeddedFXComponent>
         final ComponentView<Node, Event, Object> componentViewHandle = component.getComponentViewHandle();
         final Class<?> messageType = message.getMessageBody().getClass();
         final Optional<Method> async = Stream.of(componentViewHandle.getClass().getMethods()).filter(method -> method.isAnnotationPresent(OnAsyncMessage.class)).filter(method -> messageType.isAssignableFrom(method.getAnnotation(OnAsyncMessage.class).value())).findFirst();
-        Object value = null;
+        Node value = null;
         if (async.isPresent()) {
             Method asyncMethod = async.get();
-            value = FXUtil.invokeMethod(OnAsyncMessage.class, asyncMethod, componentViewHandle, message);
+            value = (Node) FXUtil.invokeMethod(OnAsyncMessage.class, asyncMethod, componentViewHandle, message);
+        } else {
+            value = component.getComponentViewHandle().handle(message);
         }
         final Optional<Method> sync = Stream.of(componentViewHandle.getClass().getMethods()).filter(method -> method.isAnnotationPresent(OnMessage.class)).filter(method -> messageType.isAssignableFrom(method.getAnnotation(OnMessage.class).value())).findFirst();
         Method syncMethod = null;
@@ -220,15 +224,29 @@ public class FXComponentInitWorker extends AComponentWorker<EmbeddedFXComponent>
      * @throws InvocationTargetException
      */
     private void executePostHandleAndAddComponent(
-            final Object handleReturnValue, final EmbeddedFXComponent myComponent, Method syncMethod,
+            final Node handleReturnValue, final EmbeddedFXComponent myComponent, Method syncMethod,
             final Message<Event, Object> message, final Map<String, Node> targetComponents) throws Exception {
         final Thread t = Thread.currentThread();
         FXWorker.invokeOnFXThreadAndWait(() -> {
             try {
                 final ComponentView<Node, Event, Object> componentViewHandle = myComponent.getComponentViewHandle();
+                Node potsHandleReturnValue =null;
                 if (syncMethod != null)
-                    FXUtil.invokeMethod(OnMessage.class, syncMethod, componentViewHandle, message, handleReturnValue);
+                    potsHandleReturnValue = (Node) FXUtil.invokeMethod(OnMessage.class, syncMethod, componentViewHandle, message, handleReturnValue);
 
+                if(potsHandleReturnValue==null)
+                    potsHandleReturnValue = component.getComponentViewHandle().postHandle(handleReturnValue,
+                        message); // fallback to postHandle method
+                if (potsHandleReturnValue == null) {
+                    potsHandleReturnValue = handleReturnValue;
+                } else if (component.getType().equals(UIType.DECLARATIVE)) {
+                    throw new UnsupportedOperationException(
+                        "declarative component should not have a return value in postHandle method, otherwise you would overwrite the FXML root node.");
+                }
+                if (potsHandleReturnValue != null
+                    && component.getType().equals(UIType.PROGRAMMATIC)) {
+                    component.setRoot(potsHandleReturnValue);
+                }
             } catch (Exception e) {
                 t.getUncaughtExceptionHandler().uncaughtException(t, e);
             }

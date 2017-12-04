@@ -52,7 +52,9 @@ public interface ComponentView<C, A, M> extends ComponentHandle<C, A, M> {
      * @return an ui component
      * @throws java.lang.Exception , this method can throw any Exception because it will be implemented in any component.
      */
-    C postHandle(final C node, final Message<A, M> message) throws Exception;
+    default C postHandle(final C node, final Message<A, M> message) throws Exception{
+        return node;
+    }
 
 
 }
