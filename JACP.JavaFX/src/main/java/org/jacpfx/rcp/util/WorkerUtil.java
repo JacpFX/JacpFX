@@ -25,24 +25,23 @@
 
 package org.jacpfx.rcp.util;
 
+import java.lang.reflect.Method;
+import java.util.Optional;
+import java.util.concurrent.BlockingQueue;
+import java.util.function.BiConsumer;
+import java.util.stream.Stream;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import org.jacpfx.api.annotations.method.OnMessage;
 import org.jacpfx.api.annotations.method.OnAsyncMessage;
+import org.jacpfx.api.annotations.method.OnMessage;
 import org.jacpfx.api.component.ComponentView;
 import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.component.UIComponent;
 import org.jacpfx.api.message.Message;
 import org.jacpfx.api.util.UIType;
 import org.jacpfx.rcp.component.EmbeddedFXComponent;
-
-import java.lang.reflect.Method;
-import java.util.Optional;
-import java.util.concurrent.BlockingQueue;
-import java.util.function.BiConsumer;
-import java.util.stream.Stream;
 
 /**
  * Created with IntelliJ IDEA.
@@ -152,15 +151,26 @@ public class WorkerUtil {
      * component.
      *
      * @param handleReturnValue the UI return value after "handle(message)" {@link org.jacpfx.api.component.ComponentHandle#handle(org.jacpfx.api.message.Message)} was executed
-     * @param component,        a component
-     * @param message,          the current message
-     * @throws java.lang.Exception when an Exception occures while execute {@link org.jacpfx.api.component.ComponentView#postHandle(Object, org.jacpfx.api.message.Message)}
+     * @param component         a component
+     * @param message           the current message
+     * @param method            the method to be executed
+     * @throws java.lang.Exception when an Exception occurs while execute {@link org.jacpfx.api.component.ComponentView#postHandle(Object, org.jacpfx.api.message.Message)}
      */
-    public static void executeTypedComponentViewPostHandle(final Object handleReturnValue,
+    public static void executeTypedComponentViewPostHandle(final Node handleReturnValue,
                                                       final EmbeddedFXComponent component, final Message<Event, Object> message, final Method method) throws Exception {
 
         final ComponentView<Node, Event, Object> componentViewHandle = component.getComponentViewHandle();
-        FXUtil.invokeMethod(OnMessage.class,method,componentViewHandle,handleReturnValue,message);
+        Node  potsHandleReturnValue = (Node) FXUtil.invokeMethod(OnMessage.class,method,componentViewHandle,handleReturnValue,message);
+        if (potsHandleReturnValue == null) {
+            potsHandleReturnValue = handleReturnValue;
+        } else if (component.getType().equals(UIType.DECLARATIVE)) {
+            throw new UnsupportedOperationException(
+                "declarative component should not have a return value in postHandle method, otherwise you would overwrite the FXML root node.");
+        }
+        if (potsHandleReturnValue != null
+            && component.getType().equals(UIType.PROGRAMMATIC)) {
+            component.setRoot(potsHandleReturnValue);
+        }
 
     }
 
@@ -199,10 +209,11 @@ public class WorkerUtil {
     /**
      * Runs the handle method of a componentView.
      *
-     * @param component, the component
-     * @param message,    the current message
+     * @param component     the component
+     * @param message       the current message
+     * @param runOnFXThread 
      * @return a returned node from component execution {@link org.jacpfx.api.component.ComponentHandle#handle(org.jacpfx.api.message.Message)}
-     * @throws java.lang.Exception when an Exception occures while execute {@link org.jacpfx.api.component.ComponentHandle#handle(org.jacpfx.api.message.Message)}
+     * @throws java.lang.Exception when an Exception occurs while execute {@link org.jacpfx.api.component.ComponentHandle#handle(org.jacpfx.api.message.Message)}
      */
     public static Node prepareAndRunTypedHandleMethod(
             final UIComponent<Node, EventHandler<Event>, Event, Object> component,

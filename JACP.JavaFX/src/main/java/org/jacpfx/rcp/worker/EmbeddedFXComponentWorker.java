@@ -37,6 +37,7 @@ import org.jacpfx.api.component.SubComponent;
 import org.jacpfx.api.context.JacpContext;
 import org.jacpfx.api.exceptions.NonUniqueComponentException;
 import org.jacpfx.api.message.Message;
+import org.jacpfx.api.util.UIType;
 import org.jacpfx.concurrency.FXWorker;
 import org.jacpfx.rcp.component.EmbeddedFXComponent;
 import org.jacpfx.rcp.componentLayout.FXComponentLayout;
@@ -108,8 +109,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
     private void handleComponentExecution(final EmbeddedFXComponent component, final Map<String, Node> targetComponents) {
         final Thread t = Thread.currentThread();
         try {
-            final Message<Event, Object> message = component
-                    .getNextIncomingMessage();
+            final Message<Event, Object> message = component.getNextIncomingMessage();
             MessageLoggerService.getInstance().receive(message);
             final Node previousContainer = component.getRoot();
             final InternalContext contextImpl = InternalContext.class.cast(component.getContext());
@@ -117,7 +117,8 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
             final String currentExecutionTarget = contextImpl.getExecutionTarget();
             final ComponentView<Node, Event, Object> componentViewHandle = component.getComponentViewHandle();
             final Class<?> messageType = message.getMessageBody().getClass();
-            final Object value = handleAsyncMessage(message, componentViewHandle, messageType);
+
+            final Node value = handleAsyncMessage(message, componentViewHandle, messageType);
 
             handleSyncMessage(component, targetComponents, message, previousContainer, currentTargetLayout, currentExecutionTarget, messageType, value);
 
@@ -128,32 +129,40 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
                         e));
             }
         } catch (InterruptedException e) {
+            if(!t.isInterrupted())t.interrupt();
         } catch (Exception e) {
             t.getUncaughtExceptionHandler().uncaughtException(t, e);
         }
 
     }
 
-    private void handleSyncMessage(EmbeddedFXComponent component, Map<String, Node> targetComponents, Message<Event, Object> message, Node previousContainer, String currentTargetLayout, String currentExecutionTarget, Class<?> messageType, Object value) throws InterruptedException, ExecutionException {
+    private void handleSyncMessage(EmbeddedFXComponent component, Map<String, Node> targetComponents, Message<Event, Object> message, Node previousContainer, String currentTargetLayout, String currentExecutionTarget, Class<?> messageType, Node value) throws InterruptedException, ExecutionException {
         final Method syncMethod = syncMethodMap.get(messageType);
         if (syncMethod != null) {
             publish(component, message, syncMethod, targetComponents,
                     value, previousContainer,
                     currentTargetLayout, currentExecutionTarget);
+        } else {
+            publish(component, message, targetComponents,
+                value, previousContainer,
+                currentTargetLayout, currentExecutionTarget);
         }
     }
 
-    private Object handleAsyncMessage(Message<Event, Object> message, Object componentHandle, Class<?> messageType) {
-        Object value = null;
+    private Node handleAsyncMessage(Message<Event, Object> message, ComponentView<Node, Event, Object> componentHandle, Class<?> messageType)
+        throws Exception {
+        Node value;
         final Method asyncMethod = asyncMethodMap.get(messageType);
         if (asyncMethod != null) {
-            value = FXUtil.invokeMethod(OnAsyncMessage.class, asyncMethod, componentHandle, message);
+            value = (Node) FXUtil.invokeMethod(OnAsyncMessage.class, asyncMethod, componentHandle, message);
+        } else {
+            value = componentHandle.handle(message);
         }
         return value;
     }
 
     /**
-     * publish handle result in application main thread
+     * publish message result in application main thread
      *
      * @throws InterruptedException
      */
@@ -161,7 +170,7 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
                          final Message<Event, Object> message,
                          final Method method,
                          final Map<String, Node> targetComponents,
-                         final Object handleReturnValue,
+                         final Node handleReturnValue,
                          final Node previousContainer, final String currentTargetLayout, final String currentExecutionTarget)
             throws InterruptedException, ExecutionException {
         final Thread t = Thread.currentThread();
@@ -174,6 +183,45 @@ class EmbeddedFXComponentWorker extends AEmbeddedComponentWorker {
                 EmbeddedFXComponentWorker.this.publishComponentValue(
                         component, targetComponents,
                         previousContainer, currentTargetLayout, currentExecutionTarget);
+
+
+            } catch (Exception e) {
+                t.getUncaughtExceptionHandler().uncaughtException(t, e);
+            }
+        });
+    }
+
+    /**
+     * publish handle result in application main thread
+     *
+     * @throws InterruptedException
+     */
+    private void publish(final EmbeddedFXComponent component,
+        final Message<Event, Object> message,
+        final Map<String, Node> targetComponents,
+        final Node handleReturnValue,
+        final Node previousContainer, final String currentTargetLayout, final String currentExecutionTarget)
+        throws InterruptedException, ExecutionException {
+        final Thread t = Thread.currentThread();
+        FXWorker.invokeOnFXThreadAndWait(() -> {
+            // check if component was set to inactive, if so remove
+            try {
+                Node  potsHandleReturnValue = component.getComponentViewHandle().postHandle(handleReturnValue,
+                    message); // fallback to postHandle method
+                if (potsHandleReturnValue == null) {
+                    potsHandleReturnValue = handleReturnValue;
+                } else if (component.getType().equals(UIType.DECLARATIVE)) {
+                    throw new UnsupportedOperationException(
+                        "declarative component should not have a return value in postHandle method, otherwise you would overwrite the FXML root node.");
+                }
+                if (potsHandleReturnValue != null
+                    && component.getType().equals(UIType.PROGRAMMATIC)) {
+                    component.setRoot(potsHandleReturnValue);
+                }
+
+                EmbeddedFXComponentWorker.this.publishComponentValue(
+                    component, targetComponents,
+                    previousContainer, currentTargetLayout, currentExecutionTarget);
 
 
             } catch (Exception e) {

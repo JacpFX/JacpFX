@@ -137,7 +137,6 @@ public class MessageCoordinator extends Thread implements
     }
 
     private void handleInActive(final SubComponent<EventHandler<Event>, Event, Object> component, final Perspective<Node, EventHandler<Event>, Event, Object> parentPerspective, Message<Event, Object> message) {
-        final JacpContext<EventHandler<Event>, Object> context = component.getContext();
         ComponentUtil.activateComponent(component);
         parentPerspective.addComponent(component);
         this.componentHandler.initComponent(message, component);
