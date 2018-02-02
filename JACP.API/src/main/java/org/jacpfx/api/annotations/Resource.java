@@ -30,8 +30,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * The Resource annotation allows to inject different resources in dialogs an
- * component like a parent component, resource bundles and session context.
+ * The Resource annotation allows to inject different resources in dialogs and
+ * components like a parent component, resource bundles and session context.
  *
  * @author Andy Moncsek
  */
@@ -41,7 +41,7 @@ public @interface Resource {
     /**
      * Id of desired parent component id.
      *
-     * @return The component Id
+     * @return The component Id.
      */
     String parentId() default "";
 }

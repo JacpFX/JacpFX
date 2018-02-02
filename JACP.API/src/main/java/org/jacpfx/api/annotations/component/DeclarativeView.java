@@ -30,13 +30,15 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import org.jacpfx.api.context.JacpContext;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Andy Moncsek
- * Date: 15.08.13
- * Time: 21:46
  * Marks component as declarative component.
+ * <P>
+ * Created with IntelliJ IDEA.<BR>
+ * User: Andy Moncsek<BR>
+ * Date: 15.08.13<BR>
+ * Time: 21:46
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
@@ -45,14 +47,14 @@ public @interface DeclarativeView {
     /**
      * The component id.
      *
-     * @return The component Id
+     * @return The component Id.
      */
     String id();
 
     /**
      * The active state at start time.
      *
-     * @return True
+     * @return {@code true}.
      */
     boolean active() default true;
 
@@ -65,7 +67,8 @@ public @interface DeclarativeView {
 
     /**
      * Defines the target layout id where the component should be displayed in.
-     * This id is defined in the parent perspective and can be changed at runtime (context.setLayoutTargetId).
+     * This id is defined in the parent perspective and can be changed at runtime 
+     * ({@link JacpContext#setTargetLayout(java.lang.String)}).
      *
      * @return A valid targetLayout id from perspective.
      */
@@ -74,15 +77,15 @@ public @interface DeclarativeView {
     /**
      * Represents the location of your resource bundle file.
      *
-     * @return The default resource bundle location (like bundle.messages)
+     * @return The default resource bundle location (like {@code bundle.messages}).
      */
     String resourceBundleLocation() default "";
 
     /**
-     * Represents the Locale ID. see:
-     * http://www.oracle.com/technetwork/java/javase/locales-137662.html
+     * Represents the Locale ID.
      *
-     * @return The default locale Id
+     * @return The default locale Id.
+     * @see <a href="http://www.oracle.com/technetwork/java/javase/locales-137662.html">JDK 6 and JRE 6 Supported Locales</a>
      */
     String localeID() default "";
 }

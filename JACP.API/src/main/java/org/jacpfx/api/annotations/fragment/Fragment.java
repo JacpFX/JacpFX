@@ -24,17 +24,16 @@
  */
 package org.jacpfx.api.annotations.fragment;
 
-import org.jacpfx.api.fragment.Scope;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import org.jacpfx.api.fragment.Scope;
 
 /**
  * Defines a managed dialog component, A dialog has a parent component
- * accessible by @Ressource annotation, the Fragment should either extend a Node
- * or define a viewLocation pointing to fxml.
+ * accessible by {@code @Ressource} annotation, the Fragment should either
+ * extend a Node or define a viewLocation pointing to fxml.
  *
  * @author Andy Moncsek
  */
@@ -44,37 +43,37 @@ public @interface Fragment {
     /**
      * The component id.
      *
-     * @return The component Id
+     * @return The component Id.
      */
     String id();
 
     /**
      * Defines the Scope of the Fragment, default is Singleton.
      *
-     * @return The dialog {@link Scope}
+     * @return The dialog {@link Scope}.
      */
     Scope scope() default Scope.SINGLETON;
 
     /**
      * Represents the location (URI) of the declarative UI.
      *
-     * @return The view location (like bundle.messages)
+     * @return The view location (like {@code bundle.messages}).
      */
     String viewLocation() default "";
 
     /**
      * Represents the location of your resource bundle file.
      *
-     * @return The default resource bundle location (like bundle.messages)
+     * @return The default resource bundle location (like {@code  bundle.messages}).
      */
     String resourceBundleLocation() default "";
 
 
     /**
-     * Represents the Locale ID. see:
-     * http://www.oracle.com/technetwork/java/javase/locales-137662.html
+     * Represents the Locale ID. 
      *
-     * @return The default locale Id
+     * @return The default locale Id.
+     * @see <a href="http://www.oracle.com/technetwork/java/javase/locales-137662.html">JDK 6 and JRE 6 Supported Locales</a>
      */
     String localeID() default "";
 }
