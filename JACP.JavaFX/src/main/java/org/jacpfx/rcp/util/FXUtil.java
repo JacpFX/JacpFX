@@ -24,16 +24,6 @@
  */
 package org.jacpfx.rcp.util;
 
-import javafx.collections.ObservableList;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import org.jacpfx.api.annotations.Resource;
-import org.jacpfx.api.component.Injectable;
-import org.jacpfx.api.context.JacpContext;
-
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -43,6 +33,15 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import org.jacpfx.api.annotations.Resource;
+import org.jacpfx.api.component.Injectable;
+import org.jacpfx.api.context.JacpContext;
 
 /**
  * Util class with helper methods
@@ -182,8 +181,10 @@ public class FXUtil {
      * find annotated method in component and pass value
      *
      * @param annotation , the annotation to find
+     * @param method     , the annotated method
      * @param component  , the component with the annotated method
      * @param value      , the values to pass to the annotated method
+     * @return The returned value from the method invocation or {@code null}.
      */
     public static Object invokeMethod(
             final Class annotation, Method method, final Object component,
