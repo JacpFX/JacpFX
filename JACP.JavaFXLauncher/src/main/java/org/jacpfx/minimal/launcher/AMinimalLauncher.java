@@ -89,7 +89,7 @@ public abstract class AMinimalLauncher extends Application {
     /**
      * Will be executed after Spring/JavaFX initialisation.
      *
-     * @param stage the javafx Stage
+     * @param stage The JavaFX {@link Stage}.
      */
     protected abstract void postInit(Stage stage);
 
