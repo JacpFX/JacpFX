@@ -25,6 +25,10 @@
 
 package org.jacpfx.minimal.launcher;
 
+import java.security.InvalidParameterException;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.stream.Stream;
 import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.stage.Stage;
@@ -37,11 +41,6 @@ import org.jacpfx.rcp.registry.ClassRegistry;
 import org.jacpfx.rcp.util.ClassFinder;
 import org.jacpfx.rcp.workbench.AFXWorkbench;
 import org.jacpfx.rcp.workbench.FXWorkbench;
-
-import java.security.InvalidParameterException;
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 /**
  * Created by amo on 21.08.14.
@@ -80,9 +79,10 @@ public abstract class AMinimalLauncher extends Application {
     }
 
     /**
-     * Return all packages which contains component and perspective that should be scanned. This is needed to find component/prespectives by id.
+     * Return all packages which contains component and perspective that should 
+     * be scanned. This is needed to find component/perspectives by id.
      *
-     * @return an array of package names
+     * @return An array of package names.
      */
     protected abstract String[] getBasePackages();
 
@@ -94,18 +94,20 @@ public abstract class AMinimalLauncher extends Application {
     protected abstract void postInit(Stage stage);
 
     /**
-     * Returns an ErrorDialog handler to display exceptions and errors in workspace. Overwrite this method if you need a customized handler.
+     * Returns an ErrorDialog handler to display exceptions and errors in
+     * workspace. Overwrite this method if you need a customized handler.
      *
-     * @return an {@link org.jacpfx.api.handler.ErrorDialogHandler} instance
+     * @return An {@link org.jacpfx.api.handler.ErrorDialogHandler} instance.
      */
     protected ErrorDialogHandler<Node> getErrorHandler() {
         return new DefaultErrorDialogHandler();
     }
 
     /**
-     * Return an instance of your WorkbenchDecorator, which defines the basic layout structure with toolbars and main content
+     * Return an instance of your {@link WorkbenchDecorator}, which defines the
+     * basic layout structure with toolbars and main content.
      *
-     * @return returns an instance of a {@link org.jacpfx.rcp.components.workbench.WorkbenchDecorator}
+     * @return An instance of {@link org.jacpfx.rcp.components.workbench.WorkbenchDecorator}.
      */
     protected WorkbenchDecorator getWorkbenchDecorator() {
         return new DefaultWorkbenchDecorator();
