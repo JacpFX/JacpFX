@@ -41,29 +41,29 @@ public @interface Component {
     /**
      * The component id.
      *
-     * @return The component Id
+     * @return The component Id.
      */
     String id();
 
     /**
      * The active state at start time.
      *
-     * @return True
+     * @return {@code true}.
      */
     boolean active() default true;
 
     /**
      * Represents the location of your resource bundle file.
      *
-     * @return The default resource bundle location (like bundle.messages)
+     * @return The default resource bundle location (like bundle.messages).
      */
     String resourceBundleLocation() default "";
 
     /**
-     * Represents the Locale ID. see:
-     * http://www.oracle.com/technetwork/java/javase/locales-137662.html
+     * Represents the Locale ID.
      *
-     * @return The default locale Id
+     * @return The default locale Id.
+     * @see <a href="http://www.oracle.com/technetwork/java/javase/locales-137662.html">JDK 6 and JRE 6 Supported Locales</a>
      */
     String localeID() default "";
 

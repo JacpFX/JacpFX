@@ -32,11 +32,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Andy Moncsek
- * Date: 23.07.13
+ * Defines NON-UI component for stateless usage.
+ * <P>
+ * Created with IntelliJ IDEA.<BR>
+ * User: Andy Moncsek<BR>
+ * Date: 23.07.13<BR>
  * Time: 11:13
- * Defines NON-UI component for stateless usage
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
