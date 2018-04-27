@@ -30,13 +30,15 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import org.jacpfx.api.context.JacpContext;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Andy Moncsek
- * Date: 29.08.13
+ * Defines a component that returns a view node to be displayed in a perspective target.
+ * <P>
+ * Created with IntelliJ IDEA.<BR>
+ * User: Andy Moncsek<BR>
+ * Date: 29.08.13<BR>
  * Time: 08:35
- * Defines a component that returns a view node to be displayed in a perspective target
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
@@ -45,20 +47,21 @@ public @interface View {
     /**
      * The component id.
      *
-     * @return The component Id
+     * @return The component Id.
      */
     String id();
 
     /**
      * The active state at start time.
      *
-     * @return True
+     * @return {@code true}.
      */
     boolean active() default true;
 
     /**
      * Defines the target layout id where the component should be displayed in.
-     * This id is defined in the parent perspective and can be changed at runtime (context.setLayoutTargetId).
+     * This id is defined in the parent perspective and can be changed at runtime
+     * ({@link JacpContext#setTargetLayout(java.lang.String)}).
      *
      * @return A valid targetLayout id from perspective.
      */
@@ -67,7 +70,7 @@ public @interface View {
     /**
      * Represents the location of your resource bundle file.
      *
-     * @return The default resource bundle location (like bundle.messages)
+     * @return The default resource bundle location (like {@code bundle.messages}).
      */
     String resourceBundleLocation() default "";
 
