@@ -174,7 +174,7 @@ public class WorkbenchUtil {
         final String id = perspectiveAnnotation.id();
         if (id == null) throw new IllegalArgumentException("no perspective id set");
         initContext(InternalContext.class.cast(perspective.getContext()), parentId, id, perspectiveAnnotation.active());
-        LOGGER.fine("register perspective with annotations : "
+        LOGGER.finest("register perspective with annotations : "
                 + perspectiveAnnotation.id());
         initDeclarativePerspectiveParts(perspective, perspectiveAnnotation);
         initLocaleAttributes(perspective, perspectiveAnnotation);

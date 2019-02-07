@@ -310,7 +310,7 @@ public class PerspectiveUtil {
 
     private static void log(final String message) {
         if (LOGGER.isLoggable(Level.FINE)) {
-            LOGGER.fine(">> " + message);
+            LOGGER.finest(">> " + message);
         }
     }
 }
