@@ -251,7 +251,7 @@ public abstract class AFXPerspective implements
 
     private void log(final String message) {
         if (this.logger.isLoggable(Level.FINE)) {
-            this.logger.fine(">> " + message);
+            this.logger.finest(">> " + message);
         }
     }
 

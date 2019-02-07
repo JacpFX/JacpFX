@@ -89,7 +89,7 @@ public abstract class AEmbeddedComponentWorker extends Thread {
     void log(final String message) {
         if (Logger.getLogger(AEmbeddedComponentWorker.class.getName()).isLoggable(
                 Level.FINE)) {
-            Logger.getLogger(AEmbeddedComponentWorker.class.getName()).fine(
+            Logger.getLogger(AEmbeddedComponentWorker.class.getName()).finest(
                     ">> " + message);
         }
     }

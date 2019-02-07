@@ -164,7 +164,7 @@ public abstract class AFXWorkbench
         FXUtil.performResourceInjection(handle, context);
         start(Stage.class.cast(root));
         GlobalMediator.getInstance().handleWorkbenchToolBarButtons(annotation.id(), true);
-        logger.info("INIT");
+        logger.finest("INIT");
     }
 
     private Workbench getWorkbenchAnnotation() {
@@ -312,7 +312,7 @@ public abstract class AFXWorkbench
 
     private void log(final String message) {
         if (logger.isLoggable(Level.FINE)) {
-            logger.fine(">> " + message);
+            logger.finest(">> " + message);
         }
     }
 

@@ -76,7 +76,7 @@ public final class ShutdownThreadsHandler{
 	public static void shutdownThreads() {
 		FXWorker.APPLICATION_RUNNING.set(false);
 		registeredThreads.stream().filter(t -> t.isAlive()).forEach(t -> {
-			logger.info("shutdown thread: " + t);
+			logger.finest("shutdown thread: " + t);
 			t.interrupt();
 		});
 	}
@@ -93,7 +93,7 @@ public final class ShutdownThreadsHandler{
 	public static void shutdowAll() {
 		FXWorker.APPLICATION_RUNNING.set(false);
 		registeredThreads.stream().filter(t -> t.isAlive()).forEach(t -> {
-			logger.info("shutdown thread: " + t);
+			logger.finest("shutdown thread: " + t);
 			t.interrupt();
 		});
 		registeredExecutors.forEach(java.util.concurrent.ExecutorService::shutdown);

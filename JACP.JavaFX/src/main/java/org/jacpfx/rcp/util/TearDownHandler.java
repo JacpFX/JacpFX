@@ -212,7 +212,7 @@ public class TearDownHandler {
     private static void log(final String message) {
         if (Logger.getLogger(AComponentWorker.class.getName()).isLoggable(
                 Level.FINE)) {
-            Logger.getLogger(AComponentWorker.class.getName()).fine(
+            Logger.getLogger(AComponentWorker.class.getName()).finest(
                     ">> " + message);
         }
     }
