@@ -44,7 +44,7 @@ public class DefaultErrorDialogHandler extends AErrorDialogHandler {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         e.printStackTrace(pw);
-        logger.log(Level.INFO,sw.toString());
+        logger.log(Level.FINEST,sw.toString());
         return new DefaultErrorDialog("Error Pane",sw.toString());
     }
 }
