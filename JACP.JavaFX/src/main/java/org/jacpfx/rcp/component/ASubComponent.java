@@ -90,7 +90,7 @@ public abstract class ASubComponent  implements
         try {
             this.incomingMessage.put(action);
         } catch (final InterruptedException e) {
-            this.componentLogger.info("massage put failed:");
+            this.componentLogger.warning("massage put failed:");
             //TODO handle exception global
         }
 
